@@ -84,7 +84,7 @@ xoffset=0
 
 # Default crop offset (Customizable at launch with --cropoffset)
 # Possible values:
-# NorthWest, north, northEast, west, center, east, southwest, south, southeast
+# northwest, north, northeast, west, center, east, southwest, south, southeast
 crop_offset="center"
 
 # Padding to align text to the right
