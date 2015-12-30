@@ -235,8 +235,8 @@ usage () {
     echo "   --cpu string/cmd       Manually set the cpu name"
     echo "   --memory string/cmd    Manually set the memory"
     echo "   --speed string/cmd     Manually set the cpu speed"
-    echo "   --speed_type           Type of cpu speed to get Possible values:"
-    echo "                          current, min, max"
+    echo "   --speed_type           Change the type of cpu speed to get"
+    echo "                          Possible values: current, min, max"
     echo "   --song string/cmd      Manually set the current song"
     echo
     echo "   Text Colors:"

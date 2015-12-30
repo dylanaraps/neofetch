@@ -52,8 +52,8 @@ Info:
 --cpu string/cmd       Manually set the cpu name
 --memory string/cmd    Manually set the memory
 --speed string/cmd     Manually set the cpu speed
---speed_type           Type of cpu speed to get Possible values:
-                       current, min, max
+--speed_type           Change the type of cpu speed to get
+                       Possible values: current, min, max
 --song string/cmd      Manually set the current song
 
 Text Colors:
