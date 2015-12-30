@@ -100,9 +100,6 @@ Here's what's on my todo list
 - Find a reliable way to set the text padding dynamically. I can get this to
   <br/> work based on font width but there's no reliable way of getting
   <br/> fontwidth for every terminal afaik.
-- Find a quick and reliable way to get the current window manager. I had a
-  <br/> solution that used an array of processes and pgrep but it doubled the
-  <br/> startup time for the script.
 
 If you've got any ideas on how to solve these problems, let me know!
 
