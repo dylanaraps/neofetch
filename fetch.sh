@@ -23,7 +23,7 @@ title_uptime="Uptime"
 title_packages="Packages"
 title_shell="Shell"
 title_windowmanager="Window Manager"
-title_cpu="Cpu"
+title_cpu="CPU"
 title_memory="Memory"
 title_song="Song"
 
