@@ -63,7 +63,11 @@ clear="\033[0m"
 # Custom Image {{{
 
 # Enable or disable the use of images (Disable images at launch with "--noimg")
-enableimages=1
+if type -p /usr/lib/w3m/w3mimgdisplay >/dev/null 2>&1; then
+  enableimages=1
+else
+  enableimages=0
+fi
 
 # If 1, fetch will use a cropped version of your wallpaper as the image
 # (Disable this at launch with "--nowall")
@@ -446,11 +450,13 @@ echoinfo "$title_song" "$song"
 # Display the color blocks
 [ $printcols -eq 1 ] && echo -e "$(printcols)"
 
+if type -p /usr/lib/w3m/w3mimgdisplay >/dev/null 2>&1; then
 # Display the image
-echo -e "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
-    /usr/lib/w3m/w3mimgdisplay
+  echo -e "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+      /usr/lib/w3m/w3mimgdisplay
 # Show the cursor again
-echo -n -e "\033[?25h"
+  echo -n -e "\033[?25h"
+fi
 
 
 # }}}
