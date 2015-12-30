@@ -157,7 +157,16 @@ windowmanager=$(wmctrl -m | awk '/Name:/ {printf $2}')
 cpu="$(awk 'BEGIN{FS=":"} /model name/ {print $2; exit}' /proc/cpuinfo |\
     awk 'BEGIN{FS="@"; OFS="\n"} { print $1; exit }' |\
     sed -e 's/\((tm)\|(TM)\)//' -e 's/\((R)\|(r)\)//' -e 's/^\ //')"
-speed="$(lscpu | awk '/CPU MHz:/ {printf "scale=1; " $3 " / 1000 \n"}' | bc -l)"
+
+# Get current/min/max cpu speed
+speed_type="max"
+cpuspeed () {
+    case $speed_type in
+        current) speed="$(lscpu | awk '/CPU MHz:/ {printf "scale=1; " $3 " / 1000 \n"}' | bc -l)" ;;
+        min) speed="$(lscpu | awk '/CPU min MHz:/ {printf "scale=1; " $4 " / 1000 \n"}' | bc -l)" ;;
+        max) speed="$(lscpu | awk '/CPU max MHz:/ {printf "scale=1; " $4 " / 1000 \n"}' | bc -l)" ;;
+    esac
+}
 
 # Memory (Configurable with "-M" and "--memory" at launch)
 # Print the total amount of ram and amount of ram in use
@@ -217,6 +226,8 @@ usage () {
     echo "   --cpu string/cmd       Manually set the cpu name"
     echo "   --memory string/cmd    Manually set the memory"
     echo "   --speed string/cmd     Manually set the cpu speed"
+    echo "   --speed_type           Type of cpu speed to get Possible values:"
+    echo "                          current, min, max"
     echo "   --song string/cmd      Manually set the current song"
     echo
     echo "   Text Colors:"
@@ -283,6 +294,7 @@ for argument in $args; do
         --winman) windowmanager="$2" ;;
         --cpu) cpu="$2" ;;
         --speed) speed="$2" ;;
+        --speed_type) speed_type="$2" ;;
         --memory) memory="$2" ;;
         --song) song="$2" ;;
 
@@ -384,6 +396,8 @@ fi
 
 # Print Info {{{
 
+# Get cpu speed
+cpuspeed
 
 # Get packages
 [ -z $packages ] && getpackages
