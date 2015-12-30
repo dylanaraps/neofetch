@@ -148,10 +148,19 @@ shell="$SHELL"
 # This can be detected without wmctrl by using an array of window manager
 # process names and pgrep but it's really slow.
 # (Doubles script startup time in some cases).
-# If you don't want to install wmctrl you can either edit the var below
+# If you don't want to install wmctrl you can either edit the var below,
+# export the "windowmanager" variable in your shell's configuration file,
 # or run the script with: --windowmanager wmname
 # windowmanager="openbox"
-windowmanager=$(wmctrl -m | awk '/Name:/ {printf $2}')
+if [ -z $windowmanager ]; then
+    if type -p wmctrl >/dev/null 2>&1; then
+        windowmanager=$(wmctrl -m | awk '/Name:/ {printf $2}')
+    elif [ -e ~/.xinitrc ]; then
+        windowmanager=$(grep -v "^#" "${HOME}/.xinitrc" | tail -n 1 | cut -d " " -f2)
+    else
+        windowmanager="Unknown"
+    fi
+fi
 
 # Processor (Configurable with "-C", "-S" and "--cpu", "--speed" at launch)
 cpu="$(awk 'BEGIN{FS=":"} /model name/ {print $2; exit}' /proc/cpuinfo |\
