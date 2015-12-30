@@ -114,7 +114,11 @@ title="$(whoami)@$(hostname)"
 
 # Operating System (Configurable with "-O" and "--distro" at launch)
 # You can manually set this if the command below doesn't work for you.
-os=$(awk '/^NAME=/' /etc/*ease | sed -n 's/^NAME=//p' | tr -d '"')
+if type -p crux >/dev/null 2>&1; then
+  os="CRUX"
+else
+  os=$(awk '/^NAME=/' /etc/*ease | sed -n 's/^NAME=//p' | tr -d '"')
+fi
 
 # Linux kernel name/version (Configurable with "-K" and "--kernel" at launch)
 kernel=$(uname -r)
@@ -186,7 +190,11 @@ cpuspeed () {
 memory=$(free -m | awk '/Mem:/ {printf $3 "MB / " $2 "MB"}')
 
 # Currently playing song/artist (Configurable with "-m" and "--song" at launch)
-song=$(mpc current)
+if type -p mpc >/dev/null 2>&1; then
+  song=$(mpc current)
+else
+  song="Unknown"
+fi
 
 # Print terminal colors in a line
 # (Configurable with "--printcols start end" at launch)
