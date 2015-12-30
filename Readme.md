@@ -66,6 +66,9 @@ These are the script's optional dependencies
                                The image gets priority over other
                                images: (wallpaper, \$img)
         --size px              Change the size of the image
+        --cropoffset value     Change the crop offset. Possible values:
+                               northwest, north, northeast, west, center
+                               east, southwest, south, southeast"
         --padding              How many spaces to pad the text
                                to the right
         --xoffset px           How close the image will be

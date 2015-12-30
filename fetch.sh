@@ -82,6 +82,11 @@ imgsize=128
 yoffset=0
 xoffset=0
 
+# Default crop offset (Customizable at launch with --cropoffset)
+# Possible values:
+# NorthWest, north, northEast, west, center, east, southwest, south, southeast
+crop_offset="center"
+
 # Padding to align text to the right
 # TODO: Find a reliable way to set this dynamically. I can get
 #       this to work based on font width but there's no reliable way
@@ -231,6 +236,10 @@ usage () {
     echo "                          The image gets priority over other"
     echo "                          images: (wallpaper, \$img)"
     echo "   --size px              Change the size of the image"
+    echo "   --cropoffset value     Change the crop offset. Possible values:"
+    echo "                          northwest, north, northeast, west, center"
+    echo "                          east, southwest, south, southeast"
+    echo
     echo "   --padding              How many spaces to pad the text"
     echo "                          to the right"
     echo "   --xoffset px           How close the image will be "
@@ -249,6 +258,7 @@ usage () {
 }
 
 # }}}
+
 
 # Args {{{
 
@@ -293,6 +303,7 @@ for argument in $args; do
         # Image
         --image) usewall=0; img="$2" ;;
         --size) imgsize="$2" ;;
+        --cropoffset) crop_offset="$2" ;;
         --padding) pad="$2" ;;
         --xoffset) xoffset="$2" ;;
         --yoffset) yoffset="$2" ;;
@@ -322,14 +333,14 @@ if [ $enableimages -eq 1 ]; then
     [ $usewall -eq 1 ] && \
         img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg" | sed -e "s/'//g")
 
-    # Get name of image
-    imgname=${img##*/}
+    # Get name of image and prefix it with it's crop offset
+    imgname="$crop_offset-${img##*/}"
 
-    # If the image in the tempdir is a different size to $imgsize, delete it
     # This check allows you to resize the image at launch
-    [ -f "$imgtempdir/$imgname" ] && \
-    [ $(identify -format "%h" "$imgtempdir/$imgname") != $imgsize ] && \
-        rm "$imgtempdir/$imgname"
+    if [ -f "$imgtempdir/$imgname" ]; then
+        imgheight=$(identify -format "%h" "$imgtempdir/$imgname")
+        [ $imgheight != $imgsize ] && rm "$imgtempdir/$imgname"
+    fi
 
     # Check to see if the tempfile exists before we do any cropping.
     if [ ! -f "$imgtempdir/$imgname" ]; then
@@ -356,7 +367,7 @@ if [ $enableimages -eq 1 ]; then
         # of a tiny image.
         convert \
             -crop "$size"x"$size"+0+0 \
-            -gravity center "$img" \
+            -gravity $crop_offset "$img" \
             -resize "$imgsize"x"$imgsize" "$imgtempdir/$imgname"
     fi
 
