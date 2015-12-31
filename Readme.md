@@ -17,7 +17,7 @@ for as many people as possible.
 ![1](https://sr.ht/xL9f.png)
 
 
-## Dependencies
+## Dependencies <!-- {{{ -->
 
 These are the script's required dependencies
 
@@ -30,8 +30,10 @@ These are the script's optional dependencies:
 -  Display Wallpaper: feh
 -  Current Song: mpc
 
+<!-- }}} -->
 
-## Usage
+
+## Usage <!-- {{{ -->
 
 The script now supports dynamic image sizing and padding,
 <br\> they're enabled by default and there's a variable you
@@ -77,15 +79,15 @@ Text Colors:
 --infocol num          Change the color of the info
 
 Text Formatting:
---underline on/off     Enable/Disable title underline"
---underline_char char  Character to use when underlineing title"
---linewrap on/off      Enable/Disable line wrapping"
---bold on/off          Enable/Disable bold text"
+--underline on/off     Enable/Disable title underline
+--underline_char char  Character to use when underlineing title
+--linewrap on/off      Enable/Disable line wrapping
+--bold on/off          Enable/Disable bold text
 
 Color Blocks:
 --printcols start end  Range of colors to print as blocks
---blockwidth num       Width of color blocks"
---color_blocks on/off  Enable/Disable the color blocks"
+--blockwidth num       Width of color blocks
+--color_blocks on/off  Enable/Disable the color blocks
 
 Image:
 --image                Image to display with the script
@@ -94,6 +96,10 @@ Image:
 
 --fontwidth            Used to automatically size the image
 --size px              Change the size of the image
+--smart_crop on/off    Smart crop images with plain color backgrounds
+--smart_crop_mode      Which mode to use with smart crop
+                       Takes the values: fit, fill
+--img_auto on/off      Enable/Disable automatic i mage sizing
 --cropoffset value     Change the crop offset. Possible values:
                        northwest, north, northeast, west, center
                        east, southwest, south, southeast
@@ -106,7 +112,7 @@ Image:
 
 --gap num              Gap between image and text right side
 --images on/off        Enable/Disable all images"
---wall on/off          Enable/Disable the wallpaper function"
+--wall on/off          Enable/Disable the wallpaper function
                        and fallback to \$img
 --clean                Remove all cropped images
 
@@ -114,14 +120,24 @@ Other:
 --help                 Print this text and exit
 ```
 
+<!-- }}} -->
 
-## TODO
+
+## TODO <!-- {{{ -->
 
 Here's what's on my todo list
 
 - Add an easy way to define info prefixes at launch.
-- Finish adding an option to smart crop images with plain color backgrounds.
-  <br/>What this means is that your solid bg waifu wallpaper will be cropped around
-  <br/>your waifu no matter where she is in the image.
 - Cleanup
 - Add options to bold other text in the script (info, underline, colons)
+- Fix linewrapping flag with tmux
+- Fix issues with multiline prompts
+
+<!-- }}} -->
+
+
+### Smart Crop mode comparison
+
+![fit](http://imgur.com/MI0UtSV)
+
+![fill](http://imgur.com/LvxYwki)

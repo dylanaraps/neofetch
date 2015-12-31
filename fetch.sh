@@ -41,7 +41,7 @@ title_song="Song"
 linewrap="on"
 
 # Set to "", comment this line or use the flag "--bold on/off"
-# to disable bold text.
+# to disable all bold text.
 bold="on"
 
 # Whether or not to underline the title.
@@ -93,10 +93,22 @@ wall="on"
 img="$HOME/Pictures/avatars/gon.png"
 
 # Image size is based on terminal size
-# Using the flag "--size" sets this to 0.
-img_auto=1
+# Using the flag "--size" sets this to off.
+img_auto="on"
 
-# Image size to use if img_auto=0
+# This is experimental and needs testing. ( Off by default )
+# Smart crop images with plain color backgrounds.
+# What this means is that your solid bg waifu wallpaper will be cropped around
+# your waifu no matter where she is in the image.
+smart_crop="off"
+
+# Smart crop has two modes, fit and fill.
+# Fit: Fit the whole character into the crop.
+# Fill: Fit a portrait of the character into the crop.
+# Fit gives the best results when the character isn't cut off at the sides.
+smart_crop_mode="fit"
+
+# Image size to use if img_auto="off"
 # Also configureable at launch with "--size"
 size=128
 
@@ -306,6 +318,10 @@ usage () {
     printf '%s\n' "                          images: (wallpaper, \$img)"
     printf '%s\n' "   --fontwidth px         Used to automatically size the image"
     printf '%s\n' "   --size px              Change the size of the image"
+    printf '%s\n' "   --smart_crop on/off    Smart crop images with plain color backgrounds"
+    printf '%s\n' "   --smart_crop_mode      Which mode to use with smart crop"
+    printf '%s\n' "                          Takes the values: fit, fill"
+    printf '%s\n' "   --img_auto on/off      Enable/Disable automatic i mage sizing"
     printf '%s\n' "   --cropoffset value     Change the crop offset. Possible values:"
     printf '%s\n' "                          northwest, north, northeast, west, center"
     printf '%s\n' "                          east, southwest, south, southeast"
@@ -374,7 +390,10 @@ for argument in "$@"; do
         # Image
         --image) wall="off"; img="$2" ;;
         --fontwidth) fontwidth="$2" ;;
-        --size) img_auto=0 imgsize="$2" ;;
+        --size) img_auto="off" imgsize="$2" ;;
+        --smart_crop) smart_crop="$2" ;;
+        --smart_crop_mode) smart_crop_mode="$2" ;;
+        --img_auto) img_auto="off" ;;
         --cropoffset) crop_offset="$2" ;;
         --padding) padding="$2" ;;
         --xoffset) xoffset="$2" ;;
@@ -402,7 +421,7 @@ done
 # If the script was called with --noimg, disable images and padding
 if [ $images == "on" ]; then
     # Check to see if auto=1
-    if [ $img_auto -eq 1 ]; then
+    if [ $img_auto == "on" ]; then
         # Image size is half of the terminal
         imgsize=$(($(tput cols) * fontwidth / 2))
 
@@ -412,8 +431,8 @@ if [ $images == "on" ]; then
 
     # If wall=on, Get image to display from current wallpaper.
     # (only works with feh)
-    [ $wall == "on" ] && \
-        img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg" | sed -e "s/'//g")
+    # [ $wall == "on" ] && \
+    #     img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg" | sed -e "s/'//g")
 
     # Get name of image and prefix it with it's crop offset
     imgname="$crop_offset-${img##*/}"
@@ -440,17 +459,34 @@ if [ $images == "on" ]; then
             size=${size[1]}
         fi
 
-        # Crop the image and save it to  the $imgtempdir
-        # By default we crop a square in the center of the image which is
-        # "image height x image height".
-        # We then resize it to the image size specified above.
-        # (default 128x128 px, uses var $height)
-        # This way we get a full image crop with the speed benefit
-        # of a tiny image.
-        convert \
-            -crop "$size"x"$size"+0+0 \
-            -gravity $crop_offset "$img" \
-            -resize "$imgsize"x"$imgsize" "$imgtempdir/$imgname"
+        # Crop the image, resize it and save it to $imgtempdir.
+        if [ $smart_crop == "on" ]; then
+            # Fixes transparent images having a white bg after -extent
+            c=$(convert "$img" -colorspace srgb -format "%[pixel:p{0,0}]" info:)
+
+            if [ $smart_crop_mode == "fit" ]; then
+                convert \
+                    -trim +repage "$img"  \
+                    -gravity south \
+                    -background "$c" \
+                    -extent "$size"x"$size" \
+                    -resize "$imgsize"x"$imgsize" \
+                    "$imgtempdir/$imgname"
+            else
+                convert \
+                    -trim +repage "$img"  \
+                    -resize "$imgsize"x"$imgsize"^ \
+                    -background "$c" \
+                    -extent "$imgsize"x"$imgsize" \
+                    "$imgtempdir/$imgname"
+            fi
+        else
+            convert \
+                -crop "$size"x"$size"+0+0 \
+                -gravity $crop_offset "$img" \
+                -resize "$imgsize"x"$imgsize" \
+                "$imgtempdir/$imgname"
+        fi
     fi
 
     # The final image
