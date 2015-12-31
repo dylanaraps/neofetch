@@ -1,8 +1,4 @@
 # fetch.sh
-### Check the releases page
-
-https://github.com/dylanaraps/fetch.sh
-
 
 This is the home of my fetch script! This script gathers info <br\>
 about your system and prints it to the terminal.
