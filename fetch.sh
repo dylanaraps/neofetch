@@ -146,7 +146,7 @@ getpackages () {
     case $os in
         'Arch Linux'|'Parabola GNU/Linux-libre'|'Manjaro'|'Antergos') \
             packages=$(pacman -Q | wc -l) ;;
-        'Ubuntu'|'Mint'|'Debian'|'Kali Linux') \
+        'Ubuntu'|'Mint'|'Debian'|'Kali Linux'|'Deepin Linux') \
             packages=$(dpkg --get-selections | grep -v deinstall$ | wc -l) ;;
         'Slackware') \
             packages=$(ls -1 /var/log/packages | wc -l) ;;
@@ -313,10 +313,7 @@ usage () {
 # Args {{{
 
 
-# Args
-args="$@"
-
-for argument in $args; do
+for argument in "$@"; do
     case $1 in
         # Info
         --title) title="$2" ;;
@@ -466,14 +463,14 @@ underline=$(printf %"${#title}"s |tr " " "-")
 tput civis
 
 # Print the title and underline
-printf "$pad$bold$title_color$title$clear \n"
-printf "$pad$colon_color$underline$clear \n"
+printf "%s\n" "$pad$bold$title_color$title$clear"
+printf "%s\n" "$pad$colon_color$underline$clear"
 
 # Custom printf function to make it easier to edit the info lines.
 printinfo () {
     printf "$pad$bold$subtitle_color$1$clear"
     printf "$colon_color:$clear "
-    printf "$info_color$2$clear \n"
+    printf "%s\n" "$info_color$2$clear"
 }
 
 # Disable line wrap
