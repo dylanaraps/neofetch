@@ -152,6 +152,8 @@ uptime=$(uptime -p)
 # (Link is at the top)
 getpackages () {
     case $os in
+	'void') \
+	    packages=$(xbps-query -l | wc -l) ;;
         'Arch Linux'|'Parabola GNU/Linux-libre'|'Manjaro'|'Antergos') \
             packages=$(pacman -Q | wc -l) ;;
         'Ubuntu'|'Mint'|'Debian'|'Kali Linux'|'Deepin Linux') \
