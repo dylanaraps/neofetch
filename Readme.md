@@ -121,6 +121,7 @@ Here's what's on my todo list
 - Finish adding an option to smart crop images with plain color backgrounds.
   <br/>What this means is that your solid bg waifu wallpaper will be cropped around
   <br/>your waifu no matter where she is in the image.
+- Cleanup
 
 
 ## Customization

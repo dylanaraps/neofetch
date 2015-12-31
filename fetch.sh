@@ -61,7 +61,7 @@ clear=$(tput sgr0)
 # Amount of left padding to use when images are disabled.
 # The variable takes a count of spaces. So a value of 10
 # will pad the text to the right 10 spaces.
-padding=10
+padding=0
 
 
 # }}}
