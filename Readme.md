@@ -14,7 +14,7 @@ If you're having any issues or have any ideas, please open an issue! <br\>
 I can't test on many other distros and I want this to work <br\>
 for as many people as possible.
 
-![1](https://sr.ht/5aNV.png)
+![1](https://sr.ht/xL9f.png)
 
 
 ## Dependencies
