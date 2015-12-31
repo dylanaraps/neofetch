@@ -35,14 +35,22 @@ title_song="Song"
 
 
 # Line wrap
-# Set this to 0 or use the flag "--nowrap" to disable
+# Set this to 0 or use the flag "--wrap on/off" to disable
 # line wrapping. Really useful for small terminal windows
 # and long lines.
-linewrap=1
+linewrap="on"
 
-# Set to "", comment this line or use the flaf "--nobold"
+# Set to "", comment this line or use the flag "--bold on/off"
 # to disable bold text.
-bold=$(tput bold)
+bold="on"
+
+# Whether or not to underline the title.
+# Configurable at launch with "--underline on/off"
+underline="on"
+
+# Character to underline title with
+# Configurable at launch with "--underline_char char"
+underline_char="-"
 
 # Default colors
 # Colors can be defined at launch with:
@@ -70,17 +78,17 @@ padding=0
 # Custom Image {{{
 
 
-# Enable or disable the use of images (Disable images at launch with "--noimg")
-enableimages=1
+# Enable or disable the use of images (Disable images at launch with "--images on/off")
+images="on"
 
-# If 1, fetch will use a cropped version of your wallpaper as the image
-# (Disable this at launch with "--nowall")
+# If "on", fetch will use a cropped version of your wallpaper as the image
+# (Disable this at launch with "--wall off")
 # NOTE: This is only compatible with feh, I can add support for more
 #       wallpaper setters but you'll need to show me a way to get the current
 #       wallpaper from the commandline.
-usewall=1
+wall="on"
 
-# The image to use if usewall=0. There's also the launch flags "-i" + "--image"
+# The image to use if wall="off". There's also the launch flag "--image"
 # to set a custom image at launch.
 img="$HOME/Pictures/avatars/gon.png"
 
@@ -198,9 +206,21 @@ cpuspeed () {
     esac
 }
 
-# Memory (Configurable with "-M" and "--memory" at launch)
-# Print the total amount of ram and amount of ram in use
-memory=$(free -m | awk '/Mem:/ {printf $3 "MB / " $2 "MB"}')
+# Memory (Configurable with "--memory" at launch)
+# Print used ram / total ram
+# This function checks the "free" command's version as
+# version 3.3.0 changed the layout of columns.
+getmemory () {
+    freeversion=$(free --version | awk '{printf $4}')
+
+    if [ ${freeversion//.} -gt 330 ] || [${freeversion//.} -gt 3300 ]; then
+        memory=$(free -m | awk '/Mem:/ {printf $3 "MB / " $2 "MB"}')
+    else
+        usedmem=$(free -m | awk '/cache:/ {print $3}')
+        totalmem=$(free -m | awk '/Mem:/ {print $2}')
+        memory="${usedmem}MB / ${totalmem}MB"
+    fi
+}
 
 # Currently playing song/artist (Configurable with "-m" and "--song" at launch)
 if type -p mpc >/dev/null 2>&1; then
@@ -217,7 +237,7 @@ start=0
 end=7
 
 # Print the color blocks by default.
-printcols=1
+color_blocks="on"
 
 # Widh of the color blocks
 blockwidth=3
@@ -232,7 +252,7 @@ printcols () {
     done
 
     # Clear formatting
-    printf "$clear"
+    printf %s "$clear"
 }
 
 
@@ -270,13 +290,15 @@ usage () {
     printf '%s\n' "   --infocol num          Change the color of the info"
     printf '%s\n'
     printf '%s\n' "   Text Formatting:"
-    printf '%s\n' "   --nowrap               Disable line wrapping"
-    printf '%s\n' "   --nobold               Disable bold text"
+    printf '%s\n' "   --underline on/off     Enable/Disable title underline"
+    printf '%s\n' "   --underline_char char  Character to use when underlineing title"
+    printf '%s\n' "   --linewrap on/off      Enable/Disable line wrapping"
+    printf '%s\n' "   --bold on/off          Enable/Disable bold text"
     printf '%s\n'
     printf '%s\n' "   Color Blocks:"
     printf '%s\n' "   --printcols start end  Range of colors to print as blocks"
     printf '%s\n' "   --blockwidth num       Width of color blocks"
-    printf '%s\n' "   --nopal                Disable the color blocks"
+    printf '%s\n' "   --color_blocks on/off  Enable/Disable the color blocks"
     printf '%s\n'
     printf '%s\n' "   Image:"
     printf '%s\n' "   --image                Image to display with the script"
@@ -295,8 +317,8 @@ usage () {
     printf '%s\n' "   --yoffset px           How close the image will be "
     printf '%s\n' "   --gap num              Gap between image and text right side"
     printf '%s\n' "                          to the top edge of the window"
-    printf '%s\n' "   --noimg                Disable all images"
-    printf '%s\n' "   --nowall               Disable the wallpaper function"
+    printf '%s\n' "   --images on/off        Enable/Disable all images"
+    printf '%s\n' "   --wall on/off          Enable/Disable the wallpaper function"
     printf '%s\n' "                          and fallback to \$img"
     printf '%s\n' "   --clean                Remove all cropped images"
     printf '%s\n'
@@ -340,15 +362,17 @@ for argument in "$@"; do
         --infocol) info_color="$(tput setaf $2)" ;;
 
         # Text Formatting
-        --nowrap) linewrap=0 ;;
-        --nobold) bold="" ;;
+        --underline) underline="$2" ;;
+        --underline_char) underline_char="$2" ;;
+        --linewrap) linewrap="$2" ;;
+        --bold) bold="$2" ;;
 
         # Color Blocks
         --printcols) start=$2; end=$3 ;;
-        --nopal) printcols=0 ;;
+        --color_blocks) color_blocks="$2" ;;
 
         # Image
-        --image) usewall=0; img="$2" ;;
+        --image) wall="off"; img="$2" ;;
         --fontwidth) fontwidth="$2" ;;
         --size) img_auto=0 imgsize="$2" ;;
         --cropoffset) crop_offset="$2" ;;
@@ -356,8 +380,8 @@ for argument in "$@"; do
         --xoffset) xoffset="$2" ;;
         --yoffset) yoffset="$2" ;;
         --gap) gap="$2" ;;
-        --noimg) enableimages=0 ;;
-        --nowall) usewall=0 ;;
+        --images) images="$2" ;;
+        --wall) wall="$2" ;;
         --clean) rm -rf "$imgtempdir" || exit ;;
 
         # Other
@@ -376,7 +400,7 @@ done
 
 
 # If the script was called with --noimg, disable images and padding
-if [ $enableimages -eq 1 ]; then
+if [ $images == "on" ]; then
     # Check to see if auto=1
     if [ $img_auto -eq 1 ]; then
         # Image size is half of the terminal
@@ -386,9 +410,9 @@ if [ $enableimages -eq 1 ]; then
         padding=$(($(tput cols) / 2 + gap))
     fi
 
-    # If usewall=1, Get image to display from current wallpaper.
+    # If wall=on, Get image to display from current wallpaper.
     # (only works with feh)
-    [ $usewall -eq 1 ] && \
+    [ $wall == "on" ] && \
         img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg" | sed -e "s/'//g")
 
     # Get name of image and prefix it with it's crop offset
@@ -443,7 +467,7 @@ fi
 
 
 # Get cpu speed
-cpuspeed
+[ -z $speed ] && cpuspeed
 
 # Get packages
 [ -z $packages ] && getpackages
@@ -451,30 +475,37 @@ cpuspeed
 # Get window manager
 [ -z $windowmanager ] && getwindowmanager
 
+# Get memory
+[ -z $memory ] && getmemory
+
+# Check for whether or not we bold text
+[ $bold == "on" ] && b=$(tput bold)
+
 # Padding
 pad=$(printf "%${padding}s")
 
+# Clear terminal before printing anything
 clear
 
 # Underline title with length of title
-underline=$(printf %"${#title}"s |tr " " "-")
+[ $underline == "on" ] && uline=$(printf %"${#title}"s |tr " " "$underline_char")
 
 # Hide the terminal cursor while we print the info
 tput civis
 
 # Print the title and underline
-printf "%s\n" "$pad$bold$title_color$title$clear"
-printf "%s\n" "$pad$colon_color$underline$clear"
+printf "%s\n" "$pad$b$title_color$title$clear"
+[ $underline == "on" ] && printf "%s\n" "$pad$colon_color$uline$clear"
 
 # Custom printf function to make it easier to edit the info lines.
 printinfo () {
-    printf "$pad$bold$subtitle_color$1$clear"
+    printf "$pad$b$subtitle_color$1$clear"
     printf "$colon_color:$clear "
     printf "%s\n" "$info_color$2$clear"
 }
 
 # Disable line wrap
-[ $linewrap -eq 0 ] && tput rmam
+[ $linewrap == "off" ] && tput rmam
 
 printinfo "$title_os" "$os"
 printinfo "$title_kernel" "$kernel"
@@ -488,10 +519,10 @@ printinfo "$title_song" "$song"
 
 # Display the color blocks
 printf "\n"
-[ $printcols -eq 1 ] && printf "$pad$(printcols)"
+[ $color_blocks == "on" ] && printf "$pad$(printcols)"
 
 # Enable line wrap again
-[ $linewrap -eq 0 ] && tput smam
+[ $linewrap == "off" ] && tput smam
 
 # If w3mimgviewer is found Display the image
 if type -p /usr/lib/w3m/w3mimgdisplay >/dev/null 2>&1; then
