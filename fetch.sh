@@ -526,14 +526,14 @@ fi
 # Padding
 pad=$(printf "%${padding}s")
 
+# Hide the terminal cursor while we print the info
+tput civis
+
 # Clear terminal before printing anything
 clear
 
 # Underline title with length of title
 [ $underline == "on" ] && uline=$(printf %"${#title}"s |tr " " "$underline_char")
-
-# Hide the terminal cursor while we print the info
-tput civis
 
 # Disable line wrap
 # Checks to see if we're in a tmux/screen session.
@@ -568,6 +568,7 @@ printf "\n"
 [ $linewrap == "off" ] && printf '\e[?7h'
 
 # If w3mimgviewer is found Display the image
+sleep .02
 if type -p /usr/lib/w3m/w3mimgdisplay >/dev/null 2>&1; then
     printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
         /usr/lib/w3m/w3mimgdisplay
