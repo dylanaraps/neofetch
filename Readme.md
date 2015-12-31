@@ -124,36 +124,4 @@ Here's what's on my todo list
   <br/>What this means is that your solid bg waifu wallpaper will be cropped around
   <br/>your waifu no matter where she is in the image.
 - Cleanup
-
-
-## Customization
-
-I launch fetch using a shell function and a ton of flags. Here's how it looks:
-
-```sh
-fetch () {
-    fetch.sh \
-        --printcols 1 7 \
-        --cpu "AMD FX-6300" \
-        --uptime "$(uptime -p | sed -e 's/minutes/mins/')" \
-        --title "dylan's pc" \
-        --nowrap \
-        --nobold \
-        $@
-}
-```
-
-Notice how you can even pass commands? This allows you to easily use custom
-<br/> commands or even just bare strings to change the info.
-
-
-## Screenshots
-
-#### The color script is now builtin.
-![2](https://sr.ht/Z9hZ.png)
-
-#### You can now customize the color of everything.
-![3](https://sr.ht/hy7m.png)
-
-#### You can now disable all images with a flag.
-![4](https://sr.ht/zujR.png)
+- Add options to bold other text in the script (info, underline, colons)
