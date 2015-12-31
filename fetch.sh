@@ -433,8 +433,8 @@ if [ $images == "on" ]; then
 
     # If wall=on, Get image to display from current wallpaper.
     # (only works with feh)
-    # [ $wall == "on" ] && \
-    #     img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg" | sed -e "s/'//g")
+    [ $wall == "on" ] && \
+        img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg" | sed -e "s/'//g")
 
     # Get name of image and prefix it with it's crop offset
     imgname="$crop_offset-${img##*/}"
