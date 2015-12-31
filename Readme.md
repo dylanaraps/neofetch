@@ -17,7 +17,10 @@ for as many people as possible.
 ![1](https://sr.ht/xL9f.png)
 
 
-## Dependencies <!-- {{{ -->
+<!-- {{{ -->
+
+
+## Dependencies
 
 These are the script's required dependencies
 
@@ -30,10 +33,14 @@ These are the script's optional dependencies:
 -  Display Wallpaper: feh
 -  Current Song: mpc
 
+
 <!-- }}} -->
 
 
-## Usage <!-- {{{ -->
+<!-- {{{ -->
+
+
+## Usage
 
 The script now supports dynamic image sizing and padding,
 <br\> they're enabled by default and there's a variable you
@@ -120,10 +127,14 @@ Other:
 --help                 Print this text and exit
 ```
 
+
 <!-- }}} -->
 
 
-## TODO <!-- {{{ -->
+<!-- {{{ -->
+
+
+## TODO
 
 Here's what's on my todo list
 
@@ -132,6 +143,7 @@ Here's what's on my todo list
 - Add options to bold other text in the script (info, underline, colons)
 - Fix linewrapping flag with tmux
 - Fix issues with multiline prompts
+
 
 <!-- }}} -->
 
