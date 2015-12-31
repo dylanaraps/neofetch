@@ -436,8 +436,12 @@ if [ $images == "on" ]; then
     [ $wall == "on" ] && \
         img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg" | sed -e "s/'//g")
 
-    # Get name of image and prefix it with it's crop offset
-    imgname="$crop_offset-${img##*/}"
+    # Get name of image and prefix it with it's crop offset or smart_crop mode
+    if [ $smart_crop == "on" ]; then
+        imgname="$smart_crop_mode-${img##*/}"
+    else
+        imgname="$crop_offset-${img##*/}"
+    fi
 
     # This check allows you to resize the image at launch
     if [ -f "$imgtempdir/$imgname" ]; then
