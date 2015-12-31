@@ -150,6 +150,6 @@ Here's what's on my todo list
 
 ### Smart Crop mode comparison
 
-![fit](http://imgur.com/MI0UtSV)
+![fit](https://imgur.com/MI0UtSV.png)
 
-![fill](http://imgur.com/LvxYwki)
+![fill](https://imgur.com/LvxYwki.png)
