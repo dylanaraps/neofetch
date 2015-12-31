@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Fetch info about your system
 #
-# Dependencies:
+# Optional Dependencies: (You'll lose these features without them)
 #   Displaying Images: w3m
 #   Image Cropping: ImageMagick
-#   Wallpaper Display: feh
-#   Window Manager Detection: wmctrl
+#   Wallpaper Display: feh Window Manager Detection: wmctrl
 #   Current Song: mpc
+#   Text formatting, dynamic image size and padding: tput
 #
 # Created by Dylan Araps
 # https://github.com/dylanaraps/dotfiles
@@ -34,33 +34,41 @@ title_song="Song"
 # Text Formatting {{{
 
 
-# Set to "" or comment this line to disable bold text
-bold="\033[1m"
+# Line wrap
+# Set this to 0 or use the flag "--nowrap" to disable
+# line wrapping. Really useful for small terminal windows
+# and long lines.
+linewrap=1
 
-# This is a simple function to make the vars below easier to edit.
-color () {
-    echo "\033[38;5;${1}m"
-}
+# Set to "", comment this line or use the flaf "--nobold"
+# to disable bold text.
+bold=$(tput bold)
 
 # Default colors
 # Colors can be defined at launch with:
 # "--titlecol 1, --subtitlecol 2, --coloncol 3, --infocol 4"
 # Or the shorthand "-c/--color 1 2 3 4"
 # Or by editing them below.
-title_color=$(color 7)
-subtitle_color=$(color 1)
-colon_color=$(color 7) # Also changes underline color
-info_color=$(color 7)
+title_color=$(tput setaf 7)
+subtitle_color=$(tput setaf 1)
+colon_color=$(tput setaf 7) # Also changes underline color
+info_color=$(tput setaf 7)
 
 # Reset formatting
 # Removing this line will fuck up the text formatting
-clear="\033[0m"
+clear=$(tput sgr0)
+
+# Amount of left padding to use when images are disabled.
+# The variable takes a count of spaces. So a value of 10
+# will pad the text to the right 10 spaces.
+padding=10
 
 
 # }}}
 
 
 # Custom Image {{{
+
 
 # Enable or disable the use of images (Disable images at launch with "--noimg")
 enableimages=1
@@ -76,9 +84,24 @@ usewall=1
 # to set a custom image at launch.
 img="$HOME/Pictures/avatars/gon.png"
 
+# Image size is based on terminal size
+# Using the flag "--size" sets this to 0.
+img_auto=1
+
+# Image size to use if img_auto=0
+# Also configureable at launch with "--size"
+size=128
+
+# Font width is needed to properly calulate the image size
+# If there's a gap on the right try increasing the value by 1
+# If there's an overlap try decreasing the value by 1
+fontwidth=5
+
+# Gap is the amount of space between the image and the text on the right
+gap=4
+
 # Image size/offset
-# (Customizable at launch with these flags: --size 128 --xoffset 0 --yoffset 0")
-imgsize=128
+# (Customizable at launch with these flags: --xoffset 0 --yoffset 0")
 yoffset=0
 xoffset=0
 
@@ -86,12 +109,6 @@ xoffset=0
 # Possible values:
 # northwest, north, northeast, west, center, east, southwest, south, southeast
 crop_offset="center"
-
-# Padding to align text to the right
-# TODO: Find a reliable way to set this dynamically. I can get
-#       this to work based on font width but there's no reliable way
-#       of getting fontwidth for every terminal.
-pad="                             "
 
 # Directory to store cropped images
 imgtempdir="$HOME/.fetchimages"
@@ -152,7 +169,7 @@ shell="$SHELL"
 # export the "windowmanager" variable in your shell's configuration file,
 # or run the script with: --windowmanager wmname
 # windowmanager="openbox"
-if [ -z $windowmanager ]; then
+getwindowmanager () {
     if type -p wmctrl >/dev/null 2>&1; then
         windowmanager=$(wmctrl -m | awk '/Name:/ {printf $2}')
     elif [ -e ~/.xinitrc ]; then
@@ -160,7 +177,7 @@ if [ -z $windowmanager ]; then
     else
         windowmanager="Unknown"
     fi
-fi
+}
 
 # Processor (Configurable with "-C", "-S" and "--cpu", "--speed" at launch)
 cpu="$(awk 'BEGIN{FS=":"} /model name/ {print $2; exit}' /proc/cpuinfo |\
@@ -194,23 +211,20 @@ end=7
 # Print the color blocks by default.
 printcols=1
 
-printcols () {
-    echo
-    echo
+# Widh of the color blocks
+blockwidth=3
 
+printcols () {
     while [ "$start" -le "$end" ]; do
-        echo -n "\033[48;5;${start}m      "
+        printf "%s%${blockwidth}s" "$(tput setab $start)"
         start=$((start + 1))
 
         # Split the blocks at 8 colors
-        [ $end -ge 9 ] && [ $start -eq 8 ] && echo -e "\033[0m"
+        [ $end -ge 9 ] && [ $start -eq 8 ] && printf "\n%${pad}s" "$clear$pad"
     done
 
-    # Vertically center colors if they're one row tall
-    [ $end -le 8 ] && echo
-
     # Clear formatting
-    echo -n "$clear"
+    printf "$clear"
 }
 
 
@@ -221,61 +235,69 @@ printcols () {
 
 
 usage () {
-    echo
-    echo "usage: ${0##*/} [--colors 1 2 4 5] [--kernel \"\$(uname -rs)\"]"
-    echo
-    echo "   Info:"
-    echo "   --title string         Change the title at the top"
-    echo "   --distro string/cmd    Manually set the distro"
-    echo "   --kernel string/cmd    Manually set the kernel"
-    echo "   --uptime string/cmd    Manually set the uptime"
-    echo "   --packages string/cmd  Manually set the package count"
-    echo "   --shell string/cmd     Manually set the shell"
-    echo "   --winman string/cmd Manually set the window manager"
-    echo "   --cpu string/cmd       Manually set the cpu name"
-    echo "   --memory string/cmd    Manually set the memory"
-    echo "   --speed string/cmd     Manually set the cpu speed"
-    echo "   --speed_type           Change the type of cpu speed to get"
-    echo "                          Possible values: current, min, max"
-    echo "   --song string/cmd      Manually set the current song"
-    echo
-    echo "   Text Colors:"
-    echo "   --colors 1 2 3 4       Change the color of text"
-    echo "                          (title, subtitle, colon, info)"
-    echo "   --titlecol num         Change the color of the title"
-    echo "   --subtitlecol num      Change the color of the subtitle"
-    echo "   --coloncol num         Change the color of the colons"
-    echo "   --infocol num          Change the color of the info"
-    echo
-    echo "   Color Blocks:"
-    echo "   --printcols start end  Range of colors to print as blocks"
-    echo "   --nopal                Disable the color blocks"
-    echo
-    echo "   Image:"
-    echo "   --image                Image to display with the script"
-    echo "                          The image gets priority over other"
-    echo "                          images: (wallpaper, \$img)"
-    echo "   --size px              Change the size of the image"
-    echo "   --cropoffset value     Change the crop offset. Possible values:"
-    echo "                          northwest, north, northeast, west, center"
-    echo "                          east, southwest, south, southeast"
-    echo
-    echo "   --padding              How many spaces to pad the text"
-    echo "                          to the right"
-    echo "   --xoffset px           How close the image will be "
-    echo "                          to the left edge of the window"
-    echo "   --yoffset px           How close the image will be "
-    echo "                          to the top edge of the window"
-    echo "   --noimg                Disable all images"
-    echo "   --nowall               Disable the wallpaper function"
-    echo "                          and fallback to \$img"
-    echo "   --clean                Remove all cropped images"
-    echo
-    echo "   Other:"
-    echo "   --help                 Print this text and exit"
-    echo
+    printf '%s\n'
+    printf '%s\n' "usage: ${0##*/} [--colors 1 2 4 5] [--kernel \"\$(uname -rs)\"]"
+    printf '%s\n'
+    printf '%s\n' "   Info:"
+    printf '%s\n' "   --title string         Change the title at the top"
+    printf '%s\n' "   --distro string/cmd    Manually set the distro"
+    printf '%s\n' "   --kernel string/cmd    Manually set the kernel"
+    printf '%s\n' "   --uptime string/cmd    Manually set the uptime"
+    printf '%s\n' "   --packages string/cmd  Manually set the package count"
+    printf '%s\n' "   --shell string/cmd     Manually set the shell"
+    printf '%s\n' "   --winman string/cmd    Manually set the window manager"
+    printf '%s\n' "   --cpu string/cmd       Manually set the cpu name"
+    printf '%s\n' "   --memory string/cmd    Manually set the memory"
+    printf '%s\n' "   --speed string/cmd     Manually set the cpu speed"
+    printf '%s\n' "   --speed_type           Change the type of cpu speed to get"
+    printf '%s\n' "                          Possible values: current, min, max"
+    printf '%s\n' "   --song string/cmd      Manually set the current song"
+    printf '%s\n'
+    printf '%s\n' "   Text Colors:"
+    printf '%s\n' "   --colors 1 2 3 4       Change the color of text"
+    printf '%s\n' "                          (title, subtitle, colon, info)"
+    printf '%s\n' "   --titlecol num         Change the color of the title"
+    printf '%s\n' "   --subtitlecol num      Change the color of the subtitle"
+    printf '%s\n' "   --coloncol num         Change the color of the colons"
+    printf '%s\n' "   --infocol num          Change the color of the info"
+    printf '%s\n'
+    printf '%s\n' "   Text Formatting:"
+    printf '%s\n' "   --nowrap               Disable line wrapping"
+    printf '%s\n' "   --nobold               Disable bold text"
+    printf '%s\n'
+    printf '%s\n' "   Color Blocks:"
+    printf '%s\n' "   --printcols start end  Range of colors to print as blocks"
+    printf '%s\n' "   --blockwidth num       Width of color blocks"
+    printf '%s\n' "   --nopal                Disable the color blocks"
+    printf '%s\n'
+    printf '%s\n' "   Image:"
+    printf '%s\n' "   --image                Image to display with the script"
+    printf '%s\n' "                          The image gets priority over other"
+    printf '%s\n' "                          images: (wallpaper, \$img)"
+    printf '%s\n' "   --fontwidth px         Used to automatically size the image"
+    printf '%s\n' "   --size px              Change the size of the image"
+    printf '%s\n' "   --cropoffset value     Change the crop offset. Possible values:"
+    printf '%s\n' "                          northwest, north, northeast, west, center"
+    printf '%s\n' "                          east, southwest, south, southeast"
+    printf '%s\n'
+    printf '%s\n' "   --padding num          How many spaces to pad the text"
+    printf '%s\n' "                          to the right"
+    printf '%s\n' "   --xoffset px           How close the image will be "
+    printf '%s\n' "                          to the left edge of the window"
+    printf '%s\n' "   --yoffset px           How close the image will be "
+    printf '%s\n' "   --gap num              Gap between image and text right side"
+    printf '%s\n' "                          to the top edge of the window"
+    printf '%s\n' "   --noimg                Disable all images"
+    printf '%s\n' "   --nowall               Disable the wallpaper function"
+    printf '%s\n' "                          and fallback to \$img"
+    printf '%s\n' "   --clean                Remove all cropped images"
+    printf '%s\n'
+    printf '%s\n' "   Other:"
+    printf '%s\n' "   --help                 Print this text and exit"
+    printf '%s\n'
     exit 1
 }
+
 
 # }}}
 
@@ -283,15 +305,10 @@ usage () {
 # Args {{{
 
 
-# Loop index
-index=0
-
 # Args
-args=$@
+args="$@"
 
 for argument in $args; do
-    index=$((index + 1))
-
     case $1 in
         # Info
         --title) title="$2" ;;
@@ -308,14 +325,18 @@ for argument in $args; do
         --song) song="$2" ;;
 
         # Text Colors
-        --colors) title_color="\033[38;5;${2}m"; \
-            [ ! -z $3 ] && subtitle_color="\033[38;5;${3}m"; \
-            [ ! -z $4 ] && colon_color="\033[38;5;${4}m"; \
-            [ ! -z $5 ] && info_color="\033[38;5;${5}m" ;;
-        --titlecol) title_color="\033[38;5;${2}m" ;;
-        --subtitlecol) subtitle_color="\033[38;5;${2}m" ;;
-        --coloncol) colon_color="\033[38;5;${2}m" ;;
-        --infocol) info_color="\033[38;5;${2}m" ;;
+        --colors) title_color="$(tput setaf $2)"; \
+            [ ! -z $3 ] && subtitle_color="$(tput setaf $3)"; \
+            [ ! -z $4 ] && colon_color="$(tput setaf $4)"; \
+            [ ! -z $5 ] && info_color="$(tput setaf $5)" ;;
+        --titlecol) title_color="$(tput setaf $2)" ;;
+        --subtitlecol) subtitle_color="$(tput setaf $2)" ;;
+        --coloncol) colon_color="$(tput setaf $2)" ;;
+        --infocol) info_color="$(tput setaf $2)" ;;
+
+        # Text Formatting
+        --nowrap) linewrap=0 ;;
+        --nobold) bold="" ;;
 
         # Color Blocks
         --printcols) start=$2; end=$3 ;;
@@ -323,11 +344,13 @@ for argument in $args; do
 
         # Image
         --image) usewall=0; img="$2" ;;
-        --size) imgsize="$2" ;;
+        --fontwidth) fontwidth="$2" ;;
+        --size) img_auto=0 imgsize="$2" ;;
         --cropoffset) crop_offset="$2" ;;
-        --padding) pad="$2" ;;
+        --padding) padding="$2" ;;
         --xoffset) xoffset="$2" ;;
         --yoffset) yoffset="$2" ;;
+        --gap) gap="$2" ;;
         --noimg) enableimages=0 ;;
         --nowall) usewall=0 ;;
         --clean) rm -rf "$imgtempdir" || exit ;;
@@ -344,11 +367,20 @@ done
 # }}}
 
 
-# Image Crop {{{
+# Image  {{{
 
 
 # If the script was called with --noimg, disable images and padding
 if [ $enableimages -eq 1 ]; then
+    # Check to see if auto=1
+    if [ $img_auto -eq 1 ]; then
+        # Image size is half of the terminal
+        imgsize=$(($(tput cols) * fontwidth / 2))
+
+        # Padding is half the terminal width + gap
+        padding=$(($(tput cols) / 2 + gap))
+    fi
+
     # If usewall=1, Get image to display from current wallpaper.
     # (only works with feh)
     [ $usewall -eq 1 ] && \
@@ -396,7 +428,6 @@ if [ $enableimages -eq 1 ]; then
     img="$imgtempdir/$imgname"
 else
     img=""
-    pad=""
 fi
 
 
@@ -404,6 +435,7 @@ fi
 
 
 # Print Info {{{
+
 
 # Get cpu speed
 cpuspeed
@@ -414,43 +446,57 @@ cpuspeed
 # Get window manager
 [ -z $windowmanager ] && getwindowmanager
 
+# Padding
+pad=$(printf "%${padding}s")
+
 clear
 
 # Underline title with length of title
 underline=$(printf %"${#title}"s |tr " " "-")
 
 # Hide the terminal cursor while we print the info
-echo -n -e "\033[?25l"
+tput civis
 
 # Print the title and underline
-echo -e "$pad$bold$title_color$title$clear"
-echo -e "$pad$colon_color$underline$clear"
+printf "$pad$bold$title_color$title$clear \n"
+printf "$pad$colon_color$underline$clear \n"
 
-# Custom echo function to make it easier to edit the info lines.
-echoinfo () {
-    echo -n -e "$pad$bold$subtitle_color$1$clear"
-    echo -n -e "$colon_color:$clear "
-    echo -e "$info_color$2$clear"
+# Custom printf function to make it easier to edit the info lines.
+printinfo () {
+    printf "$pad$bold$subtitle_color$1$clear"
+    printf "$colon_color:$clear "
+    printf "$info_color$2$clear \n"
 }
 
-echoinfo "$title_os" "$os"
-echoinfo "$title_kernel" "$kernel"
-echoinfo "$title_uptime" "$uptime"
-echoinfo "$title_packages" "$packages"
-echoinfo "$title_shell" "$shell"
-echoinfo "$title_windowmanager" "$windowmanager"
-echoinfo "$title_cpu" "$cpu @ ${speed}GHz"
-echoinfo "$title_memory" "$memory"
-echoinfo "$title_song" "$song"
+# Disable line wrap
+[ $linewrap -eq 0 ] && tput rmam
+
+printinfo "$title_os" "$os"
+printinfo "$title_kernel" "$kernel"
+printinfo "$title_uptime" "$uptime"
+printinfo "$title_packages" "$packages"
+printinfo "$title_shell" "$shell"
+printinfo "$title_windowmanager" "$windowmanager"
+printinfo "$title_cpu" "$cpu @ ${speed}GHz"
+printinfo "$title_memory" "$memory"
+printinfo "$title_song" "$song"
 
 # Display the color blocks
-[ $printcols -eq 1 ] && echo -e "$(printcols)"
+printf "\n"
+[ $printcols -eq 1 ] && printf "$pad$(printcols)"
+
+# Enable line wrap again
+[ $linewrap -eq 0 ] && tput smam
 
 # Display the image
-echo -e "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
     /usr/lib/w3m/w3mimgdisplay
+
 # Show the cursor again
-echo -n -e "\033[?25h"
+tput cnorm
+
+# Move the cursor to the bottom of the terminal
+tput cup $(tput lines)
 
 
 # }}}
