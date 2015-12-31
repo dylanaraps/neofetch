@@ -77,13 +77,15 @@ Text Colors:
 --infocol num          Change the color of the info
 
 Text Formatting:
---nowrap               Disable line wrapping
---nobold               Disable bold text
+--underline on/off     Enable/Disable title underline"
+--underline_char char  Character to use when underlineing title"
+--linewrap on/off      Enable/Disable line wrapping"
+--bold on/off          Enable/Disable bold text"
 
 Color Blocks:
 --printcols start end  Range of colors to print as blocks
 --blockwidth num       Width of color blocks"
---nopal                Disable the color blocks
+--color_blocks on/off  Enable/Disable the color blocks"
 
 Image:
 --image                Image to display with the script
@@ -103,8 +105,8 @@ Image:
                        to the top edge of the window
 
 --gap num              Gap between image and text right side
---noimg                Disable all images
---nowall               Disable the wallpaper function
+--images on/off        Enable/Disable all images"
+--wall on/off          Enable/Disable the wallpaper function"
                        and fallback to \$img
 --clean                Remove all cropped images
 
