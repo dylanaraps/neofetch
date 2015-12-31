@@ -535,6 +535,10 @@ clear
 # Hide the terminal cursor while we print the info
 tput civis
 
+# Disable line wrap
+# Checks to see if we're in a tmux/screen session.
+[ $linewrap == "off" ] && printf '\e[?7l'
+
 # Print the title and underline
 printf "%s\n" "$pad$b$title_color$title$clear"
 [ $underline == "on" ] && printf "%s\n" "$pad$colon_color$uline$clear"
@@ -545,9 +549,6 @@ printinfo () {
     printf "$colon_color:$clear "
     printf "%s\n" "$info_color$2$clear"
 }
-
-# Disable line wrap
-[ $linewrap == "off" ] && tput rmam
 
 printinfo "$title_os" "$os"
 printinfo "$title_kernel" "$kernel"
@@ -564,7 +565,7 @@ printf "\n"
 [ $color_blocks == "on" ] && printf "$pad$(printcols)"
 
 # Enable line wrap again
-[ $linewrap == "off" ] && tput smam
+[ $linewrap == "off" ] && printf '\e[?7h'
 
 # If w3mimgviewer is found Display the image
 if type -p /usr/lib/w3m/w3mimgdisplay >/dev/null 2>&1; then
