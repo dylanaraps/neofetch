@@ -536,7 +536,6 @@ clear
 [ $underline == "on" ] && uline=$(printf %"${#title}"s |tr " " "$underline_char")
 
 # Disable line wrap
-# Checks to see if we're in a tmux/screen session.
 [ $linewrap == "off" ] && printf '\e[?7l'
 
 # Print the title and underline
