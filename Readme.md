@@ -134,6 +134,7 @@ Other:
 
 Here's what's on my todo list
 
+- Add support for Max OS X
 - Add an easy way to define info prefixes at launch.
 - Cleanup
 - Add options to bold other text in the script (info, underline, colons)
