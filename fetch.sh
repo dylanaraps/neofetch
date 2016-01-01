@@ -567,7 +567,6 @@ printf "\n"
 [ $linewrap == "off" ] && printf '\e[?7h'
 
 # If w3mimgviewer is found Display the image
-sleep .02
 if type -p /usr/lib/w3m/w3mimgdisplay >/dev/null 2>&1; then
     printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
         /usr/lib/w3m/w3mimgdisplay
