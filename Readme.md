@@ -1,5 +1,7 @@
 # fetch.sh
 
+### I'm currently rewriting the script from scratch with portability in mind.
+
 This is the home of my fetch script! This script gathers info <br\>
 about your system and prints it to the terminal.
 
