@@ -212,6 +212,10 @@ getdistro () {
         "OpenBSD")
             distro="OpenBSD"
         ;;
+
+        *)
+            distro="Unknown"
+        ;;
     esac
 }
 
@@ -241,6 +245,10 @@ getuptime () {
             uptime=$(uptime | awk -F',' '{ print $1 }')
             uptime=${uptime# }
             uptime="${uptime# * up }"
+        ;;
+
+        *)
+            uptime="Unknown"
         ;;
     esac
 }
@@ -285,7 +293,9 @@ getpackages () {
             packages=$(pkg_info | wc -l)
         ;;
 
-        *) packages="Unknown" ;;
+        *)
+            packages="Unknown"
+        ;;
     esac
 }
 
