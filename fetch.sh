@@ -725,8 +725,9 @@ printinfo () {
         case "$info" in
             echo:*:*)
                 info=${function#*: }
-                subtitle=${function%:*}
+                subtitle=${function/:*/}
                 string="${bold}${subtitle_color}${subtitle}${clear}${colon_color}: ${info_color}${info}"
+                length=${#function}
             ;;
 
             echo:*)
@@ -766,7 +767,7 @@ printinfo () {
 
             *:*)
                 string="${bold}${subtitle_color}${subtitle}${clear}${colon_color}: ${info_color}${output}"
-                length=${#subtitle}
+                length=$((${#subtitle} +  ${#output} + 2))
             ;;
 
             *)
