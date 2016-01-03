@@ -131,8 +131,6 @@ Here's what's on my todo list
 
 - Uptime doesn't work in OS X yet.
 
-- If the customizable info includes a third colon then it breaks.
-
 - Windows support (I'm almost done)
 
 - OpenBSD support (Partially implemented, just needs testing)
