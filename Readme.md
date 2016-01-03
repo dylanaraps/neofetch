@@ -129,9 +129,27 @@ Other:
 
 Here's what's on my todo list
 
-- Add uptime support for OS X
-- Add options to bold other text in the script (info, underline, colons)
+- Uptime doesn't work in OS X yet.
 
+- If the customizable info includes a third colon then it breaks.
+
+- Windows support (I'm almost done)
+
+- Option to swap the image and text around
+
+- Imagemagick optimizations
+
+- Cleanup of info array handling
+
+- More info outputs. Now that it's easy to customize what's printed and
+  everything is a function we can add optional support for pretty much anything.
+
+    - Resolution
+    - GTK themes
+    - Terminal Font
+    - GPU
+    - IP
+    - etc
 
 <!-- }}} -->
 
