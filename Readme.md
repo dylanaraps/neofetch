@@ -1,5 +1,7 @@
 # fetch.sh
 
+## Big update: Check the releases page.
+
 This is the home of my fetch script! This script gathers info <br\>
 about your system and prints it to the terminal.
 
@@ -7,7 +9,7 @@ If you're having any issues or have any ideas, please open an issue! <br\>
 I can't test on many other distros and I want this to work <br\>
 for as many people as possible.
 
-![1](https://sr.ht/xL9f.png)
+![1](https://sr.ht/Jd8Y.png)
 
 
 <!-- {{{ -->
