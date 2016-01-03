@@ -217,7 +217,7 @@ getuptime () {
         ;;
 
         "OpenBSD")
-            uptime=$(uptime | awk -F, '{ print $1 }')
+            uptime=$(uptime | awk -F',' '{ print $1 }')
             uptime=${uptime# }
             uptime="${uptime# * up }"
         ;;
@@ -303,6 +303,10 @@ getcpu () {
             cpu="$(sysctl -n machdep.cpu.brand_string)"
         ;;
 
+        "OpenBSD")
+            cpu="$(sysctl -n hw.model)"
+        ;;
+
         *)
             cpu="$(awk -F ': ' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
 
@@ -340,6 +344,14 @@ getmemory () {
             memactive=$(vm_stat | awk '/active / { print $3 }')
             memcompressed=$(vm_stat | awk '/occupied/ { print $5 }')
             memused=$(((${memwired//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))
+            memory="${memused}MB / ${memtotal}MB"
+        ;;
+
+        "OpenBSD")
+            memtotal=$(dmesg | awk '/real mem/ {printf $5}')
+            memused=$(top -1 1 | awk '/Real:/ {print $3}')
+            memtotal=${memtotal/()MB/}
+            memused=${memused/M/}
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
