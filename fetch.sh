@@ -30,7 +30,7 @@ export LC_ALL=C
 info=(
     "gettitle"
     "underline"
-    "OS: getos"
+    "OS: getdistro"
     "Kernel: getkernel"
     "Uptime: getuptime"
     "Packages: getpackages"
@@ -177,16 +177,10 @@ xoffset=0
 # Gather Info {{{
 
 
-# Get Operating System
+# Get Operating System Type
 case "$(uname)" in
     "Linux")
-        if type -p crux >/dev/null 2>&1; then
-            os="CRUX"
-        else
-            os="$(awk -F'=' '/^NAME=/ {printf $2; exit}' /etc/*ease)"
-            os=${os#\"*}
-            os=${os%*\"}
-        fi
+        os="Linux"
     ;;
 
     "Darwin")
@@ -197,6 +191,29 @@ case "$(uname)" in
         os="OpenBSD"
     ;;
 esac
+
+# Get Distro
+getdistro () {
+    case "$os" in
+        "Linux" )
+            if type -p crux >/dev/null 2>&1; then
+                distro="CRUX"
+            else
+                distro="$(awk -F'=' '/^NAME=/ {printf $2; exit}' /etc/*ease)"
+                distro=${distro#\"*}
+                distro=${distro%*\"}
+            fi
+        ;;
+
+        "Mac OS X")
+            distro="Mac OS X $(sw_vers -productVersion)"
+        ;;
+
+        "OpenBSD")
+            distro="OpenBSD"
+        ;;
+    esac
+}
 
 # Get Title
 gettitle () {
@@ -211,6 +228,10 @@ getkernel() {
 # Get uptime
 getuptime () {
     case "$os" in
+        "Linux")
+            uptime="$(uptime -p)"
+        ;;
+
         "Mac OS X")
             # TODO: Fix uptime for OS X
             uptime="Unknown"
@@ -221,14 +242,12 @@ getuptime () {
             uptime=${uptime# }
             uptime="${uptime# * up }"
         ;;
-
-        *)  uptime="$(uptime -p)" ;;
     esac
 }
 
 # Get package count
 getpackages () {
-    case "$os" in
+    case "$distro" in
         "Arch Linux"|"Parabola GNU/Linux-libre"|"Manjaro"|"Antergos")
             packages="$(pacman -Q | wc -l)"
         ;;
@@ -298,16 +317,8 @@ getwindowmanager () {
 
 # Get cpu
 getcpu () {
-    case $os in
-        "Mac OS X")
-            cpu="$(sysctl -n machdep.cpu.brand_string)"
-        ;;
-
-        "OpenBSD")
-            cpu="$(sysctl -n hw.model)"
-        ;;
-
-        *)
+    case "$os" in
+        "Linux")
             cpu="$(awk -F ': ' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
 
             # We're using lscpu because /proc/cpuinfo doesn't have min/max speed.
@@ -321,6 +332,18 @@ getcpu () {
             speed=$((${speed/.*/} / 100))
             speed=${speed:0:1}.${speed:1}
             cpu="$cpu @ ${speed}GHz"
+        ;;
+
+        "Mac OS X")
+            cpu="$(sysctl -n machdep.cpu.brand_string)"
+        ;;
+
+        "OpenBSD")
+            cpu="$(sysctl -n hw.model)"
+        ;;
+
+        *)
+            cpu="Unknown"
         ;;
     esac
 
@@ -337,7 +360,21 @@ getcpu () {
 
 # Get memory
 getmemory () {
-    case $os in
+    case "$os" in
+        "Linux")
+            mem="$(awk 'NR < 4 {printf $2 " "}' /proc/meminfo)"
+
+            # Split the string above into 3 vars
+            # This is faster than using an array.
+            set $mem
+
+            memtotal=$1
+            memfree=$2
+            memavail=$3
+            memused="$((memtotal - memavail))"
+            memory="$(( ${memused%% *} / 1024))MB / $(( ${memtotal%% *} / 1024))MB"
+        ;;
+
         "Mac OS X")
             memtotal=$(printf "$(sysctl -n hw.memsize)"/1024^2 | bc)
             memwired=$(vm_stat | awk '/wired/ { print $4 }')
@@ -356,17 +393,7 @@ getmemory () {
         ;;
 
         *)
-            mem="$(awk 'NR < 4 {printf $2 " "}' /proc/meminfo)"
-
-            # Split the string above into 3 vars
-            # This is faster than using an array.
-            set $mem
-
-            memtotal=$1
-            memfree=$2
-            memavail=$3
-            memused="$((memtotal - memavail))"
-            memory="$(( ${memused%% *} / 1024))MB / $(( ${memtotal%% *} / 1024))MB"
+            memory="Unknown"
         ;;
     esac
 }
@@ -697,17 +724,12 @@ printinfo () {
                 fi
             ;;
 
-            *getos*)
-                continue
-            ;;
-
             *:*|*)
                 # Update the var
-                output=${function/get/}
-                typeset -n output=$output
+                var=${function/get/}
+                typeset -n output=$var
 
                 # Call the function
-                # [ -z "$output" ] && echo "$function"; time $function; continue
                 [ -z "$output" ] && $function
             ;;&
 
@@ -736,7 +758,7 @@ printinfo () {
 # }}}
 
 
-# Print The Info {{{
+# Call Functions and Finish Up {{{
 
 
 # Get image
