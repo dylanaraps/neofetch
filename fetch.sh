@@ -192,6 +192,10 @@ case "$(uname)" in
     "Darwin")
         os="Mac OS X"
     ;;
+
+    "OpenBSD")
+        os="OpenBSD"
+    ;;
 esac
 
 # Get Title
@@ -210,6 +214,12 @@ getuptime () {
         "Mac OS X")
             # TODO: Fix uptime for OS X
             uptime="Unknown"
+        ;;
+
+        "OpenBSD")
+            uptime=$(uptime | awk -F, '{ print $1 }')
+            uptime=${uptime# }
+            uptime="${uptime# * up }"
         ;;
 
         *)  uptime="$(uptime -p)" ;;
@@ -250,6 +260,10 @@ getpackages () {
         "Mac OS X")
             packages="$(pkgutil --pkgs | wc -l)"
             packages=${packages//[[:blank:]]/}
+        ;;
+
+        "OpenBSD")
+            packages=$(pkg_info | wc -l)
         ;;
 
         *) packages="Unknown" ;;
