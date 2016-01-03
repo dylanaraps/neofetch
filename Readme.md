@@ -135,7 +135,7 @@ Here's what's on my todo list
 
 - Windows support (I'm almost done)
 
-- Option to swap the image and text around
+- OpenBSD support (Partially implemented, just needs testing)
 
 - Imagemagick optimizations
 

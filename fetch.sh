@@ -135,6 +135,10 @@ imgtempdir="$HOME/.fetchimages"
 # --split_size num
 split_size=2
 
+# Image position
+# --image_position left/right
+image_position="left"
+
 # Use current wallpaper as the image
 # --wall on/off
 wall="on"
@@ -447,8 +451,18 @@ getimage () {
     # Image size is half of the terminal
     imgsize=$((columns * font_width / split_size))
 
-    # Padding is half the terminal width + gap
-    padding="$(tput cuf $((columns / split_size + gap)))"
+    # Where to draw the image
+    case "$image_position" in
+        "left")
+            # Padding is half the terminal width + gap
+            padding="$(tput cuf $((columns / split_size + gap)))"
+        ;;
+
+        "right")
+            padding=$(tput cuf 0)
+            xoffset=$((columns * font_width / split_size - gap))
+        ;;
+    esac
 
     # If wall=on, Get image to display from current wallpaper.
     if [ "$wall" == "on" ]; then
@@ -555,9 +569,6 @@ clear="$(tput sgr0)"
 # }}}
 
 
-# Args {{{
-
-
 # Usage {{{
 
 
@@ -605,6 +616,7 @@ usage () {
     printf "%s\n" "                          The image gets priority over other"
     printf "%s\n" "                          images: (wallpaper, \$img)"
     printf "%s\n" "   --font_width px        Used to automatically size the image"
+    printf "&s\n" "   --image_position       Where to display the image: (Left/Right)"
     printf "%s\n" "   --split_size num       Width of img/text splits"
     printf "%s\n" "                          A value of 2 makes each split half the terminal"
     printf "%s\n" "                          width and etc"
@@ -633,6 +645,9 @@ usage () {
 
 
 # }}}
+
+
+# Args {{{
 
 
 while [ ! -z "$1" ]; do
@@ -676,6 +691,7 @@ while [ ! -z "$1" ]; do
         # Image
         --image) wall="off"; img="$2" ;;
         --font_width) font_width="$2" ;;
+        --image_position) image_position="$2" ;;
         --split_size) split_size="$2" ;;
         --crop_mode) crop_mode="$2" ;;
         --crop_offset) crop_offset="$2" ;;
