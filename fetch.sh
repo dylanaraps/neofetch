@@ -64,7 +64,7 @@ color_blocks="on"
 
 # Color block width
 # --color_block_width num
-blockwidth=3
+block_width=3
 
 
 # }}}
@@ -290,6 +290,7 @@ getcpu () {
         *)
             cpu="$(awk -F ': ' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
 
+            # We're using lscpu because /proc/cpuinfo doesn't have min/max speed.
             case $speed_type in
                 current) speed="$(lscpu | awk '/CPU MHz:/ {printf $3}')" ;;
                 min) speed="$(lscpu | awk '/CPU min MHz:/ {printf $4}')" ;;
@@ -351,7 +352,7 @@ getcols () {
     if [ "$color_blocks" == "on" ]; then
         printf "%s" "${padding}"
         while [ $start -le $end ]; do
-            printf "%s%${blockwidth}s" "$(tput setab $start)"
+            printf "%s%${block_width}s" "$(tput setab $start)"
             start=$((start + 1))
 
             # Split the blocks at 8 colors
@@ -569,7 +570,7 @@ usage () {
 # }}}
 
 
-while [ ! -z $1 ]; do
+while [ ! -z "$1" ]; do
     case $1 in
         # Info
         --title) title="$2" ;;
@@ -605,7 +606,7 @@ while [ ! -z $1 ]; do
         # Color Blocks
         --color_blocks) color_blocks="$2" ;;
         --block_range) start=$2; end=$3 ;;
-        --block_width) blockwidth="$2" ;;
+        --block_width) block_width="$2" ;;
 
         # Image
         --image) wall="off"; img="$2" ;;
