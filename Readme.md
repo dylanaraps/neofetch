@@ -95,6 +95,7 @@ Image:
                        images: (wallpaper, \$img)
 
 --font_width px        Used to automatically size the image
+--image_position       Where to display the image: (Left/Right)
 --split_size num       Width of img/text splits
                        A value of 2 makes each split half the terminal
                        width and etc
