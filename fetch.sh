@@ -407,7 +407,7 @@ getmemory () {
         ;;
 
         "Mac OS X")
-            memtotal=$(printf "$(sysctl -n hw.memsize)"/1024^2 | bc)
+            memtotal=$(printf "%s\n" "$(sysctl -n hw.memsize)"/1024^2 | bc)
             memwired=$(vm_stat | awk '/wired/ { print $4 }')
             memactive=$(vm_stat | awk '/active / { print $3 }')
             memcompressed=$(vm_stat | awk '/occupied/ { print $5 }')
