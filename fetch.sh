@@ -2,7 +2,7 @@
 # Fetch info about your system
 #
 # Optional Dependencies: (You'll lose these features without them)
-#   Displaying Images: w3m
+#   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
 #   Wallpaper Display: feh
 #   Current Song: mpc

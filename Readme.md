@@ -24,6 +24,7 @@ These are the script's required dependencies
 These are the script's optional dependencies:
 
 -  Displaying Images: w3m
+    - You may also need w3m-img
 -  Image Cropping: ImageMagick
 -  Display Wallpaper: feh
 -  Current Song: mpc
