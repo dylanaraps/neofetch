@@ -7,6 +7,7 @@
 #   Wallpaper Display: feh
 #   Current Song: mpc
 #   Text formatting, dynamic image size and padding: tput
+#   Resolution detection: xorg-xdpyinfo
 #
 # Created by Dylan Araps
 # https://github.com/dylanaraps/dotfiles
@@ -22,11 +23,17 @@ export LC_ALL=C
 
 # Info
 # What to display and in what order.
+#
 # Format is: "Subtitle: function name"
 # Additional lines you can use include:
 # "underline" "linebreak" "echo: msg here" "title: title here"
-# You can also include your own lines by using:
+#
+# You can also include your own custom lines by using:
 # "echo: subtitlehere: $(custom cmd here)"
+# "echo: Custom string to print"
+#
+# Optional info lines that are disabled by default are:
+# "getresolution" "getsong"
 info=(
     "gettitle"
     "underline"
@@ -38,10 +45,8 @@ info=(
     "Window Manager: getwindowmanager"
     "CPU: getcpu"
     "Memory: getmemory"
-    "Song: getsong"
     "linebreak"
     "getcols"
-    "linebreak"
 )
 
 # CPU
@@ -49,6 +54,12 @@ info=(
 # CPU speed type
 # --speed_type current/min/max
 speed_type="max"
+
+
+# Uptime
+
+# Shorten the output of the uptime function
+uptime_shorthand="off"
 
 
 # Color Blocks
@@ -248,13 +259,19 @@ getuptime () {
         "OpenBSD")
             uptime=$(uptime | awk -F',' '{ print $1 }')
             uptime=${uptime# }
-            uptime="${uptime# * up }"
         ;;
 
         *)
             uptime="Unknown"
         ;;
+
     esac
+
+    if [ "$uptime_shorthand" == "on" ]; then
+        uptime=${uptime/up/}
+        uptime=${uptime/minutes/mins}
+        uptime=${uptime# }
+    fi
 }
 
 # Get package count
@@ -415,6 +432,24 @@ getmemory () {
 # Get song
 getsong () {
     song=$(mpc current 2>/dev/null || printf "%s" "Unknown")
+}
+
+# Get Resolution
+getresolution () {
+    case "$os" in
+        "Linux"|"OpenBSD")
+            resolution=$(xdpyinfo | awk '/dimensions:/ {printf $2}')
+        ;;
+
+        "Mac OS X")
+            resolution=$(system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2"x"$4" "}')
+        ;;
+
+        *)
+            resolution="Unknown"
+        ;;
+    esac
+
 }
 
 getcols () {
@@ -581,6 +616,8 @@ usage () {
     printf "%s\n" "   --distro string/cmd    Manually set the distro"
     printf "%s\n" "   --kernel string/cmd    Manually set the kernel"
     printf "%s\n" "   --uptime string/cmd    Manually set the uptime"
+    printf "%s\n" "   --uptime_shorthand on/off --v"
+    printf "%s\n" "                          Shorten the output of uptime"
     printf "%s\n" "   --packages string/cmd  Manually set the package count"
     printf "%s\n" "   --shell string/cmd     Manually set the shell"
     printf "%s\n" "   --winman string/cmd    Manually set the window manager"
@@ -657,6 +694,7 @@ while [ ! -z "$1" ]; do
         --os) os="$2" ;;
         --kernel) kernel="$2" ;;
         --uptime) uptime="$2" ;;
+        --uptime_shorthand) uptime_shorthand="$2" ;;
         --packages) packages="$2" ;;
         --shell) shell="$2" ;;
         --winman) windowmanager="$2" ;;

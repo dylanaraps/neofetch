@@ -59,6 +59,8 @@ Info:
 --distro string/cmd    Manually set the distro
 --kernel string/cmd    Manually set the kernel
 --uptime string/cmd    Manually set the uptime
+--uptime_shorthand on/off --v
+                       Shorten the output of uptime
 --packages string/cmd  Manually set the package count
 --shell string/cmd     Manually set the shell
 --winman string/cmd    Manually set the window manager
