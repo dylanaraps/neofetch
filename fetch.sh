@@ -252,12 +252,13 @@ getuptime () {
         ;;
 
         "Mac OS X")
-            # TODO: Fix uptime for OS X
-            uptime="Unknown"
+            uptime=$(uptime | awk -F',' '{print $1}')
+            uptime=${uptime# }
+            uptime=${uptime/??:?? /}
         ;;
 
         "OpenBSD")
-            uptime=$(uptime | awk -F',' '{ print $1 }')
+            uptime=$(uptime | awk -F',' '{print $1}')
             uptime=${uptime# }
         ;;
 
