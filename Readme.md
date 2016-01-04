@@ -135,7 +135,7 @@ Other:
 
 Here's what's on my todo list
 
-- Uptime doesn't work in OS X yet.
+- Cleanup of info array handling
 
 - Windows support (I'm almost done)
 
@@ -143,12 +143,10 @@ Here's what's on my todo list
 
 - Imagemagick optimizations
 
-- Cleanup of info array handling
-
 - More info outputs. Now that it's easy to customize what's printed and
   everything is a function we can add optional support for pretty much anything.
 
-    - Resolution
+    - Resolution (Done!)
     - GTK themes
     - Terminal Font
     - GPU
