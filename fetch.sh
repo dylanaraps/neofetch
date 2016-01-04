@@ -305,7 +305,7 @@ getpackages () {
             packages="$(pkginfo -i | wc -l)"
         ;;
 
-        "Mac OS X")
+        "Mac OS X"*)
             packages="$(pkgutil --pkgs | wc -l)"
             packages=${packages//[[:blank:]]/}
         ;;
