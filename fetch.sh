@@ -252,8 +252,28 @@ getuptime () {
         ;;
 
         "Mac OS X")
-            uptime=$(uptime | awk -F',' '{print $1}')
-            uptime=${uptime/??:?? /}
+            # Get boottime in seconds
+            boot="$(sysctl -n kern.boottime)"
+            boot=${boot/{ sec = /}
+            boot=${boot/,*}
+
+            # Get current date in seconds
+            now=$(date +%s)
+            uptime=$(($now-$boot))
+
+            # Convert uptime to days/hours/mins
+            secs=$((${uptime}%60))
+            mins=$((${uptime}/60%60))
+            hours=$((${uptime}/3600%24))
+            days=$((${uptime}/86400))
+
+            uptime="up ${mins} minutes"
+
+            [ "${hours}" -ne 0 ] && \
+                uptime="up ${hours} hours, ${uptime/up/}"
+
+            [ "${days}" -ne 0 ] && \
+                uptime="up ${days} days, ${uptime/up/}"
         ;;
 
         "OpenBSD")
