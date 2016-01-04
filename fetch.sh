@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Fetch info about your system
 #
 # Optional Dependencies: (You'll lose these features without them)
