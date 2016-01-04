@@ -487,18 +487,18 @@ getresolution () {
 
 getcols () {
     if [ "$color_blocks" == "on" ]; then
-        printf "%s" "${padding}"
+        printf "${padding}%s"
         while [ $start -le $end ]; do
-            printf "%s%${block_width}s" "$(tput setab $start)"
+            printf "\e[48;5;${start}m%${block_width}s"
             start=$((start + 1))
 
             # Split the blocks at 8 colors
             [ $end -ge 9 ] && [ $start -eq 8 ] && \
-                printf "\n%s" "${clear}${padding}"
+                printf "\n%s${clear}${padding}"
         done
 
         # Clear formatting
-        printf "%s" "$clear"
+        printf "$clear"
     fi
 }
 
@@ -523,11 +523,11 @@ getimage () {
     case "$image_position" in
         "left")
             # Padding is half the terminal width + gap
-            padding="$(tput cuf $((columns / split_size + gap)))"
+            padding="\e[$((columns / split_size + gap))C"
         ;;
 
         "right")
-            padding=$(tput cuf 0)
+            padding="\e[0C"
             xoffset=$((columns * font_width / split_size - gap))
         ;;
     esac
@@ -611,27 +611,27 @@ getimage () {
 
 
 underline () {
-    uline=$(printf %"$length"s)
-    uline=${uline// /$underline_char}
+    underline=$(printf %"$length"s)
+    underline=${underline// /$underline_char}
 }
 
 colors () {
-    title_color="$(tput setaf $title_color)"
-    subtitle_color="$(tput setaf $subtitle_color)"
-    colon_color="$(tput setaf $colon_color)"
-    underline_color="$(tput setaf $underline_color)"
-    info_color="$(tput setaf $info_color)"
+    title_color="\e[38;5;${title_color}m"
+    subtitle_color="\e[38;5;${subtitle_color}m"
+    colon_color="\e[38;5;${colon_color}m"
+    underline_color="\e[38;5;${underline_color}m"
+    info_color="\e[38;5;${info_color}m"
 }
 
 bold () {
     if [ "$bold" == "on" ]; then
-        bold="$(tput bold)"
+        bold="\e[1m"
     else
         bold=""
     fi
 }
 
-clear="$(tput sgr0)"
+clear="\e[0m"
 
 
 # }}}
@@ -818,7 +818,7 @@ printinfo () {
             underline)
                 if [ "$underline" == "on" ]; then
                     underline
-                    string="${underline_color}${uline}"
+                    string="${underline_color}${underline}"
                 fi
             ;;
 
@@ -848,7 +848,7 @@ printinfo () {
 
         esac
 
-        printf "%s\n" "${padding}${string}${clear}"
+        printf "%b%s\n" "${padding}${string}${clear}"
     done
 }
 
@@ -863,7 +863,7 @@ printinfo () {
 [ "$images" == "on" ] && getimage
 
 # Hide the terminal cursor
-tput civis
+printf "\e[?25l"
 
 # Clear the terminal
 clear
@@ -884,7 +884,7 @@ printinfo
 [ $line_wrap == "off" ] && printf '\e[?7h'
 
 # Move cursor to bottom and redisplay it.
-printf "cup $(tput lines) \n cuu1 \n cnorm" | tput -S
+printf "\e[$(tput lines)H\e[1A\e[?25h"
 
 
 # }}}
