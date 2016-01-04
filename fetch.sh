@@ -357,8 +357,11 @@ getshell () {
 
 # Get window manager
 getwindowmanager () {
-    if [ ! -z "${XDG_CURRENT_DESKTOP}" ]; then
-        windowmanager="${XDG_CURRENT_DESKTOP}"
+    if [ ! -z "$XDG_CURRENT_DESKTOP" ]; then
+        windowmanager="$XDG_CURRENT_DESKTOP"
+    elif type -p wmctrl >/dev/null 2>&1; then
+        windowmanager="$(wmctrl -m | head -n1)"
+        windowmanager=${windowmanager/Name: /}
     elif [ -e "$HOME/.xinitrc" ]; then
         xinitrc=$(awk '/^[^#]*exec/ {print $2}' "${HOME}/.xinitrc")
         windowmanager="${xinitrc/-session/}"
