@@ -28,6 +28,8 @@ These are the script's optional dependencies:
 -  Display Wallpaper: feh
 -  Current Song: mpc
 -  Resolution Detection: xorg-xdpyinfo
+-  Window manager detection: wmctrl
+    - This is used as a fallback to parsing ```.xinitrc``` and ```$XDG_CURRENT_DESKTOP```.
 
 
 <!-- }}} -->
