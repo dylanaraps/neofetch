@@ -253,7 +253,6 @@ getuptime () {
 
         "Mac OS X")
             uptime=$(uptime | awk -F',' '{print $1}')
-            uptime=${uptime# }
             uptime=${uptime/??:?? /}
         ;;
 
