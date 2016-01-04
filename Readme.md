@@ -171,6 +171,8 @@ Here's what's on my todo list
 
 Thanks to:
 
-- Screenfetch: I've used some snippets as a base for a few functions in this script
+- metakirby5: Providing great feedback as well as ideas for the script.
+
+- Screenfetch: I've used some snippets as a base for a few functions in this script.
 
 - @jrgz: Helping me test the Mac OS X version.
