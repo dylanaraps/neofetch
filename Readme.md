@@ -162,3 +162,12 @@ Here's what's on my todo list
 
 #### Fill
 ![fill](https://imgur.com/LvxYwki.png)
+
+
+### Thanks
+
+Thanks to:
+
+- Screenfetch: I've used some snippets as a base for a few functions in this script
+
+- @jrgz: Helping me test the Mac OS X version.

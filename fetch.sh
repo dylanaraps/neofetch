@@ -267,13 +267,23 @@ getuptime () {
             hours=$((${uptime}/3600%24))
             days=$((${uptime}/86400))
 
-            uptime="up ${mins} minutes"
+            case "$mins" in
+                0) ;;
+                1) uptime="up ${mins} minute" ;;
+                *) uptime="up ${mins} minutes" ;;
+            esac
 
-            [ "${hours}" -ne 0 ] && \
-                uptime="up ${hours} hours, ${uptime/up/}"
+            case "$hours" in
+                0) ;;
+                1) uptime="up ${hours} hour, ${uptime/up /}" ;;
+                *) uptime="up ${hours} hours, ${uptime/up /}" ;;
+            esac
 
-            [ "${days}" -ne 0 ] && \
-                uptime="up ${days} days, ${uptime/up/}"
+            case "$days" in
+                0) ;;
+                1) uptime="up ${days} day, ${uptime/up /}" ;;
+                *) uptime="up ${days} days, ${uptime/up /}" ;;
+            esac
         ;;
 
         "OpenBSD")
