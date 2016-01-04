@@ -737,10 +737,10 @@ while [ ! -z "$1" ]; do
         --song) song="$2" ;;
 
         # Text Colors
-        --colors) title_color=$2; \
-            [ ! -z $3 ] && subtitle_color=$3; \
-            [ ! -z $4 ] && colon_color=$4; \
-            [ ! -z $4 ] && underline_color=$5; \
+        --colors) title_color=$2
+            [ ! -z $3 ] && subtitle_color=$3
+            [ ! -z $4 ] && colon_color=$4
+            [ ! -z $4 ] && underline_color=$5
             [ ! -z $5 ] && info_color=$6 ;;
         --title_color) title_color=$2 ;;
         --subtitle_color) subtitle_color=$2 ;;
@@ -797,6 +797,8 @@ printinfo () {
             echo:*:*)
                 info=${function#*: }
                 subtitle=${function/:*/}
+                echo "$info"
+                echo "$subtitle"
                 string="${bold}${subtitle_color}${subtitle}${clear}${colon_color}: ${info_color}${info}"
                 length=${#function}
             ;;
