@@ -797,8 +797,6 @@ printinfo () {
             echo:*:*)
                 info=${function#*: }
                 subtitle=${function/:*/}
-                echo "$info"
-                echo "$subtitle"
                 string="${bold}${subtitle_color}${subtitle}${clear}${colon_color}: ${info_color}${info}"
                 length=${#function}
             ;;
