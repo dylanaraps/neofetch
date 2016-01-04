@@ -1,6 +1,6 @@
 # fetch.sh
 
-## Big update: Check the releases page.
+## Big updates: Check the releases page.
 
 This is the home of my fetch script! This script gathers info <br\>
 about your system and prints it to the terminal.
@@ -27,6 +27,7 @@ These are the script's optional dependencies:
 -  Image Cropping: ImageMagick
 -  Display Wallpaper: feh
 -  Current Song: mpc
+-  Resolution Detection: xorg-xdpyinfo
 
 
 <!-- }}} -->
