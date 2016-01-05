@@ -1,5 +1,7 @@
+#!/bin/mksh
 #!/usr/bin/env bash
 # Fetch info about your system
+# https://github.com/dylanaraps/fetch.sh
 #
 # Optional Dependencies: (You'll lose these features without them)
 #   Displaying Images: w3m + w3m-img
@@ -8,9 +10,10 @@
 #   Current Song: mpc
 #   Text formatting, dynamic image size and padding: tput
 #   Resolution detection: xorg-xdpyinfo
+#   More accurate window manager detection: wmctrl
 #
 # Created by Dylan Araps
-# https://github.com/dylanaraps/dotfiles
+# https://github.com/dylanaraps/
 
 # Speed up script by not using unicode
 export LC_ALL=C
@@ -48,6 +51,14 @@ info=(
     "linebreak"
     "getcols"
 )
+
+
+# Window Manager
+
+# Use wmctrl for a more accurate
+# window manager reading
+use_wmctrl=0
+
 
 # CPU
 
@@ -357,14 +368,17 @@ getshell () {
 
 # Get window manager
 getwindowmanager () {
-    if [ ! -z "$XDG_CURRENT_DESKTOP" ]; then
-        windowmanager="$XDG_CURRENT_DESKTOP"
-    elif type -p wmctrl >/dev/null 2>&1; then
+    if [ "$use_wmctrl" == "on" ]; then
         windowmanager="$(wmctrl -m | head -n1)"
         windowmanager=${windowmanager/Name: /}
+
+    elif [ ! -z "$XDG_CURRENT_DESKTOP" ]; then
+        windowmanager="$XDG_CURRENT_DESKTOP"
+
     elif [ -e "$HOME/.xinitrc" ]; then
         xinitrc=$(awk '/^[^#]*exec/ {print $2}' "${HOME}/.xinitrc")
         windowmanager="${xinitrc/-session/}"
+
     else
         case "$os" in
             "Mac OS X")
@@ -383,17 +397,15 @@ getwindowmanager () {
 getcpu () {
     case "$os" in
         "Linux")
+            # Get cpu name
             cpu="$(awk -F ': ' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
 
-            # We're using lscpu because /proc/cpuinfo doesn't have min/max speed.
-            case $speed_type in
-                current) speed="$(lscpu | awk '/CPU MHz:/ {printf $3}')" ;;
-                min) speed="$(lscpu | awk '/CPU min MHz:/ {printf $4}')" ;;
-                max) speed="$(lscpu | awk '/CPU max MHz:/ {printf $4}')" ;;
-            esac
+            # Get cpu speed
+            speed_type=${speed_type/rent/}
+            read -r speed < /sys/devices/system/cpu/cpu0/cpufreq/scaling_${speed_type}_freq
 
             # Convert mhz to ghz without bc
-            speed=$((${speed/.*/} / 100))
+            speed=$((${speed} / 100000))
             speed=${speed:0:1}.${speed:1}
             cpu="$cpu @ ${speed}GHz"
         ;;
@@ -651,6 +663,7 @@ usage () {
     printf "%s\n" "   --packages string/cmd  Manually set the package count"
     printf "%s\n" "   --shell string/cmd     Manually set the shell"
     printf "%s\n" "   --winman string/cmd    Manually set the window manager"
+    printf "%s\n" "   --use_wmctrl on/off    Use wmctrl for a more accurate reading"
     printf "%s\n" "   --cpu string/cmd       Manually set the cpu name"
     printf "%s\n" "   --memory string/cmd    Manually set the memory"
     printf "%s\n" "   --speed_type           Change the type of cpu speed to get"
@@ -728,6 +741,7 @@ while [ ! -z "$1" ]; do
         --packages) packages="$2" ;;
         --shell) shell="$2" ;;
         --winman) windowmanager="$2" ;;
+        --use_wmctrl) use_wmctrl="$2" ;;
         --cpu) cpu="$2" ;;
         --speed_type) speed_type="$2" ;;
         --memory) memory="$2" ;;
