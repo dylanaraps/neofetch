@@ -622,8 +622,7 @@ getwallpaper () {
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    path="C:\\Documents and Settings\\${USER}\\Local Settings\\Application Data\\Microsoft\\Wallpaper1.bmp"
-                    img="$(cygpath -u "${path}")"
+                    img="C:\\Documents and Settings\\${USER}\\Local Settings\\Application Data\\Microsoft\\Wallpaper1.bmp"
                 ;;
 
                 "Windows"*)
