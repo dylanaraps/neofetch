@@ -5,14 +5,13 @@
 This is the home of my fetch script! This script gathers info <br\>
 about your system and prints it to the terminal.
 
-If you're having any issues or have any ideas, please open an issue! <br\>
-I can't test on many other distros and I want this to work <br\>
-for as many people as possible.
+The script currently supports Linux, Mac OS X and Windows (Cygwin), if your OS or distro isn't
+supported open an issue and I'll add support for it.
 
 ![1](https://sr.ht/Jd8Y.png)
 
 
-<!-- {{{ -->
+<!-- Dependences {{{ -->
 
 
 ## Dependencies
@@ -36,7 +35,7 @@ These are the script's optional dependencies:
 <!-- }}} -->
 
 
-<!-- {{{ -->
+<!-- Usage {{{ -->
 
 
 ## Usage
@@ -131,7 +130,7 @@ Other:
 <!-- }}} -->
 
 
-<!-- {{{ -->
+<!-- TODO {{{ -->
 
 
 ## TODO
