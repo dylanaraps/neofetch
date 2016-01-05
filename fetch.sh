@@ -16,6 +16,7 @@
 
 # Speed up script by not using unicode
 export LC_ALL=C
+export LANG=C
 
 
 # Config Options {{{
@@ -224,8 +225,8 @@ getdistro () {
             if type -p crux >/dev/null 2>&1; then
                 distro="CRUX"
             else
-                distro="$(awk -F'=' '/^NAME=/ {printf $2; exit}' /etc/*ease)"
-                distro=${distro#\"*}
+                distro="$(grep -h '^NAME=' /etc/*ease)"
+                distro=${distro#NAME\=\"*}
                 distro=${distro%*\"}
             fi
         ;;
@@ -375,8 +376,9 @@ getwindowmanager () {
         windowmanager="$XDG_CURRENT_DESKTOP"
 
     elif [ -e "$HOME/.xinitrc" ]; then
-        xinitrc=$(awk '/^[^#]*exec/ {print $2}' "${HOME}/.xinitrc")
-        windowmanager="${xinitrc/-session/}"
+        xinitrc=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
+        windowmanager="${xinitrc/exec /}"
+        windowmanager="${windowmanager/-session/}"
 
     else
         case "$os" in
@@ -397,7 +399,8 @@ getcpu () {
     case "$os" in
         "Linux")
             # Get cpu name
-            cpu="$(awk -F ': ' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
+            cpu="$(grep 'model name' /proc/cpuinfo)"
+            cpu=${cpu/model name*: /}
 
             # Get cpu speed
             speed_type=${speed_type/rent/}
@@ -437,17 +440,26 @@ getcpu () {
 getmemory () {
     case "$os" in
         "Linux")
-            mem="$(awk 'NR < 4 {printf $2 " "}' /proc/meminfo)"
+            # Read first 3 lines
+            exec 6< /proc/meminfo
+            read memtotal <&6
+            read memfree <&6
+            read memavail <&6
+            exec 6<&-
 
-            # Split the string above into 3 vars
-            # This is faster than using an array.
-            set $mem
+            # Do some substitution on each line
+            memtotal=${memtotal/MemTotal:/}
+            memtotal=${memtotal/kB*/}
+            memtotal=${memtotal// /}
+            memfree=${memfree/MemFree:/}
+            memfree=${memfree/kB*/}
+            memfree=${memfree// /}
+            memavail=${memavail/MemAvailable:/}
+            memavail=${memavail/kB*/}
+            memavail=${memavail// /}
 
-            memtotal=$1
-            memfree=$2
-            memavail=$3
-            memused="$((memtotal - memavail))"
-            memory="$(( ${memused%% *} / 1024))MB / $(( ${memtotal%% *} / 1024))MB"
+            memused=$((memtotal - memavail))
+            memory="$(($memused / 1024))MB / $(($memtotal / 1024))MB"
         ;;
 
         "Mac OS X")
