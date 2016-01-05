@@ -513,9 +513,6 @@ getimage () {
     # Check if the directory exists
     [ ! -d "$imgtempdir" ] && (mkdir "$imgtempdir" || exit)
 
-    # Get columns
-    columns=$(tput cols)
-
     # Image size is half of the terminal
     imgsize=$((columns * font_width / split_size))
 
@@ -859,6 +856,12 @@ printinfo () {
 # Call Functions and Finish Up {{{
 
 
+# Get lines and columns
+termsize=$(printf "lines \n cols" | tput -S)
+termsize=${termsize/$'\n'/ }
+lines=${termsize% *}
+columns=${termsize#* }
+
 # Get image
 [ "$images" == "on" ] && getimage
 
@@ -881,7 +884,7 @@ printinfo
 [ $line_wrap == "off" ] && printf '\e[?7h'
 
 # Move cursor to bottom and redisplay it.
-printf "\e[$(tput lines)H\e[1A\e[?25h"
+printf "\e[${lines}H\e[1A\e[?25h"
 
 
 # }}}
