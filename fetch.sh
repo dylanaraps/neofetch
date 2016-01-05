@@ -622,7 +622,7 @@ getwallpaper () {
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    img="C:\\Documents and Settings\\${USER}\\Local Settings\\Application Data\\Microsoft\\Wallpaper1.bmp"
+                    img="/cygdrive/c/Documents and Settings/${USER}/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
                 ;;
 
                 "Windows"*)
