@@ -991,7 +991,8 @@ columns=${termsize#* }
 [ "$images" == "on" ] && getimage
 
 # Clear the terminal and hide the cursor
-printf "\033c\e[?25l"
+printf "\e[?25l"
+clear
 
 # Disable line wrap
 [ $line_wrap == "off" ] && printf '\e[?7l'
