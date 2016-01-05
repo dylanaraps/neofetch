@@ -205,10 +205,6 @@ case "$(uname)" in
     "OpenBSD")
         os="OpenBSD"
     ;;
-
-    "CYGWIN"*)
-        os="Windows"
-    ;;
 esac
 
 # Get Distro
@@ -230,15 +226,6 @@ getdistro () {
 
         "OpenBSD")
             distro="OpenBSD"
-        ;;
-
-        "Windows")
-            # TODO: Detect XP/7
-            if [ "$(wmic os get version | grep -o '^10')" ]; then
-                distro="Windows 10"
-            else
-                distro="Windows"
-            fi
         ;;
 
         *)
@@ -304,10 +291,6 @@ getuptime () {
             uptime=${uptime# }
         ;;
 
-        "Windows")
-            uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
-        ;;
-
         *)
             uptime="Unknown"
         ;;
@@ -359,10 +342,6 @@ getpackages () {
 
         "OpenBSD")
             packages=$(pkg_info | wc -l)
-        ;;
-
-        "Windows"*)
-            packages=$(cygcheck -cd | wc -l)
         ;;
 
         *)
@@ -884,7 +863,7 @@ printinfo () {
 [ "$images" == "on" ] && getimage
 
 # Clear the terminal and hide the cursor
-printf "\e[?25l\033c\e[?25l"
+printf "\033c\e[?25l"
 
 # Disable line wrap
 [ $line_wrap == "off" ] && printf '\e[?7l'
@@ -906,6 +885,5 @@ printf "\e[$(tput lines)H\e[1A\e[?25h"
 
 
 # }}}
-
 
 
