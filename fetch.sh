@@ -558,10 +558,6 @@ getresolution () {
             resolution=$(system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2"x"$4" "}')
         ;;
 
-        "Windows")
-            resolution=$(cmd /c wmic desktopmonitor get screenheight, screenwidth)
-        ;;
-
         *)
             resolution="Unknown"
         ;;
