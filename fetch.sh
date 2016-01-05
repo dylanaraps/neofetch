@@ -666,9 +666,9 @@ getimage () {
     imgname="$crop_mode-$crop_offset-${img##*/}"
 
     # This check allows you to resize the image at launch
-    if [ -f "$imgtempdir/$imgname" ]; then
+    if [ -f "$imgtempdir/$imgname" ] && [ $imgheight != $imgsize ]; then
         imgheight=$(identify -format "%h" "$imgtempdir/$imgname")
-        [ $imgheight != $imgsize ] && rm "$imgtempdir/$imgname"
+        rm "$imgtempdir/$imgname"
     fi
 
     # Check to see if the thumbnail exists before we do any cropping.
@@ -700,12 +700,10 @@ getimage () {
             ;;
 
             fill)
-                c=$(convert "$img" -colorspace srgb -format "%[pixel:p{0,0}]" info:)
                 convert \
                     "$img" \
                     -trim +repage \
                     -scale "$imgsize"x"$imgsize"^ \
-                    -background "$c" \
                     -extent "$imgsize"x"$imgsize" \
                     "$imgtempdir/$imgname"
             ;;
