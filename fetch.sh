@@ -1,4 +1,3 @@
-#!/bin/mksh
 #!/usr/bin/env bash
 # Fetch info about your system
 # https://github.com/dylanaraps/fetch.sh
