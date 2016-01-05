@@ -244,12 +244,7 @@ getdistro () {
         ;;
 
        "Windows")
-            # TODO: Detect XP/7
-            if [ "$(wmic os get version | grep -o '^10')" ]; then
-                distro="Windows 10"
-            else
-                distro="Windows"
-            fi
+            distro="Windows"
         ;;
 
         *)
