@@ -883,11 +883,8 @@ printinfo () {
 # Get image
 [ "$images" == "on" ] && getimage
 
-# Hide the terminal cursor
-printf "\e[?25l"
-
-# Clear the terminal
-clear
+# Clear the terminal and hide the cursor
+printf "\e[?25l\033c\e[?25l"
 
 # Disable line wrap
 [ $line_wrap == "off" ] && printf '\e[?7l'
