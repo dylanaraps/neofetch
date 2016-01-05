@@ -155,6 +155,10 @@ images="on"
 # Thumbnail directory
 imgtempdir="$HOME/.fetchimages"
 
+# W3m-img path
+# Some systems have this in another location
+w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
+
 # Split Size
 # Sizing for the img and text splits
 # The larger the value the less space fetch will take up.
@@ -757,80 +761,81 @@ clear="\e[0m"
 # Usage {{{
 
 
-usage () {
-    printf "%s\n"
-    printf "%s\n" "usage: ${0##*/} [--colors 1 2 4 5] [--kernel \"\$(uname -rs)\"]"
-    printf "%s\n"
-    printf "%s\n" "   Info:"
-    printf "%s\n" "   --title string         Change the title at the top"
-    printf "%s\n" "   --distro string/cmd    Manually set the distro"
-    printf "%s\n" "   --kernel string/cmd    Manually set the kernel"
-    printf "%s\n" "   --uptime string/cmd    Manually set the uptime"
-    printf "%s\n" "   --uptime_shorthand on/off --v"
-    printf "%s\n" "                          Shorten the output of uptime"
-    printf "%s\n" "   --packages string/cmd  Manually set the package count"
-    printf "%s\n" "   --shell string/cmd     Manually set the shell"
-    printf "%s\n" "   --winman string/cmd    Manually set the window manager"
-    printf "%s\n" "   --use_wmctrl on/off    Use wmctrl for a more accurate reading"
-    printf "%s\n" "   --cpu string/cmd       Manually set the cpu name"
-    printf "%s\n" "   --memory string/cmd    Manually set the memory"
-    printf "%s\n" "   --speed_type           Change the type of cpu speed to get"
-    printf "%s\n" "                          Possible values: current, min, max"
-    printf "%s\n" "   --song string/cmd      Manually set the current song"
-    printf "%s\n"
-    printf "%s\n" "   Text Colors:"
-    printf "%s\n" "   --colors 1 2 3 4 5     Change the color of text"
-    printf "%s\n" "                          (title, subtitle, colon, underline, info)"
-    printf "%s\n" "   --title_color num      Change the color of the title"
-    printf "%s\n" "   --subtitle_color num   Change the color of the subtitle"
-    printf "%s\n" "   --colon_color num      Change the color of the colons"
-    printf "%s\n" "   --underline_color num  Change the color of the underlines"
-    printf "%s\n" "   --info_color num       Change the color of the info"
-    printf "%s\n"
-    printf "%s\n" "   Text Formatting:"
-    printf "%s\n" "   --underline on/off     Enable/Disable title underline"
-    printf "%s\n" "   --underline_char char  Character to use when underlineing title"
-    printf "%s\n" "   --line_wrap on/off     Enable/Disable line wrapping"
-    printf "%s\n" "   --bold on/off          Enable/Disable bold text"
-    printf "%s\n" "   --prompt_height num    Set this to your prompt height to fix"
-    printf "%s\n" "                          issues with the text going off screen at the top"
-    printf "%s\n"
-    printf "%s\n" "   Color Blocks:"
-    printf "%s\n" "   --color_blocks on/off  Enable/Disable the color blocks"
-    printf "%s\n" "   --block_width num      Width of color blocks"
-    printf "%s\n" "   --block_range start end --v  "
-    printf "%s\n" "                          Range of colors to print as blocks"
-    printf "%s\n"
-    printf "%s\n" "   Image:"
-    printf "%s\n" "   --image                Image to display with the script"
-    printf "%s\n" "                          The image gets priority over other"
-    printf "%s\n" "                          images: (wallpaper, \$img)"
-    printf "%s\n" "   --font_width px        Used to automatically size the image"
-    printf "&s\n" "   --image_position       Where to display the image: (Left/Right)"
-    printf "%s\n" "   --split_size num       Width of img/text splits"
-    printf "%s\n" "                          A value of 2 makes each split half the terminal"
-    printf "%s\n" "                          width and etc"
-    printf "%s\n" "   --crop_mode            Which crop mode to use"
-    printf "%s\n" "                          Takes the values: normal, fit, fill"
-    printf "%s\n" "   --crop_offset value    Change the crop offset for normal mode."
-    printf "%s\n" "                          Possible values: northwest, north, northeast,"
-    printf "%s\n" "                          west, center, east, southwest, south, southeast"
-    printf "%s\n"
-    printf "%s\n" "   --xoffset px           How close the image will be "
-    printf "%s\n" "                          to the left edge of the window"
-    printf "%s\n" "   --yoffset px           How close the image will be "
-    printf "%s\n" "                          to the top edge of the window"
-    printf "%s\n" "   --gap num              Gap between image and text right side"
-    printf "%s\n" "                          to the top edge of the window"
-    printf "%s\n" "   --images on/off        Enable/Disable all images"
-    printf "%s\n" "   --wall on/off          Enable/Disable the wallpaper function"
-    printf "%s\n" "                          and fallback to \$img"
-    printf "%s\n" "   --clean                Remove all cropped images"
-    printf "%s\n"
-    printf "%s\n" "   Other:"
-    printf "%s\n" "   --help                 Print this text and exit"
-    printf "%s\n"
-    exit 1
+usage () { cat << EOF
+
+ usage: ${0##*/} [--colors 1 2 3 4 5] [--kernel "\$\(uname -rs\)"]
+
+    Info:
+    --title string         Change the title at the top
+    --distro string/cmd    Manually set the distro
+    --kernel string/cmd    Manually set the kernel
+    --uptime string/cmd    Manually set the uptime
+    --uptime_shorthand on/off --v
+                           Shorten the output of uptime
+    --packages string/cmd  Manually set the package count
+    --shell string/cmd     Manually set the shell
+    --winman string/cmd    Manually set the window manager
+    --use_wmctrl on/off    Use wmctrl for a more accurate reading
+    --cpu string/cmd       Manually set the cpu name
+    --memory string/cmd    Manually set the memory
+    --speed_type           Change the type of cpu speed to get
+                           Possible values: current, min, max
+    --song string/cmd      Manually set the current song
+
+    Text Colors:
+    --colors 1 2 3 4 5     Change the color of text
+                           (title, subtitle, colon, underline, info)
+    --title_color num      Change the color of the title
+    --subtitle_color num   Change the color of the subtitle
+    --colon_color num      Change the color of the colons
+    --underline_color num  Change the color of the underlines
+    --info_color num       Change the color of the info
+
+    Text Formatting:
+    --underline on/off     Enable/Disable title underline
+    --underline_char char  Character to use when underlineing title
+    --line_wrap on/off     Enable/Disable line wrapping
+    --bold on/off          Enable/Disable bold text
+    --prompt_height num    Set this to your prompt height to fix
+                           issues with the text going off screen at the top
+
+    Color Blocks:
+    --color_blocks on/off  Enable/Disable the color blocks
+    --block_width num      Width of color blocks
+    --block_range start end --v
+                           Range of colors to print as blocks
+
+    Image:
+    --image                Image to display with the script
+                           The image gets priority over other
+                           images: (wallpaper, \$img)
+    --font_width px        Used to automatically size the image
+    --image_position       Where to display the image: (Left/Right)
+    --split_size num       Width of img/text splits
+                           A value of 2 makes each split half the terminal
+                           width and etc
+    --crop_mode            Which crop mode to use
+                           Takes the values: normal, fit, fill
+    --crop_offset value    Change the crop offset for normal mode.
+                           Possible values: northwest, north, northeast,
+                           west, center, east, southwest, south, southeast
+
+    --xoffset px           How close the image will be
+                           to the left edge of the window
+    --yoffset px           How close the image will be
+                           to the top edge of the window
+    --gap num              Gap between image and text right side
+                           to the top edge of the window
+    --images on/off        Enable/Disable all images
+    --wall on/off          Enable/Disable the wallpaper function
+                           and fallback to \$img
+    --clean                Remove all cropped images
+
+    Other:
+    --help                 Print this text and exit
+
+EOF
+exit 1
 }
 
 
@@ -1004,7 +1009,7 @@ printinfo
 
 # Display the image
 [ "$images" == "on" ] && printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;"$img"\n4;\n3;" |\
-    /usr/lib/w3m/w3mimgdisplay
+   $w3m_img_path
 
 # Enable line wrap again
 [ $line_wrap == "off" ] && printf '\e[?7h'
