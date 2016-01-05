@@ -205,6 +205,10 @@ case "$(uname)" in
     "OpenBSD")
         os="OpenBSD"
     ;;
+
+    "CYGWIN"*)
+        os="Windows"
+    ;;
 esac
 
 # Get Distro
@@ -226,6 +230,15 @@ getdistro () {
 
         "OpenBSD")
             distro="OpenBSD"
+        ;;
+
+        "Windows")
+            # TODO: Detect XP/7
+            if [ "$(wmic os get version | grep -o '^10')" ]; then
+                distro="Windows 10"
+            else
+                distro="Windows"
+            fi
         ;;
 
         *)
@@ -291,6 +304,10 @@ getuptime () {
             uptime=${uptime# }
         ;;
 
+        "Windows")
+            uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
+        ;;
+
         *)
             uptime="Unknown"
         ;;
@@ -342,6 +359,10 @@ getpackages () {
 
         "OpenBSD")
             packages=$(pkg_info | wc -l)
+        ;;
+
+        "Windows"*)
+            packages=$(cygcheck -cd | wc -l)
         ;;
 
         *)
@@ -888,5 +909,6 @@ printf "\e[$(tput lines)H\e[1A\e[?25h"
 
 
 # }}}
+
 
 
