@@ -621,16 +621,18 @@ getwallpaper () {
             img=${img%*\'}
         ;;
 
-        "Windows XP")
-            img="C:/Documents\ and\ Settings/${USER}/Local\ Settings/Application\ Data/Microsoft/Wallpaper1.bmp"
-        ;;
+        "Windows")
+            case "$distro" in
+                "Windows XP")
+                    cd c: || wall="off"
+                    img="Documents\ and\ Settings/${USER}/Local\ Settings/Application\ Data/Microsoft/Wallpaper1.bmp"
+                    cd - >/dev/null
+                ;;
 
-        "Windows 7"|"Windows 8"|"Windows 8.1"|"Windows 10")
-            img="%AppData%/Microsoft/Windows/Themes/TranscodedWallpaper.jpg"
-        ;;
-
-        *)
-            wall="off"
+                "Windows"*)
+                    img="%AppData%/Microsoft/Windows/Themes/TranscodedWallpaper.jpg"
+                ;;
+            esac
         ;;
     esac
 }
