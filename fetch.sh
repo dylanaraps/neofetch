@@ -311,13 +311,13 @@ getuptime () {
 
             # Get current date in seconds
             now=$(date +%s)
-            uptime=$(($now-$boot))
+            uptime=$((now - boot))
 
             # Convert uptime to days/hours/mins
-            secs=$((${uptime}%60))
-            mins=$((${uptime}/60%60))
-            hours=$((${uptime}/3600%24))
-            days=$((${uptime}/86400))
+            secs=$((uptime % 60))
+            mins=$((uptime / 60%60))
+            hours=$((uptime / 3600%24))
+            days=$((uptime / 86400))
 
             case "$mins" in
                 0) ;;
@@ -460,7 +460,7 @@ getcpu () {
             read -r speed < /sys/devices/system/cpu/cpu0/cpufreq/scaling_${speed_type}_freq
 
             # Convert mhz to ghz without bc
-            speed=$((${speed} / 100000))
+            speed=$((speed / 100000))
             speed=${speed:0:1}.${speed:1}
             cpu="$cpu @ ${speed}GHz"
         ;;
@@ -487,7 +487,7 @@ getcpu () {
             speed=${speed/\./}
 
             # Convert mhz to ghz without bc
-            speed=$((${speed} / 100000))
+            speed=$((speed / 100000))
             speed=${speed:0:1}.${speed:1}
             cpu="$cpu @ ${speed}GHz"
         ;;
@@ -514,9 +514,9 @@ getmemory () {
         "Linux")
             # Read first 3 lines
             exec 6< /proc/meminfo
-            read memtotal <&6
-            read memfree <&6
-            read memavail <&6
+            read -r memtotal <&6
+            read -r memfree <&6
+            read -r memavail <&6
             exec 6<&-
 
             # Do some substitution on each line
@@ -531,7 +531,7 @@ getmemory () {
             memavail=${memavail// /}
 
             memused=$((memtotal - memavail))
-            memory="$(($memused / 1024))MB / $(($memtotal / 1024))MB"
+            memory="$((memused / 1024))MB / $((memtotal / 1024))MB"
         ;;
 
         "Mac OS X")
@@ -606,7 +606,7 @@ getcols () {
         done
 
         # Clear formatting
-        printf "$clear"
+        printf "%b%s" "$clear"
     fi
 }
 
@@ -1002,7 +1002,7 @@ printf "\e[?25l"
 clear
 
 # Disable line wrap
-[ $line_wrap == "off" ] && printf '\e[?7l'
+[ "$line_wrap" == "off" ] && printf '\e[?7l'
 
 # Call functions and display info
 colors
@@ -1010,14 +1010,14 @@ bold
 printinfo
 
 # Display the image
-[ "$images" == "on" ] && printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;"$img"\n4;\n3;" |\
+[ "$images" == "on" ] && printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
    $w3m_img_path
 
 # Enable line wrap again
-[ $line_wrap == "off" ] && printf '\e[?7h'
+[ "$line_wrap" == "off" ] && printf '\e[?7h'
 
 # Move cursor to bottom and redisplay it.
-printf "\e[${lines}H\e[${prompt_height}A\e[?25h"
+printf "%b%s" "\e[${lines}H\e[${prompt_height}A\e[?25h"
 
 
 # }}}
