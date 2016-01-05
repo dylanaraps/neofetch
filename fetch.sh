@@ -250,7 +250,31 @@ getdistro () {
         ;;
 
        "Windows")
-            distro="Windows"
+            case "$(cmd /c ver)" in
+                *"XP"*)
+                    distro="Windows XP"
+                ;;
+
+                *"7"*)
+                    distro="Windows 7"
+                ;;
+
+                *"8.1"*)
+                    distro="Windows 8.1"
+                ;;
+
+                *"8"*)
+                    distro="Windows 8"
+                ;;
+
+                *"10"*)
+                    distro="Windows 10"
+                ;;
+
+                *)
+                    distro="Windows"
+                ;;
+            esac
         ;;
 
         *)
