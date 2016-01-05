@@ -472,7 +472,7 @@ getcpu () {
 
         "Windows")
             # Get cpu name
-            cpu="$(grep 'model name' /proc/cpuinfo) @ 4.2GHz"
+            cpu="$(grep 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
             cpu=${cpu//  /}
             cpu=${cpu% }
