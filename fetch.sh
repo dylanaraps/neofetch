@@ -402,6 +402,10 @@ getwindowmanager () {
                 windowmanager="Quartz Compositor"
             ;;
 
+            "Windows")
+                windowmanager="DWM"
+            ;;
+
             *)
                 windowmanager="Unknown"
             ;;
