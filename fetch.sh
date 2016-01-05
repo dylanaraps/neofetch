@@ -478,6 +478,8 @@ getcpu () {
             cpu="$(grep 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
             cpu=${cpu/ @*/}
+            cpu=${cpu//  /}
+            cpu=${cpu% }
 
             # Get cpu speed
             speed=$(grep 'cpu MHz' /proc/cpuinfo)
