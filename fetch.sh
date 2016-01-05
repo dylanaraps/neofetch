@@ -622,10 +622,10 @@ getwallpaper () {
         ;;
 
         "Windows XP")
-            img="C:/Documents and Settings/${USER}/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
+            img="C:/Documents\ and\ Settings/${USER}/Local\ Settings/Application\ Data/Microsoft/Wallpaper1.bmp"
         ;;
 
-        "Windows"*)
+        "Windows 7"|"Windows 8"|"Windows 8.1"|"Windows 10")
             img="%AppData%/Microsoft/Windows/Themes/TranscodedWallpaper.jpg"
         ;;
 
