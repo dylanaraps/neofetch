@@ -586,7 +586,6 @@ getresolution () {
             resolution="Unknown"
         ;;
     esac
-
 }
 
 getcols () {
@@ -613,6 +612,24 @@ getcols () {
 # Images {{{
 
 
+getwallpaper () {
+    case "$os" in
+        "Linux")
+            img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg")
+            img=${img#\'*}
+            img=${img%*\'}
+        ;;
+
+        "Windows"*)
+            img="%AppData%/Microsoft/Windows/Themes/TranscodedWallpaper.jpg"
+        ;;
+
+        *)
+            wall="off"
+        ;;
+    esac
+}
+
 getimage () {
     # Check if the directory exists
     [ ! -d "$imgtempdir" ] && (mkdir "$imgtempdir" || exit)
@@ -634,11 +651,7 @@ getimage () {
     esac
 
     # If wall=on, Get image to display from current wallpaper.
-    if [ "$wall" == "on" ]; then
-        img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg")
-        img=${img#\'*}
-        img=${img%*\'}
-    fi
+    [ "$wall" == "on" ] && getwallpaper
 
     # Get name of image and prefix it with it's crop mode and offset
     imgname="$crop_mode-$crop_offset-${img##*/}"
