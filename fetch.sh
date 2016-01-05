@@ -622,7 +622,6 @@ getwallpaper () {
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    # TODO: Fix the path.
                     img="/cygdrive/c/Documents and Settings/${USER}/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
                 ;;
 
@@ -669,7 +668,7 @@ getimage () {
     # Check to see if the thumbnail exists before we do any cropping.
     if [ ! -f "$imgtempdir/$imgname" ]; then
         # Get image size so that we can do a better crop
-        size=$(identify -format "%w %h" $img)
+        size=$(identify -format "%w %h" "$img")
         width=${size%% *}
         height=${size##* }
 
@@ -1003,7 +1002,7 @@ bold
 printinfo
 
 # Display the image
-[ "$images" == "on" ] && printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+[ "$images" == "on" ] && printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;"$img"\n4;\n3;" |\
     /usr/lib/w3m/w3mimgdisplay
 
 # Enable line wrap again
