@@ -622,9 +622,7 @@ getwallpaper () {
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    cd c: || wall="off"
-                    img="Documents\ and\ Settings/${USER}/Local\ Settings/Application\ Data/Microsoft/Wallpaper1.bmp"
-                    cd - >/dev/null
+                    img="/cygdrive/c/Documents and Settings/${USER}/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
                 ;;
 
                 "Windows"*)
