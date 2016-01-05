@@ -229,59 +229,57 @@ case "$(uname)" in
 esac
 
 # Get Distro
-getdistro () {
-    case "$os" in
-        "Linux" )
-            if type -p crux >/dev/null 2>&1; then
-                distro="CRUX"
-            else
-                distro="$(grep -h '^NAME=' /etc/*ease)"
-                distro=${distro#NAME\=\"*}
-                distro=${distro%*\"}
-            fi
-        ;;
+case "$os" in
+    "Linux" )
+        if type -p crux >/dev/null 2>&1; then
+            distro="CRUX"
+        else
+            distro="$(grep -h '^NAME=' /etc/*ease)"
+            distro=${distro#NAME\=\"*}
+            distro=${distro%*\"}
+        fi
+    ;;
 
-        "Mac OS X")
-            distro="Mac OS X $(sw_vers -productVersion)"
-        ;;
+    "Mac OS X")
+        distro="Mac OS X $(sw_vers -productVersion)"
+    ;;
 
-        "OpenBSD")
-            distro="OpenBSD"
-        ;;
+    "OpenBSD")
+        distro="OpenBSD"
+    ;;
 
-       "Windows")
-            case "$(cmd /c ver)" in
-                *"XP"*)
-                    distro="Windows XP"
-                ;;
+   "Windows")
+        case "$(cmd /c ver)" in
+            *"XP"*)
+                distro="Windows XP"
+            ;;
 
-                *"7"*)
-                    distro="Windows 7"
-                ;;
+            *"7"*)
+                distro="Windows 7"
+            ;;
 
-                *"8.1"*)
-                    distro="Windows 8.1"
-                ;;
+            *"8.1"*)
+                distro="Windows 8.1"
+            ;;
 
-                *"8"*)
-                    distro="Windows 8"
-                ;;
+            *"8"*)
+                distro="Windows 8"
+            ;;
 
-                *"10"*)
-                    distro="Windows 10"
-                ;;
+            *"10"*)
+                distro="Windows 10"
+            ;;
 
-                *)
-                    distro="Windows"
-                ;;
-            esac
-        ;;
+            *)
+                distro="Windows"
+            ;;
+        esac
+    ;;
 
-        *)
-            distro="Unknown"
-        ;;
-    esac
-}
+    *)
+        distro="Unknown"
+    ;;
+esac
 
 # Get Title
 gettitle () {
