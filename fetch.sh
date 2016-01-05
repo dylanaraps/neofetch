@@ -63,6 +63,7 @@ use_wmctrl=0
 # CPU
 
 # CPU speed type
+# Only works on Linux
 # --speed_type current/min/max
 speed_type="max"
 
@@ -472,10 +473,9 @@ getcpu () {
             # Get cpu name
             cpu="$(grep 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
-            cpu=${cpu//  /}
-            cpu=${cpu% }
-            cpu=${cpu/@*/}
+            cpu=${cpu/ @*/}
 
+            # Get cpu speed
             speed=$(grep 'cpu MHz' /proc/cpuinfo)
             speed=${speed/cpu MHz*: /}
             speed=${speed/\./}
