@@ -522,6 +522,20 @@ getmemory () {
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
+        "Windows")
+            mem="$(awk 'NR < 3 {printf $2 " "}' /proc/meminfo)"
+
+            # Split the string above into 2 vars
+            # This is faster than using an array.
+            set $mem
+
+            memtotal=$1
+            memfree=$2
+            memavail=$((memtotal - memfree))
+            memused=$((memtotal - memavail))
+            memory="$(( ${memused%% *} / 1024))MB / $(( ${memtotal%% *} / 1024))MB"
+        ;;
+
         *)
             memory="Unknown"
         ;;
