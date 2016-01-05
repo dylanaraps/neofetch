@@ -134,6 +134,12 @@ underline="on"
 # --underline_char char
 underline_char="-"
 
+# Prompt height
+# You should only have to change this if your
+# prompt is greater than 2 lines high.
+# --prompt_height num
+prompt_height=1
+
 
 # }}}
 
@@ -713,8 +719,10 @@ usage () {
     printf "%s\n" "   Text Formatting:"
     printf "%s\n" "   --underline on/off     Enable/Disable title underline"
     printf "%s\n" "   --underline_char char  Character to use when underlineing title"
-    printf "%s\n" "   --line_wrap on/off      Enable/Disable line wrapping"
+    printf "%s\n" "   --line_wrap on/off     Enable/Disable line wrapping"
     printf "%s\n" "   --bold on/off          Enable/Disable bold text"
+    printf "%s\n" "   --prompt_height num    Set this to your prompt height to fix"
+    printf "%s\n" "                          issues with the text going off screen at the top"
     printf "%s\n"
     printf "%s\n" "   Color Blocks:"
     printf "%s\n" "   --color_blocks on/off  Enable/Disable the color blocks"
@@ -795,6 +803,7 @@ while [ ! -z "$1" ]; do
         --underline_char) underline_char="$2" ;;
         --line_wrap) line_wrap="$2" ;;
         --bold) bold="$2" ;;
+        --prompt_height) prompt_height="$2" ;;
 
         # Color Blocks
         --color_blocks) color_blocks="$2" ;;
@@ -929,7 +938,7 @@ printinfo
 [ $line_wrap == "off" ] && printf '\e[?7h'
 
 # Move cursor to bottom and redisplay it.
-printf "\e[${lines}H\e[1A\e[?25h"
+printf "\e[${lines}H\e[${prompt_height}A\e[?25h"
 
 
 # }}}

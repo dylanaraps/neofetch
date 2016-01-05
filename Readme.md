@@ -88,6 +88,8 @@ Text Formatting:
 --underline_char char  Character to use when underlineing title
 --line_wrap on/off     Enable/Disable line wrapping
 --bold on/off          Enable/Disable bold text
+--prompt_height num    Set this to your prompt height to fix
+                       issues with the text going off screen at the top
 
 Color Blocks:
 --color_blocks on/off  Enable/Disable the color blocks
