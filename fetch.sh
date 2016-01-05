@@ -622,11 +622,12 @@ getwallpaper () {
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    img="/cygdrive/c/Documents and Settings/${USER}/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
+                    # TODO: Fix the path.
+                    # img="/cygdrive/c/Documents and Settings/${USER}/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
                 ;;
 
                 "Windows"*)
-                    img="%AppData%/Microsoft/Windows/Themes/TranscodedWallpaper.jpg"
+                    img="$APPDATA/Microsoft/Windows/Themes/TranscodedWallpaper.jpg"
                 ;;
             esac
         ;;
