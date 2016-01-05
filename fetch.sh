@@ -450,6 +450,7 @@ getcpu () {
             # Get cpu name
             cpu="$(grep 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
+            cpu=${cpu//  /}
             cpu=${cpu% }
 
             speed=$(grep 'cpu MHz' /proc/cpuinfo)
@@ -457,7 +458,7 @@ getcpu () {
             speed=${speed/\./}
 
             # Convert mhz to ghz without bc
-            speed=$((${speed} / 1000))
+            speed=$((${speed} / 100000))
             speed=${speed:0:1}.${speed:1}
             cpu="$cpu @ ${speed}GHz"
         ;;
