@@ -670,13 +670,7 @@ getimage () {
     [ "$wall" == "on" ] && getwallpaper
 
     # Get name of image and prefix it with it's crop mode and offset
-    imgname="$crop_mode-$crop_offset-${img##*/}"
-
-    # This check allows you to resize the image at launch
-    if [ -f "$imgtempdir/$imgname" ] && [ $imgheight != $imgsize ]; then
-        imgheight=$(identify -format "%h" "$imgtempdir/$imgname")
-        rm "$imgtempdir/$imgname"
-    fi
+    imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}"
 
     # Check to see if the thumbnail exists before we do any cropping.
     if [ ! -f "$imgtempdir/$imgname" ]; then
@@ -723,6 +717,7 @@ getimage () {
                     "$img" \
                     -gravity $crop_offset \
                     -crop "$size"x"$size"+0+0 \
+                    -quality 95 \
                     -scale "$imgsize"x"$imgsize" \
                     "$imgtempdir/$imgname"
             ;;
