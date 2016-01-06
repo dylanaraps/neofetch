@@ -456,7 +456,8 @@ getcpu () {
 
             # Get cpu speed
             speed_type=${speed_type/rent/}
-            read -r speed < /sys/devices/system/cpu/cpu0/cpufreq/scaling_${speed_type}_freq
+            read -r speed < \
+                /sys/devices/system/cpu/cpu0/cpufreq/scaling_${speed_type}_freq
 
             # Convert mhz to ghz without bc
             speed=$((speed / 100000))
@@ -538,7 +539,9 @@ getmemory () {
             memwired=$(vm_stat | awk '/wired/ { print $4 }')
             memactive=$(vm_stat | awk '/active / { print $3 }')
             memcompressed=$(vm_stat | awk '/occupied/ { print $5 }')
-            memused=$(((${memwired//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))
+            memused=$(((${memwired//.} + \
+                        ${memactive//.} + \
+                        ${memcompressed//.}) * 4 / 1024))
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
@@ -561,7 +564,8 @@ getmemory () {
             memfree=$2
             memavail=$((memtotal - memfree))
             memused=$((memtotal - memavail))
-            memory="$(( ${memused%% *} / 1024))MB / $(( ${memtotal%% *} / 1024))MB"
+            memory="$((${memused%% *} / 1024))MB /"
+            memory+="$((${memtotal%% *} / 1024))MB"
         ;;
 
         *)
@@ -583,7 +587,8 @@ getresolution () {
         ;;
 
         "Mac OS X")
-            resolution=$(system_profiler SPDisplaysDataType | awk '/Resolution:/ {print $2"x"$4" "}')
+            resolution=$(system_profiler SPDisplaysDataType |\
+                        awk '/Resolution:/ {print $2"x"$4" "}')
         ;;
 
         *)
@@ -627,11 +632,14 @@ getwallpaper () {
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    img="/cygdrive/c/Documents and Settings/${USER}/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
+                    img="/cygdrive/c/Documents and Settings/${USER}"
+                    img+="/Local Settings/Application Data/Microsoft"
+                    img+="/Wallpaper1.bmp"
                 ;;
 
                 "Windows"*)
-                    img="$APPDATA/Microsoft/Windows/Themes/TranscodedWallpaper.jpg"
+                    img="$APPDATA/Microsoft/Windows/Themes"
+                    img+="/TranscodedWallpaper.jpg"
                 ;;
             esac
         ;;
@@ -687,7 +695,10 @@ getimage () {
 
         case "$crop_mode" in
             fit)
-                c=$(convert "$img" -colorspace srgb -format "%[pixel:p{0,0}]" info:)
+                c=$(convert "$img" \
+                    -colorspace srgb \
+                    -format "%[pixel:p{0,0}]" info:)
+
                 convert \
                     "$img" \
                     -trim +repage \
@@ -922,7 +933,8 @@ printinfo () {
             echo:*:*)
                 info=${function#*: }
                 subtitle=${function/:*/}
-                string="${bold}${subtitle_color}${subtitle}${clear}${colon_color}: ${info_color}${info}"
+                string="${bold}${subtitle_color}${subtitle}${clear}"
+                string+="${colon_color}: ${info_color}${info}"
                 length=${#function}
             ;;
 
@@ -962,7 +974,8 @@ printinfo () {
             ;;
 
             *:*)
-                string="${bold}${subtitle_color}${subtitle}${clear}${colon_color}: ${info_color}${output}"
+                string="${bold}${subtitle_color}${subtitle}${clear}"
+                string+="${colon_color}: ${info_color}${output}"
                 length=$((${#subtitle} +  ${#output} + 2))
             ;;
 
@@ -1006,8 +1019,9 @@ bold
 printinfo
 
 # Display the image
-[ "$images" == "on" ] && printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
-   $w3m_img_path
+[ "$images" == "on" ] && \
+    printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+    $w3m_img_path
 
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf '\e[?7h'
