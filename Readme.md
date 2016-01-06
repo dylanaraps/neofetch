@@ -16,9 +16,11 @@ supported open an issue and I'll add support for it.
 
 ## Dependencies
 
+
 These are the script's required dependencies
 
 -  Text formatting, dynamic image size and padding: tput
+-  Uptime detection: procps or procps-ng
 
 These are the script's optional dependencies:
 
