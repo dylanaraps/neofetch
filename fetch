@@ -344,7 +344,7 @@ getuptime () {
 
         "Windows")
             uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
-            uptime=${uptime/  /}
+            uptime=${uptime/  / }
         ;;
 
         *)
