@@ -19,10 +19,12 @@ export LC_ALL=C
 export LANG=C
 export LANGUAGE=C
 
+
 # Config Options {{{
 
 
 # Info Options {{{
+
 
 # Info
 # What to display and in what order.
