@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fetch info about your system
-# https://github.com/dylanaraps/fetch.sh
+# https://github.com/dylanaraps/fetch
 #
 # Optional Dependencies: (You'll lose these features without them)
 #   Displaying Images: w3m + w3m-img

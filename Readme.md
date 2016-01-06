@@ -1,4 +1,4 @@
-# fetch.sh
+# fetch
 
 ## Big updates: Check the releases page.
 
