@@ -17,7 +17,7 @@
 # Speed up script by not using unicode
 export LC_ALL=C
 export LANG=C
-
+export LANGUAGE=C
 
 # Config Options {{{
 
@@ -224,10 +224,6 @@ case "$(uname)" in
         os="Mac OS X"
     ;;
 
-    "OpenBSD")
-        os="OpenBSD"
-    ;;
-
     "CYGWIN"*)
         os="Windows"
     ;;
@@ -247,10 +243,6 @@ case "$os" in
 
     "Mac OS X")
         distro="Mac OS X $(sw_vers -productVersion)"
-    ;;
-
-    "OpenBSD")
-        distro="OpenBSD"
     ;;
 
    "Windows")
@@ -337,11 +329,6 @@ getuptime () {
             esac
         ;;
 
-        "OpenBSD")
-            uptime=$(uptime | awk -F',' '{print $1}')
-            uptime=${uptime# }
-        ;;
-
         "Windows")
             uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
             uptime=${uptime/  / }
@@ -394,10 +381,6 @@ getpackages () {
         "Mac OS X"*)
             packages="$(pkgutil --pkgs | wc -l)"
             packages=${packages//[[:blank:]]/}
-        ;;
-
-        "OpenBSD")
-            packages=$(pkg_info | wc -l)
         ;;
 
         "Windows"*)
@@ -468,10 +451,6 @@ getcpu () {
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
-        ;;
-
-        "OpenBSD")
-            cpu="$(sysctl -n hw.model)"
         ;;
 
         "Windows")
@@ -546,14 +525,6 @@ getmemory () {
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
-        "OpenBSD")
-            memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-            memused=$(top -1 1 | awk '/Real:/ {print $3}')
-            memtotal=${memtotal/()MB/}
-            memused=${memused/M/}
-            memory="${memused}MB / ${memtotal}MB"
-        ;;
-
         "Windows")
             mem="$(awk 'NR < 3 {printf $2 " "}' /proc/meminfo)"
 
@@ -583,7 +554,7 @@ getsong () {
 # Get Resolution
 getresolution () {
     case "$os" in
-        "Linux"|"OpenBSD")
+        "Linux")
             resolution=$(xdpyinfo | awk '/dimensions:/ {printf $2}')
         ;;
 
