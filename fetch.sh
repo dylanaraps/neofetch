@@ -564,7 +564,7 @@ getmemory () {
             memfree=$2
             memavail=$((memtotal - memfree))
             memused=$((memtotal - memavail))
-            memory="$((${memused%% *} / 1024))MB /"
+            memory="$((${memused%% *} / 1024))MB / "
             memory+="$((${memtotal%% *} / 1024))MB"
         ;;
 
