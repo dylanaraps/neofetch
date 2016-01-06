@@ -304,7 +304,7 @@ getuptime () {
         ;;
 
         "Mac OS X")
-            # Get boottime in seconds
+            # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
             boot=${boot/{ sec = /}
             boot=${boot/,*}
@@ -314,7 +314,6 @@ getuptime () {
             uptime=$((now - boot))
 
             # Convert uptime to days/hours/mins
-            secs=$((uptime % 60))
             mins=$((uptime / 60%60))
             hours=$((uptime / 3600%24))
             days=$((uptime / 86400))
@@ -864,10 +863,10 @@ while [ ! -z "$1" ]; do
 
         # Text Colors
         --colors) title_color=$2
-            [ ! -z $3 ] && subtitle_color=$3
-            [ ! -z $4 ] && colon_color=$4
-            [ ! -z $4 ] && underline_color=$5
-            [ ! -z $5 ] && info_color=$6 ;;
+            [ ! -z "$3" ] && subtitle_color=$3
+            [ ! -z "$4" ] && colon_color=$4
+            [ ! -z "$4" ] && underline_color=$5
+            [ ! -z "$5" ] && info_color=$6 ;;
         --title_color) title_color=$2 ;;
         --subtitle_color) subtitle_color=$2 ;;
         --colon_color) colon_color=$2 ;;
@@ -1008,7 +1007,7 @@ bold
 printinfo
 
 # Display the image
-[ "$images" == "on" ] && printf "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+[ "$images" == "on" ] && printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
    $w3m_img_path
 
 # Enable line wrap again
