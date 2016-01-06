@@ -420,7 +420,7 @@ getwindowmanager () {
         windowmanager="$(wmctrl -m | head -n1)"
         windowmanager=${windowmanager/Name: /}
 
-    elif [ ! -z "$XDG_CURRENT_DESKTOP" ]; then
+    elif [ "$XDG_CURRENT_DESKTOP" ]; then
         windowmanager="$XDG_CURRENT_DESKTOP"
 
     elif [ -e "$HOME/.xinitrc" ]; then
@@ -844,7 +844,7 @@ exit 1
 # Args {{{
 
 
-while [ ! -z "$1" ]; do
+while [ "$1" ]; do
     case $1 in
         # Info
         --title) title="$2" ;;
@@ -863,10 +863,10 @@ while [ ! -z "$1" ]; do
 
         # Text Colors
         --colors) title_color=$2
-            [ ! -z "$3" ] && subtitle_color=$3
-            [ ! -z "$4" ] && colon_color=$4
-            [ ! -z "$4" ] && underline_color=$5
-            [ ! -z "$5" ] && info_color=$6 ;;
+            [ "$3" ] && subtitle_color=$3
+            [ "$4" ] && colon_color=$4
+            [ "$4" ] && underline_color=$5
+            [ "$5" ] && info_color=$6 ;;
         --title_color) title_color=$2 ;;
         --subtitle_color) subtitle_color=$2 ;;
         --colon_color) colon_color=$2 ;;
@@ -903,8 +903,7 @@ while [ ! -z "$1" ]; do
         --help) usage ;;
     esac
 
-    # The check here fixes shift in sh/mksh
-    [ ! -z "$1" ] && shift
+    shift
 done
 
 
