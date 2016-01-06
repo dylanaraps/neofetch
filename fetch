@@ -411,6 +411,7 @@ getwindowmanager () {
         xinitrc=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
         windowmanager="${xinitrc/exec /}"
         windowmanager="${windowmanager/-session/}"
+        windowmanager="${windowmanager^}"
 
     else
         case "$os" in
