@@ -451,7 +451,7 @@ getcpu () {
     case "$os" in
         "Linux")
             # Get cpu name
-            cpu="$(grep 'model name' /proc/cpuinfo)"
+            cpu="$(grep -F 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
 
             # Get cpu speed
@@ -474,14 +474,14 @@ getcpu () {
 
         "Windows")
             # Get cpu name
-            cpu="$(grep 'model name' /proc/cpuinfo)"
+            cpu="$(grep -F 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
             cpu=${cpu/ @*/}
             cpu=${cpu//  /}
             cpu=${cpu% }
 
             # Get cpu speed
-            speed=$(grep 'cpu MHz' /proc/cpuinfo)
+            speed=$(grep -F 'cpu MHz' /proc/cpuinfo)
             speed=${speed/cpu MHz*: /}
             speed=${speed/\./}
 
@@ -639,8 +639,8 @@ getwallpaper () {
 }
 
 getimage () {
-    # Check if the directory exists
-    [ ! -d "$imgtempdir" ] && (mkdir "$imgtempdir" || exit)
+    # Make the directory if it doesn't exist
+    mkdir -p "$imgtempdir"
 
     # Image size is half of the terminal
     imgsize=$((columns * font_width / split_size))
