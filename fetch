@@ -599,7 +599,9 @@ getvisualstyle () {
         ;;
 
         "Windows"*)
-            visualstyle="$(grep -F 'CurrentTheme' /proc/registry/HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/Themes)"
+            visualstyle="$(grep '' /proc/registry/HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/Themes/CurrentTheme)"
+            visualstyle=${visualstyle##*/}
+            visualstyle=${visualstyle%\.*}
         ;;
 
         *)
