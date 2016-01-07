@@ -600,8 +600,8 @@ getvisualstyle () {
 
         "Windows"*)
             visualstyle="$(head -n1 /proc/registry/HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/Themes/CurrentTheme)"
-            visualstyle=${visualstyle##*/}
-            visualstyle=${visualstyle%\.*}
+            visualstyle="${visualstyle##*/}"
+            visualstyle="${visualstyle%.*}"
         ;;
 
         *)
