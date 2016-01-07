@@ -590,6 +590,25 @@ getcols () {
 }
 
 
+# Windows Specific Functions
+
+getvisualstyle () {
+    case "$os" in
+        "Windows XP")
+
+        ;;
+
+        "Windows"*)
+            visualstyle="grep -F 'CurrentTheme' /proc/registry/HKEY_CURRENT_USER/oftware/Microsoft/Windows/CurrentVersion/Themes"
+        ;;
+
+        *)
+            visualstyle="This feature only works on Windows"
+        ;;
+    esac
+}
+
+
 # }}}
 
 
