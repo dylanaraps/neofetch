@@ -589,7 +589,7 @@ getresolution () {
         ;;
 
         "Windows")
-            resolution="$(cmd /c wmic desktopmonitor get screenwidth, screenheight)"
+            resolution="$(wmic path Win32_VideoController  get CurrentHorizontalResolution,CurrentVerticalResolution /format:value)"
         ;;
 
         *)
