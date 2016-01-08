@@ -150,9 +150,9 @@ prompt_height=1
 # Image Options {{{
 
 
-# Toggle all images
-# --images on/off
-images="on"
+# Image Source
+# --image wall, shuffle, /path/to/img, off
+image="shuffle"
 
 # Thumbnail directory
 imgtempdir="$HOME/.fetchimages"
@@ -174,13 +174,8 @@ split_size=2
 # --image_position left/right
 image_position="left"
 
-# Use current wallpaper as the image
-# --wall on/off
-wall="on"
-
-# Default image to use if wallpaper use is disabled
-# --image img
-img="$HOME/Pictures/avatars/gon.png"
+# Shuffle dir
+shuffledir="$HOME/Pictures/wallpapers/wash"
 
 # Crop mode
 # --crop_mode normal/fit/fill
@@ -644,6 +639,12 @@ getwallpaper () {
     esac
 }
 
+getshuffle () {
+    # TODO: Test this on Windows.
+    img="$(find $shuffledir -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
+    shuf -n1 -z)"
+}
+
 getimage () {
     # Make the directory if it doesn't exist
     mkdir -p "$imgtempdir"
@@ -665,7 +666,19 @@ getimage () {
     esac
 
     # If wall=on, Get image to display from current wallpaper.
-    [ "$wall" == "on" ] && getwallpaper
+    case "$image" in
+        "wall")
+            getwallpaper
+        ;;
+
+        "shuffle")
+            getshuffle
+        ;;
+
+        *)
+            img="$image"
+        ;;
+    esac
 
     # Get name of image and prefix it with it's crop mode and offset
     imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}"
@@ -809,9 +822,9 @@ usage () { cat << EOF
                            Range of colors to print as blocks
 
     Image:
-    --image                Image to display with the script
-                           The image gets priority over other
-                           images: (wallpaper, \$img)
+    --image                Image source. Where and what image we display.
+                           Possible values: wall, shuffle, /path/to/img, off
+    --shuffledir           Which directory to shuffle for an image.
     --font_width px        Used to automatically size the image
     --image_position       Where to display the image: (Left/Right)
     --split_size num       Width of img/text splits
@@ -829,9 +842,6 @@ usage () { cat << EOF
                            to the top edge of the window
     --gap num              Gap between image and text right side
                            to the top edge of the window
-    --images on/off        Enable/Disable all images
-    --wall on/off          Enable/Disable the wallpaper function
-                           and fallback to \$img
     --clean                Remove all cropped images
 
     Other:
@@ -890,7 +900,8 @@ while [ "$1" ]; do
         --block_width) block_width="$2" ;;
 
         # Image
-        --image) wall="off"; img="$2" ;;
+        --image) image="$2" ;;
+        --shuffledir) shuffledir="$2" ;;
         --font_width) font_width="$2" ;;
         --image_position) image_position="$2" ;;
         --split_size) split_size="$2" ;;
@@ -899,8 +910,6 @@ while [ "$1" ]; do
         --xoffset) xoffset="$2" ;;
         --yoffset) yoffset="$2" ;;
         --gap) gap="$2" ;;
-        --images) images="$2" ;;
-        --wall) wall="$2" ;;
         --clean) rm -rf "$imgtempdir" || exit ;;
 
         # Other
@@ -997,7 +1006,7 @@ lines=${termsize% *}
 columns=${termsize#* }
 
 # Get image
-[ "$images" == "on" ] && getimage
+[ "$image" != "off" ] && getimage
 
 # Clear the terminal and hide the cursor
 printf "\e[?25l"
@@ -1012,7 +1021,7 @@ bold
 printinfo
 
 # Display the image
-[ "$images" == "on" ] && \
+[ "$image" != "off" ] && \
     printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
     $w3m_img_path
 

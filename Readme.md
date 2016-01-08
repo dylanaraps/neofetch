@@ -57,75 +57,73 @@ Please report any bugs or issues you're having with this as I can't
 
 
 ```
-usage: scrot.sh [--colors 1 2 4 5] [--kernel "$(uname -rs)"]
+ usage: ${0##*/} [--colors 1 2 3 4 5] [--kernel "\$\(uname -rs\)"]
 
-Info:
---title string         Change the title at the top
---distro string/cmd    Manually set the distro
---kernel string/cmd    Manually set the kernel
---uptime string/cmd    Manually set the uptime
---uptime_shorthand on/off --v
-                       Shorten the output of uptime
---packages string/cmd  Manually set the package count
---shell string/cmd     Manually set the shell
---winman string/cmd    Manually set the window manager
---cpu string/cmd       Manually set the cpu name
---memory string/cmd    Manually set the memory
---speed_type           Change the type of cpu speed to get
-                       Possible values: current, min, max
---song string/cmd      Manually set the current song
+    Info:
+    --title string         Change the title at the top
+    --distro string/cmd    Manually set the distro
+    --kernel string/cmd    Manually set the kernel
+    --uptime string/cmd    Manually set the uptime
+    --uptime_shorthand on/off --v
+                           Shorten the output of uptime
+    --packages string/cmd  Manually set the package count
+    --shell string/cmd     Manually set the shell
+    --winman string/cmd    Manually set the window manager
+    --use_wmctrl on/off    Use wmctrl for a more accurate reading
+    --cpu string/cmd       Manually set the cpu name
+    --memory string/cmd    Manually set the memory
+    --speed_type           Change the type of cpu speed to get
+                           Possible values: current, min, max
+    --song string/cmd      Manually set the current song
 
-Text Colors:
---colors 1 2 3 4 5      Change the color of text
-                       (title, subtitle, colon, info)
---title_color num      Change the color of the title
---subtitle_color num   Change the color of the subtitle
---colon_color num      Change the color of the colons
---underline_color num  Change the color of the underline
---info_color num       Change the color of the info
+    Text Colors:
+    --colors 1 2 3 4 5     Change the color of text
+                           (title, subtitle, colon, underline, info)
+    --title_color num      Change the color of the title
+    --subtitle_color num   Change the color of the subtitle
+    --colon_color num      Change the color of the colons
+    --underline_color num  Change the color of the underlines
+    --info_color num       Change the color of the info
 
-Text Formatting:
---underline on/off     Enable/Disable title underline
---underline_char char  Character to use when underlineing title
---line_wrap on/off     Enable/Disable line wrapping
---bold on/off          Enable/Disable bold text
---prompt_height num    Set this to your prompt height to fix
-                       issues with the text going off screen at the top
+    Text Formatting:
+    --underline on/off     Enable/Disable title underline
+    --underline_char char  Character to use when underlineing title
+    --line_wrap on/off     Enable/Disable line wrapping
+    --bold on/off          Enable/Disable bold text
+    --prompt_height num    Set this to your prompt height to fix
+                           issues with the text going off screen at the top
 
-Color Blocks:
---color_blocks on/off  Enable/Disable the color blocks
---block_range start end --v
-                        Range of colors to print as blocks
---block_width num       Width of color blocks
+    Color Blocks:
+    --color_blocks on/off  Enable/Disable the color blocks
+    --block_width num      Width of color blocks
+    --block_range start end --v
+                           Range of colors to print as blocks
 
-Image:
---image                Image to display with the script
-                       The image gets priority over other
-                       images: (wallpaper, \$img)
+    Image:
+    --image                Image source. Where and what image we display.
+                           Possible values: wall, shuffle, /path/to/img, off
+    --shuffledir           Which directory to shuffle for an image.
+    --font_width px        Used to automatically size the image
+    --image_position       Where to display the image: (Left/Right)
+    --split_size num       Width of img/text splits
+                           A value of 2 makes each split half the terminal
+                           width and etc
+    --crop_mode            Which crop mode to use
+                           Takes the values: normal, fit, fill
+    --crop_offset value    Change the crop offset for normal mode.
+                           Possible values: northwest, north, northeast,
+                           west, center, east, southwest, south, southeast
 
---font_width px        Used to automatically size the image
---image_position       Where to display the image: (Left/Right)
---split_size num       Width of img/text splits
-                       A value of 2 makes each split half the terminal
-                       width and etc
---crop_mode            Which crop mode to use
-                       Takes the values: normal, fit, fill
---crop_offset value    Change the crop offset for crop_mode normal.
-                       Possible values: northwest, north, northeast,
-                       west, center, east, southwest, south, southeast
---xoffset px           How close the image will be
-                       to the left edge of the window
---yoffset px           How close the image will be
-                       to the top edge of the window
+    --xoffset px           How close the image will be
+                           to the left edge of the window
+    --yoffset px           How close the image will be
+                           to the top edge of the window
+    --gap num              Gap between image and text right side
+                           to the top edge of the window
+    --clean                Remove all cropped images
 
---gap num              Gap between image and text right side
---images on/off        Enable/Disable all images
---wall on/off          Enable/Disable the wallpaper function
-                       and fallback to \$img
---clean                Remove all cropped images
-
-Other:
---help                 Print this text and exit
+    Other:
+    --help                 Print this text and exit
 ```
 
 
