@@ -443,7 +443,7 @@ getwindowmanager () {
             ;;
 
             "Windows")
-                windowmanager="DWM"
+                windowmanager="Explorer"
             ;;
 
             *)
@@ -586,6 +586,10 @@ getresolution () {
         "Mac OS X")
             resolution=$(system_profiler SPDisplaysDataType |\
                         awk '/Resolution:/ {print $2"x"$4" "}')
+        ;;
+
+        "Windows")
+            resolution="$(cmd /c wmic desktopmonitor get screenwidth, screenheight)"
         ;;
 
         *)
