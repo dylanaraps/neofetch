@@ -205,6 +205,27 @@ xoffset=0
 # }}}
 
 
+# Other Options {{{
+
+
+# Take a screenshot
+# --scrot on/off
+scrot="off"
+
+# Scrot dir
+# Where to save the screenshots
+# --scrotdir /path/to/screenshot/folder
+scrotdir="$HOME/Pictures"
+
+# Scrot filename
+# What to name the screenshots
+# --scrot
+scrotname="fetch-%Y-%m-%d-%H:%M.png"
+
+
+# }}}
+
+
 # }}}
 
 
@@ -436,6 +457,7 @@ getcpu () {
             # Get cpu name
             cpu="$(grep -F 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
+            cpu=${cpu/ @*/}
 
             # Get cpu speed
             speed_type=${speed_type/rent/}
@@ -740,6 +762,10 @@ getimage () {
     img="$imgtempdir/$imgname"
 }
 
+takescrot () {
+    scrot -c -d 3 "$scrotdir/$scrotname"
+}
+
 
 # }}}
 
@@ -844,6 +870,11 @@ usage () { cat << EOF
                            to the top edge of the window
     --clean                Remove all cropped images
 
+    Screenshot:
+    --scrot                Take a screenshot
+    --scrotdir             Directory to save the scrot
+    --scrotfile            File name of scrot
+
     Other:
     --help                 Print this text and exit
 
@@ -911,6 +942,11 @@ while [ "$1" ]; do
         --yoffset) yoffset="$2" ;;
         --gap) gap="$2" ;;
         --clean) rm -rf "$imgtempdir" || exit ;;
+
+        # Screenshot
+        --scrot|-s) scrot="on" ;;
+        --scrotdir) scrot="$2" ;;
+        --scrotfile) scrot="$2" ;;
 
         # Other
         --help) usage ;;
@@ -1030,6 +1066,9 @@ printinfo
 
 # Move cursor to bottom and redisplay it.
 printf "%b%s" "\e[${lines}H\e[${prompt_height}A\e[?25h"
+
+# If enabled take a screenshot
+[ "$scrot" == "on" ] && takescrot
 
 
 # }}}

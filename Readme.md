@@ -122,6 +122,11 @@ Please report any bugs or issues you're having with this as I can't
                            to the top edge of the window
     --clean                Remove all cropped images
 
+    Screenshot:
+    --scrot                Take a screenshot
+    --scrotdir             Directory to save the scrot
+    --scrotfile            File name of scrot
+
     Other:
     --help                 Print this text and exit
 ```
