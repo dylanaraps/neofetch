@@ -1,14 +1,44 @@
 # fetch
 
-## Big updates: Check the releases page.
-
 This is the home of my fetch script! This script gathers info <br\>
-about your system and prints it to the terminal.
+about your system and prints it to the terminal next to an image of your choice!
 
-The script currently supports Linux, Mac OS X and Windows (Cygwin), if your OS or distro isn't
-supported open an issue and I'll add support for it.
 
 ![1](https://sr.ht/Jd8Y.png)
+
+
+<!-- Features {{{ -->
+
+
+## Features
+
+
+- Supports Linux, Mac OS X and Windows (Cygwin)!
+    - If the script isn't working on your system
+      open an issue.
+
+- It's Fast
+    - The script makes heavy use of bash builtins
+      and string manipulation.
+
+- Display an image next to the info. (or not)
+    - The script can use your wallpaper, shuffle through a
+      directory or just display an image.
+
+- Highly Customizable
+    - You can customize almost everything.
+        - See Usage below or lines 23-233 in script
+
+- Take a screenshot at the end.
+    - It's disabled by default and you can specify the cmd
+      to use with ```--scrotcmd cmd``` at launch or by
+      changing the value of ```$scrotcmd``` in the script.
+
+- Smart crop (or Waifu crop)
+    - See https://github.com/dylanaraps/fetch/wiki/What-is-Smart-Crop
+
+
+<!-- }}} -->
 
 
 <!-- Dependences {{{ -->

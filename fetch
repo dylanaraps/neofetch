@@ -373,7 +373,7 @@ getuptime () {
 # Get package count
 getpackages () {
     case "$distro" in
-        "Arch Linux"|"Parabola GNU/Linux-libre"|"Manjaro"|"Antergos")
+        "Arch Linux" | "Parabola GNU/Linux-libre" | "Manjaro" | "Antergos")
             packages="$(pacman -Q | wc -l)"
         ;;
 
@@ -381,7 +381,7 @@ getpackages () {
             packages="$(xbps-query -l | wc -l)"
         ;;
 
-        "Ubuntu"|"Mint"|"Debian"|"Kali Linux"|"Deepin Linux")
+        "Ubuntu" | "Mint" | "Debian" | "Kali Linux" | "Deepin Linux")
             packages="$(dpkg --get-selections | grep -v deinstall$ | wc -l)"
         ;;
 
@@ -389,11 +389,11 @@ getpackages () {
             packages="$(ls -1 /var/log/packages | wc -l)"
         ;;
 
-        "Gentoo"|"Funtoo")
+        "Gentoo" | "Funtoo")
             packages="$(ls -d /var/db/pkg/*/* | wc -l)"
         ;;
 
-        "Fedora"|"openSUSE"|"Red Hat Enterprise Linux"|"CentOS")
+        "Fedora" | "openSUSE"|"Red Hat Enterprise Linux"|"CentOS")
             packages="$(rpm -qa | wc -l)"
         ;;
 
@@ -666,7 +666,6 @@ getwallpaper () {
 }
 
 getshuffle () {
-    # TODO: Test this on Windows.
     img="$(find $shuffledir -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
     shuf -n1 -z)"
 }
@@ -949,7 +948,7 @@ while [ "$1" ]; do
         --clean) rm -rf "$imgtempdir" || exit ;;
 
         # Screenshot
-        --scrot|-s) scrot="on" ;;
+        --scrot | -s) scrot="on" ;;
         --scrotdir) scrot="$2" ;;
         --scrotfile) scrot="$2" ;;
         --scrotcmd) scrot="$2" ;;
