@@ -238,7 +238,8 @@ case "$os" in
             distro="CRUX"
         else
             distro="$(grep -h '^NAME=' /etc/*ease)"
-            distro=${distro#NAME\=\"*}
+            distro=${distro#NAME\=*}
+            distro=${distro#\"*}
             distro=${distro%*\"}
         fi
     ;;
@@ -599,7 +600,9 @@ getvisualstyle () {
         ;;
 
         "Windows"*)
-            visualstyle="$(head -n1 /proc/registry/HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/Themes/CurrentTheme)"
+            path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
+            path+="/Windows/CurrentVersion/Themes/CurrentTheme"
+            visualstyle="$(head -n1 $path)"
             visualstyle="${visualstyle##*\\}"
             visualstyle="${visualstyle%.*}"
             visualstyle="${visualstyle^}"
@@ -621,9 +624,7 @@ getvisualstyle () {
 getwallpaper () {
     case "$os" in
         "Linux")
-            img=$(awk '/feh/ {printf $3}' "$HOME/.fehbg")
-            img=${img#\'*}
-            img=${img%*\'}
+            img="$(awk -F\' '/feh/ {printf $2}' $HOME/.fehbg)"
         ;;
 
         "Windows")
