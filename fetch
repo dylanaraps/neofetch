@@ -152,7 +152,7 @@ prompt_height=1
 
 # Image Source
 # --image wall, shuffle, /path/to/img, off
-image="shuffle"
+image="wall"
 
 # Thumbnail directory
 imgtempdir="$HOME/.fetchimages"
