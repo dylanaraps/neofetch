@@ -148,8 +148,6 @@ Here's what's on my todo list
 
 - Windows support (I'm almost done)
 
-- OpenBSD support (Partially implemented, just needs testing)
-
 - Imagemagick optimizations
 
 - More info outputs. Now that it's easy to customize what's printed and
