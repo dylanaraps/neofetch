@@ -212,6 +212,10 @@ xoffset=0
 # --scrot on/off
 scrot="off"
 
+# Screenshot program to launch
+# --scrotcmd
+scrotcmd="scrot -c -d 3"
+
 # Scrot dir
 # Where to save the screenshots
 # --scrotdir /path/to/screenshot/folder
@@ -219,7 +223,7 @@ scrotdir="$HOME/Pictures"
 
 # Scrot filename
 # What to name the screenshots
-# --scrot
+# --scrot str
 scrotname="fetch-%Y-%m-%d-%H:%M.png"
 
 
@@ -763,7 +767,7 @@ getimage () {
 }
 
 takescrot () {
-    scrot -c -d 3 "$scrotdir/$scrotname"
+    $scrotcmd "$scrotdir/$scrotname"
 }
 
 
@@ -874,6 +878,7 @@ usage () { cat << EOF
     --scrot                Take a screenshot
     --scrotdir             Directory to save the scrot
     --scrotfile            File name of scrot
+    --scrotcmd             Screenshot program to launch
 
     Other:
     --help                 Print this text and exit
@@ -947,6 +952,7 @@ while [ "$1" ]; do
         --scrot|-s) scrot="on" ;;
         --scrotdir) scrot="$2" ;;
         --scrotfile) scrot="$2" ;;
+        --scrotcmd) scrot="$2" ;;
 
         # Other
         --help) usage ;;

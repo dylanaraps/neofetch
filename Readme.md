@@ -33,7 +33,7 @@ These are the script's optional dependencies:
 -  Window manager detection: wmctrl
     - This is used as a fallback to parsing ```.xinitrc``` and ```$XDG_CURRENT_DESKTOP```.
 -  Take a screenshot on script finish: scrot
-    - I'll add an option to specify a custom cmd soon.
+    - You can change this to another program with a ```--scrotcmd``` and an in script option.
 
 
 <!-- }}} -->
