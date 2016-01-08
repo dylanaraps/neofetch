@@ -13,23 +13,23 @@ about your system and prints it to the terminal next to an image of your choice!
 ## Features
 
 
-- Supports Linux, Mac OS X and Windows (Cygwin)!
+- **Supports Linux, Mac OS X and Windows (Cygwin)!**
     - If the script isn't working on your system
       open an issue.
-- It's Fast
+- **It's Fast**
     - The script makes heavy use of bash builtins
       and string manipulation.
-- Display an image next to the info. (or not)
+- **Display an image next to the info. (or not)**
     - The script can use your wallpaper, shuffle through a
       directory or just display an image.
-- Highly Customizable
+- **Highly Customizable**
     - You can customize almost everything.
         - See Usage below or lines 23-233 in script
-- Take a screenshot at the end.
+- **Take a screenshot at the end.**
     - It's disabled by default and you can specify the cmd
       to use with ```--scrotcmd cmd``` at launch or by
       changing the value of ```$scrotcmd``` in the script.
-- Smart crop (or Waifu crop)
+- **Smart crop (or Waifu crop)**
     - See https://github.com/dylanaraps/fetch/wiki/What-is-Smart-Crop
 
 
