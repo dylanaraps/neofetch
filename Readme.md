@@ -144,9 +144,9 @@ Please report any bugs or issues you're having with this as I can't
 
 Here's what's on my todo list
 
-- Cleanup of info array handling
+- Add Windows resolution detection
 
-- Windows support (I'm almost done)
+- Cleanup of info array handling
 
 - Imagemagick optimizations
 
