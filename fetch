@@ -588,10 +588,6 @@ getresolution () {
                         awk '/Resolution:/ {print $2"x"$4" "}')
         ;;
 
-        "Windows")
-            resolution="$(wmic path Win32_VideoController  get CurrentHorizontalResolution,CurrentVerticalResolution /format:value)"
-        ;;
-
         *)
             resolution="Unknown"
         ;;
