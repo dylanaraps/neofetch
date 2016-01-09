@@ -197,3 +197,6 @@ Thanks to:
 - Screenfetch: I've used some snippets as a base for a few functions in this script.
 
 - @jrgz: Helping me test the Mac OS X version.
+
+- @xDemonessx: Helping me test the Windows version.
+
