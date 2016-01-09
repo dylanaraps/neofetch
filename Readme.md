@@ -30,7 +30,7 @@ about your system and prints it to the terminal next to an image of your choice!
       to use with ```--scrotcmd cmd``` at launch or by
       changing the value of ```$scrotcmd``` in the script.
 - **Smart crop (or Waifu crop)**
-    - See https://github.com/dylanaraps/fetch/wiki/What-is-Smart-Crop
+    - See https://github.com/dylanaraps/fetch/wiki/What-is-Smart-Crop%3F
 
 
 <!-- }}} -->
