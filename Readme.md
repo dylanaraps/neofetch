@@ -44,6 +44,7 @@ about your system and prints it to the terminal next to an image of your choice!
 
 These are the script's required dependencies
 
+-  Bash **4.0+**
 -  Text formatting, dynamic image size and padding: tput
 -  Uptime detection: procps or procps-ng
 
