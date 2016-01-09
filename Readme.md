@@ -64,6 +64,27 @@ These are the script's optional dependencies:
 <!-- }}} -->
 
 
+<!-- Installation {{{ -->
+
+
+## Installation
+
+
+### Arch
+
+1. Install ```fetch-git``` from the aur.
+
+
+### Others
+
+1. Download the latest source at https://github.com/dylanaraps/fetch
+2. Make the file executable using chmod. ```chmod +x /path/to/fetch```
+3. Move the script to somewhere in your $PATH or just run it from where it is.
+
+
+<!-- }}} -->
+
+
 <!-- Usage {{{ -->
 
 
@@ -188,6 +209,9 @@ Here's what's on my todo list
 <!-- }}} -->
 
 
+<!-- Thanks {{{ -->
+
+
 ### Thanks
 
 Thanks to:
@@ -200,3 +224,5 @@ Thanks to:
 
 - @xDemonessx: Helping me test the Windows version.
 
+
+<!-- }}} -->
