@@ -666,8 +666,8 @@ getwallpaper () {
 }
 
 getshuffle () {
-    img="$(find $shuffledir -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
-    shuf -n1 -z)"
+    img=$(find "$shuffledir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
+    shuf -n1 -z)
 }
 
 getimage () {
