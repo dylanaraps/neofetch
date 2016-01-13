@@ -112,6 +112,10 @@ block_width=3
 # --title_color num
 title_color=4
 
+# Color of "@" symbol in title
+# --at_color num
+at_color=6
+
 # --subtitle_color num
 subtitle_color=1
 
@@ -851,6 +855,7 @@ underline () {
 
 colors () {
     title_color="\e[38;5;${title_color}m"
+    at_color="\e[38;5;${at_color}m"
     subtitle_color="\e[38;5;${subtitle_color}m"
     colon_color="\e[38;5;${colon_color}m"
     underline_color="\e[38;5;${underline_color}m"
@@ -897,9 +902,10 @@ usage () { cat << EOF
     --song string/cmd      Manually set the current song
 
     Text Colors:
-    --colors 1 2 3 4 5     Change the color of text
-                           (title, subtitle, colon, underline, info)
+    --colors 1 2 3 4 5 6   Change the color of text
+                           (title, @, subtitle, colon, underline, info)
     --title_color num      Change the color of the title
+    --at_color num         Change the color of "@" in title
     --subtitle_color num   Change the color of the subtitle
     --colon_color num      Change the color of the colons
     --underline_color num  Change the color of the underlines
@@ -983,10 +989,12 @@ while [ "$1" ]; do
         # Text Colors
         --colors) title_color=$2
             [ "$3" ] && subtitle_color=$3
-            [ "$4" ] && colon_color=$4
-            [ "$4" ] && underline_color=$5
-            [ "$5" ] && info_color=$6 ;;
+            [ "$4" ] && at_color=$4
+            [ "$5" ] && colon_color=$5
+            [ "$6" ] && underline_color=$6
+            [ "$7" ] && info_color=$7 ;;
         --title_color) title_color=$2 ;;
+        --at_color) at_color=$2 ;;
         --subtitle_color) subtitle_color=$2 ;;
         --colon_color) colon_color=$2 ;;
         --underline_color) underline_color=$2 ;;
@@ -1083,6 +1091,7 @@ printinfo () {
 
             gettitle)
                 string="${bold}${title_color}${output}"
+                string="${string/@/${at_color}@${title_color}}"
                 length=${#output}
             ;;
 
