@@ -613,21 +613,26 @@ getresolution () {
     esac
 }
 
-getgtktheme () {
+getgtk () {
+    case "$1" in
+        theme) name="gtk-theme-name" ;;
+        icons) name="gtk-icon-theme-name" ;;
+    esac
+
     if [ -f "$HOME/.gtkrc-2.0" ]; then
-        gtk2theme=$(grep -F 'gtk-theme-name' $HOME/.gtkrc-2.0)
-        gtk2theme=${gtk2theme/gtk-theme-name=/}
+        gtk2theme=$(grep -F "$name" $HOME/.gtkrc-2.0)
+        gtk2theme=${gtk2theme/${name}=/}
         gtk2theme=${gtk2theme//\"/}
         gtk2theme="$gtk2theme"
         gtktheme="$gtk2theme [GTK2] "
     fi
 
     if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
-        gtk3theme=$(grep -F 'gtk-theme-name=' $HOME/.config/gtk-3.0/settings.ini)
-        gtk3theme=${gtk3theme/gtk-theme-name=/}
+        gtk3theme=$(grep -F "$name" $HOME/.config/gtk-3.0/settings.ini)
+        gtk3theme=${gtk3theme/${name}=/}
         gtk3theme=${gtk3theme//\"/}
         gtk3theme="$gtk3theme"
-        gtktheme+="$gtk3theme [GTK3]"
+        gtktheme="$gtk2theme $gtk3theme [GTK3]"
     fi
 
     if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
@@ -643,32 +648,13 @@ getgtktheme () {
     fi
 }
 
+getgtktheme () {
+    getgtk theme
+}
+
 getgtkicons () {
-    if [ -f "$HOME/.gtkrc-2.0" ]; then
-        gtk2icons=$(grep -F 'gtk-icon-theme' $HOME/.gtkrc-2.0)
-        gtk2icons=${gtk2icons/gtk-icon-theme-name=/}
-        gtk2icons=${gtk2icons//\"/}
-        gtkicons="$gtk2icons [GTK2] "
-    fi
-
-    if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
-        gtk3icons=$(grep -F 'gtk-icon-theme' $HOME/.gtkrc-2.0)
-        gtk3icons=${gtk3icons/gtk-icon-theme-name=/}
-        gtk3icons=${gtk3icons//\"/}
-        gtkicons+="$gtk3icons [GTK3]"
-    fi
-
-    if [ "$gtk2icons" ] && [ "$gtk2icons" == "$gtk3icons" ]; then
-        gtkicons="$gtk2icons [GTK2/3]"
-    elif [ -z "$gtk2icons" ] && [ -z "$gtk3icons" ]; then
-        gtkicons="None"
-    fi
-
-    if [ "$gtk_shorthand" == "on" ]; then
-        gtkicons=${gtkicons/ [GTK2]/}
-        gtkicons=${gtkicons/ [GTK3]/}
-        gtkicons=${gtkicons/ [GTK2\/\3\]/}
-    fi
+    getgtk icons
+    gtkicons="$gtktheme"
 }
 
 getcols () {
