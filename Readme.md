@@ -110,6 +110,7 @@ Once you set the var the script will scale the image and padding
  usage: ${0##*/} [--colors 1 2 3 4 5] [--kernel "\$\(uname -rs\)"]
 
     Info:
+    --exclude "OS: getos"  Disable an info line at launch
     --title string         Change the title at the top
     --distro string/cmd    Manually set the distro
     --kernel string/cmd    Manually set the kernel

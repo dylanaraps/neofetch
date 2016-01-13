@@ -39,6 +39,11 @@ export LANGUAGE=C
 #
 # Optional info lines that are disabled by default are:
 # "getresolution" "getsong" "getvisualstyle"
+#
+# Info lines enabled by default are:
+# "gettitle" "getdistro" "getkernel" "getuptime" "getpackages"
+# "getshell" "getresolution" "getwindowmanager" "getgtktheme"
+# "getgtkicons" "getcpu" "getmemory" "getcols"
 info=(
     "gettitle"
     "underline"
@@ -884,6 +889,7 @@ usage () { cat << EOF
  usage: ${0##*/} [--colors 1 2 3 4 5] [--kernel "\$\(uname -rs\)"]
 
     Info:
+    --exclude "OS: getos"  Disable an info line at launch
     --title string         Change the title at the top
     --distro string/cmd    Manually set the distro
     --kernel string/cmd    Manually set the kernel
@@ -971,6 +977,7 @@ exit 1
 while [ "$1" ]; do
     case $1 in
         # Info
+        --exclude) info=("${info[@]/$2}") ;;
         --title) title="$2" ;;
         --os) os="$2" ;;
         --kernel) kernel="$2" ;;
@@ -1078,6 +1085,10 @@ printinfo () {
                     underline
                     string="${underline_color}${underline}"
                 fi
+            ;;
+
+            "")
+                continue
             ;;
 
             *:*|*)
