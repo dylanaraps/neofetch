@@ -4,7 +4,7 @@ This is the home of my fetch script! This script gathers info <br\>
 about your system and prints it to the terminal next to an image of your choice!
 
 
-![1](https://sr.ht/Jd8Y.png)
+![1](http://i.imgur.com/bORHxT5.png)
 
 
 <!-- Features {{{ -->
