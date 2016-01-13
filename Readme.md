@@ -91,6 +91,10 @@ These are the script's optional dependencies:
 
 ## Usage
 
+There's an array near the top of the script that allows you
+to pick and choose what to display and where! You can also add custom
+info to print!
+
 The script now supports dynamic image sizing and padding,
 <br\> it's enabled by default and there's a variable you
 <br\> need to set for it to work correctly.
@@ -100,9 +104,6 @@ You can either change the variable $fontwidth inside of the
 
 Once you set the var the script will scale the image and padding
 <br\> to fit your terminal window.
-
-Please report any bugs or issues you're having with this as I can't
-<br\> test with many configurations.
 
 
 ```

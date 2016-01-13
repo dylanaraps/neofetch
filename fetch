@@ -38,7 +38,7 @@ export LANGUAGE=C
 # "echo: Custom string to print"
 #
 # Optional info lines that are disabled by default are:
-# "getresolution" "getsong"
+# "getresolution" "getsong" "getvisualstyle"
 info=(
     "gettitle"
     "underline"
