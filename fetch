@@ -47,7 +47,10 @@ info=(
     "Uptime: getuptime"
     "Packages: getpackages"
     "Shell: getshell"
+    "Resolution: getresolution"
     "Window Manager: getwindowmanager"
+    "GTK Theme: getgtktheme"
+    "Icons: getgtkicons"
     "CPU: getcpu"
     "Memory: getmemory"
     "linebreak"
@@ -73,8 +76,15 @@ speed_type="max"
 # Uptime
 
 # Shorten the output of the uptime function
+# --uptime_shorthand on/off
 uptime_shorthand="off"
 
+
+# Gtk Theme / Icons
+
+# Shorten output (Hide [GTK2] etc)
+# --gtk_shorthand on/off
+gtk_shorthand="off"
 
 # Color Blocks
 
@@ -580,7 +590,7 @@ getsong () {
 getresolution () {
     case "$os" in
         "Linux")
-            resolution=$(xdpyinfo | awk '/dimensions:/ {printf $2}')
+            resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
         ;;
 
         "Mac OS X")
@@ -592,6 +602,64 @@ getresolution () {
             resolution="Unknown"
         ;;
     esac
+}
+
+getgtktheme () {
+    if [ -f "$HOME/.gtkrc-2.0" ]; then
+        gtk2theme=$(grep -F 'gtk-theme-name' $HOME/.gtkrc-2.0)
+        gtk2theme=${gtk2theme/gtk-theme-name=/}
+        gtk2theme=${gtk2theme//\"/}
+        gtk2theme="$gtk2theme"
+        gtktheme="$gtk2theme [GTK2] "
+    fi
+
+    if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
+        gtk3theme=$(grep -F 'gtk-theme-name=' $HOME/.config/gtk-3.0/settings.ini)
+        gtk3theme=${gtk3theme/gtk-theme-name=/}
+        gtk3theme=${gtk3theme//\"/}
+        gtk3theme="$gtk3theme"
+        gtktheme+="$gtk3theme [GTK3]"
+    fi
+
+    if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
+        gtktheme="$gtk2theme [GTK2/3]"
+    elif [ -z "$gtk2theme" ] && [ -z "$gtk3theme" ]; then
+        gtktheme="None"
+    fi
+
+    if [ "$gtk_shorthand" == "on" ]; then
+        gtktheme=${gtktheme/ [GTK2]/}
+        gtktheme=${gtktheme/ [GTK3]/}
+        gtktheme=${gtktheme/ [GTK2\/\3\]/}
+    fi
+}
+
+getgtkicons () {
+    if [ -f "$HOME/.gtkrc-2.0" ]; then
+        gtk2icons=$(grep -F 'gtk-icon-theme' $HOME/.gtkrc-2.0)
+        gtk2icons=${gtk2icons/gtk-icon-theme-name=/}
+        gtk2icons=${gtk2icons//\"/}
+        gtkicons="$gtk2icons [GTK2] "
+    fi
+
+    if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
+        gtk3icons=$(grep -F 'gtk-icon-theme' $HOME/.gtkrc-2.0)
+        gtk3icons=${gtk3icons/gtk-icon-theme-name=/}
+        gtk3icons=${gtk3icons//\"/}
+        gtkicons+="$gtk3icons [GTK3]"
+    fi
+
+    if [ "$gtk2icons" ] && [ "$gtk2icons" == "$gtk3icons" ]; then
+        gtkicons="$gtk2icons [GTK2/3]"
+    elif [ -z "$gtk2icons" ] && [ -z "$gtk3icons" ]; then
+        gtkicons="None"
+    fi
+
+    if [ "$gtk_shorthand" == "on" ]; then
+        gtkicons=${gtkicons/ [GTK2]/}
+        gtkicons=${gtkicons/ [GTK3]/}
+        gtkicons=${gtkicons/ [GTK2\/\3\]/}
+    fi
 }
 
 getcols () {
@@ -821,6 +889,7 @@ usage () { cat << EOF
     --shell string/cmd     Manually set the shell
     --winman string/cmd    Manually set the window manager
     --use_wmctrl on/off    Use wmctrl for a more accurate reading
+    --gtk_shorthand on/off Shorten output of gtk theme/icons
     --cpu string/cmd       Manually set the cpu name
     --memory string/cmd    Manually set the memory
     --speed_type           Change the type of cpu speed to get
@@ -905,6 +974,7 @@ while [ "$1" ]; do
         --shell) shell="$2" ;;
         --winman) windowmanager="$2" ;;
         --use_wmctrl) use_wmctrl="$2" ;;
+        --gtk_shorthand) gtk_shorthand="$2" ;;
         --cpu) cpu="$2" ;;
         --speed_type) speed_type="$2" ;;
         --memory) memory="$2" ;;

@@ -119,6 +119,7 @@ Please report any bugs or issues you're having with this as I can't
     --shell string/cmd     Manually set the shell
     --winman string/cmd    Manually set the window manager
     --use_wmctrl on/off    Use wmctrl for a more accurate reading
+    --gtk_shorthand on/off Shorten output of gtk theme/icons
     --cpu string/cmd       Manually set the cpu name
     --memory string/cmd    Manually set the memory
     --speed_type           Change the type of cpu speed to get
@@ -175,6 +176,7 @@ Please report any bugs or issues you're having with this as I can't
     --scrot                Take a screenshot
     --scrotdir             Directory to save the scrot
     --scrotfile            File name of scrot
+    --scrotcmd             Screenshot program to launch
 
     Other:
     --help                 Print this text and exit
@@ -201,7 +203,7 @@ Here's what's on my todo list
   everything is a function we can add optional support for pretty much anything.
 
     - Resolution (Done!)
-    - GTK themes
+    - GTK themes (Done!)
     - Terminal Font
     - GPU
     - IP
