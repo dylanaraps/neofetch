@@ -1,6 +1,6 @@
 # fetch
 
-[[Features](#Features)]  [[Dependencies](#Dependencies)]  [[Installation](#Installation)]  [[Usage](#Usage)]  [[TODO](#TODO)]  [[Thanks](#Thanks)]
+[[Features](#features)]  [[Dependencies](#dependencies)]  [[Installation](#installation)]  [[Usage](#usage)]  [[TODO](#todo)]  [[Thanks](#thanks)]
 
 This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image of your choice!
