@@ -1,6 +1,8 @@
 # fetch
 
-This is the home of my fetch script! This script gathers info <br\>
+[[Features](##Features)] [[Dependencies](##Dependencies)] [[Installation](##Installation)] [[Usage](##Usage)] [[TODO](##TODO)] [[Thanks](###Thanks)]
+
+This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image of your choice!
 
 
