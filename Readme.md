@@ -93,9 +93,35 @@ These are the script's optional dependencies:
 
 ## Usage
 
-There's an array near the top of the script that allows you
-to pick and choose what to display and where! You can also add custom
-info to print!
+**NOTE:** For the images to be sized correctly you need to set the ```$font_width``` variable.
+If you don't know your font width in pixels keep trying values until the image is sized correctly.
+
+You can customize what info to print by editing the info array <br \>
+near the top of the script. The array looks like this:
+
+```sh
+info=(
+    "gettitle"
+    "underline"
+    "OS: getdistro"
+    "Kernel: getkernel"
+    "Uptime: getuptime"
+    "Packages: getpackages"
+    "Shell: getshell"
+    "Resolution: getresolution"
+    "Window Manager: getwindowmanager"
+    "GTK Theme: getgtktheme"
+    "Icons: getgtkicons"
+    "CPU: getcpu"
+    "Memory: getmemory"
+    "linebreak"
+    "getcols"
+)
+```
+
+See these comments inside the script for more info:
+
+https://github.com/dylanaraps/fetch/blob/master/fetch#L29
 
 The script now supports dynamic image sizing and padding,
 <br\> it's enabled by default and there's a variable you
