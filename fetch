@@ -273,6 +273,10 @@ case "$(uname)" in
     "CYGWIN"*)
         os="Windows"
     ;;
+
+    *)
+        printf "%s\n" "Couldn't detect OS, exiting"
+    ;;
 esac
 
 # Get Distro
