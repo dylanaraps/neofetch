@@ -114,7 +114,6 @@ info=(
 ```
 
 See these comments inside the script for more info:
-
 https://github.com/dylanaraps/fetch/blob/master/fetch#L29
 
 
