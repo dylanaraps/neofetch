@@ -96,6 +96,8 @@ These are the script's optional dependencies:
 **NOTE:** For the images to be sized correctly you need to set the ```$font_width``` variable.
 If you don't know your font width in pixels keep trying values until the image is sized correctly.
 
+You can also use the launch flag ```--font_width``` to set it on the fly.
+
 You can customize what info to print by editing the info array near the top of the script.
 The array looks like this:
 
@@ -107,31 +109,13 @@ info=(
     "Kernel: getkernel"
     "Uptime: getuptime"
     "Packages: getpackages"
-    "Shell: getshell"
-    "Resolution: getresolution"
-    "Window Manager: getwindowmanager"
-    "GTK Theme: getgtktheme"
-    "Icons: getgtkicons"
-    "CPU: getcpu"
-    "Memory: getmemory"
-    "linebreak"
-    "getcols"
+    etc...
 )
 ```
 
 See these comments inside the script for more info:
 
 https://github.com/dylanaraps/fetch/blob/master/fetch#L29
-
-The script now supports dynamic image sizing and padding,
-<br\> it's enabled by default and there's a variable you
-<br\> need to set for it to work correctly.
-
-You can either change the variable $fontwidth inside of the
-<br\> script or launch it with ```--font_width num```.
-
-Once you set the var the script will scale the image and padding
-<br\> to fit your terminal window.
 
 
 ```
