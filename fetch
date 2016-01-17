@@ -276,6 +276,7 @@ case "$(uname)" in
 
     *)
         printf "%s\n" "Couldn't detect OS, exiting"
+        exit
     ;;
 esac
 
