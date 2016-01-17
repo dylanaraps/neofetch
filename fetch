@@ -426,8 +426,25 @@ getpackages () {
         ;;
 
         "Mac OS X"*)
-            packages="$(pkgutil --pkgs | wc -l)"
-            packages=${packages//[[:blank:]]/}
+            if [ -d "/usr/local/bin" ]; then
+                local_packages=$(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l)
+                packages=$((local_packages - 1))
+            fi
+
+            if type -p port >/dev/null 2>&1; then
+                port_packages=$(port installed 2>/dev/null | wc -l)
+                packages=$((packages + $((port_packages - 1))))
+            fi
+
+            if type -p brew >/dev/null 2>&1; then
+                brew_packages=$(brew list -1 2>/dev/null | wc -l)
+                packages=$((packages + brew_packages))
+            fi
+
+            if type -p pkgin >/dev/null 2>&1; then
+                pkgsrc_packages=$(pkgin list 2>/dev/null | wc -l)
+                packages=$((packages + pkgsrc_packages))
+            fi
         ;;
 
         "Windows"*)
