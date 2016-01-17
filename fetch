@@ -1122,12 +1122,13 @@ termsize=${termsize/$'\n'/ }
 lines=${termsize% *}
 columns=${termsize#* }
 
-# Get image
-[ "$image" != "off" ] && getimage
+if [ "$image" != "off" ]; then
+    getimage
 
-# Clear the terminal and hide the cursor
-printf "\e[?25l"
-clear
+    # Clear the terminal and hide the cursor
+    clear
+    printf "\e[?25l"
+fi
 
 # Disable line wrap
 [ "$line_wrap" == "off" ] && printf '\e[?7l'
@@ -1137,16 +1138,16 @@ colors
 bold
 printinfo
 
-# Display the image
-[ "$image" != "off" ] && \
+if [ "$image" != "off" ]; then
     printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
     $w3m_img_path
 
+    # Move cursor to bottom and redisplay it.
+    printf "%b%s" "\e[${lines}H\e[${prompt_height}A\e[?25h"
+fi
+
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf '\e[?7h'
-
-# Move cursor to bottom and redisplay it.
-printf "%b%s" "\e[${lines}H\e[${prompt_height}A\e[?25h"
 
 # If enabled take a screenshot
 [ "$scrot" == "on" ] && takescrot
