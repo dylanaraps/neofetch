@@ -16,21 +16,16 @@ about your system and prints it to the terminal next to an image of your choice!
 
 
 - **Supports Linux, Mac OS X and Windows (Cygwin)!**
-    - If the script isn't working on your system
-      open an issue.
+    - If the script isn't working on your system open an issue.
 - **It's Fast**
-    - The script makes heavy use of bash builtins
-      and string manipulation.
+    - The script makes heavy use of bash builtins and <br \>string manipulation.
 - **Display an image next to the info. (or not)**
-    - The script can use your wallpaper, shuffle through a
-      directory or just display an image.
+    - The script can use your wallpaper, shuffle through a <br \>directory or just display an image.
 - **Highly Customizable**
     - You can customize almost everything.
         - See Usage below or lines 23-233 in script
 - **Take a screenshot at the end.**
-    - It's disabled by default and you can specify the cmd
-      to use with ```--scrotcmd cmd``` at launch or by
-      changing the value of ```$scrotcmd``` in the script.
+    - It's disabled by default and you can specify the cmd <br \>to use with `--scrotcmd cmd` at launch or by <br \>changing the value of `$scrotcmd` in the script.
 - **Smart crop (or Waifu crop)**
     - See https://github.com/dylanaraps/fetch/wiki/What-is-Smart-Crop%3F
 
@@ -47,9 +42,7 @@ about your system and prints it to the terminal next to an image of your choice!
 These are the script's required dependencies
 
 -  Bash **4.0+**
-    - For those of you on OS X not wanting to update bash, the script<br \>
-      also works with zsh. All you have to do is change the shebang at<br \>
-      the top to ```#!/bin/zsh```.
+    - For those of you on OS X not wanting to update bash, the script <br \>also works with zsh. All you have to do is change the shebang at <br \>the top to `#!/bin/zsh`.
 -  Text formatting, dynamic image size and padding: tput
 -  Uptime detection: procps or procps-ng
 
@@ -62,9 +55,9 @@ These are the script's optional dependencies:
 -  Current Song: mpc
 -  Resolution Detection: xorg-xdpyinfo
 -  Window manager detection: wmctrl
-    - This is used as a fallback to parsing ```.xinitrc``` and ```$XDG_CURRENT_DESKTOP```.
+    - This is used as a fallback to parsing `.xinitrc` and `$XDG_CURRENT_DESKTOP`.
 -  Take a screenshot on script finish: scrot
-    - You can change this to another program with a ```--scrotcmd``` and an in script option.
+    - You can change this to another program with a `--scrotcmd` and an in script option.
 
 
 <!-- }}} -->
@@ -78,13 +71,13 @@ These are the script's optional dependencies:
 
 ### Arch
 
-1. Install ```fetch-git``` from the aur.
+1. Install `fetch-git` from the aur.
 
 
 ### Others
 
 1. Download the latest source at https://github.com/dylanaraps/fetch
-2. Make the file executable using chmod. ```chmod +x /path/to/fetch```
+2. Make the file executable using chmod. `chmod +x /path/to/fetch`
 3. Move the script to somewhere in your $PATH or just run it from where it is.
 
 
@@ -96,10 +89,10 @@ These are the script's optional dependencies:
 
 ## Usage
 
-**NOTE:** For the images to be sized correctly you need to set the ```$font_width``` variable.
+**NOTE:** For the images to be sized correctly you need to set the `$font_width` variable.
 If you don't know your font width in pixels keep trying values until the image is sized correctly.
 
-You can also use the launch flag ```--font_width``` to set it on the fly.
+You can also use the launch flag `--font_width` to set it on the fly.
 
 You can customize what info to print by editing the info array near the top of the script.
 The array looks like this:
@@ -204,6 +197,46 @@ https://github.com/dylanaraps/fetch/blob/master/fetch#L29
 <!-- }}} -->
 
 
+<!-- Issues and Workarounds {{{ -->
+
+
+## Issues and Workarounds
+
+
+#### The image is rendering with black lines in Urxvt while using an xft font.
+
+This is an issue with w3mimgdisplay and not the script. You can find a workaround here:
+
+https://github.com/hut/ranger/issues/86#issuecomment-17346249
+
+
+#### The text is too long for my terminal window and wraps to the next line causing the image to not render correctly.
+
+There are a few ways to fix this.
+
+* Disable line wrapping with `$line_wrap off` in the script or with the launch flag `--line_wrap off`
+
+* The uptime and gtk info lines each have a shorthand option that makes their output smaller. You can <br \>
+  enable them by changing these variables or using these flags.
+
+```sh
+# In script options
+$uptime_shorthand on
+$gtk_shorthand on
+
+# Launch flags
+--uptime_shorthand on
+--gtk_shorthand on
+```
+
+* Edit the info array to make the subtitles shorter
+
+* Resizing the terminal so that the lines don't wrap.
+
+
+<!-- }}} -->
+
+
 <!-- TODO {{{ -->
 
 
@@ -211,7 +244,11 @@ https://github.com/dylanaraps/fetch/blob/master/fetch#L29
 
 Here's what's on my todo list
 
+- Add Mac OS X wallpaper detection
+
 - Add Windows resolution detection
+
+- Look into iterm2 image rendering
 
 - Cleanup of info array handling
 
@@ -233,7 +270,7 @@ Here's what's on my todo list
 <!-- Thanks {{{ -->
 
 
-### Thanks
+## Thanks
 
 Thanks to:
 
