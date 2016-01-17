@@ -96,8 +96,8 @@ These are the script's optional dependencies:
 **NOTE:** For the images to be sized correctly you need to set the ```$font_width``` variable.
 If you don't know your font width in pixels keep trying values until the image is sized correctly.
 
-You can customize what info to print by editing the info array <br \>
-near the top of the script. The array looks like this:
+You can customize what info to print by editing the info array near the top of the script.
+The array looks like this:
 
 ```sh
 info=(
