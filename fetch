@@ -19,6 +19,15 @@ export LC_ALL=C
 export LANG=C
 export LANGUAGE=C
 
+# osascript source for wallpaper detection on OSX
+wallsource="
+on run
+    tell application \"Finder\"
+        select window of desktop
+        return (get desktop picture as text)
+    end tell
+end run"
+
 
 # Config Options {{{
 
@@ -736,6 +745,12 @@ getwallpaper () {
     case "$os" in
         "Linux")
             img="$(awk -F\' '/feh/ {printf $2}' $HOME/.fehbg)"
+        ;;
+
+        "Mac OS X")
+            img="$(osascript -e "$wallsource" |
+                   sed 's/:/\//g' |
+                   sed 's/.*Users/\/Users/g')"
         ;;
 
         "Windows")
