@@ -1,6 +1,6 @@
 # fetch
 
-[[Features](#features)]  [[Dependencies](#dependencies)]  [[Installation](#installation)]  [[Usage](#usage)]  [[TODO](#todo)]  [[Thanks](#thanks)]
+[[Features](#features)]  [[Dependencies](#dependencies)]  [[Installation](#installation)]  [[Usage](#usage)] [[Issues and Workarounds](#issues-and-workarounds)]  [[TODO](#todo)]  [[Thanks](#thanks)]
 
 This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image of your choice!
@@ -20,7 +20,10 @@ about your system and prints it to the terminal next to an image of your choice!
 - **It's Fast**
     - The script makes heavy use of bash builtins and <br \>string manipulation.
 - **Display an image next to the info. (or not)**
-    - The script can use your wallpaper, shuffle through a <br \>directory or just display an image.
+    - The script can use your wallpaper, shuffle through a directory or just <br \>display an image.
+        - The wallpaper function on linux uses feh, It's hard to add support <br \>
+          for other wallpaper setters as they don't provide a way of getting <br \>
+          current wallpaper from the cli.
 - **Highly Customizable**
     - You can customize almost everything.
         - See Usage below or lines 23-233 in script
@@ -244,8 +247,6 @@ $gtk_shorthand on
 
 Here's what's on my todo list
 
-- Add Mac OS X wallpaper detection
-
 - Add Windows resolution detection
 
 - Look into iterm2 image rendering
@@ -254,7 +255,7 @@ Here's what's on my todo list
 
 - Imagemagick optimizations
 
-- More info outputs. Now that it's easy to customize what's printed and
+- More info outputs. Now that it's easy to customize what's printed and<br \>
   everything is a function we can add optional support for pretty much anything.
 
     - Resolution (Done!)

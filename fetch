@@ -738,6 +738,10 @@ getwallpaper () {
             img="$(awk -F\' '/feh/ {printf $2}' $HOME/.fehbg)"
         ;;
 
+        "Mac OS X")
+            img="$(osascript -e 'tell app \"finder\" to get posix path of (get desktop picture as text)')"
+        ;;
+
         "Windows")
             case "$distro" in
                 "Windows XP")
