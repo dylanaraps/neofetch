@@ -183,6 +183,8 @@ Once you set the var the script will scale the image and padding
     --scrotcmd             Screenshot program to launch
 
     Other:
+    --clear on/off         Whether or not to clear the terminal
+                           before printing.
     --help                 Print this text and exit
 ```
 

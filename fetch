@@ -227,6 +227,11 @@ xoffset=0
 # Other Options {{{
 
 
+# Clear terminal before printing?
+# Needs to be on for images to work
+# --clear on/off
+clear_terminal="on"
+
 # Take a screenshot
 # --scrot on/off
 scrot="off"
@@ -947,6 +952,8 @@ usage () { cat << EOF
     --scrotcmd             Screenshot program to launch
 
     Other:
+    --clear on/off         Whether or not to clear the terminal
+                           before printing.
     --help                 Print this text and exit
 
 EOF
@@ -1025,6 +1032,7 @@ while [ "$1" ]; do
         --scrotcmd) scrot="$2" ;;
 
         # Other
+        --clear) clear_terminal="$2" ;;
         --help) usage ;;
     esac
 
@@ -1122,10 +1130,10 @@ termsize=${termsize/$'\n'/ }
 lines=${termsize% *}
 columns=${termsize#* }
 
-if [ "$image" != "off" ]; then
-    getimage
+[ "$image" != "off" ] && getimage
 
-    # Clear the terminal and hide the cursor
+# Clear the terminal and hide the cursor
+if [ "$clear_terminal" == "on" ]; then
     clear
     printf "\e[?25l"
 fi
@@ -1138,13 +1146,13 @@ colors
 bold
 printinfo
 
-if [ "$image" != "off" ]; then
+[ "$image" != "off" ] && \
     printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
     $w3m_img_path
 
-    # Move cursor to bottom and redisplay it.
+# Move cursor to bottom and redisplay it.
+[ "$clear_terminal" == "on" ] && \
     printf "%b%s" "\e[${lines}H\e[${prompt_height}A\e[?25h"
-fi
 
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf '\e[?7h'
