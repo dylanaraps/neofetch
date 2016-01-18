@@ -293,6 +293,9 @@ case "$os" in
     "Linux" )
         if type -p crux >/dev/null 2>&1; then
             distro="CRUX"
+        elif type -p lsb_release >/dev/null 2>&1; then
+            distro="$(lsb_release -a | awk -F':' '/Description/ {printf $2}')"
+            distro=${distro/[[:space:]]/}
         else
             distro="$(grep -h '^NAME=' /etc/*ease)"
             distro=${distro#NAME\=*}
@@ -314,7 +317,7 @@ case "$os" in
         distro=${distro%% *}
     ;;
 
-   "Windows")
+    "Windows")
         case "$(cmd /c ver)" in
             *"XP"*)
                 distro="Windows XP"
@@ -400,7 +403,7 @@ getuptime () {
 
         "Windows")
             uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
-            uptime=${uptime/  / }
+            uptime=${uptime/[[:space:]]}
         ;;
 
         *)
@@ -486,7 +489,7 @@ getpackages () {
         ;;
     esac
 
-    packages=${packages// }
+    packages=${packages/[[:space:]]/}
 }
 
 # Get shell
@@ -554,7 +557,7 @@ getcpu () {
         "OpenBSD")
             cpu="$(sysctl -n hw.model)"
             cpu=${cpu/ @*/}
-            cpu=${cpu//  /}
+            cpu=${cpu/[[:space:]]/}
             cpu=${cpu% }
 
             speed=$(sysctl -n hw.cpuspeed)
@@ -574,7 +577,7 @@ getcpu () {
             cpu="$(grep -F 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
             cpu=${cpu/ @*/}
-            cpu=${cpu//  /}
+            cpu=${cpu/[[:space:]]/}
             cpu=${cpu% }
 
             # Get cpu speed
@@ -618,13 +621,13 @@ getmemory () {
             # Do some substitution on each line
             memtotal=${memtotal/MemTotal:/}
             memtotal=${memtotal/kB*/}
-            memtotal=${memtotal// /}
+            memtotal=${memtotal/[[:space:]]/}
             memfree=${memfree/MemFree:/}
             memfree=${memfree/kB*/}
-            memfree=${memfree// /}
+            memfree=${memfree/[[:space:]]/}
             memavail=${memavail/MemAvailable:/}
             memavail=${memavail/kB*/}
-            memavail=${memavail// /}
+            memavail=${memavail/[[:space:]]/}
 
             memused=$((memtotal - memavail))
             memory="$((memused / 1024))MB / $((memtotal / 1024))MB"
