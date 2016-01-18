@@ -641,25 +641,23 @@ getmemory () {
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
-        "FreeBSD")
-            memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-            memtotal=${memtotal/\(/}
-            memtotal=${memtotal/)MB/}
-            memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
-            memfree=${memfree/M/}
-            memused=$((memtotal - memfree))
-
-            memory="${memused}MB / ${memtotal}MB"
-        ;;
-
-        *"BSD")
+        "BSD")
             memtotal=$(dmesg | awk '/real mem/ {printf $5}')
             memtotal=${memtotal/\(/}
             memtotal=${memtotal/MB\)/}
-            memfree=$(top -d 1 | awk '/Real:/ {print $6}')
+
+            case "$distro" in
+                "FreeBSD")
+                    memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
+                ;;
+
+                *)
+                    memfree=$(top -d 1 | awk '/Real:/ {print $6}')
+                ;;
+            esac
+
             memfree=${memfree/M/}
             memused=$((memtotal - memfree))
-
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
