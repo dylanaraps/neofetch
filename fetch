@@ -367,7 +367,7 @@ getuptime () {
         "Mac OS X" | "OpenBSD" | "BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
-            boot=${boot/{ sec = /}
+            boot="${boot/{ sec = /}"
             boot=${boot/,*}
 
             # Get current date in seconds
@@ -1140,6 +1140,17 @@ printinfo () {
         function=${info#*: }
         subtitle=${info%:*}
 
+        # Update the var
+        case "$function" in
+            "get"*)
+                var=${function/get/}
+                typeset -n output=$var
+
+                # Call the function
+                [ -z "$output" ] && $function
+            ;;
+        esac
+
         case "$info" in
             echo:*:*)
                 info=${function#*: }
@@ -1174,15 +1185,6 @@ printinfo () {
                 continue
             ;;
 
-            *:*|*)
-                # Update the var
-                var=${function/get/}
-                typeset -n output=$var
-
-                # Call the function
-                [ -z "$output" ] && $function
-            ;;&
-
             gettitle)
                 string="${bold}${title_color}${output}"
                 string="${string/@/${at_color}@${title_color}}"
@@ -1214,10 +1216,8 @@ printinfo () {
 
 
 # Get lines and columns
-termsize=$(printf "lines \n cols" | tput -S)
-termsize=${termsize/$'\n'/ }
-lines=${termsize% *}
-columns=${termsize#* }
+lines=$(tput lines)
+columns=$(tput cols)
 
 [ "$image" != "off" ] && getimage
 
@@ -1228,7 +1228,7 @@ if [ "$clear_terminal" == "on" ]; then
 fi
 
 # Disable line wrap
-[ "$line_wrap" == "off" ] && printf '\e[?7l'
+[ "$line_wrap" == "off" ] && printf "\e[?7l"
 
 # Call functions and display info
 colors
@@ -1240,11 +1240,17 @@ printinfo
     $w3m_img_path
 
 # Move cursor to bottom and redisplay it.
-[ "$clear_terminal" == "on" ] && \
-    printf "%b%s" "\e[${lines}H\e[${prompt_height}A\e[?25h"
+if [ "$clear_terminal" == "on" ]; then
+    case "$os" in
+        "BSD") tput DO $lines ;;
+        *) tput cud $lines ;;
+    esac
+
+    printf "%b%s" "\e[${prompt_height}A\e[?25h"
+fi
 
 # Enable line wrap again
-[ "$line_wrap" == "off" ] && printf '\e[?7h'
+[ "$line_wrap" == "off" ] && printf "\e[?7h"
 
 # If enabled take a screenshot
 [ "$scrot" == "on" ] && takescrot
