@@ -489,7 +489,7 @@ getpackages () {
         ;;
     esac
 
-    packages=${packages/[[:space:]]/}
+    packages=${packages// }
 }
 
 # Get shell
