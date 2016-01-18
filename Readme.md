@@ -243,9 +243,9 @@ This is caused by the getwallpaper function failing to find your current wallpap
 imagemagick trying to crop a nonexistent image. You can fix this by installing feh and using it<br \>
 to set your wallpaper or by changing the image source.
 
-You can change the source by editing the `$image` variable. The possible values are:
+You can change the source by editing the `$image` variable or by launching the script with `--image`. The possible values are:
 
-* **wall** - Use the current wallpaper.
+* **wall** - Use the current wallpaper. (Default)
 * **shuffle** - Shuffle through images in a directory. See `$shuffledir`
 * **path/to/img.png** - Select an image to display.
 * **off** - Disable images
