@@ -403,7 +403,7 @@ getuptime () {
 
         "Windows")
             uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
-            uptime=${uptime/[[:space:]]}
+            uptime=${uptime/  / }
         ;;
 
         *)
@@ -557,7 +557,7 @@ getcpu () {
         "OpenBSD")
             cpu="$(sysctl -n hw.model)"
             cpu=${cpu/ @*/}
-            cpu=${cpu/[[:space:]]/}
+            cpu=${cpu//  /}
             cpu=${cpu% }
 
             speed=$(sysctl -n hw.cpuspeed)
@@ -577,7 +577,7 @@ getcpu () {
             cpu="$(grep -F 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
             cpu=${cpu/ @*/}
-            cpu=${cpu/[[:space:]]/}
+            cpu=${cpu//  /}
             cpu=${cpu% }
 
             # Get cpu speed
@@ -621,13 +621,13 @@ getmemory () {
             # Do some substitution on each line
             memtotal=${memtotal/MemTotal:/}
             memtotal=${memtotal/kB*/}
-            memtotal=${memtotal/[[:space:]]/}
+            memtotal=${memtotal// /}
             memfree=${memfree/MemFree:/}
             memfree=${memfree/kB*/}
-            memfree=${memfree/[[:space:]]/}
+            memfree=${memfree// /}
             memavail=${memavail/MemAvailable:/}
             memavail=${memavail/kB*/}
-            memavail=${memavail/[[:space:]]/}
+            memavail=${memavail// /}
 
             memused=$((memtotal - memavail))
             memory="$((memused / 1024))MB / $((memtotal / 1024))MB"
