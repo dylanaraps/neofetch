@@ -274,7 +274,7 @@ case "$(uname)" in
         os="OpenBSD"
     ;;
 
-    *"BSD" | "DragonFly")
+    *"BSD")
         os="BSD"
     ;;
 
@@ -312,7 +312,6 @@ case "$os" in
     "BSD")
         distro="$(uname -v)"
         distro=${distro%% *}
-        distro=${distro/DragonFly/DragonFlyBSD}
     ;;
 
    "Windows")
@@ -566,6 +565,7 @@ getcpu () {
         ;;
 
         *"BSD")
+            # TODO: Cpu speed for other BSD distros
             cpu="$(sysctl -n hw.model)"
         ;;
 

@@ -15,9 +15,9 @@ about your system and prints it to the terminal next to an image of your choice!
 ## Features
 
 
-- **Supports Linux, Mac OS X and Windows (Cygwin)!**
+- **Supports Linux, Mac OS X, \*BSD and Windows (Cygwin)!**
     - If the script isn't working on your system open an issue.
-        - *BSD support is currently in testing! See issue #10
+        - *BSD support is currently in testing! See issue [#10](https://github.com/dylanaraps/fetch/issues/10#issuecomment-172432389)
 - **It's Fast**
     - The script makes heavy use of bash builtins and <br \>string manipulation.
 - **Display an image next to the info. (or don't!)**
@@ -294,6 +294,8 @@ Here's what's on my todo list
 
 - Add Windows resolution detection
 
+- Add BSD cpu speed
+
 - Look into iterm2 image rendering
 
 - Cleanup of info array handling
@@ -309,6 +311,7 @@ Here's what's on my todo list
     - GPU
     - IP
     - etc
+
 
 <!-- }}} -->
 
