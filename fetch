@@ -470,6 +470,11 @@ getpackages () {
             fi
         ;;
 
+        "FreeBSD")
+            packages=$(pkg info | wc -l)
+            packages=${packages// }
+        ;;
+
         *"BSD")
             packages=$(pkg_info | wc -l)
         ;;
