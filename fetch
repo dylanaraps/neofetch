@@ -629,10 +629,12 @@ getmemory () {
 
         *"BSD")
             memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-            memused=$(top -d1 | awk '/Mem:/ {print $4}')
             memtotal=${memtotal/\(/}
             memtotal=${memtotal/)MB/}
-            memused=${memused/M/}
+            memfree=$(top -d1 | awk '/Mem:/ {print $10}')
+            memfree=${memfree/M/}
+            memused=$((memtotal - memfree))
+
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
