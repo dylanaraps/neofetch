@@ -552,7 +552,7 @@ getcpu () {
             cpu="$(sysctl -n machdep.cpu.brand_string)"
         ;;
 
-        *"BSD")
+        "OpenBSD")
             cpu="$(sysctl -n hw.model)"
             cpu=${cpu/ @*/}
             cpu=${cpu//  /}
@@ -563,6 +563,10 @@ getcpu () {
             speed=${speed:0:1}.${speed:1}
 
             cpu="$cpu @ ${speed}GHz"
+        ;;
+
+        *"BSD")
+            cpu="$(sysctl -n hw.model)"
         ;;
 
         "Windows")
