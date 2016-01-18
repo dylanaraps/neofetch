@@ -46,7 +46,6 @@ about your system and prints it to the terminal next to an image of your choice!
 #### Required dependencies:
 
 -  Bash **4.0+**
-    - For those of you on OS X not wanting to update bash, the script <br \>also works with zsh. All you have to do is change the shebang at <br \>the top to `#!/bin/zsh`.
 -  Text formatting, dynamic image size and padding: `tput`
 -  Uptime detection: `procps` or `procps-ng`
 
