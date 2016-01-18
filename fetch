@@ -270,6 +270,14 @@ case "$(uname)" in
         os="Mac OS X"
     ;;
 
+    "OpenBSD")
+        os="OpenBSD"
+    ;;
+
+    *"BSD" | "DragonFly")
+        os="BSD"
+    ;;
+
     "CYGWIN"*)
         os="Windows"
     ;;
@@ -295,6 +303,16 @@ case "$os" in
 
     "Mac OS X")
         distro="Mac OS X $(sw_vers -productVersion)"
+    ;;
+
+    "OpenBSD")
+        distro="OpenBSD"
+    ;;
+
+    "BSD")
+        distro="$(uname -v)"
+        distro=${distro%% *}
+        distro=${distro/DragonFly/DragonFlyBSD}
     ;;
 
    "Windows")
@@ -347,7 +365,7 @@ getuptime () {
             uptime="$(uptime -p)"
         ;;
 
-        "Mac OS X")
+        "Mac OS X" | "OpenBSD" | "BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
             boot=${boot/{ sec = /}
@@ -452,6 +470,10 @@ getpackages () {
             fi
         ;;
 
+        *"BSD")
+            packages=$(pkg_info | wc -l)
+        ;;
+
         "Windows"*)
             packages=$(cygcheck -cd | wc -l)
         ;;
@@ -522,6 +544,10 @@ getcpu () {
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
+        ;;
+
+        *"BSD")
+            cpu="$(sysctl -n hw.model)"
         ;;
 
         "Windows")
@@ -596,6 +622,14 @@ getmemory () {
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
+        *"BSD")
+            memtotal=$(dmesg | awk '/real mem/ {printf $5}')
+            memused=$(top -1 1 | awk '/Real:/ {print $3}')
+            memtotal=${memtotal/()MB/}
+            memused=${memused/M/}
+            memory="${memused}MB / ${memtotal}MB"
+        ;;
+
         "Windows")
             mem="$(awk 'NR < 3 {printf $2 " "}' /proc/meminfo)"
 
@@ -625,7 +659,7 @@ getsong () {
 # Get Resolution
 getresolution () {
     case "$os" in
-        "Linux")
+        "Linux" | *"BSD")
             resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
         ;;
 
@@ -734,7 +768,7 @@ getvisualstyle () {
 
 getwallpaper () {
     case "$os" in
-        "Linux")
+        "Linux" | *"BSD")
             img="$(awk -F\' '/feh/ {printf $2}' $HOME/.fehbg)"
         ;;
 
