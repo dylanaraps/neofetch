@@ -42,25 +42,30 @@ about your system and prints it to the terminal next to an image of your choice!
 ## Dependencies
 
 
-These are the script's required dependencies
+#### Required dependencies:
 
 -  Bash **4.0+**
     - For those of you on OS X not wanting to update bash, the script <br \>also works with zsh. All you have to do is change the shebang at <br \>the top to `#!/bin/zsh`.
--  Text formatting, dynamic image size and padding: tput
--  Uptime detection: procps or procps-ng
+-  Text formatting, dynamic image size and padding: `tput`
+-  Uptime detection: `procps` or `procps-ng`
 
-These are the script's optional dependencies:
+#### Optional dependencies:
 
--  Displaying Images: w3m
-    - You may also need w3m-img
--  Image Cropping: ImageMagick
--  Display Wallpaper: feh
--  Current Song: mpc
--  Resolution Detection: xorg-xdpyinfo
--  Window manager detection: wmctrl
+All OS:
+
+-  Displaying Images: `w3m`
+    - You may also need `w3m-img`
+-  Image Cropping, Resizing etc: `ImageMagick`
+-  Current Song: `mpc`
+-  Resolution Detection: `xorg-xdpyinfo`
+-  Window manager detection: `wmctrl`
     - This is used as a fallback to parsing `.xinitrc` and `$XDG_CURRENT_DESKTOP`.
--  Take a screenshot on script finish: scrot
+-  Take a screenshot on script finish: `scrot`
     - You can change this to another program with a `--scrotcmd` and an in script option.
+
+Linux:
+
+-  Display Wallpaper: `feh`
 
 
 <!-- }}} -->
