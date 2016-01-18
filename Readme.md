@@ -1,6 +1,6 @@
 # fetch
 
-[[Features](#features)]  [[Dependencies](#dependencies)]  [[Installation](#installation)]  [[Usage](#usage)] [[Issues and Workarounds](#issues-and-workarounds)]  [[TODO](#todo)]  [[Thanks](#thanks)]
+[[Features](#features)]  [[Dependencies](#dependencies)]  [[Installation](#installation)]  [[Post Install](#post-install)]  [[Usage](#usage)] [[Issues and Workarounds](#issues-and-workarounds)]  [[TODO](#todo)]  [[Thanks](#thanks)]
 
 This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image of your choice!
@@ -87,10 +87,10 @@ These are the script's optional dependencies:
 <!-- }}} -->
 
 
-<!-- Usage {{{ -->
+<!-- Post Install {{{ -->
 
+## Post Install
 
-## Usage
 
 **NOTE:** For the images to be sized correctly you need to set the `$font_width` variable.
 If you don't know your font width in pixels keep trying values until the image is sized correctly.
@@ -114,6 +114,31 @@ info=(
 
 See these comments inside the script for more info:
 https://github.com/dylanaraps/fetch/blob/master/fetch#L29
+
+If you don't want to edit the script you can customize everything using flags at launch!
+
+Here's what my fetch alias looks like:
+
+```sh
+alias fetch2="fetch \
+--block_range 1 8 \
+--line_wrap off \
+--bold off \
+--uptime_shorthand on \
+--gtk_shorthand on \
+--exclude 'Icons: getgtkicons' \
+--exclude 'Resolution: getresolution' \
+--colors 4 1 8 8 8 7 \
+"
+```
+
+<!-- }}} -->
+
+
+<!-- Usage {{{ -->
+
+
+## Usage
 
 
 ```
