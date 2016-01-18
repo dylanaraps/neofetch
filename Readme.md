@@ -63,7 +63,7 @@ All OS:
 -  Take a screenshot on script finish: `scrot`
     - You can change this to another program with a `--scrotcmd` and an in script option.
 
-Linux:
+Linux | \*BSD:
 
 -  Display Wallpaper: `feh`
 
