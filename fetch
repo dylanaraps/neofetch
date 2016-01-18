@@ -472,7 +472,6 @@ getpackages () {
 
         "FreeBSD")
             packages=$(pkg info | wc -l)
-            packages=${packages// }
         ;;
 
         *"BSD")
@@ -487,6 +486,8 @@ getpackages () {
             packages="Unknown"
         ;;
     esac
+
+    packages=${packages// }
 }
 
 # Get shell
@@ -627,11 +628,22 @@ getmemory () {
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
+        "FreeBSD")
+            memtotal=$(dmesg | awk '/real mem/ {printf $5}')
+            memtotal=${memtotal/\(/}
+            memtotal=${memtotal/)MB/}
+            memfree=$(top -d 1 | awk '/Mem:/ {print $10}')
+            memfree=${memfree/M/}
+            memused=$((memtotal - memfree))
+
+            memory="${memused}MB / ${memtotal}MB"
+        ;;
+
         *"BSD")
             memtotal=$(dmesg | awk '/real mem/ {printf $5}')
             memtotal=${memtotal/\(/}
             memtotal=${memtotal/)MB/}
-            memfree=$(top -d1 | awk '/Mem:/ {print $10}')
+            memfree=$(top -d 1 | awk '/Real:/ {print $4}')
             memfree=${memfree/M/}
             memused=$((memtotal - memfree))
 
