@@ -645,7 +645,7 @@ getmemory () {
             memtotal=$(dmesg | awk '/real mem/ {printf $5}')
             memtotal=${memtotal/\(/}
             memtotal=${memtotal/)MB/}
-            memfree=$(top -d 1 | awk '/Mem:/ {print $10}')
+            memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
             memfree=${memfree/M/}
             memused=$((memtotal - memfree))
 
