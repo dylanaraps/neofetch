@@ -554,6 +554,15 @@ getcpu () {
 
         *"BSD")
             cpu="$(sysctl -n hw.model)"
+            cpu=${cpu/ @*/}
+            cpu=${cpu//  /}
+            cpu=${cpu% }
+
+            speed=$(sysctl -n hw.cpuspeed)
+            speed=$((speed / 100))
+            speed=${speed:0:1}.${speed:1}
+
+            cpu="$cpu @ ${speed}GHz"
         ;;
 
         "Windows")
