@@ -641,7 +641,7 @@ getmemory () {
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
-        "BSD")
+        "OpenBSd" | "BSD")
             memtotal=$(dmesg | awk '/real mem/ {printf $5}')
             memtotal=${memtotal/\(/}
             memtotal=${memtotal/MB\)/}
