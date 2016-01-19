@@ -638,7 +638,12 @@ getgpu () {
         ;;
 
         "Mac OS X")
-
+            gpu=$( \
+                system_profiler SPDisplaysDataType | \
+                awk -F': ' '/^\ *Chipset Model:/ {print $2}' | \
+                awk '{ printf "%s / ", $0 }'
+            )
+            gpu=${gpu//'/ $'}
         ;;
 
         "BSD")
@@ -654,7 +659,8 @@ getgpu () {
 
 
         "Windows")
-
+            gpu=$(wmic path Win32_VideoController get caption)
+            gpu=$(tail -1 <<< ${gpu})
         ;;
     esac
 }
