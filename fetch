@@ -554,7 +554,7 @@ getcpu () {
 
             # Get cpu speed
             case "$distro" in
-                *"buntu")
+                *"buntu"*)
                     speed=$(awk -F ': ' '/cpu Mhz/ {printf $2}' /proc/cpuinfo)
                     speed=${speed/\./}
                 ;;
