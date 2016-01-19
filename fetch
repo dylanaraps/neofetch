@@ -380,7 +380,7 @@ getuptime () {
             uptime="$(uptime -p)"
         ;;
 
-        "Mac OS X" | "OpenBSD" | "BSD")
+        "Mac OS X" | *"BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
             boot="${boot/{ sec = /}"
@@ -485,12 +485,12 @@ getpackages () {
             fi
         ;;
 
-        "FreeBSD")
-            packages=$(pkg info | wc -l)
+        "OpenBSD" | "NetBSD")
+            packages=$(pkg_info | wc -l)
         ;;
 
-        *"BSD")
-            packages=$(pkg_info | wc -l)
+        "FreeBSD")
+            packages=$(pkg info | wc -l)
         ;;
 
         "Windows"*)
@@ -585,6 +585,15 @@ getcpu () {
                     cpu="$cpu @ ${speed}GHz"
                 ;;
 
+                "FreeBSD")
+                    cpu="$(sysctl -n hw.model)"
+                    speed="$(sysctl -n hw.clockrate)"
+                    speed=$((speed / 100))
+                    speed=${speed:0:1}.${speed:1}
+
+                    cpu="$cpu @ ${speed}GHz"
+                ;;
+
                 "NetBSD")
                     # Get cpu name
                     cpu="$(grep -F 'model name' /proc/cpuinfo)"
@@ -601,10 +610,6 @@ getcpu () {
                     speed=${speed:0:1}.${speed:1}
 
                     cpu="$cpu @ ${speed}GHz"
-                ;;
-
-                *)
-                    cpu="$(sysctl -n hw.model)"
                 ;;
             esac
         ;;
@@ -727,6 +732,18 @@ getmemory () {
 
         "OpenBSD" | "BSD")
             case "$distro" in
+                "OpenBSD")
+                    memtotal=$(dmesg | awk '/real mem/ {printf $5}')
+                    memtotal=${memtotal/\(/}
+                    memtotal=${memtotal/MB\)/}
+
+                    memfree=$(top -d 1 | awk '/Real:/ {print $6}')
+                    memfree=${memfree/M/}
+
+                    memused=$((memtotal - memfree))
+                    memory="${memused}MB / ${memtotal}MB"
+                ;;
+
                 "FreeBSD")
                     memtotal=$(dmesg | awk '/real mem/ {printf $5}')
                     memtotal=${memtotal/\(/}
@@ -743,18 +760,6 @@ getmemory () {
                     memfree=$(($(vmstat | awk 'END{printf $4}') / 1000))
                     memused=$(($(vmstat | awk 'END{printf $3}') / 1000))
                     memtotal=$((memused + memfree))
-
-                    memused=$((memtotal - memfree))
-                    memory="${memused}MB / ${memtotal}MB"
-                ;;
-
-                *)
-                    memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-                    memtotal=${memtotal/\(/}
-                    memtotal=${memtotal/MB\)/}
-
-                    memfree=$(top -d 1 | awk '/Real:/ {print $6}')
-                    memfree=${memfree/M/}
 
                     memused=$((memtotal - memfree))
                     memory="${memused}MB / ${memtotal}MB"
