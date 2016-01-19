@@ -78,6 +78,13 @@ use_wmctrl=0
 speed_type="max"
 
 
+# GPU
+
+# Shorten output of the getgpu funcion
+# --gpu_shorthand on/off
+gpu_shorthand="off"
+
+
 # Uptime
 
 # Shorten the output of the uptime function
@@ -90,6 +97,7 @@ uptime_shorthand="off"
 # Shorten output (Hide [GTK2] etc)
 # --gtk_shorthand on/off
 gtk_shorthand="off"
+
 
 # Color Blocks
 
@@ -634,7 +642,17 @@ getcpu () {
 getgpu () {
    case "$os" in
        "Linux")
+            gpu=$(lspci | grep "VGA" | grep -o '\[.*\]')
+            gpu=${gpu//[}
+            gpu=${gpu//]}
 
+            if [ "$gpu_shorthand" == "on" ]; then
+                gpu=${gpu/'Rev. '?}
+                gpu=${gpu/'AMD/ATI'/AMD}
+                gpu=${gpu/'Tahiti' }
+                gpu=${gpu/'PRO' }
+                gpu=${gpu/'OEM' }
+            fi
         ;;
 
         "Mac OS X")
@@ -1052,18 +1070,19 @@ usage () { cat << EOF
     --distro string/cmd    Manually set the distro
     --kernel string/cmd    Manually set the kernel
     --uptime string/cmd    Manually set the uptime
-    --uptime_shorthand on/off --v
-                           Shorten the output of uptime
     --packages string/cmd  Manually set the package count
     --shell string/cmd     Manually set the shell
     --winman string/cmd    Manually set the window manager
     --use_wmctrl on/off    Use wmctrl for a more accurate reading
-    --gtk_shorthand on/off Shorten output of gtk theme/icons
     --cpu string/cmd       Manually set the cpu name
     --memory string/cmd    Manually set the memory
     --speed_type           Change the type of cpu speed to get
                            Possible values: current, min, max
     --song string/cmd      Manually set the current song
+
+    --uptime_shorthand     Shorten the output of uptime
+    --gtk_shorthand on/off Shorten output of gtk theme/icons
+    --gpu_shorthand on/off Shorten the output of GPU
 
     Text Colors:
     --colors 1 2 3 4 5 6   Change the color of text
@@ -1142,16 +1161,18 @@ while [ "$1" ]; do
         --os) os="$2" ;;
         --kernel) kernel="$2" ;;
         --uptime) uptime="$2" ;;
-        --uptime_shorthand) uptime_shorthand="$2" ;;
         --packages) packages="$2" ;;
         --shell) shell="$2" ;;
         --winman) windowmanager="$2" ;;
         --use_wmctrl) use_wmctrl="$2" ;;
-        --gtk_shorthand) gtk_shorthand="$2" ;;
         --cpu) cpu="$2" ;;
         --speed_type) speed_type="$2" ;;
         --memory) memory="$2" ;;
         --song) song="$2" ;;
+
+        --uptime_shorthand) uptime_shorthand="$2" ;;
+        --gtk_shorthand) gtk_shorthand="$2" ;;
+        --gpu_shorthand) gpu_shorthand="$2" ;;
 
         # Text Colors
         --colors) title_color=$2

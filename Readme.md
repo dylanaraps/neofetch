@@ -154,18 +154,19 @@ alias fetch2="fetch \
     --distro string/cmd    Manually set the distro
     --kernel string/cmd    Manually set the kernel
     --uptime string/cmd    Manually set the uptime
-    --uptime_shorthand on/off --v
-                           Shorten the output of uptime
     --packages string/cmd  Manually set the package count
     --shell string/cmd     Manually set the shell
     --winman string/cmd    Manually set the window manager
     --use_wmctrl on/off    Use wmctrl for a more accurate reading
-    --gtk_shorthand on/off Shorten output of gtk theme/icons
     --cpu string/cmd       Manually set the cpu name
     --memory string/cmd    Manually set the memory
     --speed_type           Change the type of cpu speed to get
                            Possible values: current, min, max
     --song string/cmd      Manually set the current song
+
+    --uptime_shorthand     Shorten the output of uptime
+    --gtk_shorthand on/off Shorten output of gtk theme/icons
+    --gpu_shorthand on/off Shorten the output of GPU
 
     Text Colors:
     --colors 1 2 3 4 5     Change the color of text
