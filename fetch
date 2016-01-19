@@ -184,6 +184,11 @@ image="wall"
 # Thumbnail directory
 imgtempdir="$HOME/.fetchimages"
 
+# Image Backend
+# Which program to draw images with
+# --image_backend w3m, iterm2
+image_backend="w3m"
+
 # W3m-img path
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
@@ -1112,6 +1117,7 @@ usage () { cat << EOF
     Image:
     --image                Image source. Where and what image we display.
                            Possible values: wall, shuffle, /path/to/img, off
+    --image_backend          Which program to use to draw images.
     --shuffledir           Which directory to shuffle for an image.
     --font_width px        Used to automatically size the image
     --image_position       Where to display the image: (Left/Right)
@@ -1203,6 +1209,7 @@ while [ "$1" ]; do
 
         # Image
         --image) image="$2" ;;
+        --image_backend) image_backend="$2" ;;
         --shuffledir) shuffledir="$2" ;;
         --font_width) font_width="$2" ;;
         --image_position) image_position="$2" ;;
@@ -1335,9 +1342,19 @@ colors
 bold
 printinfo
 
-[ "$image" != "off" ] && \
-    printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
-    $w3m_img_path
+if [ "$image" != "off" ]; then
+    case "$image_backend" in
+        "w3m")
+            printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+            $w3m_img_path
+        ;;
+
+        "iterm2")
+            base64="$(printf "%s" "$img" | base64)"
+            printf "%b%s" "\e[1337;File=width=${imgsize}px;height=${imgsize}px;inline=1:${base64}"
+        ;;
+    esac
+fi
 
 # Move cursor to bottom and redisplay it.
 if [ "$clear_terminal" == "on" ]; then
