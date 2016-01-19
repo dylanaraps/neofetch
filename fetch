@@ -423,7 +423,7 @@ getuptime () {
 getpackages () {
     case "$distro" in
         "Arch Linux" | "Parabola GNU/Linux-libre" | "Manjaro" | "Antergos")
-            packages="$(pacman -Q | wc -l)"
+            packages="$(pacman -Qq --color never | wc -l)"
         ;;
 
         "void")
