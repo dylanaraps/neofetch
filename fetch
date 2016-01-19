@@ -692,6 +692,8 @@ getgpu () {
         gpu=${gpu/'Tahiti' }
         gpu=${gpu/'PRO' }
         gpu=${gpu/'OEM' }
+        gpu=${gpu/'Mars' }
+        gpu=${gpu/\/*}
     fi
 }
 
