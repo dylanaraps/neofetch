@@ -577,6 +577,15 @@ getcpu () {
                     cpu="$(grep -F 'model name' /proc/cpuinfo)"
                     cpu=${cpu/model name*: /}
                     cpu=${cpu/ @*/}
+
+                    # Get cpu speed
+                    speed="$(grep -F 'cpu MHz' /proc/cpuinfo)"
+                    speed=${speed/cpu MHz*: /}
+                    speed=${speed/'.'/}
+                    speed=$((speed / 100))
+                    speed=${speed:0:1}.${speed:1}
+
+                    cpu="$cpu @ ${speed}GHz"
                 ;;
 
                 *)
