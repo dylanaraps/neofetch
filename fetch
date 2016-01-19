@@ -1350,7 +1350,7 @@ if [ "$image" != "off" ]; then
         ;;
 
         "iterm2")
-            printf "%b%s" "\033]1337;File=width=${imgsize}px;height=${imgsize}px;inline=1:$(base64 < "$img")"
+            printf "%b%s\a\n" "\033]1337;File=width=${imgsize}px;height=${imgsize}px;inline=1:$(base64 < "$img")"
         ;;
     esac
 fi
