@@ -284,6 +284,29 @@ The possible values are:
 * **off** - Disable images
 
 
+#### getgpu doesn't show my exact video card name
+
+If you're output looks like this:
+
+```
+01:00.0 VGA compatible controller: NVIDIA Corporation Device 1401 (rev a1)
+```
+
+Instead of this:
+
+```
+01:00.0 VGA compatible controller: NVIDIA Corporation GM206 [GeForce GTX 960] (rev a1)
+```
+
+Then you're affected by the issue.
+
+This is caused by your `/usr/share/misc/pci.ids\*` files being outdated and you can fix it<br \>
+by running this command as root.
+
+```
+sudo update-pciids
+```
+
 <!-- }}} -->
 
 
