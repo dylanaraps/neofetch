@@ -55,6 +55,8 @@ All OS:
 
 -  Displaying Images: `w3m`
     - You may also need `w3m-img`
+    - **Note:** The script can now also use iTerm2's builtin image rendering instead of w3m!
+        - Enable it by changing `image_backend` to `iterm2` or by using the launch flag `--image_backend`.
 -  Image Cropping, Resizing etc: `ImageMagick`
 -  Current Song: `mpc`
 -  Resolution Detection: `xorg-xdpyinfo`
@@ -296,8 +298,6 @@ Here's what's on my todo list
 
 - Add BSD cpu speed
 
-- Look into iterm2 image rendering
-
 - Cleanup of info array handling
 
 - Imagemagick optimizations
@@ -308,7 +308,7 @@ Here's what's on my todo list
     - Resolution (Done!)
     - GTK themes (Done!)
     - Terminal Font
-    - GPU
+    - GPU (In master but experimental) See **[issue #21](https://github.com/dylanaraps/fetch/issues/21)**.
     - IP
     - etc
 
