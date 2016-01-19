@@ -554,22 +554,35 @@ getcpu () {
             cpu="$(sysctl -n machdep.cpu.brand_string)"
         ;;
 
-        "OpenBSD")
-            cpu="$(sysctl -n hw.model)"
-            cpu=${cpu/ @*/}
-            cpu=${cpu//  /}
-            cpu=${cpu% }
-
-            speed=$(sysctl -n hw.cpuspeed)
-            speed=$((speed / 100))
-            speed=${speed:0:1}.${speed:1}
-
-            cpu="$cpu @ ${speed}GHz"
-        ;;
-
         *"BSD")
             # TODO: Cpu speed for other BSD distros
-            cpu="$(sysctl -n hw.model)"
+            case "$distro" in
+                "OpenBSD")
+                    # Get cpu name
+                    cpu="$(sysctl -n hw.model)"
+                    cpu=${cpu/ @*/}
+                    cpu=${cpu//  /}
+                    cpu=${cpu% }
+
+                    # Get cpu speed
+                    speed=$(sysctl -n hw.cpuspeed)
+                    speed=$((speed / 100))
+                    speed=${speed:0:1}.${speed:1}
+
+                    cpu="$cpu @ ${speed}GHz"
+                ;;
+
+                "NetBSD")
+                    # Get cpu name
+                    cpu="$(grep -F 'model name' /proc/cpuinfo)"
+                    cpu=${cpu/model name*: /}
+                    cpu=${cpu/ @*/}
+                ;;
+
+                *)
+                    cpu="$(sysctl -n hw.model)"
+                ;;
+            esac
         ;;
 
         "Windows")
@@ -635,33 +648,48 @@ getmemory () {
 
         "Mac OS X")
             memtotal=$(printf "%s\n" "$(sysctl -n hw.memsize)"/1024^2 | bc)
-            memwired=$(vm_stat | awk '/wired/ { print $4 }')
             memactive=$(vm_stat | awk '/active / { print $3 }')
             memcompressed=$(vm_stat | awk '/occupied/ { print $5 }')
-            memused=$(((${memwired//.} + \
-                        ${memactive//.} + \
-                        ${memcompressed//.}) * 4 / 1024))
+            memused=$(((${memactive//.} + ${memcompressed//.}) * 4 / 1024))
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
         "OpenBSD" | "BSD")
-            memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-            memtotal=${memtotal/\(/}
-            memtotal=${memtotal/MB\)/}
-
             case "$distro" in
                 "FreeBSD")
+                    memtotal=$(dmesg | awk '/real mem/ {printf $5}')
+                    memtotal=${memtotal/\(/}
+                    memtotal=${memtotal/MB\)/}
+
                     memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
+                    memfree=${memfree/M/}
+
+                    memused=$((memtotal - memfree))
+                    memory="${memused}MB / ${memtotal}MB"
+                ;;
+
+                "NetBSD")
+                    memfree=$(($(vmstat | awk 'END{printf $4}') / 1000))
+                    memused=$(($(vmstat | awk 'END{printf $3}') / 1000))
+                    memtotal=$((memused + memfree))
+
+                    memused=$((memtotal - memfree))
+                    memory="${memused}MB / ${memtotal}MB"
                 ;;
 
                 *)
+                    memtotal=$(dmesg | awk '/real mem/ {printf $5}')
+                    memtotal=${memtotal/\(/}
+                    memtotal=${memtotal/MB\)/}
+
                     memfree=$(top -d 1 | awk '/Real:/ {print $6}')
+                    memfree=${memfree/M/}
+
+                    memused=$((memtotal - memfree))
+                    memory="${memused}MB / ${memtotal}MB"
                 ;;
             esac
 
-            memfree=${memfree/M/}
-            memused=$((memtotal - memfree))
-            memory="${memused}MB / ${memtotal}MB"
         ;;
 
         "Windows")
