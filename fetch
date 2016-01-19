@@ -73,7 +73,7 @@ use_wmctrl=0
 # CPU
 
 # CPU speed type
-# Only works on Linux
+# Only works on Linux with cpufreq.
 # --speed_type current/min/max
 speed_type="max"
 
@@ -553,13 +553,23 @@ getcpu () {
             cpu=${cpu/ @*/}
 
             # Get cpu speed
-            speed_type=${speed_type/rent/}
-            read -r speed < \
-                /sys/devices/system/cpu/cpu0/cpufreq/scaling_${speed_type}_freq
+            case "$distro" in
+                *"buntu")
+                    speed=$(awk -F ': ' '/cpu Mhz/ {printf $2}' /proc/cpuinfo)
+                    speed=${speed/\./}
+                ;;
+
+                *)
+                    speed_type=${speed_type/rent/}
+                    read -r speed < \
+                        /sys/devices/system/cpu/cpu0/cpufreq/scaling_${speed_type}_freq
+                ;;
+            esac
 
             # Convert mhz to ghz without bc
             speed=$((speed / 100000))
             speed=${speed:0:1}.${speed:1}
+
             cpu="$cpu @ ${speed}GHz"
         ;;
 
