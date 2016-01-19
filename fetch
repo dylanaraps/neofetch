@@ -645,14 +645,6 @@ getgpu () {
             gpu=$(lspci | grep "VGA" | grep -o '\[.*\]')
             gpu=${gpu//[}
             gpu=${gpu//]}
-
-            if [ "$gpu_shorthand" == "on" ]; then
-                gpu=${gpu/'Rev. '?}
-                gpu=${gpu/'AMD/ATI'/AMD}
-                gpu=${gpu/'Tahiti' }
-                gpu=${gpu/'PRO' }
-                gpu=${gpu/'OEM' }
-            fi
         ;;
 
         "Mac OS X")
@@ -683,6 +675,14 @@ getgpu () {
             gpu=${gpu//  /}
         ;;
     esac
+
+    if [ "$gpu_shorthand" == "on" ]; then
+        gpu=${gpu/'Rev. '?}
+        gpu=${gpu/'AMD/ATI'/AMD}
+        gpu=${gpu/'Tahiti' }
+        gpu=${gpu/'PRO' }
+        gpu=${gpu/'OEM' }
+    fi
 }
 
 # Get memory
