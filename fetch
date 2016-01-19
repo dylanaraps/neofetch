@@ -631,6 +631,33 @@ getcpu () {
     cpu=${cpu// Six-Core/}
 }
 
+getgpu () {
+   case "os" in
+       "Linux")
+
+        ;;
+
+        "Mac OS X")
+
+        ;;
+
+        "BSD")
+            case "$distro" in
+                "FreeBSD")
+                    gpu=$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")
+                    gpu=${gpu/device*=/}
+                    gpu=${gpu//\'/}
+                ;;
+            esac
+        ;;
+
+
+        "Windows")
+
+        ;;
+    esac
+}
+
 # Get memory
 getmemory () {
     case "$os" in
