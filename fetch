@@ -1337,11 +1337,7 @@ fi
 # Disable line wrap
 [ "$line_wrap" == "off" ] && printf "\e[?7l"
 
-# Call functions and display info
-colors
-bold
-printinfo
-
+# Display the image
 if [ "$image" != "off" ]; then
     case "$image_backend" in
         "w3m")
@@ -1354,6 +1350,14 @@ if [ "$image" != "off" ]; then
         ;;
     esac
 fi
+
+# Get colors / bold
+colors
+bold
+
+# Move the cursor to the top and display the info
+tput cup 0
+printinfo
 
 # Move cursor to bottom and redisplay it.
 if [ "$clear_terminal" == "on" ]; then
