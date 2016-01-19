@@ -568,7 +568,6 @@ getcpu () {
         ;;
 
         *"BSD")
-            # TODO: Cpu speed for other BSD distros
             case "$distro" in
                 "OpenBSD")
                     # Get cpu name
@@ -580,18 +579,18 @@ getcpu () {
                     # Get cpu speed
                     speed=$(sysctl -n hw.cpuspeed)
                     speed=$((speed / 100))
-                    speed=${speed:0:1}.${speed:1}
-
-                    cpu="$cpu @ ${speed}GHz"
                 ;;
 
                 "FreeBSD")
+                    # Get cpu name
                     cpu="$(sysctl -n hw.model)"
+                    cpu=${cpu/ @*/}
+                    cpu=${cpu//  /}
+                    cpu=${cpu% }
+
+                    # Get cpu speed
                     speed="$(sysctl -n hw.clockrate)"
                     speed=$((speed / 100))
-                    speed=${speed:0:1}.${speed:1}
-
-                    cpu="$cpu @ ${speed}GHz"
                 ;;
 
                 "NetBSD")
@@ -607,11 +606,11 @@ getcpu () {
                     speed=${speed/cpu MHz*: /}
                     speed=${speed/\./}
                     speed=$((speed / 10000))
-                    speed=${speed:0:1}.${speed:1}
-
-                    cpu="$cpu @ ${speed}GHz"
                 ;;
             esac
+
+            speed=${speed:0:1}.${speed:1}
+            cpu="$cpu @ ${speed}GHz"
         ;;
 
         "Windows")
