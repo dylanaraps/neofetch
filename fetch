@@ -660,7 +660,9 @@ getgpu () {
 
         "Windows")
             gpu=$(wmic path Win32_VideoController get caption)
-            gpu=$(tail -1 <<< ${gpu})
+            gpu=${gpu/Caption /}
+            gpu=${gpu//[[:space:]]/}
+            gpu=${gpu//  /}
         ;;
     esac
 }
