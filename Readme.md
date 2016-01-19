@@ -296,8 +296,6 @@ Here's what's on my todo list
 
 - Add Windows resolution detection
 
-- Add BSD cpu speed
-
 - Cleanup of info array handling
 
 - Imagemagick optimizations
@@ -305,7 +303,7 @@ Here's what's on my todo list
 - More info outputs. Now that it's easy to customize what's printed and<br \>
   everything is a function we can add optional support for pretty much anything.
 
-    - Resolution (Done!)
+    - Resolution (Done! Just missing Windows support)
     - GTK themes (Done!)
     - Terminal Font
     - GPU (In master but experimental) See **[issue #21](https://github.com/dylanaraps/fetch/issues/21)**.
