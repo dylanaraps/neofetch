@@ -42,7 +42,7 @@ export LANGUAGE=C
 #
 # You can also just use printf / echo to add lines but you'll
 # need to prefix your msg with "${padding}", for example:
-# echo "${padding} My custom message here"
+# echo -e "${padding} My custom message here"
 #
 # Info functions enabled by default are:
 # "title" "distro" "kernel" "uptime" "packages"
@@ -51,6 +51,9 @@ export LANGUAGE=C
 #
 # Info functions that are disabled by default are:
 # "resolution" "song" "visualstyle" "gpu"
+#
+# See this wiki page for more info:
+# https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 printinfo () {
     info title
     info underline
@@ -1093,7 +1096,6 @@ getimage () {
                     -scale "$imgsize"x"$imgsize" \
                     "$imgtempdir/$imgname"
             ;;
-
         esac
     fi
 
@@ -1104,7 +1106,6 @@ getimage () {
 takescrot () {
     $scrotcmd "$scrotdir/$scrotname"
 }
-
 
 # }}}
 
@@ -1179,6 +1180,10 @@ colors () {
     colon_color="\e[38;5;${colon_color}m"
     underline_color="\e[38;5;${underline_color}m"
     info_color="\e[38;5;${info_color}m"
+}
+
+color () {
+   printf "\e[38;5;${1}m"
 }
 
 bold () {
@@ -1393,7 +1398,7 @@ fi
 if [ "$image" != "off" ]; then
     case "$image_backend" in
         "w3m")
-            printf "%b%s" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+            printf "%b%s\n" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
             $w3m_img_path
         ;;
 
