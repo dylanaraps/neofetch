@@ -1319,14 +1319,13 @@ printinfo () {
         function=${info#*: }
         subtitle=${info%:*}
 
-        # Update the var
         case "$function" in
             "get"*)
-                var=${function/get/}
-                typeset -n output=$var
-
                 # Call the function
-                [ -z "$output" ] && $function
+                $function 2>/dev/null
+
+                # Update the variable
+                eval output="\$${function/get/}"
             ;;
         esac
 
