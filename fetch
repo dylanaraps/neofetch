@@ -38,7 +38,7 @@ export LANGUAGE=C
 # "echo: Custom string to print"
 #
 # Optional info lines that are disabled by default are:
-# "getresolution" "getsong" "getvisualstyle"
+# "getresolution" "getsong" "getvisualstyle" "getgpu"
 #
 # Info lines enabled by default are:
 # "gettitle" "getdistro" "getkernel" "getuptime" "getpackages"
@@ -554,7 +554,7 @@ getcpu () {
 
             # Get cpu speed
             case "$distro" in
-                *"buntu"*)
+                *"buntu"* | "CentOS"*)
                     speed=$(awk -F ': ' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
                     speed=${speed/\./}
                 ;;
