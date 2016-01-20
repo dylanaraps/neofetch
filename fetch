@@ -1379,6 +1379,9 @@ done
 # Call Functions and Finish Up {{{
 
 
+# Restore cursor and clear screen on ctrl+c
+trap 'printf "\e[?25h"; clear; exit' 2
+
 # Get lines and columns
 lines=$(tput lines)
 columns=$(tput cols)
