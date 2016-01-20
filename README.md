@@ -1,7 +1,5 @@
 # fetch
 
-[[Features](#features)]  [[Dependencies](#dependencies)]  [[Installation](#installation)]  [[Post Install](#post-install)]  [[Usage](#usage)] [[Issues and Workarounds](#issues-and-workarounds)]  [[TODO](#todo)]  [[Thanks](#thanks)]
-
 This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image of your choice!
 
@@ -9,22 +7,37 @@ about your system and prints it to the terminal next to an image of your choice!
 ![1](http://i.imgur.com/bORHxT5.png)
 
 
+<!-- Table of Contents {{{ -->
+
+
+## Table of Contents
+
+- [Features](#features)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+- [Post Install](#post-install)
+- [Usage](#usage)
+- [Frequently Asked Questions](#frequently-asked-questions)
+- [Issues and Workarounds](#issues-and-workarounds)
+- [Todo](#todo)
+- [Thanks](#thanks)
+
+
+<!-- }}} -->
+
+
 <!-- Features {{{ -->
 
 
 ## Features
 
-
-- **Supports Linux, Mac OS X, \*BSD and Windows (Cygwin)!**
-    - If the script isn't working on your system open an issue.
-        - *BSD support is currently in testing! See issue [#10](https://github.com/dylanaraps/fetch/issues/10#issuecomment-172432389)
+- **Supports Linux, Mac OS X, BSD and Windows (Cygwin)!**
+    - If the script doesn't work on your system, open an issue.
 - **It's Fast**
     - The script makes heavy use of bash builtins and <br \>string manipulation.
 - **Display an image next to the info. (or don't!)**
-    - The script can use your current wallpaper, shuffle through a directory or just <br \>display an image of your choice.
-        - The wallpaper function on linux uses feh, It's hard to add support <br \>
-          for other wallpaper setters as they don't provide a way of getting <br \>
-          the current wallpaper from the cli.
+    - Use your current wallpaper, shuffle through a directory or just <br \>display an image of your choice.
+    - Supports using w3m or iTerm2 to display the images.
 - **Highly Customizable**
     - You can customize almost everything.
         - See Usage below or lines 23-233 in script
@@ -45,7 +58,7 @@ about your system and prints it to the terminal next to an image of your choice!
 
 #### Required dependencies:
 
--  Bash **4.0+**
+-  `Bash 4.0+`
 -  Text formatting, dynamic image size and padding: `tput`
 -  Uptime detection: `procps` or `procps-ng`
 
@@ -65,7 +78,7 @@ All OS:
 -  Take a screenshot on script finish: `scrot`
     - You can change this to another program with a `--scrotcmd` and an in script option.
 
-Linux | \*BSD:
+Linux | BSD:
 
 -  Display Wallpaper: `feh`
 
@@ -81,7 +94,7 @@ Linux | \*BSD:
 
 ### Arch
 
-1. Install `fetch-git` from the aur.
+1. Install **[fetch-git](https://aur.archlinux.org/packages/fetch-git/)** from the aur.
 
 
 ### Others
@@ -231,6 +244,24 @@ alias fetch2="fetch \
 <!-- }}} -->
 
 
+<!-- Frequently Asked Questions {{{ -->
+
+
+## Frequently Asked Questions
+
+
+#### Why doesn't fetch support my wallpaper setter?
+
+It's hard to add support for other wallpaper setters as<br \>
+they don't provide a way of getting the current wallpaper from the cli.
+
+If your wallpaper setter **does** provide a way of getting the current wallpaper<br \>
+or you know where it's stored then adding support won't be a problem!<br \>
+
+
+<!-- }}} -->
+
+
 <!-- Issues and Workarounds {{{ -->
 
 
@@ -310,14 +341,12 @@ sudo update-pciids
 <!-- }}} -->
 
 
-<!-- TODO {{{ -->
+<!-- Todo {{{ -->
 
 
-## TODO
+## Todo
 
 Here's what's on my todo list
-
-- Add Windows resolution detection
 
 - Cleanup of info array handling
 
@@ -326,7 +355,7 @@ Here's what's on my todo list
 - More info outputs. Now that it's easy to customize what's printed and<br \>
   everything is a function we can add optional support for pretty much anything.
 
-    - Resolution (Done! Just missing Windows support)
+    - Resolution (Just missing Windows support)
     - GTK themes (Done!)
     - Terminal Font
     - GPU (In master but experimental) See **[issue #21](https://github.com/dylanaraps/fetch/issues/21)**.
