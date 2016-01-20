@@ -117,25 +117,7 @@ If you don't know your font width in pixels keep trying values until the image i
 
 You can also use the launch flag `--font_width` to set it on the fly.
 
-You can customize what info to print by editing the info array near the top of the script.
-The array looks like this:
-
-```sh
-info=(
-    "gettitle"
-    "underline"
-    "OS: getdistro"
-    "Kernel: getkernel"
-    "Uptime: getuptime"
-    "Packages: getpackages"
-    etc...
-)
-```
-
-See these comments inside the script for more info:
-https://github.com/dylanaraps/fetch/blob/master/fetch#L29
-
-If you don't want to edit the script you can customize everything using flags at launch!
+If you don't want to edit the script you can customize almost everything using launch flags!
 
 Here's what my fetch alias looks like:
 
