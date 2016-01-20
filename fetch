@@ -661,46 +661,42 @@ getcpu () {
 getgpu () {
    case "$os" in
        "Linux" | "OpenBSD")
-            if type -p nvidia-smi >/dev/null 2>&1; then
-                gpu="$(nvidia-smi | awk -F':' '/Product Name/ {printf $2}')"
-            else
-                gpu="$(lspci | grep "VGA")"
-                gpu=${gpu/* VGA compatible controller: }
-                gpu=${gpu/(rev*)}
+            gpu="$(lspci | grep "VGA")"
+            gpu=${gpu/* VGA compatible controller: }
+            gpu=${gpu/(rev*)}
 
-                shopt -s nocasematch
-                case "$gpu" in
-                    intel*)
-                        gpu=${gpu/'Intel Corporation' }
-                        gpu=${gpu/'Haswell-'??? }
+            shopt -s nocasematch
+            case "$gpu" in
+                intel*)
+                    gpu=${gpu/'Intel Corporation' }
+                    gpu=${gpu/'Haswell-'??? }
 
-                        brand="Intel"
-                    ;;
+                    brand="Intel"
+                ;;
 
-                    advanced*)
-                        gpu=${gpu/'Advanced Micro Devices, Inc.' }
-                        gpu=${gpu/'[AMD/ATI]' }
-                        gpu=${gpu/'Tahiti PRO'}
-                        gpu=${gpu/'Mars'}
-                        gpu=${gpu/' ['}
-                        gpu=${gpu/']'}
+                advanced*)
+                    gpu=${gpu/'Advanced Micro Devices, Inc.' }
+                    gpu=${gpu/'[AMD/ATI]' }
+                    gpu=${gpu/'Tahiti PRO'}
+                    gpu=${gpu/'Mars'}
+                    gpu=${gpu/' ['}
+                    gpu=${gpu/']'}
 
-                        brand="AMD"
-                    ;;
+                    brand="AMD"
+                ;;
 
-                    nvidia*)
-                        gpu=${gpu/'NVIDIA Corporation' }
-                        gpu=${gpu/'nVidia Corporation' }
-                        gpu=${gpu/G???? }
-                        gpu=${gpu/'['}
-                        gpu=${gpu/']'}
+                nvidia*)
+                    gpu=${gpu/'NVIDIA Corporation' }
+                    gpu=${gpu/'nVidia Corporation' }
+                    gpu=${gpu/G???? }
+                    gpu=${gpu/'['}
+                    gpu=${gpu/']'}
 
-                        brand="Nvidia"
-                    ;;
-                esac
+                    brand="Nvidia"
+                ;;
+            esac
 
-                gpu="$brand $gpu"
-            fi
+            gpu="$brand $gpu"
         ;;
 
         "Mac OS X")
