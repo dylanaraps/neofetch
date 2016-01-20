@@ -80,7 +80,7 @@ All OS:
 
 Linux | BSD:
 
--  Display Wallpaper: `feh`
+-  Display Wallpaper: `feh` or `nitrogen`
 
 
 <!-- }}} -->
@@ -297,22 +297,6 @@ $gtk_shorthand on
 * Edit the info array to make the subtitles shorter
 
 * Resizing the terminal so that the lines don't wrap.
-
-
-#### [Linux] The script hangs and doesn't display anything
-
-This is caused by the getwallpaper function failing to find your current wallpaper and <br \>
-imagemagick trying to crop a nonexistent image. You can fix this by installing feh and using it<br \>
-to set your wallpaper or by changing the image source.
-
-You can change the source by editing the `$image` variable or by launching the script with `--image`.
-
-The possible values are:
-
-* **wall** - Use the current wallpaper. (Default)
-* **shuffle** - Shuffle through images in a directory. See `$shuffledir`
-* **path/to/img.png** - Select an image to display.
-* **off** - Disable images
 
 
 #### getgpu doesn't show my exact video card name

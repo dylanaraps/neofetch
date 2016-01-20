@@ -1030,6 +1030,9 @@ getimage () {
         ;;
     esac
 
+    # If $img is empty, reset padding to 0 and exit the function
+    [ -z "$img" ] && padding="\e[0C"; return
+
     # Get name of image and prefix it with it's crop mode and offset
     imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}"
 
