@@ -3,6 +3,10 @@
 This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image of your choice!
 
+**NOTE: See this wiki page for info on the new info function and it's usage**
+
+https://github.com/dylanaraps/fetch/wiki/Customizing-Info
+
 
 ![1](http://i.imgur.com/bORHxT5.png)
 
