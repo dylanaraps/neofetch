@@ -116,10 +116,31 @@ Linux | BSD:
 ## Post Install
 
 
+#### Sizing the image correctly
+
 **NOTE:** For the images to be sized correctly you need to set the `$font_width` variable.
 If you don't know your font width in pixels keep trying values until the image is sized correctly.
 
 You can also use the launch flag `--font_width` to set it on the fly.
+
+
+#### Customizing what info gets displayed
+
+At the top of the script there's a function that allows you to customize all of the info that gets displayed.
+
+Here's what you can do:
+
+- Add new info lines
+- Change the ordering of the info
+- Remove unwanted info lines
+- Use bash syntax to control when info gets displayed
+
+See this wiki page that goes more in-depth about it:
+
+https://github.com/dylanaraps/fetch/wiki/Customizing-Info
+
+
+#### Customizing the script using a custom alias
 
 If you don't want to edit the script you can customize almost everything using launch flags!
 
