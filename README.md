@@ -8,7 +8,7 @@ about your system and prints it to the terminal next to an image of your choice!
 https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 
-![1](http://i.imgur.com/bORHxT5.png)
+![1](http://i.imgur.com/oTxq5fA.png)
 
 
 <!-- Table of Contents {{{ -->
