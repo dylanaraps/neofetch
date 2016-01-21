@@ -269,10 +269,12 @@ There are a few ways to fix this.
 # In script options
 $uptime_shorthand on
 $gtk_shorthand on
+$gpu_shorthand on
 
 # Launch flags
 --uptime_shorthand on
 --gtk_shorthand on
+--gpu_shorthand on
 ```
 
 * Edit the info array to make the subtitles shorter
@@ -313,19 +315,16 @@ sudo update-pciids
 
 Here's what's on my todo list
 
-- Cleanup of info array handling
-
-- Imagemagick optimizations
-
 - More info outputs. Now that it's easy to customize what's printed and<br \>
   everything is a function we can add optional support for pretty much anything.
 
     - Resolution (Just missing Windows support)
-    - GTK themes (Done!)
+    - ~~GTK themes~~
     - Terminal Font
+        - This will be difficult to add as there's no standard way of getting this info. We can't check<br \>
+        for terminal config files because the user may have multiple terminals installed.<br \>
+        Using `$PPID` isn't an option because it won't work in tmux/screen, subshells or neovim terminal splits.
     - GPU (In master but experimental) See **[issue #21](https://github.com/dylanaraps/fetch/issues/21)**.
-    - IP
-    - etc
 
 
 <!-- }}} -->
