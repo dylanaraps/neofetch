@@ -64,8 +64,12 @@ printinfo () {
     info "Packages" packages
     info "Shell" shell
     info "Window Manager" windowmanager
-    info "GTK Theme" gtktheme
-    info "Icons" gtkicons
+    
+    if [ -n "$gtktheme" ]; then
+       info "GTK Theme" gtktheme
+       info "Icons" gtkicons
+    fi
+    
     info "CPU" cpu
     info "Memory" memory
 
@@ -895,7 +899,7 @@ getgtk () {
     if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
         gtktheme="$gtk2theme [GTK2/3]"
     elif [ -z "$gtk2theme" ] && [ -z "$gtk3theme" ]; then
-        gtktheme="None"
+        gtktheme="0"
     fi
 
     if [ "$gtk_shorthand" == "on" ]; then
