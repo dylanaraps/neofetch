@@ -936,10 +936,6 @@ getcols () {
 
 getvisualstyle () {
     case "$os" in
-        "Windows XP")
-
-        ;;
-
         "Windows"*)
             path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
             path+="/Windows/CurrentVersion/Themes/CurrentTheme"
