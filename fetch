@@ -724,15 +724,6 @@ getgpu () {
                     gpu=${gpu//[[:space:]]/ }
                     gpu=${gpu//  /}
                 ;;
-
-                "NetBSD")
-                    for BUS in /dev/pci*; do
-                        gpu="$(pcictl ${BUS} list 2>/dev/null | grep "VGA")"
-                    done
-
-                    gpu=${gpu/???:??:?: }
-                    gpu=${gpu/\(*\)}
-                ;;
             esac
         ;;
 
