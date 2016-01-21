@@ -882,7 +882,7 @@ getgtk () {
     esac
 
     if [ -f "$HOME/.gtkrc-2.0" ]; then
-        gtk2theme=$(grep -F "$name" $HOME/.gtkrc-2.0)
+        gtk2theme=$(grep "^[^#]*$name" $HOME/.gtkrc-2.0)
         gtk2theme=${gtk2theme/${name}=/}
         gtk2theme=${gtk2theme//\"/}
         gtk2theme="$gtk2theme"
@@ -890,7 +890,7 @@ getgtk () {
     fi
 
     if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
-        gtk3theme=$(grep -F "$name" $HOME/.config/gtk-3.0/settings.ini)
+        gtk3theme=$(grep "^[^#]*$name" $HOME/.config/gtk-3.0/settings.ini)
         gtk3theme=${gtk3theme/${name}=/}
         gtk3theme=${gtk3theme//\"/}
         gtk3theme="$gtk3theme"
