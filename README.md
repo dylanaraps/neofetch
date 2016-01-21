@@ -287,7 +287,7 @@ $gtk_shorthand on
 
 #### getgpu doesn't show my exact video card name
 
-If you're output looks like this:
+If you're `lspci | grep "VGA"` output looks like this:
 
 ```
 01:00.0 VGA compatible controller: NVIDIA Corporation Device 1401 (rev a1)
