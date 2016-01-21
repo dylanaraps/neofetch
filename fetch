@@ -251,11 +251,6 @@ xoffset=0
 # Other Options {{{
 
 
-# Clear terminal before printing?
-# Needs to be on for images to work
-# --clear on/off
-clear_terminal="on"
-
 # Take a screenshot
 # --scrot on/off
 scrot="off"
@@ -1281,8 +1276,6 @@ usage () { cat << EOF
     --scrotcmd             Screenshot program to launch
 
     Other:
-    --clear on/off         Whether or not to clear the terminal
-                           before printing.
     --help                 Print this text and exit
 
 EOF
@@ -1363,7 +1356,6 @@ while [ "$1" ]; do
         --scrotcmd) scrot="$2" ;;
 
         # Other
-        --clear) clear_terminal="$2" ;;
         --help) usage ;;
     esac
 
@@ -1384,13 +1376,14 @@ trap 'printf "\e[?25h"; clear; exit' 2
 lines=$(tput lines)
 columns=$(tput cols)
 
-[ "$image" != "off" ] && getimage
+# Clear the terminal
+clear
 
-# Clear the terminal and hide the cursor
-if [ "$clear_terminal" == "on" ]; then
-    clear
-    printf "\e[?25l"
-fi
+# Hide the cursor
+printf "\e[?25l"
+
+# Get image
+[ "$image" != "off" ] && getimage
 
 # Disable line wrap
 [ "$line_wrap" == "off" ] && printf "\e[?7l"
@@ -1417,15 +1410,14 @@ bold
 tput cup 0
 printinfo
 
-# Move cursor to bottom and redisplay it.
-if [ "$clear_terminal" == "on" ]; then
-    case "$os" in
-        "BSD") tput DO $lines ;;
-        *) tput cud $lines ;;
-    esac
+# Move the cursor to the bottom
+case "$os" in
+    "BSD") tput DO $lines ;;
+    *) tput cup $lines ;;
+esac
 
-    printf "%b%s" "\e[${prompt_height}A\e[?25h"
-fi
+# Show the cursor
+printf "\e[?25h"
 
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf "\e[?7h"
