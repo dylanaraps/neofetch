@@ -132,8 +132,6 @@ alias fetch2="fetch \
 --bold off \
 --uptime_shorthand on \
 --gtk_shorthand on \
---exclude 'Icons: getgtkicons' \
---exclude 'Resolution: getresolution' \
 --colors 4 1 8 8 8 7 \
 "
 ```
@@ -150,7 +148,6 @@ alias fetch2="fetch \
     usage: ${0##*/} [--colors 1 2 3 4 5] [--kernel "\$\(uname -rs\)"]
 
     Info:
-    --exclude "OS: getos"  Disable an info line at launch
     --title string         Change the title at the top
     --distro string/cmd    Manually set the distro
     --kernel string/cmd    Manually set the kernel
