@@ -219,8 +219,6 @@ alias fetch2="fetch \
     --scrotcmd             Screenshot program to launch
 
     Other:
-    --clear on/off         Whether or not to clear the terminal
-                           before printing.
     --help                 Print this text and exit
 
 
