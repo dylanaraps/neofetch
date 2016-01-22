@@ -83,7 +83,7 @@ printinfo () {
 
 # Use wmctrl for a more accurate
 # window manager reading
-use_wmctrl=0
+use_wmctrl="off"
 
 
 # CPU
