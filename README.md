@@ -181,7 +181,6 @@ alias fetch2="fetch \
     --packages string/cmd  Manually set the package count
     --shell string/cmd     Manually set the shell
     --winman string/cmd    Manually set the window manager
-    --use_wmctrl on/off    Use wmctrl for a more accurate reading
     --cpu string/cmd       Manually set the cpu name
     --memory string/cmd    Manually set the memory
     --speed_type           Change the type of cpu speed to get

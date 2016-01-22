@@ -81,10 +81,6 @@ printinfo () {
 
 # Window Manager
 
-# Use wmctrl for a more accurate
-# window manager reading
-use_wmctrl="off"
-
 
 # CPU
 
@@ -523,7 +519,7 @@ getshell () {
 
 # Get window manager
 getwindowmanager () {
-    if [ "$use_wmctrl" == "on" ]; then
+    if type -p wmctrl >/dev/null 2>&1; then
         windowmanager="$(wmctrl -m | head -n1)"
         windowmanager=${windowmanager/Name: /}
 
@@ -1212,7 +1208,6 @@ usage () { cat << EOF
     --packages string/cmd  Manually set the package count
     --shell string/cmd     Manually set the shell
     --winman string/cmd    Manually set the window manager
-    --use_wmctrl on/off    Use wmctrl for a more accurate reading
     --cpu string/cmd       Manually set the cpu name
     --memory string/cmd    Manually set the memory
     --speed_type           Change the type of cpu speed to get
@@ -1301,7 +1296,6 @@ while [ "$1" ]; do
         --packages) packages="$2" ;;
         --shell) shell="$2" ;;
         --winman) windowmanager="$2" ;;
-        --use_wmctrl) use_wmctrl="$2" ;;
         --cpu) cpu="$2" ;;
         --speed_type) speed_type="$2" ;;
         --memory) memory="$2" ;;
