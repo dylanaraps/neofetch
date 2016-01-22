@@ -259,21 +259,20 @@ xoffset=0
 # Enable screenshot on script run
 # Whether or not to always take a screenshot
 # You can manually take a screenshot with "--scrot" or "-s"
-# --enable_scrot on/off
 scrot="off"
 
 # Screenshot program to launch
-# --scrotcmd
+# --scrot_cmd
 scrot_cmd="scrot -c -d 3"
 
 # Scrot dir
 # Where to save the screenshots
-# --scrotdir /path/to/screenshot/folder
+# --scrot_dir /path/to/screenshot/folder
 scrot_dir="$HOME/Pictures"
 
 # Scrot filename
 # What to name the screenshots
-# --scrot str
+# --scrot_name str
 scrot_name="fetch-%Y-%m-%d-%H:%M.png"
 
 
@@ -1102,7 +1101,7 @@ getimage () {
 }
 
 takescrot () {
-    $scrotcmd "$scrotdir/$scrotname"
+    $scrot_cmd "$scrot_dir/$scrot_name"
 }
 
 # }}}
