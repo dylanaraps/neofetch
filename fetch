@@ -83,7 +83,7 @@ printinfo () {
 
 # Use wmctrl for a more accurate
 # window manager reading
-use_wmctrl=0
+use_wmctrl="off"
 
 
 # CPU
@@ -256,23 +256,25 @@ xoffset=0
 # Other Options {{{
 
 
-# Take a screenshot
-# --scrot on/off
+# Enable screenshot on script run
+# Whether or not to always take a screenshot
+# You can manually take a screenshot with "--scrot" or "-s"
+# --enable_scrot on/off
 scrot="off"
 
 # Screenshot program to launch
 # --scrotcmd
-scrotcmd="scrot -c -d 3"
+scrot_cmd="scrot -c -d 3"
 
 # Scrot dir
 # Where to save the screenshots
 # --scrotdir /path/to/screenshot/folder
-scrotdir="$HOME/Pictures"
+scrot_dir="$HOME/Pictures"
 
 # Scrot filename
 # What to name the screenshots
 # --scrot str
-scrotname="fetch-%Y-%m-%d-%H:%M.png"
+scrot_name="fetch-%Y-%m-%d-%H:%M.png"
 
 
 # }}}
@@ -1272,9 +1274,9 @@ usage () { cat << EOF
 
     Screenshot:
     --scrot                Take a screenshot
-    --scrotdir             Directory to save the scrot
-    --scrotfile            File name of scrot
-    --scrotcmd             Screenshot program to launch
+    --scrot_cmd            Screenshot program to launch
+    --scrot_dir            Directory to save the scrot
+    --scrot_file           File name of scrot
 
     Other:
     --help                 Print this text and exit
@@ -1352,9 +1354,9 @@ while [ "$1" ]; do
 
         # Screenshot
         --scrot | -s) scrot="on" ;;
-        --scrotdir) scrot="$2" ;;
-        --scrotfile) scrot="$2" ;;
-        --scrotcmd) scrot="$2" ;;
+        --scrot_cmd) scrot_cmd="$2" ;;
+        --scrot_dir) scrot_dir="$2" ;;
+        --scrot_file) scrot_name="$2" ;;
 
         # Other
         --help) usage ;;
