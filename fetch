@@ -2,14 +2,19 @@
 # Fetch info about your system
 # https://github.com/dylanaraps/fetch
 #
+# Required Dependencies:
+#   Bash 4.0+
+#   Text formatting, dynamic image size and padding: tput
+#   [Linux / BSD / Windows] Uptime detection: procps or procps-ng
+#
+#
 # Optional Dependencies: (You'll lose these features without them)
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
-#   Wallpaper Display: feh
-#   Current Song: mpc
-#   Text formatting, dynamic image size and padding: tput
-#   Resolution detection: xorg-xdpyinfo
 #   More accurate window manager detection: wmctrl
+#   [ Linux / BSD ] Wallpaper Display: feh or nitrogen
+#   [ Linux / BSD ] Current Song: mpc or cmus
+#   [ Linux / BSD ] Resolution detection: xorg-xdpyinfo
 #
 # Created by Dylan Araps
 # https://github.com/dylanaraps/

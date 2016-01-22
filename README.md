@@ -60,31 +60,36 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 ## Dependencies
 
 
-#### Required dependencies:
+### Required dependencies:
+
+**All OS:**
 
 -  `Bash 4.0+`
 -  Text formatting, dynamic image size and padding: `tput`
+
+**Linux / BSD / Windows:**
+
 -  Uptime detection: `procps` or `procps-ng`
 
-#### Optional dependencies:
+### Optional dependencies:
 
-All OS:
+**All OS:**
 
 -  Displaying Images: `w3m`
     - You may also need `w3m-img`
     - **Note:** The script can now also use iTerm2's builtin image rendering instead of w3m!
         - Enable it by changing `image_backend` to `iterm2` or by using the launch flag `--image_backend`.
 -  Image Cropping, Resizing etc: `ImageMagick`
--  Current Song: `mpc`
--  Resolution Detection: `xorg-xdpyinfo`
 -  Window manager detection: `wmctrl`
     - This is used as a fallback to parsing `.xinitrc` and `$XDG_CURRENT_DESKTOP`.
--  Take a screenshot on script finish: `scrot`
-    - You can change this to another program with a `--scrotcmd` and an in script option.
 
-Linux | BSD:
+**Linux / BSD:**
 
 -  Display Wallpaper: `feh` or `nitrogen`
+-  Current Song: `mpc` or `cmus`
+-  Resolution Detection: `xorg-xdpyinfo`
+-  Take a screenshot on script finish: `scrot`
+    - You can change this to another program with a `--scrotcmd` and an in script option.
 
 
 <!-- }}} -->
@@ -288,9 +293,9 @@ There are a few ways to fix this.
 
 ```sh
 # In script options
-$uptime_shorthand on
-$gtk_shorthand on
-$gpu_shorthand on
+uptime_shorthand="on"
+gtk_shorthand="on"
+gpu_shorthand="on"
 
 # Launch flags
 --uptime_shorthand on
