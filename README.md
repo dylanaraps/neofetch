@@ -240,9 +240,9 @@ alias fetch2="fetch \
 
     Screenshot:
     --scrot                Take a screenshot
-    --scrotdir             Directory to save the scrot
-    --scrotfile            File name of scrot
-    --scrotcmd             Screenshot program to launch
+    --scrot_cmd            Screenshot program to launch
+    --scrot_dir            Directory to save the scrot
+    --scrot_file           File name of scrot
 
     Other:
     --help                 Print this text and exit
