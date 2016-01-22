@@ -239,10 +239,10 @@ alias fetch2="fetch \
     --clean                Remove all cropped images
 
     Screenshot:
-    --scrot                Take a screenshot
+    --scrot /path/to/img   Take a screenshot, if path is left empty
+                           the screenshot function will use
+                           \$scrot_dir and \$scrot_name.
     --scrot_cmd            Screenshot program to launch
-    --scrot_dir            Directory to save the scrot
-    --scrot_file           File name of scrot
 
     Other:
     --help                 Print this text and exit

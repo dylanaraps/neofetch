@@ -256,7 +256,6 @@ xoffset=0
 # Other Options {{{
 
 
-# Enable screenshot on script run
 # Whether or not to always take a screenshot
 # You can manually take a screenshot with "--scrot" or "-s"
 scrot="off"
@@ -1100,8 +1099,9 @@ getimage () {
     img="$imgtempdir/$imgname"
 }
 
+scrot_path="$scrot_dir/$scrot_name"
 takescrot () {
-    $scrot_cmd "$scrot_dir/$scrot_name"
+    $scrot_cmd "$scrot_path"
 }
 
 # }}}
@@ -1272,10 +1272,10 @@ usage () { cat << EOF
     --clean                Remove all cropped images
 
     Screenshot:
-    --scrot                Take a screenshot
+    --scrot /path/to/img   Take a screenshot, if path is left empty
+                           the screenshot function will use
+                           \$scrot_dir and \$scrot_name.
     --scrot_cmd            Screenshot program to launch
-    --scrot_dir            Directory to save the scrot
-    --scrot_file           File name of scrot
 
     Other:
     --help                 Print this text and exit
@@ -1352,10 +1352,9 @@ while [ "$1" ]; do
         --clean) rm -rf "$imgtempdir" || exit ;;
 
         # Screenshot
-        --scrot | -s) scrot="on" ;;
+        --scrot | -s) scrot="on"; \
+            [ "$2" ] && scrot_path="$2" ;;
         --scrot_cmd) scrot_cmd="$2" ;;
-        --scrot_dir) scrot_dir="$2" ;;
-        --scrot_file) scrot_name="$2" ;;
 
         # Other
         --help) usage ;;
