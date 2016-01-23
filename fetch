@@ -911,7 +911,7 @@ getgtk () {
         gtktheme="None"
     fi
 
-    gtktheme=${gtktheme//  /}
+    gtktheme=${gtktheme/[[:space:]]/}
 
     # Make the output shorter by removing "[GTKX]" from the string
     if [ "$gtk_shorthand" == "on" ]; then
