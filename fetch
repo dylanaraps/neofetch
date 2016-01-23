@@ -874,8 +874,15 @@ getresolution () {
 
 getgtk () {
     case "$1" in
-        theme) name="gtk-theme-name" ;;
-        icons) name="gtk-icon-theme-name" ;;
+        theme)
+            name="gtk-theme-name"
+            type="gtk"
+        ;;
+
+        icons)
+            name="gtk-icon-theme-name"
+            type="icons"
+        ;;
     esac
 
     if [ -f "$HOME/.gtkrc-2.0" ]; then
@@ -892,6 +899,9 @@ getgtk () {
         gtk3theme=${gtk3theme//\"/}
         gtk3theme="$gtk3theme"
         gtktheme="$gtk2theme $gtk3theme [GTK3]"
+    else
+        gtk3theme=$(gsettings get org.gnome.desktop.interface $type-theme 2>/dev/null)
+        gtktheme="$gtk3theme [GTK3] "
     fi
 
     if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
@@ -905,6 +915,8 @@ getgtk () {
         gtktheme=${gtktheme/ [GTK3]/}
         gtktheme=${gtktheme/ [GTK2\/\3\]/}
     fi
+
+    gtktheme=${gtktheme/\'}
 }
 
 getgtktheme () {
