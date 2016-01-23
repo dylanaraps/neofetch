@@ -561,7 +561,7 @@ getcpu () {
 
             # Get cpu speed
             case "$distro" in
-                *"buntu"* | "CentOS"*)
+                *"buntu"* | "CentOS"* | "elementary"*)
                     speed=$(awk -F ': ' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
                     speed=${speed/\./}
                 ;;
@@ -685,7 +685,7 @@ getgpu () {
                     gpu=${gpu/'Advanced Micro Devices, Inc.' }
                     gpu=${gpu/'[AMD/ATI]' }
                     gpu=${gpu/'Tahiti PRO'}
-                    gpu=${gpu/'Mars'}
+                    gpu=${gpu/'Seymour'}
                     gpu=${gpu/' ['}
                     gpu=${gpu/']'}
 
@@ -744,6 +744,7 @@ getgpu () {
         gpu=${gpu/'PRO' }
         gpu=${gpu/'OEM' }
         gpu=${gpu/'Mars' }
+        gpu=${gpu/'Series'}
         gpu=${gpu/\/*}
     fi
 }
