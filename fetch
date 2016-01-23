@@ -889,7 +889,7 @@ getgtk () {
     gtk2theme=${gtk2theme/${name}*=/}
     gtk2theme=${gtk2theme//\"/}
     gtk2theme="$gtk2theme"
-    [ "$gtktheme" ] && gtktheme="$gtk2theme [GTK2] "
+    [ "$gtk2theme" ] && gtktheme="$gtk2theme [GTK2] "
 
     # Check for gtk3 theme
     if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
@@ -902,7 +902,7 @@ getgtk () {
     gtk3theme=${gtk3theme/${name}*=/}
     gtk3theme=${gtk3theme//\"/}
     gtk3theme="$gtk3theme"
-    gtktheme="$gtk2theme $gtk3theme [GTK3]"
+    gtktheme="${gtk2theme}${gtk3theme} [GTK3]"
 
     # Check to see if gtk2 and gtk3 theme are identical
     if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
