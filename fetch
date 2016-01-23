@@ -1202,19 +1202,9 @@ usage () { cat << EOF
  usage: ${0##*/} [--colors 1 2 3 4 5] [--kernel "\$\(uname -rs\)"]
 
     Info:
-    --title string         Change the title at the top
-    --distro string/cmd    Manually set the distro
-    --kernel string/cmd    Manually set the kernel
-    --uptime string/cmd    Manually set the uptime
-    --packages string/cmd  Manually set the package count
-    --shell string/cmd     Manually set the shell
-    --winman string/cmd    Manually set the window manager
-    --cpu string/cmd       Manually set the cpu name
-    --memory string/cmd    Manually set the memory
-    --speed_type           Change the type of cpu speed to get
+    --speed_type           Change the type of cpu speed to display.
                            Possible values: current, min, max
-    --song string/cmd      Manually set the current song
-
+                           NOTE: This only support Linux with cpufreq.
     --uptime_shorthand     Shorten the output of uptime
     --gtk_shorthand on/off Shorten output of gtk theme/icons
     --gpu_shorthand on/off Shorten the output of GPU
@@ -1292,18 +1282,7 @@ exit 1
 while [ "$1" ]; do
     case $1 in
         # Info
-        --title) title="$2" ;;
-        --os) os="$2" ;;
-        --kernel) kernel="$2" ;;
-        --uptime) uptime="$2" ;;
-        --packages) packages="$2" ;;
-        --shell) shell="$2" ;;
-        --winman) windowmanager="$2" ;;
-        --cpu) cpu="$2" ;;
         --speed_type) speed_type="$2" ;;
-        --memory) memory="$2" ;;
-        --song) song="$2" ;;
-
         --uptime_shorthand) uptime_shorthand="$2" ;;
         --gtk_shorthand) gtk_shorthand="$2" ;;
         --gpu_shorthand) gpu_shorthand="$2" ;;
