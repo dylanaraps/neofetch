@@ -450,7 +450,7 @@ getpackages () {
             packages="$(xbps-query -l | wc -l)"
         ;;
 
-        "Ubuntu"* | "Mint"* | "Debian"* | "Kali Linux"* | "Deepin Linux"*)
+        "Ubuntu"* | "Mint"* | "Debian"* | "Kali Linux"* | "Deepin Linux"* | "elementary"*)
             packages="$(dpkg --get-selections | grep -v deinstall$ | wc -l)"
         ;;
 
