@@ -916,7 +916,7 @@ getgtk () {
         gtktheme=${gtktheme/ [GTK2\/\3\]/}
     fi
 
-    gtktheme=${gtktheme/\'}
+    gtktheme=${gtktheme//\'}
 }
 
 getgtktheme () {
