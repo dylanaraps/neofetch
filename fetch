@@ -874,49 +874,49 @@ getresolution () {
 
 getgtk () {
     case "$1" in
-        theme)
-            name="gtk-theme-name"
-            type="gtk"
-        ;;
-
-        icons)
-            name="gtk-icon-theme-name"
-            type="icon"
-        ;;
+        theme) name="gtk-theme-name" ;;
+        icons) name="gtk-icon-theme-name" ;;
     esac
 
+    # Check for gtk2 theme
     if [ -f "$HOME/.gtkrc-2.0" ]; then
         gtk2theme=$(grep "^[^#]*$name" $HOME/.gtkrc-2.0)
-        gtk2theme=${gtk2theme/${name}=/}
-        gtk2theme=${gtk2theme//\"/}
-        gtk2theme="$gtk2theme"
-        gtktheme="$gtk2theme [GTK2] "
+    elif [ -f "/etc/gtk-2.0/gtkrc" ]; then
+        gtk2theme=$(grep "^[^#]*$name" /etc/gtk-2.0/gtkrc)
     fi
 
+    # Format the string
+    gtk2theme=${gtk2theme/${name}=/}
+    gtk2theme=${gtk2theme//\"/}
+    gtk2theme="$gtk2theme"
+    gtktheme="$gtk2theme [GTK2] "
+
+    # Check for gtk3 theme
     if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
         gtk3theme=$(grep "^[^#]*$name" $HOME/.config/gtk-3.0/settings.ini)
-        gtk3theme=${gtk3theme/${name}=/}
-        gtk3theme=${gtk3theme//\"/}
-        gtk3theme="$gtk3theme"
-        gtktheme="$gtk2theme $gtk3theme [GTK3]"
     else
-        gtk3theme=$(gsettings get org.gnome.desktop.interface $type-theme 2>/dev/null)
-        gtktheme="$gtk3theme [GTK3] "
+        gtk3theme=$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)
     fi
 
+    # Format the string
+    gtk3theme=${gtk3theme/${name}=/}
+    gtk3theme=${gtk3theme//\"/}
+    gtk3theme="$gtk3theme"
+    gtktheme="$gtk2theme $gtk3theme [GTK3]"
+
+    # Check to see if gtk2 and gtk3 theme are identical
     if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
         gtktheme="$gtk2theme [GTK2/3]"
     elif [ -z "$gtk2theme" ] && [ -z "$gtk3theme" ]; then
         gtktheme="None"
     fi
 
+    # Make the output shorter by removing "[GTKX]" from the string
     if [ "$gtk_shorthand" == "on" ]; then
         gtktheme=${gtktheme/ [GTK2]/}
         gtktheme=${gtktheme/ [GTK3]/}
         gtktheme=${gtktheme/ [GTK2\/\3\]/}
     fi
-
-    gtktheme=${gtktheme//\'}
 }
 
 getgtktheme () {
