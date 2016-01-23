@@ -235,6 +235,8 @@ alias fetch2="fetch \
                            to the top edge of the window
     --gap num              Gap between image and text right side
                            to the top edge of the window
+                           NOTE: --gap can take a negative value which will
+                           move the text closer to the left side.
     --clean                Remove all cropped images
 
     Screenshot:
@@ -305,6 +307,12 @@ gpu_shorthand="on"
 * Edit the info array to make the subtitles shorter
 
 * Resizing the terminal so that the lines don't wrap.
+
+
+#### The text is pushed over too far to the right
+
+The easiest way to fix this is to change the value of `--gap` or `$gap`<br \>
+to a negative value. For example `--gap -10` will move the text 10 spaces to the left.
 
 
 #### getgpu doesn't show my exact video card name

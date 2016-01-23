@@ -1265,6 +1265,8 @@ usage () { cat << EOF
                            to the top edge of the window
     --gap num              Gap between image and text right side
                            to the top edge of the window
+                           NOTE: --gap can take a negative value which will
+                           move the text closer to the left side.
     --clean                Remove all cropped images
 
     Screenshot:
