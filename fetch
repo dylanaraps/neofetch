@@ -881,7 +881,7 @@ getgtk () {
 
         icons)
             name="gtk-icon-theme-name"
-            type="icons"
+            type="icon"
         ;;
     esac
 
