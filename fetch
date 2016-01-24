@@ -1054,8 +1054,19 @@ getimage () {
         return
     fi
 
-    # Get name of image and prefix it with it's crop mode and offset
-    imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}"
+    # Check to see if the image has a file extension
+    case "${img##*/}" in
+        *"."*)
+            # Get name of image and prefix it with it's crop mode and offset
+            imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}"
+        ;;
+
+        *)
+            # Add a file extension if the image doesn't have one. This
+            # fixes w3m not being able to display them.
+            imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}.jpg"
+        ;;
+    esac
 
     # Check to see if the thumbnail exists before we do any cropping.
     if [ ! -f "$imgtempdir/$imgname" ]; then
