@@ -906,13 +906,13 @@ getgtk () {
     gtk2theme=${gtk2theme//\"/}
 
     [ "$gtk2theme" ] && \
-        gtktheme="$gtk2theme [GTK2], "
+        gtk2theme="$gtk2theme [GTK2], "
 
     # Format the string
     gtk3theme=${gtk3theme/${name}*=/}
     gtk3theme=${gtk3theme//\"/}
     gtk3theme=${gtk3theme/[[:space:]]}
-    gtktheme="${gtktheme}${gtk3theme} [GTK3] "
+    gtktheme="${gtk2theme}${gtk3theme} [GTK3] "
 
     # Check to see if gtk2 and gtk3 theme are identical
     if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
