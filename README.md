@@ -175,7 +175,7 @@ alias fetch2="fetch \
 
     Info:
     --speed_type           Change the type of cpu speed to display.
-                           Possible values: current, min, max, bios
+                           Possible values: current, min, max, bios,
                            scaling_current, scaling_min, scaling_max
                            NOTE: This only support Linux with cpufreq.
     --uptime_shorthand     Shorten the output of uptime
