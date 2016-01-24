@@ -72,6 +72,7 @@ printinfo () {
     info "GTK Theme" gtktheme
     info "Icons" gtkicons
     info "CPU" cpu
+    info "GPU" gpu
     info "Memory" memory
 
     info linebreak
