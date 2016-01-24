@@ -559,7 +559,8 @@ getcpu () {
             # Get cpu name
             cpu="$(grep -F 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: /}
-            cpu=${cpu/ @*/}
+            cpu=${cpu%%  *}
+            cpu=${cpu/@*/}
 
             # Get cpu speed
             case "$distro" in
@@ -658,13 +659,14 @@ getcpu () {
 
     # Remove uneeded patterns from cpu output
     # This is faster than sed/gsub
-    cpu=${cpu//(tm)/}
-    cpu=${cpu//(TM)/}
-    cpu=${cpu//(r)/}
-    cpu=${cpu//(R)/}
-    cpu=${cpu// CPU/}
-    cpu=${cpu// Processor/}
-    cpu=${cpu// Six-Core/}
+    cpu=${cpu//'(tm)'}
+    cpu=${cpu//'(TM)'}
+    cpu=${cpu//'(r)'}
+    cpu=${cpu//'(R)'}
+    cpu=${cpu// 'CPU'}
+    cpu=${cpu// 'Processor'}
+    cpu=${cpu// 'Six-Core'}
+    cpu=${cpu// 'with Radeon HD Graphics'}
 }
 
 getgpu () {
