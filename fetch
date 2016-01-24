@@ -977,7 +977,7 @@ getvisualstyle () {
 getwallpaper () {
     case "$os" in
         "Linux" | *"BSD")
-            if type -p feh >/dev/null 2>&1; then
+            if type -p feh >/dev/null 2>&1 && [ -f "$HOME/.fehbg" ]; then
                 img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
             elif type -p nitrogen >/dev/null 2>&1; then
                 img="$(awk -F'=' '/file/ {printf $2}' "$HOME/.config/nitrogen/bg-saved.cfg")"
