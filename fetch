@@ -86,7 +86,8 @@ printinfo () {
 
 # CPU speed type
 # Only works on Linux with cpufreq.
-# --speed_type current/min/max
+# --speed_type current, min, max, bios,
+# scaling_current, scaling_min, scaling_max
 speed_type="max"
 
 
@@ -564,15 +565,24 @@ getcpu () {
 
             # Get cpu speed
             case "$distro" in
-                *"buntu"* | "CentOS"* | "elementary"*)
+                *"buntu"* | "CentOS"*)
                     speed=$(awk -F ': ' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
                     speed=${speed/\./}
                 ;;
 
                 *)
-                    speed_type=${speed_type/rent/}
+                    case "$speed_type" in
+                        current) speed_type="scaling_cur_freq" ;;
+                        min) speed_type="scaling_min_freq" ;;
+                        max) speed_type="scaling_max_freq" ;;
+                        bios) speed_type="bios_limit" ;;
+                        scaling_current) speed_type="scaling_cur_freq" ;;
+                        scaling_min) speed_type="scaling_min_freq" ;;
+                        scaling_max) speed_type="scaling_max_freq" ;;
+                    esac
+
                     read -r speed < \
-                        /sys/devices/system/cpu/cpu0/cpufreq/scaling_${speed_type}_freq
+                        /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
                 ;;
             esac
 
@@ -1242,7 +1252,8 @@ usage () { cat << EOF
 
     Info:
     --speed_type           Change the type of cpu speed to display.
-                           Possible values: current, min, max
+                           Possible values: current, min, max, bios
+                           scaling_current, scaling_min, scaling_max
                            NOTE: This only support Linux with cpufreq.
     --uptime_shorthand     Shorten the output of uptime
     --gtk_shorthand on/off Shorten output of gtk theme/icons
