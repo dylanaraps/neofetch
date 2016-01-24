@@ -1468,7 +1468,7 @@ case "$os" in
 esac
 
 # Show the cursor
-printf "\e[?25h"
+printf "\e[${prompt_height}A\e[?25h"
 
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf "\e[?7h"
