@@ -981,6 +981,10 @@ getwallpaper () {
                 img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
             elif type -p nitrogen >/dev/null 2>&1; then
                 img="$(awk -F'=' '/file/ {printf $2}' "$HOME/.config/nitrogen/bg-saved.cfg")"
+            elif type -p gsettings >/dev/null 2>&1; then
+                img="$(gsettings get org.gnome.desktop.background picture-uri 2>/dev/null)"
+                img=${img/'file://'}
+                img=${img//\'}
             fi
         ;;
 
