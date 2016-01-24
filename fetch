@@ -892,7 +892,10 @@ getgtk () {
     fi
 
     # Check for gtk3 theme
-    if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
+    if type -p gsettings >/dev/null 2>&1; then
+        gtk3theme="$(gsettings get org.gnome.desktop.interface gtk-theme)"
+        gtk3theme=${gtk3theme//\'}
+    elif [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
         gtk3theme=$(grep "^[^#]*$name" $HOME/.config/gtk-3.0/settings.ini)
     else
         gtk3theme=$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)
@@ -909,7 +912,7 @@ getgtk () {
     gtk3theme=${gtk3theme/${name}*=/}
     gtk3theme=${gtk3theme//\"/}
     gtk3theme=${gtk3theme/[[:space:]]}
-    gtktheme="${gtk2theme}${gtk3theme} [GTK3]"
+    gtktheme="${gtktheme}${gtk3theme} [GTK3]"
 
     # Check to see if gtk2 and gtk3 theme are identical
     if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
@@ -920,9 +923,9 @@ getgtk () {
 
     # Make the output shorter by removing "[GTKX]" from the string
     if [ "$gtk_shorthand" == "on" ]; then
-        gtktheme=${gtktheme/ [GTK2]/}
-        gtktheme=${gtktheme/ [GTK3]/}
-        gtktheme=${gtktheme/ [GTK2\/\3\]/}
+        gtktheme=${gtktheme/ '[GTK2]'/,}
+        gtktheme=${gtktheme/ '[GTK3]'}
+        gtktheme=${gtktheme/ '[GTK2/3]'}
     fi
 }
 
