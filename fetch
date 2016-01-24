@@ -112,6 +112,15 @@ uptime_shorthand="off"
 gtk_shorthand="off"
 
 
+# Enable/Disable gtk2 theme/icons output
+# --gtk2 on/off
+gtk2="on"
+
+# Enable/Disable gtk3 theme/icons output
+# --gtk3 on/off
+gtk3="on"
+
+
 # Color Blocks
 
 # Color block range
@@ -681,7 +690,7 @@ getcpu () {
 
 getgpu () {
    case "$os" in
-       "Linux" | "OpenBSD")
+       "Linux")
             gpu="$(lspci | grep "VGA")"
             gpu=${gpu/* VGA compatible controller: }
             gpu=${gpu/(rev*)}
@@ -929,6 +938,16 @@ getgtk () {
         gtktheme="$gtk2theme [GTK2/3]"
     elif [ -z "$gtk2theme" ] && [ -z "$gtk3theme" ]; then
         gtktheme="None"
+    fi
+
+    # Hide gtk2 from gtk theme output
+    if [ "$gtk2" == "off" ]; then
+        gtktheme=${gtktheme/*'[GTK2], '}
+    fi
+
+    # Hide gtk3 from gtk theme output
+    if [ "$gtk3" == "off" ]; then
+        gtktheme=${gtktheme/'[GTK2],'*/'[GTK2]'}
     fi
 
     # Make the output shorter by removing "[GTKX]" from the string
@@ -1256,8 +1275,10 @@ usage () { cat << EOF
                            scaling_current, scaling_min, scaling_max
                            NOTE: This only support Linux with cpufreq.
     --uptime_shorthand     Shorten the output of uptime
-    --gtk_shorthand on/off Shorten output of gtk theme/icons
     --gpu_shorthand on/off Shorten the output of GPU
+    --gtk_shorthand on/off Shorten output of gtk theme/icons
+    --gtk2 on/off          Enable/Disable gtk2 theme/icons output
+    --gtk3 on/off          Enable/Disable gtk3 theme/icons output
 
     Text Colors:
     --colors 1 2 3 4 5 6   Change the color of text
@@ -1334,8 +1355,10 @@ while [ "$1" ]; do
         # Info
         --speed_type) speed_type="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
-        --gtk_shorthand) gtk_shorthand="$2" ;;
         --gpu_shorthand) gpu_shorthand="$2" ;;
+        --gtk_shorthand) gtk_shorthand="$2" ;;
+        --gtk2) gtk2="$2" ;;
+        --gtk3) gtk3="$2" ;;
 
         # Text Colors
         --colors) title_color=$2

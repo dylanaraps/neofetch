@@ -179,8 +179,10 @@ alias fetch2="fetch \
                            scaling_current, scaling_min, scaling_max
                            NOTE: This only support Linux with cpufreq.
     --uptime_shorthand     Shorten the output of uptime
-    --gtk_shorthand on/off Shorten output of gtk theme/icons
     --gpu_shorthand on/off Shorten the output of GPU
+    --gtk_shorthand on/off Shorten output of gtk theme/icons
+    --gtk2 on/off          Enable/Disable gtk2 theme/icons output
+    --gtk3 on/off          Enable/Disable gtk3 theme/icons output
 
     Text Colors:
     --colors 1 2 3 4 5     Change the color of text
