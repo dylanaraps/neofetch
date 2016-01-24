@@ -742,13 +742,13 @@ getgpu () {
     esac
 
     if [ "$gpu_shorthand" == "on" ]; then
-        gpu=${gpu/'Rev. '?}
-        gpu=${gpu/'AMD/ATI'/AMD}
-        gpu=${gpu/'Tahiti' }
-        gpu=${gpu/'PRO' }
-        gpu=${gpu/'OEM' }
-        gpu=${gpu/'Mars' }
-        gpu=${gpu/'Series'}
+        gpu=${gpu// 'Rev. '?}
+        gpu=${gpu//'AMD/ATI'/AMD}
+        gpu=${gpu// 'Tahiti'}
+        gpu=${gpu// 'PRO'}
+        gpu=${gpu// 'OEM'}
+        gpu=${gpu// 'Mars'}
+        gpu=${gpu// 'Series'}
         gpu=${gpu/\/*}
     fi
 }
