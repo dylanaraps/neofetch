@@ -65,7 +65,6 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 **All OS:**
 
 -  `Bash 4.0+`
--  Text formatting, dynamic image size and padding: `tput`
 
 **Linux / BSD / Windows:**
 
@@ -80,8 +79,7 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
     - **Note:** The script can now also use iTerm2's builtin image rendering instead of w3m!
         - Enable it by changing `image_backend` to `iterm2` or by using the launch flag `--image_backend`.
 -  Image Cropping, Resizing etc: `ImageMagick`
--  Window manager detection: `wmctrl`
-    - This is used as a fallback to parsing `.xinitrc` and `$XDG_CURRENT_DESKTOP`.
+-  More accurate window manager detection: `wmctrl`
 
 **Linux / BSD:**
 

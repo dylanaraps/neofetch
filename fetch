@@ -1436,10 +1436,8 @@ trap 'printf "\e[?25h"; clear; exit' 2
 lines=$(tput lines)
 columns=$(tput cols)
 
-# Clear the terminal
+# Clear the terminal and hide the cursor
 clear
-
-# Hide the cursor
 printf "\e[?25l"
 
 # Get image
