@@ -269,9 +269,19 @@ or you know where it's stored then adding support won't be a problem!<br \>
 ## Issues and Workarounds
 
 
+#### The image is blank and won't show up.
+
+
+If the images display in `ranger` and `w3m` then it's an issue with my script and not<br \>
+your terminal emulator.
+
+Some terminal emulators don't support viewing images with w3m. You can either disable<br \>
+images with `--image off` at launch or `image=off` inside the script.
+
+
 #### The image is rendering with black lines in Urxvt while using an xft font.
 
-This is an issue with w3mimgdisplay and not the script. You can find a workaround here:
+This is an issue with w3mimgdisplay and not the script. You can find a possible workaround here:
 
 https://github.com/hut/ranger/issues/86#issuecomment-17346249
 
