@@ -226,6 +226,7 @@ w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 split_size=2
 
 # Image position
+# Only works with the w3m backend
 # --image_position left/right
 image_position="left"
 
@@ -911,6 +912,7 @@ getgtk () {
     # Check for gtk2 theme
     if [ -f "$HOME/.gtkrc-2.0" ]; then
         gtk2theme=$(grep "^[^#]*$name" $HOME/.gtkrc-2.0)
+
     elif [ -f "/etc/gtk-2.0/gtkrc" ]; then
         gtk2theme=$(grep "^[^#]*$name" /etc/gtk-2.0/gtkrc)
     fi
@@ -919,8 +921,10 @@ getgtk () {
     if type -p gsettings >/dev/null 2>&1; then
         gtk3theme="$(gsettings get org.gnome.desktop.interface gtk-theme)"
         gtk3theme=${gtk3theme//\'}
+
     elif [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
         gtk3theme=$(grep "^[^#]*$name" $HOME/.config/gtk-3.0/settings.ini)
+
     else
         gtk3theme=$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)
     fi
@@ -941,6 +945,7 @@ getgtk () {
     # Check to see if gtk2 and gtk3 theme are identical
     if [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
         gtktheme="$gtk2theme [GTK2/3]"
+
     elif [ -z "$gtk2theme" ] && [ -z "$gtk3theme" ]; then
         gtktheme="None"
     fi
@@ -1462,17 +1467,11 @@ colors
 bold
 
 # Move the cursor to the top and display the info
-tput cup 0
+printf "\e[0H"
 printinfo
 
-# Move the cursor to the bottom
-case "$os" in
-    "BSD") tput DO $lines ;;
-    *) tput cup $lines ;;
-esac
-
-# Show the cursor
-printf "\e[${prompt_height}A\e[?25h"
+# Move the cursor to the bottom and Show the cursor
+printf "\e[${lines}H\e[${prompt_height}A\e[?25h"
 
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf "\e[?7h"
