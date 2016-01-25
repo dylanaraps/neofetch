@@ -1317,7 +1317,7 @@ usage () { cat << EOF
     Image:
     --image                Image source. Where and what image we display.
                            Possible values: wall, shuffle, /path/to/img, off
-    --image_backend          Which program to use to draw images.
+    --image_backend        Which program to use to draw images.
     --shuffledir           Which directory to shuffle for an image.
     --font_width px        Used to automatically size the image
     --image_position       Where to display the image: (Left/Right)
@@ -1332,8 +1332,10 @@ usage () { cat << EOF
 
     --xoffset px           How close the image will be
                            to the left edge of the window
+                           NOTE: This only works with w3m
     --yoffset px           How close the image will be
                            to the top edge of the window
+                           NOTE: This only works with w3m
     --gap num              Gap between image and text right side
                            to the top edge of the window
                            NOTE: --gap can take a negative value which will

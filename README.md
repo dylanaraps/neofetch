@@ -77,7 +77,7 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 -  Displaying Images: `w3m`
     - You may also need `w3m-img`
     - **Note:** The script can now also use iTerm2's builtin image rendering instead of w3m!
-        - Enable it by changing `image_backend` to `iterm2` or by using the launch flag `--image_backend`.
+        - Enable it by changing `$image_backend` to `iterm2` or by using the launch flag `--image_backend`.
 -  Image Cropping, Resizing etc: `ImageMagick`
 -  More accurate window manager detection: `wmctrl`
 
@@ -183,9 +183,10 @@ alias fetch2="fetch \
     --gtk3 on/off          Enable/Disable gtk3 theme/icons output
 
     Text Colors:
-    --colors 1 2 3 4 5     Change the color of text
-                           (title, subtitle, colon, underline, info)
+    --colors 1 2 3 4 5 6   Change the color of text
+                           (title, @, subtitle, colon, underline, info)
     --title_color num      Change the color of the title
+    --at_color num         Change the color of "@" in title
     --subtitle_color num   Change the color of the subtitle
     --colon_color num      Change the color of the colons
     --underline_color num  Change the color of the underlines
@@ -208,6 +209,7 @@ alias fetch2="fetch \
     Image:
     --image                Image source. Where and what image we display.
                            Possible values: wall, shuffle, /path/to/img, off
+    --image_backend        Which program to use to draw images.
     --shuffledir           Which directory to shuffle for an image.
     --font_width px        Used to automatically size the image
     --image_position       Where to display the image: (Left/Right)
@@ -222,8 +224,10 @@ alias fetch2="fetch \
 
     --xoffset px           How close the image will be
                            to the left edge of the window
+                           NOTE: This only works with w3m
     --yoffset px           How close the image will be
                            to the top edge of the window
+                           NOTE: This only works with w3m
     --gap num              Gap between image and text right side
                            to the top edge of the window
                            NOTE: --gap can take a negative value which will
@@ -288,7 +292,7 @@ https://github.com/hut/ranger/issues/86#issuecomment-17346249
 
 There are a few ways to fix this.
 
-* Disable line wrapping with `$line_wrap off` in the script or with the launch flag `--line_wrap off`
+* Disable line wrapping with `line_wrap=off` in the script or with the launch flag `--line_wrap off`
 
 * The uptime and gtk info lines each have a shorthand option that makes their output smaller. You can <br \>
   enable them by changing these variables or using these flags.
