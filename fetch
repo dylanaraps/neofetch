@@ -146,7 +146,6 @@ block_width=3
 
 # }}}
 
-
 # Text Colors {{{
 # --colors 1 2 3 4 5
 
@@ -172,7 +171,6 @@ info_color=6
 
 
 # }}}
-
 
 # Text Options {{{
 
@@ -201,7 +199,6 @@ prompt_height=1
 
 
 # }}}
-
 
 # Image Options {{{
 
@@ -266,7 +263,6 @@ xoffset=0
 
 # }}}
 
-
 # Other Options {{{
 
 
@@ -298,7 +294,8 @@ scrot_name="fetch-%Y-%m-%d-%H:%M.png"
 # Gather Info {{{
 
 
-# Get Operating System Type
+# Operating System {{{
+
 case "$(uname)" in
     "Linux")
         os="Linux"
@@ -326,7 +323,10 @@ case "$(uname)" in
     ;;
 esac
 
-# Get Distro
+# }}}
+
+# Distro {{{
+
 case "$os" in
     "Linux" )
         if type -p crux >/dev/null 2>&1; then
@@ -390,17 +390,26 @@ case "$os" in
     ;;
 esac
 
-# Get Title
+# }}}
+
+# Title {{{
+
 gettitle () {
     title="${USER}@$(hostname)"
 }
 
-# Get kernel version
+# }}}
+
+# Kernel {{{
+
 getkernel() {
     kernel="$(uname -r)"
 }
 
-# Get uptime
+# }}}
+
+# Uptime {{{
+
 getuptime () {
     case "$os" in
         "Linux")
@@ -474,7 +483,10 @@ getuptime () {
     esac
 }
 
-# Get package count
+# }}}
+
+# Package Count {{{
+
 getpackages () {
     case "$distro" in
         "Arch Linux"* | "Parabola GNU/Linux-libre"* | "Manjaro"* | "Antergos"*)
@@ -547,12 +559,18 @@ getpackages () {
     packages=${packages// }
 }
 
-# Get shell
+# }}}
+
+# Shell {{{
+
 getshell () {
     shell="$SHELL"
 }
 
-# Get window manager
+# }}}
+
+# Window Manager {{{
+
 getwindowmanager () {
     if type -p wmctrl >/dev/null 2>&1; then
         windowmanager="$(wmctrl -m | head -n1)"
@@ -585,7 +603,10 @@ getwindowmanager () {
     fi
 }
 
-# Get cpu
+# }}}
+
+# CPU {{{
+
 getcpu () {
     case "$os" in
         "Linux")
@@ -708,6 +729,10 @@ getcpu () {
     cpu=${cpu// with Radeon HD Graphics}
 }
 
+# }}}
+
+# GPU {{{
+
 getgpu () {
    case "$os" in
        "Linux")
@@ -800,7 +825,10 @@ getgpu () {
     fi
 }
 
-# Get memory
+# }}}
+
+# Memory {{{
+
 getmemory () {
     case "$os" in
         "Linux")
@@ -888,7 +916,10 @@ getmemory () {
     esac
 }
 
-# Get song
+# }}}
+
+# Song {{{
+
 getsong () {
     if type -p mpc >/dev/null 2>&1; then
         song="$(mpc current)"
@@ -904,7 +935,10 @@ getsong () {
     fi
 }
 
-# Get Resolution
+# }}}
+
+# Resolution {{{
+
 getresolution () {
     case "$os" in
         "Linux" | *"BSD")
@@ -919,6 +953,10 @@ getresolution () {
 
     [ -z "$resolution" ] && resolution="Unknown"
 }
+
+# }}}
+
+# GTK Theme/Icons/Font {{{
 
 getgtk () {
     case "$1" in
@@ -1011,6 +1049,10 @@ getgtkfont () {
     gtkfont="$gtktheme"
 }
 
+# }}}
+
+# Disk Usage {{{
+
 getdisk () {
     # df flags
     case "$os" in
@@ -1038,6 +1080,10 @@ getdisk () {
     disk="${disk_used} / ${disk_total} (${disk_total_per})"
 }
 
+# }}}
+
+# Terminal colors {{{
+
 getcols () {
     if [ "$color_blocks" == "on" ]; then
         printf "${padding}%s"
@@ -1055,8 +1101,9 @@ getcols () {
     fi
 }
 
+# }}}
 
-# Windows Specific Functions
+# Windows Specific Functions {{{
 
 getvisualstyle () {
     case "$os" in
@@ -1075,12 +1122,16 @@ getvisualstyle () {
     esac
 }
 
+# }}}
+
 
 # }}}
 
 
 # Images {{{
 
+
+# Wallpaper {{{
 
 getwallpaper () {
     case "$os" in
@@ -1119,10 +1170,18 @@ getwallpaper () {
     esac
 }
 
+# }}}
+
+# Shuffle {{{
+
 getshuffle () {
     img=$(find "$shuffledir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
     shuf -n1 -z)
 }
+
+# }}}
+
+# Image {{{
 
 getimage () {
     # Make the directory if it doesn't exist
@@ -1243,8 +1302,13 @@ takescrot () {
 # }}}
 
 
+# }}}
+
+
 # Text Formatting {{{
 
+
+# Info {{{
 
 info () {
     # Call the function and update variable
@@ -1281,6 +1345,10 @@ info () {
     printf "%b%s\n" "${padding}${string}${clear}"
 }
 
+# }}}
+
+# Prin {{{
+
 prin () {
     case "$1" in
         *:*)
@@ -1301,10 +1369,18 @@ prin () {
     printf "%b%s\n" "${padding}${string}${clear}"
 }
 
+# }}}
+
+# Underline {{{
+
 getunderline () {
     underline=$(printf %"$length"s)
     underline=${underline// /$underline_char}
 }
+
+# }}}
+
+# Colors {{{
 
 colors () {
     title_color="\e[38;5;${title_color}m"
@@ -1319,6 +1395,10 @@ color () {
    printf "%b%s" "\e[38;5;${1}m"
 }
 
+# }}}
+
+# Bold {{{
+
 bold () {
     if [ "$bold" == "on" ]; then
         bold="\e[1m"
@@ -1326,6 +1406,9 @@ bold () {
         bold=""
     fi
 }
+
+# }}}
+
 
 clear="\e[0m"
 
