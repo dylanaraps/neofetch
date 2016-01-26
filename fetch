@@ -1011,7 +1011,8 @@ getdisk () {
         case "$os" in
             "Linux") df_flags="-h --total" ;;
             "Mac OS X") df_flags="-H /" ;;
-            *"BSD") df_flags="-h -c" ;;
+            "FreeBSD") df_flags="-h -c" ;;
+            *) disk="Unknown"; return ;;
         esac
 
         # Get the disk info
