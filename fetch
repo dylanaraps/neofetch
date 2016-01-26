@@ -715,7 +715,7 @@ getgpu () {
                     gpu=${gpu/'Intel Corporation' }
                     gpu=${gpu/'Haswell-'??? }
 
-                    brand="Intel"
+                    brand="Intel "
                 ;;
 
                 advanced*)
@@ -726,7 +726,7 @@ getgpu () {
                     gpu=${gpu/' ['}
                     gpu=${gpu/']'}
 
-                    brand="AMD"
+                    brand="AMD "
                 ;;
 
                 nvidia*)
@@ -737,11 +737,15 @@ getgpu () {
                     gpu=${gpu/'['}
                     gpu=${gpu/']'}
 
-                    brand="Nvidia"
+                    brand="Nvidia "
+                ;;
+
+                *virtualbox*)
+                    gpu="VirtualBox Graphics Adapter"
                 ;;
             esac
 
-            gpu="$brand $gpu"
+            gpu="${brand}${gpu}"
         ;;
 
         "Mac OS X")
