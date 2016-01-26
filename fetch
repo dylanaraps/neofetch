@@ -1015,7 +1015,7 @@ getdisk () {
         esac
 
         # Get the disk info
-        disk=$(df $df_flags 2>/dev/null | awk '/total/ {printf $2 ":" $3 ":" $5}')
+        disk=$(df $df_flags 2>/dev/null | awk '/total/ {print $2 ":" $3 ":" $5}')
 
         # Format the output
         disk_used=${disk#*:}
