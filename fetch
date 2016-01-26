@@ -328,7 +328,7 @@ case "$os" in
 
         elif type -p lsb_release >/dev/null 2>&1; then
             distro="$(lsb_release -a 2>/dev/null | awk -F':' '/Description/ {printf $2}')"
-            distro=${distro/[[:space:]]/}
+            distro=${distro/[[:space:]]}
 
         else
             distro="$(grep -h '^NAME=' /etc/*ease)"
@@ -404,7 +404,7 @@ getuptime () {
         "Mac OS X" | *"BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
-            boot="${boot/{ sec = /}"
+            boot="${boot/{ sec = }"
             boot=${boot/,*}
 
             # Get current date in seconds
@@ -418,20 +418,20 @@ getuptime () {
 
             case "$mins" in
                 0) ;;
-                1) uptime="up ${mins} minute" ;;
-                *) uptime="up ${mins} minutes" ;;
+                1) uptime="up $mins minute" ;;
+                *) uptime="up $mins minutes" ;;
             esac
 
             case "$hours" in
                 0) ;;
-                1) uptime="up ${hours} hour, ${uptime/up /}" ;;
-                *) uptime="up ${hours} hours, ${uptime/up /}" ;;
+                1) uptime="up $hours hour, ${uptime/up }" ;;
+                *) uptime="up $hours hours, ${uptime/up }" ;;
             esac
 
             case "$days" in
                 0) ;;
-                1) uptime="up ${days} day, ${uptime/up /}" ;;
-                *) uptime="up ${days} days, ${uptime/up /}" ;;
+                1) uptime="up $days day, ${uptime/up }" ;;
+                *) uptime="up $days days, ${uptime/up }" ;;
             esac
         ;;
 
@@ -448,21 +448,21 @@ getuptime () {
 
     case "$uptime_shorthand" in
         "on")
-            uptime=${uptime/up/}
+            uptime=${uptime/up}
             uptime=${uptime/minutes/mins}
             uptime=${uptime/minute/min}
             uptime=${uptime# }
         ;;
 
         "tiny")
-            uptime=${uptime/'up'/}
-            uptime=${uptime/' days'/'d'}
-            uptime=${uptime/' day'/'d'}
-            uptime=${uptime/' hours'/'h'}
-            uptime=${uptime/' hour'/'h'}
-            uptime=${uptime/' minutes'/'m'}
-            uptime=${uptime/' minute'/'m'}
-            uptime=${uptime/','}
+            uptime=${uptime/up}
+            uptime=${uptime/ days/d}
+            uptime=${uptime/ day/d}
+            uptime=${uptime/ hours/h}
+            uptime=${uptime/ hour/h}
+            uptime=${uptime/ minutes/m}
+            uptime=${uptime/ minute/m}
+            uptime=${uptime/,}
             uptime=${uptime# }
         ;;
     esac
@@ -550,15 +550,15 @@ getshell () {
 getwindowmanager () {
     if type -p wmctrl >/dev/null 2>&1; then
         windowmanager="$(wmctrl -m | head -n1)"
-        windowmanager=${windowmanager/Name: /}
+        windowmanager=${windowmanager/Name: }
 
     elif [ "$XDG_CURRENT_DESKTOP" ]; then
         windowmanager="$XDG_CURRENT_DESKTOP"
 
     elif [ -e "$HOME/.xinitrc" ]; then
         xinitrc=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
-        windowmanager="${xinitrc/exec /}"
-        windowmanager="${windowmanager/-session/}"
+        windowmanager="${xinitrc/exec }"
+        windowmanager="${windowmanager/-session}"
         windowmanager="${windowmanager^}"
 
     else
@@ -585,9 +585,9 @@ getcpu () {
         "Linux")
             # Get cpu name
             cpu="$(grep -F 'model name' /proc/cpuinfo)"
-            cpu=${cpu/model name*: /}
+            cpu=${cpu/model name*: }
             cpu=${cpu%%  *}
-            cpu=${cpu/@*/}
+            cpu=${cpu/@*}
 
             # Get cpu speed
             if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
@@ -606,7 +606,7 @@ getcpu () {
 
             else
                 speed=$(awk -F ': ' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
-                speed=${speed/\./}
+                speed=${speed/\.}
             fi
 
             # Convert mhz to ghz without bc
@@ -625,8 +625,8 @@ getcpu () {
                 "OpenBSD")
                     # Get cpu name
                     cpu="$(sysctl -n hw.model)"
-                    cpu=${cpu/ @*/}
-                    cpu=${cpu//  /}
+                    cpu=${cpu/ @*}
+                    cpu=${cpu//  }
                     cpu=${cpu% }
 
                     # Get cpu speed
@@ -637,8 +637,8 @@ getcpu () {
                 "FreeBSD")
                     # Get cpu name
                     cpu="$(sysctl -n hw.model)"
-                    cpu=${cpu/ @*/}
-                    cpu=${cpu//  /}
+                    cpu=${cpu/ @*}
+                    cpu=${cpu//  }
                     cpu=${cpu% }
 
                     # Get cpu speed
@@ -649,15 +649,15 @@ getcpu () {
                 "NetBSD")
                     # Get cpu name
                     cpu="$(grep -F 'model name' /proc/cpuinfo)"
-                    cpu=${cpu/model name*: /}
-                    cpu=${cpu/ @*/}
-                    cpu=${cpu//  /}
+                    cpu=${cpu/model name*: }
+                    cpu=${cpu/ @*}
+                    cpu=${cpu//  }
                     cpu=${cpu% }
 
                     # Get cpu speed
                     speed="$(grep -F 'cpu MHz' /proc/cpuinfo)"
-                    speed=${speed/cpu MHz*: /}
-                    speed=${speed/\./}
+                    speed=${speed/cpu MHz*: }
+                    speed=${speed/\.}
                     speed=$((speed / 10000))
                 ;;
             esac
@@ -669,15 +669,15 @@ getcpu () {
         "Windows")
             # Get cpu name
             cpu="$(grep -F 'model name' /proc/cpuinfo)"
-            cpu=${cpu/model name*: /}
-            cpu=${cpu/ @*/}
-            cpu=${cpu//  /}
+            cpu=${cpu/model name*: }
+            cpu=${cpu/ @*}
+            cpu=${cpu//  }
             cpu=${cpu% }
 
             # Get cpu speed
             speed=$(grep -F 'cpu MHz' /proc/cpuinfo)
-            speed=${speed/cpu MHz*: /}
-            speed=${speed/\./}
+            speed=${speed/cpu MHz*: }
+            speed=${speed/\.}
 
             # Convert mhz to ghz without bc
             speed=$((speed / 100000))
@@ -692,14 +692,14 @@ getcpu () {
 
     # Remove uneeded patterns from cpu output
     # This is faster than sed/gsub
-    cpu=${cpu//'(tm)'}
-    cpu=${cpu//'(TM)'}
-    cpu=${cpu//'(r)'}
-    cpu=${cpu//'(R)'}
-    cpu=${cpu// 'CPU'}
-    cpu=${cpu// 'Processor'}
-    cpu=${cpu// 'Six-Core'}
-    cpu=${cpu// 'with Radeon HD Graphics'}
+    cpu=${cpu//(tm)}
+    cpu=${cpu//(TM)}
+    cpu=${cpu//(r)}
+    cpu=${cpu//(R)}
+    cpu=${cpu// CPU}
+    cpu=${cpu// Processor}
+    cpu=${cpu// Six-Core}
+    cpu=${cpu// with Radeon HD Graphics}
 }
 
 getgpu () {
@@ -712,30 +712,30 @@ getgpu () {
             shopt -s nocasematch
             case "$gpu" in
                 intel*)
-                    gpu=${gpu/'Intel Corporation' }
-                    gpu=${gpu/'Haswell-'??? }
+                    gpu=${gpu/Intel Corporation }
+                    gpu=${gpu/Haswell-??? }
 
                     brand="Intel "
                 ;;
 
                 advanced*)
-                    gpu=${gpu/'Advanced Micro Devices, Inc.' }
+                    gpu=${gpu/Advanced Micro Devices, Inc\. }
                     gpu=${gpu/'[AMD/ATI]' }
-                    gpu=${gpu/'Tahiti PRO'}
-                    gpu=${gpu/'Seymour'}
-                    gpu=${gpu/' ['}
-                    gpu=${gpu/']'}
+                    gpu=${gpu/Tahiti PRO}
+                    gpu=${gpu/Seymour}
+                    gpu=${gpu/ \[}
+                    gpu=${gpu/\]}
 
                     brand="AMD "
                 ;;
 
                 nvidia*)
-                    gpu=${gpu/'NVIDIA Corporation' }
-                    gpu=${gpu/'nVidia Corporation' }
+                    gpu=${gpu/NVIDIA Corporation }
+                    gpu=${gpu/nVidia Corporation }
                     gpu=${gpu/G????M }
                     gpu=${gpu/G???? }
-                    gpu=${gpu/'['}
-                    gpu=${gpu/']'}
+                    gpu=${gpu/\[}
+                    gpu=${gpu/\]}
 
                     brand="Nvidia "
                 ;;
@@ -761,10 +761,10 @@ getgpu () {
             case "$distro" in
                 "FreeBSD")
                     gpu=$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")
-                    gpu=${gpu/device*= /}
-                    gpu=${gpu//\'/}
+                    gpu=${gpu/device*= }
+                    gpu=${gpu//\'}
                     gpu=${gpu//[[:space:]]/ }
-                    gpu=${gpu//  /}
+                    gpu=${gpu//  }
                 ;;
 
                 *)
@@ -776,20 +776,20 @@ getgpu () {
 
         "Windows")
             gpu=$(wmic path Win32_VideoController get caption)
-            gpu=${gpu/Caption /}
+            gpu=${gpu/Caption }
             gpu=${gpu//[[:space:]]/ }
-            gpu=${gpu//  /}
+            gpu=${gpu//  }
         ;;
     esac
 
     if [ "$gpu_shorthand" == "on" ]; then
-        gpu=${gpu// 'Rev. '?}
-        gpu=${gpu//'AMD/ATI'/AMD}
-        gpu=${gpu// 'Tahiti'}
-        gpu=${gpu// 'PRO'}
-        gpu=${gpu// 'OEM'}
-        gpu=${gpu// 'Mars'}
-        gpu=${gpu// 'Series'}
+        gpu=${gpu// Rev\. ?}
+        gpu=${gpu//AMD\/ATI/AMD}
+        gpu=${gpu// Tahiti}
+        gpu=${gpu// PRO}
+        gpu=${gpu// OEM}
+        gpu=${gpu// Mars}
+        gpu=${gpu// Series}
         gpu=${gpu/\/*}
     fi
 }
@@ -806,10 +806,10 @@ getmemory () {
             exec 6<&-
 
             # Do some substitution on each line
-            memtotal=${memtotal/MemTotal:/}
-            memtotal=${memtotal/kB*/}
-            memavail=${memavail/MemAvailable:/}
-            memavail=${memavail/kB*/}
+            memtotal=${memtotal/MemTotal:}
+            memtotal=${memtotal/kB*}
+            memavail=${memavail/MemAvailable:}
+            memavail=${memavail/kB*}
 
             memused=$((memtotal - memavail))
             memory="$((memused / 1024))MB / $((memtotal / 1024))MB"
@@ -827,11 +827,11 @@ getmemory () {
             case "$distro" in
                 "OpenBSD")
                     memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-                    memtotal=${memtotal/\(/}
-                    memtotal=${memtotal/MB\)/}
+                    memtotal=${memtotal/\(}
+                    memtotal=${memtotal/MB\)}
 
                     memfree=$(top -d 1 | awk '/Real:/ {printf $6}')
-                    memfree=${memfree/M/}
+                    memfree=${memfree/M}
 
                     memused=$((memtotal - memfree))
                     memory="${memused}MB / ${memtotal}MB"
@@ -839,11 +839,11 @@ getmemory () {
 
                 "FreeBSD")
                     memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-                    memtotal=${memtotal/\(/}
-                    memtotal=${memtotal/MB\)/}
+                    memtotal=${memtotal/\(}
+                    memtotal=${memtotal/MB\)}
 
                     memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
-                    memfree=${memfree/M/}
+                    memfree=${memfree/M}
 
                     memused=$((memtotal - memfree))
                     memory="${memused}MB / ${memtotal}MB"
@@ -953,15 +953,15 @@ getgtk () {
     fi
 
     # Format the strings
-    gtk2theme=${gtk2theme/${name}*=/}
-    gtk2theme=${gtk2theme//\"/}
+    gtk2theme=${gtk2theme/${name}*=}
+    gtk2theme=${gtk2theme//\"}
 
     [ "$gtk2theme" ] && \
         gtk2theme="$gtk2theme [GTK2], "
 
     # Format the string
-    gtk3theme=${gtk3theme/${name}*=/}
-    gtk3theme=${gtk3theme//\"/}
+    gtk3theme=${gtk3theme/${name}*=}
+    gtk3theme=${gtk3theme//\"}
     gtk3theme=${gtk3theme/[[:space:]]/ }
     gtktheme="${gtk2theme}${gtk3theme} [GTK3] "
 
