@@ -52,10 +52,10 @@ export LANGUAGE=C
 # Info functions enabled by default are:
 # "title" "distro" "kernel" "uptime" "packages"
 # "shell" "resolution" "windowmanager" "gtktheme"
-# "gtkicons" "cpu" "memory" "cols"
+# "gtkicons" "cpu" "gpu" "memory" "cols"
 #
 # Info functions that are disabled by default are:
-# "resolution" "song" "visualstyle" "gpu"
+# "resolution" "song" "visualstyle" "font"
 #
 # See this wiki page for more info:
 # https://github.com/dylanaraps/fetch/wiki/Customizing-Info
@@ -800,20 +800,15 @@ getmemory () {
             # Read first 3 lines
             exec 6< /proc/meminfo
             read -r memtotal <&6
-            read -r memfree <&6
+            read -r memfree <&6 # We don't actually use this var
             read -r memavail <&6
             exec 6<&-
 
             # Do some substitution on each line
             memtotal=${memtotal/MemTotal:/}
             memtotal=${memtotal/kB*/}
-            memtotal=${memtotal// /}
-            memfree=${memfree/MemFree:/}
-            memfree=${memfree/kB*/}
-            memfree=${memfree// /}
             memavail=${memavail/MemAvailable:/}
             memavail=${memavail/kB*/}
-            memavail=${memavail// /}
 
             memused=$((memtotal - memavail))
             memory="$((memused / 1024))MB / $((memtotal / 1024))MB"
@@ -920,8 +915,20 @@ getresolution () {
 
 getgtk () {
     case "$1" in
-        theme) name="gtk-theme-name" ;;
-        icons) name="gtk-icon-theme-name" ;;
+        theme)
+            name="gtk-theme-name"
+            gsettings="gtk-theme"
+        ;;
+
+        icons)
+            name="gtk-icon-theme-name"
+            gsettings="icon-theme"
+        ;;
+
+        font)
+            name="gtk-font-name"
+            gsettings="font-name"
+        ;;
     esac
 
     # Check for gtk2 theme
@@ -934,7 +941,7 @@ getgtk () {
 
     # Check for gtk3 theme
     if type -p gsettings >/dev/null 2>&1; then
-        gtk3theme="$(gsettings get org.gnome.desktop.interface gtk-theme)"
+        gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
         gtk3theme=${gtk3theme//\'}
 
     elif [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
@@ -954,7 +961,7 @@ getgtk () {
     # Format the string
     gtk3theme=${gtk3theme/${name}*=/}
     gtk3theme=${gtk3theme//\"/}
-    gtk3theme=${gtk3theme/[[:space:]]}
+    gtk3theme=${gtk3theme/[[:space:]]/ }
     gtktheme="${gtk2theme}${gtk3theme} [GTK3] "
 
     # Check to see if gtk2 and gtk3 theme are identical
@@ -990,6 +997,11 @@ getgtktheme () {
 getgtkicons () {
     getgtk icons
     gtkicons="$gtktheme"
+}
+
+getgtkfont () {
+    getgtk font
+    gtkfont="$gtktheme"
 }
 
 getcols () {
