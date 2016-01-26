@@ -1012,32 +1012,30 @@ getgtkfont () {
 }
 
 getdisk () {
-    if type -p df >/dev/null 2>&1; then
-        # df flags
-        case "$os" in
-            "Linux" | "Windows") df_flags="-h --total" ;;
-            "Mac OS X") df_flags="-H /" ;;
+    # df flags
+    case "$os" in
+        "Linux" | "Windows") df_flags="-h --total" ;;
+        "Mac OS X") df_flags="-H /" ;;
 
-            *"BSD")
-                case "$os" in
-                    "FreeBSD") df_flags="-h -c" ;;
-                    *) disk="Unknown"; return ;;
-                esac
-            ;;
-        esac
+        *"BSD")
+            case "$os" in
+                "FreeBSD") df_flags="-h -c" ;;
+                *) disk="Unknown"; return ;;
+            esac
+        ;;
+    esac
 
-        # Get the disk info
-        disk=$(df $df_flags 2>/dev/null | awk 'END{print $2 ":" $3 ":" $5}')
+    # Get the disk info
+    disk=$(df $df_flags 2>/dev/null | awk 'END{print $2 ":" $3 ":" $5}')
 
-        # Format the output
-        disk_used=${disk#*:}
-        disk_used=${disk_used%%:*}
-        disk_total=${disk%%:*}
-        disk_total_per=${disk#*:*:}
+    # Format the output
+    disk_used=${disk#*:}
+    disk_used=${disk_used%%:*}
+    disk_total=${disk%%:*}
+    disk_total_per=${disk#*:*:}
 
-        # Put it all together
-        disk="${disk_used} / ${disk_total} (${disk_total_per})"
-    fi
+    # Put it all together
+    disk="${disk_used} / ${disk_total} (${disk_total_per})"
 }
 
 getcols () {
