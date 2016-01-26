@@ -75,6 +75,12 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
+    # info "Font" font
+    # info "Disk" disk
+    # info "Resolution" resolution
+    # info "Song" song
+    # info "Visual Style" visualstyle
+
     info linebreak
     info cols
 }
