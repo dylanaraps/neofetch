@@ -55,7 +55,7 @@ export LANGUAGE=C
 # "gtkicons" "cpu" "gpu" "memory" "cols"
 #
 # Info functions that are disabled by default are:
-# "resolution" "song" "visualstyle" "font"
+# "resolution" "song" "visualstyle" "font" "disk"
 #
 # See this wiki page for more info:
 # https://github.com/dylanaraps/fetch/wiki/Customizing-Info
@@ -705,7 +705,7 @@ getcpu () {
 getgpu () {
    case "$os" in
        "Linux")
-            gpu="$(lspci | grep "VGA")"
+            gpu="$(lspci | grep -F "VGA")"
             gpu=${gpu/* VGA compatible controller: }
             gpu=${gpu/(rev*)}
 
@@ -1003,6 +1003,29 @@ getgtkicons () {
 getgtkfont () {
     getgtk font
     gtkfont="$gtktheme"
+}
+
+getdisk () {
+    if type -p df >/dev/null 2>&1; then
+        # df flags
+        case "$os" in
+            "Linux") df_flags="-h --total" ;;
+            "Mac OS X") df_flags="-H /" ;;
+            *"BSD") df_flags="-h -c" ;;
+        esac
+
+        # Get the disk info
+        disk=$(df $df_flags 2>/dev/null | awk '/total/ {printf $2 ":" $3 ":" $5}')
+
+        # Format the output
+        disk_used=${disk#*:}
+        disk_used=${disk_used%%:*}
+        disk_total=${disk%%:*}
+        disk_total_per=${disk#*:*:}
+
+        # Put it all together
+        disk="${disk_used} / ${disk_total} (${disk_total_per})"
+    fi
 }
 
 getcols () {
