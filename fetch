@@ -1009,10 +1009,15 @@ getdisk () {
     if type -p df >/dev/null 2>&1; then
         # df flags
         case "$os" in
-            "Linux") df_flags="-h --total" ;;
+            "Linux" | "Windows") df_flags="-h --total" ;;
             "Mac OS X") df_flags="-H /" ;;
-            "FreeBSD") df_flags="-h -c" ;;
-            *) disk="Unknown"; return ;;
+
+            *"BSD")
+                case "$os" in
+                    "FreeBSD") df_flags="-h -c" ;;
+                    *) disk="Unknown"; return ;;
+                esac
+            ;;
         esac
 
         # Get the disk info
