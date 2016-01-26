@@ -176,7 +176,7 @@ alias fetch2="fetch \
                            Possible values: current, min, max, bios,
                            scaling_current, scaling_min, scaling_max
                            NOTE: This only support Linux with cpufreq.
-    --uptime_shorthand     Shorten the output of uptime
+    --uptime_shorthand     Shorten the output of uptime (tiny, on, off)
     --gpu_shorthand on/off Shorten the output of GPU
     --gtk_shorthand on/off Shorten output of gtk theme/icons
     --gtk2 on/off          Enable/Disable gtk2 theme/icons output

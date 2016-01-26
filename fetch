@@ -102,7 +102,7 @@ gpu_shorthand="off"
 # Uptime
 
 # Shorten the output of the uptime function
-# --uptime_shorthand on/off
+# --uptime_shorthand tiny, on, off
 uptime_shorthand="off"
 
 
@@ -446,11 +446,26 @@ getuptime () {
 
     esac
 
-    if [ "$uptime_shorthand" == "on" ]; then
-        uptime=${uptime/up/}
-        uptime=${uptime/minutes/mins}
-        uptime=${uptime# }
-    fi
+    case "$uptime_shorthand" in
+        "on")
+            uptime=${uptime/up/}
+            uptime=${uptime/minutes/mins}
+            uptime=${uptime/minute/min}
+            uptime=${uptime# }
+        ;;
+
+        "tiny")
+            uptime=${uptime/'up'/}
+            uptime=${uptime/' days'/'d'}
+            uptime=${uptime/' day'/'d'}
+            uptime=${uptime/' hours'/'h'}
+            uptime=${uptime/' hour'/'h'}
+            uptime=${uptime/' minutes'/'m'}
+            uptime=${uptime/' minute'/'m'}
+            uptime=${uptime/','}
+            uptime=${uptime# }
+        ;;
+    esac
 }
 
 # Get package count
@@ -1284,7 +1299,7 @@ usage () { cat << EOF
                            Possible values: current, min, max, bios,
                            scaling_current, scaling_min, scaling_max
                            NOTE: This only support Linux with cpufreq.
-    --uptime_shorthand     Shorten the output of uptime
+    --uptime_shorthand     Shorten the output of uptime (tiny, on, off)
     --gpu_shorthand on/off Shorten the output of GPU
     --gtk_shorthand on/off Shorten output of gtk theme/icons
     --gtk2 on/off          Enable/Disable gtk2 theme/icons output
