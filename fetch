@@ -480,7 +480,7 @@ getpackages () {
         ;;
 
         "Ubuntu"* | "Mint"* | "Debian"* | "Kali Linux"* | "Deepin Linux"* | "elementary"*)
-            packages="$(dpkg --get-selections | grep -v deinstall$ | wc -l)"
+            packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
         "Slackware"*)
@@ -934,7 +934,7 @@ getgtk () {
 
     # Check for gtk2 theme
     if [ -f "$HOME/.gtkrc-2.0" ]; then
-        gtk2theme=$(grep "^[^#]*$name" $HOME/.gtkrc-2.0)
+        gtk2theme=$(grep "^[^#]*$name" "$HOME/.gtkrc-2.0")
 
     elif [ -f "/etc/gtk-2.0/gtkrc" ]; then
         gtk2theme=$(grep "^[^#]*$name" /etc/gtk-2.0/gtkrc)
@@ -946,7 +946,7 @@ getgtk () {
         gtk3theme=${gtk3theme//\'}
 
     elif [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
-        gtk3theme=$(grep "^[^#]*$name" $HOME/.config/gtk-3.0/settings.ini)
+        gtk3theme=$(grep "^[^#]*$name" "$HOME/.config/gtk-3.0/settings.ini")
 
     else
         gtk3theme=$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)
@@ -1155,7 +1155,7 @@ getimage () {
 
         # This checks to see if height is geater than width
         # so we can do a better crop of portrait images.
-        if [ $height -gt $width ]; then
+        if [ "$height" -gt "$width" ]; then
             size=$width
         else
             size=$height
@@ -1216,10 +1216,10 @@ takescrot () {
 info () {
     # Call the function and update variable
     if [ -z "$2" ]; then
-        get$1 2>/dev/null
+        "get$1" 2>/dev/null
         eval output="\$${1}"
     else
-        get$2 2>/dev/null
+        "get$2" 2>/dev/null
         eval output="\$${2}"
     fi
 
@@ -1283,7 +1283,7 @@ colors () {
 }
 
 color () {
-   printf "\e[38;5;${1}m"
+   printf "%b%s" "\e[38;5;${1}m"
 }
 
 bold () {
@@ -1499,7 +1499,7 @@ printf "\e[0H"
 printinfo
 
 # Move the cursor to the bottom and Show the cursor
-printf "\e[${lines}H\e[${prompt_height}A\e[?25h"
+printf "%b%s" "\e[${lines}H\e[${prompt_height}A\e[?25h"
 
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf "\e[?7h"
