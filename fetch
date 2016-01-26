@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# vim:fdm=marker
 # Fetch info about your system
 # https://github.com/dylanaraps/fetch
 #
