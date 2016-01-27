@@ -59,7 +59,6 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 ## Dependencies
 
-
 ### Required dependencies:
 
 **All OS:**
@@ -70,7 +69,10 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 -  Uptime detection: `procps` or `procps-ng`
 
+
 ### Optional dependencies:
+
+**NOTE:** If `w3m` or `Imagemagick` aren't found then image support will be disabled.
 
 **All OS:**
 
@@ -276,6 +278,14 @@ or you know where it's stored then adding support won't be a problem!<br \>
 
 
 ## Issues and Workarounds
+
+
+#### fetch: line 1655: /usr/lib/w3m/w3mimgdisplay: No such file or directory
+
+
+You're getting this error because the script can't find w3mimgdisplay in it's<br \>
+default location. You can fix this by setting the config option `$w3m_img_path`<br \>
+to the correct location of w3mimgdisplay.
 
 
 #### The image is blank and won't show up.
