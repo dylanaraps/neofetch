@@ -1204,8 +1204,7 @@ getshuffle () {
 
 getascii () {
     # Get length of longest line
-    length="$(wc -L "$ascii")"
-    length=${length/ *}
+    length="$(wc -L < "$ascii")"
 
     # Set the text padding
     padding="\e[$((length + gap))C"
