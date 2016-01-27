@@ -1204,7 +1204,7 @@ getshuffle () {
 
 getascii () {
     # Get length of longest line
-    length="$(wc -L 2>/dev/null < "$ascii")"
+    length="$(LC_ALL="en_US.UTF8" wc -L 2>/dev/null < "$ascii")"
 
     # Fallback to using awk on systems without 'wc -L'
     [ -z "$length" ] && \
