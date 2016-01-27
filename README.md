@@ -286,6 +286,13 @@ You're getting this error because the script can't find w3mimgdisplay in it's<br
 default location. You can fix this by setting the config option `$w3m_img_path`<br \>
 to the correct location of w3mimgdisplay.
 
+Other places that `w3mimgdisplay` could located be are:
+
+    /usr/lib/w3m/w3mimgdisplay
+    /usr/libexec/w3m/w3mimgdisplay
+    /usr/lib64/w3m/w3mimgdisplay
+    /usr/libexec64/w3m/w3mimgdisplay
+
 
 #### The image is blank and won't show up.
 
