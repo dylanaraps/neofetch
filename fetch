@@ -204,7 +204,7 @@ prompt_height=1
 
 
 # Image Source
-# --image wall, shuffle, /path/to/img, off
+# --image wall, shuffle, ascii, /path/to/img, off
 image="wall"
 
 # Thumbnail directory
@@ -259,6 +259,20 @@ gap=4
 # --yoffset px
 yoffset=0
 xoffset=0
+
+
+# }}}
+
+# Ascii Options {{{
+
+
+# Default ascii image to use
+# --ascii path/to/ascii.txt
+ascii="$HOME/hi.txt"
+
+# Ascii color
+# --ascii_color
+ascii_color="4"
 
 
 # }}}
@@ -1186,6 +1200,23 @@ getshuffle () {
 
 # }}}
 
+# Ascii {{{
+
+getascii () {
+    # Get length of longest line
+    length="$(wc -L "$ascii")"
+    length=${length/ *}
+
+    # Set the text padding
+    padding="\e[$((length + gap))C"
+
+    # Print the ascii
+    printf "%s" "$(color $ascii_color)$(<$ascii)"
+}
+
+
+# }}}
+
 # Image {{{
 
 getimage () {
@@ -1216,6 +1247,11 @@ getimage () {
 
         "shuffle")
             getshuffle
+        ;;
+
+        "ascii")
+            getascii
+            return
         ;;
 
         *)
@@ -1465,7 +1501,8 @@ usage () { cat << EOF
 
     Image:
     --image                Image source. Where and what image we display.
-                           Possible values: wall, shuffle, /path/to/img, off
+                           Possible values: wall, shuffle, ascii,
+                           /path/to/img, off
     --image_backend        Which program to use to draw images.
     --shuffle_dir           Which directory to shuffle for an image.
     --font_width px        Used to automatically size the image
@@ -1490,6 +1527,12 @@ usage () { cat << EOF
                            NOTE: --gap can take a negative value which will
                            move the text closer to the left side.
     --clean                Remove all cropped images
+
+
+    Ascii:
+    --ascii path/to/ascii  File to get ascii from
+    --ascii_color          Color to print the ascii art
+
 
     Screenshot:
     --scrot /path/to/img   Take a screenshot, if path is left empty
@@ -1560,6 +1603,10 @@ while [ "$1" ]; do
         --yoffset) yoffset="$2" ;;
         --gap) gap="$2" ;;
         --clean) rm -rf "$imgtempdir" || exit ;;
+
+        # Ascii
+        --ascii) image="ascii"; ascii="$2" ;;
+        --ascii_color) ascii_color="$2" ;;
 
         # Screenshot
         --scrot | -s) scrot="on"; \

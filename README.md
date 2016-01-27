@@ -208,7 +208,8 @@ alias fetch2="fetch \
 
     Image:
     --image                Image source. Where and what image we display.
-                           Possible values: wall, shuffle, /path/to/img, off
+                           Possible values: wall, shuffle, ascii,
+                           /path/to/img, off
     --image_backend        Which program to use to draw images.
     --shuffle_dir           Which directory to shuffle for an image.
     --font_width px        Used to automatically size the image
@@ -233,6 +234,12 @@ alias fetch2="fetch \
                            NOTE: --gap can take a negative value which will
                            move the text closer to the left side.
     --clean                Remove all cropped images
+
+
+    Ascii:
+    --ascii path/to/ascii  File to get ascii from
+    --ascii_color          Color to print the ascii art
+
 
     Screenshot:
     --scrot /path/to/img   Take a screenshot, if path is left empty
