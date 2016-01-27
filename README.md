@@ -83,11 +83,11 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 **Linux / BSD:**
 
--  Display Wallpaper: `feh` or `nitrogen`
+-  Display Wallpaper: `feh`, `nitrogen` or `gsettings`
 -  Current Song: `mpc` or `cmus`
 -  Resolution Detection: `xorg-xdpyinfo`
 -  Take a screenshot on script finish: `scrot`
-    - You can change this to another program with a `--scrotcmd` and an in script option.
+    - You can change this to another program with a `--scrot_cmd` and an in script option.
 
 
 <!-- }}} -->
