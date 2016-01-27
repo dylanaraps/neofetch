@@ -1645,7 +1645,7 @@ printf "\e[?25l"
 [ "$line_wrap" == "off" ] && printf "\e[?7l"
 
 # Display the image
-if [ "$image" != "off" ]; then
+if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
     case "$image_backend" in
         "w3m")
             printf "%b%s\n" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
