@@ -1284,6 +1284,14 @@ getimage () {
 
     # Check to see if the thumbnail exists before we do any cropping.
     if [ ! -f "$imgtempdir/$imgname" ]; then
+        # Check to see that imagemagick is installed
+        # if not then disable images
+        if ! type -p convert >/dev/null 2>&1; then
+            image="off"
+            padding="\033[0C"
+            return
+        fi
+
         # Get image size so that we can do a better crop
         size=$(identify -format "%w %h" "$img")
         width=${size%% *}
@@ -1641,18 +1649,18 @@ columns=$(tput cols)
 clear
 printf "\033[?25l"
 
-# Get image
+# Get the image
 [ "$image" != "off" ] && getimage
 
 # Disable line wrap
 [ "$line_wrap" == "off" ] && printf "\033[?7l"
 
-# Display the image
+# Display the image if enabled
 if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
     case "$image_backend" in
         "w3m")
             printf "%b%s\n" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
-            $w3m_img_path
+            $w3m_img_path 2>/dev/null || padding="\033[0C"
         ;;
 
         "iterm2")
