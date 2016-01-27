@@ -38,9 +38,11 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
     - If the script doesn't work on your system, open an issue.
 - **It's Fast**
     - The script makes heavy use of bash builtins and <br \>string manipulation.
-- **Display an image next to the info. (or don't!)**
+- **Display an image next to the info.**
     - Use your current wallpaper, shuffle through a directory or just <br \>display an image of your choice.
     - Supports using w3m or iTerm2 to display the images.
+- **Display ascii next to the info.**
+    - Use a file containing ascii art as the image.
 - **Highly Customizable**
     - You can customize almost everything.
         - See Usage below or lines 23-233 in script
@@ -170,7 +172,7 @@ alias fetch2="fetch \
 ## Usage
 
 
-    usage: ${0##*/} [--colors 1 2 3 4 5] [--kernel "\$\(uname -rs\)"]
+    usage: ${0##*/} --option "value"
 
     Info:
     --speed_type           Change the type of cpu speed to display.

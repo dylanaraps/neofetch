@@ -1473,7 +1473,7 @@ clear="\033[0m"
 
 usage () { cat << EOF
 
- usage: ${0##*/} [--colors 1 2 3 4 5] [--kernel "\$\(uname -rs\)"]
+    usage: ${0##*/} --option "value"
 
     Info:
     --speed_type           Change the type of cpu speed to display.
