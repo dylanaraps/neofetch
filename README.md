@@ -210,7 +210,7 @@ alias fetch2="fetch \
     --image                Image source. Where and what image we display.
                            Possible values: wall, shuffle, /path/to/img, off
     --image_backend        Which program to use to draw images.
-    --shuffledir           Which directory to shuffle for an image.
+    --shuffle_dir           Which directory to shuffle for an image.
     --font_width px        Used to automatically size the image
     --image_position       Where to display the image: (Left/Right)
     --split_size num       Width of img/text splits
