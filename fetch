@@ -1107,7 +1107,7 @@ getcols () {
     if [ "$color_blocks" == "on" ]; then
         printf "${padding}%s"
         while [ $start -le $end ]; do
-            printf "\e[48;5;${start}m%${block_width}s"
+            printf "\033[48;5;${start}m%${block_width}s"
             start=$((start + 1))
 
             # Split the blocks at 8 colors
@@ -1207,7 +1207,7 @@ getascii () {
     length="$(wc -L < "$ascii")"
 
     # Set the text padding
-    padding="\e[$((length + gap))C"
+    padding="\033[$((length + gap))C"
 
     # Print the ascii
     printf "%s" "$(color $ascii_color)$(<$ascii)"
@@ -1229,11 +1229,11 @@ getimage () {
     case "$image_position" in
         "left")
             # Padding is half the terminal width + gap
-            padding="\e[$((columns / split_size + gap))C"
+            padding="\033[$((columns / split_size + gap))C"
         ;;
 
         "right")
-            padding="\e[0C"
+            padding="\033[0C"
             xoffset=$((columns * font_width / split_size - gap))
         ;;
     esac
@@ -1260,7 +1260,7 @@ getimage () {
 
     # If $img is empty, reset padding to 0 and exit the function
     if [ -z "$img" ]; then
-        padding="\e[0C"
+        padding="\033[0C"
         return
     fi
 
@@ -1423,16 +1423,16 @@ getunderline () {
 # Colors {{{
 
 colors () {
-    title_color="\e[38;5;${title_color}m"
-    at_color="\e[38;5;${at_color}m"
-    subtitle_color="\e[38;5;${subtitle_color}m"
-    colon_color="\e[38;5;${colon_color}m"
-    underline_color="\e[38;5;${underline_color}m"
-    info_color="\e[38;5;${info_color}m"
+    title_color="\033[38;5;${title_color}m"
+    at_color="\033[38;5;${at_color}m"
+    subtitle_color="\033[38;5;${subtitle_color}m"
+    colon_color="\033[38;5;${colon_color}m"
+    underline_color="\033[38;5;${underline_color}m"
+    info_color="\033[38;5;${info_color}m"
 }
 
 color () {
-   printf "%b%s" "\e[38;5;${1}m"
+   printf "%b%s" "\033[38;5;${1}m"
 }
 
 # }}}
@@ -1441,7 +1441,7 @@ color () {
 
 bold () {
     if [ "$bold" == "on" ]; then
-        bold="\e[1m"
+        bold="\033[1m"
     else
         bold=""
     fi
@@ -1450,7 +1450,7 @@ bold () {
 # }}}
 
 
-clear="\e[0m"
+clear="\033[0m"
 
 
 # }}}
@@ -1627,7 +1627,7 @@ done
 
 
 # Restore cursor and clear screen on ctrl+c
-trap 'printf "\e[?25h"; clear; exit' 2
+trap 'printf "\033[?25h"; clear; exit' 2
 
 # Get lines and columns
 lines=$(tput lines)
@@ -1635,13 +1635,13 @@ columns=$(tput cols)
 
 # Clear the terminal and hide the cursor
 clear
-printf "\e[?25l"
+printf "\033[?25l"
 
 # Get image
 [ "$image" != "off" ] && getimage
 
 # Disable line wrap
-[ "$line_wrap" == "off" ] && printf "\e[?7l"
+[ "$line_wrap" == "off" ] && printf "\033[?7l"
 
 # Display the image
 if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
@@ -1662,14 +1662,14 @@ colors
 bold
 
 # Move the cursor to the top and display the info
-printf "\e[0H"
+printf "\033[0H"
 printinfo
 
 # Move the cursor to the bottom and Show the cursor
-printf "%b%s" "\e[${lines}H\e[${prompt_height}A\e[?25h"
+printf "%b%s" "\033[${lines}H\033[${prompt_height}A\033[?25h"
 
 # Enable line wrap again
-[ "$line_wrap" == "off" ] && printf "\e[?7h"
+[ "$line_wrap" == "off" ] && printf "\033[?7h"
 
 # If enabled take a screenshot
 [ "$scrot" == "on" ] && takescrot
