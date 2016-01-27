@@ -21,7 +21,7 @@
 
 # Speed up script by not using unicode
 export LC_ALL=C
-export LANG=C
+export LANG=c
 export LANGUAGE=C
 
 
@@ -1204,7 +1204,11 @@ getshuffle () {
 
 getascii () {
     # Get length of longest line
-    length="$(wc -L < "$ascii")"
+    length="$(wc -L 2>/dev/null < "$ascii")"
+
+    # Fallback to using awk on systems without 'wc -L'
+    [ -z "$length" ] && \
+        length="$(LC_ALL="en_US.UTF8" awk 'length>max{max=length}END{print max}' "$ascii")"
 
     # Set the text padding
     padding="\033[$((length + gap))C"
