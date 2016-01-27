@@ -234,7 +234,7 @@ split_size=2
 image_position="left"
 
 # Shuffle dir
-shuffledir="$HOME/Pictures/wallpapers/wash"
+shuffle_dir="$HOME/Pictures/wallpapers/wash"
 
 # Crop mode
 # --crop_mode normal/fit/fill
@@ -1180,7 +1180,7 @@ getwallpaper () {
 # Shuffle {{{
 
 getshuffle () {
-    img=$(find "$shuffledir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
+    img=$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
     shuf -n1 -z)
 }
 
@@ -1467,7 +1467,7 @@ usage () { cat << EOF
     --image                Image source. Where and what image we display.
                            Possible values: wall, shuffle, /path/to/img, off
     --image_backend        Which program to use to draw images.
-    --shuffledir           Which directory to shuffle for an image.
+    --shuffle_dir           Which directory to shuffle for an image.
     --font_width px        Used to automatically size the image
     --image_position       Where to display the image: (Left/Right)
     --split_size num       Width of img/text splits
@@ -1550,7 +1550,7 @@ while [ "$1" ]; do
         # Image
         --image) image="$2" ;;
         --image_backend) image_backend="$2" ;;
-        --shuffledir) shuffledir="$2" ;;
+        --shuffle_dir) shuffle_dir="$2" ;;
         --font_width) font_width="$2" ;;
         --image_position) image_position="$2" ;;
         --split_size) split_size="$2" ;;
