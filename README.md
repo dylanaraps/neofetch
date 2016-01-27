@@ -23,7 +23,6 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 - [Usage](#usage)
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [Issues and Workarounds](#issues-and-workarounds)
-- [Todo](#todo)
 - [Thanks](#thanks)
 
 
@@ -359,28 +358,6 @@ by running this command as root.
 ```
 sudo update-pciids
 ```
-
-<!-- }}} -->
-
-
-<!-- Todo {{{ -->
-
-
-## Todo
-
-Here's what's on my todo list
-
-- More info outputs. Now that it's easy to customize what's printed and<br \>
-  everything is a function we can add optional support for pretty much anything.
-
-    - Resolution (Just missing Windows support)
-    - ~~GTK themes~~
-    - Terminal Font
-        - This will be difficult to add as there's no standard way of getting this info. We can't check<br \>
-        for terminal config files because the user may have multiple terminals installed.<br \>
-        Using `$PPID` isn't an option because it won't work in tmux/screen, subshells or neovim terminal splits.
-    - GPU (In master but experimental) See **[issue #21](https://github.com/dylanaraps/fetch/issues/21)**.
-
 
 <!-- }}} -->
 
