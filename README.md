@@ -268,7 +268,7 @@ alias fetch2="fetch \
 
 #### How do I enable screenfetch mode?
 
-Launching the script with `--ascii distro` or setting `image="ascii"`<br \>
+Launching the script with `--ascii distro` or setting `image="ascii"` will<br \>
 launch the script in "screenfetch mode". The script will display yout distro's ascii<br \>
 next to the info, exactly like screenfetch.
 
