@@ -600,11 +600,11 @@ getwindowmanager () {
     elif [ "$XDG_CURRENT_DESKTOP" ]; then
         windowmanager="$XDG_CURRENT_DESKTOP"
 
+    elif [ "$XINITRC" ]; then
+        windowmanager=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
+
     elif [ -e "$HOME/.xinitrc" ]; then
-        xinitrc=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
-        windowmanager="${xinitrc/exec }"
-        windowmanager="${windowmanager/-session}"
-        windowmanager="${windowmanager^}"
+        windowmanager=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
 
     else
         case "$os" in
@@ -622,6 +622,10 @@ getwindowmanager () {
 
         esac
     fi
+
+    windowmanager="${windowmanager/exec }"
+    windowmanager="${windowmanager/-session}"
+    windowmanager="${windowmanager^}"
 }
 
 # }}}
