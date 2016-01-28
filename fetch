@@ -1338,23 +1338,35 @@ getascii () {
     esac
 
     if [ "$ascii" == "distro" ]; then
-        # Get distro ascii file
+        # Lowercase the distro name
         ascii=${ascii_distro,,}
 
-        # Use $0 to get the script's physical path.
-        cd "${0%/*}"
-        ascii_dir=${0##*/}
+        # Check /usr/share/fetch for ascii before
+        # looking in the script's directory.
+        if [ -f "/usr/share/fetch/ascii/distro/${ascii/ *}" ]; then
+            ascii="/usr/share/fetch/ascii/distro/${ascii/ *}"
+        else
+            # Use $0 to get the script's physical path.
+            cd "${0%/*}"
+            ascii_dir=${0##*/}
 
-        # Iterate down a (possible) chain of symlinks.
-        while [ -L "$ascii_dir" ]; do
-            ascii_dir="$(readlink $ascii_dir)"
-            cd "${ascii_dir%/*}"
-            ascii_dir="${ascii_dir##*/}"
-        done
+            # Iterate down a (possible) chain of symlinks.
+            while [ -L "$ascii_dir" ]; do
+                ascii_dir="$(readlink $ascii_dir)"
+                cd "${ascii_dir%/*}"
+                ascii_dir="${ascii_dir##*/}"
+            done
 
-        # Final directory
-        ascii_dir="$(pwd -P)"
-        ascii="$ascii_dir/ascii/distro/${ascii/ *}"
+            # Final directory
+            ascii_dir="$(pwd -P)"
+
+            if [ -f "$ascii_dir/ascii/distro/${ascii/ *}" ]; then
+                ascii="$ascii_dir/ascii/distro/${ascii/ *}"
+            else
+                padding="\033[0C"
+                return
+            fi
+        fi
 
         # Overwrite distro colors if '$ascii_color` doesn't
         # equal 'distro'.
@@ -1378,9 +1390,10 @@ getascii () {
         print="${ascii_color}$(<"$ascii")"
     fi
 
-    # Strip escape codes backslashes from contents of
-    # the ascii file.
+    # Turn the file into a variable.
     ascii_strip=$(<$ascii)
+
+    # Strip escape codes backslashes from contents of
     ascii_strip=${ascii_strip//\$\{??\}}
     ascii_strip=${ascii_strip//\\}
 
