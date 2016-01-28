@@ -392,7 +392,9 @@ Thanks to:
 
 - metakirby5: Providing great feedback as well as ideas for the script.
 
-- Screenfetch: I've used some snippets as a base for a few functions in this script.
+- Screenfetch:
+    - I've used some snippets as a base for a few functions in this script.
+    - I've used the ascii art from here.
 
 - @jrgz: Helping me test the Mac OS X version.
 
