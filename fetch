@@ -1340,9 +1340,24 @@ getascii () {
     if [ "$ascii" == "distro" ]; then
         # Get distro ascii file
         ascii=${ascii_distro,,}
-        ascii_dir="$(dirname "$(readlink -f "$0")")"
+
+        # Use $0 to get the script's physical path.
+        cd "${0%/*}"
+        ascii_dir=${0##*/}
+
+        # Iterate down a (possible) chain of symlinks.
+        while [ -L "$ascii_dir" ]; do
+            ascii_dir="$(readlink $ascii_dir)"
+            cd "${ascii_dir%/*}"
+            ascii_dir="${ascii_dir##*/}"
+        done
+
+        # Final directory
+        ascii_dir="$(pwd -P)"
         ascii="$ascii_dir/ascii/distro/${ascii/ *}"
 
+        # Overwrite distro colors if '$ascii_color` doesn't
+        # equal 'distro'.
         if [ "$ascii_color" != "distro" ]; then
             c1=$(color $ascii_color)
             c2=$(color $ascii_color)
