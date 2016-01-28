@@ -172,7 +172,7 @@ alias fetch2="fetch \
 ## Usage
 
 
-    usage: ${0##*/} --option "value"
+    usage: ${0##*/} --option "value" --option
 
     Info:
     --osx_buildversion     Hide/Show Mac OS X build version.
