@@ -175,6 +175,7 @@ alias fetch2="fetch \
     usage: ${0##*/} --option "value"
 
     Info:
+    --osx_buildversion     Hide/Show Mac OS X build version.
     --speed_type           Change the type of cpu speed to display.
                            Possible values: current, min, max, bios,
                            scaling_current, scaling_min, scaling_max

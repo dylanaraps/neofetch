@@ -86,7 +86,12 @@ printinfo () {
 }
 
 
-# Window Manager
+# Distro
+
+
+# Mac OS X hide/show build version
+# --osx_buildversion on/off
+osx_buildversion="on"
 
 
 # CPU
@@ -357,8 +362,10 @@ case "$os" in
     ;;
 
     "Mac OS X")
-        # distro="Mac OS X $(sw_vers -productVersion -buildVersion)"
         distro="Mac OS X $(sw_vers -productVersion)"
+
+        [ "$osx_buildversion" == "on" ] && \
+            distro+=" $(sw_vers -buildVersion)"
     ;;
 
     "OpenBSD")
@@ -1481,6 +1488,7 @@ usage () { cat << EOF
     usage: ${0##*/} --option "value"
 
     Info:
+    --osx_buildversion     Hide/Show Mac OS X build version.
     --speed_type           Change the type of cpu speed to display.
                            Possible values: current, min, max, bios,
                            scaling_current, scaling_min, scaling_max
@@ -1573,6 +1581,7 @@ exit 1
 while [ "$1" ]; do
     case $1 in
         # Info
+        --osx_buildversion) osx_buildversion="$2" ;;
         --speed_type) speed_type="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
         --gpu_shorthand) gpu_shorthand="$2" ;;
