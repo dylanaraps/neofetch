@@ -272,12 +272,16 @@ xoffset=0
 
 
 # Default ascii image to use
-# --ascii path/to/ascii.txt
-ascii="$HOME/hi.txt"
+# When this is set to distro it will use your
+# distro's logo as the ascii.
+# --ascii 'distro', path/to/ascii
+ascii="distro"
 
 # Ascii color
-# --ascii_color
-ascii_color="4"
+# When this is set to distro it will use your
+# ditro's colors to color the ascii.
+# --ascii_color distro, number
+ascii_color="distro"
 
 
 # }}}
@@ -409,6 +413,7 @@ case "$os" in
         distro="Unknown"
     ;;
 esac
+ascii_distro="$distro"
 
 # }}}
 
@@ -511,7 +516,7 @@ getuptime () {
 
 getpackages () {
     case "$distro" in
-        "Arch Linux"* | "Parabola GNU/Linux-libre"* | "Manjaro"* | "Antergos"*)
+        "Arch Linux"* | "Parabola"* | "Manjaro"* | "Antergos"*)
             packages="$(pacman -Qq --color never | wc -l)"
         ;;
 
@@ -1215,18 +1220,167 @@ getshuffle () {
 # Ascii {{{
 
 getascii () {
+    # Change color of logo based on distro
+    shopt -s nocasematch
+    case "$ascii_distro" in
+        "Arch Linux"* | "Antergos"*)
+            c1=$(color 6)
+            c2=$(color 4)
+        ;;
+
+        "CentOS"*)
+            c1=$(color 3)
+            c2=$(color 2)
+            c3=$(color 4)
+            c4=$(color 5)
+            c5=$(color 7)
+        ;;
+
+        "CRUX")
+            c1=$(color 4)
+            c2=$(color 5)
+            c3=$(color 7)
+        ;;
+
+        "Debian"* | "FreeBSD"*)
+            c1=$(color 7)
+            c2=$(color 1)
+        ;;
+
+        "elementary"*)
+            c1=$(color 7)
+        ;;
+
+        "Fedora"*)
+            c1=$(color 7)
+            c2=$(color 4)
+        ;;
+
+        "Gentoo"* | "Funtoo"*)
+            c1=$(color 7)
+            c2=$(color 5)
+        ;;
+
+        "Kali"*)
+            c1=$(color 4)
+            c2=$(color 8)
+        ;;
+
+        "Manjaro"* | "Deepin"*)
+            c1=$(color 2)
+        ;;
+
+        "Mac OS X"*)
+            c1=$(color 2)
+            c2=$(color 3)
+            c3=$(color 1)
+            c4=$(color 1)
+            c5=$(color 5)
+            c6=$(color 4)
+        ;;
+
+        "Mint"*)
+            c1=$(color 7)
+            c2=$(color 2)
+        ;;
+
+        "NetBSD"*)
+            c1=$(color 5)
+            c2=$(color 7)
+        ;;
+
+        "OpenBSD"*)
+            c1=$(color 3)
+            c2=$(color 3)
+            c3=$(color 6)
+            c4=$(color 1)
+            c5=$(color 8)
+        ;;
+
+        "OpenSuse"*)
+            c1=$(color 2)
+            c2=$(color 7)
+        ;;
+
+        "Parabola"*)
+            c1=$(color 5)
+            c2=$(color 7)
+        ;;
+
+        "Red Hat"*)
+            c1=$(color 7)
+            c2=$(color 1)
+        ;;
+
+        "Slackware"*)
+            c1=$(color 4)
+            c2=$(color 7)
+        ;;
+
+        "Ubuntu"*)
+            c1=$(color 7)
+            c2=$(color 1)
+            c3=$(color 3)
+        ;;
+
+        "void"*)
+            c1=$(color 2)
+            c2=$(color 2)
+            c3=$(color 8)
+        ;;
+
+        "Windows"*)
+            c1=$(color 1)
+            c2=$(color 2)
+            c3=$(color 4)
+            c4=$(color 3)
+        ;;
+    esac
+
+    if [ "$ascii" == "distro" ]; then
+        # Get distro ascii file
+        ascii=${ascii_distro,,}
+        ascii_dir="$(dirname "$(readlink -f "$0")")"
+        ascii="$ascii_dir/ascii/distro/${ascii/ *}"
+
+        if [ "$ascii_color" != "distro" ]; then
+            c1=$(color $ascii_color)
+            c2=$(color $ascii_color)
+            c3=$(color $ascii_color)
+            c4=$(color $ascii_color)
+            c5=$(color $ascii_color)
+            c6=$(color $ascii_color)
+        fi
+
+        # We only use eval in the distro ascii files.
+        print="$(eval printf "$(<$ascii)")"
+    else
+        case "$ascii_color" in
+            "distro") ascii_color="$c1" ;;
+            *) ascii_color="$(color $ascii_color)" ;;
+        esac
+
+        print="${ascii_color}$(<$ascii)"
+    fi
+
+    # Strip escape codes backslashes from contents of
+    # the ascii file.
+    ascii_strip=$(<$ascii)
+    ascii_strip=${ascii_strip//\$\{??\}}
+    ascii_strip=${ascii_strip//\\}
+
     # Get length of longest line
-    length="$(LC_ALL="en_US.UTF8" wc -L 2>/dev/null < "$ascii")"
+    length="$(LC_ALL="en_US.UTF8" wc -L 2>/dev/null <<< "$ascii_strip")"
 
     # Fallback to using awk on systems without 'wc -L'
     [ -z "$length" ] && \
-        length="$(LC_ALL="en_US.UTF8" awk 'length>max{max=length}END{print max}' "$ascii")"
+        length="$(LC_ALL="en_US.UTF8" awk 'length>max{max=length}END{print max}' <<< "$ascii_strip")"
 
     # Set the text padding
     padding="\033[$((length + gap))C"
 
     # Print the ascii
-    printf "%s" "$(color $ascii_color)$(<$ascii)"
+    printf "%b%s" "$print"
 }
 
 
@@ -1554,8 +1708,10 @@ usage () { cat << EOF
 
 
     Ascii:
-    --ascii path/to/ascii  File to get ascii from
+    --ascii                Where to get the ascii from, Possible values:
+                           'distro', '/path/to/ascii'
     --ascii_color          Color to print the ascii art
+    --ascii_distro distro  Which Distro's ascii art to print
 
 
     Screenshot:
@@ -1632,6 +1788,7 @@ while [ "$1" ]; do
         # Ascii
         --ascii) image="ascii"; ascii="$2" ;;
         --ascii_color) ascii_color="$2" ;;
+        --ascii_distro) ascii_distro="$2" ;;
 
         # Screenshot
         --scrot | -s) scrot="on"; \

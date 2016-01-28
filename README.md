@@ -241,8 +241,10 @@ alias fetch2="fetch \
 
 
     Ascii:
-    --ascii path/to/ascii  File to get ascii from
+    --ascii                Where to get the ascii from, Possible values:
+                           'distro', '/path/to/ascii'
     --ascii_color          Color to print the ascii art
+    --ascii_distro distro  Which Distro's ascii art to print
 
 
     Screenshot:
