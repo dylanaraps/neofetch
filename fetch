@@ -1353,14 +1353,14 @@ getascii () {
         fi
 
         # We only use eval in the distro ascii files.
-        print="$(eval printf "$(<$ascii)")"
+        print="$(eval printf "$(<"$ascii")")"
     else
         case "$ascii_color" in
             "distro") ascii_color="$c1" ;;
             *) ascii_color="$(color $ascii_color)" ;;
         esac
 
-        print="${ascii_color}$(<$ascii)"
+        print="${ascii_color}$(<"$ascii")"
     fi
 
     # Strip escape codes backslashes from contents of
@@ -1389,6 +1389,16 @@ getascii () {
 # Image {{{
 
 getimage () {
+    # Fallback to ascii mode if imagemagick isn't installed.
+    if ! type -p convert >/dev/null 2>&1; then
+        image="ascii"
+    fi
+
+    # Fallback to ascii mode if image mode is 'w3m' and 'w3m' isn't installed.
+    if [ "$image_backend" == "w3m" ] && ! type -p $w3m_img_path >/dev/null 2>&1; then
+        image="ascii"
+    fi
+
     # Make the directory if it doesn't exist
     mkdir -p "$imgtempdir"
 
@@ -1450,14 +1460,6 @@ getimage () {
 
     # Check to see if the thumbnail exists before we do any cropping.
     if [ ! -f "$imgtempdir/$imgname" ]; then
-        # Check to see that imagemagick is installed
-        # if not then disable images
-        if ! type -p convert >/dev/null 2>&1; then
-            image="off"
-            padding="\033[0C"
-            return
-        fi
-
         # Get image size so that we can do a better crop
         size=$(identify -format "%w %h" "$img")
         width=${size%% *}
