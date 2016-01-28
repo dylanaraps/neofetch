@@ -601,7 +601,7 @@ getwindowmanager () {
         windowmanager="$XDG_CURRENT_DESKTOP"
 
     elif [ "$XINITRC" ]; then
-        windowmanager=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
+        windowmanager=$(grep "^[^#]*exec" "$XINITRC")
 
     elif [ -e "$HOME/.xinitrc" ]; then
         windowmanager=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
