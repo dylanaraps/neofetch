@@ -83,6 +83,7 @@ printinfo () {
 
     info linebreak
     info cols
+    info linebreak
 }
 
 
@@ -1400,6 +1401,9 @@ getascii () {
     # Get length of longest line
     length="$(LC_ALL="en_US.UTF8" wc -L 2>/dev/null <<< "$ascii_strip")"
 
+    # Get the height in lines
+    lines="$(($(LC_ALL="en_US.UTF8" wc -l 2>/dev/null <<< "$ascii_strip") + 1))"
+
     # Fallback to using awk on systems without 'wc -L'
     [ -z "$length" ] && \
         length="$(LC_ALL="en_US.UTF8" awk 'length>max{max=length}END{print max}' <<< "$ascii_strip")"
@@ -1537,6 +1541,9 @@ getimage () {
             ;;
         esac
     fi
+
+    # Lines equals terminal height
+    lines=$(tput lines)
 
     # The final image
     img="$imgtempdir/$imgname"
@@ -1842,8 +1849,7 @@ done
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
 
-# Get lines and columns
-lines=$(tput lines)
+# Get columns
 columns=$(tput cols)
 
 # Clear the terminal and hide the cursor
@@ -1879,10 +1885,14 @@ printf "\033[0H"
 printinfo
 
 # Move the cursor to the bottom and Show the cursor
-printf "%b%s" "\033[${lines}H\033[${prompt_height}A\033[?25h"
+[ "$image" != "off" ] && \
+    printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
 
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf "\033[?7h"
+
+# Show the cursor
+printf "%b%s" "\033[?25h"
 
 # If enabled take a screenshot
 [ "$scrot" == "on" ] && takescrot
