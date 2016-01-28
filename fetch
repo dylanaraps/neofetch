@@ -357,6 +357,7 @@ case "$os" in
     ;;
 
     "Mac OS X")
+        # distro="Mac OS X $(sw_vers -productVersion -buildVersion)"
         distro="Mac OS X $(sw_vers -productVersion)"
     ;;
 
@@ -1011,12 +1012,12 @@ getgtk () {
 
     # Check for gtk3 theme
     if [ "$gtk3" == "on" ]; then
-        if type -p gsettings >/dev/null 2>&1; then
+        if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
+            gtk3theme=$(grep "^[^#]*$name" "$HOME/.config/gtk-3.0/settings.ini")
+
+        elif type -p gsettings >/dev/null 2>&1; then
             gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
             gtk3theme=${gtk3theme//\'}
-
-        elif [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
-            gtk3theme=$(grep "^[^#]*$name" "$HOME/.config/gtk-3.0/settings.ini")
 
         else
             gtk3theme=$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)
