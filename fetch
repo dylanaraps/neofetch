@@ -87,8 +87,14 @@ printinfo () {
 }
 
 
-# Distro
+# Kernel
 
+# Show more kernel info
+# --kernel_shorthand on/off
+kernel_shorthand="on"
+
+
+# Distro
 
 # Mac OS X hide/show build version
 # --osx_buildversion on/off
@@ -206,12 +212,12 @@ prompt_height=1
 
 # }}}
 
+# Image Options {{{
+
+
 # Image Source
 # --image wall, shuffle, ascii, /path/to/img, off
 image="wall"
-
-# Image Options {{{
-
 
 # Thumbnail directory
 imgtempdir="$HOME/.fetchimages"
@@ -429,7 +435,10 @@ gettitle () {
 # Kernel {{{
 
 getkernel() {
-    kernel="$(uname -r)"
+    case "$kernel_shorthand" in
+        "on")  kernel="$(uname -r)" ;;
+        "off") kernel="$(uname -srm)" ;;
+    esac
 }
 
 # }}}
@@ -1684,6 +1693,7 @@ usage () { cat << EOF
                            Possible values: current, min, max, bios,
                            scaling_current, scaling_min, scaling_max
                            NOTE: This only support Linux with cpufreq.
+    --kernel_shorthand     Shorten the output of kernel
     --uptime_shorthand     Shorten the output of uptime (tiny, on, off)
     --gpu_shorthand on/off Shorten the output of GPU
     --gtk_shorthand on/off Shorten output of gtk theme/icons
@@ -1776,6 +1786,7 @@ while [ "$1" ]; do
         # Info
         --osx_buildversion) osx_buildversion="$2" ;;
         --speed_type) speed_type="$2" ;;
+        --kernel_shorthand) kernel_shorthand="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
         --gpu_shorthand) gpu_shorthand="$2" ;;
         --gtk_shorthand) gtk_shorthand="$2" ;;
