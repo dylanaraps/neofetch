@@ -205,12 +205,12 @@ prompt_height=1
 
 # }}}
 
-# Image Options {{{
-
-
 # Image Source
 # --image wall, shuffle, ascii, /path/to/img, off
-image="wall"
+image="ascii"
+
+# Image Options {{{
+
 
 # Thumbnail directory
 imgtempdir="$HOME/.fetchimages"
