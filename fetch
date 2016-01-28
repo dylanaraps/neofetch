@@ -207,7 +207,7 @@ prompt_height=1
 
 # Image Source
 # --image wall, shuffle, ascii, /path/to/img, off
-image="ascii"
+image="wall"
 
 # Image Options {{{
 
