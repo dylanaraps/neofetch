@@ -1384,6 +1384,11 @@ getascii () {
             c3=$(color 8)
         ;;
 
+        "Windows 10"*)
+            c1=$(color 6)
+            ascii_distro="windows10"
+        ;;
+
         "Windows"*)
             c1=$(color 1)
             c2=$(color 2)
