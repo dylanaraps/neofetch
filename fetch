@@ -545,7 +545,7 @@ getpackages () {
             packages="$(xbps-query -l | wc -l)"
         ;;
 
-        "Ubuntu"* | "Mint"* | "Debian"* | "Kali Linux"* | "Deepin Linux"* | "elementary"*)
+        "Ubuntu"* | "Mint"* | "CrunchBang"* | "Debian"* | "Kali Linux"* | "Deepin Linux"* | "elementary"*)
             packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
@@ -1300,7 +1300,7 @@ getascii () {
             c2=$(color 1)
         ;;
 
-        "elementary"*)
+        "elementary"* | "CrunchBang"*)
             c1=$(color 7)
         ;;
 
@@ -1413,9 +1413,9 @@ getascii () {
             # Final directory
             ascii_dir="$(pwd -P)"
 
-            if [ -f "$ascii_dir/ascii/distro/${ascii/ *}" ]; then
-                ascii="$ascii_dir/ascii/distro/${ascii/ *}"
-            else
+            # If the ascii file doesn't exist
+            # fallback to text mode.
+            if [ ! -f "$ascii_dir/ascii/distro/${ascii/ *}" ]; then
                 padding="\033[0C"
                 image="off"
                 return
@@ -1440,6 +1440,14 @@ getascii () {
             "distro") ascii_color="$c1" ;;
             *) ascii_color="$(color $ascii_color)" ;;
         esac
+
+        # If the ascii file doesn't exist
+        # fallback to text mode.
+        if [ ! -f "$ascii" ]; then
+            padding="\033[0C"
+            image="off"
+            return
+        fi
 
         print="${ascii_color}$(<"$ascii")"
     fi
@@ -1869,7 +1877,15 @@ while [ "$1" ]; do
 
         # Image
         --image) image="$2"
-            [ -z "$2" ] && image="ascii" ;;
+            [ -z "$2" ] && image="ascii"
+
+            case "$2" in
+                "--"*)
+                    image="ascii"
+                ;;
+            esac
+        ;;
+
         --image_backend) image_backend="$2" ;;
         --shuffle_dir) shuffle_dir="$2" ;;
         --font_width) font_width="$2" ;;
@@ -1884,7 +1900,15 @@ while [ "$1" ]; do
 
         # Ascii
         --ascii) image="ascii"; ascii="$2"
-            [ -z "$2" ] && ascii="distro" ;;
+            [ -z "$2" ] && ascii="distro"
+
+            case "$2" in
+                "--"*)
+                    ascii="distro"
+                ;;
+            esac
+        ;;
+
         --ascii_color) ascii_color="$2" ;;
         --ascii_distro) ascii_distro="$2" ;;
 
