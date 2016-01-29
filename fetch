@@ -362,7 +362,7 @@ case "$(uname)" in
 
     *)
         printf "%s\n" "Couldn't detect OS, exiting"
-        exit
+        exit 1
     ;;
 esac
 
@@ -434,6 +434,11 @@ case "$os" in
     ;;
 esac
 ascii_distro="$distro"
+
+getdistro () {
+    distro="$distro"
+}
+
 
 # }}}
 
@@ -1714,6 +1719,13 @@ bold () {
 
 # }}}
 
+# Linebreak {{{
+
+getlinebreak () {
+   linebreak=""
+}
+
+# }}}
 
 clear="\033[0m"
 
