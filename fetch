@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # vim:fdm=marker
+#
 # Fetch info about your system
 # https://github.com/dylanaraps/fetch
 #
@@ -306,7 +307,7 @@ ascii_color="distro"
 
 # }}}
 
-# Other Options {{{
+# Scrot Options {{{
 
 
 # Whether or not to always take a screenshot
@@ -326,6 +327,16 @@ scrot_dir="$HOME/Pictures"
 # What to name the screenshots
 # --scrot_name str
 scrot_name="fetch-%Y-%m-%d-%H:%M.png"
+
+
+# }}}
+
+# Config Options {{{
+
+
+# Path to config file
+# --config path/to/config
+config_file="$HOME/.config/fetch/config"
 
 
 # }}}
@@ -1397,29 +1408,17 @@ getascii () {
         if [ -f "/usr/share/fetch/ascii/distro/${ascii/ *}" ]; then
             ascii="/usr/share/fetch/ascii/distro/${ascii/ *}"
         else
-            # Use $0 to get the script's physical path.
-            cd "${0%/*}"
-            ascii_dir=${0##*/}
-
-            # Iterate down a (possible) chain of symlinks.
-            while [ -L "$ascii_dir" ]; do
-                ascii_dir="$(readlink $ascii_dir)"
-                cd "${ascii_dir%/*}"
-                ascii_dir="${ascii_dir##*/}"
-            done
-
-            # Final directory
-            ascii_dir="$(pwd -P)"
+            getscriptdir
 
             # If the ascii file doesn't exist
             # fallback to text mode.
-            if [ ! -f "$ascii_dir/ascii/distro/${ascii/ *}" ]; then
+            if [ ! -f "$script_dir/ascii/distro/${ascii/ *}" ]; then
                 padding="\033[0C"
                 image="off"
                 return
             fi
 
-            ascii="$ascii_dir/ascii/distro/${ascii/ *}"
+            ascii="$script_dir/ascii/distro/${ascii/ *}"
         fi
 
         # Overwrite distro colors if '$ascii_color` doesn't
@@ -1739,6 +1738,64 @@ clear="\033[0m"
 # }}}
 
 
+# Other {{{
+
+
+# Get script directory {{{
+
+getscriptdir () {
+    # Use $0 to get the script's physical path.
+    cd "${0%/*}"
+    script_dir=${0##*/}
+
+    # Iterate down a (possible) chain of symlinks.
+    while [ -L "$script_dir" ]; do
+        script_dir="$(readlink $script_dir)"
+        cd "${script_dir%/*}"
+        script_dir="${script_dir##*/}"
+    done
+
+    # Final directory
+    script_dir="$(pwd -P)"
+}
+
+# }}}
+
+# Source Config {{{
+
+
+# Check for $config_file first
+getconfig () {
+    if [ -f "$config_file" ]; then
+        source "$config_file"
+        return
+    fi
+
+    # Check $HOME/.config/fetch and create the
+    # dir/files if they don't exist.
+    if [ -f "$HOME/.config/fetch/config" ]; then
+        source "$HOME/.config/fetch/config"
+    elif [ -f "/usr/share/fetch/config" ]; then
+        mkdir -p "$HOME/.config/fetch/"
+        cp "/usr/share/fetch/config" "$HOME/.config/fetch"
+        source "$HOME/.config/fetch/config"
+    else
+        getscriptdir
+
+        mkdir -p "$HOME/.config/fetch/"
+        cp "$script_dir/config" "$HOME/.config/fetch"
+        source "$HOME/.config/fetch/config"
+    fi
+}
+getconfig
+
+
+# }}}
+
+
+# }}}
+
+
 # Usage {{{
 
 
@@ -1925,6 +1982,7 @@ while [ "$1" ]; do
         --scrot_cmd) scrot_cmd="$2" ;;
 
         # Other
+        --config) config_file="$2"; getconfig ;;
         --help) usage ;;
     esac
 

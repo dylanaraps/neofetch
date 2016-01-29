@@ -1,0 +1,328 @@
+#!/usr/bin/env bash
+# vim:fdm=marker
+#
+# Fetch config file
+# https://github.com/dylanaraps/fetch
+
+# Speed up script by not using unicode
+export LC_ALL=C
+export LANG=c
+export LANGUAGE=C
+
+# Config Options {{{
+
+
+# Info Options {{{
+
+
+# Info
+# What to display and in what order.
+# You can use ANY bash syntax in the function below!
+# For example you could use if statments to only print info
+# when a condition is true!
+#
+# The script comes with two helper functions:
+# info:
+#       info "subtitle" funcname
+# prin:
+#       prin "Custom message to print"
+#       prin "Subtitle: Custom message to print"
+#       prin "Subtitle: $(date)"
+#
+# You can also just use printf / echo to add lines but you'll
+# need to prefix your msg with "${padding}", for example:
+# echo -e "${padding} My custom message here"
+#
+# Info functions enabled by default are:
+# "title" "distro" "kernel" "uptime" "packages"
+# "shell" "resolution" "windowmanager" "gtktheme"
+# "gtkicons" "cpu" "gpu" "memory" "cols"
+#
+# Info functions that are disabled by default are:
+# "resolution" "song" "visualstyle" "font" "disk"
+#
+# See this wiki page for more info:
+# https://github.com/dylanaraps/fetch/wiki/Customizing-Info
+printinfo () {
+    info linebreak
+
+    info title
+    info underline
+
+    info "OS" distro
+    info "Kernel" kernel
+    info "Uptime" uptime
+    info "Packages" packages
+    info "Shell" shell
+    info "Window Manager" windowmanager
+    info "GTK Theme" gtktheme
+    info "Icons" gtkicons
+    info "CPU" cpu
+    info "GPU" gpu
+    info "Memory" memory
+
+    # info "Font" gtkfont
+    # info "Disk" disk
+    # info "Resolution" resolution
+    # info "Song" song
+    # info "Visual Style" visualstyle
+
+    info linebreak
+    info cols
+    info linebreak
+}
+
+
+# Kernel
+
+# Show more kernel info
+# --kernel_shorthand on/off
+kernel_shorthand="on"
+
+
+# Distro
+
+# Mac OS X hide/show build version
+# --osx_buildversion on/off
+osx_buildversion="on"
+
+
+# Uptime
+
+# Shorten the output of the uptime function
+# --uptime_shorthand tiny, on, off
+uptime_shorthand="off"
+
+
+# Shell
+
+# Show the path to $SHELL
+# --shell_path on/off
+shell_path="on"
+
+# Show $SHELL's version
+# --shell_version on/off
+shell_version="off"
+
+
+# CPU
+
+# CPU speed type
+# Only works on Linux with cpufreq.
+# --speed_type current, min, max, bios,
+# scaling_current, scaling_min, scaling_max
+speed_type="max"
+
+
+# GPU
+
+# Shorten output of the getgpu funcion
+# --gpu_shorthand on/off
+gpu_shorthand="off"
+
+
+# Gtk Theme / Icons
+
+# Shorten output (Hide [GTK2] etc)
+# --gtk_shorthand on/off
+gtk_shorthand="off"
+
+
+# Enable/Disable gtk2 theme/icons output
+# --gtk2 on/off
+gtk2="on"
+
+# Enable/Disable gtk3 theme/icons output
+# --gtk3 on/off
+gtk3="on"
+
+
+# Color Blocks
+
+# Color block range
+# --block_range start end
+start=0
+end=7
+
+# Toggle color blocks
+# --color_blocks on/off
+color_blocks="on"
+
+# Color block width
+# --color_block_width num
+block_width=3
+
+
+# }}}
+
+# Text Colors {{{
+# --colors 1 2 3 4 5
+
+
+# --title_color num
+title_color=4
+
+# Color of "@" symbol in title
+# --at_color num
+at_color=6
+
+# --subtitle_color num
+subtitle_color=1
+
+# --colon_color num
+colon_color=8
+
+# --underline_color num
+underline_color=8
+
+# --info_color num
+info_color=6
+
+
+# }}}
+
+# Text Options {{{
+
+
+# Toggle line wrapping
+# --line_wrap on/off
+line_wrap="on"
+
+# Toggle bold text
+# --bold on/off
+bold="on"
+
+# Toggle title underline
+# --underline on/off
+underline="on"
+
+# Underline character
+# --underline_char char
+underline_char="-"
+
+# Prompt height
+# You should only have to change this if your
+# prompt is greater than 2 lines high.
+# --prompt_height num
+prompt_height=1
+
+
+# }}}
+
+# Image Options {{{
+
+
+# Image Source
+# --image wall, shuffle, ascii, /path/to/img, off
+image="wall"
+
+# Thumbnail directory
+imgtempdir="$HOME/.fetchimages"
+
+# Image Backend
+# Which program to draw images with
+# --image_backend w3m, iterm2
+image_backend="w3m"
+
+# W3m-img path
+# Some systems have this in another location
+w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
+
+# Split Size
+# Sizing for the img and text splits
+# The larger the value the less space fetch will take up.
+# The default value of 2 splits the image and text at
+# half terminal width each.
+# A value of 3 splits them at a third width each and etc.
+# --split_size num
+split_size=2
+
+# Image position
+# Only works with the w3m backend
+# --image_position left/right
+image_position="left"
+
+# Shuffle dir
+shuffle_dir="$HOME/Pictures/wallpapers/wash"
+
+# Crop mode
+# --crop_mode normal/fit/fill
+crop_mode="normal"
+
+# Crop offset
+# Only affects normal mode.
+# --crop_offset northwest/north/northeast/west/center
+#               east/southwest/south/southeast
+crop_offset="center"
+
+# Font width
+# Used when calculating dynamic image size
+font_width=5
+
+# Right gap between image and text
+# --gap num
+gap=4
+
+# Image offsets
+# --xoffset px
+# --yoffset px
+yoffset=0
+xoffset=0
+
+
+# }}}
+
+# Ascii Options {{{
+
+
+# Default ascii image to use
+# When this is set to distro it will use your
+# distro's logo as the ascii.
+# --ascii 'distro', path/to/ascii
+ascii="distro"
+
+# Ascii color
+# When this is set to distro it will use your
+# ditro's colors to color the ascii.
+# --ascii_color distro, number
+ascii_color="distro"
+
+
+# }}}
+
+# Scrot Options {{{
+
+
+# Whether or not to always take a screenshot
+# You can manually take a screenshot with "--scrot" or "-s"
+scrot="off"
+
+# Screenshot program to launch
+# --scrot_cmd
+scrot_cmd="scrot -c -d 3"
+
+# Scrot dir
+# Where to save the screenshots
+# --scrot_dir /path/to/screenshot/folder
+scrot_dir="$HOME/Pictures"
+
+# Scrot filename
+# What to name the screenshots
+# --scrot_name str
+scrot_name="fetch-%Y-%m-%d-%H:%M.png"
+
+
+# }}}
+
+# Config Options {{{
+
+
+# Path to config file
+# --config path/to/config
+config_file="$HOME/.config/fetch/config"
+
+
+# }}}
+
+
+# }}}
