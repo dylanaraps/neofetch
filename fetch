@@ -1295,13 +1295,10 @@ getascii () {
             c3=$(color 7)
         ;;
 
-        "Debian"* | "FreeBSD"*)
+        "Debian"* | "FreeBSD"* | "Red Hat"* | "elementary"* | "CrunchBang"* | "Ubuntu"*)
             c1=$(color 7)
             c2=$(color 1)
-        ;;
-
-        "elementary"* | "CrunchBang"*)
-            c1=$(color 7)
+            c3=$(color 3)
         ;;
 
         "Fedora"*)
@@ -1319,11 +1316,7 @@ getascii () {
             c2=$(color 8)
         ;;
 
-        "Manjaro"* | "Deepin"*)
-            c1=$(color 2)
-        ;;
-
-        "Mac OS X"*)
+        "Mac OS X"* | "Manjaro"* | "Deepin"*)
             c1=$(color 2)
             c2=$(color 3)
             c3=$(color 1)
@@ -1339,7 +1332,7 @@ getascii () {
             ascii_distro="mint"
         ;;
 
-        "NetBSD"*)
+        "NetBSD"* | "Parabola"*)
             c1=$(color 5)
             c2=$(color 7)
         ;;
@@ -1357,25 +1350,9 @@ getascii () {
             c2=$(color 7)
         ;;
 
-        "Parabola"*)
-            c1=$(color 5)
-            c2=$(color 7)
-        ;;
-
-        "Red Hat"*)
-            c1=$(color 7)
-            c2=$(color 1)
-        ;;
-
         "Slackware"*)
             c1=$(color 4)
             c2=$(color 7)
-        ;;
-
-        "Ubuntu"*)
-            c1=$(color 7)
-            c2=$(color 1)
-            c3=$(color 3)
         ;;
 
         "void"*)
