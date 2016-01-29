@@ -635,9 +635,15 @@ getshell () {
                 shell=${shell/ zsh}
             ;;
 
-            *"mksh"*)
-                shell+="$(mksh -c 'printf "%s" "$KSH_VERSION"')"
+            *"mksh"* | *"ksh")
+                shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
                 shell=${shell/ * KSH}
+            ;;
+
+            *"tcsh"* | *"csh"*)
+                shell+="$("$SHELL" --version)"
+                shell=${shell/tcsh}
+                shell=${shell/\(*}
             ;;
         esac
 
