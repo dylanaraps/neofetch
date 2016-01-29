@@ -23,7 +23,6 @@
 export LC_ALL=C
 export LANG=c
 export LANGUAGE=C
-set -e
 
 
 # Config Options {{{
