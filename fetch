@@ -23,6 +23,7 @@
 export LC_ALL=C
 export LANG=c
 export LANGUAGE=C
+set -e
 
 
 # Config Options {{{
@@ -1040,16 +1041,22 @@ getsong () {
 getresolution () {
     case "$os" in
         "Linux" | *"BSD")
-            resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
+            if type -p xdpyinfo >/dev/null 2>&1; then
+                resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
+            else
+                resolution="Unknown"
+            fi
         ;;
 
         "Mac OS X")
             resolution=$(system_profiler SPDisplaysDataType |\
                         awk '/Resolution:/ {printf $2"x"$4" "}')
         ;;
-    esac
 
-    [ -z "$resolution" ] && resolution="Unknown"
+        "*")
+            resolution="Unknown"
+        ;;
+    esac
 }
 
 # }}}
