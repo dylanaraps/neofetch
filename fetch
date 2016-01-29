@@ -1937,8 +1937,13 @@ printf "\033[0H"
 printinfo
 
 # Move the cursor to the bottom and Show the cursor
-[ "$image" != "off" ] && \
+if [ "$image" != "off" ]; then
+    # Set cursor position dynamically based on height of ascii/text.
+    info_height="$(IFS=';' read -sdR -p $'\E[6n' ROW COL;echo "${ROW#*[}")"
+    [ "$lines" -lt "$info_height" ] && lines="$info_height"
+
     printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
+fi
 
 # Enable line wrap again
 [ "$line_wrap" == "off" ] && printf "\033[?7h"
