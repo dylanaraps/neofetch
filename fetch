@@ -636,7 +636,7 @@ getshell () {
             ;;
 
             *"mksh"*)
-                shell+="$(mksh -c 'echo $KSH_VERSION')"
+                shell+="$(mksh -c 'printf "%s" "$KSH_VERSION"')"
                 shell=${shell/ * KSH}
             ;;
         esac
@@ -1939,7 +1939,7 @@ printinfo
 # Move the cursor to the bottom and Show the cursor
 if [ "$image" != "off" ]; then
     # Set cursor position dynamically based on height of ascii/text.
-    info_height="$(IFS=';' read -sdR -p $'\E[6n' ROW COL;echo "${ROW#*[}")"
+    info_height="$(IFS=';' read -sdR -p $'\E[6n' ROW COL; printf "%s" "${ROW#*[}")"
     [ "$lines" -lt "$info_height" ] && lines="$info_height"
 
     printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
