@@ -545,7 +545,7 @@ getpackages () {
             packages="$(xbps-query -l | wc -l)"
         ;;
 
-        "Ubuntu"* | "Mint"* | "CrunchBang"* | "Debian"* | "Kali Linux"* | "Deepin Linux"* | "elementary"*)
+        "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali Linux"* | "Deepin Linux"* | "elementary"*)
             packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
@@ -1332,9 +1332,11 @@ getascii () {
             c6=$(color 4)
         ;;
 
-        "Mint"*)
+        *"Mint"*)
             c1=$(color 7)
             c2=$(color 2)
+
+            ascii_distro="mint"
         ;;
 
         "NetBSD"*)
