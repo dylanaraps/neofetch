@@ -814,6 +814,7 @@ getcpu () {
     cpu=${cpu// CPU}
     cpu=${cpu// Processor}
     cpu=${cpu// Six-Core}
+    cpu=${cpu// Eight-Core}
     cpu=${cpu// with Radeon HD Graphics}
 }
 
