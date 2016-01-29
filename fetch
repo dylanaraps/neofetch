@@ -1992,7 +1992,9 @@ fi
 printf "%b%s" "\033[?25h"
 
 # If enabled take a screenshot
-[ "$scrot" == "on" ] && takescrot
+if [ "$scrot" == "on" ]; then
+    takescrot
+fi
 
 
 # }}}
