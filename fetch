@@ -1914,7 +1914,7 @@ trap 'printf "\033[?25h"; clear; exit' 2
 columns=$(tput cols)
 
 # Clear the terminal and hide the cursor
-clear
+[ "$image" != "off" ] && clear
 printf "\033[?25l"
 
 # Get the image
@@ -1942,7 +1942,7 @@ colors
 bold
 
 # Move the cursor to the top and display the info
-printf "\033[0H"
+[ "$image" != "off" ] && printf "\033[0H"
 printinfo
 
 # Move the cursor to the bottom and Show the cursor
