@@ -1410,6 +1410,7 @@ getascii () {
                 ascii="$ascii_dir/ascii/distro/${ascii/ *}"
             else
                 padding="\033[0C"
+                image="off"
                 return
             fi
         fi
