@@ -1420,6 +1420,8 @@ getascii () {
                 image="off"
                 return
             fi
+
+            ascii="$ascii_dir/ascii/distro/${ascii/ *}"
         fi
 
         # Overwrite distro colors if '$ascii_color` doesn't
