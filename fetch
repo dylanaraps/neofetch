@@ -1862,7 +1862,8 @@ while [ "$1" ]; do
         --block_width) block_width="$2" ;;
 
         # Image
-        --image) image="$2" ;;
+        --image) image="$2"
+            [ -z "$2" ] && image="ascii" ;;
         --image_backend) image_backend="$2" ;;
         --shuffle_dir) shuffle_dir="$2" ;;
         --font_width) font_width="$2" ;;
@@ -1876,7 +1877,8 @@ while [ "$1" ]; do
         --clean) rm -rf "$imgtempdir" || exit ;;
 
         # Ascii
-        --ascii) image="ascii"; ascii="$2" ;;
+        --ascii) image="ascii"; ascii="$2"
+            [ -z "$2" ] && ascii="distro" ;;
         --ascii_color) ascii_color="$2" ;;
         --ascii_distro) ascii_distro="$2" ;;
 
