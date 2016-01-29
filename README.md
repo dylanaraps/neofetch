@@ -186,6 +186,8 @@ alias fetch2="fetch \
     --gtk_shorthand on/off Shorten output of gtk theme/icons
     --gtk2 on/off          Enable/Disable gtk2 theme/icons output
     --gtk3 on/off          Enable/Disable gtk3 theme/icons output
+    --shell_path on/off    Enable/Disable showing \$SHELL path
+    --shell_version on/off Enable/Disable showing \$SHELL version
 
     Text Colors:
     --colors 1 2 3 4 5 6   Change the color of text

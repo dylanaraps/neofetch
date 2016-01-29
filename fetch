@@ -101,6 +101,24 @@ kernel_shorthand="on"
 osx_buildversion="on"
 
 
+# Uptime
+
+# Shorten the output of the uptime function
+# --uptime_shorthand tiny, on, off
+uptime_shorthand="off"
+
+
+# Shell
+
+# Show the path to $SHELL
+# --shell_path on/off
+shell_path="on"
+
+# Show $SHELL's version
+# --shell_version on/off
+shell_version="off"
+
+
 # CPU
 
 # CPU speed type
@@ -115,13 +133,6 @@ speed_type="max"
 # Shorten output of the getgpu funcion
 # --gpu_shorthand on/off
 gpu_shorthand="off"
-
-
-# Uptime
-
-# Shorten the output of the uptime function
-# --uptime_shorthand tiny, on, off
-uptime_shorthand="off"
 
 
 # Gtk Theme / Icons
@@ -607,7 +618,31 @@ getpackages () {
 # Shell {{{
 
 getshell () {
-    shell="$SHELL"
+    case "$shell_path" in
+        "on")  shell="$SHELL " ;;
+        "off") shell="${SHELL##*/} " ;;
+    esac
+
+    if [ "$shell_version" == "on" ]; then
+        case "$shell" in
+            *"bash"*)
+                shell+="$(bash --version | head -n 1)"
+                shell=${shell/ *, version}
+            ;;
+
+            *"zsh"*)
+                shell+="$(zsh --version)"
+                shell=${shell/ zsh}
+            ;;
+
+            *"mksh"*)
+                shell+="$(mksh -c 'echo $KSH_VERSION')"
+                shell=${shell/ * KSH}
+            ;;
+        esac
+
+        shell="${shell/\(*\)}"
+    fi
 }
 
 # }}}
@@ -801,6 +836,7 @@ getgpu () {
                     gpu=${gpu/'[AMD/ATI]' }
                     gpu=${gpu/Tahiti PRO}
                     gpu=${gpu/Seymour}
+                    gpu=${gpu/ OEM}
                     gpu=${gpu/ \[}
                     gpu=${gpu/\]}
 
@@ -1699,6 +1735,8 @@ usage () { cat << EOF
     --gtk_shorthand on/off Shorten output of gtk theme/icons
     --gtk2 on/off          Enable/Disable gtk2 theme/icons output
     --gtk3 on/off          Enable/Disable gtk3 theme/icons output
+    --shell_path on/off    Enable/Disable showing \$SHELL path
+    --shell_version on/off Enable/Disable showing \$SHELL version
 
     Text Colors:
     --colors 1 2 3 4 5 6   Change the color of text
@@ -1792,6 +1830,8 @@ while [ "$1" ]; do
         --gtk_shorthand) gtk_shorthand="$2" ;;
         --gtk2) gtk2="$2" ;;
         --gtk3) gtk3="$2" ;;
+        --shell_path) shell_path="$2" ;;
+        --shell_version) shell_version="$2" ;;
 
         # Text Colors
         --colors) title_color=$2
