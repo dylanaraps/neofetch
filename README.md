@@ -12,6 +12,7 @@ your distro's logo or any ascii art of your choice!
 
 ## Table of Contents
 
+- [Features](#features)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Post Install](#post-install)
@@ -19,6 +20,22 @@ your distro's logo or any ascii art of your choice!
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [Issues and Workarounds](#issues-and-workarounds)
 - [Thanks](#thanks)
+
+
+<!-- }}} -->
+
+
+<!-- Features {{{ -->
+
+
+## Features
+
+- Supports **Linux**, **Mac OS X**, **BSD** and **Windows** (Cygwin)
+- Display a **full color image**, a file containing **ascii art** or your **distro's logo** in ascii next to the info.
+- The script is **fast**. We use bash builtins wherever possible and only spawn external processes when necessary.
+- Take a screenshot of your desktop on script finish.
+- Customize **which** info is displayed, **where** it's displayed and **when** it's displayed.
+    - See this **[wiki page](https://github.com/dylanaraps/fetch/wiki/Customizing-Info)**
 
 
 <!-- }}} -->
