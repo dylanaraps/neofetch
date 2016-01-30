@@ -1201,7 +1201,7 @@ getbirthday () {
         ;;
 
         "Windows")
-            birhday="$(cmd /K WMIC OS GET InstallDate)"
+            birhday="$(wmic os get InstallDate)"
             birthday=${birthday/InstallDate }
             birthday=${birthday//[[:space:]]/ }
             date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
