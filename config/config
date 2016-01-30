@@ -11,6 +11,7 @@ export LANGUAGE=C
 
 # Info Options {{{
 
+
 # Info
 # See this wiki page for more info:
 # https://github.com/dylanaraps/fetch/wiki/Customizing-Info
@@ -32,6 +33,7 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
+    info "Birthday" birthday
     # info "Font" gtkfont
     # info "Disk" disk
     # info "Resolution" resolution
@@ -107,6 +109,17 @@ gtk2="on"
 # --gtk3 on/off
 gtk3="on"
 
+
+# Birthday
+
+# Whether to show a long pretty output
+# or a shortened one
+# --birthday_shorthand on/off
+birthday_shorthand="off"
+
+# Whether to show the time in the output
+# --birthday_time on/off
+birthday_time="on"
 
 # Color Blocks
 

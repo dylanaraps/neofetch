@@ -53,11 +53,11 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
-    # info "Birthday" birthday
     # info "Font" gtkfont
     # info "Disk" disk
     # info "Resolution" resolution
     # info "Song" song
+    # info "Birthday" birthday
     # info "Visual Style" visualstyle
 
     info linebreak
@@ -129,6 +129,17 @@ gtk2="on"
 # --gtk3 on/off
 gtk3="on"
 
+
+# Birthday
+
+# Whether to show a long pretty output
+# or a shortened one
+# --birthday_shorthand on/off
+birthday_shorthand="off"
+
+# Whether to show the time in the output
+# --birthday_time on/off
+birthday_time="on"
 
 # Color Blocks
 
@@ -1179,14 +1190,12 @@ getdisk () {
 
 getbirthday () {
     case "$os" in
-        "Linux")
+        "Linux" | *"BSD")
             birthday="$(ls -alct --full-time / | awk '/lost\+found/ {printf  $6 " " $7}')"
-            birthday=${birthday%:*}
         ;;
 
         "Mac OS X")
             birthday="$(ls -alctT /var/log/CDIS.custom | tail -1 | awk '{printf $6 " " $7 " " $9 " " $8}')"
-            birthday=${birthday%:*}
         ;;
 
         *)
@@ -1194,6 +1203,20 @@ getbirthday () {
         ;;
 
     esac
+
+    # Strip seconds from time output
+    birthday=${birthday%:*}
+
+    # Pretty output
+    if [ "$birthday_shorthand" == "off" ]; then
+        birthday="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
+        birthday=${birthday/  }
+    fi
+
+    # Toggle showing the time
+    if [ "$birthday_time" == "off" ]; then
+        birthday=${birthday/??:??*}
+    fi
 }
 
 # }}}
@@ -1856,6 +1879,8 @@ usage () { cat << EOF
     --gtk3 on/off          Enable/Disable gtk3 theme/icons output
     --shell_path on/off    Enable/Disable showing \$SHELL path
     --shell_version on/off Enable/Disable showing \$SHELL version
+    --birthday_shorthand   Shorten the output of birthday
+    --birthday_time        Enable/Disable showing the time in birthday output
 
     Text Colors:
     --colors 1 2 3 4 5 6   Change the color of text
@@ -1953,6 +1978,8 @@ while [ "$1" ]; do
         --gtk3) gtk3="$2" ;;
         --shell_path) shell_path="$2" ;;
         --shell_version) shell_version="$2" ;;
+        --birthday_shorthand) birthday_shorthand="$2" ;;
+        --birthday_time) birthday_time="$2" ;;
 
         # Text Colors
         --colors) title_color=$2

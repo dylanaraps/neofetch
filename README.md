@@ -202,6 +202,8 @@ alias fetch2="fetch \
     --gtk3 on/off          Enable/Disable gtk3 theme/icons output
     --shell_path on/off    Enable/Disable showing \$SHELL path
     --shell_version on/off Enable/Disable showing \$SHELL version
+    --birthday_shorthand   Shorten the output of birthday
+    --birthday_time        Enable/Disable showing the time in birthday output
 
     Text Colors:
     --colors 1 2 3 4 5 6   Change the color of text
