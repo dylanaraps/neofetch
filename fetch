@@ -53,6 +53,7 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
+    # info "Birthday" birthday
     # info "Font" gtkfont
     # info "Disk" disk
     # info "Resolution" resolution
@@ -1170,6 +1171,29 @@ getdisk () {
 
     # Put it all together
     disk="${disk_used} / ${disk_total} (${disk_total_per})"
+}
+
+# }}}
+
+# Birthday {{{
+
+getbirthday () {
+    case "$os" in
+        "Linux")
+            birthday="$(ls -alct --full-time / | awk '/lost\+found/ {printf  $6 " " $7}')"
+            birthday=${birthday%:*}
+        ;;
+
+        "Mac OS X")
+            birthday="$(ls -alctT /var/log/CDIS.custom | tail -1 | awk '{printf $6 " " $7 " " $9 " " $8}')"
+            birthday=${birthday%:*}
+        ;;
+
+        *)
+            birthday="Unknown"
+        ;;
+
+    esac
 }
 
 # }}}
