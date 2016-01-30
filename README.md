@@ -108,10 +108,12 @@ your distro's logo or any ascii art of your choice!
 ### Others
 
 1. Download the latest source at https://github.com/dylanaraps/fetch
-2. Make the file executable using chmod. `chmod +x /path/to/fetch`
-3. Symlink `fetch` to somehwere in your `$PATH`. `ln -s /path/to/fetch /path/to/$PATH`
-    - Fetch now comes with ascii art and a config file so moving<br \>
-    just the script file will disable these features.
+2. Run `make install` inside the script directory to install the script.
+
+**NOTE:** Fetch can be uninstalled easily using `make uninstall`.
+
+**NOTE:** Fetch can also be run from any directory like a normal script,<br \>
+you'll just be missing the ascii distro logos and config file functionality.
 
 
 <!-- }}} -->
