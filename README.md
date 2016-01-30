@@ -1,14 +1,10 @@
 # fetch
 
 This is the home of my fetch script! This script gathers info <br />
-about your system and prints it to the terminal next to an image of your choice!
+about your system and prints it to the terminal next to an image, <br \>
+your distro's logo or any ascii art of your choice!
 
-**NOTE: See this wiki page for info on the new info function and it's usage**
-
-https://github.com/dylanaraps/fetch/wiki/Customizing-Info
-
-
-![1](http://i.imgur.com/oTxq5fA.png)
+![1](http://i.imgur.com/t1V9crb.png)
 
 
 <!-- Table of Contents {{{ -->
@@ -16,7 +12,6 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 ## Table of Contents
 
-- [Features](#features)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
 - [Post Install](#post-install)
@@ -24,32 +19,6 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [Issues and Workarounds](#issues-and-workarounds)
 - [Thanks](#thanks)
-
-
-<!-- }}} -->
-
-
-<!-- Features {{{ -->
-
-
-## Features
-
-- **Supports Linux, Mac OS X, BSD and Windows (Cygwin)!**
-    - If the script doesn't work on your system, open an issue.
-- **It's Fast**
-    - The script makes heavy use of bash builtins and <br \>string manipulation.
-- **Display an image next to the info.**
-    - Use your current wallpaper, shuffle through a directory or just <br \>display an image of your choice.
-    - Supports using w3m or iTerm2 to display the images.
-- **Display ascii next to the info.**
-    - Use a file containing ascii art as the image.
-- **Highly Customizable**
-    - You can customize almost everything.
-        - See Usage below or lines 23-233 in script
-- **Take a screenshot at the end.**
-    - It's disabled by default and you can specify the cmd <br \>to use with `--scrotcmd cmd` at launch or by <br \>changing the value of `$scrotcmd` in the script.
-- **Smart crop (or Waifu crop)**
-    - See https://github.com/dylanaraps/fetch/wiki/What-is-Smart-Crop%3F
 
 
 <!-- }}} -->
@@ -77,10 +46,10 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 **All OS:**
 
--  Displaying Images: `w3m`
-    - You may also need `w3m-img`
-    - **Note:** The script can now also use iTerm2's builtin image rendering instead of w3m!<br \>
-    Enable it by changing `$image_backend` to `iterm2` or by using the launch flag `--image_backend`.
+-  Displaying Images: `w3m-img` or `iTerm2`
+    - `w3m-img` is sometimes bundled together with `w3m`. (Arch)
+    - **Note:** To enable iTerm2 mode, you need to change `$image_backend` to `iterm2`
+    or use the launch flag `--image_backend iterm2`.
 -  Image Cropping, Resizing etc: `ImageMagick`
 -  More accurate window manager detection: `wmctrl` or `xprop`
 
@@ -90,7 +59,7 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 -  Current Song: `mpc` or `cmus`
 -  Resolution Detection: `xorg-xdpyinfo`
 -  Take a screenshot on script finish: `scrot`
-    - You can change this to another program with a `--scrot_cmd` and an in script option.
+    - You can change this to another program with `--scrot_cmd` and `$scrot_cmd`.
 
 
 <!-- }}} -->
@@ -123,7 +92,9 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 1. Download the latest source at https://github.com/dylanaraps/fetch
 2. Make the file executable using chmod. `chmod +x /path/to/fetch`
-3. Move the script to somewhere in your $PATH or just run it from where it is.
+3. Symlink `fetch` to somehwere in your `$PATH`. `ln -s /path/to/fetch /path/to/$PATH`
+    - Fetch now comes with ascii art and a config file so moving<br \>
+    just the script file will disable these features.
 
 
 <!-- }}} -->
@@ -131,12 +102,23 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 <!-- Post Install {{{ -->
 
+
 ## Post Install
+
+#### Using the config file
+
+Fetch will by default create a config file at `$HOME/.config/fetch/config` and this file<br \>
+contains all of the script's options/settings. The config file allows you to keep your<br \>
+customizations between script versions and allows you to easily share your customizations<br \>
+with other people.
+
+You can launch the script without a config file by using the flag `--config none` and you can<br \>
+specify a custom config location using `--config path/to/config`.
 
 
 #### Sizing the image correctly
 
-**NOTE:** For the images to be sized correctly you need to set the `$font_width` variable.
+**NOTE:** For the images to be sized correctly you need to set the `$font_width` variable.<br \>
 If you don't know your font width in pixels keep trying values until the image is sized correctly.
 
 You can also use the launch flag `--font_width` to set it on the fly.
@@ -144,7 +126,8 @@ You can also use the launch flag `--font_width` to set it on the fly.
 
 #### Customizing what info gets displayed
 
-At the top of the script there's a function that allows you to customize all of the info that gets displayed.
+At the top of the script and in the config file there's a function that allows you to customize<br \>
+all of the info that gets displayed.
 
 Here's what you can do:
 
@@ -310,36 +293,7 @@ or you know where it's stored then adding support won't be a problem!<br \>
 ## Issues and Workarounds
 
 
-#### fetch: line 1655: /usr/lib/w3m/w3mimgdisplay: No such file or directory
-
-
-You're getting this error because the script can't find w3mimgdisplay in it's<br \>
-default location. You can fix this by setting the config option `$w3m_img_path`<br \>
-to the correct location of w3mimgdisplay.
-
-Other places that `w3mimgdisplay` could located be are:
-
-    /usr/lib/w3m/w3mimgdisplay
-    /usr/libexec/w3m/w3mimgdisplay
-    /usr/lib64/w3m/w3mimgdisplay
-    /usr/libexec64/w3m/w3mimgdisplay
-
-
 #### The image is blank and won't show up.
-
-
-If the images display in `ranger` and `w3m` then it's an issue with my script and not<br \>
-your terminal emulator.
-
-Some terminal emulators don't support viewing images with w3m. You can either disable<br \>
-images with `--image off` at launch or `image=off` inside the script.
-
-
-#### The image is rendering with black lines in Urxvt while using an xft font.
-
-This is an issue with w3mimgdisplay and not the script. You can find a possible workaround here:
-
-https://github.com/hut/ranger/issues/86#issuecomment-17346249
 
 
 #### The text is too long for my terminal window and wraps to the next line causing the image to not render correctly.
@@ -363,7 +317,7 @@ gpu_shorthand="on"
 --gpu_shorthand on
 ```
 
-* Edit the info array to make the subtitles shorter
+* Edit the config to make the subtitles shorter
 
 * Resizing the terminal so that the lines don't wrap.
 
