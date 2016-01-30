@@ -317,7 +317,7 @@ scrot_name="fetch-%Y-%m-%d-%H:%M.png"
 # Config Options {{{
 
 
-# Path to config file
+# Path to custom config file location
 # --config path/to/config
 config_file="$HOME/.config/fetch/config"
 
