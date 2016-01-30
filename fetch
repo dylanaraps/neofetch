@@ -1479,11 +1479,6 @@ getimage () {
         image="ascii"
     fi
 
-    # Fallback to ascii mode if image mode is 'w3m' and 'w3m' isn't installed.
-    if [ "$image_backend" == "w3m" ] && ! type -p $w3m_img_path >/dev/null 2>&1; then
-        image="ascii"
-    fi
-
     # Make the directory if it doesn't exist
     mkdir -p "$imgtempdir"
 
@@ -1605,6 +1600,32 @@ getimage () {
 scrot_path="$scrot_dir/$scrot_name"
 takescrot () {
     $scrot_cmd "$scrot_path"
+}
+
+# }}}
+
+# Find w3m-img {{{
+
+# Find w3mimgdisplay automatically
+getw3m_img_path () {
+    if [ -x "$w3m_img_path" ]; then
+        return
+
+    elif [ -x "/usr/lib/w3m/w3mimgdisplay" ]; then
+        w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
+
+    elif [ -x "/usr/libexec/w3m/w3mimgdisplay" ]; then
+        w3m_img_path="/usr/libexec/w3m/w3mimgdisplay"
+
+    elif [ -x "/usr/lib64/w3m/w3mimgdisplay" ]; then
+        w3m_img_path="/usr/lib64/w3m/w3mimgdisplay"
+
+    elif [ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]; then
+        w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
+
+    else
+        image="ascii"
+    fi
 }
 
 # }}}
@@ -2012,12 +2033,18 @@ trap 'printf "\033[?25h"; clear; exit' 2
 # Get columns
 columns=$(tput cols)
 
-# Clear the terminal and hide the cursor
-[ "$image" != "off" ] && clear
+# Hide the cursor
 printf "\033[?25l"
 
-# Get the image
-[ "$image" != "off" ] && getimage
+if [ "$image" != "off" ]; then
+    clear
+
+    # Find w3mimgdisplay
+    [ "$image_backend" == "w3m" ] && getw3m_img_path
+
+    # Get the image
+    getimage
+fi
 
 # Disable line wrap
 [ "$line_wrap" == "off" ] && printf "\033[?7l"
@@ -2044,9 +2071,8 @@ bold
 [ "$image" != "off" ] && printf "\033[0H"
 printinfo
 
-# Move the cursor to the bottom and Show the cursor
+# Set cursor position dynamically based on height of ascii/text.
 if [ "$image" != "off" ]; then
-    # Set cursor position dynamically based on height of ascii/text.
     info_height="$(IFS=';' read -srdR -p $'\E[6n' ROW COL; printf "%s" "${ROW#*[}")"
     [ "$lines" -lt "$info_height" ] && lines="$info_height"
 
