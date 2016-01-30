@@ -1195,9 +1195,16 @@ getbirthday () {
             date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
         ;;
 
-        "Mac OS X" | *"BSD")
+        "Mac OS X")
             birthday="$(ls -alctT /var/log/CDIS.custom | tail -1 | awk '{printf $6 " " $7 " " $9 " " $8}')"
             date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
+        ;;
+
+        "Windows")
+            birhday="$(cmd /K WMIC OS GET InstallDate)"
+            birthday=${birthday/InstallDate }
+            birthday=${birthday//[[:space:]]/ }
+            date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
         ;;
 
         *)
