@@ -33,10 +33,10 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
-    info "Birthday" birthday
     # info "Font" gtkfont
     # info "Disk" disk
     # info "Resolution" resolution
+    # info "Birthday" birthday
     # info "Song" song
     # info "Visual Style" visualstyle
 
