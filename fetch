@@ -134,6 +134,7 @@ gtk3="on"
 
 # Whether to show a long pretty output
 # or a shortened one
+# NOTE: Long pretty output doesn't work on OpenBSD.
 # --birthday_shorthand on/off
 birthday_shorthand="off"
 
@@ -1205,18 +1206,18 @@ getbirthday () {
             case "$distro" in
                 "OpenBSD")
                     birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
+                    birthday_shorthand="on"
                 ;;
 
                 "FreeBSD")
                     birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
+                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
                 ;;
 
                 *)
                     birthday="Unknown"
                 ;;
             esac
-
-            date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
         ;;
 
         *)
