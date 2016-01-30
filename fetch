@@ -12,7 +12,7 @@
 # Optional Dependencies: (You'll lose these features without them)
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
-#   More accurate window manager detection: wmctrl or xprop
+#   More accurate window manager detection: wmctrl
 #   [ Linux / BSD ] Wallpaper Display: feh, nitrogen or gsettings
 #   [ Linux / BSD ] Current Song: mpc or cmus
 #   [ Linux / BSD ] Resolution detection: xorg-xdpyinfo
@@ -652,54 +652,39 @@ getshell () {
 # Window Manager {{{
 
 getwindowmanager () {
-    # Check for window manager using wmctrl and xprop
     if type -p wmctrl >/dev/null 2>&1; then
         windowmanager="$(wmctrl -m | head -n1)"
         windowmanager=${windowmanager/Name: }
 
-    elif type -p xprop >/dev/null 2>&1; then
-        # Get id of window manager
-        wid=$(xprop -root _NET_SUPPORTING_WM_CHECK 2>/dev/null)
-        wid=${wid//* }
+    elif [ "$XDG_CURRENT_DESKTOP" ]; then
+        windowmanager="$XDG_CURRENT_DESKTOP"
 
-        windowmanager="$(xprop -id "$wid" 8s _NET_WM_NAME 2>/dev/null)"
-        windowmanager=${windowmanager/*\(*\) = \"}
-        windowmanager=${windowmanager/\"}
+    elif [ "$XINITRC" ]; then
+        windowmanager=$(grep "^[^#]*exec" "$XINITRC")
+
+    elif [ -e "$HOME/.xinitrc" ]; then
+        windowmanager=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
+
+    else
+        case "$os" in
+            "Mac OS X")
+                windowmanager="Quartz Compositor"
+            ;;
+
+            "Windows")
+                windowmanager="Explorer"
+            ;;
+
+            *)
+                windowmanager="Unknown"
+            ;;
+
+        esac
     fi
 
-    # If the window manager wasn't found, fallback to
-    # checking files / envars.
-    if [ -z "$windowmanager" ]; then
-        if [ "$XDG_CURRENT_DESKTOP" ]; then
-            windowmanager="$XDG_CURRENT_DESKTOP"
-
-        elif [ "$XINITRC" ]; then
-            windowmanager=$(grep "^[^#]*exec" "$XINITRC")
-
-        elif [ -e "$HOME/.xinitrc" ]; then
-            windowmanager=$(grep "^[^#]*exec" "${HOME}/.xinitrc")
-
-        else
-            case "$os" in
-                "Mac OS X")
-                    windowmanager="Quartz Compositor"
-                ;;
-
-                "Windows")
-                    windowmanager="Explorer"
-                ;;
-
-                *)
-                    windowmanager="Unknown"
-                ;;
-
-            esac
-        fi
-
-        windowmanager="${windowmanager/exec }"
-        windowmanager="${windowmanager/-session}"
-        windowmanager="${windowmanager^}"
-    fi
+    windowmanager="${windowmanager/exec }"
+    windowmanager="${windowmanager/-session}"
+    windowmanager="${windowmanager^}"
 }
 
 # }}}

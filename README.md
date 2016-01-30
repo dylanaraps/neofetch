@@ -68,7 +68,7 @@ your distro's logo or any ascii art of your choice!
     - **Note:** To enable iTerm2 mode, you need to change `$image_backend` to `iterm2`
     or use the launch flag `--image_backend iterm2`.
 -  Image Cropping, Resizing etc: `ImageMagick`
--  More accurate window manager detection: `wmctrl` or `xprop`
+-  More accurate window manager detection: `wmctrl`
 
 **Linux / BSD:**
 
