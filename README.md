@@ -12,6 +12,7 @@ your distro's logo or any ascii art of your choice!
 
 ## Table of Contents
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
@@ -20,6 +21,20 @@ your distro's logo or any ascii art of your choice!
 - [Frequently Asked Questions](#frequently-asked-questions)
 - [Issues and Workarounds](#issues-and-workarounds)
 - [Thanks](#thanks)
+
+
+<!-- }}} -->
+
+
+<!-- Screenshots {{{ -->
+
+
+## Screenshots
+
+![Windows](https://i.imgur.com/oVv5gHn.png)
+![Mac OS X](http://i.imgur.com/KEi9EEi.png)
+![Linux](https://i.imgur.com/IelXz1Z.png)
+![Linux](https://i.imgur.com/6fgnvcq.png)
 
 
 <!-- }}} -->
