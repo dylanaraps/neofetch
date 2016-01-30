@@ -57,7 +57,7 @@ printinfo () {
     # info "Disk" disk
     # info "Resolution" resolution
     # info "Song" song
-    # info "Birthday" birthday
+    info "Birthday" birthday
     # info "Visual Style" visualstyle
 
     info linebreak
@@ -1190,12 +1190,14 @@ getdisk () {
 
 getbirthday () {
     case "$os" in
-        "Linux" | *"BSD")
+        "Linux")
             birthday="$(ls -alct --full-time / | awk '/lost\+found/ {printf  $6 " " $7}')"
+            date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
         ;;
 
-        "Mac OS X")
+        "Mac OS X" | *"BSD")
             birthday="$(ls -alctT /var/log/CDIS.custom | tail -1 | awk '{printf $6 " " $7 " " $9 " " $8}')"
+            date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
         ;;
 
         *)
@@ -1209,8 +1211,8 @@ getbirthday () {
 
     # Pretty output
     if [ "$birthday_shorthand" == "off" ]; then
-        birthday="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
-        birthday=${birthday/  }
+        birthday="$date_cmd"
+        birthday=${birthday/  / }
     fi
 
     # Toggle showing the time
