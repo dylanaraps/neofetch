@@ -1197,7 +1197,12 @@ getbirthday () {
         ;;
 
         "Mac OS X")
-            birthday="$(ls -alctT /var/log/CDIS.custom | tail -1 | awk '{printf $6 " " $7 " " $9 " " $8}')"
+            birthday="$(ls -alctT /var/log/CDIS.custom | awk '{printf $6 " " $7 " " $9 " " $8}')"
+            date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
+        ;;
+
+        *"BSD")
+            birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
             date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
         ;;
 
