@@ -11,7 +11,7 @@ install:
 	$(INSTALL_DIR) $(DESTDIR)/$(PREFIX)/bin
 	$(INSTALL_DIR) $(DESTDIR)/usr/share/fetch/ascii/distro
 	$(INSTALL_PROG) fetch $(DESTDIR)/$(PREFIX)/bin/fetch
-	$(INSTALL_PROG) config $(DESTDIR)/usr/share/fetch/config
+	$(INSTALL_PROG) config/config $(DESTDIR)/usr/share/fetch/config
 	$(INSTALL_PROG) ascii/distro/* $(DESTDIR)/usr/share/fetch/ascii/distro
 
 uninstall:

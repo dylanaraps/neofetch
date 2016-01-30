@@ -1788,7 +1788,7 @@ getconfig () {
         getscriptdir
 
         mkdir -p "$HOME/.config/fetch/"
-        cp "$script_dir/config" "$HOME/.config/fetch"
+        cp "$script_dir/config/config" "$HOME/.config/fetch"
         source "$HOME/.config/fetch/config"
     fi
 }
