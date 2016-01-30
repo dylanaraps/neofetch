@@ -662,7 +662,7 @@ getwindowmanager () {
         wid=$(xprop -root _NET_SUPPORTING_WM_CHECK 2>/dev/null)
         wid=${wid//* }
 
-        windowmanager="$(xprop -id $wid 8s _NET_WM_NAME 2>/dev/null)"
+        windowmanager="$(xprop -id "$wid" 8s _NET_WM_NAME 2>/dev/null)"
         windowmanager=${windowmanager/*\(*\) = \"}
         windowmanager=${windowmanager/\"}
     fi
@@ -955,7 +955,7 @@ getmemory () {
             memwired=$(vm_stat | awk '/wired/ { print $4 }')
             memactive=$(vm_stat | awk '/active / { printf $3 }')
             memcompressed=$(vm_stat | awk '/occupied/ { printf $5 }')
-            memused=$(((${wiredmem//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))
+            memused=$(((${memwired//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))
             memory="${memused}MB / ${memtotal}MB"
         ;;
 
@@ -1445,7 +1445,7 @@ getascii () {
     fi
 
     # Turn the file into a variable.
-    ascii_strip=$(<$ascii)
+    ascii_strip=$(<"$ascii")
 
     # Strip escape codes backslashes from contents of
     ascii_strip=${ascii_strip//\$\{??\}}
@@ -1738,13 +1738,13 @@ clear="\033[0m"
 
 getscriptdir () {
     # Use $0 to get the script's physical path.
-    cd "${0%/*}"
+    cd "${0%/*}" || exit
     script_dir=${0##*/}
 
     # Iterate down a (possible) chain of symlinks.
     while [ -L "$script_dir" ]; do
-        script_dir="$(readlink $script_dir)"
-        cd "${script_dir%/*}"
+        script_dir="$(readlink "$script_dir")"
+        cd "${script_dir%/*}" || exit
         script_dir="${script_dir##*/}"
     done
 
@@ -2047,7 +2047,7 @@ printinfo
 # Move the cursor to the bottom and Show the cursor
 if [ "$image" != "off" ]; then
     # Set cursor position dynamically based on height of ascii/text.
-    info_height="$(IFS=';' read -sdR -p $'\E[6n' ROW COL; printf "%s" "${ROW#*[}")"
+    info_height="$(IFS=';' read -srdR -p $'\E[6n' ROW COL; printf "%s" "${ROW#*[}")"
     [ "$lines" -lt "$info_height" ] && lines="$info_height"
 
     printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
@@ -2063,7 +2063,6 @@ printf "%b%s" "\033[?25h"
 if [ "$scrot" == "on" ]; then
     takescrot
 fi
-
 
 # }}}
 
