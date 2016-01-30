@@ -1519,10 +1519,16 @@ getimage () {
     esac
 
     # If $img is empty, reset padding to 0 and exit the function
-    if [ -z "$img" ]; then
-        padding="\033[0C"
+    if [ ! -f "$img" ]; then
+        # Fallback to ascii mode
+        image="ascii"
+        getascii
+
         return
     fi
+
+    # Lines equals terminal height
+    lines=$(tput lines)
 
     # Check to see if the image has a file extension
     case "${img##*/}" in
@@ -1589,9 +1595,6 @@ getimage () {
             ;;
         esac
     fi
-
-    # Lines equals terminal height
-    lines=$(tput lines)
 
     # The final image
     img="$imgtempdir/$imgname"
