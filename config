@@ -9,38 +9,9 @@ export LC_ALL=C
 export LANG=c
 export LANGUAGE=C
 
-# Config Options {{{
-
-
 # Info Options {{{
 
-
 # Info
-# What to display and in what order.
-# You can use ANY bash syntax in the function below!
-# For example you could use if statments to only print info
-# when a condition is true!
-#
-# The script comes with two helper functions:
-# info:
-#       info "subtitle" funcname
-# prin:
-#       prin "Custom message to print"
-#       prin "Subtitle: Custom message to print"
-#       prin "Subtitle: $(date)"
-#
-# You can also just use printf / echo to add lines but you'll
-# need to prefix your msg with "${padding}", for example:
-# echo -e "${padding} My custom message here"
-#
-# Info functions enabled by default are:
-# "title" "distro" "kernel" "uptime" "packages"
-# "shell" "resolution" "windowmanager" "gtktheme"
-# "gtkicons" "cpu" "gpu" "memory" "cols"
-#
-# Info functions that are disabled by default are:
-# "resolution" "song" "visualstyle" "font" "disk"
-#
 # See this wiki page for more info:
 # https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 printinfo () {
@@ -317,12 +288,12 @@ scrot_name="fetch-%Y-%m-%d-%H:%M.png"
 # Config Options {{{
 
 
+# Enable/Disable config file
+config="on"
+
 # Path to custom config file location
 # --config path/to/config
 config_file="$HOME/.config/fetch/config"
-
-
-# }}}
 
 
 # }}}
