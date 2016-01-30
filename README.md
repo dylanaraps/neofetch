@@ -82,7 +82,7 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
     - **Note:** The script can now also use iTerm2's builtin image rendering instead of w3m!<br \>
     Enable it by changing `$image_backend` to `iterm2` or by using the launch flag `--image_backend`.
 -  Image Cropping, Resizing etc: `ImageMagick`
--  More accurate window manager detection: `wmctrl`
+-  More accurate window manager detection: `wmctrl` or `xprop`
 
 **Linux / BSD:**
 
