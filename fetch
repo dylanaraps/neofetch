@@ -1744,6 +1744,7 @@ getscriptdir () {
 
 # Check for $config_file first
 getconfig () {
+    # Check $config_file
     if [ -f "$config_file" ]; then
         source "$config_file"
         return
@@ -1767,6 +1768,14 @@ getconfig () {
         source "$HOME/.config/fetch/config"
     fi
 }
+
+# Check the commandline flags early for '--config none/off'
+case "$@" in
+    *"--config off"* | *'--config "off"'* | *"--config 'off'"* | \
+    *"--config none"* | *'--config "none"'* | *"--config 'none'"*)
+        config="off"
+    ;;
+esac
 
 # If config files are enabled
 [ "$config" == "on" ] && getconfig
@@ -1868,6 +1877,8 @@ usage () { cat << EOF
     --scrot_cmd            Screenshot program to launch
 
     Other:
+    --config               Specify a path to a custom config file
+    --config none          Launch the script without a config file
     --help                 Print this text and exit
 
 EOF
@@ -1926,9 +1937,7 @@ while [ "$1" ]; do
             [ -z "$2" ] && image="ascii"
 
             case "$2" in
-                "--"*)
-                    image="ascii"
-                ;;
+                "--"*) image="ascii" ;;
             esac
         ;;
 
@@ -1949,9 +1958,7 @@ while [ "$1" ]; do
             [ -z "$2" ] && ascii="distro"
 
             case "$2" in
-                "--"*)
-                    ascii="distro"
-                ;;
+                "--"*) ascii="distro" ;;
             esac
         ;;
 
@@ -1964,7 +1971,13 @@ while [ "$1" ]; do
         --scrot_cmd) scrot_cmd="$2" ;;
 
         # Other
-        --config) config_file="$2"; getconfig ;;
+        --config)
+            case "$2" in
+                "none" | "off") config="off" ;;
+                *) config_file="$2"; config="on"; getconfig ;;
+            esac
+        ;;
+
         --help) usage ;;
     esac
 

@@ -184,7 +184,7 @@ alias fetch2="fetch \
 ## Usage
 
 
-    usage: ${0##*/} --option "value" --option
+    usage: ${0##*/} --option "value"
 
     Info:
     --osx_buildversion     Hide/Show Mac OS X build version.
@@ -257,9 +257,9 @@ alias fetch2="fetch \
 
     Ascii:
     --ascii                Where to get the ascii from, Possible values:
-                           'distro', '/path/to/ascii'
+                           distro, /path/to/ascii
     --ascii_color          Color to print the ascii art
-    --ascii_distro distro  Which Distro's ascii art to print
+    --ascii_distro distro  Which Distro\'s ascii art to print
 
 
     Screenshot:
@@ -269,6 +269,8 @@ alias fetch2="fetch \
     --scrot_cmd            Screenshot program to launch
 
     Other:
+    --config               Specify a path to a custom config file
+    --config none          Launch the script without a config file
     --help                 Print this text and exit
 
 
