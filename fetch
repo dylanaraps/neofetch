@@ -57,7 +57,7 @@ printinfo () {
     # info "Disk" disk
     # info "Resolution" resolution
     # info "Song" song
-    info "Birthday" birthday
+    # info "Birthday" birthday
     # info "Visual Style" visualstyle
 
     info linebreak
