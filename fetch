@@ -218,7 +218,7 @@ prompt_height=1
 image="wall"
 
 # Thumbnail directory
-imgtempdir="$HOME/.cache/thumbnails/fetch"
+thumbnail_dir="$HOME/.cache/thumbnails/fetch"
 
 # Image Backend
 # Which program to draw images with
@@ -1606,7 +1606,7 @@ getimage () {
     lines=$(tput lines)
 
     # Make the directory if it doesn't exist
-    mkdir -p "$imgtempdir"
+    mkdir -p "$thumbnail_dir"
 
     # Check to see if the image has a file extension
     case "${img##*/}" in
@@ -1623,7 +1623,7 @@ getimage () {
     esac
 
     # Check to see if the thumbnail exists before we do any cropping.
-    if [ ! -f "$imgtempdir/$imgname" ]; then
+    if [ ! -f "$thumbnail_dir/$imgname" ]; then
         # Get image size so that we can do a better crop
         size=$(identify -format "%w %h" "$img")
         width=${size%% *}
@@ -1650,7 +1650,7 @@ getimage () {
                     -background "$c" \
                     -extent "$size"x"$size" \
                     -scale "$imgsize"x"$imgsize" \
-                    "$imgtempdir/$imgname"
+                    "$thumbnail_dir/$imgname"
             ;;
 
             fill)
@@ -1659,7 +1659,7 @@ getimage () {
                     -trim +repage \
                     -scale "$imgsize"x"$imgsize"^ \
                     -extent "$imgsize"x"$imgsize" \
-                    "$imgtempdir/$imgname"
+                    "$thumbnail_dir/$imgname"
             ;;
 
             *)
@@ -1669,13 +1669,13 @@ getimage () {
                     -crop "$size"x"$size"+0+0 \
                     -quality 95 \
                     -scale "$imgsize"x"$imgsize" \
-                    "$imgtempdir/$imgname"
+                    "$thumbnail_dir/$imgname"
             ;;
         esac
     fi
 
     # The final image
-    img="$imgtempdir/$imgname"
+    img="$thumbnail_dir/$imgname"
 }
 
 scrot_path="$scrot_dir/$scrot_name"
@@ -2068,7 +2068,7 @@ while [ "$1" ]; do
         --xoffset) xoffset="$2" ;;
         --yoffset) yoffset="$2" ;;
         --gap) gap="$2" ;;
-        --clean) rm -rf "$imgtempdir" || exit ;;
+        --clean) rm -rf "$thumbnail_dir" || exit ;;
 
         # Ascii
         --ascii) image="ascii"; ascii="$2"
