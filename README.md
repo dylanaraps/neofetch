@@ -35,6 +35,7 @@ your distro's logo or any ascii art of your choice!
 ![Mac OS X](http://i.imgur.com/KEi9EEi.png)
 ![Linux](https://i.imgur.com/IelXz1Z.png)
 ![Linux](https://i.imgur.com/6fgnvcq.png)
+![Linux](http://i.imgur.com/CBpGjnw.png)
 
 
 <!-- }}} -->
