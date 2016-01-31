@@ -139,6 +139,7 @@ you'll just be missing the ascii distro logos and config file functionality.
 
 ## Post Install
 
+
 #### Using the config file
 
 Fetch will by default create a config file at `$HOME/.config/fetch/config` and this file<br \>
@@ -156,6 +157,13 @@ specify a custom config location using `--config path/to/config`.
 If you don't know your font width in pixels keep trying values until the image is sized correctly.
 
 You can also use the launch flag `--font_width` to set it on the fly.
+
+
+#### Setting the prompt height
+
+If your shell prompt's height is greater than 1 line high, you'll need to change a config<br \>
+option to avoid issues with the top lines in the script output getting cut off. Set the variable<br \>
+`$prompt_height` to your shell prompt's height in lines or use the launch flag `--prompt_height`.
 
 
 #### Customizing what info gets displayed
