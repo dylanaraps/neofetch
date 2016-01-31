@@ -411,7 +411,8 @@ case "$os" in
             distro+=" $(wmic os get OSArchitecture /value)"
 
         # Strip crap from the output of wmic
-        distro=${distro//Caption'='}
+        distro=${distro/Caption'='}
+        distro=${distro/OSArchitecture'='}
         distro=${distro//[[:space:]]/ }
         distro=${distro//  }
         distro=${distro/Microsoft }
