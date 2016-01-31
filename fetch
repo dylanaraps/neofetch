@@ -2116,7 +2116,9 @@ if [ "$image" != "off" ]; then
     clear
 
     # Find w3mimgdisplay
-    [ "$image_backend" == "w3m" ] && getw3m_img_path
+    [ "$image_backend" == "w3m" ] && \
+    [ "$image" != "ascii" ] && \
+        getw3m_img_path
 
     # Get the image
     getimage
