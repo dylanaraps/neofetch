@@ -1858,7 +1858,6 @@ getscriptdir () {
 
 # Source Config {{{
 
-
 # Check for $config_file first
 getconfig () {
     # Check $config_file
@@ -1896,7 +1895,6 @@ esac
 
 # If config files are enabled
 [ "$config" == "on" ] && getconfig
-
 
 # }}}
 
