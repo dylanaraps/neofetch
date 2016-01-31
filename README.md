@@ -231,7 +231,6 @@ alias fetch2="fetch \
     --info_color num       Change the color of the info
 
     Text Formatting:
-    --underline on/off     Enable/Disable title underline
     --underline_char char  Character to use when underlineing title
     --line_wrap on/off     Enable/Disable line wrapping
     --bold on/off          Enable/Disable bold text

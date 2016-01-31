@@ -197,10 +197,6 @@ line_wrap="on"
 # --bold on/off
 bold="on"
 
-# Toggle title underline
-# --underline on/off
-underline="on"
-
 # Underline character
 # --underline_char char
 underline_char="-"
@@ -1561,9 +1557,6 @@ getimage () {
         image="ascii"
     fi
 
-    # Make the directory if it doesn't exist
-    mkdir -p "$imgtempdir"
-
     # Image size is half of the terminal
     imgsize=$((columns * font_width / split_size))
 
@@ -1600,7 +1593,7 @@ getimage () {
         ;;
     esac
 
-    # If $img is empty, reset padding to 0 and exit the function
+    # If $img is empty, fallback to ascii mode.
     if [ ! -f "$img" ]; then
         # Fallback to ascii mode
         image="ascii"
@@ -1611,6 +1604,9 @@ getimage () {
 
     # Lines equals terminal height
     lines=$(tput lines)
+
+    # Make the directory if it doesn't exist
+    mkdir -p "$imgtempdir"
 
     # Check to see if the image has a file extension
     case "${img##*/}" in
@@ -1943,7 +1939,6 @@ usage () { cat << EOF
     --info_color num       Change the color of the info
 
     Text Formatting:
-    --underline on/off     Enable/Disable title underline
     --underline_char char  Character to use when underlineing title
     --line_wrap on/off     Enable/Disable line wrapping
     --bold on/off          Enable/Disable bold text
@@ -2046,7 +2041,6 @@ while [ "$1" ]; do
         --info_color) info_color=$2 ;;
 
         # Text Formatting
-        --underline) underline="$2" ;;
         --underline_char) underline_char="$2" ;;
         --line_wrap) line_wrap="$2" ;;
         --bold) bold="$2" ;;

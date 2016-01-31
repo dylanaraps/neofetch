@@ -177,10 +177,6 @@ line_wrap="on"
 # --bold on/off
 bold="on"
 
-# Toggle title underline
-# --underline on/off
-underline="on"
-
 # Underline character
 # --underline_char char
 underline_char="-"
