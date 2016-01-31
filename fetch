@@ -1225,6 +1225,11 @@ getbirthday () {
             esac
         ;;
 
+        "Windows")
+            birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
+            date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
+        ;;
+
         *)
             birthday="Unknown"
         ;;
