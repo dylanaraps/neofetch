@@ -329,9 +329,6 @@ or you know where it's stored then adding support won't be a problem!<br \>
 ## Issues and Workarounds
 
 
-#### The image is blank and won't show up.
-
-
 #### The text is too long for my terminal window and wraps to the next line causing the image to not render correctly.
 
 There are a few ways to fix this.
@@ -346,11 +343,14 @@ There are a few ways to fix this.
 uptime_shorthand="on"
 gtk_shorthand="on"
 gpu_shorthand="on"
+birthday_shorthand="on"
 
 # Launch flags
 --uptime_shorthand on
 --gtk_shorthand on
 --gpu_shorthand on
+--birthday_shorthand on
+
 ```
 
 * Edit the config to make the subtitles shorter
@@ -406,6 +406,8 @@ Thanks to:
 - @jrgz: Helping me test the Mac OS X version.
 
 - @xDemonessx: Helping me test the Windows version.
+
+- Everyone else who has helped test the script and given feedback.
 
 
 <!-- }}} -->
