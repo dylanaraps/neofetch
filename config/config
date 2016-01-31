@@ -114,7 +114,7 @@ gtk3="on"
 
 # Whether to show a long pretty output
 # or a shortened one
-# NOTE: Long pretty output doesn't work on OpenBSD.
+# NOTE: Long pretty output doesn't work on OpenBSD or NetBSD.
 # --birthday_shorthand on/off
 birthday_shorthand="off"
 
