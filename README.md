@@ -313,10 +313,10 @@ alias fetch2="fetch \
 #### How do I enable screenfetch mode?
 
 Launching the script with `--ascii distro` or setting `ascii="distro"` and `image="ascii"` <br \>
-inside the script will launch the script in "screenfetch mode". The script will display your<br \>
+inside the config file will launch the script in "screenfetch mode". The script will display your<br \>
 distro's ascii next to the info, exactly like screenfetch.
 
-![arch](https://camo.githubusercontent.com/972490362219f4aa087a0a9491df24d506590542/687474703a2f2f692e696d6775722e636f6d2f746741504a76322e706e67)
+![arch](http://i.imgur.com/uCMjgf6.png)
 
 
 #### Why doesn't fetch support my wallpaper setter?
@@ -347,7 +347,7 @@ There are a few ways to fix this.
   enable them by changing these variables or using these flags.
 
 ```sh
-# In script options
+# Config options
 uptime_shorthand="on"
 gtk_shorthand="on"
 gpu_shorthand="on"
