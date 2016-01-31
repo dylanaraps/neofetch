@@ -403,6 +403,7 @@ case "$os" in
     "Windows")
         distro="$(wmic os get Caption /value)"
         distro=${distro/Caption}
+        distro=${distro/Caption\=}
         distro=${distro//[[:space:]]/ }
         distro=${distro//  }
         distro=${distro/Microsoft }
