@@ -837,9 +837,10 @@ getgpu () {
        "Linux")
             # Get the GPUs
             gpu="$(lspci | grep -F "VGA" | uniq -c)"
+            gpu=${gpu/??':'??'.'?}
 
             # Count the number of GPUs
-            count=${gpu/ ??:*}
+            count=${gpu/ VGA*}
             count=${count//[[:space:]]}
 
             # If there's more than one gpu
