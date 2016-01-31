@@ -2121,7 +2121,7 @@ if [ "$image" != "off" ]; then
 fi
 
 # Display the image if enabled
-if [ "$image" != "off" ] || [ "$image" != "ascii" ]; then
+if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
     case "$image_backend" in
         "w3m")
             printf "%b%s\n" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
