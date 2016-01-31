@@ -33,7 +33,7 @@ your distro's logo or any ascii art of your choice!
 
 ![Windows](https://i.imgur.com/oVv5gHn.png)
 ![Mac OS X](http://i.imgur.com/KEi9EEi.png)
-![Linux](https://i.imgur.com/IelXz1Z.png)
+![Linux](https://ipfs.pics/ipfs/QmQL7jbxuRAX8HxL2ePNH7zUpXnePV3LRuodXZQvdiFiWk)
 ![Linux](https://i.imgur.com/6fgnvcq.png)
 ![Linux](http://i.imgur.com/CBpGjnw.png)
 
@@ -186,7 +186,7 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 #### Customizing the script using a custom alias
 
-If you don't want to use the confog file you can customize almost everything using launch flags!
+If you don't want to use the config file you can customize almost everything using launch flags!
 
 Here's what my fetch alias looks like:
 
