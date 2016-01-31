@@ -835,7 +835,22 @@ getcpu () {
 getgpu () {
    case "$os" in
        "Linux")
-            gpu="$(lspci | grep -F "VGA")"
+            # Get the GPUs
+            gpu="$(lspci | grep -F "VGA" | uniq -c)"
+
+            # Count the number of GPUs
+            count=${gpu/ ??:*}
+            count=${count//[[:space:]]}
+
+            # If there's more than one gpu
+            # Display the count.
+            if [ "$count" -gt 1 ]; then
+                count=" x $count"
+            else
+                unset count
+            fi
+
+            # Format the output
             gpu=${gpu/* VGA compatible controller: }
             gpu=${gpu/(rev*)}
 
@@ -923,6 +938,8 @@ getgpu () {
         gpu=${gpu// Series}
         gpu=${gpu/\/*}
     fi
+
+    gpu="${gpu}${count}"
 }
 
 # }}}
