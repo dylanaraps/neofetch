@@ -218,7 +218,7 @@ prompt_height=1
 image="wall"
 
 # Thumbnail directory
-imgtempdir="$HOME/.fetchimages"
+imgtempdir="$HOME/.cache/thumbnails/fetch"
 
 # Image Backend
 # Which program to draw images with
