@@ -2111,13 +2111,15 @@ done
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
 
+# If the script exits for any reason, unhide the cursor.
+trap 'printf "\033[?25h"' EXIT
+
 # Get columns
 columns=$(tput cols)
 
-# Hide the cursor
-printf "\033[?25l"
-
 if [ "$image" != "off" ]; then
+    # Hide the cursor
+    printf "\033[?25l"
     clear
 
     # Find w3mimgdisplay
@@ -2127,11 +2129,8 @@ if [ "$image" != "off" ]; then
     getimage
 fi
 
-# Disable line wrap
-[ "$line_wrap" == "off" ] && printf "\033[?7l"
-
 # Display the image if enabled
-if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
+if [ "$image" != "off" ] || [ "$image" != "ascii" ]; then
     case "$image_backend" in
         "w3m")
             printf "%b%s\n" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
@@ -2144,27 +2143,31 @@ if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
     esac
 fi
 
+# Disable line wrap
+[ "$line_wrap" == "off" ] && printf "\033[?7l"
+
+# Move cursor to the top
+[ "$image" != "off" ] && printf "\033[0H"
+
 # Get colors / bold
 colors
 bold
 
-# Move the cursor to the top and display the info
-[ "$image" != "off" ] && printf "\033[0H"
+# Print the info
 printinfo
 
-# Set cursor position dynamically based on height of ascii/text.
 if [ "$image" != "off" ]; then
+    # Get cursor position
     info_height="$(IFS=';' read -srdR -p $'\E[6n' ROW COL; printf "%s" "${ROW#*[}")"
+
+    # Set cursor position dynamically based on height of ascii/text.
     [ "$lines" -lt "$info_height" ] && lines="$info_height"
 
     printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
 fi
 
-# Enable line wrap again
-[ "$line_wrap" == "off" ] && printf "\033[?7h"
-
-# Show the cursor
-printf "%b%s" "\033[?25h"
+# Show the cursor and re-enable line wrap
+printf "%b%s" "\033[?7h\033[?25h"
 
 # If enabled take a screenshot
 if [ "$scrot" == "on" ]; then
