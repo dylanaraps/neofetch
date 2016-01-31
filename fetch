@@ -402,8 +402,7 @@ case "$os" in
 
     "Windows")
         distro="$(wmic os get Caption /value)"
-        distro=${distro/Caption}
-        distro=${distro/'='}
+        distro=${distro/Caption'='}
         distro=${distro//[[:space:]]/ }
         distro=${distro//  }
         distro=${distro/Microsoft }
@@ -900,8 +899,8 @@ getgpu () {
 
 
         "Windows")
-            gpu=$(wmic path Win32_VideoController get caption)
-            gpu=${gpu/Caption }
+            gpu=$(wmic path Win32_VideoController get caption /value)
+            gpu=${gpu/Caption'='}
             gpu=${gpu//[[:space:]]/ }
             gpu=${gpu//  }
         ;;
