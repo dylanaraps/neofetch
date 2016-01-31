@@ -160,8 +160,8 @@ You can also use the launch flag `--font_width` to set it on the fly.
 
 #### Customizing what info gets displayed
 
-At the top of the script and in the config file there's a function that allows you to customize<br \>
-all of the info that gets displayed.
+In the config file there's a function that allows you to customize all of the info that<br \>
+gets displayed.
 
 Here's what you can do:
 
@@ -177,7 +177,7 @@ https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 #### Customizing the script using a custom alias
 
-If you don't want to edit the script you can customize almost everything using launch flags!
+If you don't want to use the confog file you can customize almost everything using launch flags!
 
 Here's what my fetch alias looks like:
 
