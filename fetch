@@ -79,6 +79,10 @@ kernel_shorthand="on"
 # --osx_buildversion on/off
 osx_buildversion="on"
 
+# Show '64-bit' / '32-bit' in 'Distro:'
+# --windows_bits on /off
+windows_bits="on"
+
 
 # Uptime
 
@@ -402,7 +406,12 @@ case "$os" in
 
     "Windows")
         distro="$(wmic os get Caption /value)"
-        distro=${distro/Caption'='}
+
+        [ "$windows_bits" == "on" ] && \
+            distro+=" $(wmic os get OSArchitecture /value)"
+
+        # Strip crap from the output of wmic
+        distro=${distro//Caption'='}
         distro=${distro//[[:space:]]/ }
         distro=${distro//  }
         distro=${distro/Microsoft }
@@ -1892,6 +1901,7 @@ usage () { cat << EOF
 
     Info:
     --osx_buildversion     Hide/Show Mac OS X build version.
+    --windows_bits on/off  Hide/Show Windows architecture.
     --speed_type           Change the type of cpu speed to display.
                            Possible values: current, min, max, bios,
                            scaling_current, scaling_min, scaling_max
@@ -1992,6 +2002,7 @@ exit 1
 while [ "$1" ]; do
     case $1 in
         # Info
+        --windows_bits) windows_bits="$2" ;;
         --osx_buildversion) osx_buildversion="$2" ;;
         --speed_type) speed_type="$2" ;;
         --kernel_shorthand) kernel_shorthand="$2" ;;
