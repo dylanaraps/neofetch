@@ -1461,6 +1461,11 @@ getascii () {
         ;;
     esac
 
+    # If the ascii file doesn't exist
+    # fallback to showing distro ascii.
+    [ ! -f "$ascii" ] && \
+        ascii="distro"
+
     if [ "$ascii" == "distro" ]; then
         # Lowercase the distro name
         ascii=${ascii_distro,,}
@@ -1501,14 +1506,6 @@ getascii () {
             "distro") ascii_color="$c1" ;;
             *) ascii_color="$(color $ascii_color)" ;;
         esac
-
-        # If the ascii file doesn't exist
-        # fallback to text mode.
-        if [ ! -f "$ascii" ]; then
-            padding="\033[0C"
-            image="off"
-            return
-        fi
 
         print="${ascii_color}$(<"$ascii")"
     fi
