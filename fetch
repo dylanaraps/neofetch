@@ -319,6 +319,7 @@ scrot_name="fetch-%Y-%m-%d-%H:%M.png"
 
 
 # Enable/Disable config file
+# --config off, none
 config="on"
 
 # Path to custom config file location
