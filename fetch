@@ -697,9 +697,8 @@ getcpu () {
             # Get cpu name
             cpu="$(grep -F 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: }
-            cpu=${cpu%%  *}
             cpu=${cpu/ @*}
-            cpu=${cpu//  }
+            cpu=${cpu%% }
 
             # Get cpu speed
             if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
