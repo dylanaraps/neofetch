@@ -2096,7 +2096,6 @@ if [ "$image" != "off" ]; then
 
     # Get the image
     getimage
-
 fi
 
 # Display the image if enabled
