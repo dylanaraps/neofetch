@@ -115,6 +115,14 @@ gtk2="on"
 gtk3="on"
 
 
+# Battery
+
+# Which battery to display.
+# By default we display all batteries.
+# --battery_num all, 0, 1, 2, etc
+battery_num="all"
+
+
 # Birthday
 
 # Whether to show a long pretty output
