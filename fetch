@@ -1247,7 +1247,8 @@ getbirthday () {
 # }}}
 
 # Battery {{{
-battery="$(cat /sys/class/power_supply/BAT*/capacity | head -n 1)%"
+battery="$(echo $(cat /sys/class/power_supply/BAT*/capacity))%"
+battery="$(echo $battery | sed 's/ /%, /g')"
 # }}}
 
 # Terminal colors {{{
