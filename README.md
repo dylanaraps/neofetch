@@ -235,8 +235,6 @@ alias fetch2="fetch \
     --birthday_time        Enable/Disable showing the time in birthday output
 
     Text Colors:
-    --colors 1 2 3 4 5 6   Change the color of text
-                           (title, @, subtitle, colon, underline, info)
     --title_color num      Change the color of the title
     --at_color num         Change the color of "@" in title
     --subtitle_color num   Change the color of the subtitle
