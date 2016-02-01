@@ -1573,6 +1573,9 @@ getimage () {
         return
     fi
 
+    # Get columns
+    columns=$(tput cols)
+
     # Image size is half of the terminal
     imgsize=$((columns * font_width / split_size))
 
@@ -2102,9 +2105,6 @@ trap 'printf "\033[?25h"; clear; exit' 2
 
 # If the script exits for any reason, unhide the cursor.
 trap 'printf "\033[?25h"' EXIT
-
-# Get columns
-columns=$(tput cols)
 
 if [ "$image" != "off" ]; then
     # Hide the cursor
