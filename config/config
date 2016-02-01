@@ -59,9 +59,9 @@ kernel_shorthand="on"
 # --osx_buildversion on/off
 osx_buildversion="on"
 
-# Show '64-bit' / '32-bit' in 'Distro:'
-# --windows_bits on /off
-windows_bits="on"
+# Show 'x86_64' and 'x86' in 'Distro:' output.
+# --os_arch on/off
+os_arch="on"
 
 
 # Uptime
