@@ -1246,6 +1246,10 @@ getbirthday () {
 
 # }}}
 
+# Battery {{{
+battery="$(cat /sys/class/power_supply/BAT*/capacity | head -n 1)%"
+# }}}
+
 # Terminal colors {{{
 
 getcols () {
