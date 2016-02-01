@@ -559,7 +559,7 @@ getpackages () {
             packages="$(rpm -qa | wc -l)"
         ;;
 
-        "CRUX")
+        "CRUX"*)
             packages="$(pkginfo -i | wc -l)"
         ;;
 
@@ -585,11 +585,11 @@ getpackages () {
             fi
         ;;
 
-        "OpenBSD" | "NetBSD")
+        "OpenBSD"* | "NetBSD"*)
             packages=$(pkg_info | wc -l)
         ;;
 
-        "FreeBSD")
+        "FreeBSD"*)
             packages=$(pkg info | wc -l)
         ;;
 
@@ -735,7 +735,7 @@ getcpu () {
 
         *"BSD")
             case "$distro" in
-                "OpenBSD" | "FreeBSD")
+                "OpenBSD"* | "FreeBSD"*)
                     # Get cpu name
                     cpu="$(sysctl -n hw.model)"
                     cpu=${cpu/ @*}
@@ -744,13 +744,13 @@ getcpu () {
 
                     # Get cpu speed
                     case "$distro" in
-                        "OpenBSD") speed=$(sysctl -n hw.cpuspeed) ;;
-                        "FreeBSD") speed=$(sysctl -n hw.clockrate) ;;
+                        "OpenBSD"*) speed=$(sysctl -n hw.cpuspeed) ;;
+                        "FreeBSD"*) speed=$(sysctl -n hw.clockrate) ;;
                     esac
                     speed=$((speed / 100))
                 ;;
 
-                "NetBSD")
+                "NetBSD"*)
                     # Get cpu name
                     cpu="$(grep -F 'model name' /proc/cpuinfo)"
                     cpu=${cpu/model name*: }
@@ -885,7 +885,7 @@ getgpu () {
 
         *"BSD")
             case "$distro" in
-                "FreeBSD")
+                "FreeBSD"*)
                     gpu=$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")
                     gpu=${gpu/device*= }
                     gpu=${gpu//\'}
@@ -957,14 +957,14 @@ getmemory () {
 
         "OpenBSD" | "BSD")
             case "$distro" in
-                "OpenBSD" | "FreeBSD")
+                "OpenBSD"* | "FreeBSD"*)
                     memtotal=$(dmesg | awk '/real mem/ {printf $5}')
                     memtotal=${memtotal/\(}
                     memtotal=${memtotal/MB\)}
 
                     case "$distro" in
-                        "OpenBSD") memfree=$(top -d 1 | awk '/Real:/ {printf $6}') ;;
-                        "FreeBSD") memfree=$(top -d 1 | awk '/Mem:/ {printf $10}') ;;
+                        "OpenBSD"*) memfree=$(top -d 1 | awk '/Real:/ {printf $6}') ;;
+                        "FreeBSD"*) memfree=$(top -d 1 | awk '/Mem:/ {printf $10}') ;;
                     esac
                     memfree=${memfree/M}
 
@@ -972,7 +972,7 @@ getmemory () {
                     memory="${memused}MB / ${memtotal}MB"
                 ;;
 
-                "NetBSD")
+                "NetBSD"*)
                     memfree=$(($(vmstat | awk 'END{printf $4}') / 1000))
                     memused=$(($(vmstat | awk 'END{printf $3}') / 1000))
                     memtotal=$((memused + memfree))
@@ -1192,17 +1192,17 @@ getbirthday () {
 
         *"BSD")
             case "$distro" in
-                "OpenBSD")
+                "OpenBSD"*)
                     birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
                     birthday_shorthand="on"
                 ;;
 
-                "FreeBSD")
+                "FreeBSD"*)
                     birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
                     date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
                 ;;
 
-                "NetBSD")
+                "NetBSD"*)
                     birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
                     birthday_shorthand="on"
                 ;;
