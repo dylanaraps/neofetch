@@ -501,7 +501,6 @@ getuptime () {
         *)
             uptime="Unknown"
         ;;
-
     esac
 
     # Make the output of uptime smaller.
@@ -733,7 +732,7 @@ getcpu () {
 
         *"BSD")
             case "$distro" in
-                "OpenBSD")
+                "OpenBSD" | "FreeBSD")
                     # Get cpu name
                     cpu="$(sysctl -n hw.model)"
                     cpu=${cpu/ @*}
@@ -741,19 +740,10 @@ getcpu () {
                     cpu=${cpu% }
 
                     # Get cpu speed
-                    speed=$(sysctl -n hw.cpuspeed)
-                    speed=$((speed / 100))
-                ;;
-
-                "FreeBSD")
-                    # Get cpu name
-                    cpu="$(sysctl -n hw.model)"
-                    cpu=${cpu/ @*}
-                    cpu=${cpu//  }
-                    cpu=${cpu% }
-
-                    # Get cpu speed
-                    speed="$(sysctl -n hw.clockrate)"
+                    case "$distro" in
+                        "OpenBSD") speed=$(sysctl -n hw.cpuspeed) ;;
+                        "FreeBSD") speed=$(sysctl -n hw.clockrate) ;;
+                    esac
                     speed=$((speed / 100))
                 ;;
 
@@ -964,24 +954,15 @@ getmemory () {
 
         "OpenBSD" | "BSD")
             case "$distro" in
-                "OpenBSD")
+                "OpenBSD" | "FreeBSD")
                     memtotal=$(dmesg | awk '/real mem/ {printf $5}')
                     memtotal=${memtotal/\(}
                     memtotal=${memtotal/MB\)}
 
-                    memfree=$(top -d 1 | awk '/Real:/ {printf $6}')
-                    memfree=${memfree/M}
-
-                    memused=$((memtotal - memfree))
-                    memory="${memused}MB / ${memtotal}MB"
-                ;;
-
-                "FreeBSD")
-                    memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-                    memtotal=${memtotal/\(}
-                    memtotal=${memtotal/MB\)}
-
-                    memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
+                    case "$distro" in
+                        "OpenBSD") memfree=$(top -d 1 | awk '/Real:/ {printf $6}') ;;
+                        "FreeBSD") memfree=$(top -d 1 | awk '/Mem:/ {printf $10}') ;;
+                    esac
                     memfree=${memfree/M}
 
                     memused=$((memtotal - memfree))
@@ -1250,9 +1231,8 @@ getbirthday () {
     fi
 
     # Toggle showing the time
-    if [ "$birthday_time" == "off" ]; then
+    [ "$birthday_time" == "off" ] && \
         birthday=${birthday/??:??*}
-    fi
 }
 
 # }}}
