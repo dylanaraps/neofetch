@@ -1703,10 +1703,14 @@ info () {
     if [ -z "$2" ]; then
         "get$1" 2>/dev/null
         eval output="\$${1}"
+
     else
         "get$2" 2>/dev/null
         eval output="\$${2}"
     fi
+
+    # If the output is empty, don't print anything
+    [ -z "$output" ] && return
 
     case "$1" in
         title)
@@ -1799,7 +1803,7 @@ bold () {
 # Linebreak {{{
 
 getlinebreak () {
-   linebreak=""
+   linebreak=" "
 }
 
 # }}}
@@ -1875,6 +1879,20 @@ esac
 
 # }}}
 
+# Unset function {{{
+
+unset_func () {
+    for func in "$@"; do
+        case "$func" in
+            "--disable") continue ;;
+            "--"*) return ;;
+            *) unset -f "get$func" ;;
+        esac
+    done
+}
+
+#}}}
+
 
 # }}}
 
@@ -1887,6 +1905,10 @@ usage () { cat << EOF
     usage: ${0##*/} --option "value"
 
     Info:
+    --disable infoname     Allows you to disable an info line from
+                           appearing in the output.
+                           NOTE: You can supply multiple args. eg.
+                           'fetch --disable cpu gpu disk shell'
     --osx_buildversion     Hide/Show Mac OS X build version.
     --os_arch on/off       Hide/Show Windows architecture.
     --speed_type           Change the type of cpu speed to display.
@@ -1989,6 +2011,7 @@ exit 1
 while [ "$1" ]; do
     case $1 in
         # Info
+        --disable) unset_func "$@" ;;
         --os_arch) os_arch="$2" ;;
         --osx_buildversion) osx_buildversion="$2" ;;
         --speed_type) speed_type="$2" ;;

@@ -213,6 +213,10 @@ alias fetch2="fetch \
     usage: ${0##*/} --option "value"
 
     Info:
+    --disable infoname     Allows you to disable an info line from
+                           appearing in the output.
+                           NOTE: You can supply multiple args. eg.
+                           'fetch --disable cpu gpu disk shell'
     --os_arch on/off       Hide/Show Windows architecture.
     --osx_buildversion     Hide/Show Mac OS X build version.
     --speed_type           Change the type of cpu speed to display.
