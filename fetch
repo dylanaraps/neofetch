@@ -373,6 +373,10 @@ esac
 
 # Distro {{{
 
+# Default bit style
+x64="x86_64"
+x32="x86"
+
 case "$os" in
     "Linux" )
         if type -p lsb_release >/dev/null 2>&1; then
@@ -412,6 +416,10 @@ case "$os" in
         distro=${distro//[[:space:]]/ }
         distro=${distro//  }
         distro=${distro/Microsoft }
+
+        # Change bits to xx-bit for Windows
+        x64="64-bit"
+        x32="32-bit"
     ;;
 
     *)
@@ -424,8 +432,8 @@ getdistro () {
     # Get architecture
     if [ "$os_arch" == "on" ]; then
         case "$(getconf LONG_BIT)" in
-            64) distro+=" x86_64" ;;
-            32) distro+=" x86" ;;
+            64) distro+=" $x64" ;;
+            32) distro+=" $x32" ;;
         esac
     fi
 }
