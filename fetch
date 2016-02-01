@@ -421,13 +421,12 @@ esac
 ascii_distro="$distro"
 
 getdistro () {
-    # Overflow integer to get architecture
+    # Get architecture
     if [ "$os_arch" == "on" ]; then
-        if ((1<<32)); then
-            distro+=" x86_64"
-        else
-            distro+=" x86"
-        fi
+        case "$(getconf LONG_BIT)" in
+            64) distro+=" x86_64" ;;
+            32) distro+=" x86" ;;
+        esac
     fi
 }
 
