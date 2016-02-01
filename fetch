@@ -1280,6 +1280,11 @@ getbirthday () {
 
 # }}}
 
+# Battery {{{
+battery="$(echo $(cat /sys/class/power_supply/BAT*/capacity))%"
+battery="$(echo $battery | sed 's/ /%, /g')"
+# }}}
+
 # Terminal colors {{{
 
 getcols () {
