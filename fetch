@@ -1553,8 +1553,9 @@ getimage () {
         return
     fi
 
-    # Get columns
+    # Get lines and columns
     columns=$(tput cols)
+    lines=$(tput lines)
 
     # Image size is half of the terminal
     imgsize=$((columns * font_width / split_size))
@@ -1571,9 +1572,6 @@ getimage () {
             xoffset=$((columns * font_width / split_size - gap))
         ;;
     esac
-
-    # Lines equals terminal height
-    lines=$(tput lines)
 
     # Make the directory if it doesn't exist
     mkdir -p "$thumbnail_dir"
@@ -1780,11 +1778,10 @@ color () {
 # Bold {{{
 
 bold () {
-    if [ "$bold" == "on" ]; then
-        bold="\033[1m"
-    else
-        bold=""
-    fi
+    case "$bold" in
+        "on") bold="\033[1m" ;;
+        "off") bold="" ;;
+    esac
 }
 
 # }}}
@@ -2087,9 +2084,10 @@ trap 'printf "\033[?25h"; clear; exit' 2
 trap 'printf "\033[?25h"' EXIT
 
 if [ "$image" != "off" ]; then
+    clear
+
     # Hide the cursor
     printf "\033[?25l"
-    clear
 
     # Find w3mimgdisplay
     [ "$image_backend" == "w3m" ] && \
@@ -2098,6 +2096,7 @@ if [ "$image" != "off" ]; then
 
     # Get the image
     getimage
+
 fi
 
 # Display the image if enabled
@@ -2137,8 +2136,8 @@ if [ "$image" != "off" ]; then
     printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
 fi
 
-# Show the cursor and re-enable line wrap
-printf "%b%s" "\033[?7h\033[?25h"
+# Re-enable line wrap
+printf "%b%s" "\033[?25h"
 
 # If enabled take a screenshot
 if [ "$scrot" == "on" ]; then
