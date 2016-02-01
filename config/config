@@ -36,6 +36,7 @@ printinfo () {
     # info "Font" gtkfont
     # info "Disk" disk
     # info "Resolution" resolution
+    # info "Battery" battery
     # info "Birthday" birthday
     # info "Song" song
     # info "Visual Style" visualstyle
