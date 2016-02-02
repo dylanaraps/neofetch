@@ -1216,7 +1216,7 @@ getbattery () {
 
                 # If shorthand is on, print each value on the same line
                 if [ "$battery_shorthand" == "on" ]; then
-                    battery=${batteries[@]}
+                    battery=${batteries[*]}
                     battery=${battery// /%, }
                     battery="${battery}%"
 
@@ -1328,7 +1328,7 @@ getcols () {
 
 # }}}
 
-# Windows Specific Functions {{{
+# Windows Visual Style {{{
 
 getvisualstyle () {
     case "$os" in
