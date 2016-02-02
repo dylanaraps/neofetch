@@ -38,7 +38,6 @@ printinfo () {
     # info "Resolution" resolution
     # info "Battery" battery
     # info "Birthday" birthday
-    # info "Battery" battery
     # info "Song" song
     # info "Visual Style" visualstyle
 
