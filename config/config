@@ -122,6 +122,11 @@ gtk3="on"
 # --battery_num all, 0, 1, 2, etc
 battery_num="all"
 
+# Whether or not to print each battery on the same line.
+# By default each battery gets its own line and title.
+# --battery_shorthand on/off
+battery_shorthand="off"
+
 
 # Birthday
 
