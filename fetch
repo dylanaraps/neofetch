@@ -139,11 +139,13 @@ gtk3="on"
 
 # Which battery to display.
 # By default we display all batteries.
+# NOTE: Only works on Linux.
 # --battery_num all, 0, 1, 2, etc
 battery_num="all"
 
 # Whether or not to print each battery on the same line.
 # By default each battery gets its own line and title.
+# NOTE: Only works on Linux.
 # --battery_shorthand on/off
 battery_shorthand="off"
 
@@ -835,11 +837,12 @@ getgpu () {
    case "$os" in
        "Linux")
             # Get the GPUs
-            gpu="$(lspci | grep -F "VGA" | uniq -c)"
-            gpu=${gpu/??':'??'.'?}
+            gpu="$(lspci | grep -F "VGA")"
+            gpu=${gpu//??':'??'.'?}
 
             # Count the number of GPUs
-            count=${gpu/ VGA*}
+            count="$(printf "%s" "$gpu" | uniq -c)"
+            count=${count/ VGA*}
             count=${count//[[:space:]]}
 
             # If there's more than one gpu
@@ -1237,6 +1240,18 @@ getbattery () {
             else
                 battery="None"
             fi
+        ;;
+
+        "Mac OS X")
+            battery="$(pmset -g batt | grep -o '[0-9]*%')"
+        ;;
+
+        "Windows")
+            battery="$(wmic path Win32_Battery Get EstimatedChargeRemaining /value)"
+            battery=${battery/EstimatedChargeRemaining'='}
+            battery=${battery//[[:space:]]/ }
+            battery=${battery//  }
+            battery+="%"
         ;;
     esac
 }
