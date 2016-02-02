@@ -231,6 +231,8 @@ alias fetch2="fetch \
     --gtk3 on/off          Enable/Disable gtk3 theme/icons output
     --shell_path on/off    Enable/Disable showing \$SHELL path
     --shell_version on/off Enable/Disable showing \$SHELL version
+    --battery_num          Which battery to display, default value is 'all'
+    --battery_shorthand    Whether or not each battery gets its own line and title
     --birthday_shorthand   Shorten the output of birthday
     --birthday_time        Enable/Disable showing the time in birthday output
 

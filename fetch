@@ -135,6 +135,19 @@ gtk2="on"
 gtk3="on"
 
 
+# Battery
+
+# Which battery to display.
+# By default we display all batteries.
+# --battery_num all, 0, 1, 2, etc
+battery_num="all"
+
+# Whether or not to print each battery on the same line.
+# By default each battery gets its own line and title.
+# --battery_shorthand on/off
+battery_shorthand="off"
+
+
 # Birthday
 
 # Whether to show a long pretty output
@@ -1189,26 +1202,40 @@ getbattery () {
     case "$os" in
         "Linux")
             if [ -d "/sys/class/power_supply/BAT0" ]; then
-                batteries=($(cat /sys/class/power_supply/BAT*/capacity))
+                # Set the index to the battery number.
+                case "$battery_num" in
+                    "all") battery_num="*" index=0 ;;
+                    *) index="$battery_num" ;;
+                esac
+
+                # Create an array of battery usage from each battery.
+                batteries=($(cat /sys/class/power_supply/BAT${battery_num}/capacity))
 
                 # Get the subtitle and reassign it so it doesn't change.
                 title="$subtitle"
 
-                # If there's only a single battery,
-                # don't number the subtitle.
-                if [ "${#batteries[@]}" == 1 ]; then
-                    prin "${title}: ${batteries[0]}%"
-                    return
-                fi
+                # If shorthand is on, print each value on the same line
+                if [ "$battery_shorthand" == "on" ]; then
+                    battery=${batteries[*]}
+                    battery=${battery// /%, }
+                    battery="${battery}%"
 
-                # Print each battery on a seperate line.
-                index=0
-                for bat in ${batteries[@]}; do
-                    prin "${title}${index}: ${bat}%"
-                    index=$((index + 1))
-                done
+                else
+                    # If there's only a single battery and it's battery 0,
+                    # don't number the subtitle.
+                    if [ "${#batteries[@]}" == 1 ] && [ "$battery_num" == 0 ]; then
+                        prin "${title}: ${batteries[0]}%"
+                        return
+                    fi
+
+                    # Print each battery on a seperate line.
+                    for bat in "${batteries[@]}"; do
+                        prin "${title}${index}: ${bat}%"
+                        index=$((index + 1))
+                    done
+                fi
             else
-                battery="Unknown"
+                battery="None"
             fi
         ;;
     esac
@@ -1301,7 +1328,7 @@ getcols () {
 
 # }}}
 
-# Windows Specific Functions {{{
+# Windows Visual Style {{{
 
 getvisualstyle () {
     case "$os" in
@@ -1960,6 +1987,8 @@ usage () { cat << EOF
     --gtk3 on/off          Enable/Disable gtk3 theme/icons output
     --shell_path on/off    Enable/Disable showing \$SHELL path
     --shell_version on/off Enable/Disable showing \$SHELL version
+    --battery_num          Which battery to display, default value is 'all'
+    --battery_shorthand    Whether or not each battery gets its own line and title
     --birthday_shorthand   Shorten the output of birthday
     --birthday_time        Enable/Disable showing the time in birthday output
 
@@ -2058,6 +2087,8 @@ while [ "$1" ]; do
         --gtk3) gtk3="$2" ;;
         --shell_path) shell_path="$2" ;;
         --shell_version) shell_version="$2" ;;
+        --battery_num) battery_num="$2" ;;
+        --battery_shorthand) battery_shorthand="$2" ;;
         --birthday_shorthand) birthday_shorthand="$2" ;;
         --birthday_time) birthday_time="$2" ;;
 
