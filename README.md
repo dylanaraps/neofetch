@@ -62,37 +62,37 @@ your distro's logo or any ascii art of your choice!
 
 ## Dependencies
 
+
 ### Required dependencies:
 
-**All OS:**
-
 -  `Bash 4.0+`
-
-**Linux / BSD / Windows:**
-
--  Uptime detection: `procps` or `procps-ng`
+-  `procps-ng`
+    - Not required on OS X
 
 
 ### Optional dependencies:
 
-**NOTE:** If `w3m` or `Imagemagick` aren't found then image support will be disabled.
+- Displaying images: `w3m-img` \[1\] or `iTerm2` \[2\]
+- Thumbnail creation: `imagemagick`
 
-**All OS:**
+##### Linux / BSD
 
--  Displaying Images: `w3m-img` or `iTerm2`
-    - `w3m-img` is sometimes bundled together with `w3m`. (Arch)
-    - **Note:** To enable iTerm2 mode, you need to change `$image_backend` to `iterm2`
-    or use the launch flag `--image_backend iterm2`.
--  Image Cropping, Resizing etc: `ImageMagick`
--  More accurate window manager detection: `wmctrl`
+- Window Manager: `wmctrl` \[3\]
+- Wallpaper: `feh`, `nitrogen` or `gsettings`
+- Current Song: `mpc` or `cmus`
+- Resolution: `xorg-xdpyinfo`
+- Screenshot: `scrot` \[4\]
 
-**Linux / BSD:**
+\[1\] `w3m-img` is sometimes bundled together with `w3m`.
 
--  Display Wallpaper: `feh`, `nitrogen` or `gsettings`
--  Current Song: `mpc` or `cmus`
--  Resolution Detection: `xorg-xdpyinfo`
--  Take a screenshot on script finish: `scrot`
-    - You can change this to another program with `--scrot_cmd` and `$scrot_cmd`.
+\[2\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
+changing the config option `$image_backend` to `iterm2`.
+
+\[3\] You should install wmctrl if the builtin window manager detection isn't working for you. The builtin<br \>
+detection works for most people and is generally faster which is why wmctrl isn't default.
+
+\[4\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+program's cmd and fetch will use it instead of scrot.
 
 
 <!-- }}} -->
@@ -129,7 +129,7 @@ your distro's logo or any ascii art of your choice!
 **NOTE:** Fetch can be uninstalled easily using `make uninstall`.
 
 **NOTE:** Fetch can also be run from any directory like a normal script,<br \>
-you'll just be missing the ascii distro logos and config file functionality.
+you'll just be missing the ascii distro logos and automatic config file creation.
 
 
 <!-- }}} -->
@@ -155,7 +155,8 @@ specify a custom config location using `--config path/to/config`.
 #### Sizing the image correctly
 
 **NOTE:** For the images to be sized correctly you need to set the `$font_width` variable.<br \>
-If you don't know your font width in pixels keep trying values until the image is sized correctly.
+If you don't know your font width in pixels keep trying values until the image is half the<br \>
+terminal width.
 
 You can also use the launch flag `--font_width` to set it on the fly.
 
@@ -210,100 +211,96 @@ alias fetch2="fetch \
 ## Usage
 
 
-    usage: ${0##*/} --option "value"
+    usage: fetch --option "value" --option "value"
 
     Info:
-    --disable infoname     Allows you to disable an info line from
-                           appearing in the output.
-                           NOTE: You can supply multiple args. eg.
-                           'fetch --disable cpu gpu disk shell'
-    --os_arch on/off       Hide/Show Windows architecture.
-    --osx_buildversion     Hide/Show Mac OS X build version.
-    --speed_type           Change the type of cpu speed to display.
-                           Possible values: current, min, max, bios,
-                           scaling_current, scaling_min, scaling_max
-                           NOTE: This only support Linux with cpufreq.
-    --kernel_shorthand     Shorten the output of kernel
-    --uptime_shorthand     Shorten the output of uptime (tiny, on, off)
-    --gpu_shorthand on/off Shorten the output of GPU
-    --gtk_shorthand on/off Shorten output of gtk theme/icons
-    --gtk2 on/off          Enable/Disable gtk2 theme/icons output
-    --gtk3 on/off          Enable/Disable gtk3 theme/icons output
-    --shell_path on/off    Enable/Disable showing \$SHELL path
-    --shell_version on/off Enable/Disable showing \$SHELL version
-    --battery_num          Which battery to display, default value is 'all'
-    --battery_shorthand    Whether or not each battery gets its own line and title
-    --birthday_shorthand   Shorten the output of birthday
-    --birthday_time        Enable/Disable showing the time in birthday output
+    --disable infoname          Allows you to disable an info line from appearing
+                                in the output.
+                                NOTE: You can supply multiple args. eg.
+                                'fetch --disable cpu gpu disk shell'
+    --osx_buildversion on/off   Hide/Show Mac OS X build version.
+    --os_arch on/off            Hide/Show Windows architecture.
+    --speed_type type           Change the type of cpu speed to display.
+                                Possible values: current, min, max, bios,
+                                scaling_current, scaling_min, scaling_max
+                                NOTE: This only support Linux with cpufreq.
+    --kernel_shorthand on/off   Shorten the output of kernel
+    --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
+    --gpu_shorthand on/off      Shorten the output of GPU
+    --gtk_shorthand on/off      Shorten output of gtk theme/icons
+    --gtk2 on/off               Enable/Disable gtk2 theme/icons output
+    --gtk3 on/off               Enable/Disable gtk3 theme/icons output
+    --shell_path on/off         Enable/Disable showing \$SHELL path
+    --shell_version on/off      Enable/Disable showing \$SHELL version
+    --battery_num num           Which battery to display, default value is 'all'
+    --battery_shorthand on/off  Whether or not each battery gets its own line/title
+    --birthday_shorthand on/off Shorten the output of birthday
+    --birthday_time on/ff       Enable/Disable showing the time in birthday output
 
     Text Colors:
-    --title_color num      Change the color of the title
-    --at_color num         Change the color of "@" in title
-    --subtitle_color num   Change the color of the subtitle
-    --colon_color num      Change the color of the colons
-    --underline_color num  Change the color of the underlines
-    --info_color num       Change the color of the info
+    --title_color num           Change the color of the title
+    --at_color num              Change the color of "@" in title
+    --subtitle_color num        Change the color of the subtitle
+    --colon_color num           Change the color of the colons
+    --underline_color num       Change the color of the underlines
+    --info_color num            Change the color of the info
 
     Text Formatting:
-    --underline_char char  Character to use when underlineing title
-    --line_wrap on/off     Enable/Disable line wrapping
-    --bold on/off          Enable/Disable bold text
-    --prompt_height num    Set this to your prompt height to fix
-                           issues with the text going off screen at the top
+    --underline_char char       Character to use when underlineing title
+    --line_wrap on/off          Enable/Disable line wrapping
+    --bold on/off               Enable/Disable bold text
+    --prompt_height num         Set this to your prompt height to fix issues with
+                                the text going off screen at the top
+
 
     Color Blocks:
-    --color_blocks on/off  Enable/Disable the color blocks
-    --block_width num      Width of color blocks
-    --block_range start end --v
-                           Range of colors to print as blocks
+    --color_blocks on/off       Enable/Disable the color blocks
+    --block_width num           Width of color blocks
+    --block_range start end     Range of colors to print as blocks
+
 
     Image:
-    --image                Image source. Where and what image we display.
-                           Possible values: wall, shuffle, ascii,
-                           /path/to/img, off
-    --image_backend        Which program to use to draw images.
-    --shuffle_dir           Which directory to shuffle for an image.
-    --font_width px        Used to automatically size the image
-    --image_position       Where to display the image: (Left/Right)
-    --split_size num       Width of img/text splits
-                           A value of 2 makes each split half the terminal
-                           width and etc
-    --crop_mode            Which crop mode to use
-                           Takes the values: normal, fit, fill
-    --crop_offset value    Change the crop offset for normal mode.
-                           Possible values: northwest, north, northeast,
-                           west, center, east, southwest, south, southeast
+    --image type                Image source. Where and what image we display.
+                                Possible values: wall, shuffle, ascii,
+                                /path/to/img, off
+    --image_backend w3m/iterm2  Which program to use to draw images.
+    --shuffle_dir path/to/dir   Which directory to shuffle for an image.
+    --font_width px             Used to automatically size the image
+    --image_position left/right Where to display the image: (Left/Right)
+    --split_size num            Width of img/text splits, A value of 2 makes each
+                                split half the terminal width and etc.
+    --crop_mode mode            Which crop mode to use
+                                Takes the values: normal, fit, fill
+    --crop_offset value         Change the crop offset for normal mode.
+                                Possible values: northwest, north, northeast,
+                                west, center, east, southwest, south, southeast
 
-    --xoffset px           How close the image will be
-                           to the left edge of the window
-                           NOTE: This only works with w3m
-    --yoffset px           How close the image will be
-                           to the top edge of the window
-                           NOTE: This only works with w3m
-    --gap num              Gap between image and text right side
-                           to the top edge of the window
-                           NOTE: --gap can take a negative value which will
-                           move the text closer to the left side.
-    --clean                Remove all cropped images
+    --xoffset px                How close the image will be to the left edge of the
+                                window. This only works with w3m.
+    --yoffset px                How close the image will be to the top edge of the
+                                window. This only works with w3m.
+    --gap num                   Gap between image and text.
+                                NOTE: --gap can take a negative value which will
+                                move the text closer to the left side.
+    --clean                     Remove all cropped images
 
 
     Ascii:
-    --ascii                Where to get the ascii from, Possible values:
-                           distro, /path/to/ascii
-    --ascii_color          Color to print the ascii art
-    --ascii_distro distro  Which Distro\'s ascii art to print
+    --ascii value               Where to get the ascii from, Possible values:
+                                distro, /path/to/ascii
+    --ascii_color num           Color to print the ascii art
+    --ascii_distro distro       Which Distro\'s ascii art to print
 
 
     Screenshot:
-    --scrot /path/to/img   Take a screenshot, if path is left empty
-                           the screenshot function will use
-                           \$scrot_dir and \$scrot_name.
-    --scrot_cmd            Screenshot program to launch
+    --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
+                                shot function will use \$scrot_dir and \$scrot_name.
+    --scrot_cmd cmd             Screenshot program to launch
 
     Other:
-    --config               Specify a path to a custom config file
-    --config none          Launch the script without a config file
-    --help                 Print this text and exit
+    --config /path/to/config    Specify a path to a custom config file
+    --config none               Launch the script without a config file
+    --help                      Print this text and exit
 
 
 <!-- }}} -->
@@ -342,12 +339,11 @@ or you know where it's stored then adding support won't be a problem!<br \>
 ## Issues and Workarounds
 
 
-#### The text is too long for my terminal window and wraps to the next line causing the image to not render correctly.
+#### The text is too long for my terminal window and wraps to the next line
 
 There are a few ways to fix this.
 
 * Disable line wrapping with `line_wrap=off` in the script or with the launch flag `--line_wrap off`
-
 * The uptime and gtk info lines each have a shorthand option that makes their output smaller. You can <br \>
   enable them by changing these variables or using these flags.
 
@@ -367,7 +363,6 @@ birthday_shorthand="on"
 ```
 
 * Edit the config to make the subtitles shorter
-
 * Resizing the terminal so that the lines don't wrap.
 
 

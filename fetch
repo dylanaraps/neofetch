@@ -139,11 +139,13 @@ gtk3="on"
 
 # Which battery to display.
 # By default we display all batteries.
+# NOTE: Only works on Linux.
 # --battery_num all, 0, 1, 2, etc
 battery_num="all"
 
 # Whether or not to print each battery on the same line.
 # By default each battery gets its own line and title.
+# NOTE: Only works on Linux.
 # --battery_shorthand on/off
 battery_shorthand="off"
 
@@ -835,11 +837,12 @@ getgpu () {
    case "$os" in
        "Linux")
             # Get the GPUs
-            gpu="$(lspci | grep -F "VGA" | uniq -c)"
-            gpu=${gpu/??':'??'.'?}
+            gpu="$(lspci | grep -F "VGA")"
+            gpu=${gpu//??':'??'.'?}
 
             # Count the number of GPUs
-            count=${gpu/ VGA*}
+            count="$(printf "%s" "$gpu" | uniq -c)"
+            count=${count/ VGA*}
             count=${count//[[:space:]]}
 
             # If there's more than one gpu
@@ -881,7 +884,7 @@ getgpu () {
                     gpu=${gpu/G????M }
                     gpu=${gpu/G???? }
                     gpu=${gpu/\[}
-                    gpu=${gpu/\]}
+                    gpu=${gpu/\] }
 
                     brand="Nvidia "
                 ;;
@@ -1237,6 +1240,18 @@ getbattery () {
             else
                 battery="None"
             fi
+        ;;
+
+        "Mac OS X")
+            battery="$(pmset -g batt | grep -o '[0-9]*%')"
+        ;;
+
+        "Windows")
+            battery="$(wmic path Win32_Battery Get EstimatedChargeRemaining /value)"
+            battery=${battery/EstimatedChargeRemaining'='}
+            battery=${battery//[[:space:]]/ }
+            battery=${battery//  }
+            battery+="%"
         ;;
     esac
 }
@@ -1966,100 +1981,96 @@ unset_func () {
 
 usage () { cat << EOF
 
-    usage: ${0##*/} --option "value"
+    usage: fetch --option "value" --option "value"
 
     Info:
-    --disable infoname     Allows you to disable an info line from
-                           appearing in the output.
-                           NOTE: You can supply multiple args. eg.
-                           'fetch --disable cpu gpu disk shell'
-    --osx_buildversion     Hide/Show Mac OS X build version.
-    --os_arch on/off       Hide/Show Windows architecture.
-    --speed_type           Change the type of cpu speed to display.
-                           Possible values: current, min, max, bios,
-                           scaling_current, scaling_min, scaling_max
-                           NOTE: This only support Linux with cpufreq.
-    --kernel_shorthand     Shorten the output of kernel
-    --uptime_shorthand     Shorten the output of uptime (tiny, on, off)
-    --gpu_shorthand on/off Shorten the output of GPU
-    --gtk_shorthand on/off Shorten output of gtk theme/icons
-    --gtk2 on/off          Enable/Disable gtk2 theme/icons output
-    --gtk3 on/off          Enable/Disable gtk3 theme/icons output
-    --shell_path on/off    Enable/Disable showing \$SHELL path
-    --shell_version on/off Enable/Disable showing \$SHELL version
-    --battery_num          Which battery to display, default value is 'all'
-    --battery_shorthand    Whether or not each battery gets its own line and title
-    --birthday_shorthand   Shorten the output of birthday
-    --birthday_time        Enable/Disable showing the time in birthday output
+    --disable infoname          Allows you to disable an info line from appearing
+                                in the output.
+                                NOTE: You can supply multiple args. eg.
+                                'fetch --disable cpu gpu disk shell'
+    --osx_buildversion on/off   Hide/Show Mac OS X build version.
+    --os_arch on/off            Hide/Show Windows architecture.
+    --speed_type type           Change the type of cpu speed to display.
+                                Possible values: current, min, max, bios,
+                                scaling_current, scaling_min, scaling_max
+                                NOTE: This only support Linux with cpufreq.
+    --kernel_shorthand on/off   Shorten the output of kernel
+    --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
+    --gpu_shorthand on/off      Shorten the output of GPU
+    --gtk_shorthand on/off      Shorten output of gtk theme/icons
+    --gtk2 on/off               Enable/Disable gtk2 theme/icons output
+    --gtk3 on/off               Enable/Disable gtk3 theme/icons output
+    --shell_path on/off         Enable/Disable showing \$SHELL path
+    --shell_version on/off      Enable/Disable showing \$SHELL version
+    --battery_num num           Which battery to display, default value is 'all'
+    --battery_shorthand on/off  Whether or not each battery gets its own line/title
+    --birthday_shorthand on/off Shorten the output of birthday
+    --birthday_time on/ff       Enable/Disable showing the time in birthday output
 
     Text Colors:
-    --title_color num      Change the color of the title
-    --at_color num         Change the color of "@" in title
-    --subtitle_color num   Change the color of the subtitle
-    --colon_color num      Change the color of the colons
-    --underline_color num  Change the color of the underlines
-    --info_color num       Change the color of the info
+    --title_color num           Change the color of the title
+    --at_color num              Change the color of "@" in title
+    --subtitle_color num        Change the color of the subtitle
+    --colon_color num           Change the color of the colons
+    --underline_color num       Change the color of the underlines
+    --info_color num            Change the color of the info
 
     Text Formatting:
-    --underline_char char  Character to use when underlineing title
-    --line_wrap on/off     Enable/Disable line wrapping
-    --bold on/off          Enable/Disable bold text
-    --prompt_height num    Set this to your prompt height to fix
-                           issues with the text going off screen at the top
+    --underline_char char       Character to use when underlineing title
+    --line_wrap on/off          Enable/Disable line wrapping
+    --bold on/off               Enable/Disable bold text
+    --prompt_height num         Set this to your prompt height to fix issues with
+                                the text going off screen at the top
+
 
     Color Blocks:
-    --color_blocks on/off  Enable/Disable the color blocks
-    --block_width num      Width of color blocks
-    --block_range start end --v
-                           Range of colors to print as blocks
+    --color_blocks on/off       Enable/Disable the color blocks
+    --block_width num           Width of color blocks
+    --block_range start end     Range of colors to print as blocks
+
 
     Image:
-    --image                Image source. Where and what image we display.
-                           Possible values: wall, shuffle, ascii,
-                           /path/to/img, off
-    --image_backend        Which program to use to draw images.
-    --shuffle_dir           Which directory to shuffle for an image.
-    --font_width px        Used to automatically size the image
-    --image_position       Where to display the image: (Left/Right)
-    --split_size num       Width of img/text splits
-                           A value of 2 makes each split half the terminal
-                           width and etc
-    --crop_mode            Which crop mode to use
-                           Takes the values: normal, fit, fill
-    --crop_offset value    Change the crop offset for normal mode.
-                           Possible values: northwest, north, northeast,
-                           west, center, east, southwest, south, southeast
+    --image type                Image source. Where and what image we display.
+                                Possible values: wall, shuffle, ascii,
+                                /path/to/img, off
+    --image_backend w3m/iterm2  Which program to use to draw images.
+    --shuffle_dir path/to/dir   Which directory to shuffle for an image.
+    --font_width px             Used to automatically size the image
+    --image_position left/right Where to display the image: (Left/Right)
+    --split_size num            Width of img/text splits, A value of 2 makes each
+                                split half the terminal width and etc.
+    --crop_mode mode            Which crop mode to use
+                                Takes the values: normal, fit, fill
+    --crop_offset value         Change the crop offset for normal mode.
+                                Possible values: northwest, north, northeast,
+                                west, center, east, southwest, south, southeast
 
-    --xoffset px           How close the image will be
-                           to the left edge of the window
-                           NOTE: This only works with w3m
-    --yoffset px           How close the image will be
-                           to the top edge of the window
-                           NOTE: This only works with w3m
-    --gap num              Gap between image and text right side
-                           to the top edge of the window
-                           NOTE: --gap can take a negative value which will
-                           move the text closer to the left side.
-    --clean                Remove all cropped images
+    --xoffset px                How close the image will be to the left edge of the
+                                window. This only works with w3m.
+    --yoffset px                How close the image will be to the top edge of the
+                                window. This only works with w3m.
+    --gap num                   Gap between image and text.
+                                NOTE: --gap can take a negative value which will
+                                move the text closer to the left side.
+    --clean                     Remove all cropped images
 
 
     Ascii:
-    --ascii                Where to get the ascii from, Possible values:
-                           distro, /path/to/ascii
-    --ascii_color          Color to print the ascii art
-    --ascii_distro distro  Which Distro\'s ascii art to print
+    --ascii value               Where to get the ascii from, Possible values:
+                                distro, /path/to/ascii
+    --ascii_color num           Color to print the ascii art
+    --ascii_distro distro       Which Distro\'s ascii art to print
 
 
     Screenshot:
-    --scrot /path/to/img   Take a screenshot, if path is left empty
-                           the screenshot function will use
-                           \$scrot_dir and \$scrot_name.
-    --scrot_cmd            Screenshot program to launch
+    --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
+                                shot function will use \$scrot_dir and \$scrot_name.
+    --scrot_cmd cmd             Screenshot program to launch
 
     Other:
-    --config               Specify a path to a custom config file
-    --config none          Launch the script without a config file
-    --help                 Print this text and exit
+    --config /path/to/config    Specify a path to a custom config file
+    --config none               Launch the script without a config file
+    --help                      Print this text and exit
 
 EOF
 exit 1
