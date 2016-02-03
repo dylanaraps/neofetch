@@ -337,7 +337,7 @@ or you know where it's stored then adding support won't be a problem!<br \>
 ## Issues and Workarounds
 
 
-#### The text is too long for my terminal window and wraps to the next line causing the image to not render correctly.
+#### The text is too long for my terminal window and wraps to the next line
 
 There are a few ways to fix this.
 
