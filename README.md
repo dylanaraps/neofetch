@@ -72,21 +72,26 @@ your distro's logo or any ascii art of your choice!
 
 ### Optional dependencies:
 
-- Displaying images: `w3m-img` or `iTerm2`
+- Displaying images: `w3m-img` \[1\] or `iTerm2` \[2\]
 - Thumbnail creation: `imagemagick`
 
 ##### Linux / BSD
 
-- Window Manager: `wmctrl` \[1\]
+- Window Manager: `wmctrl` \[3\]
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc` or `cmus`
 - Resolution: `xorg-xdpyinfo`
-- Screenshot: `scrot` \[2\]
+- Screenshot: `scrot` \[4\]
 
-\[1\] You should install wmctrl if the builtin window manager detection isn't working for you. The builtin<br \>
+\[1\] `w3m-img` is sometimes bundled together with `w3m`.
+
+\[2\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
+changing the config option `$image_backend` to `iterm2`.
+
+\[3\] You should install wmctrl if the builtin window manager detection isn't working for you. The builtin<br \>
 detection works for most people and is generally faster which is why wmctrl isn't default.
 
-\[2\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+\[4\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and fetch will use it instead of scrot.
 
 
