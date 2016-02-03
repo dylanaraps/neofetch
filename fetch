@@ -884,7 +884,7 @@ getgpu () {
                     gpu=${gpu/G????M }
                     gpu=${gpu/G???? }
                     gpu=${gpu/\[}
-                    gpu=${gpu/\]}
+                    gpu=${gpu/\] }
 
                     brand="Nvidia "
                 ;;
