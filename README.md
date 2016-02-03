@@ -62,37 +62,32 @@ your distro's logo or any ascii art of your choice!
 
 ## Dependencies
 
+
 ### Required dependencies:
 
-**All OS:**
-
 -  `Bash 4.0+`
-
-**Linux / BSD / Windows:**
-
--  Uptime detection: `procps` or `procps-ng`
+-  `procps-ng`
+    - Not required on OS X
 
 
 ### Optional dependencies:
 
-**NOTE:** If `w3m` or `Imagemagick` aren't found then image support will be disabled.
+- Displaying images: `w3m-img` or `iTerm2`
+- Thumbnail creation: `imagemagick`
 
-**All OS:**
+##### Linux / BSD
 
--  Displaying Images: `w3m-img` or `iTerm2`
-    - `w3m-img` is sometimes bundled together with `w3m`. (Arch)
-    - **Note:** To enable iTerm2 mode, you need to change `$image_backend` to `iterm2`
-    or use the launch flag `--image_backend iterm2`.
--  Image Cropping, Resizing etc: `ImageMagick`
--  More accurate window manager detection: `wmctrl`
+- Window Manager: `wmctrl` \[1\]
+- Wallpaper: `feh`, `nitrogen` or `gsettings`
+- Current Song: `mpc` or `cmus`
+- Resolution: `xorg-xdpyinfo`
+- Screenshot: `scrot` \[2\]
 
-**Linux / BSD:**
+\[1\] You should install wmctrl if the builtin window manager detection isn't working for you. The builtin<br \>
+detection works for most people and is generally faster which is why wmctrl isn't default.
 
--  Display Wallpaper: `feh`, `nitrogen` or `gsettings`
--  Current Song: `mpc` or `cmus`
--  Resolution Detection: `xorg-xdpyinfo`
--  Take a screenshot on script finish: `scrot`
-    - You can change this to another program with `--scrot_cmd` and `$scrot_cmd`.
+\[2\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+program's cmd and fetch will use it instead of scrot.
 
 
 <!-- }}} -->
@@ -129,7 +124,7 @@ your distro's logo or any ascii art of your choice!
 **NOTE:** Fetch can be uninstalled easily using `make uninstall`.
 
 **NOTE:** Fetch can also be run from any directory like a normal script,<br \>
-you'll just be missing the ascii distro logos and config file functionality.
+you'll just be missing the ascii distro logos and automatic config file creation.
 
 
 <!-- }}} -->
@@ -210,7 +205,7 @@ alias fetch2="fetch \
 ## Usage
 
 
-    usage: ${0##*/} --option "value"
+    usage: fetch --option "value" --option "value"
 
     Info:
     --disable infoname     Allows you to disable an info line from
@@ -347,7 +342,6 @@ or you know where it's stored then adding support won't be a problem!<br \>
 There are a few ways to fix this.
 
 * Disable line wrapping with `line_wrap=off` in the script or with the launch flag `--line_wrap off`
-
 * The uptime and gtk info lines each have a shorthand option that makes their output smaller. You can <br \>
   enable them by changing these variables or using these flags.
 
@@ -367,7 +361,6 @@ birthday_shorthand="on"
 ```
 
 * Edit the config to make the subtitles shorter
-
 * Resizing the terminal so that the lines don't wrap.
 
 
