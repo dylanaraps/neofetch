@@ -315,19 +315,22 @@ alias fetch2="fetch \
 #### How do I enable screenfetch mode?
 
 Launching the script with `--ascii distro` or setting `ascii="distro"` and `image="ascii"` <br \>
-inside the config file will launch the script in "screenfetch mode". The script will display your<br \>
-distro's ascii next to the info, exactly like screenfetch.
+inside the config file will launch the script in "screenfetch mode". The script will<br \>
+display your distro's ascii next to the info, exactly like screenfetch.
+
+**NOTE:** If you don't have `w3m-img` or `imagemagick` installed screenfetch mode will be<br \>
+used automatically
 
 ![arch](http://i.imgur.com/uCMjgf6.png)
 
 
 #### Why doesn't fetch support my wallpaper setter?
 
-It's hard to add support for other wallpaper setters as<br \>
-they don't provide a way of getting the current wallpaper from the cli.
+It's hard to add support for other wallpaper setters as they don't provide a way of <br \>
+getting the current wallpaper from the cli.
 
-If your wallpaper setter **does** provide a way of getting the current wallpaper<br \>
-or you know where it's stored then adding support won't be a problem!<br \>
+If your wallpaper setter **does** provide a way of getting the current wallpaper or you<br \>
+know where it's stored then adding support won't be a problem!<br \>
 
 
 <!-- }}} -->
