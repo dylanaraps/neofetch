@@ -247,6 +247,7 @@ crop_mode="normal"
 crop_offset="center"
 
 # Font width
+# --font_width num
 # Used when calculating dynamic image size
 font_width=5
 
