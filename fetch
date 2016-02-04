@@ -2153,7 +2153,7 @@ while [ "$1" ]; do
                     *) ascii_colors+=($arg)
                 esac
             done
-            ascii_colors+=(7 7 7 7 7)
+            ascii_colors+=(7 7 7 7 7 7)
         ;;
         --ascii_distro) ascii_distro="$2" ;;
 
