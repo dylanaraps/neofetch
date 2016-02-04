@@ -1250,11 +1250,11 @@ getbattery () {
         ;;
 
         "Windows")
-            battery="$(wmic Path Win32_Battery)"
+            battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
             battery=${battery/EstimatedChargeRemaining'='}
             battery=${battery//[[:space:]]/ }
             battery=${battery//  }
-            battery+="%"
+            battery+="${battery}%"
         ;;
     esac
 }
