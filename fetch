@@ -301,11 +301,14 @@ xoffset=0
 # --ascii 'distro', path/to/ascii
 ascii="distro"
 
-# Ascii color
+# Ascii colors
 # When this is set to distro it will use your
 # ditro's colors to color the ascii.
-# --ascii_color distro, number
-ascii_color="distro"
+# NOTE: You can also set this to a range of colors
+# which will allow you to custom color distro logos
+# --ascii_colors distro
+# --ascii_colors 2 4 5 6
+ascii_colors=(distro)
 
 
 # }}}
@@ -1554,13 +1557,13 @@ getascii () {
 
         # Overwrite distro colors if '$ascii_color` doesn't
         # equal 'distro'.
-        if [ "$ascii_color" != "distro" ]; then
-            c1=$(color $ascii_color)
-            c2=$(color $ascii_color)
-            c3=$(color $ascii_color)
-            c4=$(color $ascii_color)
-            c5=$(color $ascii_color)
-            c6=$(color $ascii_color)
+        if [ "$ascii_colors" != "distro" ]; then
+            c1=$(color ${ascii_colors[0]})
+            c2=$(color ${ascii_colors[1]})
+            c3=$(color ${ascii_colors[2]})
+            c4=$(color ${ascii_colors[3]})
+            c5=$(color ${ascii_colors[4]})
+            c6=$(color ${ascii_colors[5]})
         fi
 
         # We only use eval in the distro ascii files.
@@ -1571,7 +1574,7 @@ getascii () {
             *) ascii_color="$(color $ascii_color)" ;;
         esac
 
-        print="${ascii_color}$(<"$ascii")"
+        print="$(color ${ascii_colors[0]})$(<"$ascii")"
     fi
 
     # Turn the file into a variable.
@@ -1958,20 +1961,6 @@ esac
 
 # }}}
 
-# Unset function {{{
-
-unset_func () {
-    for func in "$@"; do
-        case "$func" in
-            "--disable") continue ;;
-            "--"*) return ;;
-            *) unset -f "get$func" ;;
-        esac
-    done
-}
-
-#}}}
-
 
 # }}}
 
@@ -2086,7 +2075,6 @@ exit 1
 while [ "$1" ]; do
     case $1 in
         # Info
-        --disable) unset_func "$@" ;;
         --os_arch) os_arch="$2" ;;
         --osx_buildversion) osx_buildversion="$2" ;;
         --speed_type) speed_type="$2" ;;
@@ -2102,6 +2090,15 @@ while [ "$1" ]; do
         --battery_shorthand) battery_shorthand="$2" ;;
         --birthday_shorthand) birthday_shorthand="$2" ;;
         --birthday_time) birthday_time="$2" ;;
+        --disable)
+            for func in "$@"; do
+                case "$func" in
+                    "--disable") continue ;;
+                    "--"*) return ;;
+                    *) unset -f "get$func" ;;
+                esac
+            done
+        ;;
 
         # Text Colors
         --title_color) title_color=$2 ;;
@@ -2123,12 +2120,9 @@ while [ "$1" ]; do
         --block_width) block_width="$2" ;;
 
         # Image
-        --image) image="$2"
-            [ -z "$2" ] && image="ascii"
-
-            case "$2" in
-                "--"*) image="ascii" ;;
-            esac
+        --image)
+            image="$2"
+            case "$2" in "--"* | "") image="ascii" ;; esac
         ;;
 
         --image_backend) image_backend="$2" ;;
@@ -2144,20 +2138,27 @@ while [ "$1" ]; do
         --clean) rm -rf "$thumbnail_dir" || exit ;;
 
         # Ascii
-        --ascii) image="ascii"; ascii="$2"
-            [ -z "$2" ] && ascii="distro"
-
-            case "$2" in
-                "--"*) ascii="distro" ;;
-            esac
+        --ascii)
+            image="ascii"
+            ascii="$2"
+            case "$2" in "--"* | "") ascii="distro" ;; esac
         ;;
 
-        --ascii_color) ascii_color="$2" ;;
+        --ascii_colors)
+            unset ascii_colors
+            for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
+                case "$arg" in
+                    "$1") continue ;;
+                    "--"*) break ;;
+                    *) ascii_colors+=($arg)
+                esac
+            done
+            ascii_colors+=(7 7 7 7 7)
+        ;;
         --ascii_distro) ascii_distro="$2" ;;
 
         # Screenshot
-        --scrot | -s) scrot="on"; \
-            [ "$2" ] && scrot_path="$2" ;;
+        --scrot | -s) scrot="on"; [ "$2" ] && scrot_path="$2" ;;
         --scrot_cmd) scrot_cmd="$2" ;;
 
         # Other
