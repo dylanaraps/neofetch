@@ -691,18 +691,9 @@ getwindowmanager () {
 
     else
         case "$os" in
-            "Mac OS X")
-                windowmanager="Quartz Compositor"
-            ;;
-
-            "Windows")
-                windowmanager="Explorer"
-            ;;
-
-            *)
-                windowmanager="Unknown"
-            ;;
-
+            "Mac OS X") windowmanager="Quartz Compositor" ;;
+            "Windows") windowmanager="Explorer" ;;
+            *) windowmanager="Unknown" ;;
         esac
     fi
 
@@ -1633,7 +1624,8 @@ getimage () {
     lines=$(tput lines)
 
     # Image size is half of the terminal
-    [ "$image_size" == "half" ] && image_size=$((columns * font_width / 2))
+    [ "$image_size" == "half" ] && \
+        image_size=$((columns * font_width / 2))
 
     # Where to draw the image
     case "$image_position" in
