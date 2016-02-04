@@ -158,6 +158,10 @@ specify a custom config location using `--config path/to/config`.
 If you don't know your font width in pixels keep trying values until the image is half the<br \>
 terminal width.
 
+Once `font_width` is set the image will by default take up half the terminal width. You can<br \>
+use the launch flag `--size px` or change the config option `$image_size` to set it to a custom<br \>
+size in pixels.
+
 You can also use the launch flag `--font_width` to set it on the fly.
 
 
@@ -263,6 +267,7 @@ alias fetch2="fetch \
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, shuffle, ascii,
                                 /path/to/img, off
+    --size px                   Size in pixels to make the image.
     --image_backend w3m/iterm2  Which program to use to draw images.
     --shuffle_dir path/to/dir   Which directory to shuffle for an image.
     --font_width px             Used to automatically size the image

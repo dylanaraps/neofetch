@@ -228,15 +228,6 @@ image_backend="w3m"
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
-# Split Size
-# Sizing for the img and text splits
-# The larger the value the less space fetch will take up.
-# The default value of 2 splits the image and text at
-# half terminal width each.
-# A value of 3 splits them at a third width each and etc.
-# --split_size num
-split_size=2
-
 # Image position
 # Only works with the w3m backend
 # --image_position left/right
@@ -258,6 +249,11 @@ crop_offset="center"
 # Font width
 # Used when calculating dynamic image size
 font_width=5
+
+# Image size
+# The image is half the terminal width by default.
+# --size half, px
+image_size="half"
 
 # Right gap between image and text
 # --gap num

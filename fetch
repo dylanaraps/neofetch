@@ -22,7 +22,7 @@
 
 # Speed up script by not using unicode
 export LC_ALL=C
-export LANG=c
+export LANG=C
 export LANGUAGE=C
 
 
@@ -248,15 +248,6 @@ image_backend="w3m"
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
-# Split Size
-# Sizing for the img and text splits
-# The larger the value the less space fetch will take up.
-# The default value of 2 splits the image and text at
-# half terminal width each.
-# A value of 3 splits them at a third width each and etc.
-# --split_size num
-split_size=2
-
 # Image position
 # Only works with the w3m backend
 # --image_position left/right
@@ -277,7 +268,13 @@ crop_offset="center"
 
 # Font width
 # Used when calculating dynamic image size
+# --font_width num
 font_width=5
+
+# Image size
+# The image is half the terminal width by default.
+# --size half, px
+image_size="half"
 
 # Right gap between image and text
 # --gap num
@@ -1415,15 +1412,6 @@ getwallpaper () {
 
 # }}}
 
-# Shuffle {{{
-
-getshuffle () {
-    img=$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
-    shuf -n1 -z)
-}
-
-# }}}
-
 # Ascii {{{
 
 getascii () {
@@ -1619,7 +1607,8 @@ getimage () {
         ;;
 
         "shuffle")
-            getshuffle
+            img="$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
+            shuf -n1 -z)"
         ;;
 
         "ascii")
@@ -1632,7 +1621,7 @@ getimage () {
         ;;
     esac
 
-    # If $img is empty, fallback to ascii mode.
+    # If $img isn't a file, fallback to ascii mode.
     if [ ! -f "$img" ]; then
         # Fallback to ascii mode
         image="ascii"
@@ -1646,18 +1635,18 @@ getimage () {
     lines=$(tput lines)
 
     # Image size is half of the terminal
-    imgsize=$((columns * font_width / split_size))
+    [ "$image_size" == "half" ] && image_size=$((columns * font_width / 2))
 
     # Where to draw the image
     case "$image_position" in
         "left")
             # Padding is half the terminal width + gap
-            padding="\033[$((columns / split_size + gap))C"
+            padding="\033[$((image_size / font_width + gap))C"
         ;;
 
         "right")
             padding="\033[0C"
-            xoffset=$((columns * font_width / split_size - gap))
+            xoffset=$((columns * font_width / 2 - gap))
         ;;
     esac
 
@@ -1668,13 +1657,13 @@ getimage () {
     case "${img##*/}" in
         *"."*)
             # Get name of image and prefix it with it's crop mode and offset
-            imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}"
+            imgname="$crop_mode-$crop_offset-$image_size-${img##*/}"
         ;;
 
         *)
             # Add a file extension if the image doesn't have one. This
             # fixes w3m not being able to display them.
-            imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}.jpg"
+            imgname="$crop_mode-$crop_offset-$image_size-${img##*/}.jpg"
         ;;
     esac
 
@@ -1705,7 +1694,7 @@ getimage () {
                     -gravity south \
                     -background "$c" \
                     -extent "$size"x"$size" \
-                    -scale "$imgsize"x"$imgsize" \
+                    -scale "$image_size"x"$image_size" \
                     "$thumbnail_dir/$imgname"
             ;;
 
@@ -1713,8 +1702,8 @@ getimage () {
                 convert \
                     "$img" \
                     -trim +repage \
-                    -scale "$imgsize"x"$imgsize"^ \
-                    -extent "$imgsize"x"$imgsize" \
+                    -scale "$image_size"x"$image_size"^ \
+                    -extent "$image_size"x"$image_size" \
                     "$thumbnail_dir/$imgname"
             ;;
 
@@ -1724,7 +1713,7 @@ getimage () {
                     -gravity $crop_offset \
                     -crop "$size"x"$size"+0+0 \
                     -quality 95 \
-                    -scale "$imgsize"x"$imgsize" \
+                    -scale "$image_size"x"$image_size" \
                     "$thumbnail_dir/$imgname"
             ;;
         esac
@@ -2022,12 +2011,11 @@ usage () { cat << EOF
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, shuffle, ascii,
                                 /path/to/img, off
+    --size px                   Size in pixels to make the image.
     --image_backend w3m/iterm2  Which program to use to draw images.
     --shuffle_dir path/to/dir   Which directory to shuffle for an image.
     --font_width px             Used to automatically size the image
     --image_position left/right Where to display the image: (Left/Right)
-    --split_size num            Width of img/text splits, A value of 2 makes each
-                                split half the terminal width and etc.
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
     --crop_offset value         Change the crop offset for normal mode.
@@ -2125,11 +2113,11 @@ while [ "$1" ]; do
             case "$2" in "--"* | "") image="ascii" ;; esac
         ;;
 
+        --size) image_size="$2" ;;
         --image_backend) image_backend="$2" ;;
         --shuffle_dir) shuffle_dir="$2" ;;
         --font_width) font_width="$2" ;;
         --image_position) image_position="$2" ;;
-        --split_size) split_size="$2" ;;
         --crop_mode) crop_mode="$2" ;;
         --crop_offset) crop_offset="$2" ;;
         --xoffset) xoffset="$2" ;;
@@ -2207,12 +2195,12 @@ fi
 if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
     case "$image_backend" in
         "w3m")
-            printf "%b%s\n" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+            printf "%b%s\n" "0;1;$xoffset;$yoffset;$image_size;$image_size;;;;;$img\n4;\n3;" |\
             $w3m_img_path 2>/dev/null || padding="\033[0C"
         ;;
 
         "iterm2")
-            printf "%b%s\a\n" "\033]1337;File=width=${imgsize}px;height=${imgsize}px;inline=1:$(base64 < "$img")"
+            printf "%b%s\a\n" "\033]1337;File=width=${image_size}px;height=${image_size}px;inline=1:$(base64 < "$img")"
         ;;
     esac
 fi
