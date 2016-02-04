@@ -1470,7 +1470,6 @@ getascii () {
         *"Mint"*)
             c1=$(color 7)
             c2=$(color 2)
-
             ascii_distro="mint"
         ;;
 
@@ -1518,8 +1517,7 @@ getascii () {
 
     # If the ascii file doesn't exist
     # fallback to showing distro ascii.
-    [ ! -f "$ascii" ] && \
-        ascii="distro"
+    [ ! -f "$ascii" ] && ascii="distro"
 
     if [ "$ascii" == "distro" ]; then
         # Lowercase the distro name
@@ -1543,7 +1541,7 @@ getascii () {
             ascii="$script_dir/ascii/distro/${ascii/ *}"
         fi
 
-        # Overwrite distro colors if '$ascii_color` doesn't
+        # Overwrite distro colors if '$ascii_colors' doesn't
         # equal 'distro'.
         if [ "$ascii_colors" != "distro" ]; then
             c1=$(color ${ascii_colors[0]})
@@ -1557,12 +1555,12 @@ getascii () {
         # We only use eval in the distro ascii files.
         print="$(eval printf "$(<"$ascii")")"
     else
-        case "$ascii_color" in
+        case "${ascii_colors[0]}" in
             "distro") ascii_color="$c1" ;;
-            *) ascii_color="$(color $ascii_color)" ;;
+            *) ascii_color="$(color ${ascii_colors[0]})" ;;
         esac
 
-        print="$(color ${ascii_colors[0]})$(<"$ascii")"
+        print="${ascii_color}$(<"$ascii")"
     fi
 
     # Turn the file into a variable.
