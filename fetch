@@ -1235,7 +1235,7 @@ getbattery () {
                     # If there's only a single battery and it's battery 0,
                     # don't number the subtitle.
                     if [ "${#batteries[@]}" == 1 ] && [ "$battery_num" == 0 ]; then
-                        prin "${title}: ${batteries[0]}%"
+                        battery="$(prin "${title}: ${batteries[0]}%")"
                         return
                     fi
 
@@ -1858,10 +1858,11 @@ prin () {
     esac
 
     # Print the info
-    printf "%b%s" "${padding}${string}${clear}"
-
-    # If stdout mode is off, print a newline too.
-    [ "$stdout" == "off" ] && printf "\n"
+    if [ "$stdout" == "on" ]; then
+        printf "%s" "${string}${stdout_seperator}"
+    else
+        printf "%b%s\n" "${padding}${string}${clear}"
+    fi
 }
 
 # }}}
