@@ -2223,6 +2223,7 @@ while [ "$1" ]; do
             esac
 
             unset info_color colors
+            underline="off"
             image="off"
             color_blocks="off"
         ;;
