@@ -1803,7 +1803,6 @@ info () {
 
         underline)
             string="${underline_color}${output}"
-            [ "$stdout" == "on" ] && string=""
         ;;
 
         linebreak | cols)
