@@ -1870,6 +1870,26 @@ prin () {
 
 # }}}
 
+# Stdout {{{
+
+stdout () {
+    index=1
+    for func in "${args[@]}"; do
+
+        case "$func" in
+            "--stdout") continue ;;
+            "--"*) break ;;
+            *)
+                case "${args[$((index + 1))]}" in "--"*) unset stdout_seperator ;; esac
+                info "$func"
+            ;;
+        esac
+        index=$((index + 1))
+    done
+}
+
+# }}}
+
 # Underline {{{
 
 getunderline () {
@@ -2190,20 +2210,15 @@ while [ "$1" ]; do
         --stdout_seperator) stdout_seperator="$2" ;;
         --stdout_subtitles) stdout_subtitles="$2" ;;
         --stdout)
-            stdout="on"
+            case "$2" in
+                "--"* | "") stdout="on" ;;
+                *) stdout="on"; stdout_args="on" ;;
+            esac
+
+            unset info_color
             image="off"
             color_blocks="off"
-            unset info_color
-
-            for func in "$@"; do
-                case "$func" in
-                    "--stdout") continue ;;
-                    "--"*) break ;;
-                    *) info "$func" ;;
-                esac
-            done
-
-            [ ! -z "$output" ] && exit
+            args=("$@")
         ;;
 
         # Other
@@ -2269,12 +2284,16 @@ fi
 # Move cursor to the top
 [ "$image" != "off" ] && printf "\033[0H"
 
-# Get colors / bold
-colors
-bold
+if [ "$stdout_args" == "on" ]; then
+    stdout
+else
+    # Get colors / bold
+    colors
+    bold
 
-# Print the info
-printinfo
+    # Print the info
+    printinfo
+fi
 
 if [ "$image" != "off" ]; then
     # Get cursor position
