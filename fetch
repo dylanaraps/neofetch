@@ -2191,12 +2191,9 @@ while [ "$1" ]; do
         --stdout_seperator) stdout_seperator="$2" ;;
         --stdout_subtitles) stdout_subtitles="$2" ;;
         --stdout)
-            # Disable images and color blocks
             stdout="on"
             image="off"
             color_blocks="off"
-
-            # Remove info color escape code.
             unset info_color
 
             for func in "$@"; do
