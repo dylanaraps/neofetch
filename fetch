@@ -1784,16 +1784,15 @@ info () {
             string="${underline_color}${output}"
         ;;
 
-        linebreak | cols)
-            string=""
-        ;;
-
         *)
             string="${bold}${subtitle_color}${subtitle}${clear}"
             string+="${colon_color}: ${info_color}${output}"
             length=$((${#subtitle} +  ${#output} + 2))
         ;;
     esac
+
+    # If there's no subtitle don't print one
+    [ -z "$2" ] && string=${string/*: }
 
     # Print the string
     printf "%b%s\n" "${padding}${string}${clear}"
