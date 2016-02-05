@@ -1234,7 +1234,7 @@ getbattery () {
                 else
                     # If there's only a single battery and it's battery 0,
                     # don't number the subtitle.
-                    if [ "${#batteries[@]}" == 1 ] && [ "$battery_num" == 0 ]; then
+                    if [ "${#batteries[@]}" == 1 ]; then
                         battery="$(prin "${title}: ${batteries[0]}%")"
                         return
                     fi
