@@ -639,11 +639,12 @@ getpackages () {
 
 getshell () {
     case "$shell_path" in
-        "on")  shell="$SHELL " ;;
-        "off") shell="${SHELL##*/} " ;;
+        "on")  shell="$SHELL" ;;
+        "off") shell="${SHELL##*/}" ;;
     esac
 
     if [ "$shell_version" == "on" ]; then
+        shell+=" "
         case "$shell" in
             *"bash"*)
                 shell+="$(bash --version | head -n 1)"
@@ -2163,10 +2164,11 @@ done
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
 
-# If the script exits for any reason, unhide the cursor.
-trap 'printf "\033[?25h"' EXIT
-
 if [ "$image" != "off" ]; then
+    # If the script exits for any reason, unhide the cursor.
+    trap 'printf "\033[?25h"' EXIT
+
+    # Clear the scren
     clear
 
     # Hide the cursor
