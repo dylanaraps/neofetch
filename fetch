@@ -2221,7 +2221,7 @@ if [ "$image" != "off" ]; then
 fi
 
 # Re-enable line wrap
-printf "%b%s" "\033[?25h"
+[ "$line_wrap" == "off" ] && printf "%b%s" "\033[?7h"
 
 # If enabled take a screenshot
 if [ "$scrot" == "on" ]; then
