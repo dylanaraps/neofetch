@@ -1857,7 +1857,11 @@ prin () {
         ;;
     esac
 
-    printf "%b%s\n" "${padding}${string}${clear}"
+    # Print the info
+    printf "%b%s" "${padding}${string}${clear}"
+
+    # If stdout mode is off, print a newline too.
+    [ "$stdout" == "off" ] && printf "\n"
 }
 
 # }}}
@@ -2196,7 +2200,7 @@ while [ "$1" ]; do
                         eval output="\$${func}"
 
                         # Print the output
-                        printf "%s" "$output"
+                        printf "%s" "${output}"
                     ;;
                 esac
             done
