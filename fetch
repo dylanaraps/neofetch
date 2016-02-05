@@ -1825,7 +1825,7 @@ info () {
 
         # Unset the vars containg escape codes as lemonbar doesn't
         # support them.
-        unset bold subtitle_color clear colon_color info_color \
+        unset -v bold subtitle_color clear colon_color info_color \
         underline_color title_color at_color
 
         # Show/Hide subtitles
@@ -1873,19 +1873,21 @@ prin () {
 # Stdout {{{
 
 stdout () {
-    index=1
-    for func in "${args[@]}"; do
+    printinfo () {
+        index=1
+        for func in "${args[@]}"; do
 
-        case "$func" in
-            "--stdout") continue ;;
-            "--"*) break ;;
-            *)
-                case "${args[$((index + 1))]}" in "--"*) unset stdout_seperator ;; esac
-                info "$func"
-            ;;
-        esac
-        index=$((index + 1))
-    done
+            case "$func" in
+                "--stdout") continue ;;
+                "--"*) break ;;
+                *)
+                    case "${args[$((index + 1))]}" in "--"*) unset stdout_seperator ;; esac
+                    info "$func"
+                ;;
+            esac
+            index=$((index + 1))
+        done
+    }
 }
 
 # }}}
@@ -2212,13 +2214,12 @@ while [ "$1" ]; do
         --stdout)
             case "$2" in
                 "--"* | "") stdout="on" ;;
-                *) stdout="on"; stdout_args="on" ;;
+                *) stdout="on"; stdout_args="on"; args=("$@"); stdout ;;
             esac
 
-            unset info_color
+            unset info_color colors
             image="off"
             color_blocks="off"
-            args=("$@")
         ;;
 
         # Other
@@ -2284,16 +2285,12 @@ fi
 # Move cursor to the top
 [ "$image" != "off" ] && printf "\033[0H"
 
-if [ "$stdout_args" == "on" ]; then
-    stdout
-else
-    # Get colors / bold
-    colors
-    bold
+# Get colors / bold
+colors 2>/dev/null
+bold
 
-    # Print the info
-    printinfo
-fi
+# Print the info
+printinfo
 
 if [ "$image" != "off" ]; then
     # Get cursor position
