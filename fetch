@@ -216,6 +216,10 @@ line_wrap="on"
 # --bold on/off
 bold="on"
 
+# Enable/Disable Underline
+# --underline on/off
+underline="on"
+
 # Underline character
 # --underline_char char
 underline_char="-"
@@ -1827,8 +1831,13 @@ prin () {
 # Underline {{{
 
 getunderline () {
-    underline=$(printf %"$length"s)
-    underline=${underline// /$underline_char}
+    case "$underline" in
+        "on")
+            underline=$(printf %"$length"s)
+            underline=${underline// /$underline_char}
+         ;;
+        "off") underline="" ;;
+    esac
 }
 
 # }}}
@@ -2087,6 +2096,7 @@ while [ "$1" ]; do
         --info_color) info_color=$2 ;;
 
         # Text Formatting
+        --underline) underline="$2" ;;
         --underline_char) underline_char="$2" ;;
         --line_wrap) line_wrap="$2" ;;
         --bold) bold="$2" ;;

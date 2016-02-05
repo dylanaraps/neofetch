@@ -196,6 +196,10 @@ line_wrap="on"
 # --bold on/off
 bold="on"
 
+# Enable/Disable Underline
+# --underline on/off
+underline="on"
+
 # Underline character
 # --underline_char char
 underline_char="-"
