@@ -1822,15 +1822,19 @@ info () {
 
     # Print the string
     if [ "$stdout" == "on" ]; then
+
         # Unset the vars containg escape codes as lemonbar doesn't
         # support them.
-        unset subtitle bold subtitle_color clear colon_color info_color \
+        unset bold subtitle_color clear colon_color info_color \
         underline_color title_color at_color
 
-        # Remove subtitles from output.
-        [ "$stdout_subtitles" == "off" ] && string=${string/*: }
+        # Show/Hide subtitles
+        [ "$stdout_subtitles" == "off" ] && \
+            string=${string/*: }
 
+        # If the string isn't empty, print it.
         [ ! -z "$string" ] && printf "%s" "${string}${stdout_seperator}"
+
     else
         printf "%b%s\n" "${padding}${string}${clear}"
     fi
@@ -2187,22 +2191,19 @@ while [ "$1" ]; do
         --stdout_seperator) stdout_seperator="$2" ;;
         --stdout_subtitles) stdout_subtitles="$2" ;;
         --stdout)
+            # Disable images and color blocks
             stdout="on"
             image="off"
             color_blocks="off"
+
+            # Remove info color escape code.
+            unset info_color
 
             for func in "$@"; do
                 case "$func" in
                     "--stdout") continue ;;
                     "--"*) break ;;
-                    *)
-                        # Call the function
-                        get$func 2>/dev/null
-                        eval output="\$${func}"
-
-                        # Print the output
-                        printf "%s" "${output}"
-                    ;;
+                    *) info "$func" ;;
                 esac
             done
 
