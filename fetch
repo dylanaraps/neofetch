@@ -1829,8 +1829,7 @@ info () {
         underline_color title_color at_color
 
         # Show/Hide subtitles
-        [ "$stdout_subtitles" == "off" ] && \
-            string=${string/*: }
+        [ "$stdout_subtitles" == "off" ] && string=${string/*: }
 
         # If the string isn't empty, print it.
         [ ! -z "$string" ] && printf "%s" "${string}${stdout_seperator}"
