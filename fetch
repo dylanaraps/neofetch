@@ -2101,10 +2101,20 @@ usage () { cat << EOF
     --ascii_distro distro       Which Distro\'s ascii art to print
 
 
+    Stdout:
+    --stdout info info          Launch fetch in stdout mode which prints the info
+                                in a plain-text format that you can use with
+                                lemonbar etc.
+    --stdout_title on/off       Hide/Show the title in stdout mode.
+    --stdout_seperator string   String to use as a seperator in stdout mode.
+    --stdout_subtitles on/off   Hide/Show the subtitles in stdout mode.
+
+
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     --scrot_cmd cmd             Screenshot program to launch
+
 
     Other:
     --config /path/to/config    Specify a path to a custom config file
