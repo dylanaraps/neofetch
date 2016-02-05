@@ -348,6 +348,22 @@ config_file="$HOME/.config/fetch/config"
 
 # }}}
 
+# Other Options {{{
+
+# Seperator to use in stdout mode.
+# --stdout_seperator string
+stdout_seperator="    "
+
+# Hide/Show the title in stdout mode.
+# --stdout_title on/off
+stdout_title="off"
+
+# Hide/Show each info's subtitle in stdout mode.
+# --stdout_subtitles on/off
+stdout_subtitles="on"
+
+# }}}
+
 
 # }}}
 
@@ -1778,10 +1794,12 @@ info () {
             string="${bold}${title_color}${output}"
             string="${string/@/${at_color}@${title_color}}"
             length=${#output}
+            [ "$stdout_title" == "off" ] && string=""
         ;;
 
         underline)
             string="${underline_color}${output}"
+            [ "$stdout" == "on" ] && string=""
         ;;
 
         linebreak | cols)
@@ -1795,8 +1813,23 @@ info () {
         ;;
     esac
 
+    # If there's no subtitle don't print one
+    [ -z "$2" ] && string=${string/*: }
+
     # Print the string
-    printf "%b%s\n" "${padding}${string}${clear}"
+    if [ "$stdout" == "on" ]; then
+        # Unset the vars containg escape codes as lemonbar doesn't
+        # support them.
+        unset subtitle bold subtitle_color clear colon_color info_color \
+        underline_color title_color at_color
+
+        # Remove subtitles from output.
+        [ "$stdout_subtitles" == "off" ] && string=${string/*: }
+
+        [ ! -z "$string" ] && printf "%s" "${string}${stdout_seperator}"
+    else
+        printf "%b%s\n" "${padding}${string}${clear}"
+    fi
 }
 
 # }}}
@@ -2139,6 +2172,12 @@ while [ "$1" ]; do
         # Screenshot
         --scrot | -s) scrot="on"; [ "$2" ] && scrot_path="$2" ;;
         --scrot_cmd) scrot_cmd="$2" ;;
+
+        # Stdout
+        --stdout) stdout="on"; image="off"; color_blocks="off" ;;
+        --stdout_title) stdout_title="$2" ;;
+        --stdout_seperator) stdout_seperator="$2" ;;
+        --stdout_subtitles) stdout_subtitles="$2" ;;
 
         # Other
         --config)
