@@ -2178,10 +2178,31 @@ while [ "$1" ]; do
         --scrot_cmd) scrot_cmd="$2" ;;
 
         # Stdout
-        --stdout) stdout="on"; image="off"; color_blocks="off" ;;
         --stdout_title) stdout_title="$2" ;;
         --stdout_seperator) stdout_seperator="$2" ;;
         --stdout_subtitles) stdout_subtitles="$2" ;;
+        --stdout)
+            stdout="on"
+            image="off"
+            color_blocks="off"
+
+            for func in "$@"; do
+                case "$func" in
+                    "--stdout") continue ;;
+                    "--"*) break ;;
+                    *)
+                        # Call the function
+                        get$func 2>/dev/null
+                        eval output="\$${func}"
+
+                        # Print the output
+                        printf "%s" "$output"
+                    ;;
+                esac
+            done
+
+            [ ! -z "$output" ] && exit
+        ;;
 
         # Other
         --config)
