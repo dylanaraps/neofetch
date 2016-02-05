@@ -1794,7 +1794,11 @@ info () {
             string="${bold}${title_color}${output}"
             string="${string/@/${at_color}@${title_color}}"
             length=${#output}
-            [ "$stdout_title" == "off" ] && string=""
+
+            # Hide the title in stdout mode
+            [ "$stdout" == "on" ] && \
+            [ "$stdout_title" == "off" ] &&\
+                string=""
         ;;
 
         underline)
