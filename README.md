@@ -422,17 +422,14 @@ sudo update-pciids
 
 Thanks to:
 
-- metakirby5: Providing great feedback as well as ideas for the script.
-
-- Screenfetch:
+- `Screenfetch`:
     - I've used some snippets as a base for a few functions in this script.
     - I've used the ascii art from here.
-
-- @jrgz: Helping me test the Mac OS X version.
-
-- @xDemonessx: Helping me test the Windows version.
-
-- Everyone else who has helped test the script and given feedback.
+- `metakirby5`: Providing great feedback as well as ideas for the script.
+- `@jrgz`: Helping me test the Mac OS X version.
+- `@xDemonessx`: Helping me test the Windows version.
+- `@tudurom`: Helping me test **everything**.
+- Everyone else who has helped test the script, given feedback or reported bugs.
 
 
 <!-- }}} -->
