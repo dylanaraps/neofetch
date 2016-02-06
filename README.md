@@ -302,7 +302,7 @@ alias fetch2="fetch \
                                 in a plain-text format that you can use with
                                 lemonbar etc.
     --stdout_title on/off       Hide/Show the title in stdout mode.
-    --stdout_seperator string   String to use as a seperator in stdout mode.
+    --stdout_separator string   String to use as a separator in stdout mode.
     --stdout_subtitles on/off   Hide/Show the subtitles in stdout mode.
 
 

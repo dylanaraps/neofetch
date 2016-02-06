@@ -334,9 +334,9 @@ config_file="$HOME/.config/fetch/config"
 
 # Other Options {{{
 
-# Seperator to use in stdout mode.
-# --stdout_seperator string
-stdout_seperator="    "
+# Separator to use in stdout mode.
+# --stdout_separator string
+stdout_separator="    "
 
 # Hide/Show the title in stdout mode.
 # --stdout_title on/off
