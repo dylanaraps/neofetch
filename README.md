@@ -158,6 +158,10 @@ specify a custom config location using `--config path/to/config`.
 If you don't know your font width in pixels keep trying values until the image is half the<br \>
 terminal width.
 
+Once `font_width` is set the image will by default take up half the terminal width. You can<br \>
+use the launch flag `--size px` or change the config option `$image_size` to set it to a custom<br \>
+size in pixels.
+
 You can also use the launch flag `--font_width` to set it on the fly.
 
 
@@ -263,6 +267,7 @@ alias fetch2="fetch \
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, shuffle, ascii,
                                 /path/to/img, off
+    --size px                   Size in pixels to make the image.
     --image_backend w3m/iterm2  Which program to use to draw images.
     --shuffle_dir path/to/dir   Which directory to shuffle for an image.
     --font_width px             Used to automatically size the image
@@ -292,6 +297,15 @@ alias fetch2="fetch \
     --ascii_distro distro       Which Distro\'s ascii art to print
 
 
+    Stdout:
+    --stdout info info          Launch fetch in stdout mode which prints the info
+                                in a plain-text format that you can use with
+                                lemonbar etc.
+    --stdout_title on/off       Hide/Show the title in stdout mode.
+    --stdout_seperator string   String to use as a seperator in stdout mode.
+    --stdout_subtitles on/off   Hide/Show the subtitles in stdout mode.
+
+
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
@@ -315,19 +329,22 @@ alias fetch2="fetch \
 #### How do I enable screenfetch mode?
 
 Launching the script with `--ascii distro` or setting `ascii="distro"` and `image="ascii"` <br \>
-inside the config file will launch the script in "screenfetch mode". The script will display your<br \>
-distro's ascii next to the info, exactly like screenfetch.
+inside the config file will launch the script in "screenfetch mode". The script will<br \>
+display your distro's ascii next to the info, exactly like screenfetch.
+
+**NOTE:** If you don't have `w3m-img` or `imagemagick` installed screenfetch mode will be<br \>
+used automatically
 
 ![arch](http://i.imgur.com/uCMjgf6.png)
 
 
 #### Why doesn't fetch support my wallpaper setter?
 
-It's hard to add support for other wallpaper setters as<br \>
-they don't provide a way of getting the current wallpaper from the cli.
+It's hard to add support for other wallpaper setters as they don't provide a way of <br \>
+getting the current wallpaper from the cli.
 
-If your wallpaper setter **does** provide a way of getting the current wallpaper<br \>
-or you know where it's stored then adding support won't be a problem!<br \>
+If your wallpaper setter **does** provide a way of getting the current wallpaper or you<br \>
+know where it's stored then adding support won't be a problem!<br \>
 
 
 <!-- }}} -->
@@ -405,17 +422,14 @@ sudo update-pciids
 
 Thanks to:
 
-- metakirby5: Providing great feedback as well as ideas for the script.
-
-- Screenfetch:
+- `Screenfetch`:
     - I've used some snippets as a base for a few functions in this script.
     - I've used the ascii art from here.
-
-- @jrgz: Helping me test the Mac OS X version.
-
-- @xDemonessx: Helping me test the Windows version.
-
-- Everyone else who has helped test the script and given feedback.
+- `metakirby5`: Providing great feedback as well as ideas for the script.
+- `@jrgz`: Helping me test the Mac OS X version.
+- `@xDemonessx`: Helping me test the Windows version.
+- `@tudurom`: Helping me test **everything**.
+- Everyone else who has helped test the script, given feedback or reported bugs.
 
 
 <!-- }}} -->

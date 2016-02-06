@@ -22,7 +22,7 @@
 
 # Speed up script by not using unicode
 export LC_ALL=C
-export LANG=c
+export LANG=C
 export LANGUAGE=C
 
 
@@ -216,6 +216,10 @@ line_wrap="on"
 # --bold on/off
 bold="on"
 
+# Enable/Disable Underline
+# --underline on/off
+underline="on"
+
 # Underline character
 # --underline_char char
 underline_char="-"
@@ -248,15 +252,6 @@ image_backend="w3m"
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
-# Split Size
-# Sizing for the img and text splits
-# The larger the value the less space fetch will take up.
-# The default value of 2 splits the image and text at
-# half terminal width each.
-# A value of 3 splits them at a third width each and etc.
-# --split_size num
-split_size=2
-
 # Image position
 # Only works with the w3m backend
 # --image_position left/right
@@ -277,7 +272,13 @@ crop_offset="center"
 
 # Font width
 # Used when calculating dynamic image size
+# --font_width num
 font_width=5
+
+# Image size
+# The image is half the terminal width by default.
+# --size half, px
+image_size="half"
 
 # Right gap between image and text
 # --gap num
@@ -301,11 +302,14 @@ xoffset=0
 # --ascii 'distro', path/to/ascii
 ascii="distro"
 
-# Ascii color
+# Ascii colors
 # When this is set to distro it will use your
 # ditro's colors to color the ascii.
-# --ascii_color distro, number
-ascii_color="distro"
+# NOTE: You can also set this to a range of colors
+# which will allow you to custom color distro logos
+# --ascii_colors distro
+# --ascii_colors 2 4 5 6
+ascii_colors=(distro)
 
 
 # }}}
@@ -345,6 +349,22 @@ config="on"
 # --config path/to/config
 config_file="$HOME/.config/fetch/config"
 
+
+# }}}
+
+# Other Options {{{
+
+# Seperator to use in stdout mode.
+# --stdout_seperator string
+stdout_seperator="    "
+
+# Hide/Show the title in stdout mode.
+# --stdout_title on/off
+stdout_title="off"
+
+# Hide/Show each info's subtitle in stdout mode.
+# --stdout_subtitles on/off
+stdout_subtitles="on"
 
 # }}}
 
@@ -639,11 +659,12 @@ getpackages () {
 
 getshell () {
     case "$shell_path" in
-        "on")  shell="$SHELL " ;;
-        "off") shell="${SHELL##*/} " ;;
+        "on")  shell="$SHELL" ;;
+        "off") shell="${SHELL##*/}" ;;
     esac
 
     if [ "$shell_version" == "on" ]; then
+        shell+=" "
         case "$shell" in
             *"bash"*)
                 shell+="$(bash --version | head -n 1)"
@@ -691,18 +712,9 @@ getwindowmanager () {
 
     else
         case "$os" in
-            "Mac OS X")
-                windowmanager="Quartz Compositor"
-            ;;
-
-            "Windows")
-                windowmanager="Explorer"
-            ;;
-
-            *)
-                windowmanager="Unknown"
-            ;;
-
+            "Mac OS X") windowmanager="Quartz Compositor" ;;
+            "Windows") windowmanager="Explorer" ;;
+            *) windowmanager="Unknown" ;;
         esac
     fi
 
@@ -1226,8 +1238,8 @@ getbattery () {
                 else
                     # If there's only a single battery and it's battery 0,
                     # don't number the subtitle.
-                    if [ "${#batteries[@]}" == 1 ] && [ "$battery_num" == 0 ]; then
-                        prin "${title}: ${batteries[0]}%"
+                    if [ "${#batteries[@]}" == 1 ]; then
+                        battery="${batteries[0]}%"
                         return
                     fi
 
@@ -1247,10 +1259,10 @@ getbattery () {
         ;;
 
         "Windows")
-            battery="$(wmic path Win32_Battery Get EstimatedChargeRemaining /value)"
+            battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
             battery=${battery/EstimatedChargeRemaining'='}
             battery=${battery//[[:space:]]/ }
-            battery=${battery//  }
+            battery=${battery// }
             battery+="%"
         ;;
     esac
@@ -1412,15 +1424,6 @@ getwallpaper () {
 
 # }}}
 
-# Shuffle {{{
-
-getshuffle () {
-    img=$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
-    shuf -n1 -z)
-}
-
-# }}}
-
 # Ascii {{{
 
 getascii () {
@@ -1479,7 +1482,6 @@ getascii () {
         *"Mint"*)
             c1=$(color 7)
             c2=$(color 2)
-
             ascii_distro="mint"
         ;;
 
@@ -1527,8 +1529,7 @@ getascii () {
 
     # If the ascii file doesn't exist
     # fallback to showing distro ascii.
-    [ ! -f "$ascii" ] && \
-        ascii="distro"
+    [ ! -f "$ascii" ] && ascii="distro"
 
     if [ "$ascii" == "distro" ]; then
         # Lowercase the distro name
@@ -1552,23 +1553,23 @@ getascii () {
             ascii="$script_dir/ascii/distro/${ascii/ *}"
         fi
 
-        # Overwrite distro colors if '$ascii_color` doesn't
+        # Overwrite distro colors if '$ascii_colors' doesn't
         # equal 'distro'.
-        if [ "$ascii_color" != "distro" ]; then
-            c1=$(color $ascii_color)
-            c2=$(color $ascii_color)
-            c3=$(color $ascii_color)
-            c4=$(color $ascii_color)
-            c5=$(color $ascii_color)
-            c6=$(color $ascii_color)
+        if [ "$ascii_colors" != "distro" ]; then
+            c1=$(color ${ascii_colors[0]})
+            c2=$(color ${ascii_colors[1]})
+            c3=$(color ${ascii_colors[2]})
+            c4=$(color ${ascii_colors[3]})
+            c5=$(color ${ascii_colors[4]})
+            c6=$(color ${ascii_colors[5]})
         fi
 
         # We only use eval in the distro ascii files.
         print="$(eval printf "$(<"$ascii")")"
     else
-        case "$ascii_color" in
+        case "${ascii_colors[0]}" in
             "distro") ascii_color="$c1" ;;
-            *) ascii_color="$(color $ascii_color)" ;;
+            *) ascii_color="$(color ${ascii_colors[0]})" ;;
         esac
 
         print="${ascii_color}$(<"$ascii")"
@@ -1616,7 +1617,8 @@ getimage () {
         ;;
 
         "shuffle")
-            getshuffle
+            img="$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
+            shuf -n1 -z)"
         ;;
 
         "ascii")
@@ -1629,7 +1631,7 @@ getimage () {
         ;;
     esac
 
-    # If $img is empty, fallback to ascii mode.
+    # If $img isn't a file, fallback to ascii mode.
     if [ ! -f "$img" ]; then
         # Fallback to ascii mode
         image="ascii"
@@ -1643,18 +1645,19 @@ getimage () {
     lines=$(tput lines)
 
     # Image size is half of the terminal
-    imgsize=$((columns * font_width / split_size))
+    [ "$image_size" == "half" ] && \
+        image_size=$((columns * font_width / 2))
 
     # Where to draw the image
     case "$image_position" in
         "left")
             # Padding is half the terminal width + gap
-            padding="\033[$((columns / split_size + gap))C"
+            padding="\033[$((image_size / font_width + gap))C"
         ;;
 
         "right")
             padding="\033[0C"
-            xoffset=$((columns * font_width / split_size - gap))
+            xoffset=$((columns * font_width / 2 - gap))
         ;;
     esac
 
@@ -1665,13 +1668,13 @@ getimage () {
     case "${img##*/}" in
         *"."*)
             # Get name of image and prefix it with it's crop mode and offset
-            imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}"
+            imgname="$crop_mode-$crop_offset-$image_size-${img##*/}"
         ;;
 
         *)
             # Add a file extension if the image doesn't have one. This
             # fixes w3m not being able to display them.
-            imgname="$crop_mode-$crop_offset-$imgsize-${img##*/}.jpg"
+            imgname="$crop_mode-$crop_offset-$image_size-${img##*/}.jpg"
         ;;
     esac
 
@@ -1702,7 +1705,7 @@ getimage () {
                     -gravity south \
                     -background "$c" \
                     -extent "$size"x"$size" \
-                    -scale "$imgsize"x"$imgsize" \
+                    -scale "$image_size"x"$image_size" \
                     "$thumbnail_dir/$imgname"
             ;;
 
@@ -1710,8 +1713,8 @@ getimage () {
                 convert \
                     "$img" \
                     -trim +repage \
-                    -scale "$imgsize"x"$imgsize"^ \
-                    -extent "$imgsize"x"$imgsize" \
+                    -scale "$image_size"x"$image_size"^ \
+                    -extent "$image_size"x"$image_size" \
                     "$thumbnail_dir/$imgname"
             ;;
 
@@ -1721,7 +1724,7 @@ getimage () {
                     -gravity $crop_offset \
                     -crop "$size"x"$size"+0+0 \
                     -quality 95 \
-                    -scale "$imgsize"x"$imgsize" \
+                    -scale "$image_size"x"$image_size" \
                     "$thumbnail_dir/$imgname"
             ;;
         esac
@@ -1795,14 +1798,15 @@ info () {
             string="${bold}${title_color}${output}"
             string="${string/@/${at_color}@${title_color}}"
             length=${#output}
+
+            # Hide the title in stdout mode
+            [ "$stdout" == "on" ] && \
+            [ "$stdout_title" == "off" ] &&\
+                string=""
         ;;
 
         underline)
             string="${underline_color}${output}"
-        ;;
-
-        linebreak | cols)
-            string=""
         ;;
 
         *)
@@ -1812,8 +1816,26 @@ info () {
         ;;
     esac
 
+    # If there's no subtitle don't print one
+    [ -z "$2" ] && string=${string/*: }
+
     # Print the string
-    printf "%b%s\n" "${padding}${string}${clear}"
+    if [ "$stdout" == "on" ]; then
+
+        # Unset the vars containg escape codes as lemonbar doesn't
+        # support them.
+        unset -v bold subtitle_color clear colon_color info_color \
+        underline_color title_color at_color
+
+        # Show/Hide subtitles
+        [ "$stdout_subtitles" == "off" ] && string=${string/*: }
+
+        # If the string isn't empty, print it.
+        [ ! -z "$string" ] && printf "%s" "${string}${stdout_seperator}"
+
+    else
+        printf "%b%s\n" "${padding}${string}${clear}"
+    fi
 }
 
 # }}}
@@ -1837,7 +1859,34 @@ prin () {
         ;;
     esac
 
-    printf "%b%s\n" "${padding}${string}${clear}"
+    # Print the info
+    if [ "$stdout" == "on" ]; then
+        printf "%s" "${string}${stdout_seperator}"
+    else
+        printf "%b%s\n" "${padding}${string}${clear}"
+    fi
+}
+
+# }}}
+
+# Stdout {{{
+
+stdout () {
+    printinfo () {
+        index=1
+        for func in "${args[@]}"; do
+
+            case "$func" in
+                "--stdout") continue ;;
+                "--"*) break ;;
+                *)
+                    case "${args[$((index + 1))]}" in "--"*) unset stdout_seperator ;; esac
+                    info "$func"
+                ;;
+            esac
+            index=$((index + 1))
+        done
+    }
 }
 
 # }}}
@@ -1845,8 +1894,13 @@ prin () {
 # Underline {{{
 
 getunderline () {
-    underline=$(printf %"$length"s)
-    underline=${underline// /$underline_char}
+    case "$underline" in
+        "on")
+            underline=$(printf %"$length"s)
+            underline=${underline// /$underline_char}
+         ;;
+        "off") underline="" ;;
+    esac
 }
 
 # }}}
@@ -1958,20 +2012,6 @@ esac
 
 # }}}
 
-# Unset function {{{
-
-unset_func () {
-    for func in "$@"; do
-        case "$func" in
-            "--disable") continue ;;
-            "--"*) return ;;
-            *) unset -f "get$func" ;;
-        esac
-    done
-}
-
-#}}}
-
 
 # }}}
 
@@ -2033,12 +2073,11 @@ usage () { cat << EOF
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, shuffle, ascii,
                                 /path/to/img, off
+    --size px                   Size in pixels to make the image.
     --image_backend w3m/iterm2  Which program to use to draw images.
     --shuffle_dir path/to/dir   Which directory to shuffle for an image.
     --font_width px             Used to automatically size the image
     --image_position left/right Where to display the image: (Left/Right)
-    --split_size num            Width of img/text splits, A value of 2 makes each
-                                split half the terminal width and etc.
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
     --crop_offset value         Change the crop offset for normal mode.
@@ -2062,10 +2101,20 @@ usage () { cat << EOF
     --ascii_distro distro       Which Distro\'s ascii art to print
 
 
+    Stdout:
+    --stdout info info          Launch fetch in stdout mode which prints the info
+                                in a plain-text format that you can use with
+                                lemonbar etc.
+    --stdout_title on/off       Hide/Show the title in stdout mode.
+    --stdout_seperator string   String to use as a seperator in stdout mode.
+    --stdout_subtitles on/off   Hide/Show the subtitles in stdout mode.
+
+
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     --scrot_cmd cmd             Screenshot program to launch
+
 
     Other:
     --config /path/to/config    Specify a path to a custom config file
@@ -2086,7 +2135,6 @@ exit 1
 while [ "$1" ]; do
     case $1 in
         # Info
-        --disable) unset_func "$@" ;;
         --os_arch) os_arch="$2" ;;
         --osx_buildversion) osx_buildversion="$2" ;;
         --speed_type) speed_type="$2" ;;
@@ -2102,6 +2150,15 @@ while [ "$1" ]; do
         --battery_shorthand) battery_shorthand="$2" ;;
         --birthday_shorthand) birthday_shorthand="$2" ;;
         --birthday_time) birthday_time="$2" ;;
+        --disable)
+            for func in "$@"; do
+                case "$func" in
+                    "--disable") continue ;;
+                    "--"*) return ;;
+                    *) unset -f "get$func" ;;
+                esac
+            done
+        ;;
 
         # Text Colors
         --title_color) title_color=$2 ;;
@@ -2112,6 +2169,7 @@ while [ "$1" ]; do
         --info_color) info_color=$2 ;;
 
         # Text Formatting
+        --underline) underline="$2" ;;
         --underline_char) underline_char="$2" ;;
         --line_wrap) line_wrap="$2" ;;
         --bold) bold="$2" ;;
@@ -2123,19 +2181,16 @@ while [ "$1" ]; do
         --block_width) block_width="$2" ;;
 
         # Image
-        --image) image="$2"
-            [ -z "$2" ] && image="ascii"
-
-            case "$2" in
-                "--"*) image="ascii" ;;
-            esac
+        --image)
+            image="$2"
+            case "$2" in "--"* | "") image="ascii" ;; esac
         ;;
 
+        --size) image_size="$2" ;;
         --image_backend) image_backend="$2" ;;
         --shuffle_dir) shuffle_dir="$2" ;;
         --font_width) font_width="$2" ;;
         --image_position) image_position="$2" ;;
-        --split_size) split_size="$2" ;;
         --crop_mode) crop_mode="$2" ;;
         --crop_offset) crop_offset="$2" ;;
         --xoffset) xoffset="$2" ;;
@@ -2144,21 +2199,44 @@ while [ "$1" ]; do
         --clean) rm -rf "$thumbnail_dir" || exit ;;
 
         # Ascii
-        --ascii) image="ascii"; ascii="$2"
-            [ -z "$2" ] && ascii="distro"
-
-            case "$2" in
-                "--"*) ascii="distro" ;;
-            esac
+        --ascii)
+            image="ascii"
+            ascii="$2"
+            case "$2" in "--"* | "") ascii="distro" ;; esac
         ;;
 
-        --ascii_color) ascii_color="$2" ;;
+        --ascii_colors)
+            unset ascii_colors
+            for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
+                case "$arg" in
+                    "$1") continue ;;
+                    "--"*) break ;;
+                    *) ascii_colors+=($arg)
+                esac
+            done
+            ascii_colors+=(7 7 7 7 7 7)
+        ;;
         --ascii_distro) ascii_distro="$2" ;;
 
         # Screenshot
-        --scrot | -s) scrot="on"; \
-            [ "$2" ] && scrot_path="$2" ;;
+        --scrot | -s) scrot="on"; [ "$2" ] && scrot_path="$2" ;;
         --scrot_cmd) scrot_cmd="$2" ;;
+
+        # Stdout
+        --stdout_title) stdout_title="$2" ;;
+        --stdout_seperator) stdout_seperator="$2" ;;
+        --stdout_subtitles) stdout_subtitles="$2" ;;
+        --stdout)
+            case "$2" in
+                "--"* | "") stdout="on" ;;
+                *) stdout="on"; stdout_args="on"; args=("$@"); stdout ;;
+            esac
+
+            unset info_color colors
+            underline="off"
+            image="off"
+            color_blocks="off"
+        ;;
 
         # Other
         --config)
@@ -2184,10 +2262,11 @@ done
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
 
-# If the script exits for any reason, unhide the cursor.
-trap 'printf "\033[?25h"' EXIT
-
 if [ "$image" != "off" ]; then
+    # If the script exits for any reason, unhide the cursor.
+    trap 'printf "\033[?25h"' EXIT
+
+    # Clear the scren
     clear
 
     # Hide the cursor
@@ -2206,12 +2285,12 @@ fi
 if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
     case "$image_backend" in
         "w3m")
-            printf "%b%s\n" "0;1;$xoffset;$yoffset;$imgsize;$imgsize;;;;;$img\n4;\n3;" |\
+            printf "%b%s\n" "0;1;$xoffset;$yoffset;$image_size;$image_size;;;;;$img\n4;\n3;" |\
             $w3m_img_path 2>/dev/null || padding="\033[0C"
         ;;
 
         "iterm2")
-            printf "%b%s\a\n" "\033]1337;File=width=${imgsize}px;height=${imgsize}px;inline=1:$(base64 < "$img")"
+            printf "%b%s\a\n" "\033]1337;File=width=${image_size}px;height=${image_size}px;inline=1:$(base64 < "$img")"
         ;;
     esac
 fi
@@ -2223,7 +2302,7 @@ fi
 [ "$image" != "off" ] && printf "\033[0H"
 
 # Get colors / bold
-colors
+colors 2>/dev/null
 bold
 
 # Print the info
@@ -2240,7 +2319,7 @@ if [ "$image" != "off" ]; then
 fi
 
 # Re-enable line wrap
-printf "%b%s" "\033[?25h"
+[ "$line_wrap" == "off" ] && printf "%b%s" "\033[?7h"
 
 # If enabled take a screenshot
 if [ "$scrot" == "on" ]; then
