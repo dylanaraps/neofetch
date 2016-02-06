@@ -355,8 +355,8 @@ config_file="$HOME/.config/fetch/config"
 # Other Options {{{
 
 # Seperator to use in stdout mode.
-# --stdout_seperator string
-stdout_seperator="    "
+# --stdout_separator string
+stdout_separator="    "
 
 # Hide/Show the title in stdout mode.
 # --stdout_title on/off
@@ -1831,7 +1831,7 @@ info () {
         [ "$stdout_subtitles" == "off" ] && string=${string/*: }
 
         # If the string isn't empty, print it.
-        [ ! -z "$string" ] && printf "%s" "${string}${stdout_seperator}"
+        [ ! -z "$string" ] && printf "%s" "${string}${stdout_separator}"
 
     else
         printf "%b%s\n" "${padding}${string}${clear}"
@@ -1861,7 +1861,7 @@ prin () {
 
     # Print the info
     if [ "$stdout" == "on" ]; then
-        printf "%s" "${string}${stdout_seperator}"
+        printf "%s" "${string}${stdout_separator}"
     else
         printf "%b%s\n" "${padding}${string}${clear}"
     fi
@@ -1880,7 +1880,7 @@ stdout () {
                 "--stdout") continue ;;
                 "--"*) break ;;
                 *)
-                    case "${args[$((index + 1))]}" in "--"*) unset stdout_seperator ;; esac
+                    case "${args[$((index + 1))]}" in "--"*) unset stdout_separator ;; esac
                     info "$func"
                 ;;
             esac
@@ -2106,7 +2106,7 @@ usage () { cat << EOF
                                 in a plain-text format that you can use with
                                 lemonbar etc.
     --stdout_title on/off       Hide/Show the title in stdout mode.
-    --stdout_seperator string   String to use as a seperator in stdout mode.
+    --stdout_separator string   String to use as a separator in stdout mode.
     --stdout_subtitles on/off   Hide/Show the subtitles in stdout mode.
 
 
@@ -2224,7 +2224,7 @@ while [ "$1" ]; do
 
         # Stdout
         --stdout_title) stdout_title="$2" ;;
-        --stdout_seperator) stdout_seperator="$2" ;;
+        --stdout_separator) stdout_separator="$2" ;;
         --stdout_subtitles) stdout_subtitles="$2" ;;
         --stdout)
             case "$2" in
