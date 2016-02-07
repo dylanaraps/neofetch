@@ -239,7 +239,7 @@ alias fetch2="fetch \
     --battery_num num           Which battery to display, default value is 'all'
     --battery_shorthand on/off  Whether or not each battery gets its own line/title
     --birthday_shorthand on/off Shorten the output of birthday
-    --birthday_time on/ff       Enable/Disable showing the time in birthday output
+    --birthday_time on/off      Enable/Disable showing the time in birthday output
 
     Text Colors:
     --title_color num           Change the color of the title
