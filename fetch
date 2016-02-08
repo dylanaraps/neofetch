@@ -500,7 +500,16 @@ getkernel() {
 getuptime () {
     case "$os" in
         "Linux")
-            uptime="$(uptime -p)"
+            case "$distro" in
+                "Puppy Linux"*)
+                    uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
+                    uptime=${uptime/  / }
+                ;;
+
+                *)
+                    uptime="$(uptime -p)"
+                ;;
+            esac
         ;;
 
         "Mac OS X" | *"BSD")
