@@ -501,8 +501,13 @@ getuptime () {
     case "$os" in
         "Linux")
             case "$distro" in
-                "Puppy Linux"* | "Quirky Werewolf"* | "Precise Puppy"* | "openSUSE"*)
+                "Puppy Linux"* | "Quirky Werewolf"* | "Precise Puppy"*)
                     uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
+                    uptime=${uptime/  / }
+                ;;
+
+                "openSUSE"*)
+                    uptime=$(uptime | awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')
                     uptime=${uptime/  / }
                 ;;
 
