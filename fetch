@@ -1335,6 +1335,26 @@ getbattery () {
 
 # }}}
 
+# IP Address {{{
+
+getlocalip () {
+    case "$os" in
+        "Linux")
+            localip="$(ip route get 1 | awk '{print $NF;exit}')"
+        ;;
+
+        "Windows")
+            localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
+        ;;
+
+        *)
+            localip="Unknown"
+        ;;
+    esac
+}
+
+# }}}
+
 # Birthday {{{
 
 getbirthday () {
