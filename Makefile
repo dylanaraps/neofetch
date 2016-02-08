@@ -1,8 +1,8 @@
 PREFIX        ?=  /usr
 RM            ?=  rm -f
 INSTALL_DIR   ?=  install -m755 -d
-INSTALL_PROG  ?=  install -m755 -D
-INSTALL_FILE  ?=  install -m644 -D
+INSTALL_PROG  ?=  install -m755
+INSTALL_FILE  ?=  install -m644
 
 all:
 	@echo Run \'make install\' to install Fetch
