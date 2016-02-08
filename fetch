@@ -1144,7 +1144,7 @@ getgtk () {
 
         "Xfce"*)
             if type -p xfconf-query >/dev/null 2>&1; then
-                gtk2Theme=$(xfconf-query -c xsettings -p /Net/$xfconf)
+                gtk2theme=$(xfconf-query -c xsettings -p /Net/$xfconf)
             fi
         ;;
 
