@@ -125,6 +125,7 @@ program's cmd and fetch will use it instead of scrot.
 
 1. Download the latest source at https://github.com/dylanaraps/fetch
 2. Run `make install` inside the script directory to install the script.
+    - **El Captain**: `PREFIX=/usr/local make install`
 
 **NOTE:** Fetch can be uninstalled easily using `make uninstall`.
 
