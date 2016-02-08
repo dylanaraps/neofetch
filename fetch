@@ -594,7 +594,7 @@ getpackages () {
             packages="$(xbps-query -l | wc -l)"
         ;;
 
-        "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali Linux"* | "Deepin Linux"* | "elementary"*)
+        "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* | "elementary"*)
             packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
