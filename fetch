@@ -1103,25 +1103,72 @@ getresolution () {
 # GTK Theme/Icons/Font {{{
 
 getgtk () {
+    # Fix weird output when the function
+    # is run multiple times.
+    unset gtk2theme gtk3theme
+
     case "$1" in
         theme)
             name="gtk-theme-name"
             gsettings="gtk-theme"
+            gconf="gtk_theme"
+            xfconf="ThemeName"
         ;;
 
         icons)
             name="gtk-icon-theme-name"
             gsettings="icon-theme"
+            gconf="icon_theme"
+            xfconf="IconThemeName"
         ;;
 
         font)
             name="gtk-font-name"
             gsettings="font-name"
+            gconf="font_theme"
+            xfconf="FontName"
+        ;;
+    esac
+
+    # Current DE
+    desktop="$XDG_CURRENT_DESKTOP"
+    desktop=${desktop,,}
+    desktop=${desktop^}
+
+    case "$desktop" in
+        "Cinnamon")
+            if type -p gsettings >/dev/null 2>&1; then
+                gtk3theme=$(gsettings get org.cinnamon.desktop.interface $gsettings)
+                gtk3theme=${gtk3theme//"'"}
+                gtk2theme=${gtk3theme}
+            fi
+        ;;
+
+        "Gnome"* | "Unity"* | "Budgie")
+            if type -p gsettings >/dev/null 2>&1; then
+                gtk3theme=$(gsettings get org.gnome.desktop.interface $gsettings)
+                gtk3theme=${gtk3theme//"'"}
+                gtk2theme=${gtk3theme}
+
+            elif type -p gconftool-2 >/dev/null 2>&1; then
+                gtk2theme=$(gconftool-2 -g /desktop/gnome/interface/$gconf)
+            fi
+        ;;
+
+        "Mate"*)
+            gtk3theme=$(gsettings get org.mate.interface $gsettings)
+            gtk2theme=${gtk3theme}
+        ;;
+
+        "Xfce"*)
+            if type -p xfconf-query >/dev/null 2>&1; then
+                gtk2theme=$(xfconf-query -c xsettings -p /Net/$xfconf)
+            fi
         ;;
     esac
 
     # Check for gtk2 theme
-    if [ "$gtk2" == "on" ]; then
+    if [ -z "$gtk2theme" ]; then
         if [ -f "$HOME/.gtkrc-2.0" ]; then
             gtk2theme=$(grep "^[^#]*$name" "$HOME/.gtkrc-2.0")
 
@@ -1134,7 +1181,7 @@ getgtk () {
     fi
 
     # Check for gtk3 theme
-    if [ "$gtk3" == "on" ]; then
+    if [ -z "$gtk3theme" ]; then
         if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
             gtk3theme=$(grep "^[^#]*$name" "$HOME/.config/gtk-3.0/settings.ini")
 
@@ -1150,6 +1197,10 @@ getgtk () {
         gtk3theme=${gtk3theme//\"}
         gtk3theme=${gtk3theme/[[:space:]]/ }
     fi
+
+    # Toggle visibility of gtk themes.
+    [ "$gtk2" == "off" ] && unset gtk2theme
+    [ "$gtk3" == "off" ] && unset gtk3theme
 
     # Format the string based on which themes exist
     if  [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
