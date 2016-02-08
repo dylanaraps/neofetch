@@ -1980,20 +1980,25 @@ getconfig () {
         return
     fi
 
+    # Make the directory if it doesn't exist
+    mkdir -p "$HOME/.config/fetch/"
+
     # Check $HOME/.config/fetch and create the
     # dir/files if they don't exist.
     if [ -f "$HOME/.config/fetch/config" ]; then
         source "$HOME/.config/fetch/config"
 
     elif [ -f "/usr/share/fetch/config" ]; then
-        mkdir -p "$HOME/.config/fetch/"
         cp "/usr/share/fetch/config" "$HOME/.config/fetch"
+        source "$HOME/.config/fetch/config"
+
+    elif [ -f "/usr/local/share/fetch/config" ]; then
+        cp "/usr/local/share/fetch/config" "$HOME/.config/fetch"
         source "$HOME/.config/fetch/config"
 
     else
         getscriptdir
 
-        mkdir -p "$HOME/.config/fetch/"
         cp "$script_dir/config/config" "$HOME/.config/fetch"
         source "$HOME/.config/fetch/config"
     fi
