@@ -1086,7 +1086,7 @@ getresolution () {
 
 # }}}
 
-# GTK Theme/Icons/Font New {{{
+# GTK Theme/Icons/Font {{{
 
 getgtk () {
     case "$1" in
