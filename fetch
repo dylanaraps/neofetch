@@ -1343,6 +1343,11 @@ getlocalip () {
             localip="$(ip route get 1 | awk '{print $NF;exit}')"
         ;;
 
+        "Mac OS X")
+            localip="$(ipconfig getifaddr en0)"
+            [ -z "$localip" ] && localip="$(ipconfig getifaddr en1)"
+        ;;
+
         "Windows")
             localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
         ;;
