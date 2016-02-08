@@ -1178,6 +1178,10 @@ getgtk () {
         ;;
     esac
 
+    # Toggle visibility of gtk themes.
+    [ "$gtk2" == "off" ] && unset gtk2theme
+    [ "$gtk3" == "off" ] && unset gtk3theme
+
     # Format the string based on which themes exist
     if  [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
         gtk3theme+=" [GTK2/3]"
