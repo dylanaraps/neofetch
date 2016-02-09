@@ -150,6 +150,13 @@ battery_num="all"
 battery_shorthand="off"
 
 
+# IP Address
+
+# Website to ping for the public IP
+# --ip_host url
+public_ip_host="http://ident.me"
+
+
 # Birthday
 
 # Whether to show a long pretty output
@@ -1360,10 +1367,10 @@ getlocalip () {
 
 getpublicip () {
     if type -p curl >/dev/null 2>&1; then
-        publicip="$(curl -w '\n' http://ident.me)"
+        publicip="$(curl -w '\n' "$public_ip_host")"
 
     elif type -p wget >/dev/null 2>&1; then
-        publicip="$(wget -qO- http://ident.me; printf "%s")"
+        publicip="$(wget -qO- "$public_ip_host"; printf "%s")"
 
     else
         publicip="Unknown"
@@ -2151,6 +2158,7 @@ usage () { cat << EOF
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --battery_num num           Which battery to display, default value is 'all'
     --battery_shorthand on/off  Whether or not each battery gets its own line/title
+    --ip_host url               Url to ping for public IP
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
 
@@ -2255,6 +2263,7 @@ while [ "$1" ]; do
         --shell_version) shell_version="$2" ;;
         --battery_num) battery_num="$2" ;;
         --battery_shorthand) battery_shorthand="$2" ;;
+        --ip_host) public_ip_host="$2" ;;
         --birthday_shorthand) birthday_shorthand="$2" ;;
         --birthday_time) birthday_time="$2" ;;
         --disable)

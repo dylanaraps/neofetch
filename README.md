@@ -239,6 +239,7 @@ alias fetch2="fetch \
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --battery_num num           Which battery to display, default value is 'all'
     --battery_shorthand on/off  Whether or not each battery gets its own line/title
+    --ip_host url               Url to ping for public IP
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
 
@@ -273,8 +274,6 @@ alias fetch2="fetch \
     --shuffle_dir path/to/dir   Which directory to shuffle for an image.
     --font_width px             Used to automatically size the image
     --image_position left/right Where to display the image: (Left/Right)
-    --split_size num            Width of img/text splits, A value of 2 makes each
-                                split half the terminal width and etc.
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
     --crop_offset value         Change the crop offset for normal mode.
