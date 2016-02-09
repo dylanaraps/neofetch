@@ -23,8 +23,6 @@
 # Speed up script by not using unicode
 export LC_ALL=C
 export LANG=C
-export LANGUAGE=C
-
 
 # Config Options {{{
 
@@ -1698,6 +1696,9 @@ getascii () {
         print="${ascii_color}$(<"$ascii")"
     fi
 
+    # Set locale to get correct padding
+    export LC_ALL="en_US.UTF8"
+
     # Turn the file into a variable.
     ascii_strip=$(<"$ascii")
 
@@ -1706,20 +1707,23 @@ getascii () {
     ascii_strip=${ascii_strip//\\}
 
     # Get length of longest line
-    length="$(LC_ALL="en_US.UTF8" wc -L 2>/dev/null <<< "$ascii_strip")"
+    length="$(wc -L 2>/dev/null <<< "$ascii_strip")"
 
     # Get the height in lines
-    lines="$(($(LC_ALL="en_US.UTF8" wc -l 2>/dev/null <<< "$ascii_strip") + 1))"
+    lines="$(($(wc -l 2>/dev/null <<< "$ascii_strip") + 1))"
 
     # Fallback to using awk on systems without 'wc -L'
     [ -z "$length" ] && \
-        length="$(LC_ALL="en_US.UTF8" awk 'length>max{max=length}END{print max}' <<< "$ascii_strip")"
+        length="$(awk 'length>max{max=length}END{print max}' <<< "$ascii_strip")"
 
     # Set the text padding
     padding="\033[$((length + gap))C"
 
     # Print the ascii
     printf "%b%s" "$print"
+
+    # Set locale to get correct padding
+    export LC_ALL=C
 }
 
 
@@ -2458,5 +2462,4 @@ fi
 
 
 # }}}
-
 
