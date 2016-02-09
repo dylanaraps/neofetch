@@ -1355,6 +1355,11 @@ getlocalip () {
             [ -z "$localip" ] && localip="$(ipconfig getifaddr en1)"
         ;;
 
+        *"BSD")
+            localip="$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' \
+                | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')"
+        ;;
+
         "Windows")
             localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
         ;;
