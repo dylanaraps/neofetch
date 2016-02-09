@@ -863,7 +863,7 @@ getgpu () {
    case "$os" in
        "Linux")
             # Get the GPUs
-            gpu="$(lspci | grep -F "VGA")"
+            gpu="$(PATH="/usr/sbin:$PATH" lspci | grep -F "VGA")"
             gpu=${gpu//??':'??'.'?}
 
             # Count the number of GPUs
