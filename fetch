@@ -58,6 +58,8 @@ printinfo () {
     # info "Resolution" resolution
     # info "Battery" battery
     # info "Song" song
+    # info "Local IP" localip
+    # info "Public IP" public
     # info "Birthday" birthday
     # info "Visual Style" visualstyle
 
