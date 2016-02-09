@@ -1358,6 +1358,18 @@ getlocalip () {
     esac
 }
 
+getpublicip () {
+    if type -p curl >/dev/null 2>&1; then
+        publicip="$(curl -w '\n' http://ident.me)"
+
+    elif type -p wget >/dev/null 2>&1; then
+        publicip="$(wget -qO- http://ident.me; printf "%s")"
+
+    else
+        publicip="Unknown"
+    fi
+}
+
 # }}}
 
 # Birthday {{{
