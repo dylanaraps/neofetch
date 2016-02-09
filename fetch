@@ -1460,7 +1460,12 @@ getwallpaper () {
                 img="$(awk -F'=' '/file/ {printf $2}' "$HOME/.config/nitrogen/bg-saved.cfg")"
 
             elif type -p gsettings >/dev/null 2>&1; then
-                img="$(gsettings get org.gnome.desktop.background picture-uri 2>/dev/null)"
+                case "$XDG_CURRENT_DESKTOP" in
+                    "MATE"*) img="$(gsettings get org.mate.background picture-filename 2>/dev/null)" ;;
+                    *) img="$(gsettings get org.gnome.desktop.background picture-uri 2>/dev/null)" ;;
+                esac
+
+                # Strip quotes etc from the path.
                 img=${img/'file://'}
                 img=${img//\'}
             fi
