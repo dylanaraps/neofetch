@@ -130,6 +130,13 @@ battery_num="all"
 battery_shorthand="off"
 
 
+# IP Address
+
+# Website to ping for the public IP
+# --ip_host url
+public_ip_host="http://ident.me"
+
+
 # Birthday
 
 # Whether to show a long pretty output
