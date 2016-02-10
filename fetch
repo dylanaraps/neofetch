@@ -21,6 +21,7 @@
 # https://github.com/dylanaraps/
 
 # Speed up script by not using unicode
+SYS_LOCALE="$LANG"
 export LC_ALL=C
 export LANG=C
 
@@ -1703,7 +1704,7 @@ getascii () {
     fi
 
     # Set locale to get correct padding
-    export LC_ALL="en_US.UTF8"
+    export LC_ALL="$SYS_LOCALE"
 
     # Turn the file into a variable.
     ascii_strip=$(<"$ascii")
