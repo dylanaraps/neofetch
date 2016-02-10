@@ -118,7 +118,7 @@ speed_type="max"
 
 # Shorten output of the getgpu funcion
 # --gpu_shorthand on/off
-gpu_shorthand="off"
+gpu_shorthand="on"
 
 
 # Gtk Theme / Icons
@@ -912,6 +912,7 @@ getgpu () {
                     gpu=${gpu/Tahiti PRO}
                     gpu=${gpu/Seymour}
                     gpu=${gpu/ OEM}
+                    gpu=${gpu/ Cape Verde}
                     gpu=${gpu/ \[}
                     gpu=${gpu/\]}
 
