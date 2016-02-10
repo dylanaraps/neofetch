@@ -44,7 +44,8 @@ printinfo () {
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
-    info "Window Manager" windowmanager
+    info "Desktop Environment" de
+    info "Window Manager" wm
     info "GTK Theme" gtktheme
     info "Icons" gtkicons
     info "CPU" cpu
@@ -715,33 +716,38 @@ getshell () {
 
 # }}}
 
+# Desktop Environment {{{
+
+getde () {
+    [ "$XDG_CURRENT_DESKTOP" ] && de="$XDG_CURRENT_DESKTOP"
+}
+
+# }}}
+
 # Window Manager {{{
 
-getwindowmanager () {
+getwm () {
     if type -p wmctrl >/dev/null 2>&1; then
-        windowmanager="$(wmctrl -m | head -n1)"
-        windowmanager=${windowmanager/Name: }
-
-    elif [ "$XDG_CURRENT_DESKTOP" ]; then
-        windowmanager="$XDG_CURRENT_DESKTOP"
+        wm="$(wmctrl -m | head -n1)"
+        wm=${wm/Name: }
 
     elif [ "$XINITRC" ]; then
-        windowmanager=$(grep "^[^#]*exec" "$XINITRC" | tail -n 1)
+        wm=$(grep "^[^#]*exec" "$XINITRC" | tail -n 1)
 
     elif [ -e "$HOME/.xinitrc" ]; then
-        windowmanager=$(grep "^[^#]*exec" "${HOME}/.xinitrc" | tail -n 1)
+        wm=$(grep "^[^#]*exec" "${HOME}/.xinitrc" | tail -n 1)
 
     else
         case "$os" in
-            "Mac OS X") windowmanager="Quartz Compositor" ;;
-            "Windows") windowmanager="Explorer" ;;
-            *) windowmanager="Unknown" ;;
+            "Mac OS X") wm="Quartz Compositor" ;;
+            "Windows") wm="Explorer" ;;
+            *) wm="Unknown" ;;
         esac
     fi
 
-    windowmanager="${windowmanager/exec }"
-    windowmanager="${windowmanager/-session}"
-    windowmanager="${windowmanager^}"
+    wm="${wm/exec }"
+    wm="${wm/-session}"
+    wm="${wm^}"
 }
 
 # }}}
