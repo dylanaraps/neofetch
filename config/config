@@ -85,6 +85,14 @@ shell_path="on"
 shell_version="off"
 
 
+# Window Manager / Desktop Environment
+
+# Set the title based on whether or not the output is
+# a DE or WM.
+# --wm_dynamic_title on/off
+wm_dynamic_title="on"
+
+
 # CPU
 
 # CPU speed type

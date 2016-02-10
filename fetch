@@ -103,6 +103,14 @@ shell_path="on"
 shell_version="off"
 
 
+# Window Manager / Desktop Environment
+
+# Set the title based on whether or not the output is
+# a DE or WM.
+# --wm_dynamic_title on/off
+wm_dynamic_title="on"
+
+
 # CPU
 
 # CPU speed type
@@ -718,12 +726,12 @@ getshell () {
 # Window Manager {{{
 
 getwindowmanager () {
-    if type -p wmctrl >/dev/null 2>&1; then
+    if [ "$XDG_CURRENT_DESKTOP" ]; then
+        windowmanager="$XDG_CURRENT_DESKTOP"
+
+    elif type -p wmctrl >/dev/null 2>&1; then
         windowmanager="$(wmctrl -m | head -n1)"
         windowmanager=${windowmanager/Name: }
-
-    elif [ "$XDG_CURRENT_DESKTOP" ]; then
-        windowmanager="$XDG_CURRENT_DESKTOP"
 
     elif [ "$XINITRC" ]; then
         windowmanager=$(grep "^[^#]*exec" "$XINITRC" | tail -n 1)
@@ -742,6 +750,26 @@ getwindowmanager () {
     windowmanager="${windowmanager/exec }"
     windowmanager="${windowmanager/-session}"
     windowmanager="${windowmanager^}"
+
+    if [ "$wm_dynamic_title" == "on" ]; then
+        shopt -s nocasematch
+        case "$windowmanager" in
+            "KDE" | "XFCE" | "LUMINA" | "LXDE" | "MATE" | "Unity" | "LXQT" |\
+            *"Cinnamon" | "Gnome"* | "Budgie")
+                title="DE:"
+            ;;
+
+            *)
+                title="WM:"
+            ;;
+        esac
+
+        # Print the WM/DE
+        prin "${title}: ${windowmanager}"
+
+        # Unset WM to avoid duplicate output.
+        unset windowmanager
+    fi
 }
 
 # }}}
@@ -1143,7 +1171,7 @@ getgtk () {
     desktop=${desktop^}
 
     case "$desktop" in
-        "Cinnamon")
+        *"Cinnamon")
             if type -p gsettings >/dev/null 2>&1; then
                 gtk3theme=$(gsettings get org.cinnamon.desktop.interface $gsettings)
                 gtk3theme=${gtk3theme//"'"}
@@ -2174,6 +2202,7 @@ usage () { cat << EOF
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
+    --wm_dynamic_title on/off   Enable/Disable dynamically titling the DE/WM info cmd
     --battery_num num           Which battery to display, default value is 'all'
     --battery_shorthand on/off  Whether or not each battery gets its own line/title
     --ip_host url               Url to ping for public IP
@@ -2279,6 +2308,7 @@ while [ "$1" ]; do
         --gtk3) gtk3="$2" ;;
         --shell_path) shell_path="$2" ;;
         --shell_version) shell_version="$2" ;;
+        --wm_dynamic_title) wm_dynamic_title="$2" ;;
         --battery_num) battery_num="$2" ;;
         --battery_shorthand) battery_shorthand="$2" ;;
         --ip_host) public_ip_host="$2" ;;

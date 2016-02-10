@@ -237,6 +237,7 @@ alias fetch2="fetch \
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
+    --wm_dynamic_title on/off   Enable/Disable dynamically titling the DE/WM info cmd
     --battery_num num           Which battery to display, default value is 'all'
     --battery_shorthand on/off  Whether or not each battery gets its own line/title
     --ip_host url               Url to ping for public IP
