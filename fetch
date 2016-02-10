@@ -44,7 +44,7 @@ printinfo () {
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
-    info "Window Manager" windowmanager
+    info windowmanager
     info "GTK Theme" gtktheme
     info "Icons" gtkicons
     info "CPU" cpu
@@ -718,12 +718,12 @@ getshell () {
 # Window Manager {{{
 
 getwindowmanager () {
-    if type -p wmctrl >/dev/null 2>&1; then
+    if [ "$XDG_CURRENT_DESKTOP" ]; then
+        windowmanager="$XDG_CURRENT_DESKTOP"
+
+    elif type -p wmctrl >/dev/null 2>&1; then
         windowmanager="$(wmctrl -m | head -n1)"
         windowmanager=${windowmanager/Name: }
-
-    elif [ "$XDG_CURRENT_DESKTOP" ]; then
-        windowmanager="$XDG_CURRENT_DESKTOP"
 
     elif [ "$XINITRC" ]; then
         windowmanager=$(grep "^[^#]*exec" "$XINITRC" | tail -n 1)
@@ -742,6 +742,26 @@ getwindowmanager () {
     windowmanager="${windowmanager/exec }"
     windowmanager="${windowmanager/-session}"
     windowmanager="${windowmanager^}"
+
+    if [ "$no_title" -eq 1 ]; then
+        shopt -s nocasematch
+        case "$windowmanager" in
+            "KDE" | "XFCE" | "LUMINA" | "LXDE" | "MATE" | "Unity" | "LXQT" |\
+            *"Cinnamon" | "Gnome"* | "Budgie")
+                title="DE:"
+            ;;
+
+            *)
+                title="WM:"
+            ;;
+        esac
+
+        # Print the WM/DE
+        prin "${title}: ${windowmanager}"
+
+        # Unset WM to avoid duplicate output.
+        unset windowmanager
+    fi
 }
 
 # }}}
@@ -1143,7 +1163,7 @@ getgtk () {
     desktop=${desktop^}
 
     case "$desktop" in
-        "Cinnamon")
+        *"Cinnamon")
             if type -p gsettings >/dev/null 2>&1; then
                 gtk3theme=$(gsettings get org.cinnamon.desktop.interface $gsettings)
                 gtk3theme=${gtk3theme//"'"}
@@ -1909,10 +1929,11 @@ info () {
 
     # Call the function and update variable
     if [ -z "$2" ]; then
+        no_title=1
         "get$1" 2>/dev/null
         eval output="\$${1}"
-
     else
+        no_title=0
         "get$2" 2>/dev/null
         eval output="\$${2}"
     fi
