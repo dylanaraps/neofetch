@@ -876,13 +876,18 @@ getcpu () {
 getgpu () {
    case "$os" in
        "Linux")
-            # Get the GPUs
+            gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
+
+            # If a GPU with a prefix of '3D' doesn't exist
+            # fallback to looking for a prefix of 'VGA'
+            [ -z "$gpu" ] && \
             gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
             gpu=${gpu//??':'??'.'?}
 
             # Count the number of GPUs
             count="$(printf "%s" "$gpu" | uniq -c)"
             count=${count/ VGA*}
+            count=${count/ 3D*}
             count=${count//[[:space:]]}
 
             # If there's more than one gpu
@@ -895,6 +900,7 @@ getgpu () {
 
             # Format the output
             gpu=${gpu/* VGA compatible controller: }
+            gpu=${gpu/* 3D controller: }
             gpu=${gpu/(rev*)}
 
             shopt -s nocasematch
