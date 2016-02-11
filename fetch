@@ -908,6 +908,7 @@ getgpu () {
                 intel*)
                     gpu=${gpu/Intel Corporation }
                     gpu=${gpu/Haswell-??? }
+                    gpu=${gpu/?th Gen Core Processor}
 
                     brand="Intel "
                 ;;
@@ -986,6 +987,7 @@ getgpu () {
         gpu=${gpu// OEM}
         gpu=${gpu// Mars}
         gpu=${gpu// Series}
+        gpu=${gpu// Controller}
         gpu=${gpu/\/*}
     fi
 
