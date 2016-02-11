@@ -1640,6 +1640,11 @@ getascii () {
             c2=$(color 7)
         ;;
 
+        "Raspbian"*)
+            c1=$(color 2)
+            c2=$(color 1)
+        ;;
+
         "Slackware"*)
             c1=$(color 4)
             c2=$(color 7)
