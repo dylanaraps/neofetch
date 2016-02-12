@@ -620,7 +620,7 @@ getpackages () {
             packages="$(ls -d /var/db/pkg/*/* | wc -l)"
         ;;
 
-        "Fedora"* | "openSUSE"* | "Red Hat Enterprise Linux"* | "CentOS"*)
+        "Fedora"* | "openSUSE"* | "Red Hat Enterprise Linux"* | "CentOS"* | "Mageia"*)
             packages="$(rpm -qa | wc -l)"
         ;;
 
