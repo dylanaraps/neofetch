@@ -1616,6 +1616,11 @@ getascii () {
             c6=$(color 4)
         ;;
 
+        "Mageia"*)
+            c1=$(color 7)
+            c2=$(color 6)
+        ;;
+
         *"Mint"*)
             c1=$(color 7)
             c2=$(color 2)
