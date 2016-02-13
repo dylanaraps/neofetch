@@ -1630,7 +1630,7 @@ getascii () {
             ascii_distro="mint"
         ;;
 
-        "NetBSD"* | "Parabola"*)
+        "NetBSD"* | "Parabola"* | "Tails"*)
             c1=$(color 5)
             c2=$(color 7)
         ;;
