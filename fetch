@@ -430,7 +430,10 @@ case "$os" in
             distro="CRUX"
         else
             distro="$(grep -h '^NAME=' /etc/*ease)"
+
+            # Workaround for distros that store the value differently.
             [ -z "$distro" ] && distro="$(grep -h 'TAILS_PRODUCT_NAME' /etc/*ease)"
+            [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
 
             distro=${distro/*NAME\=}
             distro=${distro#\"*}
@@ -623,7 +626,8 @@ getpackages () {
             packages="$(ls -d /var/db/pkg/*/* | wc -l)"
         ;;
 
-        "Fedora"* | "openSUSE"* | "Red Hat"* | "CentOS"* | "Mageia"* | "PCLinuxOS"*)
+        "Fedora"* | "openSUSE"* | "Red Hat"* | "CentOS"* | "Mageia"* | "PCLinuxOS"* |\
+        "BLAG"*)
             packages="$(rpm -qa | wc -l)"
         ;;
 
@@ -765,6 +769,7 @@ getcpu () {
             cpu="$(grep -F 'model name' /proc/cpuinfo)"
             cpu=${cpu/model name*: }
             cpu=${cpu/ @*}
+            cpu=${cpu//  }
             cpu=${cpu%% }
 
             # Get cpu speed
@@ -1630,7 +1635,7 @@ getascii () {
             ascii_distro="mint"
         ;;
 
-        "NetBSD"* | "Parabola"* | "Tails"*)
+        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
             c1=$(color 5)
             c2=$(color 7)
         ;;
