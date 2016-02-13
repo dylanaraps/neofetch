@@ -1719,13 +1719,13 @@ getascii () {
 
         # Overwrite distro colors if '$ascii_colors' doesn't
         # equal 'distro'.
-        if [ "$ascii_colors" != "distro" ]; then
-            c1=$(color ${ascii_colors[0]})
-            c2=$(color ${ascii_colors[1]})
-            c3=$(color ${ascii_colors[2]})
-            c4=$(color ${ascii_colors[3]})
-            c5=$(color ${ascii_colors[4]})
-            c6=$(color ${ascii_colors[5]})
+        if [ "${ascii_colors[0]}" != "distro" ]; then
+            c1=$(color "${ascii_colors[0]}")
+            c2=$(color "${ascii_colors[1]}")
+            c3=$(color "${ascii_colors[2]}")
+            c4=$(color "${ascii_colors[3]}")
+            c5=$(color "${ascii_colors[4]}")
+            c6=$(color "${ascii_colors[5]}")
         fi
 
         # We only use eval in the distro ascii files.
@@ -2406,7 +2406,7 @@ while [ "$1" ]; do
         --stdout)
             case "$2" in
                 "--"* | "") stdout="on" ;;
-                *) stdout="on"; stdout_args="on"; args=("$@"); stdout ;;
+                *) stdout="on"; args=("$@"); stdout ;;
             esac
 
             unset info_color colors
