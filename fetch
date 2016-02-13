@@ -430,6 +430,8 @@ case "$os" in
             distro="CRUX"
         else
             distro="$(grep -h '^NAME=' /etc/*ease)"
+            [ -z "$distro" ] && distro="$(grep -h 'TAILS_PRODUCT_NAME' /etc/*ease)"
+
             distro=${distro#NAME\=*}
             distro=${distro#\"*}
             distro=${distro%*\"}
@@ -608,7 +610,8 @@ getpackages () {
             packages="$(xbps-query -l | wc -l)"
         ;;
 
-        "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* | "elementary"* | "Raspbian"* | "Zorin"*)
+        "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* |\
+        "elementary"* | "Raspbian"* | "Zorin"* | "Tails"*)
             packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
