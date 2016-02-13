@@ -608,7 +608,7 @@ getpackages () {
             packages="$(xbps-query -l | wc -l)"
         ;;
 
-        "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* | "elementary"* | "Raspbian"*)
+        "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* | "elementary"* | "Raspbian"* | "Zorin"*)
             packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
@@ -1676,6 +1676,10 @@ getascii () {
             c2=$(color 2)
             c3=$(color 4)
             c4=$(color 3)
+        ;;
+
+        "Zorin"*)
+            c1=$(color 4)
         ;;
     esac
 
