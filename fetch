@@ -620,7 +620,7 @@ getpackages () {
             packages="$(ls -d /var/db/pkg/*/* | wc -l)"
         ;;
 
-        "Fedora"* | "openSUSE"* | "Red Hat Enterprise Linux"* | "CentOS"* | "Mageia"*)
+        "Fedora"* | "openSUSE"* | "Red Hat"* | "CentOS"* | "Mageia"* | "PCLinuxOS"*)
             packages="$(rpm -qa | wc -l)"
         ;;
 
@@ -1642,6 +1642,11 @@ getascii () {
 
         "OpenSuse"*)
             c1=$(color 2)
+            c2=$(color 7)
+        ;;
+
+        "PCLinuxOS"*)
+            c1=$(color 4)
             c2=$(color 7)
         ;;
 
