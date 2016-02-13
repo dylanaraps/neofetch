@@ -527,6 +527,7 @@ getuptime () {
 
                 *)
                     uptime="$(uptime -p)"
+                    [ "$uptime" == "up" ] && uptime="up $(cat /proc/uptime)"
                 ;;
             esac
         ;;
