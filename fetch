@@ -626,6 +626,10 @@ getpackages () {
             packages="$(ls -d /var/db/pkg/*/* | wc -l)"
         ;;
 
+        "NixOS"*)
+            packages="$(ls -d -1 /nix/store/*/ | wc -l)"
+        ;;
+
         "Fedora"* | "openSUSE"* | "Red Hat"* | "CentOS"* | "Mageia"* | "PCLinuxOS"* |\
         "BLAG"*)
             packages="$(rpm -qa | wc -l)"
@@ -1684,7 +1688,7 @@ getascii () {
             c2=$(color 8)
         ;;
 
-        "Trisquel"*)
+        "Trisquel"* | "NixOS"*)
             c1=$(color 4)
             c2=$(color 6)
         ;;
