@@ -635,6 +635,10 @@ getpackages () {
             packages="$(pkginfo -i | wc -l)"
         ;;
 
+        "Solus"*)
+            packages="$(pisi list-installed | wc -l)"
+        ;;
+
         "Mac OS X"*)
             if [ -d "/usr/local/bin" ]; then
                 local_packages=$(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l)
@@ -1661,6 +1665,11 @@ getascii () {
         "Raspbian"*)
             c1=$(color 2)
             c2=$(color 1)
+        ;;
+
+        "Solus"*)
+            c1=$(color 7)
+            c2=$(color 8)
         ;;
 
         "Trisquel"*)
