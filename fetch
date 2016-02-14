@@ -605,7 +605,7 @@ getuptime () {
 
 getpackages () {
     case "$distro" in
-        "Arch Linux"* | "Parabola"* | "Manjaro"* | "Antergos"*)
+        "Arch Linux"* | "Parabola"* | "Manjaro"* | "Antergos"* | "Chakra"*)
             packages="$(pacman -Qq --color never | wc -l)"
         ;;
 
@@ -1596,7 +1596,7 @@ getascii () {
             c5=$(color 7)
         ;;
 
-        "CRUX")
+        "CRUX"* | "Chakra"*)
             c1=$(color 4)
             c2=$(color 5)
             c3=$(color 7)
