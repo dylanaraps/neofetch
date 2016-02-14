@@ -614,7 +614,7 @@ getpackages () {
         ;;
 
         "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* |\
-        "elementary"* | "Raspbian"* | "Zorin"* | "Tails"*)
+        "elementary"* | "Raspbian"* | "Zorin"* | "Tails"* | "Trisquel"*)
             packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
@@ -1653,7 +1653,7 @@ getascii () {
             c2=$(color 7)
         ;;
 
-        "PCLinuxOS"*)
+        "PCLinuxOS"* | "Slackware"*)
             c1=$(color 4)
             c2=$(color 7)
         ;;
@@ -1663,9 +1663,9 @@ getascii () {
             c2=$(color 1)
         ;;
 
-        "Slackware"*)
+        "Trisquel"*)
             c1=$(color 4)
-            c2=$(color 7)
+            c2=$(color 6)
         ;;
 
         "void"*)
