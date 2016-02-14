@@ -1598,10 +1598,17 @@ getascii () {
             c3=$(color 7)
         ;;
 
-        "Debian"* | "FreeBSD"* | "Red Hat"* | "elementary"* | "CrunchBang"* | "Ubuntu"*)
+        "Debian"* | "FreeBSD"* | "elementary"* | "CrunchBang"* | "Ubuntu"*)
             c1=$(color 7)
             c2=$(color 1)
             c3=$(color 3)
+        ;;
+
+        "Red Hat"*)
+            c1=$(color 7)
+            c2=$(color 1)
+            c3=$(color 3)
+            ascii_distro="redhat"
         ;;
 
         "Fedora"*)
