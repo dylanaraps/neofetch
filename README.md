@@ -1,5 +1,7 @@
 # fetch
 
+[![Gitter](https://badges.gitter.im/dylanaraps/fetch.svg)](https://gitter.im/dylanaraps/fetch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image, <br \>
 your distro's logo or any ascii art of your choice!
