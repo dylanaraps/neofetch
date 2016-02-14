@@ -609,6 +609,10 @@ getpackages () {
             packages="$(pacman -Qq --color never | wc -l)"
         ;;
 
+        "Dragora"*)
+            packages="$(ls -1 /var/db/pkg | wc -l)"
+        ;;
+
         "void"*)
             packages="$(xbps-query -l | wc -l)"
         ;;
