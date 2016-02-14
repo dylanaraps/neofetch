@@ -2407,7 +2407,12 @@ while [ "$1" ]; do
             done
             ascii_colors+=(7 7 7 7 7 7)
         ;;
-        --ascii_distro) ascii_distro="$2" ;;
+
+        --ascii_distro)
+            image="ascii"
+            ascii_distro="$2"
+            case "$2" in "--"* | "") ascii_distro="$distro" ;; esac
+        ;;
 
         # Screenshot
         --scrot | -s) scrot="on"; [ "$2" ] && scrot_path="$2" ;;
