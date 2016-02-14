@@ -527,6 +527,7 @@ getuptime () {
 
                 *)
                     uptime="$(uptime -p)"
+                    [ "$uptime" == "up " ] && uptime="up $(awk -F'.' '{print $1}' /proc/uptime) seconds"
                 ;;
             esac
         ;;
@@ -582,6 +583,7 @@ getuptime () {
             uptime=${uptime/up}
             uptime=${uptime/minutes/mins}
             uptime=${uptime/minute/min}
+            uptime=${uptime/seconds/secs}
             uptime=${uptime# }
         ;;
 
@@ -593,6 +595,7 @@ getuptime () {
             uptime=${uptime/ hour/h}
             uptime=${uptime/ minutes/m}
             uptime=${uptime/ minute/m}
+            uptime=${uptime/ seconds/s}
             uptime=${uptime/,}
             uptime=${uptime# }
         ;;
