@@ -1107,6 +1107,9 @@ getsong () {
         song=${song/tag title/-}
         song=${song//[[:space:]]/ }
 
+    elif type -p mocp >/dev/null 2>&1; then
+        song="$(mocp -Q "%artist - %song")"
+
     else
         song="Unknown"
     fi
