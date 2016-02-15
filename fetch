@@ -1195,8 +1195,9 @@ getgtk () {
             if [ -f "${kde_config_dir}/share/config/kdeglobals" ]; then
                 kde_config_file="${kde_config_dir}/share/config/kdeglobals"
 
-                gtk3theme=$(grep "^[^#]*$kde" "$kde_config_file")
-                gtk3theme=${gtk3theme/${kde}*=}
+                gtktheme=$(grep "^[^#]*$kde" "$kde_config_file")
+                gtktheme=${gtk3theme/${kde}*=}
+                return
             fi
         ;;
 
