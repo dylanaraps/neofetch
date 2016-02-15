@@ -28,8 +28,8 @@ printinfo () {
     info "Shell" shell
     info "Desktop Environment" de
     info "Window Manager" wm
-    info "GTK Theme" gtktheme
-    info "Icons" gtkicons
+    info "Theme" theme
+    info "Icons" icons
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
