@@ -1197,6 +1197,7 @@ getstyle () {
 
                 theme=$(grep "^[^#]*$kde" "$kde_config_file")
                 theme=${theme/${kde}*=}
+                theme=${theme^}
 
                 gtk_shorthand="on"
                 return
