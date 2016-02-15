@@ -609,7 +609,7 @@ getuptime () {
 
 getpackages () {
     case "$distro" in
-        "Arch Linux"* | "Parabola"* | "Manjaro"* | "Antergos"* | "Chakra"*)
+        "Arch Linux"* | "Parabola"* | "Manjaro"* | "Antergos"* | "Chakra"* | "KaOS"*)
             packages="$(pacman -Qq --color never | wc -l)"
         ;;
 
