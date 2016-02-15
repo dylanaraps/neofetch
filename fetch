@@ -630,7 +630,7 @@ getpackages () {
             packages="$(ls -1 /var/log/packages | wc -l)"
         ;;
 
-        "Gentoo"* | "Funtoo"*)
+        "Gentoo"* | "Funtoo"* | "Sabayon"*)
             packages="$(ls -d /var/db/pkg/*/* | wc -l)"
         ;;
 
@@ -1623,7 +1623,7 @@ getascii () {
             ascii_distro="redhat"
         ;;
 
-        "Fedora"*)
+        "Fedora"* | "Sabayon"*)
             c1=$(color 7)
             c2=$(color 4)
         ;;
