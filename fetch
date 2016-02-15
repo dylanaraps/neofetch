@@ -1196,7 +1196,7 @@ getstyle () {
                 kde_config_file="${kde_config_dir}/share/config/kdeglobals"
 
                 theme=$(grep "^[^#]*$kde" "$kde_config_file")
-                theme=${gtk3theme/${kde}*=}
+                theme=${theme/${kde}*=}
 
                 gtk_shorthand="on"
                 return
