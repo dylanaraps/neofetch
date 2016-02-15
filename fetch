@@ -1155,6 +1155,7 @@ getgtk () {
             gsettings="gtk-theme"
             gconf="gtk_theme"
             xfconf="ThemeName"
+            kde="widgetStyle"
         ;;
 
         icons)
@@ -1162,6 +1163,7 @@ getgtk () {
             gsettings="icon-theme"
             gconf="icon_theme"
             xfconf="IconThemeName"
+            kde="Theme"
         ;;
 
         font)
@@ -1169,6 +1171,7 @@ getgtk () {
             gsettings="font-name"
             gconf="font_theme"
             xfconf="FontName"
+            kde="font"
         ;;
     esac
 
@@ -1178,6 +1181,19 @@ getgtk () {
     desktop=${desktop^}
 
     case "$desktop" in
+        "KDE"*)
+            if type -p kde5-config >/dev/null 2>&1; then
+                kde_config_dir=$(kde5-config --localprefix)
+
+                if [ -f "${kde_config_dir}/share/config/kdeglobals" ]; then
+                    kde_config_file="${kde_config_dir}/share/config/kdeglobals"
+
+                    gtk3theme=$(grep "^[^#]*$kde" "$kde_config_file")
+                    gtk3theme=${gtk3theme/${kde}*=}
+                fi
+            fi
+        ;;
+
         "Cinnamon")
             if type -p gsettings >/dev/null 2>&1; then
                 gtk3theme=$(gsettings get org.cinnamon.desktop.interface $gsettings)
