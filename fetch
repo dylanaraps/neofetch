@@ -608,54 +608,44 @@ getuptime () {
 # Package Count {{{
 
 getpackages () {
-    case "$distro" in
-        "Arch Linux"* | "Parabola"* | "Manjaro"* | "Antergos"* | "Chakra"* | "KaOS"*)
-            packages="$(pacman -Qq --color never | wc -l)"
+    case "$os" in
+        "Linux")
+            if type -p dpkg >/dev/null 2>&1; then
+                packages="$(dpkg --get-selections | grep -cv deinstall$)"
+
+            elif type -p pacman >/dev/null 2>&1; then
+                packages="$(pacman -Qq --color never | wc -l)"
+
+            elif type -p rpm >/dev/null 2>&1; then
+                packages="$(rpm -qa | wc -l)"
+
+            elif type -p xbps-query >/dev/null 2>&1; then
+                packages="$(xbps-query -l | wc -l)"
+
+            elif type -p pkginfo >/dev/null 2>&1; then
+                packages="$(pkginfo -i | wc -l)"
+
+            elif type -p pisi >/dev/null 2>&1; then
+                packages="$(pisi list-installed | wc -l)"
+
+            elif type -p pkg >/dev/null 2>&1; then
+                packages="$(ls -1 /var/db/pkg | wc -l)"
+
+            elif type -p pkgtool >/dev/null 2>&1; then
+                packages="$(ls -1 /var/log/packages | wc -l)"
+
+            elif type -p emerge >/dev/null 2>&1; then
+                packages="$(ls -d /var/db/pkg/*/* | wc -l)"
+
+            elif type -p nix-env >/dev/null 2>&1; then
+                packages="$(ls -d -1 /nix/store/*/ | wc -l)"
+
+            elif type -p pacman-g2 >/dev/null 2>&1; then
+                packages="$(pacman-g2 -Q | wc -l)"
+            fi
         ;;
 
-        "Frugalware"*)
-            packages="$(pacman-g2 -Q | wc -l)"
-        ;;
-
-        "Dragora"*)
-            packages="$(ls -1 /var/db/pkg | wc -l)"
-        ;;
-
-        "void"*)
-            packages="$(xbps-query -l | wc -l)"
-        ;;
-
-        "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* |\
-        "elementary"* | "Raspbian"* | "Zorin"* | "Tails"* | "Trisquel"* | "gNewSense"* | "LMDE"*)
-            packages="$(dpkg --get-selections | grep -cv deinstall$)"
-        ;;
-
-        "Slackware"*)
-            packages="$(ls -1 /var/log/packages | wc -l)"
-        ;;
-
-        "Gentoo"* | "Funtoo"* | "Sabayon"*)
-            packages="$(ls -d /var/db/pkg/*/* | wc -l)"
-        ;;
-
-        "NixOS"*)
-            packages="$(ls -d -1 /nix/store/*/ | wc -l)"
-        ;;
-
-        "Fedora"* | "openSUSE"* | "Red Hat"* | "CentOS"* | "Mageia"* | "PCLinuxOS"* |\
-        "BLAG"* | "OpenMandriva"*)
-            packages="$(rpm -qa | wc -l)"
-        ;;
-
-        "CRUX"*)
-            packages="$(pkginfo -i | wc -l)"
-        ;;
-
-        "Solus"*)
-            packages="$(pisi list-installed | wc -l)"
-        ;;
-
-        "Mac OS X"*)
+        "Mac OS X")
             if [ -d "/usr/local/bin" ]; then
                 local_packages=$(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l)
                 packages=$((local_packages - 1))
@@ -677,15 +667,16 @@ getpackages () {
             fi
         ;;
 
-        "OpenBSD"* | "NetBSD"*)
-            packages=$(pkg_info | wc -l)
+        *"BSD")
+            if type -p pkg_info >/dev/null 2>&1; then
+                packages=$(pkg_info | wc -l)
+
+            elif type -p pkg >/dev/null 2>&1; then
+                packages=$(pkg info | wc -l)
+            fi
         ;;
 
-        "FreeBSD"*)
-            packages=$(pkg info | wc -l)
-        ;;
-
-        "Windows"*)
+        "Windows")
             packages=$(cygcheck -cd | wc -l)
 
             # Count chocolatey packages
@@ -694,13 +685,10 @@ getpackages () {
                 packages=$((packages + choco_packages))
             fi
         ;;
-
-        *)
-            packages="Unknown"
-        ;;
     esac
-
     packages=${packages// }
+
+    [ -z "$packages" ] && packages="Unknown"
 }
 
 # }}}
