@@ -1669,7 +1669,7 @@ getascii () {
             ascii_distro="mint"
         ;;
 
-        "LMDE"*)
+        "LMDE"* | "Chapeau"*)
             c1=$(color 7)
             c2=$(color 2)
         ;;
