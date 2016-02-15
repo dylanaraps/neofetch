@@ -638,7 +638,7 @@ getpackages () {
         ;;
 
         "Fedora"* | "openSUSE"* | "Red Hat"* | "CentOS"* | "Mageia"* | "PCLinuxOS"* |\
-        "BLAG"*)
+        "BLAG"* | "Mandriva"*)
             packages="$(rpm -qa | wc -l)"
         ;;
 
@@ -1609,7 +1609,7 @@ getascii () {
             c3=$(color 7)
         ;;
 
-        "Debian"* | "FreeBSD"* | "elementary"* | "CrunchBang"* | "Ubuntu"*)
+        "Debian"* | "FreeBSD"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
             c1=$(color 7)
             c2=$(color 1)
             c3=$(color 3)
@@ -1644,6 +1644,11 @@ getascii () {
             c4=$(color 1)
             c5=$(color 5)
             c6=$(color 4)
+        ;;
+
+        "Mandriva"*)
+            c1=$(color 4)
+            c2=$(color 3)
         ;;
 
         "Mageia"*)
