@@ -1185,12 +1185,18 @@ getgtk () {
             if type -p kde5-config >/dev/null 2>&1; then
                 kde_config_dir=$(kde5-config --localprefix)
 
-                if [ -f "${kde_config_dir}/share/config/kdeglobals" ]; then
-                    kde_config_file="${kde_config_dir}/share/config/kdeglobals"
+            elif type -p kde4-config >/dev/null 2>&1; then
+                kde_config_dir=$(kde4-config --localprefix)
 
-                    gtk3theme=$(grep "^[^#]*$kde" "$kde_config_file")
-                    gtk3theme=${gtk3theme/${kde}*=}
-                fi
+            elif type -p kde-config >/dev/null 2>&1; then
+                kde_config_dir=$(kde-config --localprefix)
+            fi
+
+            if [ -f "${kde_config_dir}/share/config/kdeglobals" ]; then
+                kde_config_file="${kde_config_dir}/share/config/kdeglobals"
+
+                gtk3theme=$(grep "^[^#]*$kde" "$kde_config_file")
+                gtk3theme=${gtk3theme/${kde}*=}
             fi
         ;;
 
