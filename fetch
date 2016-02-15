@@ -638,6 +638,9 @@ getpackages () {
 
             elif type -p nix-env >/dev/null 2>&1; then
                 packages="$(ls -d -1 /nix/store/*/ | wc -l)"
+
+            elif type -p pacman-g2 >/dev/null 2>&1; then
+                packages="$(pacman-g2 -Q | wc -l)"
             fi
         ;;
 
