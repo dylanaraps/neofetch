@@ -424,8 +424,9 @@ x32="x86"
 case "$os" in
     "Linux" )
         if type -p lsb_release >/dev/null 2>&1; then
-            distro="$(lsb_release -a 2>/dev/null | awk -F':' '/Description/ {printf $2}')"
+            distro="$(lsb_release -d 2>/dev/null | awk -F':' '/Description/ {printf $2}')"
             distro=${distro/[[:space:]]}
+
         elif type -p crux >/dev/null 2>&1; then
             distro="CRUX"
         else
@@ -1635,6 +1636,12 @@ getascii () {
         "Kali"*)
             c1=$(color 4)
             c2=$(color 8)
+        ;;
+
+        "KaOS"*)
+            c1=$(color 4)
+            c2=$(color 7)
+            c3=$(color 1)
         ;;
 
         "Mac OS X"* | "Manjaro"* | "Deepin"*)
