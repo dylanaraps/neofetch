@@ -621,7 +621,7 @@ getpackages () {
         ;;
 
         "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* |\
-        "elementary"* | "Raspbian"* | "Zorin"* | "Tails"* | "Trisquel"*)
+        "elementary"* | "Raspbian"* | "Zorin"* | "Tails"* | "Trisquel"* | "gNewSense"*)
             packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
@@ -1603,7 +1603,7 @@ getascii () {
             c5=$(color 7)
         ;;
 
-        "CRUX"* | "Chakra"*)
+        "CRUX"* | "Chakra"* | "gNewSense"*)
             c1=$(color 4)
             c2=$(color 5)
             c3=$(color 7)
