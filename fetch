@@ -621,7 +621,7 @@ getpackages () {
         ;;
 
         "Ubuntu"* | *"Mint"* | "CrunchBang"* | "Debian"* | "Kali"* | "Deepin Linux"* |\
-        "elementary"* | "Raspbian"* | "Zorin"* | "Tails"* | "Trisquel"* | "gNewSense"*)
+        "elementary"* | "Raspbian"* | "Zorin"* | "Tails"* | "Trisquel"* | "gNewSense"* | "LMDE"*)
             packages="$(dpkg --get-selections | grep -cv deinstall$)"
         ;;
 
@@ -1665,6 +1665,11 @@ getascii () {
             c1=$(color 7)
             c2=$(color 2)
             ascii_distro="mint"
+        ;;
+
+        "LMDE"*)
+            c1=$(color 7)
+            c2=$(color 2)
         ;;
 
         "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
