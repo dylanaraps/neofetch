@@ -1099,20 +1099,33 @@ getmemory () {
 
 getsong () {
     if pgrep "mpd" >/dev/null 2>&1; then
-        song="$(mpc current)"
+        song="$(mpc current 2>/dev/null)"
+        state=$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)
 
     elif pgrep "cmus" >/dev/null 2>&1; then
-        song="$(cmus-remote -Q | grep "tag artist\|title")"
+        song="$(cmus-remote -Q | grep "tag artist\|title" 2>/dev/null)"
         song=${song/tag artist }
         song=${song/tag title/-}
         song=${song//[[:space:]]/ }
+        state=$(cmus-remote -Q | awk -F ' ' '/status/ {printf $2}' 2>/dev/null)
 
     elif pgrep "mocp" >/dev/null 2>&1; then
-        song="$(mocp -Q "%artist - %song")"
+        song="$(mocp -Q "%artist - %song" 2>/dev/null)"
+        state="$(mocp -Q "%state" 2>/dev/null)"
 
     else
         song="Unknown"
     fi
+
+    case "$state" in
+        "paused" | "PAUSE")
+            song="Paused"
+        ;;
+
+        "stopped" | "STOP" | "")
+            song="Stopped"
+        ;;
+    esac
 }
 
 # }}}
