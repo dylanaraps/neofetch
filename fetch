@@ -642,6 +642,11 @@ getpackages () {
 
             elif type -p pacman-g2 >/dev/null 2>&1; then
                 packages="$(pacman-g2 -Q | wc -l)"
+
+            elif type -p cave >/dev/null 2>&1; then
+                cross_packages=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* | wc -l)
+                packages=$(ls -d -1 /var/db/paludis/repositories/installed/data/* | wc -l)
+                packages=$((packages + cross_packages))
             fi
         ;;
 
@@ -1629,6 +1634,12 @@ getascii () {
             c2=$(color 1)
             c3=$(color 3)
             ascii_distro="redhat"
+        ;;
+
+        "Exherbo"*)
+            c1=$(color 7)
+            c2=$(color 4)
+            c3=$(color 1)
         ;;
 
         "Fedora"* | "Sabayon"* | "Frugalware"*)
