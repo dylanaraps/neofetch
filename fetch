@@ -616,6 +616,9 @@ getpackages () {
             elif type -p pacman >/dev/null 2>&1; then
                 packages="$(pacman -Qq --color never | wc -l)"
 
+            elif type -p pkgtool >/dev/null 2>&1; then
+                packages="$(ls -1 /var/log/packages | wc -l)"
+
             elif type -p rpm >/dev/null 2>&1; then
                 packages="$(rpm -qa | wc -l)"
 
@@ -630,9 +633,6 @@ getpackages () {
 
             elif type -p pkg >/dev/null 2>&1; then
                 packages="$(ls -1 /var/db/pkg | wc -l)"
-
-            elif type -p pkgtool >/dev/null 2>&1; then
-                packages="$(ls -1 /var/log/packages | wc -l)"
 
             elif type -p emerge >/dev/null 2>&1; then
                 packages="$(ls -d /var/db/pkg/*/* | wc -l)"
