@@ -1614,8 +1614,9 @@ getascii () {
             ascii_colors 4 5 7
         ;;
 
-        "Chrome"*)
+        "Chrom"*)
             ascii_colors 2 1 3 4 7
+            ascii_distro="chrome"
         ;;
 
         "Debian"* | "FreeBSD"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
