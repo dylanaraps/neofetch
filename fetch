@@ -756,10 +756,6 @@ getwm () {
             *) wm="Unknown" ;;
         esac
     fi
-
-    wm="${wm/exec }"
-    wm="${wm/-session}"
-    wm="${wm^}"
 }
 
 # }}}
