@@ -749,13 +749,6 @@ getwm () {
     if type -p wmctrl >/dev/null 2>&1; then
         wm="$(wmctrl -m | head -n1)"
         wm=${wm/Name: }
-
-    elif [ "$XINITRC" ]; then
-        wm=$(grep "^[^#]*exec" "$XINITRC" | tail -n 1)
-
-    elif [ -e "$HOME/.xinitrc" ]; then
-        wm=$(grep "^[^#]*exec" "${HOME}/.xinitrc" | tail -n 1)
-
     else
         case "$os" in
             "Mac OS X") wm="Quartz Compositor" ;;

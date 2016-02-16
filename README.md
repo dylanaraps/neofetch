@@ -67,9 +67,13 @@ your distro's logo or any ascii art of your choice!
 
 ### Required dependencies:
 
--  `Bash 4.0+`
--  `procps-ng`
+- `Bash 4.0+`
+- `procps-ng`
     - Not required on OS X
+
+##### Linux / BSD
+
+- `wmctrl` \[3\]
 
 
 ### Optional dependencies:
@@ -79,7 +83,6 @@ your distro's logo or any ascii art of your choice!
 
 ##### Linux / BSD
 
-- Window Manager: `wmctrl` \[3\]
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc` or `cmus`
 - Resolution: `xorg-xdpyinfo`
@@ -90,8 +93,7 @@ your distro's logo or any ascii art of your choice!
 \[2\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
 changing the config option `$image_backend` to `iterm2`.
 
-\[3\] You should install wmctrl if the builtin window manager detection isn't working for you. The builtin<br \>
-detection works for most people and is generally faster which is why wmctrl isn't default.
+\[3\] See **#75** about why this is now a required dependency.
 
 \[4\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and fetch will use it instead of scrot.
