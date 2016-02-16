@@ -107,6 +107,11 @@ program's cmd and fetch will use it instead of scrot.
 
 ## Installation
 
+Those using a git version of fetch should check this page after<br \>
+updating, this page lists any breaking changes that were made and<br \>
+how you can workaround them.
+
+https://github.com/dylanaraps/fetch/wiki/Following-HEAD
 
 ### Arch
 
