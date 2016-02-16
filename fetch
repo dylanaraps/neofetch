@@ -1715,6 +1715,12 @@ getascii () {
             c2=$(color 1)
         ;;
 
+        "Scientific"*)
+            c1=$(color 4)
+            c2=$(color 1)
+            c3=$(color 7)
+        ;;
+
         "Solus"*)
             c1=$(color 7)
             c2=$(color 8)
