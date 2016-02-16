@@ -47,8 +47,8 @@ printinfo () {
     info "Shell" shell
     info "Desktop Environment" de
     info "Window Manager" wm
-    info "GTK Theme" gtktheme
-    info "Icons" gtkicons
+    info "Theme" theme
+    info "Icons" icons
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
@@ -1158,9 +1158,9 @@ getresolution () {
 
 # }}}
 
-# GTK Theme/Icons/Font {{{
+# Theme/Icons/Font {{{
 
-getgtk () {
+getstyle () {
     # Fix weird output when the function
     # is run multiple times.
     unset gtk2theme gtk3theme
@@ -1171,6 +1171,7 @@ getgtk () {
             gsettings="gtk-theme"
             gconf="gtk_theme"
             xfconf="ThemeName"
+            kde="widgetStyle"
         ;;
 
         icons)
@@ -1178,6 +1179,7 @@ getgtk () {
             gsettings="icon-theme"
             gconf="icon_theme"
             xfconf="IconThemeName"
+            kde="Theme"
         ;;
 
         font)
@@ -1185,6 +1187,7 @@ getgtk () {
             gsettings="font-name"
             gconf="font_theme"
             xfconf="FontName"
+            kde="font"
         ;;
     esac
 
@@ -1194,6 +1197,29 @@ getgtk () {
     desktop=${desktop^}
 
     case "$desktop" in
+        "KDE"*)
+            if type -p kde5-config >/dev/null 2>&1; then
+                kde_config_dir=$(kde5-config --localprefix)
+
+            elif type -p kde4-config >/dev/null 2>&1; then
+                kde_config_dir=$(kde4-config --localprefix)
+
+            elif type -p kde-config >/dev/null 2>&1; then
+                kde_config_dir=$(kde-config --localprefix)
+            fi
+
+            if [ -f "${kde_config_dir}/share/config/kdeglobals" ]; then
+                kde_config_file="${kde_config_dir}/share/config/kdeglobals"
+
+                theme=$(grep "^[^#]*$kde" "$kde_config_file")
+                theme=${theme/${kde}*=}
+                theme=${theme^}
+
+                gtk_shorthand="on"
+                return
+            fi
+        ;;
+
         "Cinnamon")
             if type -p gsettings >/dev/null 2>&1; then
                 gtk3theme=$(gsettings get org.cinnamon.desktop.interface $gsettings)
@@ -1274,31 +1300,31 @@ getgtk () {
     fi
 
     # Final string
-    gtktheme="${gtk2theme}${gtk3theme}"
+    theme="${gtk2theme}${gtk3theme}"
 
     # If the final string is empty print "None"
-    [ -z "$gtktheme" ] && gtktheme="None"
+    [ -z "$theme" ] && theme="None"
 
     # Make the output shorter by removing "[GTKX]" from the string
     if [ "$gtk_shorthand" == "on" ]; then
-        gtktheme=${gtktheme/ '[GTK2]'}
-        gtktheme=${gtktheme/ '[GTK3]'}
-        gtktheme=${gtktheme/ '[GTK2/3]'}
+        theme=${theme/ '[GTK2]'}
+        theme=${theme/ '[GTK3]'}
+        theme=${theme/ '[GTK2/3]'}
     fi
 }
 
-getgtktheme () {
-    getgtk theme
+gettheme () {
+    getstyle theme
 }
 
-getgtkicons () {
-    getgtk icons
-    gtkicons="$gtktheme"
+geticons () {
+    getstyle icons
+    icons="$theme"
 }
 
-getgtkfont () {
-    getgtk font
-    gtkfont="$gtktheme"
+getfont () {
+    getstyle font
+    font="$theme"
 }
 
 # }}}
