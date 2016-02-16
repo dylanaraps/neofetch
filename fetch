@@ -1746,6 +1746,10 @@ getascii () {
         # looking in the script's directory.
         if [ -f "/usr/share/fetch/ascii/distro/${ascii/ *}" ]; then
             ascii="/usr/share/fetch/ascii/distro/${ascii/ *}"
+
+        elif [ -f "/usr/local/share/fetch/ascii/distro/${ascii/ *}" ]; then
+            ascii="/usr/local/share/fetch/ascii/distro/${ascii/ *}"
+
         else
             getscriptdir
 
