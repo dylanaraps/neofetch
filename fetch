@@ -429,6 +429,7 @@ case "$os" in
 
         elif type -p crux >/dev/null 2>&1; then
             distro="CRUX"
+
         else
             distro="$(grep -h '^NAME=' /etc/*ease)"
 
@@ -437,16 +438,13 @@ case "$os" in
             [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
 
             distro=${distro/*NAME\=}
-            distro=${distro#\"*}
-            distro=${distro%*\"}
+            distro=${distro//\"}
         fi
     ;;
 
     "Mac OS X")
         distro="Mac OS X $(sw_vers -productVersion)"
-
-        [ "$osx_buildversion" == "on" ] && \
-            distro+=" $(sw_vers -buildVersion)"
+        [ "$osx_buildversion" == "on" ] && distro+=" $(sw_vers -buildVersion)"
     ;;
 
     "OpenBSD")
