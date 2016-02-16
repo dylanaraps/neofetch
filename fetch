@@ -1605,163 +1605,114 @@ getascii () {
     shopt -s nocasematch
     case "$ascii_distro" in
         "Arch Linux"* | "Antergos"*)
-            c1=$(color 6)
-            c2=$(color 4)
+            ascii_colors 6 4
         ;;
 
         "CentOS"*)
-            c1=$(color 3)
-            c2=$(color 2)
-            c3=$(color 4)
-            c4=$(color 5)
-            c5=$(color 7)
+            ascii_colors 3 2 4 5 7
         ;;
 
         "CRUX"* | "Chakra"* | "gNewSense"*)
-            c1=$(color 4)
-            c2=$(color 5)
-            c3=$(color 7)
+            ascii_colors 4 5 7
         ;;
 
         "Debian"* | "FreeBSD"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
-            c1=$(color 7)
-            c2=$(color 1)
-            c3=$(color 3)
+            ascii_colors 7 1 3
         ;;
 
         "Red Hat"*)
-            c1=$(color 7)
-            c2=$(color 1)
-            c3=$(color 3)
+            ascii_colors 7 1 3
             ascii_distro="redhat"
         ;;
 
-        "Exherbo"*)
-            c1=$(color 7)
-            c2=$(color 4)
-            c3=$(color 1)
-        ;;
-
-        "Fedora"* | "Sabayon"* | "Frugalware"*)
-            c1=$(color 7)
-            c2=$(color 4)
+        "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
+            ascii_colors 7 4 1
         ;;
 
         "Gentoo"* | "Funtoo"*)
-            c1=$(color 7)
-            c2=$(color 5)
+            ascii_colors 7 5
         ;;
 
         "Kali"*)
-            c1=$(color 4)
-            c2=$(color 8)
+            ascii_colors 4 8
         ;;
 
         "KaOS"*)
-            c1=$(color 4)
-            c2=$(color 7)
-            c3=$(color 1)
+            ascii_colors 4 7 1
         ;;
 
         "Mac OS X"* | "Manjaro"* | "Deepin"*)
-            c1=$(color 2)
-            c2=$(color 3)
-            c3=$(color 1)
-            c4=$(color 1)
-            c5=$(color 5)
-            c6=$(color 4)
+            ascii_colors 2 3 1 1 5 4
         ;;
 
         "OpenMandriva"*)
-            c1=$(color 4)
-            c2=$(color 3)
+            ascii_colors 4 3
         ;;
 
         "Mageia"*)
-            c1=$(color 7)
-            c2=$(color 6)
+            ascii_colors 7 6
         ;;
 
         "Peppermint"*)
-            c1=$(color 7)
-            c2=$(color 1)
+            ascii_colors 7 1
         ;;
 
         *"Mint"*)
-            c1=$(color 7)
-            c2=$(color 2)
+            ascii_colors 7 2
             ascii_distro="mint"
         ;;
 
         "LMDE"* | "Chapeau"*)
-            c1=$(color 7)
-            c2=$(color 2)
+            ascii_colors 7 2
         ;;
 
         "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
-            c1=$(color 5)
-            c2=$(color 7)
+            ascii_colors 5 7
         ;;
 
         "OpenBSD"*)
-            c1=$(color 3)
-            c2=$(color 3)
-            c3=$(color 6)
-            c4=$(color 1)
-            c5=$(color 8)
+            ascii_colors 3 3 6 1 8
         ;;
 
         "OpenSuse"*)
-            c1=$(color 2)
-            c2=$(color 7)
+            ascii_colors 2 7
         ;;
 
         "PCLinuxOS"* | "Slackware"*)
-            c1=$(color 4)
-            c2=$(color 7)
+            ascii_colors 4 7
         ;;
 
         "Raspbian"*)
-            c1=$(color 2)
-            c2=$(color 1)
+            ascii_colors 2 1
         ;;
 
         "Scientific"*)
-            c1=$(color 4)
-            c2=$(color 1)
-            c3=$(color 7)
+            ascii_colors 4 1 7
         ;;
 
         "Solus"*)
-            c1=$(color 7)
-            c2=$(color 8)
+            ascii_colors 7 8
         ;;
 
         "Trisquel"* | "NixOS"*)
-            c1=$(color 4)
-            c2=$(color 6)
+            ascii_colors 4 6
         ;;
 
         "void"*)
-            c1=$(color 2)
-            c2=$(color 2)
-            c3=$(color 8)
+            ascii_colors 2 2 8
         ;;
 
         "Windows 10"*)
-            c1=$(color 6)
+            ascii_colors 6
             ascii_distro="windows10"
         ;;
 
         "Windows"*)
-            c1=$(color 1)
-            c2=$(color 2)
-            c3=$(color 4)
-            c4=$(color 3)
+            ascii_colors 1 2 4 3
         ;;
 
         "Zorin"*)
-            c1=$(color 4)
+            ascii_colors 4
         ;;
     esac
 
@@ -1841,6 +1792,15 @@ getascii () {
 
     # Set locale to get correct padding
     export LC_ALL=C
+}
+
+ascii_colors () {
+    c1=$(color "$1")
+    c2=$(color "$2")
+    c3=$(color "$3")
+    c4=$(color "$4")
+    c5=$(color "$5")
+    c6=$(color "$6")
 }
 
 
