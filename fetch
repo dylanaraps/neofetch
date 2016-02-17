@@ -6,13 +6,12 @@
 #
 # Required Dependencies:
 #   Bash 4.0+
-#   Text formatting, dynamic image size and padding: tput
+#   xprop
 #   [Linux / BSD / Windows] Uptime detection: procps or procps-ng
 #
 # Optional Dependencies: (You'll lose these features without them)
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
-#   More accurate window manager detection: wmctrl
 #   [ Linux / BSD ] Wallpaper Display: feh, nitrogen or gsettings
 #   [ Linux / BSD ] Current Song: mpc or cmus
 #   [ Linux / BSD ] Resolution detection: xorg-xdpyinfo

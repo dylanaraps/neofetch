@@ -68,12 +68,9 @@ your distro's logo or any ascii art of your choice!
 ### Required dependencies:
 
 - `Bash 4.0+`
+- `xprop` \[3\]
 - `procps-ng`
     - Not required on OS X
-
-##### Linux / BSD
-
-- `wmctrl` \[3\]
 
 
 ### Optional dependencies:
