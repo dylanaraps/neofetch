@@ -6,13 +6,12 @@
 #
 # Required Dependencies:
 #   Bash 4.0+
-#   Text formatting, dynamic image size and padding: tput
+#   xprop
 #   [Linux / BSD / Windows] Uptime detection: procps or procps-ng
 #
 # Optional Dependencies: (You'll lose these features without them)
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
-#   More accurate window manager detection: wmctrl
 #   [ Linux / BSD ] Wallpaper Display: feh, nitrogen or gsettings
 #   [ Linux / BSD ] Current Song: mpc or cmus
 #   [ Linux / BSD ] Resolution detection: xorg-xdpyinfo
@@ -746,9 +745,13 @@ getde () {
 # Window Manager {{{
 
 getwm () {
-    if type -p wmctrl >/dev/null 2>&1; then
-        wm="$(wmctrl -m | head -n1)"
-        wm=${wm/Name: }
+    if [ -n "$DISPLAY" ]; then
+        id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
+        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
+        wm=${wm/*_NET_WM_NAME = }
+        wm=${wm/\"}
+        wm=${wm/\"*}
+
     else
         case "$os" in
             "Mac OS X") wm="Quartz Compositor" ;;
