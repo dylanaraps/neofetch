@@ -749,6 +749,14 @@ getwm () {
     if type -p wmctrl >/dev/null 2>&1; then
         wm="$(wmctrl -m | head -n1)"
         wm=${wm/Name: }
+
+    elif [ -n "$DISPLAY" ]; then
+        id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
+        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
+        wm=${wm/*_NET_WM_NAME = }
+        wm=${wm/\"}
+        wm=${wm/\"*}
+
     else
         case "$os" in
             "Mac OS X") wm="Quartz Compositor" ;;
