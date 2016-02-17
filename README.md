@@ -33,11 +33,10 @@ your distro's logo or any ascii art of your choice!
 
 ## Screenshots
 
+![Linux](https://u.teknik.io/sW22K.png)
 ![Windows](https://i.imgur.com/oVv5gHn.png)
 ![Mac OS X](http://i.imgur.com/KEi9EEi.png)
 ![Linux](https://ipfs.pics/ipfs/QmQL7jbxuRAX8HxL2ePNH7zUpXnePV3LRuodXZQvdiFiWk)
-![Linux](https://i.imgur.com/6fgnvcq.png)
-![Linux](http://i.imgur.com/CBpGjnw.png)
 
 
 <!-- }}} -->
@@ -126,6 +125,7 @@ https://github.com/dylanaraps/fetch/wiki/Following-HEAD
 4. Install the package
     - `emerge -a x11-apps/fetch`
 
+
 ### CRUX
 
 1. Install git and the git ports(8) driver
@@ -136,6 +136,7 @@ https://github.com/dylanaraps/fetch/wiki/Following-HEAD
     - `sudo ports -u`
 4. Install the package
     - `sudo prt-get depinst fetch`
+
 
 ### Others
 
