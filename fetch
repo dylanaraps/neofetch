@@ -1630,7 +1630,7 @@ getascii () {
             ascii_colors 3 2 4 5 7
         ;;
 
-        "CRUX"* | "Chakra"* | "gNewSense"*)
+        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"*)
             ascii_colors 4 5 7
         ;;
 
