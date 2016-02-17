@@ -126,6 +126,16 @@ https://github.com/dylanaraps/fetch/wiki/Following-HEAD
 4. Install the package
     - `emerge -a x11-apps/fetch`
 
+### CRUX
+
+1. Install git and the git ports(8) driver
+    - `sudo prt-get depinst git`
+2. Add the 3rd party repo
+    - `sudo wget -O /etc/ports/arcetera.git https://git.io/vgNJ6`
+3. Sync the repos
+    - `sudo ports -u`
+4. Install the package
+    - `sudo prt-get depinst fetch`
 
 ### Others
 
