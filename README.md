@@ -90,7 +90,7 @@ your distro's logo or any ascii art of your choice!
 \[2\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
 changing the config option `$image_backend` to `iterm2`.
 
-\[3\] See **#75** about why this is now a required dependency.
+\[3\] See **[#79](https://github.com/dylanaraps/fetch/issues/79)** about why this is now a required dependency.
 
 \[4\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and fetch will use it instead of scrot.
