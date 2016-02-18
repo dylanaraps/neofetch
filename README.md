@@ -170,19 +170,6 @@ You can launch the script without a config file by using the flag `--config none
 specify a custom config location using `--config path/to/config`.
 
 
-#### Sizing the image correctly
-
-**NOTE:** For the images to be sized correctly you need to set the `$font_width` variable.<br \>
-If you don't know your font width in pixels keep trying values until the image is half the<br \>
-terminal width.
-
-Once `font_width` is set the image will by default take up half the terminal width. You can<br \>
-use the launch flag `--size px` or change the config option `$image_size` to set it to a custom<br \>
-size in pixels.
-
-You can also use the launch flag `--font_width` to set it on the fly.
-
-
 #### Setting the prompt height
 
 If your shell prompt's height is greater than 1 line high, you'll need to change a config<br \>
@@ -289,7 +276,6 @@ alias fetch2="fetch \
     --size px                   Size in pixels to make the image.
     --image_backend w3m/iterm2  Which program to use to draw images.
     --shuffle_dir path/to/dir   Which directory to shuffle for an image.
-    --font_width px             Used to automatically size the image
     --image_position left/right Where to display the image: (Left/Right)
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill

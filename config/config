@@ -260,11 +260,6 @@ crop_mode="normal"
 #               east/southwest/south/southeast
 crop_offset="center"
 
-# Font width
-# --font_width num
-# Used when calculating dynamic image size
-font_width=5
-
 # Image size
 # The image is half the terminal width by default.
 # --size half, px
