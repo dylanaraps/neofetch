@@ -280,8 +280,8 @@ crop_offset="center"
 
 # Image size
 # The image is half the terminal width by default.
-# --size half, px
-image_size="half"
+# --size auto, px
+image_size="auto"
 
 # Right gap between image and text
 # --gap num
@@ -1851,8 +1851,21 @@ getimage () {
         ;;
     esac
 
-    # If $img isn't a file, fallback to ascii mode.
-    if [ ! -f "$img" ]; then
+    # Get terminal width and height
+    printf "%b%s" '\033[14t'
+
+    index=0
+    while IFS= read -s -r -n 1 -t 0.25 char; do
+        case "$index" in
+            "0") [ "$char" == ";" ] && index=$((index + 1)) ;;
+            "1") [ "$char" == ";" ] && index=$((index + 1)) || term_height="${term_height}${char}" ;;
+            "2") [ "$char" == "t" ] && break || term_width="${term_width}${char}"
+        esac
+    done
+
+    # If $img isn't a file or the terminal doesn't support xterm escape sequences,
+    # fallback to ascii mode.
+    if [ ! -f "$img" ] || [ -z "$term_height" ]; then
         # Fallback to ascii mode
         image="ascii"
         getascii
@@ -1864,24 +1877,12 @@ getimage () {
     columns=$(tput cols)
     lines=$(tput lines)
 
-    # Get terminal width and height
-    printf "%b%s" '\033[14t'
-
-    index=0
-    while IFS= read -s -r -n 1 char; do
-        case "$index" in
-            "0") [ "$char" == ";" ] && index=$((index + 1)) ;;
-            "1") [ "$char" == ";" ] && index=$((index + 1)) || term_height="${term_height}${char}" ;;
-            "2") [ "$char" == "t" ] && break || term_width="${term_width}${char}"
-        esac
-    done
-
     # Calculate font size
     font_width=$((term_width / columns))
     font_height=$((term_height / lines))
 
     # Image size is half of the terminal
-    if [ "$image_size" == "half" ]; then
+    if [ "$image_size" == "auto" ]; then
         image_size=$((columns * font_width / 2))
 
         [ "$((term_height - term_height / 4))" -lt "$image_size" ] && \
