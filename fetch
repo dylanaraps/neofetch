@@ -362,22 +362,6 @@ config_file="$HOME/.config/fetch/config"
 
 # }}}
 
-# Other Options {{{
-
-# Separator to use in stdout mode.
-# --stdout_separator string
-stdout_separator="    "
-
-# Hide/Show the title in stdout mode.
-# --stdout_title on/off
-stdout_title="off"
-
-# Hide/Show each info's subtitle in stdout mode.
-# --stdout_subtitles on/off
-stdout_subtitles="on"
-
-# }}}
-
 
 # }}}
 
@@ -2053,11 +2037,6 @@ info () {
             string="${bold}${title_color}${output}"
             string="${string/@/${at_color}@${title_color}}"
             length=${#output}
-
-            # Hide the title in stdout mode
-            [ "$stdout" == "on" ] && \
-            [ "$stdout_title" == "off" ] &&\
-                string=""
         ;;
 
         underline)
@@ -2075,22 +2054,7 @@ info () {
     [ -z "$2" ] && string=${string/*: }
 
     # Print the string
-    if [ "$stdout" == "on" ]; then
-
-        # Unset the vars containg escape codes as lemonbar doesn't
-        # support them.
-        unset -v bold subtitle_color clear colon_color info_color \
-        underline_color title_color at_color
-
-        # Show/Hide subtitles
-        [ "$stdout_subtitles" == "off" ] && string=${string/*: }
-
-        # If the string isn't empty, print it.
-        [ ! -z "$string" ] && printf "%s" "${string}${stdout_separator}"
-
-    else
-        printf "%b%s\n" "${padding}${string}${clear}"
-    fi
+    printf "%b%s\n" "${padding}${string}${clear}"
 }
 
 # }}}
@@ -2115,11 +2079,7 @@ prin () {
     esac
 
     # Print the info
-    if [ "$stdout" == "on" ]; then
-        printf "%s" "${string}${stdout_separator}"
-    else
-        printf "%b%s\n" "${padding}${string}${clear}"
-    fi
+    printf "%b%s\n" "${padding}${string}${clear}"
 }
 
 # }}}
@@ -2127,21 +2087,17 @@ prin () {
 # Stdout {{{
 
 stdout () {
-    printinfo () {
-        index=1
-        for func in "${args[@]}"; do
-
-            case "$func" in
-                "--stdout") continue ;;
-                "--"*) break ;;
-                *)
-                    case "${args[$((index + 1))]}" in "--"*) unset stdout_separator ;; esac
-                    info "$func"
-                ;;
-            esac
-            index=$((index + 1))
-        done
-    }
+    for func in "${args[@]}"; do
+        case "$func" in
+            "--"*) break ;;
+            *)
+                "get$func" 2>/dev/null
+                eval output="\$$func"
+                printf "$output  "
+            ;;
+        esac
+    done
+    exit
 }
 
 # }}}
@@ -2366,9 +2322,6 @@ usage () { cat << EOF
     --stdout info info          Launch fetch in stdout mode which prints the info
                                 in a plain-text format that you can use with
                                 lemonbar etc.
-    --stdout_title on/off       Hide/Show the title in stdout mode.
-    --stdout_separator string   String to use as a separator in stdout mode.
-    --stdout_subtitles on/off   Hide/Show the subtitles in stdout mode.
 
 
     Screenshot:
@@ -2490,19 +2443,12 @@ while [ "$1" ]; do
         --scrot_cmd) scrot_cmd="$2" ;;
 
         # Stdout
-        --stdout_title) stdout_title="$2" ;;
-        --stdout_separator) stdout_separator="$2" ;;
-        --stdout_subtitles) stdout_subtitles="$2" ;;
         --stdout)
-            case "$2" in
-                "--"* | "") stdout="on" ;;
-                *) stdout="on"; args=("$@"); stdout ;;
-            esac
-
             unset info_color colors
-            underline="off"
-            image="off"
-            color_blocks="off"
+            case "$2" in
+                "--"* | "") echo "--stdout requires at least one argument"; exit ;;
+                *) shift; args=("$@"); stdout ;;
+            esac
         ;;
 
         # Other
