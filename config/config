@@ -140,6 +140,13 @@ battery_shorthand="off"
 public_ip_host="http://ident.me"
 
 
+# Song
+
+# Print the Artist and Title on seperate lines
+# --song_shorthand on/off
+song_shorthand="off"
+
+
 # Birthday
 
 # Whether to show a long pretty output

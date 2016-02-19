@@ -257,6 +257,7 @@ alias fetch2="fetch \
     --battery_num num           Which battery to display, default value is 'all'
     --battery_shorthand on/off  Whether or not each battery gets its own line/title
     --ip_host url               Url to ping for public IP
+    --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
 
