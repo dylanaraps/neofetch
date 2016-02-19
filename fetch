@@ -2123,21 +2123,17 @@ prin () {
 # Stdout {{{
 
 stdout () {
-    printinfo () {
-        index=1
-        for func in "${args[@]}"; do
-
-            case "$func" in
-                "--stdout") continue ;;
-                "--"*) break ;;
-                *)
-                    case "${args[$((index + 1))]}" in "--"*) unset stdout_separator ;; esac
-                    info "$func"
-                ;;
-            esac
-            index=$((index + 1))
-        done
-    }
+    for func in "${args[@]}"; do
+        case "$func" in
+            "--"*) break ;;
+            *)
+                "get$func" 2>/dev/null
+                eval output="\$$func"
+                printf "$output "
+            ;;
+        esac
+    done
+    exit
 }
 
 # }}}
@@ -2492,12 +2488,13 @@ while [ "$1" ]; do
         --stdout_separator) stdout_separator="$2" ;;
         --stdout_subtitles) stdout_subtitles="$2" ;;
         --stdout)
+            stdout="on"
+            unset info_color colors
             case "$2" in
-                "--"* | "") stdout="on" ;;
-                *) stdout="on"; args=("$@"); stdout ;;
+                "--"* | "") ;;
+                *) shift; args=("$@"); stdout ;;
             esac
 
-            unset info_color colors
             underline="off"
             image="off"
             color_blocks="off"
