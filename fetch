@@ -1322,9 +1322,6 @@ getstyle () {
         theme=${theme//\"}
         theme=${theme//\'}
 
-        # If the final string is empty print "None"
-        [ -z "$theme" ] && theme="None"
-
         # Make the output shorter by removing "[GTKX]" from the string
         if [ "$gtk_shorthand" == "on" ]; then
             theme=${theme/ '[GTK2]'}
