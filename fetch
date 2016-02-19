@@ -1331,7 +1331,7 @@ getstyle () {
     else
         case "$os" in
             "Windows")
-                [ ! "$path" ] && return
+                [ -z "$path" ] && return
                 theme="$(head -n1 $path 2>/dev/null)"
                 theme="${theme##*\\}"
                 theme="${theme%.*}"
