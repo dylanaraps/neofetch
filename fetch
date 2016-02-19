@@ -1311,7 +1311,7 @@ getstyle () {
         case "$os" in
             "Windows")
                 [ -z "$path" ] && return
-                theme="$(head -n1 $path 2>/dev/null)"
+                theme="$(head -n1 "$path" 2>/dev/null)"
                 theme="${theme##*\\}"
                 theme="${theme%.*}"
                 theme="${theme^}"
@@ -1783,8 +1783,6 @@ getascii () {
 
     # Turn the file into a variable.
     ascii_strip=$(<"$ascii")
-
-    # Strip escape codes backslashes from contents of
     ascii_strip=${ascii_strip//\$\{??\}}
     ascii_strip=${ascii_strip//\\}
 
@@ -1798,13 +1796,9 @@ getascii () {
     [ -z "$length" ] && \
         length="$(awk 'length>max{max=length}END{print max}' <<< "$ascii_strip")"
 
-    # Set the text padding
     padding="\033[$((length + gap))C"
-
-    # Print the ascii
     printf "%b%s" "$print"
 
-    # Set locale to get correct padding
     export LC_ALL=C
 }
 
@@ -1824,34 +1818,21 @@ ascii_colors () {
 
 getimage () {
     # Fallback to ascii mode if imagemagick isn't installed.
-    if ! type -p convert >/dev/null 2>&1; then
-        image="ascii"
-    fi
+    type -p convert >/dev/null 2>&1 || image="ascii"
 
     # Call function based on $image
     case "$image" in
-        "wall")
-            getwallpaper
-        ;;
-
-        "shuffle")
-            img="$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 |
-            shuf -n1 -z)"
-        ;;
-
-        "ascii")
-            getascii
-            return
-        ;;
-
-        *)
-            img="$image"
-        ;;
+        "wall") getwallpaper ;;
+        "shuffle") img="$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 | shuf -n1 -z)" ;;
+        "ascii") getascii; return ;;
+        *) img="$image" ;;
     esac
 
     # Get terminal width and height
     printf "%b%s" '\033[14t'
 
+    # The ascape code above prints the output AFTER the prompt so this
+    # loop below reads it as input. wtf xterm
     index=0
     while IFS= read -s -r -n 1 -t 0.25 char; do
         case "$index" in
@@ -1864,10 +1845,8 @@ getimage () {
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
     if [ ! -f "$img" ] || [ -z "$term_height" ]; then
-        # Fallback to ascii mode
         image="ascii"
         getascii
-
         return
     fi
 
@@ -1903,18 +1882,11 @@ getimage () {
     # Make the directory if it doesn't exist
     mkdir -p "$thumbnail_dir"
 
-    # Check to see if the image has a file extension
+    # Check to see if the image has a file extension, if it doesn't
+    # then add one.
     case "${img##*/}" in
-        *"."*)
-            # Get name of image and prefix it with it's crop mode and offset
-            imgname="$crop_mode-$crop_offset-$image_size-${img##*/}"
-        ;;
-
-        *)
-            # Add a file extension if the image doesn't have one. This
-            # fixes w3m not being able to display them.
-            imgname="$crop_mode-$crop_offset-$image_size-${img##*/}.jpg"
-        ;;
+        *"."*) imgname="$crop_mode-$crop_offset-$image_size-${img##*/}" ;;
+        *) imgname="$crop_mode-$crop_offset-$image_size-${img##*/}.jpg" ;;
     esac
 
     # Check to see if the thumbnail exists before we do any cropping.
@@ -1926,11 +1898,8 @@ getimage () {
 
         # This checks to see if height is geater than width
         # so we can do a better crop of portrait images.
-        if [ "$height" -gt "$width" ]; then
-            size=$width
-        else
-            size=$height
-        fi
+        size=$height
+        [ "$height" -gt "$width" ] && size=$width
 
         case "$crop_mode" in
             fit)
