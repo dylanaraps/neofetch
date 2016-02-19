@@ -1178,7 +1178,7 @@ getresolution () {
 getstyle () {
     # Fix weird output when the function
     # is run multiple times.
-    unset gtk2theme gtk3theme
+    unset gtk2theme gtk3theme theme path
 
     case "$1" in
         theme)
@@ -1334,6 +1334,7 @@ getstyle () {
     else
         case "$os" in
             "Windows")
+                [ ! "$path" ] && return
                 theme="$(head -n1 $path 2>/dev/null)"
                 theme="${theme##*\\}"
                 theme="${theme%.*}"
