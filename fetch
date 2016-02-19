@@ -540,7 +540,7 @@ getuptime () {
         "Mac OS X" | *"BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
-            boot="${boot/{ sec = }"
+            boot="${boot/'{ sec = '}"
             boot=${boot/,*}
 
             # Get current date in seconds
@@ -763,7 +763,7 @@ getwm () {
         case "$os" in
             "Mac OS X") wm="Quartz Compositor" ;;
             "Windows") wm="Explorer" ;;
-            *) wm="Unknown" ;;
+            "Linux" | *"BSD") return ;;
         esac
     fi
 }
@@ -1176,6 +1176,9 @@ getresolution () {
 # Theme/Icons/Font {{{
 
 getstyle () {
+    # If X isn't running don't print the theme.
+    [ ! -n "$DISPLAY" ] && return
+
     # Fix weird output when the function
     # is run multiple times.
     unset gtk2theme gtk3theme
