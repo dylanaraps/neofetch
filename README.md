@@ -63,18 +63,17 @@ your distro's logo or any ascii art of your choice!
 
 ## Dependencies
 
-
 ### Required dependencies:
 
 - `Bash 4.0+`
-- `xprop` \[3\]
+- `xprop` \[1\]
 - `procps-ng`
     - Not required on OS X
 
 
 ### Optional dependencies:
 
-- Displaying images: `w3m-img` \[1\] or `iTerm2` \[2\]
+- Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` \[4\]
 - Thumbnail creation: `imagemagick`
 
 ##### Linux / BSD
@@ -82,16 +81,20 @@ your distro's logo or any ascii art of your choice!
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc` or `cmus`
 - Resolution: `xorg-xdpyinfo`
-- Screenshot: `scrot` \[4\]
+- Screenshot: `scrot` \[5\]
 
-\[1\] `w3m-img` is sometimes bundled together with `w3m`.
 
-\[2\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
+\[1\] See **[#79](https://github.com/dylanaraps/fetch/issues/79)** about why this is now a required dependency.
+
+\[2\] `w3m-img` is sometimes bundled together with `w3m`.
+
+\[3\] Image support only works in certain terminal emulators. The script will fallback to ascii mode on<br \>
+terminal emulators that don't support the xterm escape sequences we're using for image sizing.
+
+\[4\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
 changing the config option `$image_backend` to `iterm2`.
 
-\[3\] See **[#79](https://github.com/dylanaraps/fetch/issues/79)** about why this is now a required dependency.
-
-\[4\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+\[5\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and fetch will use it instead of scrot.
 
 
@@ -168,19 +171,6 @@ with other people.
 
 You can launch the script without a config file by using the flag `--config none` and you can<br \>
 specify a custom config location using `--config path/to/config`.
-
-
-#### Sizing the image correctly
-
-**NOTE:** For the images to be sized correctly you need to set the `$font_width` variable.<br \>
-If you don't know your font width in pixels keep trying values until the image is half the<br \>
-terminal width.
-
-Once `font_width` is set the image will by default take up half the terminal width. You can<br \>
-use the launch flag `--size px` or change the config option `$image_size` to set it to a custom<br \>
-size in pixels.
-
-You can also use the launch flag `--font_width` to set it on the fly.
 
 
 #### Setting the prompt height
@@ -290,7 +280,6 @@ alias fetch2="fetch \
     --size px                   Size in pixels to make the image.
     --image_backend w3m/iterm2  Which program to use to draw images.
     --shuffle_dir path/to/dir   Which directory to shuffle for an image.
-    --font_width px             Used to automatically size the image
     --image_position left/right Where to display the image: (Left/Right)
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
