@@ -63,18 +63,17 @@ your distro's logo or any ascii art of your choice!
 
 ## Dependencies
 
-
 ### Required dependencies:
 
 - `Bash 4.0+`
-- `xprop` \[3\]
+- `xprop` \[1\]
 - `procps-ng`
     - Not required on OS X
 
 
 ### Optional dependencies:
 
-- Displaying images: `w3m-img` \[1\] or `iTerm2` \[2\]
+- Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` \[4\]
 - Thumbnail creation: `imagemagick`
 
 ##### Linux / BSD
@@ -82,16 +81,20 @@ your distro's logo or any ascii art of your choice!
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc` or `cmus`
 - Resolution: `xorg-xdpyinfo`
-- Screenshot: `scrot` \[4\]
+- Screenshot: `scrot` \[5\]
 
-\[1\] `w3m-img` is sometimes bundled together with `w3m`.
 
-\[2\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
+\[1\] See **[#79](https://github.com/dylanaraps/fetch/issues/79)** about why this is now a required dependency.
+
+\[2\] `w3m-img` is sometimes bundled together with `w3m`.
+
+\[3\] Image support only works in certain terminal emulators. The script will fallback to ascii mode on<br \>
+terminal emulators that don't support the xterm escape sequences we're using for image sizing.
+
+\[4\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
 changing the config option `$image_backend` to `iterm2`.
 
-\[3\] See **[#79](https://github.com/dylanaraps/fetch/issues/79)** about why this is now a required dependency.
-
-\[4\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+\[5\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and fetch will use it instead of scrot.
 
 
