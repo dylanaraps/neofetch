@@ -803,7 +803,11 @@ getcpu () {
                     speed="$(grep -F 'cpu MHz' /proc/cpuinfo)"
                     speed=${speed/cpu MHz*: }
                     speed=${speed/\.}
-                    speed=$((speed / 10000))
+
+                    case "$distro" in
+                        "NetBSD"*) speed=$((speed / 10000)) ;;
+                        "WindowS"*) speed=$((speed / 100000)) ;;
+                    esac
                 ;;
             esac
 
