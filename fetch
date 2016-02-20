@@ -1837,9 +1837,10 @@ getimage () {
     case "$image_size" in
         "auto")
             image_size=$((columns * font_width / 2))
+            term_height=$((term_height - term_height / 4))
 
-            [ "$((term_height - term_height / 4))" -lt "$image_size" ] && \
-                image_size=$((term_height - term_height / 4))
+            [ "$term_height" -lt "$image_size" ] && \
+                image_size="$term_height"
         ;;
 
         *"%")
