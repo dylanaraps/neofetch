@@ -290,6 +290,11 @@ crop_offset="center"
 # --size auto, px
 image_size="auto"
 
+# Image size multiplier
+# Multiply to increase the image by px before halfing.
+# --size_multiplier px
+image_size_multiplier=0 # Recommended start 150
+
 # Right gap between image and text
 # --gap num
 gap=4
@@ -1864,11 +1869,12 @@ getimage () {
     font_height=$((term_height / lines))
 
     # Image size is half of the terminal
-    if [ "$image_size" == "auto" ]; then
+    if [ "$image_size" == "auto" ] && [ $image_size_multiplier != 0 ] ; then
+        image_size=$(((columns * font_width * $image_size_multiplier) / 2))
+        [ "$((term_height - term_height / 4))" -lt "$image_size" ] && image_size=$((term_height - term_height / 4))
+    elif [ "$image_size" == "auto" ] && [ $image_size_multiplier == 0 ] ; then
         image_size=$((columns * font_width / 2))
-
-        [ "$((term_height - term_height / 4))" -lt "$image_size" ] && \
-            image_size=$((term_height - term_height / 4))
+        [ "$((term_height - term_height / 4))" -lt "$image_size" ] && image_size=$((term_height - term_height / 4))
     fi
 
     # Where to draw the image
@@ -2377,6 +2383,7 @@ while [ "$1" ]; do
         ;;
 
         --size) image_size="$2" ;;
+        --size_multiplier) image_size_multiplier="$2" ;;
         --image_backend) image_backend="$2" ;;
         --shuffle_dir) shuffle_dir="$2" ;;
         --image_position) image_position="$2" ;;
@@ -2512,7 +2519,3 @@ fi
 if [ "$scrot" == "on" ]; then
     takescrot
 fi
-
-
-# }}}
-

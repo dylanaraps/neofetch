@@ -272,6 +272,11 @@ crop_offset="center"
 # --size auto, px
 image_size="auto"
 
+# Image size multiplier
+# Multiply to increase the image by px before halfing.
+# --size_multiplier px
+image_size_multiplier=0 # Recommended start 150
+
 # Right gap between image and text
 # --gap num
 gap=4
