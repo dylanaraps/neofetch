@@ -372,30 +372,12 @@ config_file="$HOME/.config/fetch/config"
 # Operating System {{{
 
 case "$(uname)" in
-    "Linux")
-        os="Linux"
-    ;;
-
-    "Darwin")
-        os="Mac OS X"
-    ;;
-
-    "OpenBSD")
-        os="OpenBSD"
-    ;;
-
-    *"BSD")
-        os="BSD"
-    ;;
-
-    "CYGWIN"*)
-        os="Windows"
-    ;;
-
-    *)
-        printf "%s\n" "Couldn't detect OS, exiting"
-        exit 1
-    ;;
+    "Linux")   os="Linux" ;;
+    "Darwin")  os="Mac OS X" ;;
+    "OpenBSD") os="OpenBSD" ;;
+    *"BSD")    os="BSD" ;;
+    "CYGWIN"*) os="Windows" ;;
+    *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
 esac
 
 # }}}
