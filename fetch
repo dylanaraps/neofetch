@@ -1077,7 +1077,7 @@ getsong () {
         ;;
     esac
 
-    # Display Artist and song on seperate lines.
+    # Display Artist and Title on seperate lines.
     if [ "$song_shorthand" == "on" ]; then
         artist="${song/ -*}"
         song=${song/*- }
@@ -1126,11 +1126,6 @@ getstyle () {
     # is run multiple times.
     unset gtk2theme gtk3theme theme path
 
-    # Disable theme output on OS X
-    case "$os" in
-        "Mac OS X") return ;;
-    esac
-
     case "$1" in
         theme)
             name="gtk-theme-name"
@@ -1159,7 +1154,7 @@ getstyle () {
         ;;
     esac
 
-    if [ -n "$DISPLAY" ]; then
+    if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
         # Current DE
         desktop="$XDG_CURRENT_DESKTOP"
         desktop=${desktop,,}
