@@ -277,7 +277,7 @@ alias fetch2="fetch \
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, shuffle, ascii,
                                 /path/to/img, off
-    --size px                   Size in pixels to make the image.
+    --size 20 | --size 20%      Size to make the image, takes pixels or a percentage.
     --image_backend w3m/iterm2  Which program to use to draw images.
     --shuffle_dir path/to/dir   Which directory to shuffle for an image.
     --image_position left/right Where to display the image: (Left/Right)
