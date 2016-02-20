@@ -731,7 +731,7 @@ getde () {
 # Window Manager {{{
 
 getwm () {
-    if [ -n "$DISPLAY" ]; then
+    if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
         id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
         wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
         wm=${wm/*_NET_WM_NAME = }
