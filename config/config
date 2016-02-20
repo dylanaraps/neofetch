@@ -269,7 +269,7 @@ crop_offset="center"
 
 # Image size
 # The image is half the terminal width by default.
-# --size auto, px
+# --size auto, px, 00%
 image_size="auto"
 
 # Right gap between image and text
