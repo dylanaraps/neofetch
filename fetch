@@ -1159,6 +1159,11 @@ getstyle () {
     # is run multiple times.
     unset gtk2theme gtk3theme theme path
 
+    # Disable theme output on OS X
+    case "$os" in
+        "Mac OS X") return ;;
+    esac
+
     case "$1" in
         theme)
             name="gtk-theme-name"
