@@ -369,6 +369,10 @@ config_file="$HOME/.config/fetch/config"
 # Gather Info {{{
 
 
+# Set no case match
+shopt -s nocasematch
+
+
 # Operating System {{{
 
 case "$(uname)" in
@@ -867,7 +871,6 @@ getgpu () {
             gpu=${gpu/* 3D controller: }
             gpu=${gpu/(rev*)}
 
-            shopt -s nocasematch
             case "$gpu" in
                 intel*)
                     gpu=${gpu/Intel Corporation }
@@ -1580,7 +1583,6 @@ getwallpaper () {
 
 getascii () {
     # Change color of logo based on distro
-    shopt -s nocasematch
     case "$ascii_distro" in
         "Arch Linux"* | "Antergos"*)
             ascii_colors 6 4
