@@ -1119,11 +1119,15 @@ getresolution () {
         ;;
 
         "Windows")
-            resolution=$(wmic desktopmonitor get screenwidth, screenheight /value 2>/dev/null)
-            resolution=${resolution//ScreenWidth'='/ }
-            resolution=${resolution//ScreenHeight'='/x}
-            resolution=${resolution//$'\n'/}
-            resolution=${resolution/ }
+            width=$(wmic desktopmonitor get screenwidth /value 2>/dev/null)
+            width=${width/ScreenWidth'='/}
+            width=${width//[[:space:]]}
+
+            height=$(wmic desktopmonitor get screenheight /value 2>/dev/null)
+            height=${height/ScreenHeight'='/}
+            height=${height//[[:space:]]}
+
+            resolution="${width}x${height}"
         ;;
 
         "*")
