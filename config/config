@@ -178,6 +178,12 @@ block_width=3
 # Text Colors {{{
 
 
+# When this is set to 'on' and you're in
+# ascii image mode, the text will be colored
+# according to your distro's ascii logo.
+# --text_color_auto  on / off
+text_color_auto="on"
+
 # --title_color num
 title_color=4
 

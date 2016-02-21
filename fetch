@@ -196,6 +196,12 @@ block_width=3
 # Text Colors {{{
 
 
+# When this is set to 'on' and you're in
+# ascii image mode, the text will be colored
+# according to your distro's ascii logo.
+# --text_color_auto  on / off
+text_color_auto="on"
+
 # --title_color num
 title_color=4
 
@@ -1774,12 +1780,25 @@ getascii () {
 }
 
 ascii_colors () {
+    # Ascii colors
     c1=$(color "$1")
     c2=$(color "$2")
     c3=$(color "$3")
     c4=$(color "$4")
     c5=$(color "$5")
     c6=$(color "$6")
+
+    # Text colors
+    if [ "$text_color_auto" == "on" ]; then
+        title_color="$1"
+        subtitle_color="$2"
+        info_color=7
+        at_color=7
+        colon_color=7
+
+        # If the second color is white use the first for the subtitle
+        [ "$2" == 7 ] && subtitle_color="$1"
+    fi
 }
 
 
@@ -2198,6 +2217,8 @@ usage () { cat << EOF
 
     usage: fetch --option "value" --option "value"
 
+    NOTE: There's also a config option for each flag below.
+
     Info:
     --disable infoname          Allows you to disable an info line from appearing
                                 in the output.
@@ -2225,6 +2246,8 @@ usage () { cat << EOF
     --birthday_time on/off      Enable/Disable showing the time in birthday output
 
     Text Colors:
+    --text_color_auto on/off    When set to 'on' and you're in ascii mode, the text
+                                will be colored according to your distro's ascii logo.
     --title_color num           Change the color of the title
     --at_color num              Change the color of "@" in title
     --subtitle_color num        Change the color of the subtitle
@@ -2336,6 +2359,7 @@ while [ "$1" ]; do
         ;;
 
         # Text Colors
+        --text_color_auto) text_color_auto="$2" ;;
         --title_color) title_color=$2 ;;
         --at_color) at_color=$2 ;;
         --subtitle_color) subtitle_color=$2 ;;

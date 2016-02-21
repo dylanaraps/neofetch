@@ -252,6 +252,8 @@ alias fetch2="fetch \
     --birthday_time on/off      Enable/Disable showing the time in birthday output
 
     Text Colors:
+    --text_color_auto on/off    When set to 'on' and you're in ascii mode, the text
+                                will be colored according to your distro's ascii logo.
     --title_color num           Change the color of the title
     --at_color num              Change the color of "@" in title
     --subtitle_color num        Change the color of the subtitle
