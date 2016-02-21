@@ -16,8 +16,6 @@ export LANGUAGE=C
 # See this wiki page for more info:
 # https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 printinfo () {
-    info linebreak
-
     info title
     info underline
 
