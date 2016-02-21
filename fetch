@@ -1805,7 +1805,11 @@ getimage () {
     esac
 
     # Get terminal width and height
-    printf "%b%s" '\033[14t'
+    if [ -n "$TMUX" ]; then
+        printf "%b\033Ptmux;\033\033[14t\033\\"
+    else
+        printf "%b%s" '\033[14t'
+    fi
 
     # The ascape code above prints the output AFTER the prompt so this
     # loop below reads it as input. wtf xterm
