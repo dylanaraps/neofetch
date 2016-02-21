@@ -1794,6 +1794,10 @@ getimage () {
     # Get terminal lines
     lines=$(tput lines)
 
+    # If we're in a screen session, fallback to
+    # ascii mode.
+    [ -n "$STY" ] && image="ascii"
+
     # Call function based on $image
     case "$image" in
         "wall") getwallpaper ;;
@@ -1811,22 +1815,25 @@ getimage () {
 
     # The ascape code above prints the output AFTER the prompt so this
     # loop below reads it as input. wtf xterm
-    index=0
     while IFS= read -s -r -n 1 -t 0.25 char; do
-        case "$index" in
-            "0") [ "$char" == ";" ] && index=$((index + 1)) ;;
-            "1") [ "$char" == ";" ] && index=$((index + 1)) || term_height="${term_height}${char}" ;;
-            "2") [ "$char" == "t" ] && break || term_width="${term_width}${char}"
-        esac
+        [ "$char" == "t" ] && break
+        term_size+=$char
     done
 
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
-    if [ ! -f "$img" ] || [ -z "$term_height" ]; then
+    if [ ! -f "$img" ] || [ -z "$term_size" ]; then
         image="ascii"
         getascii
         return
     fi
+
+    # Split the string
+    term_size=${term_size//'['}
+    term_size=${term_size/';'}
+    term_size=${term_size/$'\E4'}
+    term_height=${term_size/';'*}
+    term_width=${term_size/*';'}
 
     # Get terminal columns
     columns=$(tput cols)
