@@ -1815,10 +1815,7 @@ getimage () {
 
     # The ascape code above prints the output AFTER the prompt so this
     # loop below reads it as input. wtf xterm
-    while IFS= read -s -r -n 1 -t 0.25 char; do
-        [ "$char" == "t" ] && break
-        term_size+=$char
-    done
+    IFS= read -d t -s -r term_size
 
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
