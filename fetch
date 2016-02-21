@@ -1794,10 +1794,6 @@ getimage () {
     # Get terminal lines
     lines=$(tput lines)
 
-    # If we're in a screen session, fallback to
-    # ascii mode.
-    [ -n "$STY" ] && image="ascii"
-
     # Call function based on $image
     case "$image" in
         "wall") getwallpaper ;;
@@ -1808,29 +1804,31 @@ getimage () {
 
     # Get terminal width and height
     if [ -n "$TMUX" ]; then
-        printf "%b%s" "\033Ptmux;\033\033[14t\033\\"
+        printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
     else
-        printf "%b%s" "\033[14t"
+        printf "%b%s" "\033[14t\033[c"
     fi
 
     # The ascape code above prints the output AFTER the prompt so this
     # loop below reads it as input. wtf xterm
-    IFS= read -d t -s -r term_size
-
-    # If $img isn't a file or the terminal doesn't support xterm escape sequences,
-    # fallback to ascii mode.
-    if [ ! -f "$img" ] || [ -z "$term_size" ]; then
-        image="ascii"
-        getascii
-        return
-    fi
+    read -d c -s -r term_size
 
     # Split the string
     term_size=${term_size//'['}
     term_size=${term_size/';'}
     term_size=${term_size/$'\E4'}
+    term_size=${term_size/t*}
     term_height=${term_size/';'*}
     term_width=${term_size/*';'}
+
+
+    # If $img isn't a file or the terminal doesn't support xterm escape sequences,
+    # fallback to ascii mode.
+    if [ ! -f "$img" ] || [ ${#term_size} -le 5 ]; then
+        image="ascii"
+        getascii
+        return
+    fi
 
     # Get terminal columns
     columns=$(tput cols)
