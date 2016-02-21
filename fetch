@@ -1118,6 +1118,14 @@ getresolution () {
                         awk '/Resolution:/ {printf $2"x"$4" "}')
         ;;
 
+        "Windows")
+            resolution=$(wmic desktopmonitor get screenwidth, screenheight /value 2>/dev/null)
+            resolution=${resolution//ScreenWidth'='/ }
+            resolution=${resolution//ScreenHeight'='/x}
+            resolution=${resolution//$'\n'/}
+            resolution=${resolution/ }
+        ;;
+
         "*")
             resolution="Unknown"
         ;;
