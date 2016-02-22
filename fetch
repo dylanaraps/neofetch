@@ -922,7 +922,7 @@ getgpu () {
         "Mac OS X")
             gpu=$( \
                 system_profiler SPDisplaysDataType | \
-                awk -F': ' '/^\ *Chipset Model:/ {printf $2}' | \
+                awk -F':' '/^\ *Chipset Model:/ {printf $2 ","}' | \
                 awk '{ printf "%s ", $0 }'
             )
             gpu=${gpu//'/ $'}
