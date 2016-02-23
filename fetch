@@ -1983,10 +1983,6 @@ colors () {
             setcolors 4 8
         ;;
 
-        "KaOS"*)
-            setcolors 4 7 1
-        ;;
-
         "Mac"* | "Manjaro"* | "Deepin"*)
             setcolors 2 3 1 1 5 4
         ;;
@@ -2024,12 +2020,8 @@ colors () {
             setcolors 2 7
         ;;
 
-        "PCLinuxOS"* | "Slackware"*)
-            setcolors 4 7
-        ;;
-
-        "Raspbian"*)
-            setcolors 2 1
+        "PCLinuxOS"* | "Slackware"* | "KaOS")
+            setcolors 4 7 1
         ;;
 
         "Scientific"*)
@@ -2057,7 +2049,7 @@ colors () {
             setcolors 1 2 4 3
         ;;
 
-        *)
+        "Raspbian"* | *)
             setcolors 2 1
         ;;
     esac
