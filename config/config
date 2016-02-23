@@ -185,15 +185,6 @@ block_width=3
 # colors=(4 6 1 8 8 6)
 colors=(distro)
 
-# These flags also exist allowing you to change each
-# color independently.
-# --title_color num
-# --at_color num
-# --subtitle_color num
-# --colon_color num
-# --underline_color num
-# --info_color num
-
 
 # }}}
 

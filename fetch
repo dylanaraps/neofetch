@@ -203,15 +203,6 @@ block_width=3
 # colors=(4 6 1 8 8 6)
 colors=(distro)
 
-# These flags also exist allowing you to change each
-# color independently.
-# --title_color num
-# --at_color num
-# --subtitle_color num
-# --colon_color num
-# --underline_color num
-# --info_color num
-
 
 # }}}
 
@@ -2239,14 +2230,8 @@ usage () { cat << EOF
     --birthday_time on/off      Enable/Disable showing the time in birthday output
 
     Text Colors:
-    --text_color_auto on/off    When set to 'on' and you're in ascii mode, the text
-                                will be colored according to your distro's ascii logo.
-    --title_color num           Change the color of the title
-    --at_color num              Change the color of "@" in title
-    --subtitle_color num        Change the color of the subtitle
-    --colon_color num           Change the color of the colons
-    --underline_color num       Change the color of the underlines
-    --info_color num            Change the color of the info
+    --colors x x x x x x        Changes the text colors in this order:
+                                title, @, underline, subtitle, colon, info
 
     Text Formatting:
     --underline_char char       Character to use when underlineing title
@@ -2352,13 +2337,6 @@ while [ "$1" ]; do
         ;;
 
         # Text Colors
-        --text_color_auto) text_color_auto="$2" ;;
-        --title_color) title_color=$2 ;;
-        --at_color) at_color=$2 ;;
-        --subtitle_color) subtitle_color=$2 ;;
-        --colon_color) colon_color=$2 ;;
-        --underline_color) underline_color=$2 ;;
-        --info_color) info_color=$2 ;;
         --colors)
             unset colors
             for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
