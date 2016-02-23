@@ -41,7 +41,6 @@ printinfo () {
     # info "Public IP" public
     # info "Birthday" birthday
     # info "Song" song
-    # info "Visual Style" visualstyle
 
     info linebreak
     info cols

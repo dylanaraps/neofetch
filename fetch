@@ -19,8 +19,10 @@
 # Created by Dylan Araps
 # https://github.com/dylanaraps/
 
-# Speed up script by not using unicode
+version=${BASH_VERSION/.*}
 SYS_LOCALE="$LANG"
+
+# Speed up script by not using unicode
 export LC_ALL=C
 export LANG=C
 
@@ -59,7 +61,6 @@ printinfo () {
     # info "Local IP" localip
     # info "Public IP" public
     # info "Birthday" birthday
-    # info "Visual Style" visualstyle
 
     info linebreak
     info cols
@@ -935,7 +936,7 @@ getgpu () {
 
     if [ "$gpu_shorthand" == "on" ]; then
         gpu=${gpu// Rev\. ?}
-        gpu=${gpu//AMD\/ATI/AMD}
+        gpu=${gpu//AMD*\/ATI\]/AMD}
         gpu=${gpu// Tahiti}
         gpu=${gpu// PRO}
         gpu=${gpu// OEM}
@@ -1153,11 +1154,7 @@ getstyle () {
 
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
         # Current DE
-        desktop="$XDG_CURRENT_DESKTOP"
-        desktop=${desktop,,}
-        desktop=${desktop^}
-
-        case "$desktop" in
+        case "$XDG_CURRENT_DESKTOP" in
             "KDE"*)
                 if type -p kde5-config >/dev/null 2>&1; then
                     kde_config_dir=$(kde5-config --localprefix)
@@ -1174,7 +1171,7 @@ getstyle () {
 
                     theme=$(grep "^[^#]*$kde" "$kde_config_file")
                     theme=${theme/${kde}*=}
-                    theme=${theme^}
+                    [ "$version" -ge 4 ] && theme=${theme^}
 
                     gtk_shorthand="on"
                     return
@@ -1244,8 +1241,10 @@ getstyle () {
         fi
 
         # Uppercase the first letter of each gtk theme
-        gtk2theme=${gtk2theme^}
-        gtk3theme=${gtk3theme^}
+        if [ "$version" -ge 4 ]; then
+            gtk2theme=${gtk2theme^}
+            gtk3theme=${gtk3theme^}
+        fi
 
         # Toggle visibility of gtk themes.
         [ "$gtk2" == "off" ] && unset gtk2theme
@@ -1604,7 +1603,11 @@ getascii () {
 
     if [ "$ascii" == "distro" ]; then
         # Lowercase the distro name
-        ascii=${ascii_distro,,}
+        if [ "$version" -le 3 ]; then
+            ascii=$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")
+        else
+            ascii=${ascii_distro,,}
+        fi
 
         # Check /usr/share/fetch for ascii before
         # looking in the script's directory.
