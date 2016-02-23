@@ -1406,13 +1406,13 @@ getbattery () {
         ;;
 
         "OpenBSD")
-             battery0full=$(sysctl -n hw.sensors.acpibat0.watthour0)
-             battery0full=${battery0full/ Wh*}
+            battery0full=$(sysctl -n hw.sensors.acpibat0.watthour0)
+            battery0full=${battery0full/ Wh*}
 
-             battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
-             battery0now="${battery0now/ Wh*}"
+            battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
+            battery0now="${battery0now/ Wh*}"
 
-             battery="$(echo "100 * $battery0now / $battery0full" | bc)%"
+            battery="$(echo "100 * $battery0now / $battery0full" | bc)%"
         ;;
 
         "Mac OS X")
