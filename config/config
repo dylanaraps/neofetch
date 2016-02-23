@@ -179,30 +179,12 @@ block_width=3
 # Text Colors {{{
 
 
-# When this is set to 'on' and you're in
-# ascii image mode, the text will be colored
-# according to your distro's ascii logo.
-# --text_color_auto  on / off
-text_color_auto="on"
-
-# --title_color num
-title_color=4
-
-# Color of "@" symbol in title
-# --at_color num
-at_color=6
-
-# --subtitle_color num
-subtitle_color=1
-
-# --colon_color num
-colon_color=8
-
-# --underline_color num
-underline_color=8
-
-# --info_color num
-info_color=6
+# Text Colors
+# Each number represents a different part of
+# the text in this order:
+# title, @, underline, subtitle, colon, info
+# colors=(4 6 1 8 8 6)
+colors=(distro)
 
 
 # }}}
