@@ -42,6 +42,7 @@ printinfo () {
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
+    info "Resolution" resolution
     info "Desktop Environment" de
     info "Window Manager" wm
     info "Theme" theme
@@ -1104,11 +1105,8 @@ getsong () {
 getresolution () {
     case "$os" in
         "Linux" | *"BSD")
-            if type -p xdpyinfo >/dev/null 2>&1; then
+            type -p xdpyinfo >/dev/null 2>&1 && \
                 resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
-            else
-                resolution="Unknown"
-            fi
         ;;
 
         "Mac OS X")

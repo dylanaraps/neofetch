@@ -24,6 +24,7 @@ printinfo () {
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
+    info "Resolution" resolution
     info "Desktop Environment" de
     info "Window Manager" wm
     info "Theme" theme
