@@ -1397,11 +1397,19 @@ getbattery () {
             fi
         ;;
 
-        "BSD")
+        *"BSD")
             case "$distro" in
                 "FreeBSD"*)
                     battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
                 ;;
+                "OpenBSD")
+                    battery0full=$(sysctl -n hw.sensors.acpibat0.watthour0)
+                    battery0full=${battery0full/ Wh*}
+
+                    battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
+                    battery0now="${battery0now/ Wh*}"
+
+                    battery="$(( 100 * $battery0now / $battery0full ))%"
             esac
         ;;
 
