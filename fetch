@@ -196,30 +196,21 @@ block_width=3
 # Text Colors {{{
 
 
-# When this is set to 'on' and you're in
-# ascii image mode, the text will be colored
-# according to your distro's ascii logo.
-# --text_color_auto  on / off
-text_color_auto="on"
+# Text Colors
+# Each number represents a different part of
+# the text in this order:
+# title, @, underline, subtitle, colon, info
+# colors=(4 6 1 8 8 6)
+colors=(distro)
 
+# These flags also exist allowing you to change each
+# color independently.
 # --title_color num
-title_color=4
-
-# Color of "@" symbol in title
 # --at_color num
-at_color=6
-
 # --subtitle_color num
-subtitle_color=1
-
 # --colon_color num
-colon_color=8
-
 # --underline_color num
-underline_color=8
-
 # --info_color num
-info_color=6
 
 
 # }}}
@@ -1600,125 +1591,6 @@ getwallpaper () {
 # Ascii {{{
 
 getascii () {
-    # Change color of logo based on distro
-    case "$ascii_distro" in
-        "Arch Linux"* | "Antergos"*)
-            ascii_colors 6 4
-        ;;
-
-        "CentOS"*)
-            ascii_colors 3 2 4 5 7
-        ;;
-
-        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"*)
-            ascii_colors 4 5 7
-        ;;
-
-        "Chrom"*)
-            ascii_colors 2 1 3 4 7
-            ascii_distro="chrome"
-        ;;
-
-        "Debian"* | "FreeBSD"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
-            ascii_colors 7 1 3
-        ;;
-
-        "Red Hat"*)
-            ascii_colors 7 1 3
-            ascii_distro="redhat"
-        ;;
-
-        "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
-            ascii_colors 7 4 1
-        ;;
-
-        "Gentoo"* | "Funtoo"*)
-            ascii_colors 7 5
-        ;;
-
-        "Kali"*)
-            ascii_colors 4 8
-        ;;
-
-        "KaOS"*)
-            ascii_colors 4 7 1
-        ;;
-
-        "Mac OS X"* | "Manjaro"* | "Deepin"*)
-            ascii_colors 2 3 1 1 5 4
-        ;;
-
-        "OpenMandriva"*)
-            ascii_colors 4 3
-        ;;
-
-        "Mageia"*)
-            ascii_colors 7 6
-        ;;
-
-        "Peppermint"*)
-            ascii_colors 7 1
-        ;;
-
-        *"Mint"*)
-            ascii_colors 7 2
-            ascii_distro="mint"
-        ;;
-
-        "LMDE"* | "Chapeau"*)
-            ascii_colors 7 2
-        ;;
-
-        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
-            ascii_colors 5 7
-        ;;
-
-        "OpenBSD"*)
-            ascii_colors 3 3 6 1 8
-        ;;
-
-        "OpenSuse"*)
-            ascii_colors 2 7
-        ;;
-
-        "PCLinuxOS"* | "Slackware"*)
-            ascii_colors 4 7
-        ;;
-
-        "Raspbian"*)
-            ascii_colors 2 1
-        ;;
-
-        "Scientific"*)
-            ascii_colors 4 1 7
-        ;;
-
-        "Solus"*)
-            ascii_colors 7 8
-        ;;
-
-        "Trisquel"* | "NixOS"*)
-            ascii_colors 4 6
-        ;;
-
-        "void"*)
-            ascii_colors 2 2 8
-        ;;
-
-        "Windows 10"*)
-            ascii_colors 6
-            ascii_distro="windows10"
-        ;;
-
-        "Windows"*)
-            ascii_colors 1 2 4 3
-        ;;
-
-        "Zorin"*)
-            ascii_colors 4
-        ;;
-    esac
-
     # If the ascii file doesn't exist
     # fallback to showing distro ascii.
     [ ! -f "$ascii" ] && ascii="distro"
@@ -1752,14 +1624,14 @@ getascii () {
         # Overwrite distro colors if '$ascii_colors' doesn't
         # equal 'distro'.
         [ "${ascii_colors[0]}" != "distro" ] && \
-            ascii_colors ${ascii_colors[@]}
+            setcolors ${ascii_colors[@]}
 
         # We only use eval in the distro ascii files.
         print="$(eval printf "$(<"$ascii")")"
     else
         case "${ascii_colors[0]}" in
             "distro") ascii_color="$c1" ;;
-            *) ascii_color="$(color ${ascii_colors[0]})" ;;
+            *) ascii_color="\033[38;5;${ascii_colors[0]}m" ;;
         esac
 
         print="${ascii_color}$(<"$ascii")"
@@ -1787,28 +1659,6 @@ getascii () {
     printf "%b%s" "$print"
 
     export LC_ALL=C
-}
-
-ascii_colors () {
-    # Ascii colors
-    c1=$(color "$1")
-    c2=$(color "$2")
-    c3=$(color "$3")
-    c4=$(color "$4")
-    c5=$(color "$5")
-    c6=$(color "$6")
-
-    # Text colors
-    if [ "$text_color_auto" == "on" ]; then
-        title_color="$1"
-        subtitle_color="$2"
-        info_color=7
-        at_color=7
-        colon_color=7
-
-        # If the second color is white use the first for the subtitle
-        [ "$2" == 7 ] && subtitle_color="$1"
-    fi
 }
 
 
@@ -2107,17 +1957,150 @@ getunderline () {
 # Colors {{{
 
 colors () {
-    title_color="\033[38;5;${title_color}m"
-    at_color="\033[38;5;${at_color}m"
-    subtitle_color="\033[38;5;${subtitle_color}m"
-    colon_color="\033[38;5;${colon_color}m"
-    underline_color="\033[38;5;${underline_color}m"
-    info_color="\033[38;5;${info_color}m"
+    # Change color of logo based on distro
+    case "$ascii_distro" in
+        "Arch Linux"* | "Antergos"*)
+            setcolors 6 4
+        ;;
+
+        "CentOS"*)
+            setcolors 3 2 4 5 7
+        ;;
+
+        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"*)
+            setcolors 4 5 7
+        ;;
+
+        "Chrom"*)
+            setcolors 2 1 3 4 7
+            ascii_distro="chrome"
+        ;;
+
+        "Debian"* | "FreeBSD"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
+            setcolors 7 1 3
+        ;;
+
+        "Red Hat"*)
+            setcolors 7 1 3
+            ascii_distro="redhat"
+        ;;
+
+        "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
+            setcolors 7 4 1
+        ;;
+
+        "Gentoo"* | "Funtoo"*)
+            setcolors 7 5
+        ;;
+
+        "Kali"*)
+            setcolors 4 8
+        ;;
+
+        "KaOS"*)
+            setcolors 4 7 1
+        ;;
+
+        "Mac OS X"* | "Manjaro"* | "Deepin"*)
+            setcolors 2 3 1 1 5 4
+        ;;
+
+        "OpenMandriva"*)
+            setcolors 4 3
+        ;;
+
+        "Mageia"*)
+            setcolors 7 6
+        ;;
+
+        "Peppermint"*)
+            setcolors 7 1
+        ;;
+
+        *"Mint"*)
+            setcolors 7 2
+            ascii_distro="mint"
+        ;;
+
+        "LMDE"* | "Chapeau"*)
+            setcolors 7 2
+        ;;
+
+        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
+            setcolors 5 7
+        ;;
+
+        "OpenBSD"*)
+            setcolors 3 3 6 1 8
+        ;;
+
+        "OpenSuse"*)
+            setcolors 2 7
+        ;;
+
+        "PCLinuxOS"* | "Slackware"*)
+            setcolors 4 7
+        ;;
+
+        "Raspbian"*)
+            setcolors 2 1
+        ;;
+
+        "Scientific"*)
+            setcolors 4 1 7
+        ;;
+
+        "Solus"*)
+            setcolors 7 8
+        ;;
+
+        "Trisquel"* | "NixOS"* | "Zorin"*)
+            setcolors 4 6
+        ;;
+
+        "void"*)
+            setcolors 2 2 8
+        ;;
+
+        "Windows 10"*)
+            setcolors 6
+            ascii_distro="windows10"
+        ;;
+
+        "Windows"*)
+            setcolors 1 2 4 3
+        ;;
+    esac
 }
 
-color () {
-   printf "%b%s" "\033[38;5;${1}m"
+setcolors () {
+    c1="\033[38;5;${1}m"
+    c2="\033[38;5;${2}m"
+    c3="\033[38;5;${3}m"
+    c4="\033[38;5;${4}m"
+    c5="\033[38;5;${5}m"
+    c6="\033[38;5;${6}m"
+
+    if [ "${colors[0]}" == "distro" ]; then
+        title_color="\033[38;5;${1}m"
+        at_color="\033[38;5;7m"
+        underline_color="\033[38;5;7m"
+        subtitle_color="\033[38;5;${2}m"
+        colon_color="\033[38;5;7m"
+        info_color="\033[38;5;7m"
+
+        # If the second color is white use the first for the subtitle
+        [ "$2" == 7 ] && subtitle_color="\033[38;5;${1}m"
+    else
+        title_color="\033[38;5;${colors[0]}m"
+        at_color="\033[38;5;${colors[1]}m"
+        underline_color="\033[38;5;${colors[2]}m"
+        subtitle_color="\033[38;5;${colors[3]}m"
+        colon_color="\033[38;5;${colors[4]}m"
+        info_color="\033[38;5;${colors[5]}m"
+    fi
 }
+
 
 # }}}
 
@@ -2376,6 +2359,16 @@ while [ "$1" ]; do
         --colon_color) colon_color=$2 ;;
         --underline_color) underline_color=$2 ;;
         --info_color) info_color=$2 ;;
+        --colors)
+            unset colors
+            for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
+                case "$arg" in
+                    "--"*) break ;;
+                    *) colors+=($arg)
+                esac
+            done
+            colors+=(7 7 7 7 7 7)
+        ;;
 
         # Text Formatting
         --underline) underline="$2" ;;
@@ -2468,6 +2461,10 @@ done
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
 
+# Get colors / bold
+colors
+bold
+
 if [ "$image" != "off" ]; then
     # If the script exits for any reason, unhide the cursor.
     trap 'printf "\033[?25h"' EXIT
@@ -2506,10 +2503,6 @@ fi
 
 # Move cursor to the top
 [ "$image" != "off" ] && printf "\033[0H"
-
-# Get colors / bold
-colors 2>/dev/null
-bold
 
 # Print the info
 printinfo
