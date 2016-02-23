@@ -1398,10 +1398,19 @@ getbattery () {
                 battery="None"
             fi
         ;;
+        
+        "BSD")
+          case "$distro" in
+            "FreeBSD"*)
+              battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
+            ;;
+          esac
+        ;;
 
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
         ;;
+
 
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
@@ -2081,7 +2090,7 @@ stdout () {
             *)
                 "get$func" 2>/dev/null
                 eval output="\$$func"
-                printf "$output  "
+                printf "%s" "$output  "
             ;;
         esac
     done
