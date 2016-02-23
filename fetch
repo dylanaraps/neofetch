@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:fdm=marker
+# vim: fdm=marker:noai:ts=4:sw=4
 #
 # Fetch info about your system
 # https://github.com/dylanaraps/fetch
