@@ -1612,11 +1612,6 @@ getascii () {
             ascii="$script_dir/ascii/distro/${ascii/ *}"
         fi
 
-        # Overwrite distro colors if '$ascii_colors' doesn't
-        # equal 'distro'.
-        [ "${ascii_colors[0]}" != "distro" ] && \
-            setcolors ${ascii_colors[@]}
-
         # We only use eval in the distro ascii files.
         print="$(eval printf "$(<"$ascii")")"
     else
@@ -2066,6 +2061,11 @@ colors () {
             setcolors 2 1
         ;;
     esac
+
+    # Overwrite distro colors if '$ascii_colors' doesn't
+    # equal 'distro'.
+    [ "${ascii_colors[0]}" != "distro" ] && \
+        setcolors ${ascii_colors[@]}
 }
 
 setcolors () {
