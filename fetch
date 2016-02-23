@@ -2061,6 +2061,10 @@ colors () {
         "Windows"*)
             setcolors 1 2 4 3
         ;;
+
+        *)
+            setcolors 2 1
+        ;;
     esac
 }
 
