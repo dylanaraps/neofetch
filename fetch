@@ -1412,7 +1412,7 @@ getbattery () {
              battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
              battery0now="${battery0now/ Wh*}"
 
-             battery="$(( 100 * $battery0now / $battery0full ))%"
+             battery="$(echo "100 * $battery0now / $battery0full" | bc)%"
         ;;
 
         "Mac OS X")
