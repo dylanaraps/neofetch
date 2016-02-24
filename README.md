@@ -6,7 +6,7 @@ This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image, <br \>
 your distro's logo or any ascii art of your choice!
 
-![1](https://ipfs.pics/ipfs/QmYqd7a92DqPLYonNtKmnU2X6T4Dq7xJbiLwtBJtLvXNBC)
+![1](https://ipfs.pics/ipfs/QmdUAjLLsLSPZo7oAdpywTDEHXrED4TCeQ4hM2ug7p71Eg)
 
 
 <!-- Table of Contents {{{ -->
