@@ -1605,8 +1605,6 @@ getascii () {
             ascii=${ascii_distro,,}
         fi
 
-        # Check /usr/share/fetch for ascii before
-        # looking in the script's directory.
         if [ -f "/usr/share/fetch/ascii/distro/${ascii/ *}" ]; then
             ascii="/usr/share/fetch/ascii/distro/${ascii/ *}"
 
@@ -1616,8 +1614,7 @@ getascii () {
         else
             getscriptdir
 
-            # If the ascii file doesn't exist
-            # fallback to text mode.
+            # If the ascii file doesn't exist fallback to text mode.
             if [ ! -f "$script_dir/ascii/distro/${ascii/ *}" ]; then
                 padding="\033[0C"
                 image="off"
@@ -1641,7 +1638,7 @@ getascii () {
     # Set locale to get correct padding
     export LC_ALL="$SYS_LOCALE"
 
-    # Turn the file into a variable.
+    # Turn the file into a variable and strip escape codes.
     ascii_strip=$(<"$ascii")
     ascii_strip=${ascii_strip//\$\{??\}}
     ascii_strip=${ascii_strip//\\}
@@ -1674,7 +1671,6 @@ getimage () {
     # Get terminal lines
     lines=$(tput lines)
 
-    # Call function based on $image
     case "$image" in
         "wall") getwallpaper ;;
         "shuffle") img="$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 | shuf -n1 -z)" ;;
