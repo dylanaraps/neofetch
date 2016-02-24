@@ -706,7 +706,7 @@ getde () {
 
 getwm () {
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
-        id="$(xprop -root -notype | \awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
+        id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
         wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
         wm=${wm/*_NET_WM_NAME = }
         wm=${wm/\"}
@@ -1014,12 +1014,8 @@ getmemory () {
         "Windows")
             mem="$(awk 'NR < 3 {printf $2 " "}' /proc/meminfo)"
 
-            # Split the string above into 2 vars
-            # This is faster than using an array.
-            set $mem
-
-            memtotal=$1
-            memfree=$2
+            memtotal=${mem/ *}
+            memfree=${mem#* }
             memavail=$((memtotal - memfree))
             memused=$((memtotal - memavail))
             memory="$((${memused%% *} / 1024))MB / "
