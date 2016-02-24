@@ -59,7 +59,7 @@ printinfo () {
     # info "Battery" battery
     # info "Song" song
     # info "Local IP" localip
-    # info "Public IP" public
+    # info "Public IP" publicip
     # info "Birthday" birthday
 
     info linebreak
