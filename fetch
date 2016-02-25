@@ -60,6 +60,7 @@ printinfo () {
     # info "Song" song
     # info "Local IP" localip
     # info "Public IP" publicip
+    # info "Users" users
     # info "Birthday" birthday
 
     info linebreak
@@ -1452,6 +1453,15 @@ getpublicip () {
     else
         publicip="Unknown"
     fi
+}
+
+# }}}
+
+# Logged In Users {{{
+
+getusers () {
+    users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
+    users=${users%\,*}
 }
 
 # }}}
