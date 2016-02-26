@@ -1389,7 +1389,6 @@ getbattery () {
                 "FreeBSD"*)
                     battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
                 ;;
-                #added NetBSD support, i guess.
                 "NetBSD"*)
                     battery=$(envstat|grep charge|grep %|sed -n -e 's/.*Wh (\([^)]*\))/\1/p')
                 ;;
