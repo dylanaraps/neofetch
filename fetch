@@ -875,6 +875,7 @@ getgpu () {
                     gpu=${gpu/?th Gen Core Processor}
                     gpu=${gpu/ Mobile}
                     gpu=${gpu/ Express}
+                    gpu=${gpu/ Sky Lake}
 
                     brand="Intel "
                 ;;
