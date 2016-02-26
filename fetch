@@ -1346,7 +1346,7 @@ getdisk () {
 getbattery () {
     case "$os" in
         "Linux")
-            if [ -d "/sys/class/power_supply" ]; then
+            if [ "$(ls /sys/class/power_supply/)" ]; then
                 # Set the index to the battery number.
                 case "$battery_num" in
                     "all") battery_num="*" index=0 ;;
