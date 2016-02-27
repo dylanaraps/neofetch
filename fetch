@@ -2185,9 +2185,6 @@ getconfig () {
         return
     fi
 
-    # Make the directory if it doesn't exist
-    mkdir -p "$HOME/.config/fetch/"
-
     # Check $HOME/.config/fetch and create the
     # dir/files if they don't exist.
     if [ -f "$HOME/.config/fetch/config" ]; then
@@ -2216,9 +2213,6 @@ case "$@" in
         config="off"
     ;;
 esac
-
-# If config files are enabled
-[ "$config" == "on" ] && getconfig
 
 # }}}
 
@@ -2441,7 +2435,7 @@ while [ "$1" ]; do
             unset info_color colors
             case "$2" in
                 "--"* | "") echo "--stdout requires at least one argument"; exit ;;
-                *) shift; args=("$@"); stdout ;;
+                *) shift; args=("$@"); config="off" stdout ;;
             esac
         ;;
 
@@ -2468,6 +2462,11 @@ done
 
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
+
+if [ "$config" == "on" ]; then
+    mkdir -p "$HOME/.config/fetch/"
+    getconfig
+fi
 
 # Get colors / bold
 colors
