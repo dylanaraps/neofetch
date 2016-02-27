@@ -2435,7 +2435,7 @@ while [ "$1" ]; do
             unset info_color colors
             case "$2" in
                 "--"* | "") echo "--stdout requires at least one argument"; exit ;;
-                *) shift; args=("$@"); stdout ;;
+                *) shift; args=("$@"); config="off" stdout ;;
             esac
         ;;
 
