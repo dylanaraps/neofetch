@@ -1389,6 +1389,11 @@ getbattery () {
                 "FreeBSD"*)
                     battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
                 ;;
+
+                "NetBSD"*)
+                    battery=$(envstat | awk '\\(|\\)' '/charge:/ {print $2}')
+                    battery="${battery/\.*}%"
+                ;;
             esac
         ;;
 
