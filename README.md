@@ -143,7 +143,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 ### Debian / Ubuntu
 
 1. Add the 3rd party repo
-    - `echo "deb https://dl.bintray.com/dawidd6/neofetch jessie main" | sudo tee -a /etc/apt/sources.list`
+    - `echo "deb http://dl.bintray.com/dawidd6/neofetch jessie main" | sudo tee -a /etc/apt/sources.list`
 2. If you don't have curl, install it with this command
     - `sudo apt-get install curl`
 3. Add public key and update your repos
