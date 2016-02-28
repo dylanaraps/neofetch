@@ -574,7 +574,7 @@ getpackages () {
             elif type -p pacman >/dev/null 2>&1; then
                 packages="$(pacman -Qq --color never | wc -l)"
 
-            elif type -p pkgtool >/dev/null 2>&1; then
+            elif type -p /sbin/pkgtool >/dev/null 2>&1; then
                 packages="$(ls -1 /var/log/packages | wc -l)"
 
             elif type -p rpm >/dev/null 2>&1; then
