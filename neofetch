@@ -886,6 +886,7 @@ getgpu () {
                     gpu=${gpu/'[AMD/ATI]' }
                     gpu=${gpu/Tahiti PRO}
                     gpu=${gpu/Seymour}
+                    gpu=${gpu/Richland}
                     gpu=${gpu/ OEM}
                     gpu=${gpu/ Cape Verde}
                     gpu=${gpu/ \[}
