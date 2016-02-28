@@ -439,6 +439,7 @@ Thanks to:
 - [Screenfetch](https://github.com/KittyKatt/screenFetch):
     - I've used some snippets as a base for a few functions in this script.
     - I've used the ascii art from here.
+- [ufetch](https://github.com/jschx/ufetch): Tiny ascii logos
 - [@metakirby5](https://github.com/metakirby5): Providing great feedback as well as ideas for the script.
 - [@jrgz](https://github.com/jrgz): Helping me test the Mac OS X version.
 - [@mclado](https://github.com/mclado): Helping me with Max OS X testing

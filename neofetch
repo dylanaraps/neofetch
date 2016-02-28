@@ -310,6 +310,13 @@ ascii="distro"
 # --ascii_colors 2 4 5 6
 ascii_colors=(distro)
 
+# Logo size
+# Arch, Crux and Gentoo have a smaller logo
+# variant. Changing the value below to 'small'
+# will make neofetch use the small logo.
+# --ascii_logo_size small, normal
+ascii_logo_size="normal"
+
 
 # }}}
 
@@ -1626,6 +1633,9 @@ getascii () {
             ascii=${ascii_distro,,}
         fi
 
+        [ "$ascii_logo_size" == "small" ] && \
+            ascii="${ascii/ *}_small"
+
         if [ -f "/usr/share/neofetch/ascii/distro/${ascii/ *}" ]; then
             ascii="/usr/share/neofetch/ascii/distro/${ascii/ *}"
 
@@ -2424,6 +2434,8 @@ while [ "$1" ]; do
             ascii_distro="$2"
             case "$2" in "--"* | "") ascii_distro="$distro" ;; esac
         ;;
+
+        --ascii_logo_size) ascii_logo_size="$2" ;;
 
         # Screenshot
         --scrot | -s) scrot="on"; [ "$2" ] && scrot_path="$2" ;;

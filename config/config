@@ -290,6 +290,12 @@ ascii="distro"
 # --ascii_colors 2 4 5 6
 ascii_colors=(distro)
 
+# Logo size
+# Arch, Crux and Gentoo have a smaller logo
+# variant. Changing the value below to small
+# will make neofetch use the small logo.
+# --ascii_logo_size small, normal
+ascii_logo_size="normal"
 
 # }}}
 
