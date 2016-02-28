@@ -1618,11 +1618,7 @@ getwallpaper () {
 # Ascii {{{
 
 getascii () {
-    # If the ascii file doesn't exist
-    # fallback to showing distro ascii.
-    [ ! -f "$ascii" ] && ascii="distro"
-
-    if [ "$ascii" == "distro" ]; then
+    if [ ! -f "$ascii" ] || [ "$ascii" == "distro" ]; then
         # Lowercase the distro name
         if [ "$version" -le 3 ]; then
             ascii=$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")
