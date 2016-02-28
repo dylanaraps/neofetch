@@ -124,9 +124,9 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 2. Sync the repos
     - `layman -S`
 3. To enable w3m and scrot support, enable the appropriate flags.
-    - `echo "x11-apps/fetch" >> /etc/portage/package.use`
+    - `echo "x11-apps/neofetch" >> /etc/portage/package.use`
 4. Install the package
-    - `emerge -a x11-apps/fetch`
+    - `emerge -a x11-apps/neofetch`
 
 
 ### CRUX
@@ -138,7 +138,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 3. Sync the repos
     - `sudo ports -u`
 4. Install the package
-    - `sudo prt-get depinst fetch`
+    - `sudo prt-get depinst neofetch`
 
 
 ### Others
