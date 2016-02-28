@@ -114,7 +114,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 
 ### Arch
 
-1. Install **[fetch-git](https://aur.archlinux.org/packages/fetch-git/)** from the aur.
+1. Install **[neofetch-git](https://aur.archlinux.org/packages/neofetch-git/)** from the aur.
 
 
 ### Gentoo / Funtoo
