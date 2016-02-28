@@ -1,4 +1,4 @@
-# fetch
+# Neofetch
 
 [![Gitter](https://badges.gitter.im/dylanaraps/fetch.svg)](https://gitter.im/dylanaraps/fetch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -52,7 +52,7 @@ your distro's logo or any ascii art of your choice!
 - The script is **fast**. We use bash builtins wherever possible and only spawn external processes when necessary.
 - Take a screenshot of your desktop on script finish.
 - Customize **which** info is displayed, **where** it's displayed and **when** it's displayed.
-    - See this **[wiki page](https://github.com/dylanaraps/fetch/wiki/Customizing-Info)**
+    - See this **[wiki page](https://github.com/dylanaraps/neofetch/wiki/Customizing-Info)**
 
 
 <!-- }}} -->
@@ -84,7 +84,7 @@ your distro's logo or any ascii art of your choice!
 - Screenshot: `scrot` \[5\]
 
 
-\[1\] See **[#79](https://github.com/dylanaraps/fetch/issues/79)** about why this is now a required dependency.
+\[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
 
 \[2\] `w3m-img` is sometimes bundled together with `w3m`.
 
@@ -95,7 +95,7 @@ terminal emulators that don't support the xterm escape sequences we're using for
 changing the config option `$image_backend` to `iterm2`.
 
 \[5\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
-program's cmd and fetch will use it instead of scrot.
+program's cmd and neofetch will use it instead of scrot.
 
 
 <!-- }}} -->
@@ -106,15 +106,15 @@ program's cmd and fetch will use it instead of scrot.
 
 ## Installation
 
-Those using a git version of fetch should check this page after<br \>
+Those using a git version of neofetch should check this page after<br \>
 updating, this page lists any breaking changes that were made and<br \>
 how you can workaround them.
 
-https://github.com/dylanaraps/fetch/wiki/Following-HEAD
+https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 
 ### Arch
 
-1. Install **[fetch-git](https://aur.archlinux.org/packages/fetch-git/)** from the aur.
+1. Install **[neofetch-git](https://aur.archlinux.org/packages/neofetch-git/)** from the aur.
 
 
 ### Gentoo / Funtoo
@@ -143,13 +143,13 @@ https://github.com/dylanaraps/fetch/wiki/Following-HEAD
 
 ### Others
 
-1. Download the latest source at https://github.com/dylanaraps/fetch
+1. Download the latest source at https://github.com/dylanaraps/neofetch
 2. Run `make install` inside the script directory to install the script.
     - **El Capitan**: `PREFIX=/usr/local make install`
 
-**NOTE:** Fetch can be uninstalled easily using `make uninstall`.
+**NOTE:** Neofetch can be uninstalled easily using `make uninstall`.
 
-**NOTE:** Fetch can also be run from any directory like a normal script,<br \>
+**NOTE:** Neofetch can also be run from any directory like a normal script,<br \>
 you'll just be missing the ascii distro logos and automatic config file creation.
 
 
@@ -164,7 +164,7 @@ you'll just be missing the ascii distro logos and automatic config file creation
 
 #### Using the config file
 
-Fetch will by default create a config file at `$HOME/.config/fetch/config` and this file<br \>
+Neofetch will by default create a config file at `$HOME/.config/neofetch/config` and this file<br \>
 contains all of the script's options/settings. The config file allows you to keep your<br \>
 customizations between script versions and allows you to easily share your customizations<br \>
 with other people.
@@ -341,7 +341,7 @@ used automatically
 ![arch](http://i.imgur.com/uCMjgf6.png)
 
 
-#### Why doesn't fetch support my wallpaper setter?
+#### Why doesn't Neofetch support my wallpaper setter?
 
 It's hard to add support for other wallpaper setters as they don't provide a way of <br \>
 getting the current wallpaper from the cli.
