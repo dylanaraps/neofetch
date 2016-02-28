@@ -2184,6 +2184,7 @@ getconfig () {
         source "$config_file"
         return
     fi
+    mkdir -p "$HOME/.config/neofetch/"
 
     # Check $HOME/.config/neofetch and create the
     # dir/files if they don't exist.
@@ -2209,10 +2210,11 @@ getconfig () {
 # Check the commandline flags early for '--config none/off'
 case "$@" in
     *"--config off"* | *'--config "off"'* | *"--config 'off'"* | \
-    *"--config none"* | *'--config "none"'* | *"--config 'none'"*)
+    *"--config none"* | *'--config "none"'* | *"--config 'none'"* | *"--stdout"*)
         config="off"
     ;;
 esac
+[ "$config" == "on" ] && getconfig
 
 # }}}
 
@@ -2462,11 +2464,6 @@ done
 
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
-
-if [ "$config" == "on" ]; then
-    mkdir -p "$HOME/.config/neofetch/"
-    getconfig
-fi
 
 # Get colors / bold
 colors
