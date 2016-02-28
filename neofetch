@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # vim: fdm=marker:noai:ts=4:sw=4
 #
-# Fetch info about your system
-# https://github.com/dylanaraps/fetch
+# Neofetch info about your system
+# https://github.com/dylanaraps/neofetch
 #
 # Required Dependencies:
 #   Bash 4.0+
@@ -34,7 +34,7 @@ export LANG=C
 
 # Info
 # See this wiki page for more info:
-# https://github.com/dylanaraps/fetch/wiki/Customizing-Info
+# https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 printinfo () {
     info title
     info underline
@@ -245,7 +245,7 @@ prompt_height=1
 image="wall"
 
 # Thumbnail directory
-thumbnail_dir="$HOME/.cache/thumbnails/fetch"
+thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 
 # Image Backend
 # Which program to draw images with
@@ -332,7 +332,7 @@ scrot_dir="$HOME/Pictures"
 # Scrot filename
 # What to name the screenshots
 # --scrot_name str
-scrot_name="fetch-%Y-%m-%d-%H:%M.png"
+scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
 
 
 # }}}
@@ -346,7 +346,7 @@ config="on"
 
 # Path to custom config file location
 # --config path/to/config
-config_file="$HOME/.config/fetch/config"
+config_file="$HOME/.config/neofetch/config"
 
 
 # }}}
@@ -1629,11 +1629,11 @@ getascii () {
             ascii=${ascii_distro,,}
         fi
 
-        if [ -f "/usr/share/fetch/ascii/distro/${ascii/ *}" ]; then
-            ascii="/usr/share/fetch/ascii/distro/${ascii/ *}"
+        if [ -f "/usr/share/neofetch/ascii/distro/${ascii/ *}" ]; then
+            ascii="/usr/share/neofetch/ascii/distro/${ascii/ *}"
 
-        elif [ -f "/usr/local/share/fetch/ascii/distro/${ascii/ *}" ]; then
-            ascii="/usr/local/share/fetch/ascii/distro/${ascii/ *}"
+        elif [ -f "/usr/local/share/neofetch/ascii/distro/${ascii/ *}" ]; then
+            ascii="/usr/local/share/neofetch/ascii/distro/${ascii/ *}"
 
         else
             getscriptdir
@@ -2185,24 +2185,24 @@ getconfig () {
         return
     fi
 
-    # Check $HOME/.config/fetch and create the
+    # Check $HOME/.config/neofetch and create the
     # dir/files if they don't exist.
-    if [ -f "$HOME/.config/fetch/config" ]; then
-        source "$HOME/.config/fetch/config"
+    if [ -f "$HOME/.config/neofetch/config" ]; then
+        source "$HOME/.config/neofetch/config"
 
-    elif [ -f "/usr/share/fetch/config" ]; then
-        cp "/usr/share/fetch/config" "$HOME/.config/fetch"
-        source "$HOME/.config/fetch/config"
+    elif [ -f "/usr/share/neofetch/config" ]; then
+        cp "/usr/share/neofetch/config" "$HOME/.config/neofetch"
+        source "$HOME/.config/neofetch/config"
 
-    elif [ -f "/usr/local/share/fetch/config" ]; then
-        cp "/usr/local/share/fetch/config" "$HOME/.config/fetch"
-        source "$HOME/.config/fetch/config"
+    elif [ -f "/usr/local/share/neofetch/config" ]; then
+        cp "/usr/local/share/neofetch/config" "$HOME/.config/neofetch"
+        source "$HOME/.config/neofetch/config"
 
     else
         getscriptdir
 
-        cp "$script_dir/config/config" "$HOME/.config/fetch"
-        source "$HOME/.config/fetch/config"
+        cp "$script_dir/config/config" "$HOME/.config/neofetch"
+        source "$HOME/.config/neofetch/config"
     fi
 }
 
@@ -2225,7 +2225,7 @@ esac
 
 usage () { cat << EOF
 
-    usage: fetch --option "value" --option "value"
+    usage: neofetch --option "value" --option "value"
 
     NOTE: There's also a config option for each flag below.
 
@@ -2233,7 +2233,7 @@ usage () { cat << EOF
     --disable infoname          Allows you to disable an info line from appearing
                                 in the output.
                                 NOTE: You can supply multiple args. eg.
-                                'fetch --disable cpu gpu disk shell'
+                                'neofetch --disable cpu gpu disk shell'
     --osx_buildversion on/off   Hide/Show Mac OS X build version.
     --os_arch on/off            Hide/Show Windows architecture.
     --speed_type type           Change the type of cpu speed to display.
@@ -2305,7 +2305,7 @@ usage () { cat << EOF
 
 
     Stdout:
-    --stdout info info          Launch fetch in stdout mode which prints the info
+    --stdout info info          Launch neofetch in stdout mode which prints the info
                                 in a plain-text format that you can use with
                                 lemonbar etc.
 
@@ -2464,7 +2464,7 @@ done
 trap 'printf "\033[?25h"; clear; exit' 2
 
 if [ "$config" == "on" ]; then
-    mkdir -p "$HOME/.config/fetch/"
+    mkdir -p "$HOME/.config/neofetch/"
     getconfig
 fi
 
