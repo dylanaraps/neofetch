@@ -282,8 +282,10 @@ alias fetch2="fetch \
 
     Progress Bars:
     --progress_char char        Character to use when drawing progress bars.
+    --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar. Set in this order:
                                 elapsed, total
+    --cpu_usage_bar on/off      Whether or not to print a progress bar for cpu usage.
 
 
     Image:
