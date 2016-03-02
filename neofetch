@@ -237,6 +237,21 @@ prompt_height=1
 
 # }}}
 
+# Progress Bars {{{
+
+
+# Progress bar character
+# --progress_char char
+progress_char="━"
+
+# Progress bar colors
+# --progress_colors col col
+progress_color_elapsed="6"
+progress_color_total="8"
+
+
+# }}}
+
 # Image Options {{{
 
 
@@ -2227,6 +2242,25 @@ esac
 
 # }}}
 
+# Progress Bars {{{
+
+bar() {
+    # Get the values
+    percent="$1"
+    length="$2"
+    inc=$((percent * length / 100))
+
+    # Create the bar with spaces
+    prog=$(printf %"$inc"s)
+    total=$(printf %"$((length - inc))"s)
+
+    # Set the colors and swap the spaces for $progress_char
+    bar="\033[38;5;${progress_color_elapsed}m${prog// /$progress_char}"
+    bar+="\033[38;5;${progress_color_total}m${total// /$progress_char}"
+    printf "%b%s\n" "${bar}${clear}"
+}
+
+# }}}
 
 # }}}
 
@@ -2282,6 +2316,12 @@ usage () { cat << EOF
     --color_blocks on/off       Enable/Disable the color blocks
     --block_width num           Width of color blocks
     --block_range start end     Range of colors to print as blocks
+
+
+    Progress Bars:
+    --progress_char char        Character to use when drawing progress bars.
+    --progress_colors num num   Colors to make the progress bar. Set in this order:
+                                elapsed, total
 
 
     Image:
@@ -2396,6 +2436,13 @@ while [ "$1" ]; do
         --color_blocks) color_blocks="$2" ;;
         --block_range) start=$2; end=$3 ;;
         --block_width) block_width="$2" ;;
+
+        # Progress Bars
+        --progress_char) progress_char="$2" ;;
+        --progress_colors)
+            progress_color_elapsed="$2"
+            progress_color_total="$3"
+        ;;
 
         # Image
         --image)

@@ -280,6 +280,12 @@ alias fetch2="fetch \
     --block_range start end     Range of colors to print as blocks
 
 
+    Progress Bars:
+    --progress_char char        Character to use when drawing progress bars.
+    --progress_colors num num   Colors to make the progress bar. Set in this order:
+                                elapsed, total
+
+
     Image:
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, shuffle, ascii,

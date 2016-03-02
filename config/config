@@ -217,6 +217,21 @@ prompt_height=1
 
 # }}}
 
+# Progress Bars {{{
+
+
+# Progress bar character
+# --progress_char char
+progress_char="━"
+
+# Progress bar colors
+# --progress_colors col col
+progress_color_elapsed="6"
+progress_color_total="8"
+
+
+# }}}
+
 # Image Options {{{
 
 
