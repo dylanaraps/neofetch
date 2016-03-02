@@ -1973,7 +1973,6 @@ stdout () {
     for func in "${args[@]}"; do
         case "$func" in
             "--"*) break ;;
-
             *)
                 "get$func" 2>/dev/null
                 eval output="\$$func"
