@@ -63,6 +63,8 @@ printinfo () {
     # info "Users" users
     # info "Birthday" birthday
 
+    # info "CPU Usage" cpu_usage
+
     info linebreak
     info cols
     info linebreak
@@ -244,10 +246,18 @@ prompt_height=1
 # --progress_char char
 progress_char="━"
 
+# Progress bar length in spaces
+# Number of chars long to make the progress bars.
+# --progress_length num
+progress_length="15"
+
 # Progress bar colors
 # --progress_colors col col
 progress_color_elapsed="6"
 progress_color_total="8"
+
+# Cpu Usage progress bar
+cpu_usage_bar="on"
 
 
 # }}}
@@ -1583,6 +1593,18 @@ getcols () {
 
 # }}}
 
+# CPU Usage {{{
+
+getcpu_usage () {
+    cpu_usage="$(ps aux  | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
+    cpu_usage="${cpu_usage/\.*}%"
+
+    [ "$cpu_usage_bar" == "on" ] && \
+        cpu_usage+=" $(bar "${cpu_usage/'%'}")"
+}
+
+
+# }}}
 
 # }}}
 
@@ -2247,12 +2269,11 @@ esac
 bar() {
     # Get the values
     percent="$1"
-    length="$2"
-    inc=$((percent * length / 100))
+    elapsed=$((percent * progress_length / 100))
 
     # Create the bar with spaces
-    prog=$(printf %"$inc"s)
-    total=$(printf %"$((length - inc))"s)
+    prog=$(printf %"$elapsed"s)
+    total=$(printf %"$((progress_length - elapsed))"s)
 
     # Set the colors and swap the spaces for $progress_char
     bar="\033[38;5;${progress_color_elapsed}m${prog// /$progress_char}"
@@ -2439,6 +2460,7 @@ while [ "$1" ]; do
 
         # Progress Bars
         --progress_char) progress_char="$2" ;;
+        --progress_length) progress_length="$2" ;;
         --progress_colors)
             progress_color_elapsed="$2"
             progress_color_total="$3"

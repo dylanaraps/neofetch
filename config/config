@@ -224,10 +224,18 @@ prompt_height=1
 # --progress_char char
 progress_char="━"
 
+# Progress bar length in spaces
+# Number of chars long to make the progress bars.
+# --progress_length num
+progress_length="15"
+
 # Progress bar colors
 # --progress_colors col col
 progress_color_elapsed="6"
 progress_color_total="8"
+
+# Cpu Usage progress bar
+cpu_usage_bar="on"
 
 
 # }}}
