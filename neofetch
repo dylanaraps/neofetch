@@ -344,6 +344,14 @@ scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
 
 # }}}
 
+# Stdout options {{{
+
+# Separator for stdout mode
+# --stdout_separator string
+stdout_separator="  "
+
+# }}}
+
 # Config Options {{{
 
 
@@ -1955,15 +1963,25 @@ prin () {
 # Stdout {{{
 
 stdout () {
+    stdout_separator_flag="$(awk -F '--stdout_separator ' '{printf $2}' <<< "${args[@]}")"
+    stdout_separator_flag=${stdout_separator_flag/ '--'*}
+
+    [ ! -z "$stdout_separator_flag" ] && \
+        stdout_separator="$stdout_separator_flag"
+
+    index=0
     for func in "${args[@]}"; do
         case "$func" in
             "--"*) break ;;
+
             *)
                 "get$func" 2>/dev/null
                 eval output="\$$func"
-                printf "%s" "$output  "
+                case "${args[$((index + 1))]}" in "--"*) unset stdout_separator ;; esac
+                printf "%s" "${output}${stdout_separator}"
             ;;
         esac
+        index=$((index + 1))
     done
     exit
 }
@@ -2447,7 +2465,7 @@ while [ "$1" ]; do
             unset info_color colors
             case "$2" in
                 "--"* | "") echo "--stdout requires at least one argument"; exit ;;
-                *) shift; args=("$@"); config="off" stdout ;;
+                *) shift; args=("$@"); config="off"; stdout ;;
             esac
         ;;
 
