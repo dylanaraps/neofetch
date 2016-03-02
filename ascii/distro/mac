@@ -1,18 +1,18 @@
 "\
-${c1}                 -/+:.
-${c1}                :++++.
-${c1}               /+++/.
-${c1}       .:-::- .+/:-\`\`.::-
-${c1}    .:/++++++/::::/++++++/:\`
-${c2}  .:///////////////////////:\`
-${c2}  ////////////////////////\`
-${c3} -+++++++++++++++++++++++\`
-${c3} /++++++++++++++++++++++/
-${c4} /sssssssssssssssssssssss.
-${c4} :ssssssssssssssssssssssss-
-${c5}  osssssssssssssssssssssssso/\`
-${c5}  \`syyyyyyyyyyyyyyyyyyyyyyyy+\`
-${c6}   \`ossssssssssssssssssssss/
-${c6}     :ooooooooooooooooooo+.
-${c6}      \`:+oo+/:-..-:/+o+/-
+${c1}                -/+:.
+               :++++.
+              /+++/.
+      .:-::- .+/:-\`\`.::-
+   .:/++++++/::::/++++++/:\`
+${c2} .:///////////////////////:\`
+ ////////////////////////\`
+${c3}-+++++++++++++++++++++++\`
+/++++++++++++++++++++++/
+${c4}/sssssssssssssssssssssss.
+:ssssssssssssssssssssssss-
+${c5} osssssssssssssssssssssssso/\`
+ \`syyyyyyyyyyyyyyyyyyyyyyyy+\`
+${c6}  \`ossssssssssssssssssssss/
+    :ooooooooooooooooooo+.
+     \`:+oo+/:-..-:/+o+/-
 "

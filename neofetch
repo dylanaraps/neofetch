@@ -2081,7 +2081,7 @@ colors () {
         ;;
 
         "void"*)
-            setcolors 2 2 8
+            setcolors 2 8
         ;;
 
         "Windows 10"*)

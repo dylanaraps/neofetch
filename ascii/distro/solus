@@ -1,20 +1,20 @@
 "\
-${c1}               e         e
-${c1}             eee       ee
-${c1}            eeee     eee
-${c2}        wwwwwwwww${c1}eeeeee
-${c2}     wwwwwwwwwwwwwww${c1}eee
-${c2}   wwwwwwwwwwwwwwwwwww${c1}eeeeeeee
-${c2}  wwwww     ${c1}eeeee${c2}wwwwww${c1}eeee
-${c2} www          ${c1}eeee${c2}wwwwww${c1}e
-${c2} ww             ${c1}ee${c2}wwwwww
-${c2} w                 wwwww
-${c2}                   wwwww
-${c2}                  wwwww
-${c2}                 wwwww
-${c2}                wwww
-${c2}               wwww
-${c2}             wwww
-${c2}           www
-${c2}         ww
+${c1}              e         e
+            eee       ee
+           eeee     eee
+${c2}       wwwwwwwww${c1}eeeeee
+${c2}    wwwwwwwwwwwwwww${c1}eee
+${c2}  wwwwwwwwwwwwwwwwwww${c1}eeeeeeee
+${c2} wwwww     ${c1}eeeee${c2}wwwwww${c1}eeee
+${c2}www          ${c1}eeee${c2}wwwwww${c1}e
+${c2}ww             ${c1}ee${c2}wwwwww
+w                 wwwww
+                  wwwww
+                 wwwww
+                wwwww
+               wwww
+              wwww
+            wwww
+          www
+        ww
 "

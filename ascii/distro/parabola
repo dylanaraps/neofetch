@@ -1,19 +1,19 @@
 "\
 ${c1}              eeeeeeeee
-${c1}          eeeeeeeeeeeeeee
-${c1}       eeeeee${c2}//////////${c1}eeeee
-${c1}     eeeee${c2}///////////////${c1}eeeee
-${c1}   eeeee${c2}///           ////${c1}eeee
-${c1}  eeee${c2}//              ///${c1}eeeee
-${c1} eee                 ${c2}///${c1}eeeee
-${c1}ee                  ${c2}//${c1}eeeeee
-${c1}e                  ${c2}/${c1}eeeeeee
-${c1}                  eeeeeee
-${c1}                 eeeeee
-${c1}                eeeeee
-${c1}               eeeee
-${c1}              eeee
-${c1}            eee
-${c1}           ee
-${c1}          e
+          eeeeeeeeeeeeeee
+       eeeeee${c2}//////////${c1}eeeee
+     eeeee${c2}///////////////${c1}eeeee
+   eeeee${c2}///           ////${c1}eeee
+  eeee${c2}//              ///${c1}eeeee
+ eee                 ${c2}///${c1}eeeee
+ee                  ${c2}//${c1}eeeeee
+e                  ${c2}/${c1}eeeeeee
+                  eeeeeee
+                 eeeeee
+                eeeeee
+               eeeee
+              eeee
+            eee
+           ee
+          e
 "
