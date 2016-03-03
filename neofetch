@@ -1079,7 +1079,7 @@ getmemory () {
     esac
 
     [ "$memory_bar" == "on" ] && \
-        memory+=" $(bar "$((memused / 100000))" "$((memtotal / 100000))")"
+        memory+=" $(bar "$memused" "$memtotal")"
 }
 
 # }}}
