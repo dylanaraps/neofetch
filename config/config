@@ -35,7 +35,6 @@ printinfo () {
 
     # info "Font" font
     # info "Disk" disk
-    # info "Resolution" resolution
     # info "Battery" battery
     # info "Local IP" localip
     # info "Public IP" publicip

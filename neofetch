@@ -55,7 +55,6 @@ printinfo () {
 
     # info "Font" gtkfont
     # info "Disk" disk
-    # info "Resolution" resolution
     # info "Battery" battery
     # info "Song" song
     # info "Local IP" localip
