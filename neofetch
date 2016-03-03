@@ -1411,7 +1411,13 @@ getbattery () {
                     if [ "${#batteries[@]}" -gt 1 ]; then
                         # Print each battery on a separate line.
                         for bat in "${batteries[@]}"; do
-                            prin "${title}${index}: ${bat}%"
+                            battery="${title}${index}: ${bat}%"
+
+                            [ "$battery_bar" == "on" ] && \
+                                battery+=" $(bar $bat 100)"
+
+                            prin "$battery"
+                            unset battery
                             index=$((index + 1))
                         done
                         return
