@@ -260,9 +260,11 @@ progress_color_total="8"
 # --cpu_usage_bar on/off
 # --memory_bar on/off
 # --battery_bar on/off
+# --disk_bar on/off
 cpu_usage_bar="off"
 memory_bar="off"
 battery_bar="off"
+disk_bar="off"
 
 # }}}
 
@@ -1379,6 +1381,12 @@ getdisk () {
 
     # Put it all together
     disk="${disk_used} / ${disk_total} (${disk_total_per})"
+
+    if [ "$disk_bar" == "on" ]; then
+        disk_used=${disk_used/T}
+        disk_total=${disk_total/T}
+        disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")"
+    fi
 }
 
 # }}}
@@ -2361,6 +2369,7 @@ usage () { cat << EOF
     --cpu_usage_bar on/off      Whether or not to print a progress bar for cpu usage.
     --memory_bar on/off         Whether or not to print a progress bar for memory usage.
     --battery_bar on/off        Whether or not to print a progress bar for battery usage.
+    --disk_bar on/off           Whether or not to print a progress bar for disk usage.
 
 
     Image:
@@ -2486,6 +2495,7 @@ while [ "$1" ]; do
         --cpu_usage_bar) cpu_usage_bar="$2" ;;
         --memory_bar) memory_bar="$2" ;;
         --battery_bar) battery_bar="$2" ;;
+        --disk_bar) disk_bar="$2" ;;
 
         # Image
         --image)

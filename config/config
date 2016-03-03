@@ -238,9 +238,11 @@ progress_color_total="8"
 # --cpu_usage_bar on/off
 # --memory_bar on/off
 # --battery_bar on/off
+# --disk_bar on/off
 cpu_usage_bar="off"
 memory_bar="off"
 battery_bar="off"
+disk_bar="off"
 
 # }}}
 
