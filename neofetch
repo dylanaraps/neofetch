@@ -1408,18 +1408,16 @@ getbattery () {
                     battery="${battery}%"
 
                 else
-                    # If there's only a single battery and it's battery 0,
-                    # don't number the subtitle.
-                    if [ "${#batteries[@]}" == 1 ]; then
-                        battery="${batteries[0]}%"
+                    if [ "${#batteries[@]}" -gt 1 ]; then
+                        # Print each battery on a separate line.
+                        for bat in "${batteries[@]}"; do
+                            prin "${title}${index}: ${bat}%"
+                            index=$((index + 1))
+                        done
                         return
                     fi
 
-                    # Print each battery on a separate line.
-                    for bat in "${batteries[@]}"; do
-                        prin "${title}${index}: ${bat}%"
-                        index=$((index + 1))
-                    done
+                    battery="${batteries[0]}%"
                 fi
             else
                 battery="None"
