@@ -256,8 +256,11 @@ progress_length="15"
 progress_color_elapsed="6"
 progress_color_total="8"
 
-# Cpu Usage progress bar
+# Enable/Disable progress bars
+# --cpu_usage_bar on/off
+# --memory_bar on/off
 cpu_usage_bar="on"
+memory_bar="on"
 
 
 # }}}
@@ -1071,6 +1074,9 @@ getmemory () {
             memory="Unknown"
         ;;
     esac
+
+    [ "$memory_bar" == "on" ] && \
+        memory+=" $(bar "$((memused / 100000))" "$((memtotal / 100000))")"
 }
 
 # }}}
@@ -1600,7 +1606,7 @@ getcpu_usage () {
     cpu_usage="${cpu_usage/\.*}%"
 
     [ "$cpu_usage_bar" == "on" ] && \
-        cpu_usage+=" $(bar "${cpu_usage/'%'}")"
+        cpu_usage+=" $(bar "${cpu_usage/'%'}" 100)"
 }
 
 
@@ -2269,7 +2275,7 @@ esac
 bar() {
     # Get the values
     percent="$1"
-    elapsed=$((percent * progress_length / 100))
+    elapsed=$((percent * progress_length / $2))
 
     # Create the bar with spaces
     prog=$(printf %"$elapsed"s)
@@ -2345,6 +2351,7 @@ usage () { cat << EOF
     --progress_colors num num   Colors to make the progress bar. Set in this order:
                                 elapsed, total
     --cpu_usage_bar on/off      Whether or not to print a progress bar for cpu usage.
+    --memory_bar on/off         Whether or not to print a progress bar for memory usage.
 
 
     Image:

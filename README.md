@@ -286,6 +286,7 @@ alias fetch2="fetch \
     --progress_colors num num   Colors to make the progress bar. Set in this order:
                                 elapsed, total
     --cpu_usage_bar on/off      Whether or not to print a progress bar for cpu usage.
+    --memory_bar on/off         Whether or not to print a progress bar for memory usage.
 
 
     Image:

@@ -234,8 +234,11 @@ progress_length="15"
 progress_color_elapsed="6"
 progress_color_total="8"
 
-# Cpu Usage progress bar
+# Enable/Disable progress bars
+# --cpu_usage_bar on/off
+# --memory_bar on/off
 cpu_usage_bar="on"
+memory_bar="on"
 
 
 # }}}
