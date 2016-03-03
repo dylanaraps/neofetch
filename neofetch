@@ -2290,8 +2290,7 @@ esac
 
 bar() {
     # Get the values
-    percent="$1"
-    elapsed=$((percent * progress_length / $2))
+    elapsed=$(($1 * progress_length / $2))
 
     # Create the bar with spaces
     prog=$(printf %"$elapsed"s)
