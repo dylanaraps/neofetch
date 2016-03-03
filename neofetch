@@ -2474,6 +2474,8 @@ while [ "$1" ]; do
             progress_color_elapsed="$2"
             progress_color_total="$3"
         ;;
+        --cpu_usage_bar) cpu_usage_bar="$2" ;;
+        --memory_bar) memory_bar="$2" ;;
 
         # Image
         --image)
