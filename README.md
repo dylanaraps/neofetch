@@ -287,6 +287,7 @@ alias fetch2="fetch \
                                 elapsed, total
     --cpu_usage_bar on/off      Whether or not to print a progress bar for cpu usage.
     --memory_bar on/off         Whether or not to print a progress bar for memory usage.
+    --battery_bar on/off        Whether or not to print a progress bar for battery usage.
 
 
     Image:

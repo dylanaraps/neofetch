@@ -259,9 +259,10 @@ progress_color_total="8"
 # Enable/Disable progress bars
 # --cpu_usage_bar on/off
 # --memory_bar on/off
+# --battery_bar on/off
 cpu_usage_bar="on"
 memory_bar="on"
-
+battery_bar="on"
 
 # }}}
 
@@ -1460,6 +1461,9 @@ getbattery () {
             battery+="%"
         ;;
     esac
+
+    [ "$battery_bar" == "on" ] && \
+        battery+=" $(bar ${battery/'%'} 100)"
 }
 
 # }}}
@@ -2352,6 +2356,7 @@ usage () { cat << EOF
                                 elapsed, total
     --cpu_usage_bar on/off      Whether or not to print a progress bar for cpu usage.
     --memory_bar on/off         Whether or not to print a progress bar for memory usage.
+    --battery_bar on/off        Whether or not to print a progress bar for battery usage.
 
 
     Image:
@@ -2476,6 +2481,7 @@ while [ "$1" ]; do
         ;;
         --cpu_usage_bar) cpu_usage_bar="$2" ;;
         --memory_bar) memory_bar="$2" ;;
+        --battery_bar) battery_bar="$2" ;;
 
         # Image
         --image)

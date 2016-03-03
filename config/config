@@ -237,9 +237,10 @@ progress_color_total="8"
 # Enable/Disable progress bars
 # --cpu_usage_bar on/off
 # --memory_bar on/off
+# --battery_bar on/off
 cpu_usage_bar="on"
 memory_bar="on"
-
+battery_bar="on"
 
 # }}}
 
