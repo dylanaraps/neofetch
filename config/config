@@ -323,6 +323,14 @@ scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
 
 # }}}
 
+# Stdout options {{{
+
+# Separator for stdout mode
+# --stdout_separator string
+stdout_separator="  "
+
+# }}}
+
 # Config Options {{{
 
 
