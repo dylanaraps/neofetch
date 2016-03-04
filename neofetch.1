@@ -1,0 +1,232 @@
+.TH NEOFETCH "1" "March 2016" "1.3" "User Commands"
+.SH NAME
+neofetch \- simple system information script
+
+.SH SYNOPSIS
+.B neofetch \fR[OPTIONAL FLAGS]
+
+.SH DESCRIPTION
+neofetch is a script that gathers information about your system and prints 
+it to the terminal next to an image, a distro's logo or any ASCII art of
+your choice.
+
+.SH OPTIONS
+.TP
+.B \--disable 'INFONAME'
+Allows you to disable an info line from appearing in the output.
+.br
+NOTE: You can supply multiple args. eg.
+.br
+\'neofetch --disable cpu gpu disk shell\'
+.TP
+.B \--osx_buildversion 'ON/OFF'
+Hide/Show Mac OS X build version.
+.TP
+.B \--os_arch 'ON/OFF'
+Hide/Show Windows architecture.
+.TP
+.B \--speed_type 'TYPE'
+Change the type of cpu speed to display.
+.br
+Possible values: current, min, max, bios,
+scaling_current, scaling_min, scaling_max
+.br
+NOTE: This only support Linux with cpufreq.
+.TP
+.B \--kernel_shorthand 'ON/OFF'
+Shorten the output of kernel
+.TP
+.B \--uptime_shorthand 'ON/OFF'
+Shorten the output of uptime (tiny, on, off)
+.TP
+.B \--gpu_shorthand 'ON/OFF'
+Shorten the output of GPU
+.TP
+.B \--gtk_shorthand 'ON/OFF'
+Shorten output of gtk theme/icons
+.TP 
+.B \--gtk2 'ON/OFF'
+Enable/Disable GTK2 theme/icons output
+.TP
+.B \--gtk3 'ON/OFF'
+Enable/Disable gtk3 theme/icons output
+.TP
+.B \--shell_path 'ON/OFF'
+Enable/Disable showing \$SHELL path
+.TP
+.B \--shell_version 'ON/OFF'
+Enable/Disable showing \$SHELL version
+.TP
+.B \--battery_num 'NUM'
+Which battery to display, default value is 'all'
+.TP
+.B \--battery_shorthand 'ON/OFF'
+Whether or not each battery gets its own line/title
+.TP
+.B \--ip_host 'URL'
+URL to ping for public IP
+.TP
+.B \--song_shorthand 'ON/OFF'
+Print the Artist/Title on seperate lines
+.TP
+.B \--birthday_shorthand 'ON/OFF'
+Shorten the output of birthday
+.TP
+.B \--birthday_time 'ON/OFF'
+Enable/Disable showing the time in birthday output
+
+.SH TEXT COLORS
+.TP
+.B \--colors x x x x x x
+Changes the text colors in this order:
+title, @, underline, subtitle, colon, info
+
+.SH TEXT FORMATTING
+.TP
+.B \--underline_char 'CHAR'
+Character to use when underlineing title
+.TP
+.B \--line_wrap 'ON/OFF'
+Enable/Disable line wrapping
+.TP
+.B \--bold 'ON/OFF'
+Enable/Disable bold text
+.TP
+.B \--prompt_height 'NUM'
+Set this to your prompt height to fix issues
+with the text going off screen at the top
+
+.SH COLOR BLOCKS
+.TP
+.B \--color_blocks 'ON/OFF'
+Enable/Disable the color blocks
+.TP
+.B \--block_width 'NUM'
+Width of color blocks
+.TP
+.B \--block_range 'START' 'END'
+Range of colors to print as blocks
+
+.SH IMAGE
+.TP
+.B \--image 'TYPE'
+Image source. Where and what image we display.
+.br
+Possible values: wall, shuffle, ascii, /path/to/img, off
+.TP
+.B \--size 'SIZE'
+Size to make the image, takes pixels or a percentage.
+.TP
+.B \--image_backend 'w3m/iterm2'
+Which program to use to draw images.
+.TP
+.B \--shuffle_dir 'PATH'
+Which directory to shuffle for an image.
+.TP
+.B \--image_position 'LEFT/RIGHT'
+Where to display the image: (Left/Right)
+.TP
+.B \--crop_mode 'MODE'
+Which crop mode to use
+.br Takes the values: normal, fit, fill
+.TP
+.B \--crop_offset 'VALUE'
+Change the crop offset for normal mode.
+.br
+Possible values: northwest, north, northeast,
+west, center, east, southwest, south, southeast
+.TP
+.B \--xoffset 'VALUE'
+How close the image will be to the left edge of the
+window in pixel. This only works with w3m.
+.TP
+.B \--yoffset 'VALUE'
+How close the image will be to the top edge
+of the window. This only works with w3m.
+.TP
+.B \--gap 'NUM'
+Gap between image and text.
+.br
+NOTE: --gap can take a negative value which
+will move the text closer to the left side.
+.TP
+.B \--clean
+Remove all cropped images
+
+.SH ASCII
+.TP
+.B \--ascii 'VALUE'
+Where to get the ASCII from
+.br
+Possible values: distro, /path/to/ascii
+.TP
+.B \--ascii_color 'NUM'
+Color to print the ASCII art
+.TP
+.B \--ascii_distro 'DISTRO'
+Which Distro\'s ASCII art to print
+
+.SH STDOUT
+.TP
+.B \--stdout info info
+Launch fetch in stdout mode which prints the info in
+a plain-text format that you can use with lemonbar etc.
+.TP
+.B \--stdout_title 'ON/OFF'
+Hide/Show the title in stdout mode.
+.TP
+.B \--stdout_separator 'STRING'
+String to use as a separator in stdout mode.
+.TP
+.B \--stdout_subtitles 'ON/OFF'
+Hide/Show the subtitles in stdout mode.
+
+
+.SH SCREENSHOT
+.TP
+.B \--scrot 'PATH'
+Take a screenshot, if path is left empty the screenshot
+function will use \$scrot_dir and \$scrot_name.
+.TP
+.B \--scrot_cmd 'CMD'
+Screenshot program to launch
+
+.SH OTHER
+.TP
+.B \--config 'PATH'
+Specify a path to a custom config file
+.TP
+.B \--config none
+Launch the script without a config file
+.TP
+.B \--help   
+
+.SH "SEE ALSO"
+http://github.com/dylanaraps/neofetch
+
+.SH BUGS
+Report bugs to <https://github.com/dylanaraps/neofetch/issues>
+
+.SH LICENSE
+
+The MIT License (MIT)
+
+Copyright (c) 2016 Dylan Araps
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom
+the Software is furnished to do so, subject to the following conditions:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+.SH AUTHOR
+Created by Dylan Araps.
