@@ -262,12 +262,11 @@ alias fetch2="fetch \
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
 
-    Text Colors:
-    --colors x x x x x x        Changes the text colors in this order:
-                                title, @, underline, subtitle, colon, info
 
     Text Formatting:
-    --underline_char char       Character to use when underlineing title
+    --colors x x x x x x        Changes the text colors in this order:
+                                title, @, underline, subtitle, colon, info
+    --underline_char char       Character to use when underlining title
     --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
     --prompt_height num         Set this to your prompt height to fix issues with
