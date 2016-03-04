@@ -2164,6 +2164,10 @@ setcolors () {
     fi
 }
 
+color () {
+    printf "%b%s" "\033[38;5;${1}m"
+}
+
 
 # }}}
 
