@@ -888,7 +888,8 @@ getgpu () {
                     gpu=${gpu/Intel Corporation }
                     gpu=${gpu/Haswell-??? }
                     gpu=${gpu/?th Gen }
-                    gpu=${gpu/Core Processor }
+                    gpu=${gpu/Core }
+                    gpu=${gpu/Processor }
                     gpu=${gpu/ Mobile}
                     gpu=${gpu/ Express}
                     gpu=${gpu/Sky }
