@@ -1564,10 +1564,8 @@ getbirthday () {
     birthday=${birthday%:*}
 
     # Pretty output
-    if [ "$birthday_shorthand" == "off" ]; then
-        birthday="$date_cmd"
-        birthday=${birthday/  / }
-    fi
+    [ "$birthday_shorthand" == "off" ] && \
+        birthday="${date_cmd/  / }"
 
     # Toggle showing the time
     [ "$birthday_time" == "off" ] && \
