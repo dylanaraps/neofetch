@@ -306,7 +306,7 @@ alias fetch2="fetch \
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
                                 distro, /path/to/ascii
-    --ascii_color num           Color to print the ascii art
+    --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro\'s ascii art to print
 
 
@@ -314,9 +314,7 @@ alias fetch2="fetch \
     --stdout info info          Launch fetch in stdout mode which prints the info
                                 in a plain-text format that you can use with
                                 lemonbar etc.
-    --stdout_title on/off       Hide/Show the title in stdout mode.
     --stdout_separator string   String to use as a separator in stdout mode.
-    --stdout_subtitles on/off   Hide/Show the subtitles in stdout mode.
 
 
     Screenshot:
