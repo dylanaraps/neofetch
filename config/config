@@ -158,6 +158,11 @@ birthday_shorthand="off"
 # --birthday_time on/off
 birthday_time="on"
 
+# Date format to use when printing birthday
+# --birthday_format "format"
+birthday_format="+%a %d %b %Y %l:%M %p"
+
+
 # Color Blocks
 
 # Color block range

@@ -261,6 +261,7 @@ alias fetch2="fetch \
     --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
+    --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
 
     Text Formatting:

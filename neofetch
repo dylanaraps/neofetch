@@ -178,6 +178,11 @@ birthday_shorthand="off"
 # --birthday_time on/off
 birthday_time="on"
 
+# Date format to use when printing birthday
+# --birthday_format "format"
+birthday_format="%a %d %b %Y %l:%M %p"
+
+
 # Color Blocks
 
 # Color block range
@@ -1513,12 +1518,12 @@ getbirthday () {
     case "$os" in
         "Linux")
             birthday="$(ls -alct --full-time / | awk '/lost\+found/ {printf  $6 " " $7}')"
-            date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
+            date_cmd="$(date -d"$birthday" +"$birthday_format")"
         ;;
 
         "Mac OS X")
             birthday="$(ls -alctT /var/log/CDIS.custom | awk '{printf $6 " " $7 " " $9 " " $8}')"
-            date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
+            date_cmd="$(date -j -f "%b %d %Y" "$birthday" +"$birthday_format")"
         ;;
 
         *"BSD")
@@ -1530,7 +1535,7 @@ getbirthday () {
 
                 "FreeBSD"*)
                     birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
-                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
+                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" +"$birthday_format")"
                 ;;
 
                 "NetBSD"*)
@@ -1546,7 +1551,7 @@ getbirthday () {
 
         "Windows")
             birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
-            date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
+            date_cmd="$(date -d"$birthday" +"$birthday_format")"
         ;;
 
         *)
@@ -2302,6 +2307,7 @@ usage () { cat << EOF
     --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
+    --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
 
     Text Formatting:
@@ -2400,6 +2406,7 @@ while [ "$1" ]; do
         --song_shorthand) song_shorthand="$2" ;;
         --birthday_shorthand) birthday_shorthand="$2" ;;
         --birthday_time) birthday_time="$2" ;;
+        --birthday_format) birthday_format="$2" ;;
         --disable)
             for func in "$@"; do
                 case "$func" in
