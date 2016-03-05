@@ -134,7 +134,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 1. Install git and the git ports(8) driver
     - `sudo prt-get depinst git`
 2. Add the 3rd party repo
-    - `sudo wget -O /etc/ports/arcetera.git http://arcetera.moe/sync`
+    - `sudo wget -O /etc/ports/arcetera.git https://arcetera.moe/sync`
 3. Sync the repos
     - `sudo ports -u`
 4. Install the package
