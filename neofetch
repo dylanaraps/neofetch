@@ -910,6 +910,7 @@ getgpu () {
                     gpu=${gpu/Seymour}
                     gpu=${gpu/Richland}
                     gpu=${gpu/Pitcairn}
+                    gpu=${gpu/Hawaii}
                     gpu=${gpu/ OEM}
                     gpu=${gpu/ Cape Verde}
                     gpu=${gpu/ \[}
