@@ -244,6 +244,17 @@ memory_bar="off"
 battery_bar="off"
 disk_bar="off"
 
+# Enable/Disable showing just the bar on its own.
+# Set this to 'off' to only show the progress bar.
+# --cpu_usage_info on/off
+# --memory_info on/off
+# --battery_info on/off
+# --disk_info on/off
+cpu_usage_info="on"
+memory_info="on"
+battery_info="on"
+disk_info="on"
+
 # }}}
 
 # Image Options {{{

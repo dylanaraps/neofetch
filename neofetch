@@ -266,6 +266,17 @@ memory_bar="off"
 battery_bar="off"
 disk_bar="off"
 
+# Enable/Disable showing just the bar on its own.
+# Set this to 'off' to only show the progress bar.
+# --cpu_usage_info on/off
+# --memory_info on/off
+# --battery_info on/off
+# --disk_info on/off
+cpu_usage_info="on"
+memory_info="on"
+battery_info="on"
+disk_info="on"
+
 # }}}
 
 # Image Options {{{
@@ -1078,8 +1089,13 @@ getmemory () {
         ;;
     esac
 
-    [ "$memory_bar" == "on" ] && \
-        memory+=" $(bar "$memused" "$memtotal")"
+    # Progress bars
+    if [ "$memory_bar" == "on" ]; then
+        case "$memory_info" in
+            "off") memory=" $(bar "$memused" "$memtotal")" ;;
+            *) memory+=" $(bar "$memused" "$memtotal")" ;;
+        esac
+    fi
 }
 
 # }}}
@@ -1385,7 +1401,11 @@ getdisk () {
     if [ "$disk_bar" == "on" ]; then
         disk_used=${disk_used/T}
         disk_total=${disk_total/T}
-        disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")"
+
+        case "$disk_info" in
+            "off") disk="$disk_total_per $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+            *) disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+        esac
     fi
 }
 
@@ -1474,8 +1494,12 @@ getbattery () {
         ;;
     esac
 
-    [ "$battery_bar" == "on" ] && \
-        battery+=" $(bar ${battery/'%'} 100)"
+    if [ "$battery_bar" == "on" ]; then
+        case "$battery_info" in
+            "off") battery+=" $(bar ${battery/'%'} 100)" ;;
+            *) battery="$(bar ${battery/'%'} 100)" ;;
+        esac
+    fi
 }
 
 # }}}
@@ -1621,8 +1645,12 @@ getcpu_usage () {
     cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
     cpu_usage="${cpu_usage/\.*}%"
 
-    [ "$cpu_usage_bar" == "on" ] && \
-        cpu_usage+=" $(bar "${cpu_usage/'%'}" 100)"
+    if [ "$cpu_usage_bar" == "on" ]; then
+        case "$cpu_usage_info" in
+            "off") cpu_usage="$(bar "${cpu_usage/'%'}" 100)" ;;
+            *) cpu_usage+=" $(bar "${cpu_usage/'%'}" 100)" ;;
+        esac
+    fi
 }
 
 
@@ -2495,6 +2523,10 @@ while [ "$1" ]; do
         --memory_bar) memory_bar="$2" ;;
         --battery_bar) battery_bar="$2" ;;
         --disk_bar) disk_bar="$2" ;;
+        --cpu_usage_info) cpu_usage_info="$2" ;;
+        --memory_info) memory_info="$2" ;;
+        --battery_info) battery_info="$2" ;;
+        --disk_info) disk_info="$2" ;;
 
         # Image
         --image)
