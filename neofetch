@@ -494,7 +494,7 @@ getuptime () {
     case "$os" in
         "Linux")
             case "$distro" in
-                "Puppy Linux"* | "Quirky Werewolf"* | "Precise Puppy"*)
+                "Puppy Linux"* | "Quirky Werewolf"* | "Precise Puppy"* | "Alpine Linux"*)
                     uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
                     uptime=${uptime/  / }
                 ;;
@@ -617,6 +617,9 @@ getpackages () {
 
             elif type -p nix-env >/dev/null 2>&1; then
                 packages="$(ls -d -1 /nix/store/*/ | wc -l)"
+
+            elif type -p apk >/dev/null 2>&1; then
+                packages="$(apk info | wc -l)"
 
             elif type -p pacman-g2 >/dev/null 2>&1; then
                 packages="$(pacman-g2 -Q | wc -l)"
@@ -2035,7 +2038,7 @@ colors () {
             setcolors 3 2 4 5 7
         ;;
 
-        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"*)
+        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"*)
             setcolors 4 5 7
         ;;
 
