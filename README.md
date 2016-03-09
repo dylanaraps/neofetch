@@ -152,6 +152,9 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 4. Install the package
     - `sudo apt-get install neofetch`
 
+### OS X
+1. Install `neofetch` with Homebrew
+    - `brew install neofetch`
 
 ### Others
 
