@@ -1358,12 +1358,12 @@ getfont () {
 getdisk () {
     # df flags
     case "$os" in
-        "Linux" | "Windows") df_flags="-h --total" ;;
-        "Mac OS X") df_flags="-H /" ;;
+        "Linux" | "Windows") df_flags="-h -l --total" ;;
+        "Mac OS X") df_flags="-H / -l" ;;
 
         *"BSD")
             case "$os" in
-                "FreeBSD") df_flags="-h -c" ;;
+                "FreeBSD") df_flags="-h -c -l" ;;
                 *) disk="Unknown"; return ;;
             esac
         ;;
