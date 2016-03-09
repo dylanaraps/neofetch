@@ -22,7 +22,7 @@ your distro's logo or any ascii art of your choice!
     - [Gentoo / Funtoo](#gentoo--funtoo)
     - [CRUX](#crux)
     - [Debian / Ubuntu](#debian--ubuntu)
-    - [Mac OS X](#max-os-x)
+    - [Mac OS X](#mac-os-x)
     - [Others](#others)
 - [Post Install](#post-install)
 - [Usage](#usage)
@@ -123,7 +123,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Gentoo / Funtoo](#gentoo--funtoo)
 - [CRUX](#crux)
 - [Debian / Ubuntu](#debian--ubuntu)
-- [Mac OS X](#max-os-x)
+- [Mac OS X](#mac-os-x)
 - [Others](#others)
 
 
