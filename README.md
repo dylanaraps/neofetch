@@ -66,6 +66,7 @@ your distro's logo or any ascii art of your choice!
 ### Required dependencies:
 
 - `Bash 3.0+`
+    - Alpine Linux: You also need `ncurses`.
 - `xprop` \[1\]
 - `procps-ng`
     - Not required on OS X
