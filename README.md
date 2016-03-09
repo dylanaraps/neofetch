@@ -18,6 +18,12 @@ your distro's logo or any ascii art of your choice!
 - [Features](#features)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
+    - [Arch Linux](#arch)
+    - [Gentoo / Funtoo](#gentoo--funtoo)
+    - [CRUX](#crux)
+    - [Debian / Ubuntu](#debian--ubuntu)
+    - [Mac OS X](#max-os-x)
+    - [Others](#others)
 - [Post Install](#post-install)
 - [Usage](#usage)
 - [Frequently Asked Questions](#frequently-asked-questions)
@@ -113,6 +119,14 @@ how you can workaround them.
 
 https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 
+- [Arch Linux](#arch)
+- [Gentoo / Funtoo](#gentoo--funtoo)
+- [CRUX](#crux)
+- [Debian / Ubuntu](#debian--ubuntu)
+- [Mac OS X](#max-os-x)
+- [Others](#others)
+
+
 ### Arch
 
 1. Install **[neofetch-git](https://aur.archlinux.org/packages/neofetch-git/)** from the aur.
@@ -152,9 +166,13 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 4. Install the package
     - `sudo apt-get install neofetch`
 
-### OS X
+### Mac OS X
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
+
+Note: The homebrew package is still in the auditing and approval process and should be<br \>
+available in less than 24 hours.
+
 
 ### Others
 
