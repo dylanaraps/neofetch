@@ -113,6 +113,11 @@ shell_version="off"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
+# CPU shorthand
+# Decice to show name only, model only, or speed only
+# --cpu_shorthand name, model, name_model, speed, off
+cpu_shorthand="off"
+
 
 # GPU
 
@@ -855,6 +860,27 @@ getcpu () {
     cpu=${cpu// Six-Core}
     cpu=${cpu// Eight-Core}
     cpu=${cpu// with Radeon HD Graphics}
+
+    # Make the output of cpu shorter
+    case "$cpu_shorthand" in
+        "name")
+            cpu=${cpu%-*}
+        ;;
+
+        "model")
+            cpu=${cpu#*-}
+            cpu=${cpu%% *}
+        ;;
+
+        "name_model")
+            cpu=${cpu%@*}
+            cpu=${cpu# }
+        ;;
+
+        "speed")
+            cpu=${cpu#*@ }
+        ;;
+    esac
 }
 
 # }}}
@@ -2295,6 +2321,8 @@ usage () { cat << EOF
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
                                 NOTE: This only support Linux with cpufreq.
+    --cpu_shorthand type        Shorten the output of CPU
+                                Possible values: name, model, name_model, speed
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --gpu_shorthand on/off      Shorten the output of GPU
@@ -2396,6 +2424,7 @@ while [ "$1" ]; do
         --speed_type) speed_type="$2" ;;
         --kernel_shorthand) kernel_shorthand="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
+        --cpu_shorthand) cpu_shorthand="$2" ;;
         --gpu_shorthand) gpu_shorthand="$2" ;;
         --gtk_shorthand) gtk_shorthand="$2" ;;
         --gtk2) gtk2="$2" ;;

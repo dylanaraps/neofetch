@@ -93,6 +93,11 @@ shell_version="off"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
+# CPU shorthand
+# Decice to show name only, model only, or speed only
+# --cpu_shorthand name, model, name_model, speed, off
+cpu_shorthand="off"
+
 
 # GPU
 
