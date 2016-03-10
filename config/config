@@ -266,7 +266,7 @@ image_size="auto"
 
 # Right gap between image and text
 # --gap num
-gap=4
+gap=2
 
 # Image offsets
 # --xoffset px
