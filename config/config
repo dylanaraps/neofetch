@@ -94,8 +94,8 @@ shell_version="off"
 speed_type="max"
 
 # CPU shorthand
-# Decice to show name only, model only, or speed only
-# --cpu_shorthand name, model, name_model, speed, off
+# Decice to show name only, speed only, or short info
+# --cpu_shorthand name, speed, tiny, on, off
 cpu_shorthand="off"
 
 

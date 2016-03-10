@@ -114,8 +114,8 @@ shell_version="off"
 speed_type="max"
 
 # CPU shorthand
-# Decice to show name only, model only, or speed only
-# --cpu_shorthand name, model, name_model, speed, off
+# Decice to show name only, speed only, or short info
+# --cpu_shorthand name, speed, tiny, on, off
 cpu_shorthand="off"
 
 
@@ -864,21 +864,24 @@ getcpu () {
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
         "name")
-            cpu=${cpu%-*}
-        ;;
-
-        "model")
-            cpu=${cpu#*-}
-            cpu=${cpu%% *}
-        ;;
-
-        "name_model")
-            cpu=${cpu%@*}
-            cpu=${cpu# }
+            cpu=${cpu/@*}
         ;;
 
         "speed")
             cpu=${cpu#*@ }
+        ;;
+
+        "on")
+            cpu=${cpu/Intel }
+            cpu=${cpu/Core }
+            cpu=${cpu/AMD }
+        ;;
+
+        "tiny")
+            cpu=${cpu/Intel }
+            cpu=${cpu/Core }
+            cpu=${cpu/AMD }
+            cpu=${cpu/@*}
         ;;
     esac
 }
@@ -2322,7 +2325,7 @@ usage () { cat << EOF
                                 scaling_current, scaling_min, scaling_max
                                 NOTE: This only support Linux with cpufreq.
     --cpu_shorthand type        Shorten the output of CPU
-                                Possible values: name, model, name_model, speed
+                                Possible values: name, speed, tiny, on, off 
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --gpu_shorthand on/off      Shorten the output of GPU
