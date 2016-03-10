@@ -871,17 +871,15 @@ getcpu () {
             cpu=${cpu#*@ }
         ;;
 
-        "on")
+        "on" | "tiny")
             cpu=${cpu/Intel }
             cpu=${cpu/Core }
+            cpu=${cpu/Core? Duo }
             cpu=${cpu/AMD }
-        ;;
 
-        "tiny")
-            cpu=${cpu/Intel }
-            cpu=${cpu/Core }
-            cpu=${cpu/AMD }
-            cpu=${cpu/@*}
+            case "$cpu_shorthand" in
+                "tiny") cpu${cpu/@*} ;;
+            esac
         ;;
     esac
 }
