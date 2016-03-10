@@ -269,6 +269,8 @@ alias fetch2="fetch \
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
                                 NOTE: This only support Linux with cpufreq.
+    --cpu_shorthand type        Shorten the output of CPU
+                                Possible values: name, speed, tiny, on, off
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --gpu_shorthand on/off      Shorten the output of GPU

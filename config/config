@@ -93,6 +93,11 @@ shell_version="off"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
+# CPU shorthand
+# Decice to show name only, speed only, or short info
+# --cpu_shorthand name, speed, tiny, on, off
+cpu_shorthand="off"
+
 
 # GPU
 
