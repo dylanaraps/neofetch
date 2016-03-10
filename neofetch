@@ -2060,7 +2060,7 @@ colors () {
             setcolors 7 4 1
         ;;
 
-        "Gentoo"* | "Funtoo"*)
+        "Gentoo"* | "Funtoo"* | "SteamOS"*)
             setcolors 7 5
         ;;
 
