@@ -362,11 +362,11 @@ alias fetch2="fetch \
 
 #### How do I enable screenfetch mode?
 
-Launching the script with `--ascii distro` or setting `ascii="distro"` and `image="ascii"` <br \>
+Launching the script with `--ascii` or setting `ascii="distro"` and `image="ascii"` <br \>
 inside the config file will launch the script in "screenfetch mode". The script will<br \>
 display your distro's ascii next to the info, exactly like screenfetch.
 
-**NOTE:** If you don't have `w3m-img` or `imagemagick` installed screenfetch mode will be<br \>
+**NOTE:** If you **don't** have `w3m-img` or `imagemagick` installed screenfetch mode will be<br \>
 used automatically
 
 ![arch](http://i.imgur.com/uCMjgf6.png)
@@ -458,7 +458,7 @@ Thanks to:
 
 - [Screenfetch](https://github.com/KittyKatt/screenFetch):
     - I've used some snippets as a base for a few functions in this script.
-    - I've used the ascii art from here.
+    - Most of the ascii art.
 - [ufetch](https://github.com/jschx/ufetch): Tiny ascii logos
 - [@metakirby5](https://github.com/metakirby5): Providing great feedback as well as ideas for the script.
 - [@jrgz](https://github.com/jrgz): Helping me test the Mac OS X version.
