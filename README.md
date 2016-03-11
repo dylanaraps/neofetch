@@ -23,6 +23,7 @@ your distro's logo or any ascii art of your choice!
     - [CRUX](#crux)
     - [Debian / Ubuntu](#debian--ubuntu)
     - [Fedora](#fedora)
+    - [RHEL / CentOS](#rhel--centos)
     - [Mac OS X](#mac-os-x)
     - [Others](#others)
 - [Post Install](#post-install)
@@ -125,6 +126,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [CRUX](#crux)
 - [Debian / Ubuntu](#debian--ubuntu)
 - [Fedora](#fedora)
+- [RHEL / CentOS](#rhel--centos)
 - [Mac OS X](#mac-os-x)
 - [Others](#others)
 
@@ -178,6 +180,14 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 3. Install the package
     - `sudo dnf install neofetch`
 
+### RHEL / CentOS
+
+1. Change your working directory to `/etc/yum.repos.d`
+    - `cd /etc/yum.repos.d`
+2. Fetch the repo file
+    - `wget https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo`
+3. Install the package
+    - `sudo yum install neofetch`
 
 ### Mac OS X
 1. Install `neofetch` with Homebrew
