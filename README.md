@@ -23,6 +23,7 @@ your distro's logo or any ascii art of your choice!
     - [CRUX](#crux)
     - [Debian / Ubuntu](#debian--ubuntu)
     - [Mac OS X](#mac-os-x)
+    - [Fedora](#fedora)
     - [Others](#others)
 - [Post Install](#post-install)
 - [Usage](#usage)
@@ -170,6 +171,13 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
 
+### Fedora
+1. Make sure you have installed `dnf-plugins-core`
+    - `sudo dnf install dnf-plugins-core`
+2. Enable COPR repository
+    - `sudo dnf copr enable konimex/neofetch`
+3. Install the package
+    - `sudo dnf install neofetch`
 
 ### Others
 
