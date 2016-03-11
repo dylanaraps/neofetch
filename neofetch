@@ -1564,8 +1564,23 @@ getbirthday () {
         ;;
 
         "Mac OS X")
-            birthday="$(ls -alctT /var/log/CDIS.custom | awk '{printf $6 " " $7 " " $9 " " $8}')"
-            date_cmd="$(date -j -f "%b %d %Y" "$birthday" +"$birthday_format")"
+            birthday="$(ls -lctT /var/log/install.log | awk '{printf $6 " " $7 " " $9 " " $8}')"
+
+            # Split the string into Date + Time
+            time=${birthday/*???? }
+            birthday=${birthday/$time}
+
+            case "${time/:*}" in
+                0? | 10 | 11)
+                    time="$time AM"
+                ;;
+
+                *)
+                    time="$time PM"
+                ;;
+            esac
+            birthday+="$time"
+            birthday_shorthand="on"
         ;;
 
         *"BSD")
@@ -1603,7 +1618,7 @@ getbirthday () {
     esac
 
     # Strip seconds from time output
-    birthday=${birthday%:*}
+    birthday=${birthday/:?? / }
 
     # Pretty output
     [ "$birthday_shorthand" == "off" ] && \
