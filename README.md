@@ -170,9 +170,6 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
 
-Note: The homebrew package is still in the auditing and approval process and should be<br \>
-available in less than 24 hours.
-
 
 ### Others
 
