@@ -124,6 +124,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Gentoo / Funtoo](#gentoo--funtoo)
 - [CRUX](#crux)
 - [Debian / Ubuntu](#debian--ubuntu)
+- [Fedora](#fedora)
 - [Mac OS X](#mac-os-x)
 - [Others](#others)
 
@@ -156,6 +157,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 4. Install the package
     - `sudo prt-get depinst neofetch`
 
+
 ### Debian / Ubuntu
 
 1. Add the 3rd party repo
@@ -167,9 +169,11 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 4. Install the package
     - `sudo apt-get install neofetch`
 
+
 ### Mac OS X
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
+
 
 ### Fedora
 1. Make sure you have installed `dnf-plugins-core`
@@ -178,6 +182,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
     - `sudo dnf copr enable konimex/neofetch`
 3. Install the package
     - `sudo dnf install neofetch`
+
 
 ### Others
 
