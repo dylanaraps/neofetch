@@ -1572,11 +1572,11 @@ getbirthday () {
 
             case "${time/:*}" in
                 0? | 10 | 11)
-                    time+="  AM"
+                    time+=" AM"
                 ;;
 
                 *)
-                    time+="  PM"
+                    time+=" PM"
                 ;;
             esac
             birthday+="$time"
@@ -1618,7 +1618,7 @@ getbirthday () {
     esac
 
     # Strip seconds from time output
-    birthday=${birthday/:?? /}
+    birthday=${birthday/:?? / }
 
     # Pretty output
     [ "$birthday_shorthand" == "off" ] && \
