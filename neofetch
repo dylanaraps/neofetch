@@ -13,7 +13,8 @@
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
 #   [ Linux / BSD ] Wallpaper Display: feh, nitrogen or gsettings
-#   [ Linux / BSD ] Current Song: mpc or cmus
+#   [ Linux / BSD ] Current Song: mpc, cmus, moc
+#   [ Linux ] Current Song: spotify
 #   [ Linux / BSD ] Resolution detection: xorg-xdpyinfo
 #
 # Created by Dylan Araps
