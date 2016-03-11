@@ -5,7 +5,7 @@
 # https://github.com/dylanaraps/neofetch
 #
 # Required Dependencies:
-#   Bash 4.0+
+#   Bash 3.0+
 #   xprop
 #   [Linux / BSD / Windows] Uptime detection: procps or procps-ng
 #
