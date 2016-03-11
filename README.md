@@ -283,7 +283,7 @@ alias fetch2="fetch \
                                 Possible values: name, speed, tiny, on, off
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
-    --gpu_shorthand on/off      Shorten the output of GPU
+    --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output

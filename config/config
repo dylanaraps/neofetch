@@ -102,7 +102,7 @@ cpu_shorthand="off"
 # GPU
 
 # Shorten output of the getgpu funcion
-# --gpu_shorthand on/off
+# --gpu_shorthand on/off/tiny
 gpu_shorthand="on"
 
 
