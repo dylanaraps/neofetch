@@ -1130,12 +1130,11 @@ getmemory () {
     esac
 
     # Progress bars
-    if [ "$memory_bar" == "on" ]; then
-        case "$memory_info" in
-            "off") memory=" $(bar "$memused" "$memtotal")" ;;
-            *) memory+=" $(bar "$memused" "$memtotal")" ;;
-        esac
-    fi
+    case "$memory_info_bar" in
+        "bar") memory="$(bar "${memused}" "${memtotal}")" ;;
+        "infobar") memory="${memory} $(bar "${memused}" "${memtotal}")" ;;
+        "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
+    esac
 }
 
 # }}}
