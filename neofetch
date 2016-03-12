@@ -1438,17 +1438,22 @@ getdisk () {
     # Put it all together
     disk="${disk_used} / ${disk_total} (${disk_total_per})"
 
-    if [ "$disk_bar" == "on" ]; then
-        disk_used=${disk_used/G}
-        disk_used=${disk_used/T}
-        disk_total=${disk_total/G}
-        disk_total=${disk_total/T}
+    # Add info bar
+    case "$disk_info_bar" in
+        "bar" | "infobar" | "barinfo")
+            disk_used=${disk_used/G}
+            disk_used=${disk_used/T}
+            disk_total=${disk_total/G}
+            disk_total=${disk_total/T}
 
-        case "$disk_info" in
-            "off") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
-            *) disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
-        esac
-    fi
+            case "$disk_info_bar" in
+                "bar") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+                "infobar") disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+                "barinfo") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}") $disk" ;;
+            esac
+
+            ;;
+    esac
 }
 
 # }}}
