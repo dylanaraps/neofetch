@@ -115,6 +115,12 @@ shell_version="off"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
+# CPU Display
+# Set shorthand setting and progress bar setting
+# --cpu_display (name, speed, tiny, on, off) (bar, infobar, barinfo, off)
+cpu_shorthand="off"
+cpu_display="off"
+
 
 # GPU
 
@@ -257,25 +263,13 @@ progress_color_elapsed="6"
 progress_color_total="8"
 
 # Enable/Disable progress bars
-# --cpu_usage_bar on/off
-# --memory_bar on/off
-# --battery_bar on/off
-# --disk_bar on/off
-cpu_usage_bar="off"
-memory_bar="off"
-battery_bar="off"
-disk_bar="off"
+# --memory_bar bar/infobar/barinfo/off
+# --battery_bar bar/infobar/barinfo/off
+# --disk_bar bar/infobar/barinfo/off
+memory_display="off"
+battery_display="off"
+disk_display="off"
 
-# Enable/Disable showing just the bar on its own.
-# Set this to 'off' to only show the progress bar.
-# --cpu_usage_info on/off
-# --memory_info on/off
-# --battery_info on/off
-# --disk_info on/off
-cpu_usage_info="on"
-memory_info="on"
-battery_info="on"
-disk_info="on"
 
 # }}}
 
@@ -905,22 +899,20 @@ getcpu () {
     esac
 
     # Add CPU info bar
-    case "$cpu_info_bar" in
-        "info" | "bar" | "infobar" | "barinfo")
-            prin "CPU: ${cpu}"
 
-            cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
-            cpu_usage="${cpu_usage/\.*}%"
+    prin "${subtitle}: ${cpu}"
 
-            case "$cpu_info_bar" in
-                "info") prin "CPU Usage: ${cpu_usage}" ;;
-                "bar") prin "CPU Usage: $(bar "${cpu_usage/'%'}" 100)" ;;
-                "infobar") prin "CPU Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" 100)" ;;
-                "barinfo") prin "CPU Usage: $(bar "${cpu_usage/'%'}" 100) ${cpu_usage}" ;;
-            esac
+    cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
+    cpu_usage="${cpu_usage/\.*}%"
 
-            unset cpu
+    case "$cpu_display" in
+        "info") prin "CPU Usage: ${cpu_usage}" ;;
+        "bar") prin "CPU Usage: $(bar "${cpu_usage/'%'}" 100)" ;;
+        "infobar") prin "CPU Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" 100)" ;;
+        "barinfo") prin "CPU Usage: $(bar "${cpu_usage/'%'}" 100) ${cpu_usage}" ;;
     esac
+
+    unset cpu
 }
 
 # }}}
@@ -1130,7 +1122,7 @@ getmemory () {
     esac
 
     # Progress bars
-    case "$memory_info_bar" in
+    case "$memory_display" in
         "bar") memory="$(bar "${memused}" "${memtotal}")" ;;
         "infobar") memory="${memory} $(bar "${memused}" "${memtotal}")" ;;
         "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
@@ -1438,20 +1430,15 @@ getdisk () {
     disk="${disk_used} / ${disk_total} (${disk_total_per})"
 
     # Add info bar
-    case "$disk_info_bar" in
-        "bar" | "infobar" | "barinfo")
-            disk_used=${disk_used/G}
-            disk_used=${disk_used/T}
-            disk_total=${disk_total/G}
-            disk_total=${disk_total/T}
+    disk_used=${disk_used/G}
+    disk_used=${disk_used/T}
+    disk_total=${disk_total/G}
+    disk_total=${disk_total/T}
 
-            case "$disk_info_bar" in
-                "bar") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
-                "infobar") disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
-                "barinfo") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}") $disk" ;;
-            esac
-
-            ;;
+    case "$disk_display" in
+        "bar") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+        "infobar") disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+        "barinfo") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}") $disk" ;;
     esac
 }
 
@@ -1540,7 +1527,7 @@ getbattery () {
         ;;
     esac
 
-    case "$battery_info_bar" in
+    case "$battery_display" in
         "bar") battery="$(bar ${battery/'%'} 100)" ;;
         "infobar") battery="${battery} $(bar "${battery/'%'}" 100)" ;;
         "barinfo") battery="$(bar "${battery/'%'}" 100) ${battery}" ;;
@@ -2438,10 +2425,15 @@ usage () { cat << EOF
     --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar. Set in this order:
                                 elapsed, total
-    --cpu_usage_bar on/off      Whether or not to print a progress bar for cpu usage.
-    --memory_bar on/off         Whether or not to print a progress bar for memory usage.
-    --battery_bar on/off        Whether or not to print a progress bar for battery usage.
-    --disk_bar on/off           Whether or not to print a progress bar for disk usage.
+    --cpu_display mode1 mode2   Which shorthand to use and how CPU usage should be printed
+                                mode1 takes: name, speed, tiny, on, off
+                                mode2 takes: info, bar, infobar, barinfo
+    --memory_display mode       Which way should the memory progress bar be added
+                                Takes bar, infobar, barinfo
+    --battery_display mode      Which way should the battery progress bar be added
+                                Takes bar, infobar, barinfo
+    --disk_display mode         Which way should the disk progress bar be added
+                                Takes bar, infobar, barinfo
 
 
     Image:
@@ -2566,11 +2558,11 @@ while [ "$1" ]; do
         ;;
         --cpu_display)
             cpu_shorthand="$2"
-            cpu_info_bar="$3"
+            cpu_display="$3"
         ;;
-        --memory_info_bar) memory_info_bar="$2" ;;
-        --battery_info_bar) battery_info_bar="$2" ;;
-        --disk_info_bar) disk_info_bar="$2" ;;
+        --memory_display) memory_display="$2" ;;
+        --battery_display) battery_display="$2" ;;
+        --disk_display) disk_display="$2" ;;
 
         # Image
         --image)
