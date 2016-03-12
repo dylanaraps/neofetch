@@ -1942,7 +1942,7 @@ getimage () {
     case "$image_position" in
         "left")
             # Padding is half the terminal width + gap
-            padding="\033[$((image_size / font_width + gap))C"
+            padding="\033[$((image_size / font_width + gap + xoffset/font_width))C"
         ;;
 
         "right")
