@@ -1399,11 +1399,13 @@ getdisk () {
     disk="${disk_used} / ${disk_total} (${disk_total_per})"
 
     if [ "$disk_bar" == "on" ]; then
+        disk_used=${disk_used/G}
         disk_used=${disk_used/T}
+        disk_total=${disk_total/G}
         disk_total=${disk_total/T}
 
         case "$disk_info" in
-            "off") disk="$disk_total_per $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+            "off") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
             *) disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
         esac
     fi
@@ -1496,8 +1498,8 @@ getbattery () {
 
     if [ "$battery_bar" == "on" ]; then
         case "$battery_info" in
-            "off") battery+=" $(bar ${battery/'%'} 100)" ;;
-            *) battery="$(bar ${battery/'%'} 100)" ;;
+            "off") battery="$(bar ${battery/'%'} 100)" ;;
+            *) battery+=" $(bar ${battery/'%'} 100)" ;;
         esac
     fi
 }
