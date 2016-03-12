@@ -881,6 +881,46 @@ getcpu () {
     cpu=${cpu// Six-Core}
     cpu=${cpu// Eight-Core}
     cpu=${cpu// with Radeon HD Graphics}
+
+    # Make the output of cpu shorter
+    case "$cpu_shorthand" in
+        "name")
+            cpu=${cpu/@*}
+        ;;
+
+        "speed")
+            cpu=${cpu#*@ }
+        ;;
+
+        "on" | "tiny")
+            cpu=${cpu/Intel }
+            cpu=${cpu/Core }
+            cpu=${cpu/Core? Duo }
+            cpu=${cpu/AMD }
+
+            case "$cpu_shorthand" in
+                "tiny") cpu=${cpu/@*} ;;
+            esac
+        ;;
+    esac
+
+    # Add CPU info bar
+    case "$cpu_info_bar" in
+        "info" | "bar" | "infobar" | "barinfo")
+            prin "CPU: ${cpu}"
+
+            cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
+            cpu_usage="${cpu_usage/\.*}%"
+
+            case "$cpu_info_bar" in
+                "info") prin "CPU Usage: ${cpu_usage}" ;;
+                "bar") prin "CPU Usage: $(bar "${cpu_usage/'%'}" 100)" ;;
+                "infobar") prin "CPU Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" 100)" ;;
+                "barinfo") prin "CPU Usage: $(bar "${cpu_usage/'%'}" 100) ${cpu_usage}" ;;
+            esac
+
+            unset cpu
+    esac
 }
 
 # }}}
@@ -2521,14 +2561,13 @@ while [ "$1" ]; do
             progress_color_elapsed="$2"
             progress_color_total="$3"
         ;;
-        --cpu_usage_bar) cpu_usage_bar="$2" ;;
-        --memory_bar) memory_bar="$2" ;;
-        --battery_bar) battery_bar="$2" ;;
-        --disk_bar) disk_bar="$2" ;;
-        --cpu_usage_info) cpu_usage_info="$2" ;;
-        --memory_info) memory_info="$2" ;;
-        --battery_info) battery_info="$2" ;;
-        --disk_info) disk_info="$2" ;;
+        --cpu_display)
+            cpu_shorthand="$2"
+            cpu_info_bar="$3"
+        ;;
+        --memory_info_bar) memory_info_bar="$2" ;;
+        --battery_info_bar) battery_info_bar="$2" ;;
+        --disk_info_bar) disk_info_bar="$2" ;;
 
         # Image
         --image)
