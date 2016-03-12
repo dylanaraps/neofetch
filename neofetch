@@ -1540,12 +1540,11 @@ getbattery () {
         ;;
     esac
 
-    if [ "$battery_bar" == "on" ]; then
-        case "$battery_info" in
-            "off") battery="$(bar ${battery/'%'} 100)" ;;
-            *) battery+=" $(bar ${battery/'%'} 100)" ;;
-        esac
-    fi
+    case "$battery_info_bar" in
+        "bar") battery="$(bar ${battery/'%'} 100)" ;;
+        "infobar") battery="${battery} $(bar "${battery/'%'}" 100)" ;;
+        "barinfo") battery="$(bar "${battery/'%'}" 100) ${battery}" ;;
+    esac
 }
 
 # }}}
