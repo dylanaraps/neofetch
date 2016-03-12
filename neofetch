@@ -27,6 +27,7 @@ SYS_LOCALE="$LANG"
 export LC_ALL=C
 export LANG=C
 
+
 # Config Options {{{
 
 
@@ -727,7 +728,7 @@ getshell () {
 # Desktop Environment {{{
 
 getde () {
-    [ "$XDG_CURRENT_DESKTOP" ] && de="$XDG_CURRENT_DESKTOP"
+    [ "$XDG_CURRENT_DESKTOP" != "i3" ] && de="$XDG_CURRENT_DESKTOP"
 }
 
 # }}}
@@ -1142,7 +1143,7 @@ getsong () {
     elif [ -n "$(ps aux | awk '!(/awk/ || /Helper/) && /iTunes/')" ]; then
         song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " name of current track as string')"
         state="$(osascript -e 'tell application "iTunes" to player state as string')"
-        
+
     elif [ -n "$(ps aux | awk '!(/awk/) && /spotify/')" ]; then
         song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
         state="$(osascript -e 'tell application "Spotify" to player state as string')"
