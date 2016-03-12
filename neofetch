@@ -1220,7 +1220,7 @@ getsong () {
     # Display Artist and Title on seperate lines.
     if [ "$song_shorthand" == "on" ]; then
         artist="${song/ -*}"
-        song=${song/*- }
+        song=${song/$artist - }
 
         if [ "$song" != "$artist" ]; then
             prin "Artist: ${artist}"
