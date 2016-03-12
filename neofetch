@@ -262,10 +262,17 @@ progress_length="15"
 progress_color_elapsed="6"
 progress_color_total="8"
 
-# Enable/Disable progress bars
-# --memory_bar bar/infobar/barinfo/off
-# --battery_bar bar/infobar/barinfo/off
-# --disk_bar bar/infobar/barinfo/off
+# Customize how the info is displayed.
+# bar: Only the progress bar is displayed.
+# infobar: The bar is displayed after the info.
+# barinfo: The bar is displayed before the info.
+# off: Only the info is displayed.
+#
+# --cpu_displau bar/infobar/barinfo/off
+# --memory_display bar/infobar/barinfo/off
+# --battery_display bar/infobar/barinfo/off
+# --disk_display bar/infobar/barinfo/off
+cpu_display="off"
 memory_display="off"
 battery_display="off"
 disk_display="off"
@@ -899,19 +906,17 @@ getcpu () {
     esac
 
     # Add CPU info bar
-
     prin "${subtitle}: ${cpu}"
 
     cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
     cpu_usage="${cpu_usage/\.*}%"
 
     case "$cpu_display" in
-        "info") prin "CPU Usage: ${cpu_usage}" ;;
-        "bar") prin "CPU Usage: $(bar "${cpu_usage/'%'}" 100)" ;;
-        "infobar") prin "CPU Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" 100)" ;;
-        "barinfo") prin "CPU Usage: $(bar "${cpu_usage/'%'}" 100) ${cpu_usage}" ;;
+        "info") prin "${subtitle} Usage: ${cpu_usage}" ;;
+        "bar") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" 100)" ;;
+        "infobar") prin "${subtitle} Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" 100)" ;;
+        "barinfo") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" 100) ${cpu_usage}" ;;
     esac
-
     unset cpu
 }
 
@@ -1470,16 +1475,11 @@ getbattery () {
 
                 else
                     if [ "${#batteries[@]}" -gt 1 ]; then
+                        unset battery
+
                         # Print each battery on a separate line.
                         for bat in "${batteries[@]}"; do
-                            battery="${title}${index}: ${bat}%"
-
-                            [ "$battery_bar" == "on" ] && \
-                                battery+=" $(bar $bat 100)"
-
-                            prin "$battery"
-                            unset battery
-                            index=$((index + 1))
+                            prin "${title}${index}: ${bat}%"
                         done
                         return
                     fi
@@ -1668,23 +1668,6 @@ getcols () {
         printf "%b%s" "$clear"
     fi
 }
-
-# }}}
-
-# CPU Usage {{{
-
-getcpu_usage () {
-    cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
-    cpu_usage="${cpu_usage/\.*}%"
-
-    if [ "$cpu_usage_bar" == "on" ]; then
-        case "$cpu_usage_info" in
-            "off") cpu_usage="$(bar "${cpu_usage/'%'}" 100)" ;;
-            *) cpu_usage+=" $(bar "${cpu_usage/'%'}" 100)" ;;
-        esac
-    fi
-}
-
 
 # }}}
 
