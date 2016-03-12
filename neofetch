@@ -1145,7 +1145,7 @@ getsong () {
         
     elif [ -n "$(ps aux | awk '!(/awk/) && /spotify/')" ]; then
         song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
-        state="$(osascript -e 'tell application "Spotify" to player state')"
+        state="$(osascript -e 'tell application "Spotify" to player state as string')"
 
     else
         song="Unknown"
