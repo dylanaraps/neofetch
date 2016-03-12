@@ -285,10 +285,15 @@ alias fetch2="fetch \
     --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar. Set in this order:
                                 elapsed, total
-    --cpu_usage_bar on/off      Whether or not to print a progress bar for cpu usage.
-    --memory_bar on/off         Whether or not to print a progress bar for memory usage.
-    --battery_bar on/off        Whether or not to print a progress bar for battery usage.
-    --disk_bar on/off           Whether or not to print a progress bar for disk usage.
+    --cpu_display mode1 mode2   Which shorthand to use and how CPU usage should be printed
+                                mode1 takes: name, speed, tiny, on, off
+                                mode2 takes: info, bar, infobar, barinfo
+    --memory_display mode       Which way should the memory progress bar be added
+                                Takes bar, infobar, barinfo
+    --battery_display mode      Which way should the battery progress bar be added
+                                Takes bar, infobar, barinfo
+    --disk_display mode         Which way should the disk progress bar be added
+                                Takes bar, infobar, barinfo
 
 
     Image:
