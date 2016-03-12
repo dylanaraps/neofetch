@@ -115,10 +115,11 @@ shell_version="off"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
-# CPU shorthand
-# Decice to show name only, speed only, or short info
-# --cpu_shorthand name, speed, tiny, on, off
+# CPU Display
+# Set shorthand setting and progress bar setting
+# --cpu_display (name, speed, tiny, on, off) (bar, infobar, barinfo, off)
 cpu_shorthand="off"
+cpu_display="off"
 
 
 # GPU
@@ -245,6 +246,39 @@ underline_char="-"
 # prompt is greater than 2 lines high.
 # --prompt_height num
 prompt_height=1
+
+
+# }}}
+
+# Progress Bars {{{
+
+
+# Progress bar character
+# --progress_char char
+progress_char="━"
+
+# Progress bar length in spaces
+# Number of chars long to make the progress bars.
+# --progress_length num
+progress_length="15"
+
+# Progress bar colors
+# --progress_colors col col
+progress_color_elapsed="6"
+progress_color_total="8"
+
+# Customize how the info is displayed.
+# bar: Only the progress bar is displayed.
+# infobar: The bar is displayed after the info.
+# barinfo: The bar is displayed before the info.
+# off: Only the info is displayed.
+#
+# --memory_display bar/infobar/barinfo/off
+# --battery_display bar/infobar/barinfo/off
+# --disk_display bar/infobar/barinfo/off
+memory_display="off"
+battery_display="off"
+disk_display="off"
 
 
 # }}}
@@ -880,10 +914,24 @@ getcpu () {
             cpu=${cpu/AMD }
 
             case "$cpu_shorthand" in
-                "tiny") cpu${cpu/@*} ;;
+                "tiny") cpu=${cpu/@*} ;;
             esac
         ;;
     esac
+
+    # Add CPU info bar
+    prin "${subtitle}: ${cpu}"
+
+    cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
+    cpu_usage="${cpu_usage/\.*}%"
+
+    case "$cpu_display" in
+        "info") prin "${subtitle} Usage: ${cpu_usage}" ;;
+        "bar") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" 100)" ;;
+        "infobar") prin "${subtitle} Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" 100)" ;;
+        "barinfo") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" 100) ${cpu_usage}" ;;
+    esac
+    unset cpu
 }
 
 # }}}
@@ -1102,6 +1150,13 @@ getmemory () {
         *)
             memory="Unknown"
         ;;
+    esac
+
+    # Progress bars
+    case "$memory_display" in
+        "bar") memory="$(bar "${memused}" "${memtotal}")" ;;
+        "infobar") memory="${memory} $(bar "${memused}" "${memtotal}")" ;;
+        "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
     esac
 }
 
@@ -1427,6 +1482,18 @@ getdisk () {
 
     # Put it all together
     disk="${disk_used} / ${disk_total} (${disk_total_per})"
+
+    # Add info bar
+    disk_used=${disk_used/G}
+    disk_used=${disk_used/T}
+    disk_total=${disk_total/G}
+    disk_total=${disk_total/T}
+
+    case "$disk_display" in
+        "bar") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+        "infobar") disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
+        "barinfo") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}") $disk" ;;
+    esac
 }
 
 # }}}
@@ -1456,18 +1523,23 @@ getbattery () {
                     battery="${battery}%"
 
                 else
-                    # If there's only a single battery and it's battery 0,
-                    # don't number the subtitle.
-                    if [ "${#batteries[@]}" == 1 ]; then
-                        battery="${batteries[0]}%"
+                    if [ "${#batteries[@]}" -gt 1 ]; then
+                        unset battery
+
+                        # Print each battery on a separate line.
+                        for bat in "${batteries[@]}"; do
+                            case "$battery_display" in
+                                "bar") prin "${title}${index}: $(bar ${bat/'%'} 100)" ;;
+                                "infobar") prin "${title}${index}: ${bat}% $(bar "${bat/'%'}" 100)" ;;
+                                "barinfo") prin "${title}${index}: $(bar "${bat/'%'}" 100) ${bat}%" ;;
+                                *) prin "${title}${index}: ${bat}%" ;;
+                            esac
+                            index=$((index + 1))
+                        done
                         return
                     fi
 
-                    # Print each battery on a separate line.
-                    for bat in "${batteries[@]}"; do
-                        prin "${title}${index}: ${bat}%"
-                        index=$((index + 1))
-                    done
+                    battery="${batteries[0]}%"
                 fi
             else
                 battery="None"
@@ -1508,6 +1580,12 @@ getbattery () {
             battery=${battery// }
             battery+="%"
         ;;
+    esac
+
+    case "$battery_display" in
+        "bar") battery="$(bar ${battery/'%'} 100)" ;;
+        "infobar") battery="${battery} $(bar "${battery/'%'}" 100)" ;;
+        "barinfo") battery="$(bar "${battery/'%'}" 100) ${battery}" ;;
     esac
 }
 
@@ -1660,7 +1738,6 @@ getcols () {
 }
 
 # }}}
-
 
 # }}}
 
@@ -2333,6 +2410,23 @@ esac
 
 # }}}
 
+# Progress Bars {{{
+
+bar() {
+    # Get the values
+    elapsed=$(($1 * progress_length / $2))
+
+    # Create the bar with spaces
+    prog=$(printf %"$elapsed"s)
+    total=$(printf %"$((progress_length - elapsed))"s)
+
+    # Set the colors and swap the spaces for $progress_char
+    bar="\033[38;5;${progress_color_elapsed}m${prog// /$progress_char}"
+    bar+="\033[38;5;${progress_color_total}m${total// /$progress_char}"
+    printf "%b%s\n" "${bar}${clear}"
+}
+
+# }}}
 
 # }}}
 
@@ -2390,6 +2484,22 @@ usage () { cat << EOF
     --color_blocks on/off       Enable/Disable the color blocks
     --block_width num           Width of color blocks
     --block_range start end     Range of colors to print as blocks
+
+
+    Progress Bars:
+    --progress_char char        Character to use when drawing progress bars.
+    --progress_length num       Length in spaces to make the progress bars.
+    --progress_colors num num   Colors to make the progress bar. Set in this order:
+                                elapsed, total
+    --cpu_display mode1 mode2   Which shorthand to use and how CPU usage should be printed
+                                mode1 takes: name, speed, tiny, on, off
+                                mode2 takes: info, bar, infobar, barinfo
+    --memory_display mode       Which way should the memory progress bar be added
+                                Takes bar, infobar, barinfo
+    --battery_display mode      Which way should the battery progress bar be added
+                                Takes bar, infobar, barinfo
+    --disk_display mode         Which way should the disk progress bar be added
+                                Takes bar, infobar, barinfo
 
 
     Image:
@@ -2508,6 +2618,21 @@ while [ "$1" ]; do
         --block_range) start=$2; end=$3 ;;
         --block_width) block_width="$2" ;;
 
+        # Progress Bars
+        --progress_char) progress_char="$2" ;;
+        --progress_length) progress_length="$2" ;;
+        --progress_colors)
+            progress_color_elapsed="$2"
+            progress_color_total="$3"
+        ;;
+        --cpu_display)
+            cpu_shorthand="$2"
+            cpu_display="$3"
+        ;;
+        --memory_display) memory_display="$2" ;;
+        --battery_display) battery_display="$2" ;;
+        --disk_display) disk_display="$2" ;;
+
         # Image
         --image)
             image="$2"
@@ -2557,6 +2682,7 @@ while [ "$1" ]; do
         # Stdout
         --stdout)
             unset info_color colors
+            unset -f bar
             case "$2" in
                 "--"* | "") echo "--stdout requires at least one argument"; exit ;;
                 *) shift; args=("$@"); config="off"; stdout ;;

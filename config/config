@@ -227,6 +227,41 @@ prompt_height=1
 
 # }}}
 
+# Progress Bars {{{
+
+
+# Progress bar character
+# --progress_char char
+progress_char="━"
+
+# Progress bar length in spaces
+# Number of chars long to make the progress bars.
+# --progress_length num
+progress_length="15"
+
+# Progress bar colors
+# --progress_colors col col
+progress_color_elapsed="6"
+progress_color_total="8"
+
+# Customize how the info is displayed.
+# bar: Only the progress bar is displayed.
+# infobar: The bar is displayed after the info.
+# barinfo: The bar is displayed before the info.
+# off: Only the info is displayed.
+#
+# --cpu_displau bar/infobar/barinfo/off
+# --memory_display bar/infobar/barinfo/off
+# --battery_display bar/infobar/barinfo/off
+# --disk_display bar/infobar/barinfo/off
+cpu_display="off"
+memory_display="off"
+battery_display="off"
+disk_display="off"
+
+
+# }}}
+
 # Image Options {{{
 
 
