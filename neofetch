@@ -2747,7 +2747,7 @@ if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
         ;;
 
         "iterm2")
-            printf "\033[${xoffset}C"
+            printf "\033[$((xoffset / font_width))C"
             printf "%b%s\a\n" "\033]1337;File=width=${image_size}px;height=${image_size}px;inline=1:$(base64 < "$img")"
         ;;
     esac
