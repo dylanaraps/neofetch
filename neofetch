@@ -1139,6 +1139,14 @@ getsong () {
                 song=${song//'['*}
             ;;
         esac
+    elif [ -n "$(ps aux | awk '!(/awk/ || /Helper/) && /iTunes/')" ]; then
+        song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " name of current track as string')"
+        state="$(osascript -e 'tell application "iTunes" to player state as string')"
+        
+    elif [ -n "$(ps aux | awk '!(/awk/) && /spotify/')" ]; then
+        song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
+        state="$(osascript -e 'tell application "Spotify" to player state as string')"
+
     else
         song="Unknown"
     fi
