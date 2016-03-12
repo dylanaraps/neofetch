@@ -1481,6 +1481,7 @@ getbattery () {
                                 "barinfo") prin "${title}${index}: $(bar "${bat/'%'}" 100) ${bat}%" ;;
                                 *) prin "${title}${index}: ${bat}%" ;;
                             esac
+                            index=$((index + 1))
                         done
                         return
                     fi
