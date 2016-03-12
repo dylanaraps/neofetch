@@ -35,7 +35,6 @@ printinfo () {
 
     # info "Font" font
     # info "Disk" disk
-    # info "Resolution" resolution
     # info "Battery" battery
     # info "Local IP" localip
     # info "Public IP" publicip
@@ -45,6 +44,7 @@ printinfo () {
 
     info linebreak
     info cols
+    info linebreak
     info linebreak
 }
 
@@ -93,11 +93,16 @@ shell_version="off"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
+# CPU shorthand
+# Decice to show name only, speed only, or short info
+# --cpu_shorthand name, speed, tiny, on, off
+cpu_shorthand="off"
+
 
 # GPU
 
 # Shorten output of the getgpu funcion
-# --gpu_shorthand on/off
+# --gpu_shorthand on/off/tiny
 gpu_shorthand="on"
 
 
@@ -157,6 +162,11 @@ birthday_shorthand="off"
 # Whether to show the time in the output
 # --birthday_time on/off
 birthday_time="on"
+
+# Date format to use when printing birthday
+# --birthday_format "format"
+birthday_format="+%a %d %b %Y %l:%M %p"
+
 
 # Color Blocks
 
@@ -296,7 +306,7 @@ image_size="auto"
 
 # Right gap between image and text
 # --gap num
-gap=4
+gap=2
 
 # Image offsets
 # --xoffset px
@@ -355,6 +365,14 @@ scrot_dir="$HOME/Pictures"
 # --scrot_name str
 scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
 
+
+# }}}
+
+# Stdout options {{{
+
+# Separator for stdout mode
+# --stdout_separator string
+stdout_separator="  "
 
 # }}}
 

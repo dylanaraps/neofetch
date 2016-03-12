@@ -5,7 +5,7 @@
 # https://github.com/dylanaraps/neofetch
 #
 # Required Dependencies:
-#   Bash 4.0+
+#   Bash 3.0+
 #   xprop
 #   [Linux / BSD / Windows] Uptime detection: procps or procps-ng
 #
@@ -13,7 +13,8 @@
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
 #   [ Linux / BSD ] Wallpaper Display: feh, nitrogen or gsettings
-#   [ Linux / BSD ] Current Song: mpc or cmus
+#   [ Linux / BSD ] Current Song: mpc, cmus, moc
+#   [ Linux ] Current Song: spotify
 #   [ Linux / BSD ] Resolution detection: xorg-xdpyinfo
 #
 # Created by Dylan Araps
@@ -25,6 +26,7 @@ SYS_LOCALE="$LANG"
 # Speed up script by not using unicode
 export LC_ALL=C
 export LANG=C
+
 
 # Config Options {{{
 
@@ -55,7 +57,6 @@ printinfo () {
 
     # info "Font" gtkfont
     # info "Disk" disk
-    # info "Resolution" resolution
     # info "Battery" battery
     # info "Song" song
     # info "Local IP" localip
@@ -65,6 +66,7 @@ printinfo () {
 
     info linebreak
     info cols
+    info linebreak
     info linebreak
 }
 
@@ -123,7 +125,7 @@ cpu_display="off"
 # GPU
 
 # Shorten output of the getgpu funcion
-# --gpu_shorthand on/off
+# --gpu_shorthand on/off/tiny
 gpu_shorthand="on"
 
 
@@ -183,6 +185,11 @@ birthday_shorthand="off"
 # Whether to show the time in the output
 # --birthday_time on/off
 birthday_time="on"
+
+# Date format to use when printing birthday
+# --birthday_format "format"
+birthday_format="%a %d %b %Y %l:%M %p"
+
 
 # Color Blocks
 
@@ -320,7 +327,7 @@ image_size="auto"
 
 # Right gap between image and text
 # --gap num
-gap=4
+gap=2
 
 # Image offsets
 # --xoffset px
@@ -380,6 +387,14 @@ scrot_dir="$HOME/Pictures"
 # --scrot_name str
 scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
 
+
+# }}}
+
+# Stdout options {{{
+
+# Separator for stdout mode
+# --stdout_separator string
+stdout_separator="  "
 
 # }}}
 
@@ -520,7 +535,7 @@ getuptime () {
     case "$os" in
         "Linux")
             case "$distro" in
-                "Puppy Linux"* | "Quirky Werewolf"* | "Precise Puppy"*)
+                "Puppy Linux"* | "Quirky Werewolf"* | "Precise Puppy"* | "Alpine Linux"*)
                     uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
                     uptime=${uptime/  / }
                 ;;
@@ -644,6 +659,9 @@ getpackages () {
             elif type -p nix-env >/dev/null 2>&1; then
                 packages="$(ls -d -1 /nix/store/*/ | wc -l)"
 
+            elif type -p apk >/dev/null 2>&1; then
+                packages="$(apk info | wc -l)"
+
             elif type -p pacman-g2 >/dev/null 2>&1; then
                 packages="$(pacman-g2 -Q | wc -l)"
 
@@ -744,7 +762,7 @@ getshell () {
 # Desktop Environment {{{
 
 getde () {
-    [ "$XDG_CURRENT_DESKTOP" ] && de="$XDG_CURRENT_DESKTOP"
+    [ "$XDG_CURRENT_DESKTOP" != "i3" ] && de="$XDG_CURRENT_DESKTOP"
 }
 
 # }}}
@@ -955,7 +973,8 @@ getgpu () {
                     gpu=${gpu/Intel Corporation }
                     gpu=${gpu/Haswell-??? }
                     gpu=${gpu/?th Gen }
-                    gpu=${gpu/Core Processor }
+                    gpu=${gpu/Core }
+                    gpu=${gpu/Processor }
                     gpu=${gpu/ Mobile}
                     gpu=${gpu/ Express}
                     gpu=${gpu/Sky }
@@ -971,6 +990,7 @@ getgpu () {
                     gpu=${gpu/Seymour}
                     gpu=${gpu/Richland}
                     gpu=${gpu/Pitcairn}
+                    gpu=${gpu/Hawaii}
                     gpu=${gpu/ OEM}
                     gpu=${gpu/ Cape Verde}
                     gpu=${gpu/ \[}
@@ -1029,17 +1049,27 @@ getgpu () {
         ;;
     esac
 
-    if [ "$gpu_shorthand" == "on" ]; then
-        gpu=${gpu// Rev\. ?}
-        gpu=${gpu//AMD*\/ATI\]/AMD}
-        gpu=${gpu// Tahiti}
-        gpu=${gpu// PRO}
-        gpu=${gpu// OEM}
-        gpu=${gpu// Mars}
-        gpu=${gpu// Series}
-        gpu=${gpu// Controller}
-        gpu=${gpu/\/*}
-    fi
+    case "$gpu_shorthand" in
+        "on" | "tiny")
+            gpu=${gpu// Rev\. ?}
+            gpu=${gpu//AMD*\/ATI\]/AMD}
+            gpu=${gpu// Tahiti}
+            gpu=${gpu// PRO}
+            gpu=${gpu// OEM}
+            gpu=${gpu// Mars}
+            gpu=${gpu// Series}
+            gpu=${gpu// Controller}
+            gpu=${gpu/\/*}
+
+            case "$gpu_shorthand" in
+                "tiny")
+                    gpu=${gpu/Graphics }
+                    gpu=${gpu/GeForce }
+                    gpu=${gpu/Radeon }
+                ;;
+            esac
+        ;;
+    esac
 
     gpu="${gpu}${count}"
 }
@@ -1150,6 +1180,29 @@ getsong () {
         song="$(mocp -Q "%artist - %song" 2>/dev/null)"
         state="$(mocp -Q "%state" 2>/dev/null)"
 
+    elif pgrep "spotify" >/dev/null 2>&1; then
+        case "$os" in
+            "Linux")
+                # This command is way too long
+                song="$(\
+                    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
+                    org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
+                    awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
+                    awk -F '"' '/artist|title/ {printf $2 " - "}'
+                )"
+                song=${song% - }
+                song=${song/'('*}
+                song=${song//'['*}
+            ;;
+        esac
+    elif [ -n "$(ps aux | awk '!(/awk/ || /Helper/) && /iTunes/')" ]; then
+        song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " name of current track as string')"
+        state="$(osascript -e 'tell application "iTunes" to player state as string')"
+
+    elif [ -n "$(ps aux | awk '!(/awk/) && /spotify/')" ]; then
+        song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
+        state="$(osascript -e 'tell application "Spotify" to player state as string')"
+
     else
         song="Unknown"
     fi
@@ -1159,7 +1212,7 @@ getsong () {
             song="Paused"
         ;;
 
-        "stopped" | "STOP" | "")
+        "stopped" | "STOP")
             song="Stopped"
         ;;
     esac
@@ -1276,7 +1329,7 @@ getstyle () {
                 fi
             ;;
 
-            "Cinnamon")
+            *"Cinnamon")
                 if type -p gsettings >/dev/null 2>&1; then
                     gtk3theme=$(gsettings get org.cinnamon.desktop.interface $gsettings)
                     gtk3theme=${gtk3theme//"'"}
@@ -1407,12 +1460,12 @@ getfont () {
 getdisk () {
     # df flags
     case "$os" in
-        "Linux" | "Windows") df_flags="-h --total" ;;
-        "Mac OS X") df_flags="-H /" ;;
+        "Linux" | "Windows") df_flags="-h -l --total" ;;
+        "Mac OS X") df_flags="-H / -l" ;;
 
         *"BSD")
             case "$os" in
-                "FreeBSD") df_flags="-h -c" ;;
+                "FreeBSD") df_flags="-h -c -l" ;;
                 *) disk="Unknown"; return ;;
             esac
         ;;
@@ -1594,12 +1647,27 @@ getbirthday () {
     case "$os" in
         "Linux")
             birthday="$(ls -alct --full-time / | awk '/lost\+found/ {printf  $6 " " $7}')"
-            date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
+            date_cmd="$(date -d"$birthday" +"$birthday_format")"
         ;;
 
         "Mac OS X")
-            birthday="$(ls -alctT /var/log/CDIS.custom | awk '{printf $6 " " $7 " " $9 " " $8}')"
-            date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
+            birthday="$(ls -lUT /var/log/install.log | awk '{printf $6 " " $7 " " $9 " " $8}')"
+
+            # Split the string into Date + time
+            time=${birthday/*???? }
+            birthday=${birthday/$time}
+
+            case "${time/:*}" in
+                0? | 10 | 11)
+                    time+=" AM"
+                ;;
+
+                *)
+                    time+=" PM"
+                ;;
+            esac
+            birthday+="$time"
+            birthday_shorthand="on"
         ;;
 
         *"BSD")
@@ -1611,7 +1679,7 @@ getbirthday () {
 
                 "FreeBSD"*)
                     birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
-                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" "+%a %d %b %Y %l:%M %p")"
+                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" +"$birthday_format")"
                 ;;
 
                 "NetBSD"*)
@@ -1627,7 +1695,7 @@ getbirthday () {
 
         "Windows")
             birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
-            date_cmd="$(date -d"$birthday" "+%a %d %b %Y %l:%M %p")"
+            date_cmd="$(date -d"$birthday" +"$birthday_format")"
         ;;
 
         *)
@@ -1637,13 +1705,11 @@ getbirthday () {
     esac
 
     # Strip seconds from time output
-    birthday=${birthday%:*}
+    birthday=${birthday/:?? / }
 
     # Pretty output
-    if [ "$birthday_shorthand" == "off" ]; then
-        birthday="$date_cmd"
-        birthday=${birthday/  / }
-    fi
+    [ "$birthday_shorthand" == "off" ] && \
+        birthday="${date_cmd/  / }"
 
     # Toggle showing the time
     [ "$birthday_time" == "off" ] && \
@@ -2060,16 +2126,25 @@ prin () {
 # Stdout {{{
 
 stdout () {
+    # Read args early for the separator
+    stdout_separator_flag="$(awk -F '--stdout_separator ' '{printf $2}' <<< "${args[@]}")"
+    stdout_separator_flag=${stdout_separator_flag/ '--'*}
+
+    [ ! -z "$stdout_separator_flag" ] && \
+        stdout_separator="$stdout_separator_flag"
+
     for func in "${args[@]}"; do
         case "$func" in
             "--"*) break ;;
             *)
                 "get$func" 2>/dev/null
                 eval output="\$$func"
-                printf "%s" "$output  "
+                stdout+="${output}${stdout_separator}"
             ;;
         esac
     done
+
+    printf "%s" "${stdout%%${stdout_separator}}"
     exit
 }
 
@@ -2102,7 +2177,7 @@ colors () {
             setcolors 3 2 4 5 7
         ;;
 
-        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"*)
+        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"*)
             setcolors 4 5 7
         ;;
 
@@ -2124,7 +2199,7 @@ colors () {
             setcolors 7 4 1
         ;;
 
-        "Gentoo"* | "Funtoo"*)
+        "Gentoo"* | "Funtoo"* | "SteamOS"*)
             setcolors 7 5
         ;;
 
@@ -2235,6 +2310,10 @@ setcolors () {
         colon_color="\033[38;5;${colors[4]}m"
         info_color="\033[38;5;${colors[5]}m"
     fi
+}
+
+color () {
+    printf "%b%s" "\033[38;5;${1}m"
 }
 
 
@@ -2372,9 +2451,11 @@ usage () { cat << EOF
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
                                 NOTE: This only support Linux with cpufreq.
+    --cpu_shorthand type        Shorten the output of CPU
+                                Possible values: name, speed, tiny, on, off
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
-    --gpu_shorthand on/off      Shorten the output of GPU
+    --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
@@ -2386,13 +2467,13 @@ usage () { cat << EOF
     --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
+    --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
-    Text Colors:
-    --colors x x x x x x        Changes the text colors in this order:
-                                title, @, underline, subtitle, colon, info
 
     Text Formatting:
-    --underline_char char       Character to use when underlineing title
+    --colors x x x x x x        Changes the text colors in this order:
+                                title, @, underline, subtitle, colon, info
+    --underline_char char       Character to use when underlining title
     --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
     --prompt_height num         Set this to your prompt height to fix issues with
@@ -2448,7 +2529,7 @@ usage () { cat << EOF
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
                                 distro, /path/to/ascii
-    --ascii_color num           Color to print the ascii art
+    --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
 
@@ -2456,6 +2537,7 @@ usage () { cat << EOF
     --stdout info info          Launch neofetch in stdout mode which prints the info
                                 in a plain-text format that you can use with
                                 lemonbar etc.
+    --stdout_separator string   String to use as a separator in stdout mode.
 
 
     Screenshot:
@@ -2488,6 +2570,7 @@ while [ "$1" ]; do
         --speed_type) speed_type="$2" ;;
         --kernel_shorthand) kernel_shorthand="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
+        --cpu_shorthand) cpu_shorthand="$2" ;;
         --gpu_shorthand) gpu_shorthand="$2" ;;
         --gtk_shorthand) gtk_shorthand="$2" ;;
         --gtk2) gtk2="$2" ;;
@@ -2500,6 +2583,7 @@ while [ "$1" ]; do
         --song_shorthand) song_shorthand="$2" ;;
         --birthday_shorthand) birthday_shorthand="$2" ;;
         --birthday_time) birthday_time="$2" ;;
+        --birthday_format) birthday_format="$2" ;;
         --disable)
             for func in "$@"; do
                 case "$func" in
@@ -2601,7 +2685,7 @@ while [ "$1" ]; do
             unset -f bar
             case "$2" in
                 "--"* | "") echo "--stdout requires at least one argument"; exit ;;
-                *) shift; args=("$@"); config="off" stdout ;;
+                *) shift; args=("$@"); config="off"; stdout ;;
             esac
         ;;
 

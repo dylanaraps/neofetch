@@ -18,6 +18,14 @@ your distro's logo or any ascii art of your choice!
 - [Features](#features)
 - [Dependencies](#dependencies)
 - [Installation](#installation)
+    - [Arch Linux](#arch)
+    - [Gentoo / Funtoo](#gentoo--funtoo)
+    - [CRUX](#crux)
+    - [Debian / Ubuntu](#debian--ubuntu)
+    - [Fedora](#fedora)
+    - [RHEL / CentOS](#rhel--centos)
+    - [Mac OS X](#mac-os-x)
+    - [Others](#others)
 - [Post Install](#post-install)
 - [Usage](#usage)
 - [Frequently Asked Questions](#frequently-asked-questions)
@@ -66,6 +74,7 @@ your distro's logo or any ascii art of your choice!
 ### Required dependencies:
 
 - `Bash 3.0+`
+    - Alpine Linux: You also need `ncurses`.
 - `xprop` \[1\]
 - `procps-ng`
     - Not required on OS X
@@ -112,9 +121,19 @@ how you can workaround them.
 
 https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 
+- [Arch Linux](#arch)
+- [Gentoo / Funtoo](#gentoo--funtoo)
+- [CRUX](#crux)
+- [Debian / Ubuntu](#debian--ubuntu)
+- [Fedora](#fedora)
+- [RHEL / CentOS](#rhel--centos)
+- [Mac OS X](#mac-os-x)
+- [Others](#others)
+
+
 ### Arch
 
-1. Install **[neofetch-git](https://aur.archlinux.org/packages/neofetch-git/)** from the aur.
+1. Install **[neofetch](https://aur.archlinux.org/packages/neofetch/)** or **[neofetch-git](https://aur.archlinux.org/packages/neofetch-git/)** from the aur.
 
 
 ### Gentoo / Funtoo
@@ -134,11 +153,12 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 1. Install git and the git ports(8) driver
     - `sudo prt-get depinst git`
 2. Add the 3rd party repo
-    - `sudo wget -O /etc/ports/arcetera.git https://git.io/vgNJ6`
+    - `sudo wget -O /etc/ports/arcetera.git https://arcetera.moe/sync`
 3. Sync the repos
     - `sudo ports -u`
 4. Install the package
     - `sudo prt-get depinst neofetch`
+
 
 ### Debian / Ubuntu
 
@@ -150,6 +170,28 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
     - `curl -L https://bintray.com/user/downloadSubjectPublicKey?username=bintray -o Release-neofetch.key && sudo apt-key add Release-neofetch.key && rm Release-neofetch.key && sudo apt-get update`
 4. Install the package
     - `sudo apt-get install neofetch`
+
+
+### Fedora
+1. Make sure you have installed `dnf-plugins-core`
+    - `sudo dnf install dnf-plugins-core`
+2. Enable COPR repository
+    - `sudo dnf copr enable konimex/neofetch`
+3. Install the package
+    - `sudo dnf install neofetch`
+
+### RHEL / CentOS
+
+1. Change your working directory to `/etc/yum.repos.d`
+    - `cd /etc/yum.repos.d`
+2. Fetch the repo file
+    - `wget https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo`
+3. Install the package
+    - `sudo yum install neofetch`
+
+### Mac OS X
+1. Install `neofetch` with Homebrew
+    - `brew install neofetch`
 
 
 ### Others
@@ -247,9 +289,11 @@ alias fetch2="fetch \
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
                                 NOTE: This only support Linux with cpufreq.
+    --cpu_shorthand type        Shorten the output of CPU
+                                Possible values: name, speed, tiny, on, off
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
-    --gpu_shorthand on/off      Shorten the output of GPU
+    --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
@@ -261,13 +305,13 @@ alias fetch2="fetch \
     --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
+    --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
-    Text Colors:
-    --colors x x x x x x        Changes the text colors in this order:
-                                title, @, underline, subtitle, colon, info
 
     Text Formatting:
-    --underline_char char       Character to use when underlineing title
+    --colors x x x x x x        Changes the text colors in this order:
+                                title, @, underline, subtitle, colon, info
+    --underline_char char       Character to use when underlining title
     --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
     --prompt_height num         Set this to your prompt height to fix issues with
@@ -323,7 +367,7 @@ alias fetch2="fetch \
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
                                 distro, /path/to/ascii
-    --ascii_color num           Color to print the ascii art
+    --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro\'s ascii art to print
 
 
@@ -331,9 +375,7 @@ alias fetch2="fetch \
     --stdout info info          Launch fetch in stdout mode which prints the info
                                 in a plain-text format that you can use with
                                 lemonbar etc.
-    --stdout_title on/off       Hide/Show the title in stdout mode.
     --stdout_separator string   String to use as a separator in stdout mode.
-    --stdout_subtitles on/off   Hide/Show the subtitles in stdout mode.
 
 
     Screenshot:
@@ -358,11 +400,11 @@ alias fetch2="fetch \
 
 #### How do I enable screenfetch mode?
 
-Launching the script with `--ascii distro` or setting `ascii="distro"` and `image="ascii"` <br \>
+Launching the script with `--ascii` or setting `ascii="distro"` and `image="ascii"` <br \>
 inside the config file will launch the script in "screenfetch mode". The script will<br \>
 display your distro's ascii next to the info, exactly like screenfetch.
 
-**NOTE:** If you don't have `w3m-img` or `imagemagick` installed screenfetch mode will be<br \>
+**NOTE:** If you **don't** have `w3m-img` or `imagemagick` installed screenfetch mode will be<br \>
 used automatically
 
 ![arch](http://i.imgur.com/uCMjgf6.png)
@@ -454,7 +496,7 @@ Thanks to:
 
 - [Screenfetch](https://github.com/KittyKatt/screenFetch):
     - I've used some snippets as a base for a few functions in this script.
-    - I've used the ascii art from here.
+    - Most of the ascii art.
 - [ufetch](https://github.com/jschx/ufetch): Tiny ascii logos
 - [@metakirby5](https://github.com/metakirby5): Providing great feedback as well as ideas for the script.
 - [@jrgz](https://github.com/jrgz): Helping me test the Mac OS X version.
