@@ -112,6 +112,41 @@ Width of color blocks
 .B \--block_range 'start' 'end'
 Range of colors to print as blocks
 
+.SH PROGRESS BARS
+.TP
+.B \--progress_char 'char'
+Character to use when drawing progress bars.
+.TP
+.B \--progress_length 'num'
+Length in spaces to make the progress bars.
+.TP
+.B \--progress_colors 'num' 'num'
+Colors to make the progress bar.
+.br
+Set in this order: elapsed, total
+.TP
+.B \--cpu_display 'mode1' 'mode2'
+Which shorthand to use and how CPU usage should be printed
+.br
+mode1 takes: name, speed, tiny, on, off
+.br
+mode2 takes: info, bar, infobar, barinfo
+.TP
+.B \--memory_display 'mode'
+Which way should the memory progress bar be added
+.br
+Takes: bar, infobar, barinfo
+.TP
+.B \--battery_display 'mode'
+Which way should the battery progress bar be added
+.br
+Takes: bar, infobar, barinfo
+.TP
+.B \--disk_display mode
+Which way should the disk progress bar be added
+.br
+Takes: bar, infobar, barinfo
+
 .SH IMAGE
 .TP
 .B \--image 'type'
@@ -133,7 +168,8 @@ Where to display the image: (Left/Right)
 .TP
 .B \--crop_mode 'mode'
 Which crop mode to use
-.br Takes the values: normal, fit, fill
+.br
+Takes the values: normal, fit, fill
 .TP
 .B \--crop_offset 'value'
 Change the crop offset for normal mode.
