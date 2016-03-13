@@ -284,6 +284,7 @@ alias fetch2="fetch \
                                 NOTE: You can supply multiple args. eg.
                                 'fetch --disable cpu gpu disk shell'
     --osx_buildversion on/off   Hide/Show Mac OS X build version.
+    --osx_codename on/off       Hide/Show Mac OS X codename.
     --os_arch on/off            Hide/Show Windows architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
