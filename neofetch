@@ -469,9 +469,8 @@ case "$os" in
 
     "Mac OS X")
         osx_version=$(sw_vers -productVersion)
-        osx_version=${osx_version%.*}
 
-        case "$osx_version" in
+        case "${osx_version%.*}" in
             "10.4") codename="Mac OS X Tiger" ;;
             "10.5") codename="Mac OS X Leopard" ;;
             "10.6") codename="Mac OS X Snow Leopard" ;;
