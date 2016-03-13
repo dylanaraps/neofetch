@@ -465,7 +465,6 @@ case "$os" in
 
     "Mac OS X")
         osx_version=$(sw_vers -productVersion)
-        osx_version="10.11.3"
 
         case "$osx_version" in
             "10.4."*) osx_codename="Mac OS X Tiger" ;;
