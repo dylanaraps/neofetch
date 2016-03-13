@@ -21,6 +21,7 @@ printinfo () {
 
     info "OS" distro
     info "Kernel" kernel
+    info "Codename" osx_codename
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
@@ -61,6 +62,10 @@ kernel_shorthand="on"
 # Mac OS X hide/show build version
 # --osx_buildversion on/off
 osx_buildversion="on"
+
+# Mac OS X hide/show codename
+# --osx_codename on/off
+codename="on"
 
 # Show 'x86_64' and 'x86' in 'Distro:' output.
 # --os_arch on/off

@@ -43,6 +43,7 @@ printinfo () {
 
     info "OS" distro
     info "Kernel" kernel
+    info "Codename" osx_codename
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
@@ -83,6 +84,10 @@ kernel_shorthand="on"
 # Mac OS X hide/show build version
 # --osx_buildversion on/off
 osx_buildversion="on"
+
+# Mac OS X hide/show codename
+# --osx_codename on/off
+codename="on"
 
 # Show 'x86_64' and 'x86' in 'Distro:' output.
 # --os_arch on/off
@@ -525,6 +530,25 @@ getkernel() {
         "on")  kernel="$(uname -r)" ;;
         "off") kernel="$(uname -srm)" ;;
     esac
+}
+
+# }}}
+
+# Codename {{{
+
+getosx_codename() {
+    if [ "$codename" == "on" ]; then
+        case "$kernel" in
+            *"8."*) osx_codename="Mac OS X Tiger" ;;
+            *"9."*) osx_codename="Mac OS X Leopard" ;;
+            *"10."*) osx_codename="Mac OS X Snow Leopard" ;;
+            *"11."*) osx_codename="Mac OS X Lion" ;;
+            *"12."*) osx_codename="OS X Mountain Lion" ;;
+            *"13."*) osx_codename="OS X Mavericks" ;;
+            *"14."*) osx_codename="OS X Yosemite" ;;
+            *"15."*) osx_codename="OS X El Capitan" ;;
+        esac
+    fi
 }
 
 # }}}
@@ -2446,6 +2470,7 @@ usage () { cat << EOF
                                 NOTE: You can supply multiple args. eg.
                                 'neofetch --disable cpu gpu disk shell'
     --osx_buildversion on/off   Hide/Show Mac OS X build version.
+    --osx_codename on/off       Hide/Show Mac OS X codename.
     --os_arch on/off            Hide/Show Windows architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -2567,6 +2592,7 @@ while [ "$1" ]; do
         # Info
         --os_arch) os_arch="$2" ;;
         --osx_buildversion) osx_buildversion="$2" ;;
+        --osx_codename) codename="$2" ;;
         --speed_type) speed_type="$2" ;;
         --kernel_shorthand) kernel_shorthand="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
