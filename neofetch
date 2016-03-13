@@ -464,8 +464,23 @@ case "$os" in
     ;;
 
     "Mac OS X")
-        distro="Mac OS X $(sw_vers -productVersion)"
-        [ "$osx_buildversion" == "on" ] && distro+=" $(sw_vers -buildVersion)"
+        osx_version=$(sw_vers -productVersion)
+        osx_version="10.11.3"
+
+        case "$osx_version" in
+            "10.4."*) osx_codename="Mac OS X Tiger" ;;
+            "10.5."*) osx_codename="Mac OS X Leopard" ;;
+            "10.6."*) osx_codename="Mac OS X Snow Leopard" ;;
+            "10.7."*) osx_codename="Mac OS X Lion" ;;
+            "10.8."*) osx_codename="OS X Mountain Lion" ;;
+            "10.9."*) osx_codename="OS X Mavericks" ;;
+            "10.10."*) osx_codename="OS X Yosemite" ;;
+            "10.11."*) osx_codename="OS X El Capitan" ;;
+            *) distro="Mac OS X $osx_version" ;;
+        esac
+        distro="$osx_codename $osx_version"
+
+        [ "$osx_buildversion" == "on" ] && distro+="$(sw_vers -buildVersion)"
     ;;
 
     "OpenBSD")
@@ -2209,8 +2224,9 @@ colors () {
             setcolors 4 8
         ;;
 
-        "Mac"* | "Manjaro"* | "Deepin"*)
+        *"OS X"* )
             setcolors 2 3 1 1 5 4
+            ascii_distro="mac"
         ;;
 
         "OpenMandriva"*)
@@ -2242,7 +2258,7 @@ colors () {
             setcolors 3 3 6 1 8
         ;;
 
-        "OpenSuse"*)
+        "OpenSuse"* | "Manjaro"* | "Deepin"*)
             setcolors 2 7
         ;;
 
@@ -2595,6 +2611,11 @@ while [ "$1" ]; do
                 esac
             done
         ;;
+        --osx_codename)
+            case "$2" in
+                "off") distro=${distro/${osx_codename}/Mac OS X} ;;
+            esac
+        ;;
 
         # Text Colors
         --colors)
@@ -2779,7 +2800,6 @@ fi
 if [ "$scrot" == "on" ]; then
     takescrot
 fi
-
 
 # }}}
 
