@@ -84,6 +84,10 @@ kernel_shorthand="on"
 # --osx_buildversion on/off
 osx_buildversion="on"
 
+# Mac OS X hide/show codename
+# --osx_codename on/off
+osx_codename="on"
+
 # Show 'x86_64' and 'x86' in 'Distro:' output.
 # --os_arch on/off
 os_arch="on"
@@ -467,17 +471,17 @@ case "$os" in
         osx_version=$(sw_vers -productVersion)
 
         case "$osx_version" in
-            "10.4."*) osx_codename="Mac OS X Tiger" ;;
-            "10.5."*) osx_codename="Mac OS X Leopard" ;;
-            "10.6."*) osx_codename="Mac OS X Snow Leopard" ;;
-            "10.7."*) osx_codename="Mac OS X Lion" ;;
-            "10.8."*) osx_codename="OS X Mountain Lion" ;;
-            "10.9."*) osx_codename="OS X Mavericks" ;;
-            "10.10."*) osx_codename="OS X Yosemite" ;;
-            "10.11."*) osx_codename="OS X El Capitan" ;;
-            *) distro="Mac OS X $osx_version" ;;
+            "10.4."*) codename="Mac OS X Tiger" ;;
+            "10.5."*) codename="Mac OS X Leopard" ;;
+            "10.6."*) codename="Mac OS X Snow Leopard" ;;
+            "10.7."*) codename="Mac OS X Lion" ;;
+            "10.8."*) codename="OS X Mountain Lion" ;;
+            "10.9."*) codename="OS X Mavericks" ;;
+            "10.10."*) codename="OS X Yosemite" ;;
+            "10.11."*) codename="OS X El Capitan" ;;
+            *) codename="Mac OS X" ;;
         esac
-        distro="$osx_codename $osx_version"
+        distro="$codename $osx_version"
 
         [ "$osx_buildversion" == "on" ] && distro+=" $(sw_vers -buildVersion)"
     ;;
@@ -2584,6 +2588,7 @@ while [ "$1" ]; do
         # Info
         --os_arch) os_arch="$2" ;;
         --osx_buildversion) osx_buildversion="$2" ;;
+        --osx_codename) osx_codename="$2" ;;
         --speed_type) speed_type="$2" ;;
         --kernel_shorthand) kernel_shorthand="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
@@ -2609,11 +2614,6 @@ while [ "$1" ]; do
                     *) unset -f "get$func" ;;
                 esac
             done
-        ;;
-        --osx_codename)
-            case "$2" in
-                "off") distro=${distro/${osx_codename}/Mac OS X} ;;
-            esac
         ;;
 
         # Text Colors
@@ -2725,6 +2725,16 @@ while [ "$1" ]; do
     shift
 done
 
+
+# }}}
+
+
+# OS overides {{{
+
+# Overide OS X codename
+case "$osx_codename" in
+    "off") distro=${distro/${codename}/Mac OS X} ;;
+esac
 
 # }}}
 

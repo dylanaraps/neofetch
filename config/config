@@ -62,6 +62,10 @@ kernel_shorthand="on"
 # --osx_buildversion on/off
 osx_buildversion="on"
 
+# Mac OS X hide/show codename
+# --osx_codename on/off
+osx_codename="on"
+
 # Show 'x86_64' and 'x86' in 'Distro:' output.
 # --os_arch on/off
 os_arch="on"
