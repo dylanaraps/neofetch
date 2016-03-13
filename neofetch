@@ -84,6 +84,10 @@ kernel_shorthand="on"
 # --osx_buildversion on/off
 osx_buildversion="on"
 
+# Mac OS X hide/show codename
+# --osx_codename on/off
+osx_codename="on"
+
 # Show 'x86_64' and 'x86' in 'Distro:' output.
 # --os_arch on/off
 os_arch="on"
@@ -464,7 +468,25 @@ case "$os" in
     ;;
 
     "Mac OS X")
-        distro="Mac OS X $(sw_vers -productVersion)"
+        osx_version=$(sw_vers -productVersion)
+
+        case "$osx_codename" in
+            "on")
+                case "$osx_version" in
+                    "10.4."*) distro="Mac OS X Tiger $osx_version" ;;
+                    "10.5."*) distro="Mac OS X Leopard $osx_version" ;;
+                    "10.6."*) distro="Mac OS X Snow Leopard $osx_version" ;;
+                    "10.7."*) distro="Mac OS X Lion $osx_version" ;;
+                    "10.8."*) distro="OS X Mountain Lion $osx_version" ;;
+                    "10.9."*) distro="OS X Mavericks $osx_version" ;;
+                    "10.10."*) distro="OS X Yosemite $osx_version" ;;
+                    "10.11."*) distro="OS X El Capitan $osx_version" ;;
+                    *) distro="Mac OS X $osx_version" ;;
+                esac
+                ;;
+            *) distro="Mac OS X $osx_version" ;;
+        esac
+
         [ "$osx_buildversion" == "on" ] && distro+=" $(sw_vers -buildVersion)"
     ;;
 
@@ -2448,6 +2470,7 @@ usage () { cat << EOF
                                 NOTE: You can supply multiple args. eg.
                                 'neofetch --disable cpu gpu disk shell'
     --osx_buildversion on/off   Hide/Show Mac OS X build version.
+    --osx_codename on/off       Hide/Show Mac OS X codename.
     --os_arch on/off            Hide/Show Windows architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -2569,6 +2592,7 @@ while [ "$1" ]; do
         # Info
         --os_arch) os_arch="$2" ;;
         --osx_buildversion) osx_buildversion="$2" ;;
+        --osx_codename) osx_codename="$2" ;;
         --speed_type) speed_type="$2" ;;
         --kernel_shorthand) kernel_shorthand="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
@@ -2781,4 +2805,3 @@ fi
 
 
 # }}}
-
