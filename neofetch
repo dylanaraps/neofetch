@@ -479,7 +479,7 @@ case "$os" in
         esac
         distro="$osx_codename $osx_version"
 
-        [ "$osx_buildversion" == "on" ] && distro+="$(sw_vers -buildVersion)"
+        [ "$osx_buildversion" == "on" ] && distro+=" $(sw_vers -buildVersion)"
     ;;
 
     "OpenBSD")
