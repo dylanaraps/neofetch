@@ -1509,18 +1509,16 @@ getdisk () {
 
     if [[ "$disk_used" == *"T" ]]; then
         disk_used=$(printf "%s\n" "${disk_used/T} * 1000" | bc)
-        disk_used=${disk_used/'.'*}
     fi
 
     if [[ "$disk_total" == *"T" ]]; then
         disk_total=$(printf "%s\n" "${disk_total/T} * 1000" | bc)
-        disk_total=${disk_total/'.'*}
     fi
 
     case "$disk_display" in
-        "bar") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
-        "infobar") disk+=" $(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
-        "barinfo") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}") $disk" ;;
+        "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "infobar") disk+=" $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
     esac
 }
 
