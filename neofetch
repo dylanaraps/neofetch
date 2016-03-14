@@ -1505,9 +1505,21 @@ getdisk () {
 
     # Add info bar
     disk_used=${disk_used/G}
-    disk_used=${disk_used/T}
     disk_total=${disk_total/G}
-    disk_total=${disk_total/T}
+
+    if [[ "$disk_used" == *"T" ]]; then
+        touch "terabyte_used"
+        disk_used=${disk_used/T}
+        disk_used=$(echo "${disk_used} * 1000" | bc)
+        disk_used=${disk_used/'.'*}
+    fi
+
+    if [[ "$disk_total" == *"T" ]]; then
+        touch "terabyte_total"
+        disk_total=${disk_total/T}
+        disk_total=$(echo "${disk_total} * 1000" | bc)
+        disk_total=${disk_total/'.'*}
+    fi
 
     case "$disk_display" in
         "bar") disk="$(bar "${disk_used/'.'}" "${disk_total/'.'}")" ;;
