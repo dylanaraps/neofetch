@@ -1586,7 +1586,7 @@ getbattery () {
             battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
             battery0now="${battery0now/ Wh*}"
 
-            battery="$(echo "100 * $battery0now / $battery0full" | bc)%"
+            battery="$(printf "%s\n" "100 * $battery0now / $battery0full" | bc)%"
         ;;
 
         "Mac OS X")
@@ -2707,7 +2707,7 @@ while [ "$1" ]; do
             unset info_color colors
             unset -f bar
             case "$2" in
-                "--"* | "") echo "--stdout requires at least one argument"; exit ;;
+                "--"* | "") printf "%s\n" "--stdout requires at least one argument"; exit ;;
                 *) shift; args=("$@"); config="off"; stdout ;;
             esac
         ;;
