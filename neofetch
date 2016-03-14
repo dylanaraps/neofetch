@@ -1508,14 +1508,12 @@ getdisk () {
     disk_total=${disk_total/G}
 
     if [[ "$disk_used" == *"T" ]]; then
-        disk_used=${disk_used/T}
-        disk_used=$(echo "${disk_used} * 1000" | bc)
+        disk_used=$(echo "${disk_used/T} * 1000" | bc)
         disk_used=${disk_used/'.'*}
     fi
 
     if [[ "$disk_total" == *"T" ]]; then
-        disk_total=${disk_total/T}
-        disk_total=$(echo "${disk_total} * 1000" | bc)
+        disk_total=$(echo "${disk_total/T} * 1000" | bc)
         disk_total=${disk_total/'.'*}
     fi
 
