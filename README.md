@@ -188,6 +188,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
     - `wget https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo`
 3. Install the package
     - `sudo yum install neofetch`
+* NOTE: This will only work in RHEL/CentOS 7
 
 ### Mac OS X
 1. Install `neofetch` with Homebrew
