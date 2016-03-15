@@ -995,6 +995,7 @@ getgpu () {
                     gpu=${gpu/Processor }
                     gpu=${gpu/ Mobile}
                     gpu=${gpu/ Express}
+                    gpu=${gpu/ Controller}
                     gpu=${gpu/Sky }
                     gpu=${gpu/Lake }
 
