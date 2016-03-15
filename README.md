@@ -293,6 +293,7 @@ alias fetch2="fetch \
                                 NOTE: This only support Linux with cpufreq.
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
+    --cpu_cores on/off          Whether or not to display the number of CPU cores
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)

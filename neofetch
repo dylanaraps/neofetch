@@ -125,6 +125,10 @@ speed_type="max"
 cpu_shorthand="off"
 cpu_display="off"
 
+# CPU Cores
+# Display CPU cores in output
+# --cpu_cores on/off
+cpu_cores="on"
 
 # GPU
 
@@ -849,8 +853,6 @@ getcpu () {
             speed=${speed:0:1}.${speed:1}
 
             cpu="$cpu @ ${speed}GHz"
-
-            # Get cpu cores
             cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
         ;;
 
@@ -875,8 +877,6 @@ getcpu () {
                         "FreeBSD"*) speed=$(sysctl -n hw.clockrate) ;;
                     esac
                     speed=$((speed / 100))
-
-                    # Get cpu cores
                     cores=$(sysctl -n hw.ncpu)
                 ;;
 
@@ -897,8 +897,6 @@ getcpu () {
                         "NetBSD"*) speed=$((speed / 10000)) ;;
                         "Windows"*) speed=$((speed / 100000)) ;;
                     esac
-
-                    # Get cpu cores
                     cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
                 ;;
             esac
@@ -923,6 +921,10 @@ getcpu () {
     cpu=${cpu// Six-Core}
     cpu=${cpu// Eight-Core}
     cpu=${cpu// with Radeon HD Graphics}
+
+    # Add cpu cores to output
+    [ "$cpu_cores" == "on" ] && \
+        cpu=${cpu/@/\(${cores}\) @}
 
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
@@ -2489,6 +2491,7 @@ usage () { cat << EOF
                                 NOTE: This only support Linux with cpufreq.
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
+    --cpu_cores on/off          Whether or not to display the number of CPU cores
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)

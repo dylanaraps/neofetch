@@ -103,6 +103,11 @@ speed_type="max"
 cpu_shorthand="off"
 cpu_display="off"
 
+# CPU Cores
+# Display CPU cores in output
+# --cpu_cores on/off
+cpu_cores="on"
+
 
 # GPU
 
