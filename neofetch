@@ -469,6 +469,7 @@ case "$os" in
 
     "Mac OS X")
         osx_version=$(sw_vers -productVersion)
+        osx_build=$(sw_vers -buildVersion)
 
         case "${osx_version%.*}" in
             "10.4") codename="Mac OS X Tiger" ;;
@@ -481,9 +482,7 @@ case "$os" in
             "10.11") codename="OS X El Capitan" ;;
             *) codename="Mac OS X" ;;
         esac
-        distro="$codename $osx_version"
-
-        [ "$osx_buildversion" == "on" ] && distro+=" $(sw_vers -buildVersion)"
+        distro="$codename $osx_version $osx_build"
     ;;
 
     "OpenBSD")
@@ -2741,6 +2740,10 @@ case "$osx_codename" in
     "off") distro=${distro/${codename}/Mac OS X} ;;
 esac
 
+case "$osx_buildversion" in
+    "off") distro=${distro/ ${osx_build}} ;;
+esac
+
 # }}}
 
 
@@ -2815,4 +2818,3 @@ if [ "$scrot" == "on" ]; then
 fi
 
 # }}}
-
