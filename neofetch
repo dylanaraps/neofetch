@@ -851,7 +851,7 @@ getcpu () {
             cpu="$cpu @ ${speed}GHz"
 
             # Get cpu cores
-            cores=$(nproc)
+            cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
         ;;
 
         "Mac OS X")
@@ -897,6 +897,9 @@ getcpu () {
                         "NetBSD"*) speed=$((speed / 10000)) ;;
                         "Windows"*) speed=$((speed / 100000)) ;;
                     esac
+
+                    # Get cpu cores
+                    cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
                 ;;
             esac
 
