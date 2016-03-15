@@ -2607,6 +2607,7 @@ while [ "$1" ]; do
         --os_arch) os_arch="$2" ;;
         --osx_buildversion) osx_buildversion="$2" ;;
         --osx_codename) osx_codename="$2" ;;
+        --cpu_cores) cpu_cores="$2" ;;
         --speed_type) speed_type="$2" ;;
         --kernel_shorthand) kernel_shorthand="$2" ;;
         --uptime_shorthand) uptime_shorthand="$2" ;;
