@@ -849,11 +849,15 @@ getcpu () {
             speed=${speed:0:1}.${speed:1}
 
             cpu="$cpu @ ${speed}GHz"
+
+            # Get cpu cores
+            cores=$(nproc)
         ;;
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
             cpu=${cpu/    }
+            cores=$(sysctl -n hw.ncpu)
         ;;
 
         *"BSD" | "Windows")
@@ -871,6 +875,9 @@ getcpu () {
                         "FreeBSD"*) speed=$(sysctl -n hw.clockrate) ;;
                     esac
                     speed=$((speed / 100))
+
+                    # Get cpu cores
+                    cores=$(sysctl -n hw.ncpu)
                 ;;
 
                 "NetBSD"* | "Windows"*)
@@ -888,7 +895,7 @@ getcpu () {
 
                     case "$distro" in
                         "NetBSD"*) speed=$((speed / 10000)) ;;
-                        "WindowS"*) speed=$((speed / 100000)) ;;
+                        "Windows"*) speed=$((speed / 100000)) ;;
                     esac
                 ;;
             esac
@@ -944,9 +951,9 @@ getcpu () {
 
     case "$cpu_display" in
         "info") prin "${subtitle} Usage: ${cpu_usage}" ;;
-        "bar") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" 100)" ;;
-        "infobar") prin "${subtitle} Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" 100)" ;;
-        "barinfo") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" 100) ${cpu_usage}" ;;
+        "bar") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} )))" ;;
+        "infobar") prin "${subtitle} Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} )))" ;;
+        "barinfo") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} ))) ${cpu_usage}" ;;
     esac
     unset cpu
 }
