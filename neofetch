@@ -1399,6 +1399,9 @@ getstyle () {
 
             elif [ -f "/etc/gtk-2.0/gtkrc" ]; then
                 gtk2theme=$(grep "^[^#]*$name" /etc/gtk-2.0/gtkrc)
+            
+            elif [ -f "/usr/share/gtk-2.0/gtkrc" ]; then
+                gtk2theme=$(grep "^[^#]*$name" /usr/share/gtk-2.0/gtkrc)
             fi
 
             gtk2theme=${gtk2theme/${name}*=}
@@ -1414,8 +1417,11 @@ getstyle () {
                 gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
                 gtk3theme=${gtk3theme//\'}
 
-            else
+            elif [ -f "/etc/gtk-3.0/settings.ini" ]; then
                 gtk3theme=$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)
+
+            elif [ -f "/usr/share/gtk-3.0/settings.ini" ]; then
+                gtk3theme=$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)
             fi
 
             gtk3theme=${gtk3theme/${name}*=}
