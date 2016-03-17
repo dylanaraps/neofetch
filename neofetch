@@ -959,8 +959,9 @@ getcpu () {
         "bar") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} )))" ;;
         "infobar") prin "${subtitle} Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} )))" ;;
         "barinfo") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} ))) ${cpu_usage}" ;;
+        "off") ;;
     esac
-    unset cpu
+    [ "$stdout_mode" != "on" ] && unset cpu
 }
 
 # }}}
@@ -1246,7 +1247,7 @@ getsong () {
     esac
 
     # Display Artist and Title on seperate lines.
-    if [ "$song_shorthand" == "on" ]; then
+    if [ "$song_shorthand" == "on" ] && [ "$stdout_mode" != "on" ]; then
         artist="${song/ -*}"
         song=${song/$artist - }
 
@@ -1555,7 +1556,7 @@ getbattery () {
                 title="$subtitle"
 
                 # If shorthand is on, print each value on the same line
-                if [ "$battery_shorthand" == "on" ]; then
+                if [ "$battery_shorthand" == "on" ] || [ "$stdout_mode" == "on" ]; then
                     battery=${batteries[*]}
                     battery=${battery// /%, }
                     battery="${battery}%"
@@ -2725,11 +2726,12 @@ while [ "$1" ]; do
 
         # Stdout
         --stdout)
-            unset info_color colors
-            unset -f bar
+            unset info_color colors cpu_display bar prin
+            stdout_mode="on"
+            config="off"
             case "$2" in
                 "--"* | "") printf "%s\n" "--stdout requires at least one argument"; exit ;;
-                *) shift; args=("$@"); config="off"; stdout ;;
+                *) shift; args=("$@"); stdout ;;
             esac
         ;;
 
