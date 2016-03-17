@@ -1563,6 +1563,7 @@ getbattery () {
                         unset battery
 
                         # Print each battery on a separate line.
+                        index=0
                         for bat in "${batteries[@]}"; do
                             case "$battery_display" in
                                 "bar") prin "${title}${index}: $(bar ${bat/'%'} 100)" ;;
