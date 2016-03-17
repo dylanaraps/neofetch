@@ -1112,16 +1112,12 @@ getmemory () {
     case "$os" in
         "Linux")
             # Read first 3 lines
-            exec 6< /proc/meminfo
-            read -r memtotal <&6
-            read -r memfree <&6 # We don't actually use this var
-            read -r memavail <&6
-            exec 6<&-
+            mem=$(awk -F ':' '/MemTotal|MemAvailable/ {printf $2}' /proc/meminfo )
 
             # Do some substitution on each line
-            memtotal=${memtotal/MemTotal:}
+            memtotal=${mem/kB*/kB}
+            memavail=${mem/${memtotal}}
             memtotal=${memtotal/kB*}
-            memavail=${memavail/MemAvailable:}
             memavail=${memavail/kB*}
 
             memused=$((memtotal - memavail))
