@@ -457,7 +457,7 @@ case "$os" in
             distro=${distro/[[:space:]]}
 
         elif type -p crux >/dev/null 2>&1; then
-            distro="CRUX"
+            distro="$(crux)"
 
         else
             distro="$(grep -h '^NAME=' /etc/*ease)"
