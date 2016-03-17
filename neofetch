@@ -1556,7 +1556,7 @@ getbattery () {
                 title="$subtitle"
 
                 # If shorthand is on, print each value on the same line
-                if [ "$battery_shorthand" == "on" ]; then
+                if [ "$battery_shorthand" == "on" ] || [ "$stdout_mode" == "on" ]; then
                     battery=${batteries[*]}
                     battery=${battery// /%, }
                     battery="${battery}%"
