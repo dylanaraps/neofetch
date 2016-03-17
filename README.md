@@ -164,15 +164,16 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 
 1. Add the 3rd party repo
     - `echo "deb http://dl.bintray.com/dawidd6/neofetch jessie main" | sudo tee -a /etc/apt/sources.list`
-2. If you don't have curl, install it with this command
-    - `sudo apt-get install curl`
-3. Add public key and update your repos
-    - `curl -L https://bintray.com/user/downloadSubjectPublicKey?username=bintray -o Release-neofetch.key && sudo apt-key add Release-neofetch.key && rm Release-neofetch.key && sudo apt-get update`
+2. Add public key (you need to have curl installed)
+    - `curl -L "https://bintray.com/user/downloadSubjectPublicKey?username=bintray" -o Release-neofetch.key && sudo apt-key add Release-neofetch.key && rm Release-neofetch.key`
+3. Update repositories
+    - `sudo apt-get update`
 4. Install the package
     - `sudo apt-get install neofetch`
 
 
 ### Fedora
+
 1. Make sure you have installed `dnf-plugins-core`
     - `sudo dnf install dnf-plugins-core`
 2. Enable COPR repository
@@ -191,6 +192,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 * NOTE: This will only work in RHEL/CentOS 7
 
 ### Mac OS X
+
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
 
