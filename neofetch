@@ -1247,7 +1247,7 @@ getsong () {
     esac
 
     # Display Artist and Title on seperate lines.
-    if [ "$song_shorthand" == "on" ]; then
+    if [ "$song_shorthand" == "on" ] && [ "$stdout_mode" != "on" ]; then
         artist="${song/ -*}"
         song=${song/$artist - }
 
