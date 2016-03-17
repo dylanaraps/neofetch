@@ -2219,7 +2219,7 @@ colors () {
             setcolors 3 2 4 5 7
         ;;
 
-        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"*)
+        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"*)
             setcolors 4 5 7
         ;;
 
@@ -2287,7 +2287,7 @@ colors () {
             setcolors 2 7
         ;;
 
-        "PCLinuxOS"* | "Slackware"* | "KaOS")
+        "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"*)
             setcolors 4 7 1
         ;;
 
