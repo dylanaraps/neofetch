@@ -136,6 +136,11 @@ cpu_cores="on"
 # --gpu_shorthand on/off/tiny
 gpu_shorthand="on"
 
+# Resolution
+
+# Display refresh rate next to each monitor
+# --refresh_rate on/off
+refresh_rate="off"
 
 # Gtk Theme / Icons
 
@@ -1273,8 +1278,16 @@ getresolution () {
         ;;
 
         "Mac OS X")
-            resolution=$(system_profiler SPDisplaysDataType |\
-                        awk '/Resolution:/ {printf $2"x"$4" "}')
+            case "$refresh_rate" in
+                "on")
+                    resolution=$(system_profiler SPDisplaysDataType |\
+                                awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')
+                ;;
+                "off")
+                    resolution=$(system_profiler SPDisplaysDataType |\
+                                awk '/Resolution:/ {printf $2"x"$4", "}')
+                ;;
+            esac
         ;;
 
         "Windows")
@@ -1293,6 +1306,8 @@ getresolution () {
             resolution="Unknown"
         ;;
     esac
+
+    resolution=${resolution%,*}
 }
 
 # }}}
@@ -2498,6 +2513,7 @@ usage () { cat << EOF
     --cpu_cores on/off          Whether or not to display the number of CPU cores
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
+    --refresh_rate on/off       Whether to display the refresh rate of each monitor
     --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
@@ -2617,6 +2633,7 @@ while [ "$1" ]; do
         --uptime_shorthand) uptime_shorthand="$2" ;;
         --cpu_shorthand) cpu_shorthand="$2" ;;
         --gpu_shorthand) gpu_shorthand="$2" ;;
+        --refresh_rate) refresh_rate="$2" ;;
         --gtk_shorthand) gtk_shorthand="$2" ;;
         --gtk2) gtk2="$2" ;;
         --gtk3) gtk3="$2" ;;
