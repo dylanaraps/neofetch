@@ -55,7 +55,7 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
-    # info "Font" gtkfont
+    # info "Font" font
     # info "Disk" disk
     # info "Battery" battery
     # info "Song" song
