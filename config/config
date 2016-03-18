@@ -6,7 +6,7 @@
 
 # Speed up script by not using unicode
 export LC_ALL=C
-export LANG=c
+export LANG=C
 export LANGUAGE=C
 
 # Info Options {{{
@@ -368,12 +368,12 @@ scrot_cmd="scrot -c -d 3"
 # Scrot dir
 # Where to save the screenshots
 # --scrot_dir /path/to/screenshot/folder
-scrot_dir="$HOME/Pictures"
+scrot_dir="$HOME/Pictures/"
 
 # Scrot filename
 # What to name the screenshots
 # --scrot_name str
-scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
+scrot_name="neofetch-$(date +%F-%T).png"
 
 
 # }}}

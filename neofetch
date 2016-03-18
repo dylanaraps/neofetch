@@ -388,12 +388,12 @@ scrot_cmd="scrot -c -d 3"
 # Scrot dir
 # Where to save the screenshots
 # --scrot_dir /path/to/screenshot/folder
-scrot_dir="$HOME/Pictures"
+scrot_dir="$HOME/Pictures/"
 
 # Scrot filename
 # What to name the screenshots
 # --scrot_name str
-scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
+scrot_name="neofetch-$(date +%F-%T).png"
 
 
 # }}}
@@ -2052,9 +2052,8 @@ getimage () {
     img="$thumbnail_dir/$imgname"
 }
 
-scrot_path="$scrot_dir/$scrot_name"
 takescrot () {
-    $scrot_cmd "$scrot_path"
+    $scrot_cmd "${scrot_dir}${scrot_name}"
 }
 
 # }}}
@@ -2721,7 +2720,13 @@ while [ "$1" ]; do
         --ascii_logo_size) ascii_logo_size="$2" ;;
 
         # Screenshot
-        --scrot | -s) scrot="on"; [ "$2" ] && scrot_path="$2" ;;
+        --scrot | -s)
+            scrot="on"
+            if [ "$2" ]; then
+                scrot_name="${2##*/}"
+                scrot_dir="${2/$scrot_name}"
+            fi
+        ;;
         --scrot_cmd) scrot_cmd="$2" ;;
 
         # Stdout
