@@ -1268,8 +1268,18 @@ getsong () {
 getresolution () {
     case "$os" in
         "Linux" | *"BSD")
-            type -p xdpyinfo >/dev/null 2>&1 && \
+            if type -p xrandr >/dev/null 2>&1; then
+                resolution=$(xrandr --nograb --current | awk -F '*  ' '/*/ {printf $1 ", "}')
+                resolution=${resolution//??.??    }
+                resolution=${resolution//   }
+                resolution=${resolution//  / @ }
+                resolution=${resolution//\*}
+                resolution=${resolution//+}
+                resolution=${resolution//,/Hz,}
+
+            elif type -p xdpyinfo >/dev/null 2>&1; then
                 resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
+            fi
         ;;
 
         "Mac OS X")
