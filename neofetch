@@ -1659,7 +1659,10 @@ getlocalip () {
 }
 
 getpublicip () {
-    if type -p curl >/dev/null 2>&1; then
+    if type -p dig >/dev/null 2>&1; then
+        publicip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+
+    elif type -p curl >/dev/null 2>&1; then
         publicip="$(curl -w '\n' "$public_ip_host")"
 
     elif type -p wget >/dev/null 2>&1; then
