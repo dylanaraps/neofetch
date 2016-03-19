@@ -1269,13 +1269,7 @@ getresolution () {
     case "$os" in
         "Linux" | *"BSD")
             if type -p xrandr >/dev/null 2>&1; then
-                resolution=$(xrandr --nograb --current | awk -F '*  ' '/*/ {printf $1 ", "}')
-                resolution=${resolution//??.??    }
-                resolution=${resolution//   }
-                resolution=${resolution//  / @ }
-                resolution=${resolution//\*}
-                resolution=${resolution//+}
-                resolution=${resolution//,/Hz,}
+                resolution="$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}') @ $(xrandr | awk  '/*+/ {print $2}' | tr -d '*+')Hz"
 
             elif type -p xdpyinfo >/dev/null 2>&1; then
                 resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
