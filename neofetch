@@ -1573,14 +1573,17 @@ getbattery () {
                                 "bar") prin "${title}${index}: $(bar ${bat/'%'} 100)" ;;
                                 "infobar") prin "${title}${index}: ${bat}% $(bar "${bat/'%'}" 100)" ;;
                                 "barinfo") prin "${title}${index}: $(bar "${bat/'%'}" 100) ${bat}%" ;;
-                                *) prin "${title}${index}: ${bat}% " ;;
+                                *) prin "${title}${index}: ${bat}%" ;;
                             esac
                             index=$((index + 1))
                         done
                         return
                     fi
-
-                    battery="${batteries[0]}% ${power_status}"
+						if [ $power_status = "Charging" ]; then
+		                battery="${batteries[0]}% ${power_status}"
+		                else
+		                battery="${batteries[0]}%"
+		                fi
                 fi
             else
                 battery="None"
@@ -1590,7 +1593,13 @@ getbattery () {
         "BSD")
             case "$distro" in
                 "FreeBSD"*)
+            		power_status=$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')
+            		
+            		if [ $power_status = "charging" ]; then
+                    battery="$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}') $power_status"
+                    else
                     battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
+                    fi
                 ;;
 
                 "NetBSD"*)
