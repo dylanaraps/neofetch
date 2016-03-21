@@ -1580,7 +1580,7 @@ getbattery () {
                         return
                     fi
 						if [ $power_status = "Charging" ]; then
-		                battery="${batteries[0]}% ${power_status}"
+		                battery="${batteries[0]}% Charging"
 		                else
 		                battery="${batteries[0]}%"
 		                fi
@@ -1596,7 +1596,7 @@ getbattery () {
             		power_status=$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')
             		
             		if [ $power_status = "charging" ]; then
-                    battery="$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}') $power_status"
+                    battery="$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}') Charging"
                     else
                     battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
                     fi
@@ -1621,6 +1621,10 @@ getbattery () {
 
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
+            power_status="$(pmset -g batt | awk 'NR==2 {print $3}')"
+            if [ "$power_status" == "charging;" ]; then
+                battery="${battery} Charging"
+            fi
         ;;
 
         "Windows")
