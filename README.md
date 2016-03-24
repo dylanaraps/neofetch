@@ -84,13 +84,14 @@ your distro's logo or any ascii art of your choice!
 
 - Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` \[4\]
 - Thumbnail creation: `imagemagick`
+- Displaying song information from Google Play Music Desktop Player: `gpmdp` \[5\]
 
 ##### Linux / BSD
 
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc` or `cmus`
 - Resolution: `xorg-xdpyinfo`
-- Screenshot: `scrot` \[5\]
+- Screenshot: `scrot` \[6\]
 
 
 \[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
@@ -103,7 +104,9 @@ terminal emulators that don't support the xterm escape sequences we're using for
 \[4\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
 changing the config option `$image_backend` to `iterm2`.
 
-\[5\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+\[5\] This currently isn't in any repositories, see [`gpmdp-bash`](https://github.com/iandrewt/gpmdp-bash) for install instructions
+
+\[6\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and neofetch will use it instead of scrot.
 
 
