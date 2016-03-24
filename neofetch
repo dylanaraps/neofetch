@@ -1192,7 +1192,7 @@ getmemory () {
 # Song {{{
 
 getsong () {
-    if hash "mpc" >/dev/null 2>&1; then
+    if mpc version >/dev/null 2>&1; then
         song="$(mpc current 2>/dev/null)"
         state=$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)
 
