@@ -55,7 +55,7 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
-    # info "Font" gtkfont
+    # info "Font" font
     # info "Disk" disk
     # info "Battery" battery
     # info "Song" song
@@ -388,12 +388,12 @@ scrot_cmd="scrot -c -d 3"
 # Scrot dir
 # Where to save the screenshots
 # --scrot_dir /path/to/screenshot/folder
-scrot_dir="$HOME/Pictures"
+scrot_dir="$HOME/Pictures/"
 
 # Scrot filename
 # What to name the screenshots
 # --scrot_name str
-scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
+scrot_name="neofetch-$(date +%F-%T).png"
 
 
 # }}}
@@ -589,23 +589,23 @@ getuptime () {
             days=$((uptime / 86400))
 
             # Format the output like Linux's "uptime -p" cmd.
-            case "$mins" in
-                0) ;;
-                1) uptime="up $mins minute" ;;
-                *) uptime="up $mins minutes" ;;
-            esac
+            if [ "$mins" == 1 ]; then
+                uptime="up $mins minute"
+            elif [ "$mins" != 0 ]; then
+                uptime="up $mins minutes"
+            fi
 
-            case "$hours" in
-                0) ;;
-                1) uptime="up $hours hour, ${uptime/up }" ;;
-                *) uptime="up $hours hours, ${uptime/up }" ;;
-            esac
+            if [ "$hours" == 1 ]; then
+                uptime="up $hours hour, ${uptime/up }"
+            elif [ "$mins" != 0 ]; then
+                uptime="up $hours hours, ${uptime/up }"
+            fi
 
-            case "$days" in
-                0) ;;
-                1) uptime="up $days day, ${uptime/up }" ;;
-                *) uptime="up $days days, ${uptime/up }" ;;
-            esac
+            if [ "$days" == 1 ]; then
+                uptime="up $days day, ${uptime/up }"
+            elif [ "$days" != 0 ]; then
+                uptime="up $days days, ${uptime/ up}"
+            fi
         ;;
 
         "Windows")
@@ -1659,7 +1659,10 @@ getlocalip () {
 }
 
 getpublicip () {
-    if type -p curl >/dev/null 2>&1; then
+    if type -p dig >/dev/null 2>&1; then
+        publicip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+
+    elif type -p curl >/dev/null 2>&1; then
         publicip="$(curl -w '\n' "$public_ip_host")"
 
     elif type -p wget >/dev/null 2>&1; then
@@ -2052,9 +2055,8 @@ getimage () {
     img="$thumbnail_dir/$imgname"
 }
 
-scrot_path="$scrot_dir/$scrot_name"
 takescrot () {
-    $scrot_cmd "$scrot_path"
+    $scrot_cmd "${scrot_dir}${scrot_name}"
 }
 
 # }}}
@@ -2721,7 +2723,13 @@ while [ "$1" ]; do
         --ascii_logo_size) ascii_logo_size="$2" ;;
 
         # Screenshot
-        --scrot | -s) scrot="on"; [ "$2" ] && scrot_path="$2" ;;
+        --scrot | -s)
+            scrot="on"
+            if [ "$2" ]; then
+                scrot_name="${2##*/}"
+                scrot_dir="${2/$scrot_name}"
+            fi
+        ;;
         --scrot_cmd) scrot_cmd="$2" ;;
 
         # Stdout

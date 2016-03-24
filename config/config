@@ -6,7 +6,7 @@
 
 # Speed up script by not using unicode
 export LC_ALL=C
-export LANG=c
+export LANG=C
 export LANGUAGE=C
 
 # Info Options {{{
@@ -260,11 +260,9 @@ progress_color_total="8"
 # barinfo: The bar is displayed before the info.
 # off: Only the info is displayed.
 #
-# --cpu_displau bar/infobar/barinfo/off
 # --memory_display bar/infobar/barinfo/off
 # --battery_display bar/infobar/barinfo/off
 # --disk_display bar/infobar/barinfo/off
-cpu_display="off"
 memory_display="off"
 battery_display="off"
 disk_display="off"
@@ -368,12 +366,12 @@ scrot_cmd="scrot -c -d 3"
 # Scrot dir
 # Where to save the screenshots
 # --scrot_dir /path/to/screenshot/folder
-scrot_dir="$HOME/Pictures"
+scrot_dir="$HOME/Pictures/"
 
 # Scrot filename
 # What to name the screenshots
 # --scrot_name str
-scrot_name="neofetch-%Y-%m-%d-%H:%M.png"
+scrot_name="neofetch-$(date +%F-%T).png"
 
 
 # }}}
