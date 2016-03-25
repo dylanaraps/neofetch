@@ -1273,8 +1273,11 @@ getsong () {
 getresolution () {
     case "$os" in
         "Linux" | *"BSD")
-            if type -p xrandr >/dev/null 2>&1 && [ "$refresh_rate" == "on" ]; then
-                resolution=$(xrandr --nograb --current | awk 'match($0,/[0-0]{2,3}.[0-9]{2}\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')
+            if type -p xrandr >/dev/null 2>&1; then
+                case "$refresh_rate" in
+                    "on") resolution=$(xrandr --nograb --current | awk 'match($0,/[0-0]{2,3}.[0-9]{2}\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}') ;;
+                    "off") resolution=$(xrandr --nograb --current | awk '/*/ {printf $1 ", "}') ;;
+                esac 
                 resolution=${resolution//\*}
 
             elif type -p xdpyinfo >/dev/null 2>&1 && \
