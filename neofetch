@@ -1634,9 +1634,9 @@ getbattery () {
     esac
 
     case "$battery_display" in
-        "bar") battery="$(bar ${battery/'% Charging'} 100)" ;;
-        "infobar") battery="${battery/ Charging} $(bar "${battery/'% Charging'}" 100)" ;;
-        "barinfo") battery="$(bar "${battery/'% Charging'}" 100) ${battery/ Charging}" ;;
+        "bar") battery="$(bar ${battery/'%'*} 100)" ;;
+        "infobar") battery="${battery/ Charging} $(bar "${battery/'%'*}" 100)" ;;
+        "barinfo") battery="$(bar "${battery/'%'*}" 100) ${battery/ Charging}" ;;
     esac
 }
 
