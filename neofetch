@@ -1064,10 +1064,6 @@ getgpu () {
                     gpu=${gpu//[[:space:]]/ }
                     gpu=${gpu//  }
                 ;;
-
-                *)
-                    gpu="Unknown"
-                ;;
             esac
         ;;
 
