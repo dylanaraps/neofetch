@@ -295,7 +295,7 @@ disk_display="off"
 
 
 # Image Source
-# --image wall, shuffle, ascii, /path/to/img, off
+# --image wall, ascii, /path/to/img, /path/to/dir/, off
 image="wall"
 
 # Thumbnail directory
@@ -314,9 +314,6 @@ w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 # Only works with the w3m backend
 # --image_position left/right
 image_position="left"
-
-# Shuffle dir
-shuffle_dir="$HOME/Pictures/wallpapers/wash"
 
 # Crop mode
 # --crop_mode normal/fit/fill
@@ -1923,9 +1920,14 @@ getimage () {
 
     case "$image" in
         "wall") getwallpaper ;;
-        "shuffle") img="$(find "$shuffle_dir" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 | shuf -n1 -z)" ;;
         "ascii") getascii; return ;;
-        *) img="$image" ;;
+        *)
+            if [ "${image: -1}" == "/" ]; then
+                img="$(find "$image" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 | shuf -n1 -z)"
+            else
+                img="$image"
+            fi
+        ;;
     esac
 
     # Get terminal width and height
@@ -2553,11 +2555,10 @@ usage () { cat << EOF
 
     Image:
     --image type                Image source. Where and what image we display.
-                                Possible values: wall, shuffle, ascii,
-                                /path/to/img, off
+                                Possible values: wall, ascii,
+                                /path/to/img, /path/to/dir/, off
     --size 20px | --size 20%    Size to make the image, takes pixels or a percentage.
     --image_backend w3m/iterm2  Which program to use to draw images.
-    --shuffle_dir path/to/dir   Which directory to shuffle for an image.
     --image_position left/right Where to display the image: (Left/Right)
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
@@ -2692,7 +2693,6 @@ while [ "$1" ]; do
 
         --size) image_size="$2" ;;
         --image_backend) image_backend="$2" ;;
-        --shuffle_dir) shuffle_dir="$2" ;;
         --image_position) image_position="$2" ;;
         --crop_mode) crop_mode="$2" ;;
         --crop_offset) crop_offset="$2" ;;
