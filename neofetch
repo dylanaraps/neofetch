@@ -1923,7 +1923,8 @@ getimage () {
         "ascii") getascii; return ;;
         *)
             if [ "${image: -1}" == "/" ]; then
-                img="$(find "$image" -type f \( -name '*.jpg' -o -name '*.png' \) -print0 | shuf -n1 -z)"
+                files=("$image"*.png "$image"*.jpg)
+                img="$(printf "%s" "${files[RANDOM % ${#files[@]}]}")"
             else
                 img="$image"
             fi
