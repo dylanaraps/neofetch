@@ -89,7 +89,7 @@ your distro's logo or any ascii art of your choice!
 
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc` or `cmus`
-- Resolution: `xorg-xdpyinfo`
+- Resolution: `xorg-xdpyinfo` or `xrandr`
 - Screenshot: `scrot` \[5\]
 
 
