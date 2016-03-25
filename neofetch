@@ -864,6 +864,7 @@ getcpu () {
                 "OpenBSD"* | "FreeBSD"*)
                     # Get cpu name
                     cpu="$(sysctl -n hw.model)"
+                    cpu=${cpu/[0-9]\.*}
                     cpu=${cpu/ @*}
                     cpu=${cpu//  }
                     cpu=${cpu% }
