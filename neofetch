@@ -1134,7 +1134,14 @@ getmemory () {
 
         "OpenBSD" | "BSD")
             case "$distro" in
-                "OpenBSD"* | "FreeBSD"*)
+                "OpenBSD"*)
+                    mem=($(top -d 1 | awk -F ':  |/| |M' '/Memory:/ {printf $4 " " $6 " " $11 "\n"}'))
+                    memtotal=$((${mem[1]} + ${mem[2]}))
+                    memused=$((memtotal - ${mem[0]}))
+                    memory="${memused}MB / ${memtotal}MB"
+                ;;
+
+                "FreeBSD"*)
                     memtotal=$(dmesg | awk '/real mem/ {printf $5}')
                     memtotal=${memtotal/\(}
                     memtotal=${memtotal/MB\)}
