@@ -1630,7 +1630,7 @@ getbattery () {
     esac
 
     case "$battery_state" in
-        *"charging"*) battery+=" Charging" ;;
+        "charging"*) battery+=" Charging" ;;
     esac
 
     case "$battery_display" in
