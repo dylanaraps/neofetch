@@ -1555,7 +1555,7 @@ getbattery () {
                 esac
 
                 batteries=($(cat /sys/class/power_supply/BAT${battery_num}/capacity))
-                battery_status=($(cat /sys/class/power_supply/BAT${battery_num}/status))
+                battery_state=($(cat /sys/class/power_supply/BAT${battery_num}/status))
 
                 # Get the subtitle and reassign it so it doesn't change.
                 title="$subtitle"
@@ -1594,7 +1594,7 @@ getbattery () {
             case "$distro" in
                 "FreeBSD"*)
                     battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
-                    battery_status=$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')
+                    battery_state=$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')
                 ;;
 
                 "NetBSD"*)
@@ -1616,7 +1616,7 @@ getbattery () {
 
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
-            battery_status="$(pmset -g batt | awk 'NR==2 {print $3}')"
+            battery_state="$(pmset -g batt | awk 'NR==2 {print $3}')"
         ;;
 
         "Windows")
@@ -1628,7 +1628,7 @@ getbattery () {
         ;;
     esac
 
-    case "$battery_status" in
+    case "$battery_state" in
         *"charging"*) battery+=" Charging" ;;
     esac
 
