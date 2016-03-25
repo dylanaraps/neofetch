@@ -1146,10 +1146,7 @@ getmemory () {
                     memtotal=${memtotal/\(}
                     memtotal=${memtotal/MB\)}
 
-                    case "$distro" in
-                        "OpenBSD"*) memfree=$(top -d 1 | awk '/Real:/ {printf $6}') ;;
-                        "FreeBSD"*) memfree=$(top -d 1 | awk '/Mem:/ {printf $10}') ;;
-                    esac
+                    memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
                     memfree=${memfree/M}
 
                     memused=$((memtotal - memfree))
