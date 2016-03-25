@@ -1537,6 +1537,7 @@ getdisk () {
         "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
         "infobar") disk+=" $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
         "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
+        "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
     esac
 }
 
@@ -2554,7 +2555,7 @@ usage () { cat << EOF
     --battery_display mode      Which way should the battery progress bar be added
                                 Takes bar, infobar, barinfo
     --disk_display mode         Which way should the disk progress bar be added
-                                Takes bar, infobar, barinfo
+                                Takes bar, infobar, barinfo, perc
 
 
     Image:

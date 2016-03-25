@@ -347,7 +347,7 @@ alias fetch2="fetch \
     --battery_display mode      Which way should the battery progress bar be added
                                 Takes bar, infobar, barinfo
     --disk_display mode         Which way should the disk progress bar be added
-                                Takes bar, infobar, barinfo
+                                Takes bar, infobar, barinfo, perc
 
 
     Image:
