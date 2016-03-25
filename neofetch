@@ -2342,35 +2342,35 @@ colors () {
 }
 
 setcolors () {
-    c1="\033[38;5;${1}m"
-    c2="\033[38;5;${2}m"
-    c3="\033[38;5;${3}m"
-    c4="\033[38;5;${4}m"
-    c5="\033[38;5;${5}m"
-    c6="\033[38;5;${6}m"
+    c1="\033[0m\033[3${1}m"
+    c2="\033[0m\033[3${2}m"
+    c3="\033[0m\033[3${3}m"
+    c4="\033[0m\033[3${4}m"
+    c5="\033[0m\033[3${5}m"
+    c6="\033[0m\033[3${6}m"
 
     if [ "${colors[0]}" == "distro" ]; then
-        title_color="\033[38;5;${1}m"
-        at_color="\033[38;5;7m"
-        underline_color="\033[38;5;7m"
-        subtitle_color="\033[38;5;${2}m"
-        colon_color="\033[38;5;7m"
-        info_color="\033[38;5;7m"
+        title_color="\033[0m\033[3${1}m"
+        at_color="\033[0m\033[37m"
+        underline_color="\033[0m\033[37m"
+        subtitle_color="\033[0m\033[3${2}m"
+        colon_color="\033[0m\033[37m"
+        info_color="\033[0m\033[37m"
 
         # If the second color is white use the first for the subtitle
-        [ "$2" == 7 ] && subtitle_color="\033[38;5;${1}m"
+        [ "$2" == 7 ] && subtitle_color="\033[0m\033[3${1}m"
     else
-        title_color="\033[38;5;${colors[0]}m"
-        at_color="\033[38;5;${colors[1]}m"
-        underline_color="\033[38;5;${colors[2]}m"
-        subtitle_color="\033[38;5;${colors[3]}m"
-        colon_color="\033[38;5;${colors[4]}m"
-        info_color="\033[38;5;${colors[5]}m"
+        title_color="\033[0m\033[3${colors[0]}m"
+        at_color="\033[0m\033[3${colors[1]}m"
+        underline_color="\033[0m\033[3${colors[2]}m"
+        subtitle_color="\033[0m\033[3${colors[3]}m"
+        colon_color="\033[0m\033[3${colors[4]}m"
+        info_color="\033[0m\033[3${colors[5]}m"
     fi
 }
 
 color () {
-    printf "%b%s" "\033[38;5;${1}m"
+    printf "%b%s" "\033[0m\033[3${1}m"
 }
 
 
