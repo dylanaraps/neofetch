@@ -2223,7 +2223,7 @@ colors () {
             setcolors 3 2 4 5 7
         ;;
 
-        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"*)
+        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"* | "Qubes"*)
             setcolors 4 5 7
         ;;
 
