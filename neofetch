@@ -1112,17 +1112,9 @@ getgpu () {
 getmemory () {
     case "$os" in
         "Linux")
-            # Read first 3 lines
-            mem=$(awk -F ':' '/MemTotal|MemAvailable/ {printf $2}' /proc/meminfo )
-
-            # Do some substitution on each line
-            memtotal=${mem/kB*/kB}
-            memavail=${mem/${memtotal}}
-            memtotal=${memtotal/kB*}
-            memavail=${memavail/kB*}
-
-            memused=$((memtotal - memavail))
-            memory="$((memused / 1024))MB / $((memtotal / 1024))MB"
+            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo ))
+            memused=$((${mem[0]} - ${mem[1]} - ${mem[2]} - ${mem[3]}))
+            memory="$((memused / 1024))MB / $((${mem[0]} / 1024))MB"
         ;;
 
         "Mac OS X")
