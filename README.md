@@ -89,9 +89,13 @@ your distro's logo or any ascii art of your choice!
 ##### Linux / BSD
 
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
-- Current Song: `mpc` or `cmus`
+- Current Song: `mpc`, `cmus`, `moc`, `spotify`, `gpmdc`
 - Resolution: `xorg-xdpyinfo`
 - Screenshot: `scrot` \[5\]
+
+##### OSX
+
+- Current Song: `itunes`
 
 
 \[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
