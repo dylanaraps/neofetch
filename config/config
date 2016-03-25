@@ -274,7 +274,7 @@ disk_display="off"
 
 
 # Image Source
-# --image wall, shuffle, ascii, /path/to/img, off
+# --image wall, ascii, /path/to/img, /path/to/dir/, off
 image="wall"
 
 # Thumbnail directory
@@ -293,9 +293,6 @@ w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 # Only works with the w3m backend
 # --image_position left/right
 image_position="left"
-
-# Shuffle dir
-shuffle_dir="$HOME/Pictures/wallpapers/wash"
 
 # Crop mode
 # --crop_mode normal/fit/fill
