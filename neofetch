@@ -587,24 +587,24 @@ getuptime () {
 
             # Format the output like Linux's "uptime -p" cmd.
             if [ "$mins" == 1 ]; then
-                mins="$mins minute"
+                uptime="$mins minute"
             elif [ "$mins" != 0 ]; then
-                mins="$mins minutes"
+                uptime="$mins minutes"
             fi
 
             if [ "$hours" == 1 ]; then
-                hours="$hours hour,"
+                uptime="$hours hour, $uptime"
             elif [ "$mins" != 0 ]; then
-                hours="$hours hours,"
+                uptime="$hours hours, $uptime"
             fi
 
             if [ "$days" == 1 ]; then
-                days="$days day,"
+                uptime="$days day, $uptime"
             elif [ "$days" != 0 ]; then
-                days="$days days,"
+                uptime="$days days, $uptime"
             fi
 
-            uptime="up $days $hours $mins"
+            uptime="up $uptime"
         ;;
 
         "Windows")
