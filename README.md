@@ -84,6 +84,7 @@ your distro's logo or any ascii art of your choice!
 
 - Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` \[4\]
 - Thumbnail creation: `imagemagick`
+- Displaying song information from Google Play Music Desktop Player: [`gpmdp`](https://github.com/iAndrewT/gpmdp-bash)
 
 ##### Linux / BSD
 

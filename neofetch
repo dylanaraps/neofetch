@@ -1228,6 +1228,10 @@ getsong () {
             ;;
         esac
 
+    elif [ -n "$(ps aux | awk '!(/awk/ || /Helper/) && /Google Play Music Desktop Player/')" ] && type -p gpmdp >/dev/null 2>&1; then
+        song="$(gpmdp current)"
+        state="$(gpmdp status)"
+
     elif [ -n "$(ps aux | awk '!(/awk/ || /Helper/) && /iTunes/')" ]; then
         song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " name of current track as string')"
         state="$(osascript -e 'tell application "iTunes" to player state as string')"
