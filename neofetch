@@ -587,22 +587,24 @@ getuptime () {
 
             # Format the output like Linux's "uptime -p" cmd.
             if [ "$mins" == 1 ]; then
-                uptime="up $mins minute"
+                uptime="$mins minute"
             elif [ "$mins" != 0 ]; then
-                uptime="up $mins minutes"
+                uptime="$mins minutes"
             fi
 
             if [ "$hours" == 1 ]; then
-                uptime="up $hours hour, ${uptime/up }"
+                uptime="$hours hour, $uptime"
             elif [ "$mins" != 0 ]; then
-                uptime="up $hours hours, ${uptime/up }"
+                uptime="$hours hours, $uptime"
             fi
 
             if [ "$days" == 1 ]; then
-                uptime="up $days day, ${uptime/up }"
+                uptime="$days day, $uptime"
             elif [ "$days" != 0 ]; then
-                uptime="up $days days, ${uptime/ up}"
+                uptime="$days days, $uptime"
             fi
+
+            uptime="up $uptime"
         ;;
 
         "Windows")
@@ -864,6 +866,7 @@ getcpu () {
                 "OpenBSD"* | "FreeBSD"*)
                     # Get cpu name
                     cpu="$(sysctl -n hw.model)"
+                    cpu=${cpu/[0-9]\.*}
                     cpu=${cpu/ @*}
                     cpu=${cpu//  }
                     cpu=${cpu% }
@@ -1133,15 +1136,19 @@ getmemory () {
 
         "OpenBSD" | "BSD")
             case "$distro" in
-                "OpenBSD"* | "FreeBSD"*)
+                "OpenBSD"*)
+                    mem=($(top -d 1 | awk -F ':  |/| |M' '/Memory:/ {printf $4 " " $6 " " $11 "\n"}'))
+                    memtotal=$((${mem[1]} + ${mem[2]}))
+                    memused=$((memtotal - ${mem[0]}))
+                    memory="${memused}MB / ${memtotal}MB"
+                ;;
+
+                "FreeBSD"*)
                     memtotal=$(dmesg | awk '/real mem/ {printf $5}')
                     memtotal=${memtotal/\(}
                     memtotal=${memtotal/MB\)}
 
-                    case "$distro" in
-                        "OpenBSD"*) memfree=$(top -d 1 | awk '/Real:/ {printf $6}') ;;
-                        "FreeBSD"*) memfree=$(top -d 1 | awk '/Mem:/ {printf $10}') ;;
-                    esac
+                    memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
                     memfree=${memfree/M}
 
                     memused=$((memtotal - memfree))
