@@ -1551,8 +1551,8 @@ getbattery () {
 
                 # Create an array of battery usage from each battery.
                 batteries=($(cat /sys/class/power_supply/BAT${battery_num}/capacity))
-				# Get the power status
-				power_status=($(cat /sys/class/power_supply/BAT${battery_num}/status))
+                # Get the power status
+                battery_status=($(cat /sys/class/power_supply/BAT${battery_num}/status))
                 # Get the subtitle and reassign it so it doesn't change.
                 title="$subtitle"
 
@@ -1579,11 +1579,12 @@ getbattery () {
                         done
                         return
                     fi
-						if [ $power_status = "Charging" ]; then
-		                battery="${batteries[0]}% Charging"
-		                else
-		                battery="${batteries[0]}%"
-		                fi
+
+		    if [ "$battery_status" == "Charging" ]; then
+			battery="${batteries[0]}% Charging"
+		    else
+			battery="${batteries[0]}%"
+		    fi
                 fi
             else
                 battery="None"
@@ -1593,12 +1594,12 @@ getbattery () {
         "BSD")
             case "$distro" in
                 "FreeBSD"*)
-            		power_status=$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')
-            		
-            		if [ $power_status = "charging" ]; then
-                    battery="$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}') Charging"
-                    else
-                    battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
+            	    battery_status=$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')
+
+            	    if [ "$battery_status" == "charging" ]; then
+		        battery="$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}') Charging"
+		    else
+		        battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
                     fi
                 ;;
 
@@ -1621,8 +1622,8 @@ getbattery () {
 
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
-            power_status="$(pmset -g batt | awk 'NR==2 {print $3}')"
-            [ "$power_status" == "charging;" ] && \
+            battery_status="$(pmset -g batt | awk 'NR==2 {print $3}')"
+            [ "$battery_status" == "charging;" ] && \
                 battery="${battery} Charging"
         ;;
 
