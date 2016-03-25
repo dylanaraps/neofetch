@@ -1290,7 +1290,8 @@ getresolution () {
             height=${height/ScreenHeight'='/}
             height=${height//[[:space:]]}
 
-            resolution="${width}x${height}"
+            [ ! -z "$width" ] && \
+                resolution="${width}x${height}"
         ;;
 
         "*")
