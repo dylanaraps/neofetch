@@ -284,13 +284,15 @@ alias fetch2="fetch \
 ## Usage
 
 
-    usage: fetch --option "value" --option "value"
+    usage: neofetch --option "value" --option "value"
+
+    NOTE: There's also a config option for each flag below.
 
     Info:
     --disable infoname          Allows you to disable an info line from appearing
                                 in the output.
                                 NOTE: You can supply multiple args. eg.
-                                'fetch --disable cpu gpu disk shell'
+                                'neofetch --disable cpu gpu disk shell'
     --osx_buildversion on/off   Hide/Show Mac OS X build version.
     --osx_codename on/off       Hide/Show Mac OS X codename.
     --os_arch on/off            Hide/Show Windows architecture.
@@ -337,8 +339,8 @@ alias fetch2="fetch \
     Progress Bars:
     --progress_char char        Character to use when drawing progress bars.
     --progress_length num       Length in spaces to make the progress bars.
-    --progress_colors num num   Colors to make the progress bar. Set in this order:
-                                elapsed, total
+    --progress_colors num num   Colors to make the progress bar.
+                                Set in this order: elapsed, total
     --cpu_display mode1 mode2   Which shorthand to use and how CPU usage should be printed
                                 mode1 takes: name, speed, tiny, on, off
                                 mode2 takes: info, bar, infobar, barinfo
@@ -352,11 +354,10 @@ alias fetch2="fetch \
 
     Image:
     --image type                Image source. Where and what image we display.
-                                Possible values: wall, shuffle, ascii,
-                                /path/to/img, off
+                                Possible values: wall, ascii,
+                                /path/to/img, /path/to/dir/, off
     --size 20px | --size 20%    Size to make the image, takes pixels or a percentage.
     --image_backend w3m/iterm2  Which program to use to draw images.
-    --shuffle_dir path/to/dir   Which directory to shuffle for an image.
     --image_position left/right Where to display the image: (Left/Right)
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
@@ -378,11 +379,11 @@ alias fetch2="fetch \
     --ascii value               Where to get the ascii from, Possible values:
                                 distro, /path/to/ascii
     --ascii_colors x x x x x x  Colors to print the ascii art
-    --ascii_distro distro       Which Distro\'s ascii art to print
+    --ascii_distro distro       Which Distro's ascii art to print
 
 
     Stdout:
-    --stdout info info          Launch fetch in stdout mode which prints the info
+    --stdout info info          Launch neofetch in stdout mode which prints the info
                                 in a plain-text format that you can use with
                                 lemonbar etc.
     --stdout_separator string   String to use as a separator in stdout mode.
@@ -392,6 +393,7 @@ alias fetch2="fetch \
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     --scrot_cmd cmd             Screenshot program to launch
+
 
     Other:
     --config /path/to/config    Specify a path to a custom config file
