@@ -554,9 +554,9 @@ getkernel() {
 
 getuptime () {
     case "$os" in
-        "Linux")
+        "Linux" | "Windows")
             case "$distro" in
-                "Puppy Linux"* | "Quirky Werewolf"* | "Precise Puppy"* | "Alpine Linux"*)
+                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "Windows"*)
                     uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
                     uptime=${uptime/  / }
                 ;;
@@ -608,11 +608,6 @@ getuptime () {
             fi
 
             uptime="up $uptime"
-        ;;
-
-        "Windows")
-            uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
-            uptime=${uptime/  / }
         ;;
 
         *)
