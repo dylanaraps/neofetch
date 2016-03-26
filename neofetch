@@ -2796,6 +2796,7 @@ while [ "$1" ]; do
             info=(title underline distro kernel uptime packages shell resolution de wm theme icons cpu gpu memory font disk battery song localip publicip users birthday cols)
 
             printinfo () {
+                printf "\n"
                 for func in "${info[@]}"; do
                     info "${func^^}" $func
                 done
