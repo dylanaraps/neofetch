@@ -2797,7 +2797,7 @@ while [ "$1" ]; do
 
             printinfo () {
                 for func in "${info[@]}"; do
-                    info "${func^^}" $func
+                    info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" $func
                 done
                 printf "%b%s" "\033[$(tput lines)H"
             }
