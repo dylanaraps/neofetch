@@ -6,5 +6,5 @@ os:
     - osx
 
 script:
-    - sudo make install
+    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then sudo PREFIX=/usr/local make install; else sudo make install; fi
     - neofetch --test --ascii --color_blocks off
