@@ -115,6 +115,13 @@ cpu_cores="on"
 # --gpu_shorthand on/off/tiny
 gpu_shorthand="on"
 
+# Resolution
+
+# Display refresh rate next to each monitor
+# Unsupported on Windows
+# --refresh_rate on/off
+refresh_rate="off"
+
 
 # Gtk Theme / Icons
 
