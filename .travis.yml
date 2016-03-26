@@ -7,4 +7,4 @@ os:
 
 script:
     - sudo make install
-    - neofetch --test --ascii --color_blocks off --config off
+    - neofetch --test --ascii --color_blocks off --config off --ascii_distro travis
