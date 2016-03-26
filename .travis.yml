@@ -3,4 +3,4 @@ sudo: required
 
 script:
     - sudo make install
-    - bash neofetch --ascii
+    - bash neofetch --test --ascii
