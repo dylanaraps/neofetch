@@ -1412,8 +1412,8 @@ getstyle () {
 
         # Check for gtk2 theme
         if [ -z "$gtk2theme" ]; then
-            if [ -f "$HOME/.gtkrc-2.0" ]; then
-                gtk2theme=$(grep "^[^#]*$name" "$HOME/.gtkrc-2.0")
+            if [ -f "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}" ]; then
+                gtk2theme=$(grep "^[^#]*$name" "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}")
 
             elif [ -f "/usr/share/gtk-2.0/gtkrc" ]; then
                 gtk2theme=$(grep "^[^#]*$name" /usr/share/gtk-2.0/gtkrc)
