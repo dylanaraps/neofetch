@@ -2871,7 +2871,7 @@ printinfo
 
 if [ "$image" != "off" ]; then
     # Get cursor position
-    info_height="$(IFS=';' read -srdR -p $'\033[6n' ROW COL; printf "%s" "${ROW#*[}")"
+    info_height="$(IFS=';' read -srdR -t 1 -p $'\033[6n' ROW COL; printf "%s" "${ROW#*[}")"
 
     # Set cursor position dynamically based on height of ascii/text.
     [ "$lines" -lt "$info_height" ] && lines="$info_height"
