@@ -299,6 +299,7 @@ alias fetch2="fetch \
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
+                                Unsupported on Windows
     --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
