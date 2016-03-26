@@ -2797,12 +2797,16 @@ while [ "$1" ]; do
             esac
         ;;
         --test)
-            info=(title underline distro kernel uptime packages shell resolution de wm theme icons cpu gpu memory font disk battery song localip publicip users birthday cols)
+            info=(title underline distro kernel uptime packages shell resolution de wm theme icons cpu gpu memory font disk battery song localip publicip users birthday)
 
             printinfo () {
+                info linebreak
                 for func in "${info[@]}"; do
                     info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" $func
                 done
+                info linebreak
+                info cols
+                info linebreak
                 printf "%b%s" "\033[$(tput lines)H"
             }
         ;;
