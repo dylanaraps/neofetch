@@ -7,4 +7,4 @@ os:
 
 script:
     - sudo make install
-    - bash neofetch --test --ascii --color_blocks off
+    - neofetch --test --ascii --color_blocks off
