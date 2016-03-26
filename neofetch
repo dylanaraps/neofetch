@@ -2329,6 +2329,11 @@ colors () {
             setcolors 4 7 1
         ;;
 
+        "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
+            setcolors 4
+            ascii_distro="puppy"
+        ;;
+
         "Scientific"*)
             setcolors 4 1 7
         ;;
