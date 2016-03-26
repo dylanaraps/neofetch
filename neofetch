@@ -1044,7 +1044,7 @@ getgpu () {
                     gpu=${gpu/\[}
                     gpu=${gpu/\] }
 
-                    brand="Nvidia "
+                    brand="NVIDIA "
                 ;;
 
                 *virtualbox*)
