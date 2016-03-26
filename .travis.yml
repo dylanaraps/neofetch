@@ -2,5 +2,5 @@ language: bash
 sudo: required
 
 script:
-    - make install
+    - sudo make install
     - bash neofetch --ascii
