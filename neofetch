@@ -2801,6 +2801,7 @@ while [ "$1" ]; do
 
             printinfo () {
                 info linebreak
+                info linebreak
                 for func in "${info[@]}"; do
                     info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" $func
                 done
