@@ -2344,6 +2344,10 @@ colors () {
             setcolors 4 6
         ;;
 
+        "Travis")
+            setcolors 3 1 0 7 4
+        ;;
+
         "void"*)
             setcolors 2 8
         ;;
