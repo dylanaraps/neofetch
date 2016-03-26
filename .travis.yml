@@ -1,6 +1,10 @@
 language: bash
 sudo: required
 
+os:
+    - linux
+    - osx
+
 script:
     - sudo make install
     - bash neofetch --test --ascii --color_blocks off
