@@ -511,10 +511,6 @@ case "$os" in
         x64="64-bit"
         x32="32-bit"
     ;;
-
-    *)
-        distro="Unknown"
-    ;;
 esac
 ascii_distro="$distro"
 
@@ -608,10 +604,6 @@ getuptime () {
             fi
 
             uptime="up $uptime"
-        ;;
-
-        *)
-            uptime="Unknown"
         ;;
     esac
 
@@ -732,8 +724,6 @@ getpackages () {
         ;;
     esac
     packages=${packages// }
-
-    [ -z "$packages" ] && packages="Unknown"
 }
 
 # }}}
@@ -897,10 +887,6 @@ getcpu () {
             speed=${speed:0:1}.${speed:1}
             cpu="$cpu @ ${speed}GHz"
         ;;
-
-        *)
-            cpu="Unknown"
-        ;;
     esac
 
     # Remove uneeded patterns from cpu output
@@ -969,7 +955,8 @@ getgpu () {
             # If a GPU with a prefix of '3D' doesn't exist
             # fallback to looking for a prefix of 'VGA'
             [ -z "$gpu" ] && \
-            gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
+                gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
+
             gpu=${gpu//??':'??'.'?}
 
             # Count the number of GPUs
@@ -1166,10 +1153,6 @@ getmemory () {
             memory="$((${memused%% *} / 1024))MB / "
             memory+="$((${memtotal%% *} / 1024))MB"
         ;;
-
-        *)
-            memory="Unknown"
-        ;;
     esac
 
     # Progress bars
@@ -1230,7 +1213,7 @@ getsong () {
         state="$(osascript -e 'tell application "iTunes" to player state as string')"
 
     else
-        song="Unknown"
+        song="Not Playing"
     fi
 
     case "$state" in
@@ -1301,10 +1284,6 @@ getresolution () {
 
             [ ! -z "$width" ] && \
                 resolution="${width}x${height}"
-        ;;
-
-        "*")
-            resolution="Unknown"
         ;;
     esac
 
@@ -1515,9 +1494,8 @@ getdisk () {
         "Mac OS X") df_flags="-H / -l" ;;
 
         *"BSD")
-            case "$os" in
-                "FreeBSD") df_flags="-h -c -l" ;;
-                *) disk="Unknown"; return ;;
+            case "$distro" in
+                "FreeBSD"*) df_flags="-h -c -l" ;;
             esac
         ;;
     esac
@@ -1673,10 +1651,6 @@ getlocalip () {
         "Windows")
             localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
         ;;
-
-        *)
-            localip="Unknown"
-        ;;
     esac
 }
 
@@ -1689,9 +1663,6 @@ getpublicip () {
 
     elif type -p wget >/dev/null 2>&1; then
         publicip="$(wget -qO- "$public_ip_host"; printf "%s")"
-
-    else
-        publicip="Unknown"
     fi
 }
 
@@ -1751,10 +1722,6 @@ getbirthday () {
                     birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
                     birthday_shorthand="on"
                 ;;
-
-                *)
-                    birthday="Unknown"
-                ;;
             esac
         ;;
 
@@ -1762,11 +1729,6 @@ getbirthday () {
             birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
             date_cmd="$(date -d"$birthday" +"$birthday_format")"
         ;;
-
-        *)
-            birthday="Unknown"
-        ;;
-
     esac
 
     # Strip seconds from time output
