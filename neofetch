@@ -1285,7 +1285,7 @@ getresolution () {
                 esac 
                 resolution=${resolution//\*}
 
-            elif type -p xdpyinfo >/dev/null 2>&1 && \
+            elif type -p xdpyinfo >/dev/null 2>&1; then
                 resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
             fi
         ;;
