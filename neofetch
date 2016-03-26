@@ -819,11 +819,7 @@ getcpu () {
     case "$os" in
         "Linux")
             # Get cpu name
-            cpu="$(grep -F 'model name' /proc/cpuinfo)"
-            cpu=${cpu/model name*: }
-            cpu=${cpu/ @*}
-            cpu=${cpu//  }
-            cpu=${cpu%% }
+            cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
 
             # Get cpu speed
             if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
@@ -841,8 +837,7 @@ getcpu () {
                     /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
 
             else
-                speed=$(awk -F ': ' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
-                speed=${speed/\.}
+                speed=$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
             fi
 
             # Convert mhz to ghz without bc
