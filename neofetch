@@ -903,7 +903,7 @@ getcpu () {
 
     # Add cpu cores to output
     [ "$cpu_cores" == "on" ] && [ ! -z "$cores" ] && \
-        cpu=${cpu/@/\(${cores}\) @}
+        cpu=${cpu/ @/ \(${cores}\) @}
 
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
