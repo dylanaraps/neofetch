@@ -510,7 +510,7 @@ case "$os" in
         x32="32-bit"
     ;;
 esac
-distro=${distro//+( )/ }
+distro=${distro//+([[:space:]])/ }
 ascii_distro="$distro"
 
 getdistro () {
@@ -627,7 +627,7 @@ getuptime () {
             uptime=${uptime# }
         ;;
     esac
-    uptime=${uptime//+( )/ }
+    uptime=${uptime//+([[:space:]])/ }
 }
 
 # }}}
@@ -920,7 +920,7 @@ getcpu () {
     esac
 
     # Trim whitespace
-    cpu=${cpu//+( )/ }
+    cpu=${cpu//+([[:space:]])/ }
 
     # Add CPU info bar
     prin "${subtitle}: ${cpu}"
@@ -1070,7 +1070,7 @@ getgpu () {
         ;;
     esac
 
-    gpu=${gpu//+( )/ }
+    gpu=${gpu//+([[:space:]])/ }
     gpu="${gpu}${count}"
 }
 
@@ -1719,7 +1719,7 @@ getbirthday () {
 
     # Pretty output
     [ "$birthday_shorthand" == "off" ] && \
-        birthday=${date_cmd//+( )/ }
+        birthday=${date_cmd//+([[:space:]])/ }
 
     # Toggle showing the time
     [ "$birthday_time" == "off" ] && \
