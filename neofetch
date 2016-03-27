@@ -1704,7 +1704,7 @@ getbirthday () {
 
                 "FreeBSD"*)
                     birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
-                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" +"$birthday_format")"
+                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" "$birthday_format")"
                 ;;
 
                 "NetBSD"*)
@@ -1716,7 +1716,7 @@ getbirthday () {
 
         "Windows")
             birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
-            date_cmd="$(date -d"$birthday" +"$birthday_format")"
+            date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
     esac
 
