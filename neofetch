@@ -456,21 +456,18 @@ x32="x86"
 case "$os" in
     "Linux" )
         if type -p lsb_release >/dev/null 2>&1; then
-            distro="$(lsb_release -d 2>/dev/null | awk -F':' '/Description/ {printf $2}')"
+            distro="$(lsb_release -d 2>/dev/null | awk -F ':' '/Description/ {printf $2}')"
             distro=${distro/[[:space:]]}
 
         elif type -p crux >/dev/null 2>&1; then
             distro="$(crux)"
 
         else
-            distro="$(grep -h '^NAME=' /etc/*ease)"
+            distro="$(awk -F 'NAME="|"' '/^NAME=/ {printf $2}' /etc/*ease)"
 
             # Workaround for distros that store the value differently.
-            [ -z "$distro" ] && distro="$(grep -h 'TAILS_PRODUCT_NAME' /etc/*ease)"
+            [ -z "$distro" ] && distro="$(awk -F 'TAILS_PRODUCT_NAME="|"' '/^TAILS_PRODUCT_NAME=/ {printf $2}' /etc/*ease)"
             [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
-
-            distro=${distro/*NAME\=}
-            distro=${distro//\"}
         fi
     ;;
 
@@ -514,10 +511,6 @@ case "$os" in
         x64="64-bit"
         x32="32-bit"
     ;;
-
-    *)
-        distro="Unknown"
-    ;;
 esac
 ascii_distro="$distro"
 
@@ -557,9 +550,9 @@ getkernel() {
 
 getuptime () {
     case "$os" in
-        "Linux")
+        "Linux" | "Windows")
             case "$distro" in
-                "Puppy Linux"* | "Quirky Werewolf"* | "Precise Puppy"* | "Alpine Linux"*)
+                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "Windows"*)
                     uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
                     uptime=${uptime/  / }
                 ;;
@@ -611,15 +604,6 @@ getuptime () {
             fi
 
             uptime="up $uptime"
-        ;;
-
-        "Windows")
-            uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
-            uptime=${uptime/  / }
-        ;;
-
-        *)
-            uptime="Unknown"
         ;;
     esac
 
@@ -740,8 +724,6 @@ getpackages () {
         ;;
     esac
     packages=${packages// }
-
-    [ -z "$packages" ] && packages="Unknown"
 }
 
 # }}}
@@ -827,11 +809,7 @@ getcpu () {
     case "$os" in
         "Linux")
             # Get cpu name
-            cpu="$(grep -F 'model name' /proc/cpuinfo)"
-            cpu=${cpu/model name*: }
-            cpu=${cpu/ @*}
-            cpu=${cpu//  }
-            cpu=${cpu%% }
+            cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
 
             # Get cpu speed
             if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
@@ -848,13 +826,11 @@ getcpu () {
                 read -r speed < \
                     /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
 
+                speed=$((speed / 100000))
             else
-                speed=$(awk -F ': ' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
-                speed=${speed/\.}
+                speed=$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
+                speed=$((speed / 100))
             fi
-
-            # Convert mhz to ghz without bc
-            speed=$((speed / 100000))
             speed=${speed:0:1}.${speed:1}
 
             cpu="$cpu @ ${speed}GHz"
@@ -909,10 +885,6 @@ getcpu () {
 
             speed=${speed:0:1}.${speed:1}
             cpu="$cpu @ ${speed}GHz"
-        ;;
-
-        *)
-            cpu="Unknown"
         ;;
     esac
 
@@ -982,7 +954,8 @@ getgpu () {
             # If a GPU with a prefix of '3D' doesn't exist
             # fallback to looking for a prefix of 'VGA'
             [ -z "$gpu" ] && \
-            gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
+                gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
+
             gpu=${gpu//??':'??'.'?}
 
             # Count the number of GPUs
@@ -1171,10 +1144,6 @@ getmemory () {
             memory="$((${memused%% *} / 1024))MB / "
             memory+="$((${memtotal%% *} / 1024))MB"
         ;;
-
-        *)
-            memory="Unknown"
-        ;;
     esac
 
     # Progress bars
@@ -1235,7 +1204,7 @@ getsong () {
         state="$(osascript -e 'tell application "iTunes" to player state as string')"
 
     else
-        song="Unknown"
+        song="Not Playing"
     fi
 
     case "$state" in
@@ -1306,10 +1275,6 @@ getresolution () {
 
             [ ! -z "$width" ] && \
                 resolution="${width}x${height}"
-        ;;
-
-        "*")
-            resolution="Unknown"
         ;;
     esac
 
@@ -1520,9 +1485,8 @@ getdisk () {
         "Mac OS X") df_flags="-H / -l" ;;
 
         *"BSD")
-            case "$os" in
-                "FreeBSD") df_flags="-h -c -l" ;;
-                *) disk="Unknown"; return ;;
+            case "$distro" in
+                "FreeBSD"*) df_flags="-h -c -l" ;;
             esac
         ;;
     esac
@@ -1602,8 +1566,6 @@ getbattery () {
                     fi
                     battery="${batteries[0]}%"
                 fi
-            else
-                battery="None"
             fi
         ;;
 
@@ -1678,10 +1640,6 @@ getlocalip () {
         "Windows")
             localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
         ;;
-
-        *)
-            localip="Unknown"
-        ;;
     esac
 }
 
@@ -1694,9 +1652,6 @@ getpublicip () {
 
     elif type -p wget >/dev/null 2>&1; then
         publicip="$(wget -qO- "$public_ip_host"; printf "%s")"
-
-    else
-        publicip="Unknown"
     fi
 }
 
@@ -1756,10 +1711,6 @@ getbirthday () {
                     birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
                     birthday_shorthand="on"
                 ;;
-
-                *)
-                    birthday="Unknown"
-                ;;
             esac
         ;;
 
@@ -1767,11 +1718,6 @@ getbirthday () {
             birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
             date_cmd="$(date -d"$birthday" +"$birthday_format")"
         ;;
-
-        *)
-            birthday="Unknown"
-        ;;
-
     esac
 
     # Strip seconds from time output
@@ -2322,6 +2268,11 @@ colors () {
 
         "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"*)
             setcolors 4 7 1
+        ;;
+
+        "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
+            setcolors 4
+            ascii_distro="puppy"
         ;;
 
         "Scientific"*)
