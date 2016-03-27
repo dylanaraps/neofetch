@@ -826,12 +826,11 @@ getcpu () {
                 read -r speed < \
                     /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
 
+                speed=$((speed / 100000))
             else
                 speed=$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
+                speed=$((speed / 100))
             fi
-
-            # Convert mhz to ghz without bc
-            speed=$((speed / 100000))
             speed=${speed:0:1}.${speed:1}
 
             cpu="$cpu @ ${speed}GHz"
@@ -903,7 +902,7 @@ getcpu () {
 
     # Add cpu cores to output
     [ "$cpu_cores" == "on" ] && [ ! -z "$cores" ] && \
-        cpu=${cpu/ @/ \(${cores}\) @}
+        cpu=${cpu/@/\(${cores}\) @}
 
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
