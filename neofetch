@@ -458,6 +458,7 @@ case "$os" in
     "Linux" )
         if type -p lsb_release >/dev/null 2>&1; then
             distro="$(lsb_release -d 2>/dev/null | awk -F ':' '/Description/ {printf $2}')"
+            distro=${distro/[[:space:]]}
 
         elif type -p crux >/dev/null 2>&1; then
             distro="$(crux)"
@@ -510,7 +511,7 @@ case "$os" in
         x32="32-bit"
     ;;
 esac
-distro=${distro//+([[:space:]])/ }
+distro=${distro//+( )/ }
 ascii_distro="$distro"
 
 getdistro () {
@@ -627,7 +628,7 @@ getuptime () {
             uptime=${uptime# }
         ;;
     esac
-    uptime=${uptime//+([[:space:]])/ }
+    uptime=${uptime//+( )/ }
 }
 
 # }}}
@@ -920,7 +921,7 @@ getcpu () {
     esac
 
     # Trim whitespace
-    cpu=${cpu//+([[:space:]])/ }
+    cpu=${cpu//+( )/ }
 
     # Add CPU info bar
     prin "${subtitle}: ${cpu}"
@@ -1070,7 +1071,7 @@ getgpu () {
         ;;
     esac
 
-    gpu=${gpu//+([[:space:]])/ }
+    gpu=${gpu//+( )/ }
     gpu="${gpu}${count}"
 }
 
@@ -1719,7 +1720,7 @@ getbirthday () {
 
     # Pretty output
     [ "$birthday_shorthand" == "off" ] && \
-        birthday=${date_cmd//+([[:space:]])/ }
+        birthday=${date_cmd//+( )/ }
 
     # Toggle showing the time
     [ "$birthday_time" == "off" ] && \
