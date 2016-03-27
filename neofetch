@@ -430,8 +430,9 @@ config_file="$HOME/.config/neofetch/config"
 # Gather Info {{{
 
 
-# Set no case match
+# Set no case match and extended globbing.
 shopt -s nocasematch
+shopt -s extglob
 
 
 # Operating System {{{
@@ -512,6 +513,7 @@ case "$os" in
         x32="32-bit"
     ;;
 esac
+distro=${distro//+( )/ }
 ascii_distro="$distro"
 
 getdistro () {
@@ -554,12 +556,10 @@ getuptime () {
             case "$distro" in
                 *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "Windows"*)
                     uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
-                    uptime=${uptime/  / }
                 ;;
 
                 "openSUSE"*)
                     uptime=$(uptime | awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')
-                    uptime=${uptime/   / }
                 ;;
 
                 *)
@@ -630,6 +630,7 @@ getuptime () {
             uptime=${uptime# }
         ;;
     esac
+    uptime=${uptime//+( )/ }
 }
 
 # }}}
@@ -839,7 +840,6 @@ getcpu () {
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
-            cpu=${cpu/    }
             cores=$(sysctl -n hw.ncpu)
         ;;
 
@@ -850,8 +850,6 @@ getcpu () {
                     cpu="$(sysctl -n hw.model)"
                     cpu=${cpu/[0-9]\.*}
                     cpu=${cpu/ @*}
-                    cpu=${cpu//  }
-                    cpu=${cpu% }
 
                     # Get cpu speed
                     case "$distro" in
@@ -894,11 +892,11 @@ getcpu () {
     cpu=${cpu//(TM)}
     cpu=${cpu//(r)}
     cpu=${cpu//(R)}
-    cpu=${cpu// CPU}
-    cpu=${cpu// Processor}
-    cpu=${cpu// Six-Core}
-    cpu=${cpu// Eight-Core}
-    cpu=${cpu// with Radeon HD Graphics}
+    cpu=${cpu//CPU}
+    cpu=${cpu//Processor}
+    cpu=${cpu//Six-Core}
+    cpu=${cpu//Eight-Core}
+    cpu=${cpu//with Radeon HD Graphics}
 
     # Add cpu cores to output
     [ "$cpu_cores" == "on" ] && [ ! -z "$cores" ] && \
@@ -925,6 +923,9 @@ getcpu () {
             esac
         ;;
     esac
+
+    # Trim whitespace
+    cpu=${cpu//+( )/ }
 
     # Add CPU info bar
     prin "${subtitle}: ${cpu}"
@@ -1011,7 +1012,6 @@ getgpu () {
 
                 nvidia*)
                     gpu=${gpu/NVIDIA Corporation }
-                    gpu=${gpu/nVidia Corporation }
                     gpu=${gpu/G????M }
                     gpu=${gpu/G???? }
                     gpu=${gpu/\[}
@@ -1040,8 +1040,6 @@ getgpu () {
                     gpu=$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")
                     gpu=${gpu/device*= }
                     gpu=${gpu//\'}
-                    gpu=${gpu//[[:space:]]/ }
-                    gpu=${gpu//  }
                 ;;
             esac
         ;;
@@ -1077,6 +1075,7 @@ getgpu () {
         ;;
     esac
 
+    gpu=${gpu//+( )/ }
     gpu="${gpu}${count}"
 }
 
@@ -1487,6 +1486,7 @@ getdisk () {
         *"BSD")
             case "$distro" in
                 "FreeBSD"*) df_flags="-h -c -l" ;;
+                *) return ;;
             esac
         ;;
     esac
@@ -1590,7 +1590,8 @@ getbattery () {
             battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
             battery0now="${battery0now/ Wh*}"
 
-            battery="$(printf "%s\n" "100 * $battery0now / $battery0full" | bc)%"
+            [ ! -z "$battery0full" ] && \
+                battery="$(printf "%s\n" "100 * $battery0now / $battery0full" | bc)%"
         ;;
 
         "Mac OS X")
@@ -1726,7 +1727,7 @@ getbirthday () {
 
     # Pretty output
     [ "$birthday_shorthand" == "off" ] && \
-        birthday="${date_cmd/  / }"
+        birthday=${date_cmd//+( )/ }
 
     # Toggle showing the time
     [ "$birthday_time" == "off" ] && \
