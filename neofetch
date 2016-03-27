@@ -2325,11 +2325,11 @@ setcolors () {
 
     if [ "${colors[0]}" == "distro" ]; then
         title_color="\033[3${1}m"
-        at_color="\033[37m"
-        underline_color="\033[37m"
+        at_color="\033[0m"
+        underline_color="\033[0m"
         subtitle_color="\033[3${2}m"
-        colon_color="\033[37m"
-        info_color="\033[37m"
+        colon_color="\033[0m"
+        info_color="\033[0m"
 
         # If the second color is white use the first for the subtitle
         [ "$2" == 7 ] && subtitle_color="\033[3${1}m"
