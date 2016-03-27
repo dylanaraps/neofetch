@@ -95,7 +95,7 @@ your distro's logo or any ascii art of your choice!
 
 ##### OSX
 
-- Resolution (quicker): `screenresolution
+- Resolution (quicker): `screenresolution`
 
 
 \[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
