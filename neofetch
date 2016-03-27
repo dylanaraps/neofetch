@@ -1089,8 +1089,8 @@ getgpu () {
 
 getmemory () {
     case "$os" in
-        "Linux")
-            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo ))
+        "Linux" | "Windows")
+            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo ) 0 0)
             memused=$((${mem[0]} - ${mem[1]} - ${mem[2]} - ${mem[3]}))
             memused=$((memused / 1024))
             memtotal=$((${mem[0]} / 1024))
@@ -1129,17 +1129,6 @@ getmemory () {
                 ;;
             esac
 
-        ;;
-
-        "Windows")
-            mem="$(awk 'NR < 3 {printf $2 " "}' /proc/meminfo)"
-
-            memtotal=${mem/ *}
-            memfree=${mem#* }
-            memavail=$((memtotal - memfree))
-            memused=$((memtotal - memavail))
-            memused=$((${memused%% *} / 1024))
-            memtotal=$((${memtotal%% *} / 1024))
         ;;
     esac
     memory="${memused}MB / ${memtotal}MB"
@@ -2470,6 +2459,7 @@ bar() {
 }
 
 # }}}
+
 
 # }}}
 
