@@ -504,6 +504,8 @@ case "$os" in
 
         # Strip crap from the output of wmic
         distro=${distro/Caption'='}
+        distro=${distro//[[:space:]]/ }
+        distro=${distro//  }
         distro=${distro/Microsoft }
 
         # Change bits to xx-bit for Windows
@@ -863,6 +865,8 @@ getcpu () {
                     cpu="$(grep -F 'model name' /proc/cpuinfo)"
                     cpu=${cpu/model name*: }
                     cpu=${cpu/ @*}
+                    cpu=${cpu//  }
+                    cpu=${cpu% }
 
                     # Get cpu speed
                     speed="$(grep -F 'cpu MHz' /proc/cpuinfo)"
