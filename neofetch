@@ -1603,7 +1603,8 @@ getbattery () {
             battery=${battery/EstimatedChargeRemaining'='}
             battery=${battery//[[:space:]]/ }
             battery=${battery// }
-            battery+="%"
+            [ ! -z "$battery" ] && \
+                battery+="%"
         ;;
     esac
 
