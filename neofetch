@@ -1486,6 +1486,7 @@ getdisk () {
         *"BSD")
             case "$distro" in
                 "FreeBSD"*) df_flags="-h -c -l" ;;
+                *) return ;;
             esac
         ;;
     esac
@@ -1589,7 +1590,8 @@ getbattery () {
             battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
             battery0now="${battery0now/ Wh*}"
 
-            battery="$(printf "%s\n" "100 * $battery0now / $battery0full" | bc)%"
+            [ ! -z "$battery0full" ] && \
+                battery="$(printf "%s\n" "100 * $battery0now / $battery0full" | bc)%"
         ;;
 
         "Mac OS X")
