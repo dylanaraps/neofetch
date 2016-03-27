@@ -839,7 +839,7 @@ getcpu () {
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
-            cpu=${cpu/    }
+            cpu=${cpu//[[:space:]]/ }
             cores=$(sysctl -n hw.ncpu)
         ;;
 
