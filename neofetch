@@ -1254,22 +1254,16 @@ getresolution () {
 
         "Mac OS X")
             if type -p screenresolution >/dev/null 2>&1; then
-                resolution=$(screenresolution get 2>&1 | awk '/Display/ {printf $6"Hz, "}')
+                resolution=$(screenresolution get 2>&1 | awk '/Display/ {printf $6 "Hz, "}')
                 resolution=${resolution//x??@/ @ }
-                [[ "$refresh_rate" == "off" ]] && resolution=${resolution// @ +([0-9])Hz}
 
             else
-                case "$refresh_rate" in
-                    "on")
-                        resolution=$(system_profiler SPDisplaysDataType |\
-                                    awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')
-                    ;;
-                    "off")
-                        resolution=$(system_profiler SPDisplaysDataType |\
-                                    awk '/Resolution:/ {printf $2"x"$4", "}')
-                    ;;
-                esac
+                resolution=$(system_profiler SPDisplaysDataType |\
+                            awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')
             fi
+
+            [[ "$refresh_rate" == "off" ]] && \
+                 resolution=${resolution// @ +([0-9])Hz}
         ;;
 
         "Windows")
