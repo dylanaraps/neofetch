@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 # vim: fdm=marker:noai:ts=4:sw=4
 #
 # Neofetch info about your system
@@ -1089,7 +1090,7 @@ getgpu () {
 
 getmemory () {
     case "$os" in
-        "Linux")
+        "Linux" | "Windows")
             mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo ))
             memused=$((${mem[0]} - ${mem[1]} - ${mem[2]} - ${mem[3]}))
             memused=$((memused / 1024))
@@ -1129,17 +1130,6 @@ getmemory () {
                 ;;
             esac
 
-        ;;
-
-        "Windows")
-            mem="$(awk 'NR < 3 {printf $2 " "}' /proc/meminfo)"
-
-            memtotal=${mem/ *}
-            memfree=${mem#* }
-            memavail=$((memtotal - memfree))
-            memused=$((memtotal - memavail))
-            memused=$((${memused%% *} / 1024))
-            memtotal=$((${memtotal%% *} / 1024))
         ;;
     esac
     memory="${memused}MB / ${memtotal}MB"
@@ -2470,6 +2460,7 @@ bar() {
 }
 
 # }}}
+
 
 # }}}
 
