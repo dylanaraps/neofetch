@@ -1090,7 +1090,8 @@ getmemory () {
         "Linux")
             mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo ))
             memused=$((${mem[0]} - ${mem[1]} - ${mem[2]} - ${mem[3]}))
-            memory="$((memused / 1024))MB / $((${mem[0]} / 1024))MB"
+            memused=$((memused / 1024))
+            memtotal=$((${mem[0]} / 1024))
         ;;
 
         "Mac OS X")
@@ -1099,7 +1100,6 @@ getmemory () {
             memactive=$(vm_stat | awk '/active / { printf $3 }')
             memcompressed=$(vm_stat | awk '/occupied/ { printf $5 }')
             memused=$(((${memwired//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))
-            memory="${memused}MB / ${memtotal}MB"
         ;;
 
         "OpenBSD" | "BSD")
@@ -1108,28 +1108,22 @@ getmemory () {
                     mem=($(top -d 1 | awk -F ':  |/| |M' '/Memory:/ {printf $4 " " $6 " " $11 "\n"}'))
                     memtotal=$((${mem[1]} + ${mem[2]}))
                     memused=$((memtotal - ${mem[0]}))
-                    memory="${memused}MB / ${memtotal}MB"
                 ;;
 
                 "FreeBSD"*)
                     memtotal=$(dmesg | awk '/real mem/ {printf $5}')
                     memtotal=${memtotal/\(}
                     memtotal=${memtotal/MB\)}
-
                     memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
                     memfree=${memfree/M}
-
                     memused=$((memtotal - memfree))
-                    memory="${memused}MB / ${memtotal}MB"
                 ;;
 
                 "NetBSD"*)
                     memfree=$(($(vmstat | awk 'END{printf $4}') / 1000))
                     memused=$(($(vmstat | awk 'END{printf $3}') / 1000))
                     memtotal=$((memused + memfree))
-
                     memused=$((memtotal - memfree))
-                    memory="${memused}MB / ${memtotal}MB"
                 ;;
             esac
 
@@ -1142,10 +1136,11 @@ getmemory () {
             memfree=${mem#* }
             memavail=$((memtotal - memfree))
             memused=$((memtotal - memavail))
-            memory="$((${memused%% *} / 1024))MB / "
-            memory+="$((${memtotal%% *} / 1024))MB"
+            memused=$((${memused%% *} / 1024))
+            memtotal=$((${memtotal%% *} / 1024))
         ;;
     esac
+    memory="${memused}MB / ${memtotal}MB"
 
     # Progress bars
     case "$memory_display" in
@@ -2746,6 +2741,12 @@ while [ "$1" ]; do
         ;;
         --test)
             info=(title underline distro kernel uptime packages shell resolution de wm theme icons cpu gpu memory font disk battery song localip publicip users birthday)
+
+            refresh_rate="on"
+            shell_version="on"
+            cpu_display="infobar"
+            memory_display="infobar"
+            disk_display="infobar"
 
             printinfo () {
                 info linebreak
