@@ -430,8 +430,9 @@ config_file="$HOME/.config/neofetch/config"
 # Gather Info {{{
 
 
-# Set no case match
+# Set no case match and extended globbing.
 shopt -s nocasematch
+shopt -s extglob
 
 
 # Operating System {{{
@@ -838,7 +839,8 @@ getcpu () {
         ;;
 
         "Mac OS X")
-            cpu="$(sysctl -n machdep.cpu.brand_string | tr -s \ )"
+            cpu="$(sysctl -n machdep.cpu.brand_string)"
+            cpu=${cpu//+( )/ }
             cores=$(sysctl -n hw.ncpu)
         ;;
 
