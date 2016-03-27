@@ -279,9 +279,11 @@ progress_char="━"
 progress_length="15"
 
 # Progress bar colors
+# When set to distro, uses your distro's logo colors
+# Takes: num, "distro"
 # --progress_colors col col
-progress_color_elapsed="6"
-progress_color_total="8"
+progress_color_elapsed="distro"
+progress_color_total="distro"
 
 # Customize how the info is displayed.
 # bar: Only the progress bar is displayed.
@@ -2341,6 +2343,12 @@ setcolors () {
         colon_color="\033[3${colors[4]}m"
         info_color="\033[3${colors[5]}m"
     fi
+
+    [ "$progress_color_elapsed" == "distro" ] && \
+        progress_color_elapsed="7"
+
+    [ "$progress_color_total" == "distro" ] && \
+        progress_color_total="$2"
 }
 
 color () {
@@ -2452,8 +2460,8 @@ bar() {
     total=$(printf %"$((progress_length - elapsed))"s)
 
     # Set the colors and swap the spaces for $progress_char
-    bar="\033[38;5;${progress_color_elapsed}m${prog// /$progress_char}"
-    bar+="\033[38;5;${progress_color_total}m${total// /$progress_char}"
+    bar="\033[0m\033[3${progress_color_elapsed}m${prog// /$progress_char}"
+    bar+="\033[0m\033[3${progress_color_total}m${total// /$progress_char}"
     printf "%b%s\n" "${bar}${clear}"
 }
 
