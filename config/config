@@ -257,9 +257,11 @@ progress_char="━"
 progress_length="15"
 
 # Progress bar colors
+# When set to distro, uses your distro's logo colors
+# Takes: num, "distro"
 # --progress_colors col col
-progress_color_elapsed="6"
-progress_color_total="8"
+progress_color_elapsed="distro"
+progress_color_total="distro"
 
 # Customize how the info is displayed.
 # bar: Only the progress bar is displayed.
