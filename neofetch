@@ -12,10 +12,12 @@
 # Optional Dependencies: (You'll lose these features without them)
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
+#   Displaying song with Google Play Music: gpmdp-bash
 #   [ Linux / BSD ] Wallpaper Display: feh, nitrogen or gsettings
 #   [ Linux / BSD ] Current Song: mpc, cmus, moc
 #   [ Linux ] Current Song: spotify
 #   [ Linux / BSD ] Resolution detection: xorg-xdpyinfo
+#   [ OS X ] Getting screen resolution (faster): screenresolution
 #
 # Created by Dylan Araps
 # https://github.com/dylanaraps/
@@ -1251,16 +1253,23 @@ getresolution () {
         ;;
 
         "Mac OS X")
-            case "$refresh_rate" in
-                "on")
-                    resolution=$(system_profiler SPDisplaysDataType |\
-                                awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')
-                ;;
-                "off")
-                    resolution=$(system_profiler SPDisplaysDataType |\
-                                awk '/Resolution:/ {printf $2"x"$4", "}')
-                ;;
-            esac
+            if type -p screenresolution >/dev/null 2>&1; then
+                resolution=$(screenresolution get 2>&1 | awk '/Display/ {printf $6"Hz, "}')
+                resolution=${resolution//x??@/ @ }
+                [[ "$refresh_rate" == "off" ]] && resolution=${resolution// @ +([0-9])Hz}
+
+            else
+                case "$refresh_rate" in
+                    "on")
+                        resolution=$(system_profiler SPDisplaysDataType |\
+                                    awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')
+                    ;;
+                    "off")
+                        resolution=$(system_profiler SPDisplaysDataType |\
+                                    awk '/Resolution:/ {printf $2"x"$4", "}')
+                    ;;
+                esac
+            fi
         ;;
 
         "Windows")
