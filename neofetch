@@ -2347,8 +2347,10 @@ setcolors () {
     [ "$progress_color_elapsed" == "distro" ] && \
         progress_color_elapsed="7"
 
-    [ "$progress_color_total" == "distro" ] && \
+    if [ "$progress_color_total" == "distro" ]; then
         progress_color_total="$2"
+        [ "$2" == 7 ] && progress_color_total="${1}"
+    fi
 }
 
 color () {
