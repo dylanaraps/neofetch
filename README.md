@@ -90,8 +90,8 @@ your distro's logo or any ascii art of your choice!
 
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc`, `cmus`, `moc`, `spotify`, `gpmdc`
-- Resolution: `xorg-xdpyinfo`
-- Screenshot: `scrot` \[5\]
+- Resolution: `xorg-xrandr` or `xorg-xdpyinfo` \[5\]
+- Screenshot: `scrot` \[6\]
 
 ##### OSX
 
@@ -108,7 +108,10 @@ terminal emulators that don't support the xterm escape sequences we're using for
 \[4\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
 changing the config option `$image_backend` to `iterm2`.
 
-\[5\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+\[5\] Xrandr is prefered over xdpyinfo as Xrandr supports multi monitor and refresh rate display in the<br \>
+output.
+
+\[6\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and neofetch will use it instead of scrot.
 
 
