@@ -572,7 +572,8 @@ getuptime () {
         "Mac OS X" | *"BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
-            boot="${boot/*('{ sec = '|,*)}"
+            boot=${boot/'{ sec = '}
+            boot=${boot/,*}
 
             # Get current date in seconds
             now=$(date +%s)
