@@ -1778,7 +1778,8 @@ getascii () {
 
     # Turn the file into a variable and strip escape codes.
     ascii_strip=$(<"$ascii")
-    ascii_strip=${ascii_strip//*(\$\{??\}|\\)}
+    ascii_strip=${ascii_strip//\$\{??\}}
+    ascii_strip=${ascii_strip//\\}
 
     # Get length of longest line
     length="$(wc -L 2>/dev/null <<< "$ascii_strip")"
