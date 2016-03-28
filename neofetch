@@ -29,6 +29,9 @@ SYS_LOCALE="$LANG"
 export LC_ALL=C
 export LANG=C
 
+# Set no case match and extended globbing.
+shopt -s extglob nocasematch
+
 
 # Config Options {{{
 
@@ -434,11 +437,6 @@ config_file="$HOME/.config/neofetch/config"
 # Gather Info {{{
 
 
-# Set no case match and extended globbing.
-shopt -s nocasematch
-shopt -s extglob
-
-
 # Operating System {{{
 
 case "$(uname)" in
@@ -507,10 +505,8 @@ case "$os" in
         distro="$(wmic os get Caption /value)"
 
         # Strip crap from the output of wmic
-        distro=${distro/Caption'='}
+        distro=${distro//*(Caption'='|  |Microsoft )}
         distro=${distro//[[:space:]]/ }
-        distro=${distro//  }
-        distro=${distro/Microsoft }
 
         # Change bits to xx-bit for Windows
         x64="64-bit"
@@ -576,7 +572,7 @@ getuptime () {
         "Mac OS X" | *"BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
-            boot="${boot/'{ sec = '}"
+            boot=${boot/'{ sec = '}
             boot=${boot/,*}
 
             # Get current date in seconds
@@ -614,24 +610,18 @@ getuptime () {
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
         "on")
-            uptime=${uptime/up}
+            uptime=${uptime/up }
             uptime=${uptime/minutes/mins}
             uptime=${uptime/minute/min}
             uptime=${uptime/seconds/secs}
-            uptime=${uptime# }
         ;;
 
         "tiny")
-            uptime=${uptime/up}
-            uptime=${uptime/ days/d}
-            uptime=${uptime/ day/d}
-            uptime=${uptime/ hours/h}
-            uptime=${uptime/ hour/h}
-            uptime=${uptime/ minutes/m}
-            uptime=${uptime/ minute/m}
-            uptime=${uptime/ seconds/s}
-            uptime=${uptime/,}
-            uptime=${uptime# }
+            uptime=${uptime//*(up |,)}
+            uptime=${uptime// day[s]/d}
+            uptime=${uptime// hour[s]/h}
+            uptime=${uptime// minute[s]/m}
+            uptime=${uptime// seconds/s}
         ;;
     esac
     uptime=${uptime//+( )/ }
@@ -761,8 +751,7 @@ getshell () {
 
             *"tcsh"* | *"csh"*)
                 shell+="$("$SHELL" --version)"
-                shell=${shell/tcsh}
-                shell=${shell/\(*}
+                shell=${shell//*(tcsh|\(*)}
             ;;
         esac
 
@@ -891,16 +880,9 @@ getcpu () {
     esac
 
     # Remove uneeded patterns from cpu output
-    # This is faster than sed/gsub
-    cpu=${cpu//(tm)}
-    cpu=${cpu//(TM)}
-    cpu=${cpu//(r)}
-    cpu=${cpu//(R)}
-    cpu=${cpu//CPU}
-    cpu=${cpu//Processor}
-    cpu=${cpu//Six-Core}
-    cpu=${cpu//Eight-Core}
-    cpu=${cpu//with Radeon HD Graphics}
+    cpu=${cpu//*(CPU|Processor|Six-Core|Eight-Core|with Radeon HD Graphics)}
+    cpu=${cpu/'(r)'}
+    cpu=${cpu/'(tm)'}
 
     # Add cpu cores to output
     [ "$cpu_cores" == "on" ] && [ ! -z "$cores" ] && \
@@ -908,19 +890,12 @@ getcpu () {
 
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
-        "name")
-            cpu=${cpu/@*}
-        ;;
-
-        "speed")
-            cpu=${cpu#*@ }
-        ;;
+        "name") cpu=${cpu/@*} ;;
+        "speed") cpu=${cpu#*@ } ;;
 
         "on" | "tiny")
-            cpu=${cpu/Intel }
-            cpu=${cpu/Core }
-            cpu=${cpu/Core? Duo }
-            cpu=${cpu/AMD }
+            cpu=${cpu//*(Intel |Core |AMD )}
+            cpu=${cpu/Core? Duo}
 
             case "$cpu_shorthand" in
                 "tiny") cpu=${cpu/@*} ;;
@@ -952,8 +927,8 @@ getcpu () {
 # GPU {{{
 
 getgpu () {
-   case "$os" in
-       "Linux")
+    case "$os" in
+        "Linux")
             gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
 
             # If a GPU with a prefix of '3D' doesn't exist
@@ -984,43 +959,19 @@ getgpu () {
 
             case "$gpu" in
                 intel*)
-                    gpu=${gpu/Intel Corporation }
-                    gpu=${gpu/Haswell-??? }
-                    gpu=${gpu/?th Gen }
-                    gpu=${gpu/Core }
-                    gpu=${gpu/Processor }
-                    gpu=${gpu/ Mobile}
-                    gpu=${gpu/ Express}
-                    gpu=${gpu/ Controller}
-                    gpu=${gpu/Sky }
-                    gpu=${gpu/Lake }
-
+                    gpu=${gpu//*(Intel Corporation |Haswell-??? |?th Gen |Core |Processor |\
+                                Mobile |Express |Controller |Sky |Lake )}
                     brand="Intel "
                 ;;
 
                 advanced*)
-                    gpu=${gpu/Advanced Micro Devices, Inc\. }
-                    gpu=${gpu/'[AMD/ATI]' }
-                    gpu=${gpu/Tahiti PRO}
-                    gpu=${gpu/Seymour}
-                    gpu=${gpu/Richland}
-                    gpu=${gpu/Pitcairn}
-                    gpu=${gpu/Hawaii}
-                    gpu=${gpu/ OEM}
-                    gpu=${gpu/ Cape Verde}
-                    gpu=${gpu/ \[}
-                    gpu=${gpu/\]}
-
+                    gpu=${gpu//*(Advanced Micro Devices, Inc.|'[AMD/ATI]'|Tahiti PRO|Seymour|\
+                                Richland|Pitcairn|Hawaii| OEM| Cape Verde)}
                     brand="AMD "
                 ;;
 
                 nvidia*)
-                    gpu=${gpu/NVIDIA Corporation }
-                    gpu=${gpu/G????M }
-                    gpu=${gpu/G???? }
-                    gpu=${gpu/\[}
-                    gpu=${gpu/\] }
-
+                    gpu=${gpu//*(NVIDIA Corporation |G????M |G???? )}
                     brand="NVIDIA "
                 ;;
 
@@ -1059,22 +1010,11 @@ getgpu () {
 
     case "$gpu_shorthand" in
         "on" | "tiny")
-            gpu=${gpu// Rev\. ?}
+            gpu=${gpu//*( Rev . ?| PRO| OEM| Mars| Series| Controller|\/*|\[|\])}
             gpu=${gpu//AMD*\/ATI\]/AMD}
-            gpu=${gpu// Tahiti}
-            gpu=${gpu// PRO}
-            gpu=${gpu// OEM}
-            gpu=${gpu// Mars}
-            gpu=${gpu// Series}
-            gpu=${gpu// Controller}
-            gpu=${gpu/\/*}
 
             case "$gpu_shorthand" in
-                "tiny")
-                    gpu=${gpu/Graphics }
-                    gpu=${gpu/GeForce }
-                    gpu=${gpu/Radeon }
-                ;;
+                "tiny") gpu=${gpu//*(Graphics |Geforce |Radeon )} ;;
             esac
         ;;
     esac
@@ -1254,12 +1194,10 @@ getresolution () {
 
         "Windows")
             width=$(wmic desktopmonitor get screenwidth /value 2>/dev/null)
-            width=${width/ScreenWidth'='/}
-            width=${width//[[:space:]]}
+            width=${width//*(ScreenWidth'='|[[:space:]])}
 
             height=$(wmic desktopmonitor get screenheight /value 2>/dev/null)
-            height=${height/ScreenHeight'='/}
-            height=${height//[[:space:]]}
+            height=${height//*(ScreenHeight'='|[[:space:]])}
 
             [ ! -z "$width" ] && \
                 resolution="${width}x${height}"
@@ -1425,15 +1363,11 @@ getstyle () {
 
         # Final string
         theme="${gtk2theme}${gtk3theme}"
-        theme=${theme//\"}
-        theme=${theme//\'}
+        theme=${theme//*(\"|\')}
 
         # Make the output shorter by removing "[GTKX]" from the string
-        if [ "$gtk_shorthand" == "on" ]; then
-            theme=${theme/ '[GTK2]'}
-            theme=${theme/ '[GTK3]'}
-            theme=${theme/ '[GTK2/3]'}
-        fi
+        [ "$gtk_shorthand" == "on" ] && \
+            theme=${theme//*( \[GTK[23]\]|\[GTK2\/3])}
     else
         case "$os" in
             "Windows")
@@ -1591,8 +1525,7 @@ getbattery () {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
             battery=${battery/EstimatedChargeRemaining'='}
-            battery=${battery//[[:space:]]/ }
-            battery=${battery// }
+            battery=${battery//[[:space:]]}
             [ ! -z "$battery" ] && \
                 battery+="%"
         ;;
@@ -1770,8 +1703,7 @@ getwallpaper () {
                 esac
 
                 # Strip quotes etc from the path.
-                img=${img/'file://'}
-                img=${img//\'}
+                img=${img//*('file://'|\')}
             fi
         ;;
 
