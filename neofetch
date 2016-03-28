@@ -750,8 +750,7 @@ getshell () {
 
             *"tcsh"* | *"csh"*)
                 shell+="$("$SHELL" --version)"
-                shell=${shell/tcsh}
-                shell=${shell/\(*}
+                shell=${shell//*(tcsh|\(*)}
             ;;
         esac
 
@@ -880,16 +879,7 @@ getcpu () {
     esac
 
     # Remove uneeded patterns from cpu output
-    # This is faster than sed/gsub
-    cpu=${cpu//(tm)}
-    cpu=${cpu//(TM)}
-    cpu=${cpu//(r)}
-    cpu=${cpu//(R)}
-    cpu=${cpu//CPU}
-    cpu=${cpu//Processor}
-    cpu=${cpu//Six-Core}
-    cpu=${cpu//Eight-Core}
-    cpu=${cpu//with Radeon HD Graphics}
+    cpu=${cpu//*('(tm)'|'(r)'|CPU|Processor|Six-Core|Eight-Core|with Radeon HD Graphics)}
 
     # Add cpu cores to output
     [ "$cpu_cores" == "on" ] && [ ! -z "$cores" ] && \
@@ -901,10 +891,7 @@ getcpu () {
         "speed") cpu=${cpu#*@ } ;;
 
         "on" | "tiny")
-            cpu=${cpu/Intel }
-            cpu=${cpu/Core }
-            cpu=${cpu/Core? Duo }
-            cpu=${cpu/AMD }
+            cpu=${cpu//*(Intel |Core |Core? Duo |AMD )}
 
             case "$cpu_shorthand" in
                 "tiny") cpu=${cpu/@*} ;;
@@ -1203,12 +1190,10 @@ getresolution () {
 
         "Windows")
             width=$(wmic desktopmonitor get screenwidth /value 2>/dev/null)
-            width=${width/ScreenWidth'='/}
-            width=${width//[[:space:]]}
+            width=${width//*(ScreenWidth'='|[[:space:]])}
 
             height=$(wmic desktopmonitor get screenheight /value 2>/dev/null)
-            height=${height/ScreenHeight'='/}
-            height=${height//[[:space:]]}
+            height=${height//*(ScreenHeight'='|[[:space:]])}
 
             [ ! -z "$width" ] && \
                 resolution="${width}x${height}"
@@ -1374,15 +1359,11 @@ getstyle () {
 
         # Final string
         theme="${gtk2theme}${gtk3theme}"
-        theme=${theme//\"}
-        theme=${theme//\'}
+        theme=${theme//*(\"|\')}
 
         # Make the output shorter by removing "[GTKX]" from the string
-        if [ "$gtk_shorthand" == "on" ]; then
-            theme=${theme/ '[GTK2]'}
-            theme=${theme/ '[GTK3]'}
-            theme=${theme/ '[GTK2/3]'}
-        fi
+        [ "$gtk_shorthand" == "on" ] && \
+            theme=${theme//*( \[GTK[23]\]|\[GTK2\/3])}
     else
         case "$os" in
             "Windows")
@@ -1540,8 +1521,7 @@ getbattery () {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
             battery=${battery/EstimatedChargeRemaining'='}
-            battery=${battery//[[:space:]]/ }
-            battery=${battery// }
+            battery=${battery//[[:space:]]}
             [ ! -z "$battery" ] && \
                 battery+="%"
         ;;
@@ -1719,8 +1699,7 @@ getwallpaper () {
                 esac
 
                 # Strip quotes etc from the path.
-                img=${img/'file://'}
-                img=${img//\'}
+                img=${img//*('file://'|\')}
             fi
         ;;
 
@@ -1799,8 +1778,7 @@ getascii () {
 
     # Turn the file into a variable and strip escape codes.
     ascii_strip=$(<"$ascii")
-    ascii_strip=${ascii_strip//\$\{??\}}
-    ascii_strip=${ascii_strip//\\}
+    ascii_strip=${ascii_strip//*(\$\{??\}|\\)}
 
     # Get length of longest line
     length="$(wc -L 2>/dev/null <<< "$ascii_strip")"
