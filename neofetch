@@ -892,7 +892,8 @@ getcpu () {
         "speed") cpu=${cpu#*@ } ;;
 
         "on" | "tiny")
-            cpu=${cpu//*(Intel |Core |Core? Duo |AMD )}
+            cpu=${cpu//*(Intel |Core |AMD )}
+            cpu=${cpu/Core? Duo}
 
             case "$cpu_shorthand" in
                 "tiny") cpu=${cpu/@*} ;;
