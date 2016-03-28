@@ -880,7 +880,9 @@ getcpu () {
     esac
 
     # Remove uneeded patterns from cpu output
-    cpu=${cpu//*('(tm)'|'(r)'|CPU|Processor|Six-Core|Eight-Core|with Radeon HD Graphics)}
+    cpu=${cpu//*(CPU|Processor|Six-Core|Eight-Core|with Radeon HD Graphics)}
+    cpu=${cpu/'(r)'}
+    cpu=${cpu/'(tm)'}
 
     # Add cpu cores to output
     [ "$cpu_cores" == "on" ] && [ ! -z "$cores" ] && \
