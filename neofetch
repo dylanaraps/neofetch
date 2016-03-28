@@ -505,10 +505,8 @@ case "$os" in
         distro="$(wmic os get Caption /value)"
 
         # Strip crap from the output of wmic
-        distro=${distro/Caption'='}
+        distro=${distro//*(Caption'='|  |Microsoft )}
         distro=${distro//[[:space:]]/ }
-        distro=${distro//  }
-        distro=${distro/Microsoft }
 
         # Change bits to xx-bit for Windows
         x64="64-bit"
@@ -574,8 +572,7 @@ getuptime () {
         "Mac OS X" | *"BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
-            boot="${boot/'{ sec = '}"
-            boot=${boot/,*}
+            boot="${boot/*('{ sec = '|,*)}"
 
             # Get current date in seconds
             now=$(date +%s)
@@ -612,24 +609,18 @@ getuptime () {
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
         "on")
-            uptime=${uptime/up}
+            uptime=${uptime/up }
             uptime=${uptime/minutes/mins}
             uptime=${uptime/minute/min}
             uptime=${uptime/seconds/secs}
-            uptime=${uptime# }
         ;;
 
         "tiny")
-            uptime=${uptime/up}
-            uptime=${uptime/ days/d}
-            uptime=${uptime/ day/d}
-            uptime=${uptime/ hours/h}
-            uptime=${uptime/ hour/h}
-            uptime=${uptime/ minutes/m}
-            uptime=${uptime/ minute/m}
-            uptime=${uptime/ seconds/s}
-            uptime=${uptime/,}
-            uptime=${uptime# }
+            uptime=${uptime//*(up |,)}
+            uptime=${uptime// day[s]/d}
+            uptime=${uptime// hour[s]/h}
+            uptime=${uptime// minute[s]/m}
+            uptime=${uptime// seconds/s}
         ;;
     esac
     uptime=${uptime//+( )/ }
