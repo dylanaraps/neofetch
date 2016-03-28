@@ -29,6 +29,9 @@ SYS_LOCALE="$LANG"
 export LC_ALL=C
 export LANG=C
 
+# Set no case match and extended globbing.
+shopt -s extglob nocasematch
+
 
 # Config Options {{{
 
@@ -432,11 +435,6 @@ config_file="$HOME/.config/neofetch/config"
 
 
 # Gather Info {{{
-
-
-# Set no case match and extended globbing.
-shopt -s nocasematch
-shopt -s extglob
 
 
 # Operating System {{{
@@ -908,13 +906,8 @@ getcpu () {
 
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
-        "name")
-            cpu=${cpu/@*}
-        ;;
-
-        "speed")
-            cpu=${cpu#*@ }
-        ;;
+        "name") cpu=${cpu/@*} ;;
+        "speed") cpu=${cpu#*@ } ;;
 
         "on" | "tiny")
             cpu=${cpu/Intel }
@@ -952,8 +945,8 @@ getcpu () {
 # GPU {{{
 
 getgpu () {
-   case "$os" in
-       "Linux")
+    case "$os" in
+        "Linux")
             gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
 
             # If a GPU with a prefix of '3D' doesn't exist
@@ -984,43 +977,19 @@ getgpu () {
 
             case "$gpu" in
                 intel*)
-                    gpu=${gpu/Intel Corporation }
-                    gpu=${gpu/Haswell-??? }
-                    gpu=${gpu/?th Gen }
-                    gpu=${gpu/Core }
-                    gpu=${gpu/Processor }
-                    gpu=${gpu/ Mobile}
-                    gpu=${gpu/ Express}
-                    gpu=${gpu/ Controller}
-                    gpu=${gpu/Sky }
-                    gpu=${gpu/Lake }
-
+                    gpu=${gpu//*(Intel Corporation |Haswell-??? |?th Gen |Core |Processor |\
+                                Mobile |Express |Controller |Sky |Lake )}
                     brand="Intel "
                 ;;
 
                 advanced*)
-                    gpu=${gpu/Advanced Micro Devices, Inc\. }
-                    gpu=${gpu/'[AMD/ATI]' }
-                    gpu=${gpu/Tahiti PRO}
-                    gpu=${gpu/Seymour}
-                    gpu=${gpu/Richland}
-                    gpu=${gpu/Pitcairn}
-                    gpu=${gpu/Hawaii}
-                    gpu=${gpu/ OEM}
-                    gpu=${gpu/ Cape Verde}
-                    gpu=${gpu/ \[}
-                    gpu=${gpu/\]}
-
+                    gpu=${gpu//*(Advanced Micro Devices, Inc.|'[AMD/ATI]'|Tahiti PRO|Seymour|\
+                                Richland|Pitcairn|Hawaii| OEM| Cape Verde)}
                     brand="AMD "
                 ;;
 
                 nvidia*)
-                    gpu=${gpu/NVIDIA Corporation }
-                    gpu=${gpu/G????M }
-                    gpu=${gpu/G???? }
-                    gpu=${gpu/\[}
-                    gpu=${gpu/\] }
-
+                    gpu=${gpu//*(NVIDIA Corporation |G????M |G???? )}
                     brand="NVIDIA "
                 ;;
 
@@ -1059,22 +1028,11 @@ getgpu () {
 
     case "$gpu_shorthand" in
         "on" | "tiny")
-            gpu=${gpu// Rev\. ?}
+            gpu=${gpu//*( Rev . ?| PRO| OEM| Mars| Series| Controller|\/*|\[|\])}
             gpu=${gpu//AMD*\/ATI\]/AMD}
-            gpu=${gpu// Tahiti}
-            gpu=${gpu// PRO}
-            gpu=${gpu// OEM}
-            gpu=${gpu// Mars}
-            gpu=${gpu// Series}
-            gpu=${gpu// Controller}
-            gpu=${gpu/\/*}
 
             case "$gpu_shorthand" in
-                "tiny")
-                    gpu=${gpu/Graphics }
-                    gpu=${gpu/GeForce }
-                    gpu=${gpu/Radeon }
-                ;;
+                "tiny") gpu=${gpu//*(Graphics |Geforce |Radeon )} ;;
             esac
         ;;
     esac
