@@ -1251,7 +1251,7 @@ getresolution () {
             fi
 
             [[ "$refresh_rate" == "off" ]] && \
-                 resolution=${resolution// @ +([0-9])Hz}
+                 resolution=${resolution// @ *([0-9])Hz}
         ;;
 
         "Windows")
