@@ -435,8 +435,7 @@ config_file="$HOME/.config/neofetch/config"
 
 
 # Set no case match and extended globbing.
-shopt -s nocasematch
-shopt -s extglob
+shopt -s nocasematch extglob
 
 
 # Operating System {{{
@@ -2343,14 +2342,11 @@ setcolors () {
         progress_color_elapsed="$(color $progress_color_elapsed)"
     fi
 
-    if [ "$progress_color_total" == "distro" ]; then
-        progress_color_total="$c1"
-        case "$1" in
-            7 | 3 | 6) progress_color_total="$c2" ;;
-        esac
-    else
-        progress_color_total="$(color $progress_color_total)"
-    fi
+    case "$progress_color_total $1" in
+        distro\ [736]) progress_color_total="$c2" ;;
+        distro\ [0-9]) progress_color_total="$c1" ;;
+        *) progress_color_total="$(color $progress_color_total)" ;;
+    esac
 }
 
 color () {
@@ -2466,8 +2462,8 @@ bar() {
     total=$(printf %"$((progress_length - elapsed))"s)
 
     # Set the colors and swap the spaces for $progress_char
-    bar="\033[0m${progress_color_elapsed}${prog// /$progress_char}"
-    bar+="\033[0m${progress_color_total}${total// /$progress_char}"
+    bar="${progress_color_elapsed}${prog// /$progress_char}"
+    bar+="${progress_color_total}${total// /$progress_char}"
     printf "%b%s\n" "${bar}${clear}"
 }
 
