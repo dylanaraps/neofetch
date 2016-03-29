@@ -1857,16 +1857,11 @@ getascii () {
     ascii_strip=${ascii_strip//\\}
 
     # Get length of longest line
-    length="$(wc -L 2>/dev/null <<< "$ascii_strip")"
+    ascii_size=($(awk 'END {print NR}length>max{max=length}END{print max}' <<< "$ascii_strip"))
+    ascii_height=$((${ascii_size[0]} + 1))
+    ascii_length=${ascii_size[1]}
 
-    # Get the height in lines
-    lines="$(($(wc -l 2>/dev/null <<< "$ascii_strip") + 1))"
-
-    # Fallback to using awk on systems without 'wc -L'
-    [ -z "$length" ] && \
-        length="$(awk 'length>max{max=length}END{print max}' <<< "$ascii_strip")"
-
-    padding="\033[$((length + gap))C"
+    padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
 
     export LC_ALL=C
@@ -2864,9 +2859,9 @@ if [ "$image" != "off" ]; then
     [ -z "$info_height" ] && info_height=0
 
     # Set cursor position dynamically based on height of ascii/text.
-    [ "$lines" -lt "$info_height" ] && lines="$info_height"
+    [ "$ascii_height" -lt "$info_height" ] && ascii_height="$info_height"
 
-    printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
+    printf "%b%s" "\033[${ascii_height}H\033[${prompt_height}A"
 fi
 
 # Re-enable line wrap
