@@ -939,9 +939,9 @@ getcpu () {
 
         case "$cpu_display" in
             "info") prin "${subtitle} Usage: ${cpu_usage}" ;;
-            "bar") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} )))" ;;
-            "infobar") prin "${subtitle} Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} )))" ;;
-            "barinfo") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" $(( 100 * ${cores} ))) ${cpu_usage}" ;;
+            "bar") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" $(( 100 * cores )))" ;;
+            "infobar") prin "${subtitle} Usage: ${cpu_usage} $(bar "${cpu_usage/'%'}" $(( 100 * cores )))" ;;
+            "barinfo") prin "${subtitle} Usage: $(bar "${cpu_usage/'%'}" $(( 100 * cores ))) ${cpu_usage}" ;;
         esac
     fi
     [ "$stdout_mode" != "on" ] && unset cpu
@@ -1081,10 +1081,10 @@ getgpu () {
 getmemory () {
     case "$os" in
         "Linux" | "Windows")
-            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo))
-            memused=$((${mem[0]} - ${mem[1]} - ${mem[2]:-0} - ${mem[3]:-0}))
+            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo) 0 0)
+            memused=$((mem[0] - mem[1] - mem[2] - mem[3]))
             memused=$((memused / 1024))
-            memtotal=$((${mem[0]} / 1024))
+            memtotal=$((mem[0] / 1024))
         ;;
 
         "Mac OS X")
@@ -1845,7 +1845,7 @@ getascii () {
 
     # Get length of longest line
     ascii_size=($(awk 'END {print NR}length>max{max=length}END{print max}' <<< "$ascii_strip"))
-    lines=$((${ascii_size[0]} + 1))
+    lines=$((ascii_size[0] + 1))
     ascii_length=${ascii_size[1]}
 
     padding="\033[$((ascii_length + gap))C"
