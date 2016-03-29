@@ -2803,6 +2803,13 @@ if [ "$image" != "off" ]; then
     # Hide the cursor
     printf "\033[?25l"
 
+    # If iterm2 is detected use iterm2 backend.
+    if [ -n "$ITERM_PROFILE" ]; then
+        image_backend="iterm2"
+    else
+        image_backend="w3m"
+    fi
+
     # Find w3mimgdisplay
     [ "$image_backend" == "w3m" ] && \
     [ "$image" != "ascii" ] && \
