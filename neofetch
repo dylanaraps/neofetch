@@ -2755,11 +2755,15 @@ while [ "$1" ]; do
             disk_display="infobar"
 
             printinfo () {
-                info linebreak
-                info linebreak
+                if [ ! -z "$TRAVIS_OS_NAME" ]; then
+                    info linebreak
+                    info linebreak
+                fi
+
                 for func in "${info[@]}"; do
                     info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" $func
                 done
+
                 info linebreak
                 info cols
                 info linebreak
