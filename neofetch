@@ -312,7 +312,9 @@ image="wall"
 thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 
 # W3m-img path
-# Some systems have this in another location
+# This is automatically detected, this variable
+# should only be set to w3m-img's location if the
+# builtin detection doesn't work.
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
 # Image position
