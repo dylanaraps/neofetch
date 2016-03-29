@@ -2838,7 +2838,7 @@ if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
         ;;
 
         "iterm2")
-            printf "%b%s\a\n" "\033]1337;File=width=${image_size}px;height=${image_size}px;inline=1:$(base64 < "$img" || padding="\033[0C")"
+            printf "%b%s\a\n" "\033]1337;File=width=${image_size}px;height=${image_size}px;inline=1:$(base64 < "$img")"
         ;;
     esac
 fi
