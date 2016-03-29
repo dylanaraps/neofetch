@@ -2461,8 +2461,8 @@ bar() {
     total=$(printf %"$((progress_length - elapsed))"s)
 
     # Set the colors and swap the spaces for $progress_char
-    bar="${progress_color_elapsed}${prog// /$progress_char}"
-    bar+="${progress_color_total}${total// /$progress_char}"
+    bar="\033[0m${progress_color_elapsed}${prog// /$progress_char}"
+    bar+="\033[0m${progress_color_total}${total// /$progress_char}"
     printf "%b%s\n" "${bar}${clear}"
 }
 
