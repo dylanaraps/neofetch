@@ -2328,6 +2328,7 @@ setcolors () {
 
         # If the second color is white use the first for the subtitle
         [ "$2" == 7 ] && subtitle_color="\033[0m\033[3${1}m"
+        [ "$1" == 7 ] && title_color="\033[0m"
     else
         title_color="\033[0m\033[3${colors[0]}m"
         at_color="\033[0m\033[3${colors[1]}m"
