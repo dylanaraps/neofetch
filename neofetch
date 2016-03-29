@@ -1897,6 +1897,7 @@ getimage () {
     esac
 
     # Get terminal width and height
+    stty -echo
     if [ -n "$TMUX" ]; then
         printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
     else
@@ -1905,7 +1906,7 @@ getimage () {
 
     # The ascape code above prints the output AFTER the prompt so this
     # loop below reads it as input. wtf xterm
-    read -d c -s -r term_size
+    read -d c -s -r term_size; stty echo
 
     # Split the string
     term_size=${term_size//'['}
@@ -2843,7 +2844,7 @@ printinfo
 
 if [ "$image" != "off" ]; then
     # Get cursor position
-    info_height="$(IFS=';' read -srdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}")"
+    info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}")"
 
     # If get cursor pos fails set the value to 0
     [ -z "$info_height" ] && info_height=0
