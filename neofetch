@@ -1858,7 +1858,7 @@ getascii () {
 
     # Get length of longest line
     ascii_size=($(awk 'END {print NR}length>max{max=length}END{print max}' <<< "$ascii_strip"))
-    ascii_height=${ascii_size[0]}
+    ascii_height=$((${ascii_size[0]} + 1))
     ascii_length=${ascii_size[1]}
 
     padding="\033[$((ascii_length + gap))C"
