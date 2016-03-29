@@ -774,7 +774,7 @@ getshell () {
 # Desktop Environment {{{
 
 getde () {
-    [ "$XDG_CURRENT_DESKTOP" != "i3" ] && de="$XDG_CURRENT_DESKTOP"
+    de="${XDG_CURRENT_DESKTOP/i3}"
 }
 
 # }}}
@@ -1081,8 +1081,8 @@ getgpu () {
 getmemory () {
     case "$os" in
         "Linux" | "Windows")
-            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo ) 0 0)
-            memused=$((${mem[0]} - ${mem[1]} - ${mem[2]} - ${mem[3]}))
+            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo))
+            memused=$((${mem[0]} - ${mem[1]} - ${mem[2]:-0} - ${mem[3]:-0}))
             memused=$((memused / 1024))
             memtotal=$((${mem[0]} / 1024))
         ;;
@@ -1348,9 +1348,8 @@ getstyle () {
             ;;
 
             "Xfce"*)
-                if type -p xfconf-query >/dev/null 2>&1; then
+                type -p xfconf-query >/dev/null 2>&1 && \
                     gtk2theme=$(xfconf-query -c xsettings -p /Net/$xfconf)
-                fi
             ;;
         esac
 
