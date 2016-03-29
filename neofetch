@@ -1857,13 +1857,9 @@ getascii () {
     ascii_strip=${ascii_strip//\\}
 
     # Get length of longest line
-    ascii_size=($(wc -lL 2>/dev/null <<< "$ascii_strip"))
+    ascii_size=($(awk 'END {print NR}length>max{max=length}END{print max}' <<< "$ascii_strip"))
     ascii_height=${ascii_size[0]}
     ascii_length=${ascii_size[1]}
-
-    # Fallback to using awk on systems without 'wc -L'
-    [ -z "$ascii_length" ] && \
-        ascii_length="$(awk 'length>max{max=length}END{print max}' <<< "$ascii_strip")"
 
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
