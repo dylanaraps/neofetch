@@ -2844,7 +2844,7 @@ printinfo
 
 if [ "$image" != "off" ]; then
     # Get cursor position
-    info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}")"
+    info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
 
     # If get cursor pos fails set the value to 0
     [ -z "$info_height" ] && info_height=0
