@@ -1858,7 +1858,7 @@ getascii () {
 
     # Get length of longest line
     ascii_size=($(awk 'END {print NR}length>max{max=length}END{print max}' <<< "$ascii_strip"))
-    ascii_height=$((${ascii_size[0]} + 1))
+    lines=$((${ascii_size[0]} + 1))
     ascii_length=${ascii_size[1]}
 
     padding="\033[$((ascii_length + gap))C"
@@ -2855,13 +2855,10 @@ if [ "$image" != "off" ]; then
     # Get cursor position
     info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
 
-    # If get cursor pos fails set the value to 0
-    [ -z "$info_height" ] && info_height=0
-
     # Set cursor position dynamically based on height of ascii/text.
-    [ "$ascii_height" -lt "$info_height" ] && ascii_height="$info_height"
+    [ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
 
-    printf "%b%s" "\033[${ascii_height}H\033[${prompt_height}A"
+    printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
 fi
 
 # Re-enable line wrap
