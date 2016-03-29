@@ -2337,14 +2337,19 @@ setcolors () {
         info_color="$(color ${colors[5]})"
     fi
 
-    [ "$progress_color_elapsed" == "distro" ] && \
+    if [ "$progress_color_elapsed" == "distro" ]; then
         progress_color_elapsed="$(color 7)"
+    else
+        progress_color_elapsed="$(color $progress_color_elapsed)"
+    fi
 
     if [ "$progress_color_total" == "distro" ]; then
         progress_color_total="$c1"
         case "$1" in
             7 | 3 | 6) progress_color_total="$c2" ;;
         esac
+    else
+        progress_color_total="$(color $progress_color_total)"
     fi
 }
 
