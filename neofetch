@@ -317,7 +317,9 @@ thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 image_backend="w3m"
 
 # W3m-img path
-# Some systems have this in another location
+# This is automatically detected, this variable
+# should only be set to w3m-img's location if the
+# builtin detection doesn't work.
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
 # Image position
@@ -2836,7 +2838,7 @@ if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
         ;;
 
         "iterm2")
-            printf "%b%s\a\n" "\033]1337;File=width=${image_size}px;height=${image_size}px;inline=1:$(base64 < "$img")"
+            printf "%b%s\a\n" "\033]1337;File=width=${image_size}px;height=${image_size}px;inline=1:$(base64 < "$img" || padding="\033[0C")"
         ;;
     esac
 fi
