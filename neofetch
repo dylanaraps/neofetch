@@ -311,11 +311,6 @@ image="wall"
 # Thumbnail directory
 thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 
-# Image Backend
-# Which program to draw images with
-# --image_backend w3m, iterm2
-image_backend="w3m"
-
 # W3m-img path
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
@@ -2536,7 +2531,6 @@ usage () { cat << EOF
                                 Possible values: wall, ascii,
                                 /path/to/img, /path/to/dir/, off
     --size 20px | --size 20%    Size to make the image, takes pixels or a percentage.
-    --image_backend w3m/iterm2  Which program to use to draw images.
     --image_position left/right Where to display the image: (Left/Right)
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
@@ -2671,7 +2665,6 @@ while [ "$1" ]; do
         ;;
 
         --size) image_size="$2" ;;
-        --image_backend) image_backend="$2" ;;
         --image_position) image_position="$2" ;;
         --crop_mode) crop_mode="$2" ;;
         --crop_offset) crop_offset="$2" ;;
@@ -2802,6 +2795,13 @@ if [ "$image" != "off" ]; then
 
     # Hide the cursor
     printf "\033[?25l"
+
+    # If iterm2 is detected use iterm2 backend.
+    if [ -n "$ITERM_PROFILE" ]; then
+        image_backend="iterm2"
+    else
+        image_backend="w3m"
+    fi
 
     # Find w3mimgdisplay
     [ "$image_backend" == "w3m" ] && \
