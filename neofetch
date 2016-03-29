@@ -1852,7 +1852,7 @@ getascii () {
     export LC_ALL="$SYS_LOCALE"
 
     # Turn the file into a variable and strip escape codes.
-    ascii_strip=$(<"${ascii}")
+    ascii_strip=$(<"$ascii")
     ascii_strip=${ascii_strip//\$\{??\}}
     ascii_strip=${ascii_strip//\\}
 
