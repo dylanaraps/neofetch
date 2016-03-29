@@ -2318,13 +2318,21 @@ setcolors () {
     c5="\033[0m\033[3${5}m"
     c6="\033[0m\033[3${6}m"
 
+    # Fix for white on white
+    [ "$1" == 7 ] && c1="\033[0m"
+    [ "$2" == 7 ] && c2="\033[0m"
+    [ "$3" == 7 ] && c3="\033[0m"
+    [ "$4" == 7 ] && c4="\033[0m"
+    [ "$5" == 7 ] && c5="\033[0m"
+    [ "$6" == 7 ] && c6="\033[0m"
+
     if [ "${colors[0]}" == "distro" ]; then
         title_color="\033[0m\033[3${1}m"
-        at_color="\033[0m\033[0m"
-        underline_color="\033[0m\033[0m"
+        at_color="\033[0m"
+        underline_color="\033[0m"
         subtitle_color="\033[0m\033[3${2}m"
-        colon_color="\033[0m\033[0m"
-        info_color="\033[0m\033[0m"
+        colon_color="\033[0m"
+        info_color="\033[0m"
 
         # If the second color is white use the first for the subtitle
         [ "$2" == 7 ] && subtitle_color="\033[0m\033[3${1}m"
