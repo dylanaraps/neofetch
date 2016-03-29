@@ -984,18 +984,7 @@ getgpu () {
 
             case "$gpu" in
                 intel*)
-                    gpu=${gpu/Intel Corporation }
-                    gpu=${gpu/Haswell-??? }
-                    gpu=${gpu/?th Gen }
-                    gpu=${gpu/Core }
-                    gpu=${gpu/Processor }
-                    gpu=${gpu/ Mobile}
-                    gpu=${gpu/ Express}
-                    gpu=${gpu/ Controller}
-                    gpu=${gpu/Sky }
-                    gpu=${gpu/Lake }
-
-                    brand="Intel "
+                    gpu="Intel Integrated Graphics"
                 ;;
 
                 advanced*)
