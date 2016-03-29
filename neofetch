@@ -1778,7 +1778,7 @@ getwallpaper () {
         ;;
 
         "Mac OS X")
-            img="$(osascript -e 'tell app "finder" to get posix path of (get desktop picture as text)')"
+            img="$(osascript -e 'tell application "System Events" to picture of current desktop')"
         ;;
 
         "Windows")
