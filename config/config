@@ -289,11 +289,6 @@ image="wall"
 # Thumbnail directory
 thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 
-# Image Backend
-# Which program to draw images with
-# --image_backend w3m, iterm2
-image_backend="w3m"
-
 # W3m-img path
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
