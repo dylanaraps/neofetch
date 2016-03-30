@@ -949,12 +949,6 @@ getcpu () {
 # GPU {{{
 
 getgpu () {
-    # Use cache if it exists
-    if [ -f "/tmp/neofetch/gpu" ]; then
-        source "/tmp/neofetch/gpu"
-        return
-    fi
-
    case "$os" in
        "Linux")
             gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
@@ -1027,7 +1021,13 @@ getgpu () {
         ;;
 
         "Mac OS X")
-            gpu=$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')
+            # Use cache if it exists
+            if [ -f "/tmp/neofetch/gpu" ]; then
+                source "/tmp/neofetch/gpu"
+            else
+                gpu=$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')
+                cache "gpu" "$gpu"
+            fi
             gpu=${gpu//'/ $'}
             gpu=${gpu%,*}
         ;;
@@ -1075,9 +1075,6 @@ getgpu () {
 
     gpu=${gpu//+( )/ }
     gpu="${gpu}${count}"
-
-    # Cache the output
-    cache "gpu" "$gpu"
 }
 
 # }}}
