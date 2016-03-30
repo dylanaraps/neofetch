@@ -1022,13 +1022,13 @@ getgpu () {
 
         "Mac OS X")
             # Use cache if it exists
-            if [ -f "/tmp/neofetch/gpu" ]; then
-                source "/tmp/neofetch/gpu"
+            if [ -f "/Library/Caches/neofetch/gpu" ]; then
+                source "/Library/Caches/neofetch/gpu"
             else
                 gpu=$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')
                 gpu=${gpu//'/ $'}
                 gpu=${gpu%,*}
-                cache "gpu" "$gpu"
+                cache "gpu" "$gpu" "/Library/Caches/"
             fi
         ;;
 
@@ -2458,8 +2458,8 @@ bar() {
 # Cache {{{
 
 cache () {
-    mkdir -p "/tmp/neofetch"
-    echo "${1/*-}=\"$2\"" > "/tmp/neofetch/${1/*-}"
+    mkdir -p "$3/neofetch"
+    echo "${1/*-}=\"$2\"" > "$3/neofetch/${1/*-}"
 }
 
 # }}}
