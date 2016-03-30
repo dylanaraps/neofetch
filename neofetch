@@ -949,6 +949,12 @@ getcpu () {
 # GPU {{{
 
 getgpu () {
+    # Use cache if it exists
+    if [ -f "/tmp/neofetch/gpu" ]; then
+        source "/tmp/neofetch/gpu"
+        return
+    fi
+
    case "$os" in
        "Linux")
             gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
@@ -1069,6 +1075,9 @@ getgpu () {
 
     gpu=${gpu//+( )/ }
     gpu="${gpu}${count}"
+
+    # Cache the output
+    cache "gpu" "$gpu"
 }
 
 # }}}
@@ -2449,6 +2458,14 @@ bar() {
 
 # }}}
 
+# Cache {{{
+
+cache () {
+    mkdir -p "/tmp/neofetch"
+    echo "${1/*-}=\"$2\"" > "/tmp/neofetch/${1/*-}"
+}
+
+# }}}
 
 # }}}
 
