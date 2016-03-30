@@ -1021,9 +1021,15 @@ getgpu () {
         ;;
 
         "Mac OS X")
-            gpu=$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')
-            gpu=${gpu//'/ $'}
-            gpu=${gpu%,*}
+            # Use cache if it exists
+            if [ -f "/Library/Caches/neofetch/gpu" ]; then
+                source "/Library/Caches/neofetch/gpu"
+            else
+                gpu=$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')
+                gpu=${gpu//'/ $'}
+                gpu=${gpu%,*}
+                cache "gpu" "$gpu" "/Library/Caches/"
+            fi
         ;;
 
         *"BSD")
@@ -2449,6 +2455,14 @@ bar() {
 
 # }}}
 
+# Cache {{{
+
+cache () {
+    mkdir -p "$3/neofetch"
+    echo "${1/*-}=\"$2\"" > "$3/neofetch/${1/*-}"
+}
+
+# }}}
 
 # }}}
 
@@ -2673,7 +2687,11 @@ while [ "$1" ]; do
         --xoffset) xoffset="$2" ;;
         --yoffset) yoffset="$2" ;;
         --gap) gap="$2" ;;
-        --clean) rm -rf "$thumbnail_dir" || exit ;;
+        --clean)
+            rm -rf "$thumbnail_dir"
+            rm -rf "/Library/Caches/neofetch/"
+            exit
+        ;;
 
         # Ascii
         --ascii)
