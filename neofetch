@@ -695,8 +695,8 @@ getpackages () {
             fi
 
             if type -p brew >/dev/null 2>&1; then
-                brew_packages=$(brew list -1 2>/dev/null | wc -l)
-                packages=$((packages + brew_packages))
+                brew_packages=$(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l)
+                packages=$((packages + $((brew_packages - 1))))
             fi
 
             if type -p pkgin >/dev/null 2>&1; then
