@@ -23,7 +23,7 @@
 # https://github.com/dylanaraps/
 
 version=${BASH_VERSION/.*}
-SYS_LOCALE="$LANG"
+SYS_LOCALE="${LANG:-C}"
 
 # Speed up script by not using unicode
 export LC_ALL=C
