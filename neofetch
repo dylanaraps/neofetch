@@ -2687,7 +2687,11 @@ while [ "$1" ]; do
         --xoffset) xoffset="$2" ;;
         --yoffset) yoffset="$2" ;;
         --gap) gap="$2" ;;
-        --clean) rm -rf "$thumbnail_dir" || exit ;;
+        --clean)
+            rm -rf "$thumbnail_dir"
+            rm -rf "/Library/Caches/neofetch/"
+            exit
+        ;;
 
         # Ascii
         --ascii)
