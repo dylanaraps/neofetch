@@ -691,12 +691,12 @@ getpackages () {
 
             if type -p port >/dev/null 2>&1; then
                 port_packages=$(port installed 2>/dev/null | wc -l)
-                packages=$((packages + $((port_packages - 1))))
+                packages=$((packages + port_packages - 1))
             fi
 
             if type -p brew >/dev/null 2>&1; then
                 brew_packages=$(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l)
-                packages=$((packages + $((brew_packages - 1))))
+                packages=$((packages + brew_packages - 1))
             fi
 
             if type -p pkgin >/dev/null 2>&1; then
