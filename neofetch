@@ -1728,7 +1728,7 @@ getcols () {
         while [ $start -le $end ]; do
             case "$start" in
                 [0-6]) printf "\033[4${start}m%${block_width}s" ;;
-                7) printf "\033[48;5;${start}m%${block_width}s\n${clear}${padding}" ;;
+                7) printf "\033[4${start}m%${block_width}s\n${clear}${padding}" ;;
                 *) printf "\033[48;5;${start}m%${block_width}s" ;;
             esac
             start=$((start + 1))
