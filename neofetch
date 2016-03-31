@@ -1435,7 +1435,7 @@ getstyle () {
                     if [ "$1" == "font" ]; then
                         theme=$(/usr/libexec/PlistBuddy -c Print \
                                 ~/Library/Preferences/com.googlecode.iterm2.plist |\
-                                awk -F '= ' '/Name =|Normal Font/ {printf $2 " "}')
+                                awk -F '= ' '/Name =|Normal Font/ {printf $2 "  "}')
                         theme="${theme/${ITERM_PROFILE}*}"
                         theme="${theme/*  }"
                     fi
