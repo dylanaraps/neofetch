@@ -1435,7 +1435,7 @@ getstyle () {
                     [ "$1" == "font" ] && \
                         theme=$(/usr/libexec/PlistBuddy -c Print \
                                 ~/Library/Preferences/com.googlecode.iterm2.plist |\
-                                awk -F '= ' '/Normal Font/ {printf $2}')
+                                awk -F '= ' '/Normal Font/ {printf $2; exit}')
             ;;
 
             "Windows")
