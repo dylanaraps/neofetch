@@ -1726,12 +1726,12 @@ getcols () {
     if [ "$color_blocks" == "on" ]; then
         printf "${padding}%s"
         while [ $start -le $end ]; do
-            printf "\033[48;5;${start}m%${block_width}s"
+            case "$start" in
+                [0-6]) printf "\033[4${start}m%${block_width}s" ;;
+                7) printf "\033[48;5;${start}m%${block_width}s\n${clear}${padding}" ;;
+                *) printf "\033[48;5;${start}m%${block_width}s" ;;
+            esac
             start=$((start + 1))
-
-            # Split the blocks at 8 colors
-            [ $end -ge 9 ] && [ $start -eq 8 ] && \
-                printf "\n%s${clear}${padding}"
         done
 
         # Clear formatting
