@@ -1433,7 +1433,7 @@ getstyle () {
         case "$os" in
             "Mac OS X")
                     [ "$1" == "font" ] && \
-                        theme=$(/usr/libexec/PlistBuddy -c “Print” \
+                        theme=$(/usr/libexec/PlistBuddy -c Print \
                                 ~/Library/Preferences/com.googlecode.iterm2.plist |\
                                 awk -F '= ' '/Normal Font/ {printf $2}')
             ;;
