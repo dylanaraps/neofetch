@@ -2734,7 +2734,7 @@ while [ "$1" ]; do
 
         # Stdout
         --stdout)
-            unset info_color colors cpu_display bar prin
+            unset info_color prin clear bar
             stdout_mode="on"
             config="off"
             case "$2" in
