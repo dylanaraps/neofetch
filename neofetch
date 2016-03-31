@@ -1432,13 +1432,11 @@ getstyle () {
     else
         case "$os" in
             "Mac OS X")
-                    if [ "$1" == "font" ]; then
-                        theme=$(/usr/libexec/PlistBuddy -c Print \
-                                ~/Library/Preferences/com.googlecode.iterm2.plist |\
-                                awk -F '= ' '/Name =|Normal Font/ {printf $2 "  "}')
-                        theme="${theme/${ITERM_PROFILE}*}"
-                        theme="${theme/*  }"
-                    fi
+                if [ "$1" == "font" ]; then
+                    theme=$(/usr/libexec/PlistBuddy -c Print \
+                            ~/Library/Preferences/com.googlecode.iterm2.plist |\
+                            awk -F '= ' '/Name =|Normal Font/ {printf $2 "  "}')
+                fi
             ;;
 
             "Windows")
