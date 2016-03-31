@@ -769,9 +769,11 @@ getshell () {
 # }}}
 
 # Desktop Environment {{{
-
 getde () {
-    de="${XDG_CURRENT_DESKTOP/i3}"
+    case "$os" in
+        "Mac OS X") de="Aqua" ;;
+        *) de="${XDG_CURRENT_DESKTOP/i3}" ;;
+    esac
 }
 
 # }}}
