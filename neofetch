@@ -22,8 +22,9 @@
 # Created by Dylan Araps
 # https://github.com/dylanaraps/
 
-version=${BASH_VERSION/.*}
+version="${BASH_VERSION/.*}"
 SYS_LOCALE="${LANG:-C}"
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
 # Speed up script by not using unicode
 export LC_ALL=C
@@ -420,7 +421,7 @@ config="on"
 
 # Path to custom config file location
 # --config path/to/config
-config_file="$HOME/.config/neofetch/config"
+config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
 
 
 # }}}
@@ -860,7 +861,7 @@ getwmtheme () {
 
         'Openbox')
             [ -f "${HOME}/.config/openbox/rc.xml" ] && \
-                wmtheme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$HOME/.config/openbox/rc.xml")";
+                wmtheme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$XDG_CONFIG_HOME/openbox/rc.xml")";
         ;;
 
         'PekWM')
@@ -1472,8 +1473,8 @@ getstyle () {
 
         # Check for gtk3 theme
         if [ -z "$gtk3theme" ]; then
-            if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
-                gtk3theme=$(grep "^[^#]*$name" "$HOME/.config/gtk-3.0/settings.ini")
+            if [ -f "$XDG_CONFIG_HOME/gtk-3.0/settings.ini" ]; then
+                gtk3theme=$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")
 
             elif type -p gsettings >/dev/null 2>&1; then
                 gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
@@ -1843,7 +1844,7 @@ getwallpaper () {
                 img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
 
             elif type -p nitrogen >/dev/null 2>&1; then
-                img="$(awk -F'=' '/file/ {printf $2;exit;}' "$HOME/.config/nitrogen/bg-saved.cfg")"
+                img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
 
             elif type -p gsettings >/dev/null 2>&1; then
                 case "$XDG_CURRENT_DESKTOP" in
@@ -2492,26 +2493,26 @@ getconfig () {
         source "$config_file"
         return
     fi
-    mkdir -p "$HOME/.config/neofetch/"
+    mkdir -p "$XDG_CONFIG_HOME/neofetch/"
 
-    # Check $HOME/.config/neofetch and create the
+    # Check $XDG_CONFIG_HOME/neofetch and create the
     # dir/files if they don't exist.
-    if [ -f "$HOME/.config/neofetch/config" ]; then
-        source "$HOME/.config/neofetch/config"
+    if [ -f "$XDG_CONFIG_HOME/neofetch/config" ]; then
+        source "$XDG_CONFIG_HOME/neofetch/config"
 
     elif [ -f "/usr/share/neofetch/config" ]; then
-        cp "/usr/share/neofetch/config" "$HOME/.config/neofetch"
-        source "$HOME/.config/neofetch/config"
+        cp "/usr/share/neofetch/config" "$XDG_CONFIG_HOME/neofetch"
+        source "$XDG_CONFIG_HOME/neofetch/config"
 
     elif [ -f "/usr/local/share/neofetch/config" ]; then
-        cp "/usr/local/share/neofetch/config" "$HOME/.config/neofetch"
-        source "$HOME/.config/neofetch/config"
+        cp "/usr/local/share/neofetch/config" "$XDG_CONFIG_HOME/neofetch"
+        source "$XDG_CONFIG_HOME/neofetch/config"
 
     else
         getscriptdir
 
-        cp "$script_dir/config/config" "$HOME/.config/neofetch"
-        source "$HOME/.config/neofetch/config"
+        cp "$script_dir/config/config" "$XDG_CONFIG_HOME/neofetch"
+        source "$XDG_CONFIG_HOME/neofetch/config"
     fi
 }
 

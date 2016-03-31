@@ -7,7 +7,6 @@
 # Speed up script by not using unicode
 export LC_ALL=C
 export LANG=C
-export LANGUAGE=C
 
 # Info Options {{{
 
@@ -395,7 +394,7 @@ config="on"
 
 # Path to custom config file location
 # --config path/to/config
-config_file="$HOME/.config/neofetch/config"
+config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
 
 
 # }}}
