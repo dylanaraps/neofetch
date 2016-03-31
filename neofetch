@@ -816,7 +816,7 @@ getwmtheme () {
         'BudgieWM') wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)" ;;
         'E16') wmtheme="$(awk -F"= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
         'Marco') wmtheme="$(gsettings get org.mate.Marco.general theme)" ;;
-        'Metacity') wmtheme="$(gconftool-2 -g /apps/metacity/general/theme 2>/dev/null)" ;;
+        'Metacity'*) wmtheme="$(gconftool-2 -g /apps/metacity/general/theme 2>/dev/null)" ;;
         'Sawfish') wmtheme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "$HOME/.sawfish/custom")" ;;
 
         'Cinnamon' | 'Muffin')
@@ -853,7 +853,7 @@ getwmtheme () {
                 wmtheme="$(awk -F "/" '/styleFile/ {print $NF}' "$HOME/.fluxbox/init")"
         ;;
 
-        'IceWM')
+        'IceWM'*)
             [ -f $HOME/.icewm/theme ] && \
                 wmtheme="$(awk -F "[\",/]" '!/#/ {print $2}' "$HOME/.icewm/theme")"
         ;;
