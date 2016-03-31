@@ -1431,6 +1431,14 @@ getstyle () {
         fi
     else
         case "$os" in
+            "Mac OS X")
+                if [ "$1" == "font" ]; then
+                    theme=$(/usr/libexec/PlistBuddy -c Print \
+                            ~/Library/Preferences/com.googlecode.iterm2.plist |\
+                            awk -F '= ' '/Name =|Normal Font/ {printf $2 "  "}')
+                fi
+            ;;
+
             "Windows")
                 [ -z "$path" ] && return
                 theme="$(head -n1 "$path" 2>/dev/null)"
@@ -1438,7 +1446,6 @@ getstyle () {
                 theme="${theme%.*}"
                 theme="${theme^}"
             ;;
-
         esac
     fi
 }
