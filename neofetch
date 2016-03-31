@@ -1633,11 +1633,11 @@ getpublicip () {
     fi
 
     if [ -z "$publicip" ] && type -p curl >/dev/null 2>&1; then
-        publicip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
+        publicip="$(curl --max-time 10 -w '\n' "$public_ip_host" 2>/dev/null)"
     fi
 
     if [ -z "$publicip" ] && type -p wget >/dev/null 2>&1; then
-        publicip="$(wget -T 10 -qO- "$public_ip_host"; printf "%s")"
+        publicip="$(wget -T 10 -qO- "$public_ip_host" 2>/dev/null; printf "%s")"
     fi
 }
 
