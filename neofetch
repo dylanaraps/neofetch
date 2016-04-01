@@ -819,7 +819,7 @@ getwmtheme () {
         'Metacity'*) wmtheme="$(gconftool-2 -g /apps/metacity/general/theme 2>/dev/null)" ;;
         'Sawfish') wmtheme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "$HOME/.sawfish/custom")" ;;
 
-        'Cinnamon' | 'Muffin')
+        'Cinnamon' | 'Muffin' | 'Mutter (Muffin)')
             detheme="$(gsettings get org.cinnamon.theme name)"
             wmtheme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
             wmtheme="$detheme (${wmtheme})"
