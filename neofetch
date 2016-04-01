@@ -775,7 +775,10 @@ getshell () {
 getde () {
     case "$os" in
         "Mac OS X") de="Aqua" ;;
-        *) de="${XDG_CURRENT_DESKTOP/i3}" ;;
+        *)
+            de="${XDG_CURRENT_DESKTOP/i3}"
+            de=${de/'X-'}
+        ;;
     esac
 
     # TODO: Add support for all DEs that have xprop values.
