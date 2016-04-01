@@ -854,6 +854,11 @@ getwmtheme () {
                 wmtheme="Graphite"
             fi
         ;;
+
+        'Fluxbox')
+            [ -f $HOME/.fluxbox/init ] && \
+                wmtheme="$(awk -F "/" '/styleFile/ {print $NF}' "$HOME/.fluxbox/init")"
+        ;;
     esac
     wmtheme="${wmtheme//\'}"
 }
