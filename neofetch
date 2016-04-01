@@ -816,6 +816,14 @@ getwmtheme () {
         '2bwm')
 
         ;;
+        'Quartz Compositor')
+            wmtheme=$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)
+            if [ -z "$wmtheme" ] || [ "$wmtheme" == "1" ]; then
+                wmtheme="Blue"
+            else
+                wmtheme="Graphite"
+            fi
+        ;;
 
     esac
 }
