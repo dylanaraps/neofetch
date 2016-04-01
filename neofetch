@@ -780,8 +780,12 @@ getde () {
 
     # TODO: Add support for all DEs that have xprop values.
     if [ -z "$de" ]; then
-        de="$(xprop -root | awk -F '= ' '/KDE_SESSION_VERSION/ {printf $2}')"
+        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MARCO|^_MUFFIN|xfce4|xfce5/')"
 
+        case "$de" in
+            "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
+
+        esac
     fi
 }
 
