@@ -789,8 +789,8 @@ getde () {
             "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
             *"MUFFIN"*) de="Cinnamon" ;;
             *"MARCO"*) de="MATE" ;;
-            *"xfce4") de="XFCE4" ;;
-            *"xfce5") de="XFCE5" ;;
+            *"xfce4"*) de="XFCE4" ;;
+            *"xfce5"*) de="XFCE5" ;;
         esac
     fi
 }
