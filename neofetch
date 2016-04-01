@@ -810,18 +810,13 @@ getwm () {
 # Window Manager Theme {{{
 
 getwmtheme () {
-    case "$os"  in
-        "Linux" | *"BSD")
+    [ -z "$wm" ] && getwm
+
+    case "$wm"  in
+        '2bwm')
 
         ;;
 
-        "Mac OS X")
-
-        ;;
-
-        "Windows")
-
-        ;;
     esac
 }
 
