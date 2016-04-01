@@ -860,8 +860,14 @@ getwmtheme () {
         ;;
 
         'Openbox')
-            [ -f "${HOME}/.config/openbox/rc.xml" ] && \
-                wmtheme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$XDG_CONFIG_HOME/openbox/rc.xml")";
+            if [ "$de" == "LXDE" ] && [ -f "${HOME}/.config/openbox/lxde-rc.xml" ]; then
+                ob_file="lxde-rc"
+
+            elif [ -f "${HOME}/.config/openbox/rc.xml" ]; then
+                ob_file="rc"
+            fi
+
+            wmtheme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$XDG_CONFIG_HOME/openbox/${ob_file}.xml")";
         ;;
 
         'PekWM')
