@@ -814,6 +814,10 @@ getwmtheme () {
 
     case "$wm"  in
         'BudgieWM') wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)" ;;
+        'E16') wmtheme="$(awk -F"= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
+        'Marco') wmtheme="$(gsettings get org.mate.Marco.general theme)" ;;
+        'Metacity') wmtheme="$(gconftool-2 -g /apps/metacity/general/theme 2>/dev/null)" ;;
+        'Sawfish') wmtheme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "$HOME/.sawfish/custom")" ;;
 
         'Cinnamon' | 'Muffin')
             detheme="$(gsettings get org.cinnamon.theme name)"
@@ -835,8 +839,6 @@ getwmtheme () {
                 wmtheme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme)"
         ;;
 
-        'E16') wmtheme="$(awk -F"= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
-
         'E17'|'Enlightenment')
             # TODO: Reduce the size of this.
             if type -p eet >/dev/null 2>&1; then
@@ -844,6 +846,31 @@ getwmtheme () {
                 wmtheme=${wmtheme##*/}
                 wmtheme=${wmtheme%.*}
             fi
+        ;;
+
+        'Fluxbox')
+            [ -f $HOME/.fluxbox/init ] && \
+                wmtheme="$(awk -F "/" '/styleFile/ {print $NF}' "$HOME/.fluxbox/init")"
+        ;;
+
+        'IceWM')
+            [ -f $HOME/.icewm/theme ] && \
+                wmtheme="$(awk -F "[\",/]" '!/#/ {print $2}' "$HOME/.icewm/theme")"
+        ;;
+
+        'Openbox')
+            [ -f "${HOME}/.config/openbox/rc.xml" ] && \
+                wmtheme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$HOME/.config/openbox/rc.xml")";
+        ;;
+
+        'PekWM')
+            [ -f $HOME/.pekwm/config ] && \
+                wmtheme="$(awk -F "/" '/Theme/ {gsub(/\"/,""); print $NF}' "$HOME/.pekwm/config")"
+        ;;
+
+        'Xfwm4')
+            [ -f "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" ] && \
+                wmtheme="$(xfconf-query -c xfwm4 -p /general/theme)"
         ;;
 
         'Quartz Compositor')
@@ -855,12 +882,10 @@ getwmtheme () {
             fi
         ;;
 
-        'Fluxbox')
-            [ -f $HOME/.fluxbox/init ] && \
-                wmtheme="$(awk -F "/" '/styleFile/ {print $NF}' "$HOME/.fluxbox/init")"
-        ;;
     esac
+
     wmtheme="${wmtheme//\'}"
+    [ "$version" -ge 4 ] && wmtheme=${wmtheme^}
 }
 
 # }}}
