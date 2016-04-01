@@ -822,7 +822,7 @@ getwmtheme () {
         'Cinnamon' | 'Muffin')
             detheme="$(gsettings get org.cinnamon.theme name)"
             wmtheme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
-            wmtheme="${detheme} (${wmtheme})"
+            wmtheme="$detheme (${wmtheme})"
         ;;
 
         'Compiz' | 'Mutter'* | 'GNOME Shell' | 'Gala')
@@ -871,6 +871,18 @@ getwmtheme () {
         'Xfwm4')
             [ -f "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" ] && \
                 wmtheme="$(xfconf-query -c xfwm4 -p /general/theme)"
+        ;;
+
+        'KWin'*)
+            kdeconfigdir
+            kde_config_dir=${kde_config_dir%/}
+
+            if [ -f "$kde_config_dir/share/config/kwinrc" ]; then
+                wmtheme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "$kde_config_dir/share/config/kwinrc")"
+
+            elif [ -f "$KDE_CONFIG_DIR/share/config/kdebugrc" ]; then
+                wmtheme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kde_config_dir/share/config/kdebugrc")"
+            fi
         ;;
 
         'Quartz Compositor')
@@ -1390,15 +1402,7 @@ getstyle () {
         # Current DE
         case "$XDG_CURRENT_DESKTOP" in
             "KDE"*)
-                if type -p kde5-config >/dev/null 2>&1; then
-                    kde_config_dir=$(kde5-config --localprefix)
-
-                elif type -p kde4-config >/dev/null 2>&1; then
-                    kde_config_dir=$(kde4-config --localprefix)
-
-                elif type -p kde-config >/dev/null 2>&1; then
-                    kde_config_dir=$(kde-config --localprefix)
-                fi
+                kdeconfigdir
 
                 if [ -f "${kde_config_dir}/share/config/kdeglobals" ]; then
                     kde_config_file="${kde_config_dir}/share/config/kdeglobals"
@@ -2551,6 +2555,23 @@ cache () {
 }
 
 # }}}
+
+# KDE Config directory {{{
+
+kdeconfigdir () {
+    if type -p kde5-config >/dev/null 2>&1; then
+        kde_config_dir=$(kde5-config --localprefix)
+
+    elif type -p kde4-config >/dev/null 2>&1; then
+        kde_config_dir=$(kde4-config --localprefix)
+
+    elif type -p kde-config >/dev/null 2>&1; then
+        kde_config_dir=$(kde-config --localprefix)
+    fi
+}
+
+# }}}
+
 
 # }}}
 
