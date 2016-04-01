@@ -813,11 +813,15 @@ getwmtheme () {
     [ -z "$wm" ] && getwm
 
     case "$wm"  in
-        '2bwm')
+        'BudgieWM') wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)" ;;
 
+        'Cinnamon' | 'Muffin')
+            de_theme="$(gsettings get org.cinnamon.theme name)"
+            win_theme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
+            Win_theme="${de_theme} (${win_theme})"
         ;;
-
     esac
+    wmtheme="${wmtheme//\'}"
 }
 
 # }}}
