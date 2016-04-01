@@ -829,6 +829,11 @@ getwmtheme () {
                 wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
             fi
         ;;
+
+        'Deepin WM')
+            type -p gsettings >/dev/null 2>&1 && \
+                wmtheme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme)"
+        ;;
     esac
     wmtheme="${wmtheme//\'}"
 }
