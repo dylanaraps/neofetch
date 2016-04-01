@@ -820,6 +820,14 @@ getwmtheme () {
             wmtheme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
             wmtheme="${detheme} (${wmtheme})"
         ;;
+        'Quartz Compositor')
+            wmtheme=$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)
+            if [ -z "$wmtheme" ] || [ "$wmtheme" == "1" ]; then
+                wmtheme="Blue"
+            else
+                wmtheme="Graphite"
+            fi
+        ;;
 
         'Compiz' | 'Mutter'* | 'GNOME Shell' | 'Gala')
             if type -p gsettings >/dev/null 2>&1; then
