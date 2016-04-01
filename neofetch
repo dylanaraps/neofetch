@@ -784,6 +784,7 @@ getde () {
 
         case "$de" in
             "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
+            *"MUFFIN"*) de="Cinnamon" ;;
 
         esac
     fi
