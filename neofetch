@@ -781,7 +781,6 @@ getde () {
         ;;
     esac
 
-    # TODO: Add support for all DEs that have xprop values.
     if [ -z "$de" ]; then
         de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MARCO|^_MUFFIN|xfce4|xfce5/')"
 
