@@ -810,7 +810,19 @@ getwm () {
 # Window Manager Theme {{{
 
 getwmtheme () {
-    echo "TODO"
+    case "$os"  in
+        "Linux" | *"BSD")
+
+        ;;
+
+        "Mac OS X")
+
+        ;;
+
+        "Windows")
+
+        ;;
+    esac
 }
 
 # }}}
