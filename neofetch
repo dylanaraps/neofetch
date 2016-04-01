@@ -1426,8 +1426,10 @@ getstyle () {
     esac
 
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
-        # Current DE
-        case "$XDG_CURRENT_DESKTOP" in
+        # Get DE if user has disabled the function.
+        [ -z "$de" ] && getde
+
+        case "$de" in
             "KDE"*)
                 kdeconfigdir
 
@@ -1865,7 +1867,10 @@ getwallpaper () {
                 img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
 
             elif type -p gsettings >/dev/null 2>&1; then
-                case "$XDG_CURRENT_DESKTOP" in
+                # Get DE if user has disabled the function.
+                [ -z "$de" ] && getde
+
+                case "$de" in
                     "MATE"*) img="$(gsettings get org.mate.background picture-filename 2>/dev/null)" ;;
                     *) img="$(gsettings get org.gnome.desktop.background picture-uri 2>/dev/null)" ;;
                 esac
