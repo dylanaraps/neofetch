@@ -894,6 +894,16 @@ getwmtheme () {
             fi
         ;;
 
+        'Explorer')
+            path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
+            path+="/Windows/CurrentVersion/Themes/CurrentTheme"
+
+            wmtheme="$(head -n1 "$path" 2>/dev/null)"
+            wmtheme="${wmtheme##*\\}"
+            wmtheme="${wmtheme%.*}"
+            wmtheme="${wmtheme^}"
+        ;;
+
     esac
 
     wmtheme="${wmtheme//\'}"
@@ -1377,8 +1387,6 @@ getstyle () {
             gconf="gtk_theme"
             xfconf="ThemeName"
             kde="widgetStyle"
-            path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
-            path+="/Windows/CurrentVersion/Themes/CurrentTheme"
         ;;
 
         icons)
@@ -1517,17 +1525,6 @@ getstyle () {
             theme=${theme/ '[GTK3]'}
             theme=${theme/ '[GTK2/3]'}
         fi
-    else
-        case "$os" in
-            "Windows")
-                [ -z "$path" ] && return
-                theme="$(head -n1 "$path" 2>/dev/null)"
-                theme="${theme##*\\}"
-                theme="${theme%.*}"
-                theme="${theme^}"
-            ;;
-
-        esac
     fi
 }
 
