@@ -820,14 +820,6 @@ getwmtheme () {
             wmtheme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
             wmtheme="${detheme} (${wmtheme})"
         ;;
-        'Quartz Compositor')
-            wmtheme=$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)
-            if [ -z "$wmtheme" ] || [ "$wmtheme" == "1" ]; then
-                wmtheme="Blue"
-            else
-                wmtheme="Graphite"
-            fi
-        ;;
 
         'Compiz' | 'Mutter'* | 'GNOME Shell' | 'Gala')
             if type -p gsettings >/dev/null 2>&1; then
@@ -851,6 +843,15 @@ getwmtheme () {
                 wmtheme="$(eet -d $HOME/.e/e/config/standard/e.cfg config | awk '/value \"file\" string.*.edj/ {print $4}')"
                 wmtheme=${wmtheme##*/}
                 wmtheme=${wmtheme%.*}
+            fi
+        ;;
+
+        'Quartz Compositor')
+            wmtheme=$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)
+            if [ -z "$wmtheme" ] || [ "$wmtheme" == "1" ]; then
+                wmtheme="Blue"
+            else
+                wmtheme="Graphite"
             fi
         ;;
     esac
