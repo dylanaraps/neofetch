@@ -881,7 +881,7 @@ getwmtheme () {
             if [ -f "$kde_config_dir/share/config/kwinrc" ]; then
                 wmtheme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "$kde_config_dir/share/config/kwinrc")"
 
-            elif [ -f "$KDE_CONFIG_DIR/share/config/kdebugrc" ]; then
+            elif [ -f "$kde_config_dir/share/config/kdebugrc" ]; then
                 wmtheme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kde_config_dir/share/config/kdebugrc")"
             fi
         ;;
@@ -2557,7 +2557,10 @@ cache () {
 # KDE Config directory {{{
 
 kdeconfigdir () {
-    if type -p kde5-config >/dev/null 2>&1; then
+    if [ -n "$KDE_CONFIG_DIR" ]; then
+        kde_config_dir="$KDE_CONFIG_DIR"
+
+    elif type -p kde5-config >/dev/null 2>&1; then
         kde_config_dir=$(kde5-config --localprefix)
 
     elif type -p kde4-config >/dev/null 2>&1; then
