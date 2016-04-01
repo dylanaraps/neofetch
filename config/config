@@ -25,8 +25,9 @@ printinfo () {
     info "Packages" packages
     info "Shell" shell
     info "Resolution" resolution
-    info "Desktop Environment" de
-    info "Window Manager" wm
+    info "DE" de
+    info "WM" wm
+    info "WM Theme" wmtheme
     info "Theme" theme
     info "Icons" icons
     info "CPU" cpu
