@@ -816,9 +816,18 @@ getwmtheme () {
         'BudgieWM') wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)" ;;
 
         'Cinnamon' | 'Muffin')
-            de_theme="$(gsettings get org.cinnamon.theme name)"
-            win_theme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
-            Win_theme="${de_theme} (${win_theme})"
+            detheme="$(gsettings get org.cinnamon.theme name)"
+            wmtheme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
+            wmtheme="${detheme} (${wmtheme})"
+        ;;
+
+        'Compiz' | 'Mutter'* | 'GNOME Shell' | 'Gala')
+            if type -p gsettings >/dev/null 2>&1; then
+                wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
+
+            elif type -p gconftool-2 >/dev/null 2>&1; then
+                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
+            fi
         ;;
     esac
     wmtheme="${wmtheme//\'}"
