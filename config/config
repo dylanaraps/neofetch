@@ -7,7 +7,6 @@
 # Speed up script by not using unicode
 export LC_ALL=C
 export LANG=C
-export LANGUAGE=C
 
 # Info Options {{{
 
@@ -25,8 +24,9 @@ printinfo () {
     info "Packages" packages
     info "Shell" shell
     info "Resolution" resolution
-    info "Desktop Environment" de
-    info "Window Manager" wm
+    info "DE" de
+    info "WM" wm
+    info "WM Theme" wmtheme
     info "Theme" theme
     info "Icons" icons
     info "CPU" cpu
@@ -394,7 +394,7 @@ config="on"
 
 # Path to custom config file location
 # --config path/to/config
-config_file="$HOME/.config/neofetch/config"
+config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
 
 
 # }}}

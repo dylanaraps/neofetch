@@ -22,8 +22,9 @@
 # Created by Dylan Araps
 # https://github.com/dylanaraps/
 
-version=${BASH_VERSION/.*}
+version="${BASH_VERSION/.*}"
 SYS_LOCALE="${LANG:-C}"
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
 # Speed up script by not using unicode
 export LC_ALL=C
@@ -49,8 +50,9 @@ printinfo () {
     info "Packages" packages
     info "Shell" shell
     info "Resolution" resolution
-    info "Desktop Environment" de
-    info "Window Manager" wm
+    info "DE" de
+    info "WM" wm
+    info "WM Theme" wmtheme
     info "Theme" theme
     info "Icons" icons
     info "CPU" cpu
@@ -419,7 +421,7 @@ config="on"
 
 # Path to custom config file location
 # --config path/to/config
-config_file="$HOME/.config/neofetch/config"
+config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
 
 
 # }}}
@@ -803,6 +805,118 @@ getwm () {
             "Windows") wm="Explorer" ;;
         esac
     fi
+}
+
+# }}}
+
+# Window Manager Theme {{{
+
+getwmtheme () {
+    [ -z "$wm" ] && getwm
+
+    case "$wm"  in
+        'BudgieWM') wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)" ;;
+        'E16') wmtheme="$(awk -F"= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
+        'Sawfish') wmtheme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "$HOME/.sawfish/custom")" ;;
+
+        'Cinnamon' | 'Muffin' | 'Mutter (Muffin)')
+            detheme="$(gsettings get org.cinnamon.theme name)"
+            wmtheme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
+            wmtheme="$detheme (${wmtheme})"
+        ;;
+
+        'Compiz' | 'Mutter'* | 'GNOME Shell' | 'Gala')
+            if type -p gsettings >/dev/null 2>&1; then
+                wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
+
+            elif type -p gconftool-2 >/dev/null 2>&1; then
+                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
+            fi
+        ;;
+
+        'Metacity'*)
+            if [ "$de" == "Deepin" ]; then
+                wmtheme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme 2>/dev/null)"
+
+            else
+                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme 2>/dev/null)"
+            fi
+        ;;
+
+        'E17' | 'Enlightenment')
+            if type -p eet >/dev/null 2>&1; then
+                wmtheme="$(eet -d $HOME/.e/e/config/standard/e.cfg config | awk '/value \"file\" string.*.edj/ {print $4}')"
+                wmtheme=${wmtheme##*/}
+                wmtheme=${wmtheme%.*}
+            fi
+        ;;
+
+        'Fluxbox')
+            [ -f $HOME/.fluxbox/init ] && \
+                wmtheme="$(awk -F "/" '/styleFile/ {print $NF}' "$HOME/.fluxbox/init")"
+        ;;
+
+        'IceWM'*)
+            [ -f $HOME/.icewm/theme ] && \
+                wmtheme="$(awk -F "[\",/]" '!/#/ {print $2}' "$HOME/.icewm/theme")"
+        ;;
+
+        'Openbox')
+            if [ "$de" == "LXDE" ] && [ -f "${HOME}/.config/openbox/lxde-rc.xml" ]; then
+                ob_file="lxde-rc"
+
+            elif [ -f "${HOME}/.config/openbox/rc.xml" ]; then
+                ob_file="rc"
+            fi
+
+            wmtheme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$XDG_CONFIG_HOME/openbox/${ob_file}.xml")";
+        ;;
+
+        'PekWM')
+            [ -f $HOME/.pekwm/config ] && \
+                wmtheme="$(awk -F "/" '/Theme/ {gsub(/\"/,""); print $NF}' "$HOME/.pekwm/config")"
+        ;;
+
+        'Xfwm4')
+            [ -f "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" ] && \
+                wmtheme="$(xfconf-query -c xfwm4 -p /general/theme)"
+        ;;
+
+        'KWin'*)
+            kdeconfigdir
+            kde_config_dir=${kde_config_dir%/}
+
+            if [ -f "$kde_config_dir/share/config/kwinrc" ]; then
+                wmtheme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "$kde_config_dir/share/config/kwinrc")"
+
+            elif [ -f "$kde_config_dir/share/config/kdebugrc" ]; then
+                wmtheme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kde_config_dir/share/config/kdebugrc")"
+            fi
+        ;;
+
+        'Quartz Compositor')
+            wmtheme=$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)
+            if [ -z "$wmtheme" ] || [ "$wmtheme" == "1" ]; then
+                wmtheme="Blue"
+            else
+                wmtheme="Graphite"
+            fi
+        ;;
+
+        'Explorer')
+            path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
+            path+="/Windows/CurrentVersion/Themes/CurrentTheme"
+
+            wmtheme="$(head -n1 "$path" 2>/dev/null)"
+            wmtheme="${wmtheme##*\\}"
+            wmtheme="${wmtheme%.*}"
+            wmtheme="${wmtheme^}"
+        ;;
+
+    esac
+
+    wmtheme="${wmtheme//\'}"
+    [ "$version" -ge 4 ] && wmtheme=${wmtheme^}
 }
 
 # }}}
@@ -1282,8 +1396,6 @@ getstyle () {
             gconf="gtk_theme"
             xfconf="ThemeName"
             kde="widgetStyle"
-            path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
-            path+="/Windows/CurrentVersion/Themes/CurrentTheme"
         ;;
 
         icons)
@@ -1307,15 +1419,7 @@ getstyle () {
         # Current DE
         case "$XDG_CURRENT_DESKTOP" in
             "KDE"*)
-                if type -p kde5-config >/dev/null 2>&1; then
-                    kde_config_dir=$(kde5-config --localprefix)
-
-                elif type -p kde4-config >/dev/null 2>&1; then
-                    kde_config_dir=$(kde4-config --localprefix)
-
-                elif type -p kde-config >/dev/null 2>&1; then
-                    kde_config_dir=$(kde-config --localprefix)
-                fi
+                kdeconfigdir
 
                 if [ -f "${kde_config_dir}/share/config/kdeglobals" ]; then
                     kde_config_file="${kde_config_dir}/share/config/kdeglobals"
@@ -1377,8 +1481,8 @@ getstyle () {
 
         # Check for gtk3 theme
         if [ -z "$gtk3theme" ]; then
-            if [ -f "$HOME/.config/gtk-3.0/settings.ini" ]; then
-                gtk3theme=$(grep "^[^#]*$name" "$HOME/.config/gtk-3.0/settings.ini")
+            if [ -f "$XDG_CONFIG_HOME/gtk-3.0/settings.ini" ]; then
+                gtk3theme=$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")
 
             elif type -p gsettings >/dev/null 2>&1; then
                 gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
@@ -1430,17 +1534,6 @@ getstyle () {
             theme=${theme/ '[GTK3]'}
             theme=${theme/ '[GTK2/3]'}
         fi
-    else
-        case "$os" in
-            "Windows")
-                [ -z "$path" ] && return
-                theme="$(head -n1 "$path" 2>/dev/null)"
-                theme="${theme##*\\}"
-                theme="${theme%.*}"
-                theme="${theme^}"
-            ;;
-
-        esac
     fi
 }
 
@@ -1759,7 +1852,7 @@ getwallpaper () {
                 img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
 
             elif type -p nitrogen >/dev/null 2>&1; then
-                img="$(awk -F'=' '/file/ {printf $2;exit;}' "$HOME/.config/nitrogen/bg-saved.cfg")"
+                img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
 
             elif type -p gsettings >/dev/null 2>&1; then
                 case "$XDG_CURRENT_DESKTOP" in
@@ -2408,26 +2501,26 @@ getconfig () {
         source "$config_file"
         return
     fi
-    mkdir -p "$HOME/.config/neofetch/"
+    mkdir -p "$XDG_CONFIG_HOME/neofetch/"
 
-    # Check $HOME/.config/neofetch and create the
+    # Check $XDG_CONFIG_HOME/neofetch and create the
     # dir/files if they don't exist.
-    if [ -f "$HOME/.config/neofetch/config" ]; then
-        source "$HOME/.config/neofetch/config"
+    if [ -f "$XDG_CONFIG_HOME/neofetch/config" ]; then
+        source "$XDG_CONFIG_HOME/neofetch/config"
 
     elif [ -f "/usr/share/neofetch/config" ]; then
-        cp "/usr/share/neofetch/config" "$HOME/.config/neofetch"
-        source "$HOME/.config/neofetch/config"
+        cp "/usr/share/neofetch/config" "$XDG_CONFIG_HOME/neofetch"
+        source "$XDG_CONFIG_HOME/neofetch/config"
 
     elif [ -f "/usr/local/share/neofetch/config" ]; then
-        cp "/usr/local/share/neofetch/config" "$HOME/.config/neofetch"
-        source "$HOME/.config/neofetch/config"
+        cp "/usr/local/share/neofetch/config" "$XDG_CONFIG_HOME/neofetch"
+        source "$XDG_CONFIG_HOME/neofetch/config"
 
     else
         getscriptdir
 
-        cp "$script_dir/config/config" "$HOME/.config/neofetch"
-        source "$HOME/.config/neofetch/config"
+        cp "$script_dir/config/config" "$XDG_CONFIG_HOME/neofetch"
+        source "$XDG_CONFIG_HOME/neofetch/config"
     fi
 }
 
@@ -2468,6 +2561,26 @@ cache () {
 }
 
 # }}}
+
+# KDE Config directory {{{
+
+kdeconfigdir () {
+    if [ -n "$KDE_CONFIG_DIR" ]; then
+        kde_config_dir="$KDE_CONFIG_DIR"
+
+    elif type -p kde5-config >/dev/null 2>&1; then
+        kde_config_dir=$(kde5-config --localprefix)
+
+    elif type -p kde4-config >/dev/null 2>&1; then
+        kde_config_dir=$(kde4-config --localprefix)
+
+    elif type -p kde-config >/dev/null 2>&1; then
+        kde_config_dir=$(kde-config --localprefix)
+    fi
+}
+
+# }}}
+
 
 # }}}
 
