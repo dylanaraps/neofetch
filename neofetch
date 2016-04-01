@@ -843,7 +843,6 @@ getwmtheme () {
         ;;
 
         'E17' | 'Enlightenment')
-            # TODO: Reduce the size of this.
             if type -p eet >/dev/null 2>&1; then
                 wmtheme="$(eet -d $HOME/.e/e/config/standard/e.cfg config | awk '/value \"file\" string.*.edj/ {print $4}')"
                 wmtheme=${wmtheme##*/}
