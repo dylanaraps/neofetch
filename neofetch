@@ -464,7 +464,8 @@ case "$os" in
             distro="$(crux)"
 
         else
-            distro="$(awk -F 'NAME="|"' '/^NAME=/ {printf $2}' /etc/*ease)"
+            distro="$(awk -F 'NAME=' '/^NAME=/ {printf $2}' /etc/*ease)"
+            distro=${distro//\"}
 
             # Workaround for distros that store the value differently.
             [ -z "$distro" ] && distro="$(awk -F 'TAILS_PRODUCT_NAME="|"' '/^TAILS_PRODUCT_NAME=/ {printf $2}' /etc/*ease)"
