@@ -253,7 +253,7 @@ bold="on"
 
 # Enable/Disable Underline
 # --underline on/off
-underline="on"
+underline_enabled="on"
 
 # Underline character
 # --underline_char char
@@ -2266,7 +2266,7 @@ stdout () {
 # Underline {{{
 
 getunderline () {
-    case "$underline" in
+    case "$underline_enabled" in
         "on")
             underline=$(printf %"$length"s)
             underline=${underline// /$underline_char}
