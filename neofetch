@@ -2220,21 +2220,15 @@ info () {
 # Prin {{{
 
 prin () {
-    case "$1" in
-        *:*)
-            subtitle=${1%%:*}
-            output=${1#*: }
+    if [ -z "$2" ]; then
+        string="${info_color}${1}"
+        length=${#1}
 
-            string="${bold}${subtitle_color}${subtitle}${clear}"
-            string+="${colon_color}: ${info_color}${output}"
-            length=$((${#subtitle} +  ${#output} + 1))
-        ;;
-
-        *)
-            string="${info_color}${1}"
-            length=${#1}
-        ;;
-    esac
+    else
+        string="${bold}${subtitle_color}${1}${clear}"
+        string+="${colon_color}: ${info_color}${2}"
+        length=$((${#subtitle} +  ${#2} + 1))
+    fi
 
     # Print the info
     printf "%b%s\n" "${padding}${string}${clear}"
