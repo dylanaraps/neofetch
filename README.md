@@ -157,8 +157,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 4. Install the package
     - `emerge -a x11-apps/neofetch`
     
-Note: There is also a git version available:
-    - `emerge --autounmask-write =x11-apps/neofetch-9999`
+There is also a git version available: `emerge --autounmask-write =x11-apps/neofetch-9999`
 
 
 ### CRUX
