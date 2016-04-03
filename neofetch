@@ -1787,13 +1787,8 @@ getbirthday () {
             birthday=${birthday/$time}
 
             case "${time/:*}" in
-                0? | 10 | 11)
-                    time+=" AM"
-                ;;
-
-                *)
-                    time+=" PM"
-                ;;
+                0? | 10 | 11) time+=" AM" ;;
+                *) time+=" PM" ;;
             esac
             birthday+="$time"
             birthday_shorthand="on"
