@@ -452,81 +452,90 @@ esac
 
 # Distro {{{
 
-# Default bit style
-x64="x86_64"
-x32="x86"
-
-case "$os" in
-    "Linux" )
-        if type -p lsb_release >/dev/null 2>&1; then
-            distro="$(lsb_release -d 2>/dev/null | awk -F ':' '/Description/ {printf $2}')"
-            distro=${distro/[[:space:]]}
-
-        elif type -p crux >/dev/null 2>&1; then
-            distro="$(crux)"
-
-        else
-            distro="$(awk -F 'NAME=' '/^NAME=/ {printf $2}' /etc/*ease)"
-            distro=${distro//\"}
-
-            # Workaround for distros that store the value differently.
-            [ -z "$distro" ] && distro="$(awk -F 'TAILS_PRODUCT_NAME="|"' '/^TAILS_PRODUCT_NAME=/ {printf $2}' /etc/*ease)"
-            [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
-        fi
-    ;;
-
-    "Mac OS X")
-        osx_version=$(sw_vers -productVersion)
-        osx_build=$(sw_vers -buildVersion)
-
-        case "${osx_version%.*}" in
-            "10.4") codename="Mac OS X Tiger" ;;
-            "10.5") codename="Mac OS X Leopard" ;;
-            "10.6") codename="Mac OS X Snow Leopard" ;;
-            "10.7") codename="Mac OS X Lion" ;;
-            "10.8") codename="OS X Mountain Lion" ;;
-            "10.9") codename="OS X Mavericks" ;;
-            "10.10") codename="OS X Yosemite" ;;
-            "10.11") codename="OS X El Capitan" ;;
-            *) codename="Mac OS X" ;;
-        esac
-        distro="$codename $osx_version $osx_build"
-    ;;
-
-    "OpenBSD")
-        distro="OpenBSD"
-    ;;
-
-    "BSD")
-        distro="$(uname -v)"
-        distro=${distro%% *}
-    ;;
-
-    "Windows")
-        distro="$(wmic os get Caption /value)"
-
-        # Strip crap from the output of wmic
-        distro=${distro/Caption'='}
-        distro=${distro//[[:space:]]/ }
-        distro=${distro//  }
-        distro=${distro/Microsoft }
-
-        # Change bits to xx-bit for Windows
-        x64="64-bit"
-        x32="32-bit"
-    ;;
-esac
-distro=${distro//+( )/ }
-ascii_distro="$distro"
 
 getdistro () {
+    # Default bit style
+    x64="x86_64"
+    x32="x86"
+
+    case "$os" in
+        "Linux" )
+            if type -p lsb_release >/dev/null 2>&1; then
+                distro="$(lsb_release -d 2>/dev/null | awk -F ':' '/Description/ {printf $2}')"
+                distro=${distro/[[:space:]]}
+
+            elif type -p crux >/dev/null 2>&1; then
+                distro="$(crux)"
+
+            else
+                distro="$(awk -F 'NAME=' '/^NAME=/ {printf $2}' /etc/*ease)"
+                distro=${distro//\"}
+
+                # Workaround for distros that store the value differently.
+                [ -z "$distro" ] && distro="$(awk -F 'TAILS_PRODUCT_NAME="|"' '/^TAILS_PRODUCT_NAME=/ {printf $2}' /etc/*ease)"
+                [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
+            fi
+        ;;
+
+        "Mac OS X")
+            osx_version=$(sw_vers -productVersion)
+            osx_build=$(sw_vers -buildVersion)
+
+            case "${osx_version%.*}" in
+                "10.4") codename="Mac OS X Tiger" ;;
+                "10.5") codename="Mac OS X Leopard" ;;
+                "10.6") codename="Mac OS X Snow Leopard" ;;
+                "10.7") codename="Mac OS X Lion" ;;
+                "10.8") codename="OS X Mountain Lion" ;;
+                "10.9") codename="OS X Mavericks" ;;
+                "10.10") codename="OS X Yosemite" ;;
+                "10.11") codename="OS X El Capitan" ;;
+                *) codename="Mac OS X" ;;
+            esac
+            distro="$codename $osx_version $osx_build"
+        ;;
+
+        "OpenBSD")
+            distro="OpenBSD"
+        ;;
+
+        "BSD")
+            distro="$(uname -v)"
+            distro=${distro%% *}
+        ;;
+
+        "Windows")
+            distro="$(wmic os get Caption /value)"
+
+            # Strip crap from the output of wmic
+            distro=${distro/Caption'='}
+            distro=${distro//[[:space:]]/ }
+            distro=${distro//  }
+            distro=${distro/Microsoft }
+
+            # Change bits to xx-bit for Windows
+            x64="64-bit"
+            x32="32-bit"
+        ;;
+    esac
+    distro=${distro//+( )/ }
+    ascii_distro="$distro"
+
     # Get architecture
-    if [ "$os_arch" == "on" ]; then
-        case "$(getconf LONG_BIT)" in
-            64) distro+=" $x64" ;;
-            32) distro+=" $x32" ;;
-        esac
-    fi
+    case "$os_arch $(getconf LONG_BIT)" in
+        "on 64") distro+=" $x64" ;;
+        "on 32") distro+=" $x32" ;;
+    esac
+
+    # OS X Stuff
+    case "$osx_codename" in
+        "off") distro=${distro/${codename}/Mac OS X} ;;
+    esac
+
+    case "$osx_buildversion" in
+        "off") distro=${distro/ ${osx_build}} ;;
+    esac
+
 }
 
 
@@ -2914,27 +2923,14 @@ done
 # }}}
 
 
-# OS overides {{{
-
-# Overide OS X codename
-case "$osx_codename" in
-    "off") distro=${distro/${codename}/Mac OS X} ;;
-esac
-
-case "$osx_buildversion" in
-    "off") distro=${distro/ ${osx_build}} ;;
-esac
-
-# }}}
-
-
 # Call Functions and Finish Up {{{
 
 
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
 
-# Get colors / bold
+# Call functions
+getdistro
 colors
 bold
 
