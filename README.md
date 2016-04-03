@@ -165,7 +165,7 @@ There is also a git version available: `emerge --autounmask-write =x11-apps/neof
 1. Install git and the git ports(8) driver
     - `sudo prt-get depinst git`
 2. Add the 3rd party repo
-    - `sudo wget -O /etc/ports/arcetera.git https://arcetera.moe/sync`
+    - `sudo wget -O /etc/ports/tudurom.git https://git.io/vV46y`
 3. Sync the repos
     - `sudo ports -u`
 4. Install the package
