@@ -513,7 +513,7 @@ ascii_distro="$distro"
 
 getdistro () {
     # Get architecture
-    [ "$os_arch" == "on" ]
+    if [ "$os_arch" == "on" ]; then
         case "$(getconf LONG_BIT)" in
             64) distro+=" 64-bit" ;;
             32) distro+=" 32-bit" ;;
