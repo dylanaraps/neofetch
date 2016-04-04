@@ -773,8 +773,8 @@ getde () {
         ;;
     esac
 
-    if [ -z "$de" ]; then
-        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MARCO|^_MUFFIN|xfce4|xfce5/')"
+    if [ -n "$DISPLAY" ] && [ -z "$de" ]; then
+        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MARCO|^_MUFFIN|xfce4|xfce5/' 2>/dev/null)"
 
         case "$de" in
             "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
