@@ -977,11 +977,7 @@ getcpu () {
                         speed=$((speed / 100000))
                     else
                         speed=$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
-
-                        case "$distro" in
-                            "NetBSD"*) speed=$((speed / 10000)) ;;
-                            *) speed=$((speed / 100)) ;;
-                        esac
+                        speed=$((speed / 100))
                     fi
 
                     cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
