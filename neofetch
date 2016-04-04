@@ -946,7 +946,7 @@ getcpu () {
             cores=$(sysctl -n hw.ncpu)
         ;;
 
-        "Linux" | *"BSD" | "Windows")
+        *)
             case "$distro" in
                 "OpenBSD"* | "FreeBSD"*)
                     # Get cpu name
