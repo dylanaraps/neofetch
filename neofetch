@@ -992,16 +992,16 @@ getcpu () {
                         esac
                     fi
 
-                    # Fix for speeds under 1ghz
-                    if [ -z "${speed:1}" ]; then
-                       speed="0.${speed}"
-                    else
-                       speed=${speed:0:1}.${speed:1}
-                    fi
-
                     cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
                 ;;
             esac
+
+            # Fix for speeds under 1ghz
+            if [ -z "${speed:1}" ]; then
+               speed="0.${speed}"
+            else
+               speed=${speed:0:1}.${speed:1}
+            fi
 
             cpu="$cpu @ ${speed}GHz"
         ;;
