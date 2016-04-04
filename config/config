@@ -68,7 +68,7 @@ osx_codename="on"
 
 # Show 'x86_64' and 'x86' in 'Distro:' output.
 # --os_arch on/off
-os_arch="off"
+os_arch="on"
 
 
 # Uptime
