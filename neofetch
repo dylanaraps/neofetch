@@ -452,10 +452,6 @@ esac
 
 # Distro {{{
 
-# Default bit style
-x64="x86_64"
-x32="x86"
-
 case "$os" in
     "Linux" )
         if type -p lsb_release >/dev/null 2>&1; then
@@ -510,10 +506,6 @@ case "$os" in
         distro=${distro//[[:space:]]/ }
         distro=${distro//  }
         distro=${distro/Microsoft }
-
-        # Change bits to xx-bit for Windows
-        x64="64-bit"
-        x32="32-bit"
     ;;
 esac
 distro=${distro//+( )/ }
@@ -521,12 +513,8 @@ ascii_distro="$distro"
 
 getdistro () {
     # Get architecture
-    if [ "$os_arch" == "on" ]; then
-        case "$(getconf LONG_BIT)" in
-            64) distro+=" $x64" ;;
-            32) distro+=" $x32" ;;
-        esac
-    fi
+    [ "$os_arch" == "on" ] && \
+        distro+=" $(uname -m)"
 }
 
 
@@ -781,8 +769,8 @@ getde () {
         ;;
     esac
 
-    if [ -z "$de" ]; then
-        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MARCO|^_MUFFIN|xfce4|xfce5/')"
+    if [ -n "$DISPLAY" ] && [ -z "$de" ]; then
+        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MARCO|^_MUFFIN|xfce4|xfce5/' 2>/dev/null)"
 
         case "$de" in
             "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
@@ -941,42 +929,12 @@ getwmtheme () {
 
 getcpu () {
     case "$os" in
-        "Linux")
-            # Get cpu name
-            cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
-
-            # Get cpu speed
-            if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
-                case "$speed_type" in
-                    current) speed_type="scaling_cur_freq" ;;
-                    min) speed_type="scaling_min_freq" ;;
-                    max) speed_type="scaling_max_freq" ;;
-                    bios) speed_type="bios_limit" ;;
-                    scaling_current) speed_type="scaling_cur_freq" ;;
-                    scaling_min) speed_type="scaling_min_freq" ;;
-                    scaling_max) speed_type="scaling_max_freq" ;;
-                esac
-
-                read -r speed < \
-                    /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
-
-                speed=$((speed / 100000))
-            else
-                speed=$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
-                speed=$((speed / 100))
-            fi
-            speed=${speed:0:1}.${speed:1}
-
-            cpu="$cpu @ ${speed}GHz"
-            cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
-        ;;
-
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
             cores=$(sysctl -n hw.ncpu)
         ;;
 
-        *"BSD" | "Windows")
+        *)
             case "$distro" in
                 "OpenBSD"* | "FreeBSD"*)
                     # Get cpu name
@@ -993,28 +951,42 @@ getcpu () {
                     cores=$(sysctl -n hw.ncpu)
                 ;;
 
-                "NetBSD"* | "Windows"*)
+                *)
                     # Get cpu name
-                    cpu="$(grep -F 'model name' /proc/cpuinfo)"
-                    cpu=${cpu/model name*: }
-                    cpu=${cpu/ @*}
-                    cpu=${cpu//  }
-                    cpu=${cpu% }
+                    cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
 
                     # Get cpu speed
-                    speed="$(grep -F 'cpu MHz' /proc/cpuinfo)"
-                    speed=${speed/cpu MHz*: }
-                    speed=${speed/\.}
+                    if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
+                        case "$speed_type" in
+                            current) speed_type="scaling_cur_freq" ;;
+                            min) speed_type="scaling_min_freq" ;;
+                            max) speed_type="scaling_max_freq" ;;
+                            bios) speed_type="bios_limit" ;;
+                            scaling_current) speed_type="scaling_cur_freq" ;;
+                            scaling_min) speed_type="scaling_min_freq" ;;
+                            scaling_max) speed_type="scaling_max_freq" ;;
+                        esac
 
-                    case "$distro" in
-                        "NetBSD"*) speed=$((speed / 10000)) ;;
-                        "Windows"*) speed=$((speed / 100000)) ;;
-                    esac
+                        read -r speed < \
+                            /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
+
+                        speed=$((speed / 100000))
+                    else
+                        speed=$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
+                        speed=$((speed / 100))
+                    fi
+
                     cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
                 ;;
             esac
 
-            speed=${speed:0:1}.${speed:1}
+            # Fix for speeds under 1ghz
+            if [ -z "${speed:1}" ]; then
+               speed="0.${speed}"
+            else
+               speed=${speed:0:1}.${speed:1}
+            fi
+
             cpu="$cpu @ ${speed}GHz"
         ;;
     esac
