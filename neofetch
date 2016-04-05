@@ -30,6 +30,9 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export LC_ALL=C
 export LANG=C
 
+# Set no case match and extended globbing.
+shopt -s nocasematch extglob
+
 
 # Config Options {{{
 
@@ -430,14 +433,7 @@ config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
 # }}}
 
 
-# Gather Info {{{
-
-
-# Set no case match and extended globbing.
-shopt -s nocasematch extglob
-
-
-# Operating System {{{
+# Detect OS {{{
 
 case "$(uname)" in
     "Linux")   os="Linux" ;;
@@ -447,9 +443,6 @@ case "$(uname)" in
     "CYGWIN"*) os="Windows" ;;
     *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
 esac
-
-# }}}
-
 
 # }}}
 
