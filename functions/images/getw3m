@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Find w3mimgdisplay automatically
+getw3m_img_path () {
+    if [ -x "$w3m_img_path" ]; then
+        return
+
+    elif [ -x "/usr/lib/w3m/w3mimgdisplay" ]; then
+        w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
+
+    elif [ -x "/usr/libexec/w3m/w3mimgdisplay" ]; then
+        w3m_img_path="/usr/libexec/w3m/w3mimgdisplay"
+
+    elif [ -x "/usr/lib64/w3m/w3mimgdisplay" ]; then
+        w3m_img_path="/usr/lib64/w3m/w3mimgdisplay"
+
+    elif [ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]; then
+        w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
+
+    else
+        image="ascii"
+    fi
+}

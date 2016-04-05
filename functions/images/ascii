@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+getascii () {
+    if [ ! -f "$ascii" ] || [ "$ascii" == "distro" ]; then
+        # Lowercase the distro name
+        if [ "$version" -le 3 ]; then
+            ascii=$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")
+        else
+            ascii=${ascii_distro,,}
+        fi
+
+        [ "$ascii_logo_size" == "small" ] && \
+            ascii="${ascii/ *}_small"
+
+        if [ -f "/usr/share/neofetch/ascii/distro/${ascii/ *}" ]; then
+            ascii="/usr/share/neofetch/ascii/distro/${ascii/ *}"
+
+        elif [ -f "/usr/local/share/neofetch/ascii/distro/${ascii/ *}" ]; then
+            ascii="/usr/local/share/neofetch/ascii/distro/${ascii/ *}"
+
+        else
+            getscriptdir
+
+            # If the ascii file doesn't exist fallback to text mode.
+            if [ ! -f "$script_dir/ascii/distro/${ascii/ *}" ]; then
+                padding="\033[0C"
+                image="off"
+                return
+            fi
+
+            ascii="$script_dir/ascii/distro/${ascii/ *}"
+        fi
+
+        # We only use eval in the distro ascii files.
+        print="$(eval printf "$(<"$ascii")")"
+    else
+        case "${ascii_colors[0]}" in
+            "distro") ascii_color="$c1" ;;
+            *) ascii_color="\033[38;5;${ascii_colors[0]}m" ;;
+        esac
+
+        print="${ascii_color}$(<"$ascii")"
+    fi
+
+    # Set locale to get correct padding
+    export LC_ALL="$SYS_LOCALE"
+
+    # Turn the file into a variable and strip escape codes.
+    ascii_strip=$(<"$ascii")
+    ascii_strip=${ascii_strip//\$\{??\}}
+    ascii_strip=${ascii_strip//\\}
+
+    # Get length of longest line
+    ascii_size=($(awk 'END {print NR}length>max{max=length}END{print max}' <<< "$ascii_strip"))
+    lines=$((ascii_size[0] + 1))
+    ascii_length=${ascii_size[1]}
+
+    padding="\033[$((ascii_length + gap))C"
+    printf "%b%s" "$print"
+
+    export LC_ALL=C
+}
