@@ -875,6 +875,16 @@ kdeconfigdir () {
 # }}}
 
 
+source_func () {
+    getscriptdir
+
+    for func in "$script_dir/functions/"**/*; do
+        source "$func"
+    done
+}
+
+source_func
+
 # }}}
 
 
