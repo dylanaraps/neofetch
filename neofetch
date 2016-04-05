@@ -887,11 +887,12 @@ source_func () {
         func_dir="$script_dir"
     fi
 
-    for func in "$script_dir/functions/"**/*; do
+    for func in "${func_dir}/functions/"**/*; do
         source "$func"
     done
 }
 
+source_func
 
 # }}}
 
@@ -1218,7 +1219,6 @@ done
 trap 'printf "\033[?25h"; clear; exit' 2
 
 getdistro
-source_func
 colors
 bold
 
