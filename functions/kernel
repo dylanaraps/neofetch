@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+getkernel() {
+    case "$kernel_shorthand" in
+        "on")  kernel="$(uname -r)" ;;
+        "off") kernel="$(uname -srm)" ;;
+    esac
+}
+

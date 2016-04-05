@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+getbirthday () {
+    case "$os" in
+        "Linux")
+            birthday="$(ls -alct --full-time / | awk '/lost\+found/ {printf  $6 " " $7}')"
+            date_cmd="$(date -d"$birthday" "$birthday_format")"
+        ;;
+
+        "Mac OS X")
+            birthday="$(ls -lUT /var/log/install.log | awk '{printf $6 " " $7 " " $9 " " $8}')"
+
+            # Split the string into Date + time
+            time=${birthday/*???? }
+            birthday=${birthday/$time}
+
+            case "${time/:*}" in
+                0? | 10 | 11) time+=" AM" ;;
+                *) time+=" PM" ;;
+            esac
+            birthday+="$time"
+            birthday_shorthand="on"
+        ;;
+
+        *"BSD")
+            case "$distro" in
+                "OpenBSD"*)
+                    birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
+                    birthday_shorthand="on"
+                ;;
+
+                "FreeBSD"*)
+                    birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
+                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" "$birthday_format")"
+                ;;
+
+                "NetBSD"*)
+                    birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
+                    birthday_shorthand="on"
+                ;;
+            esac
+        ;;
+
+        "Windows")
+            birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
+            date_cmd="$(date -d"$birthday" "$birthday_format")"
+        ;;
+    esac
+
+    # Strip seconds from time output
+    birthday=${birthday/:?? / }
+
+    # Pretty output
+    [ "$birthday_shorthand" == "off" ] && \
+        birthday=${date_cmd//+( )/ }
+
+    # Toggle showing the time
+    [ "$birthday_time" == "off" ] && \
+        birthday=${birthday/??:??*}
+}

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+getwm () {
+    if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
+        id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
+        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
+        wm=${wm/*_NET_WM_NAME = }
+        wm=${wm/\"}
+        wm=${wm/\"*}
+
+        # Fallback for Wayland wms
+        case "$wm" in
+            "xwlc")
+                wm="$(ps -e | grep -m 1 -oE "sway|orbment|velox|orbital")"
+                [ "$version" -ge 4 ] && wm=${wm^}
+            ;;
+        esac
+
+    else
+        case "$os" in
+            "Mac OS X") wm="Quartz Compositor" ;;
+            "Windows") wm="Explorer" ;;
+        esac
+    fi
+}

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+gettitle () {
+    title="${USER}@$(hostname)"
+}
+

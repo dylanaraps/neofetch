@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+getuptime () {
+    case "$os" in
+        "Linux" | "Windows")
+            case "$distro" in
+                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "Windows"*)
+                    uptime=$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')
+                ;;
+
+                "openSUSE"*)
+                    uptime=$(uptime | awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')
+                ;;
+
+                *)
+                    uptime="$(uptime -p)"
+                    [ "$uptime" == "up " ] && uptime="up $(awk -F'.' '{print $1}' /proc/uptime) seconds"
+                ;;
+            esac
+        ;;
+
+        "Mac OS X" | *"BSD")
+            # Get boot time in seconds
+            boot="$(sysctl -n kern.boottime)"
+            boot="${boot/'{ sec = '}"
+            boot=${boot/,*}
+
+            # Get current date in seconds
+            now=$(date +%s)
+            uptime=$((now - boot))
+
+            # Convert uptime to days/hours/mins
+            mins=$((uptime / 60%60))
+            hours=$((uptime / 3600%24))
+            days=$((uptime / 86400))
+
+            # Format the output like Linux's "uptime -p" cmd.
+            if [ "$mins" == 1 ]; then
+                uptime="$mins minute"
+            elif [ "$mins" != 0 ]; then
+                uptime="$mins minutes"
+            fi
+
+            if [ "$hours" == 1 ]; then
+                uptime="$hours hour, $uptime"
+            elif [ "$mins" != 0 ]; then
+                uptime="$hours hours, $uptime"
+            fi
+
+            if [ "$days" == 1 ]; then
+                uptime="$days day, $uptime"
+            elif [ "$days" != 0 ]; then
+                uptime="$days days, $uptime"
+            fi
+
+            uptime="up $uptime"
+        ;;
+    esac
+
+    # Make the output of uptime smaller.
+    case "$uptime_shorthand" in
+        "on")
+            uptime=${uptime/up}
+            uptime=${uptime/minutes/mins}
+            uptime=${uptime/minute/min}
+            uptime=${uptime/seconds/secs}
+            uptime=${uptime# }
+        ;;
+
+        "tiny")
+            uptime=${uptime/up}
+            uptime=${uptime/ days/d}
+            uptime=${uptime/ day/d}
+            uptime=${uptime/ hours/h}
+            uptime=${uptime/ hour/h}
+            uptime=${uptime/ minutes/m}
+            uptime=${uptime/ minute/m}
+            uptime=${uptime/ seconds/s}
+            uptime=${uptime/,}
+            uptime=${uptime# }
+        ;;
+    esac
+    uptime=${uptime//+( )/ }
+}

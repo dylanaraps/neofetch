@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+getresolution () {
+    case "$os" in
+        "Linux" | *"BSD")
+            if type -p xrandr >/dev/null 2>&1; then
+                case "$refresh_rate" in
+                    "on") resolution=$(xrandr --nograb --current | awk 'match($0,/[0-9]{2,3}.[0-9]{2}\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}') ;;
+                    "off") resolution=$(xrandr --nograb --current | awk '/*/ {printf $1 ", "}') ;;
+                esac
+                resolution=${resolution//\*}
+
+            elif type -p xdpyinfo >/dev/null 2>&1; then
+                resolution=$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')
+            fi
+        ;;
+
+        "Mac OS X")
+            if type -p screenresolution >/dev/null 2>&1; then
+                resolution=$(screenresolution get 2>&1 | awk '/Display/ {printf $6 "Hz, "}')
+                resolution=${resolution//x??@/ @ }
+
+            else
+                resolution=$(system_profiler SPDisplaysDataType |\
+                            awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')
+            fi
+
+            [[ "$refresh_rate" == "off" ]] && \
+                 resolution=${resolution// @ *([0-9])Hz}
+        ;;
+
+        "Windows")
+            width=$(wmic desktopmonitor get screenwidth /value 2>/dev/null)
+            width=${width/ScreenWidth'='/}
+            width=${width//[[:space:]]}
+
+            height=$(wmic desktopmonitor get screenheight /value 2>/dev/null)
+            height=${height/ScreenHeight'='/}
+            height=${height//[[:space:]]}
+
+            [ ! -z "$width" ] && \
+                resolution="${width}x${height}"
+        ;;
+    esac
+
+    resolution=${resolution%,*}
+}
