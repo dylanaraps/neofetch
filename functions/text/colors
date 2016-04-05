@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+colors () {
+    # Change color of logo based on distro
+    case "$ascii_distro" in
+        "Arch"* | "Antergos"*)
+            setcolors 6 4
+        ;;
+
+        "CentOS"*)
+            setcolors 3 2 4 5 7
+        ;;
+
+        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"* | "Qubes"*)
+            setcolors 4 5 7
+        ;;
+
+        "Chrom"*)
+            setcolors 2 1 3 4 7
+            ascii_distro="chrome"
+        ;;
+
+        "Debian"* | "FreeBSD"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
+            setcolors 7 1 3
+        ;;
+
+        "Red"*)
+            setcolors 7 1 3
+            ascii_distro="redhat"
+        ;;
+
+        "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
+            setcolors 7 4 1
+        ;;
+
+        "Gentoo"* | "Funtoo"* | "SteamOS"*)
+            setcolors 7 5
+        ;;
+
+        "Kali"*)
+            setcolors 4 8
+        ;;
+
+        *"OS X"* )
+            setcolors 2 3 1 1 5 4
+            ascii_distro="mac"
+        ;;
+
+        "OpenMandriva"*)
+            setcolors 4 3
+        ;;
+
+        "Mageia"*)
+            setcolors 7 6
+        ;;
+
+        "Peppermint"*)
+            setcolors 7 1
+        ;;
+
+        *"Mint"*)
+            setcolors 7 2
+            ascii_distro="mint"
+        ;;
+
+        "LMDE"* | "Chapeau"*)
+            setcolors 7 2
+        ;;
+
+        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
+            setcolors 5 7
+        ;;
+
+        "OpenBSD"*)
+            setcolors 3 3 6 1 8
+        ;;
+
+        "OpenSuse"* | "Manjaro"* | "Deepin"*)
+            setcolors 2 7
+        ;;
+
+        "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"*)
+            setcolors 4 7 1
+        ;;
+
+        "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
+            setcolors 4
+            ascii_distro="puppy"
+        ;;
+
+        "Scientific"*)
+            setcolors 4 1 7
+        ;;
+
+        "Solus"*)
+            setcolors 7 8
+        ;;
+
+        "Trisquel"* | "NixOS"* | "Zorin"*)
+            setcolors 4 6
+        ;;
+
+        "Travis")
+            setcolors 3 1 0 7 4
+        ;;
+
+        "void"*)
+            setcolors 2 8
+        ;;
+
+        "Windows 10"*)
+            setcolors 6
+            ascii_distro="windows10"
+        ;;
+
+        "Windows"*)
+            setcolors 1 2 4 3
+        ;;
+
+        "Raspbian"* | *)
+            setcolors 2 1
+        ;;
+    esac
+
+    # Overwrite distro colors if '$ascii_colors' doesn't
+    # equal 'distro'.
+    [ "${ascii_colors[0]}" != "distro" ] && \
+        setcolors ${ascii_colors[@]}
+}
+
+setcolors () {
+    c1="$(color $1)"
+    c2="$(color $2)"
+    c3="$(color $3)"
+    c4="$(color $4)"
+    c5="$(color $5)"
+    c6="$(color $6)"
+
+    if [ "${colors[0]}" == "distro" ]; then
+        title_color="$c1"
+        at_color="\033[0m"
+        underline_color="\033[0m"
+        subtitle_color="$c2"
+        colon_color="\033[0m"
+        info_color="\033[0m"
+
+        # If the second color is white use the first for the subtitle
+        [ "$2" == 7 ] && subtitle_color="\033[0m\033[3${1}m"
+    else
+        title_color="$(color ${colors[0]})"
+        at_color="$(color ${colors[1]})"
+        underline_color="$(color ${colors[2]})"
+        subtitle_color="$(color ${colors[3]})"
+        colon_color="$(color ${colors[4]})"
+        info_color="$(color ${colors[5]})"
+    fi
+
+    if [ "$progress_color_elapsed" == "distro" ]; then
+        progress_color_elapsed="$(color 7)"
+    else
+        progress_color_elapsed="$(color $progress_color_elapsed)"
+    fi
+
+    case "$progress_color_total $1" in
+        distro\ [736]) progress_color_total="$c2" ;;
+        distro\ [0-9]) progress_color_total="$c1" ;;
+        *) progress_color_total="$(color $progress_color_total)" ;;
+    esac
+}
+
+color () {
+    if [ "$1" == 7 ]; then
+        printf "%b%s" "\033[0m"
+    else
+        printf "%b%s" "\033[0m\033[3${1}m"
+    fi
+}

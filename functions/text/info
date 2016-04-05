@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+info () {
+    # $1 is the subtitle
+    subtitle="$1"
+
+    # Call the function and update variable
+    if [ -z "$2" ]; then
+        "get$1" 2>/dev/null
+        eval output="\$${1}"
+
+    else
+        "get$2" 2>/dev/null
+        eval output="\$${2}"
+    fi
+
+    # If the output is empty, don't print anything
+    [ -z "$output" ] && return
+
+    case "$1" in
+        title)
+            string="${bold}${title_color}${output}"
+            string="${string/@/${at_color}@${title_color}}"
+            length=${#output}
+        ;;
+
+        underline)
+            string="${underline_color}${output}"
+        ;;
+
+        *)
+            string="${bold}${subtitle_color}${subtitle}${clear}"
+            string+="${colon_color}: ${info_color}${output}"
+            length=$((${#subtitle} +  ${#output} + 2))
+        ;;
+    esac
+
+    # If there's no subtitle don't print one
+    [ -z "$2" ] && string=${string/*: }
+
+    # Print the string
+    printf "%b%s\n" "${padding}${string}${clear}"
+}
