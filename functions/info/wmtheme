@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+getwmtheme () {
+    [ -z "$wm" ] && getwm
+    [ -z "$de" ] && getde
+
+    case "$wm"  in
+        'BudgieWM') wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)" ;;
+        'E16') wmtheme="$(awk -F "= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
+        'Sawfish') wmtheme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "$HOME/.sawfish/custom")" ;;
+
+        'Cinnamon' | 'Muffin' | 'Mutter (Muffin)')
+            detheme="$(gsettings get org.cinnamon.theme name)"
+            wmtheme="$(gsettings get org.cinnamon.desktop.wm.preferences theme)"
+            wmtheme="$detheme (${wmtheme})"
+        ;;
+
+        'Compiz' | 'Mutter'* | 'GNOME Shell' | 'Gala')
+            if type -p gsettings >/dev/null 2>&1; then
+                wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
+
+            elif type -p gconftool-2 >/dev/null 2>&1; then
+                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
+            fi
+        ;;
+
+        'Metacity'*)
+            if [ "$de" == "Deepin" ]; then
+                wmtheme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme 2>/dev/null)"
+
+            else
+                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme 2>/dev/null)"
+            fi
+        ;;
+
+        'E17' | 'Enlightenment')
+            if type -p eet >/dev/null 2>&1; then
+                wmtheme="$(eet -d $HOME/.e/e/config/standard/e.cfg config | awk '/value \"file\" string.*.edj/ {print $4}')"
+                wmtheme=${wmtheme##*/}
+                wmtheme=${wmtheme%.*}
+            fi
+        ;;
+
+        'Fluxbox')
+            [ -f $HOME/.fluxbox/init ] && \
+                wmtheme="$(awk -F "/" '/styleFile/ {print $NF}' "$HOME/.fluxbox/init")"
+        ;;
+
+        'IceWM'*)
+            [ -f $HOME/.icewm/theme ] && \
+                wmtheme="$(awk -F "[\",/]" '!/#/ {print $2}' "$HOME/.icewm/theme")"
+        ;;
+
+        'Openbox')
+            if [ "$de" == "LXDE" ] && [ -f "${HOME}/.config/openbox/lxde-rc.xml" ]; then
+                ob_file="lxde-rc"
+
+            elif [ -f "${HOME}/.config/openbox/rc.xml" ]; then
+                ob_file="rc"
+            fi
+
+            wmtheme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$XDG_CONFIG_HOME/openbox/${ob_file}.xml")";
+        ;;
+
+        'PekWM')
+            [ -f $HOME/.pekwm/config ] && \
+                wmtheme="$(awk -F "/" '/Theme/ {gsub(/\"/,""); print $NF}' "$HOME/.pekwm/config")"
+        ;;
+
+        'Xfwm4')
+            [ -f "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" ] && \
+                wmtheme="$(xfconf-query -c xfwm4 -p /general/theme)"
+        ;;
+
+        'KWin'*)
+            kdeconfigdir
+            kde_config_dir=${kde_config_dir%/}
+
+            if [ -f "$kde_config_dir/share/config/kwinrc" ]; then
+                wmtheme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "$kde_config_dir/share/config/kwinrc")"
+
+            elif [ -f "$kde_config_dir/share/config/kdebugrc" ]; then
+                wmtheme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kde_config_dir/share/config/kdebugrc")"
+            fi
+        ;;
+
+        'Quartz Compositor')
+            wmtheme=$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)
+            if [ -z "$wmtheme" ] || [ "$wmtheme" == "1" ]; then
+                wmtheme="Blue"
+            else
+                wmtheme="Graphite"
+            fi
+        ;;
+
+        'Explorer')
+            path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
+            path+="/Windows/CurrentVersion/Themes/CurrentTheme"
+
+            wmtheme="$(head -n1 "$path" 2>/dev/null)"
+            wmtheme="${wmtheme##*\\}"
+            wmtheme="${wmtheme%.*}"
+            wmtheme="${wmtheme^}"
+        ;;
+
+    esac
+
+    wmtheme="${wmtheme//\'}"
+    [ "$version" -ge 4 ] && wmtheme=${wmtheme^}
+}

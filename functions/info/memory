@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+getmemory () {
+    case "$os" in
+        "Linux" | "Windows")
+            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo) 0 0)
+            memused=$((mem[0] - mem[1] - mem[2] - mem[3]))
+            memused=$((memused / 1024))
+            memtotal=$((mem[0] / 1024))
+        ;;
+
+        "Mac OS X")
+            memtotal=$(printf "%s\n" "$(sysctl -n hw.memsize)"/1024^2 | bc)
+            memwired=$(vm_stat | awk '/wired/ { print $4 }')
+            memactive=$(vm_stat | awk '/active / { printf $3 }')
+            memcompressed=$(vm_stat | awk '/occupied/ { printf $5 }')
+            memused=$(((${memwired//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))
+        ;;
+
+        "OpenBSD" | "BSD")
+            case "$distro" in
+                "OpenBSD"*)
+                    mem=($(top -d 1 | awk -F ':  |/| |M' '/Memory:/ {printf $4 " " $6 " " $11 "\n"}'))
+                    memtotal=$((${mem[1]} + ${mem[2]}))
+                    memused=$((memtotal - ${mem[0]}))
+                ;;
+
+                "FreeBSD"*)
+                    memtotal=$(dmesg | awk '/real mem/ {printf $5}')
+                    memtotal=${memtotal/\(}
+                    memtotal=${memtotal/MB\)}
+                    memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
+                    memfree=${memfree/M}
+                    memused=$((memtotal - memfree))
+                ;;
+
+                "NetBSD"*)
+                    memfree=$(($(vmstat | awk 'END{printf $4}') / 1000))
+                    memused=$(($(vmstat | awk 'END{printf $3}') / 1000))
+                    memtotal=$((memused + memfree))
+                    memused=$((memtotal - memfree))
+                ;;
+            esac
+
+        ;;
+    esac
+    memory="${memused}MB / ${memtotal}MB"
+
+    # Progress bars
+    case "$memory_display" in
+        "bar") memory="$(bar "${memused}" "${memtotal}")" ;;
+        "infobar") memory="${memory} $(bar "${memused}" "${memtotal}")" ;;
+        "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
+    esac
+}

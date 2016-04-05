@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+getbattery () {
+    case "$os" in
+        "Linux")
+            if [ "$(ls /sys/class/power_supply/)" ]; then
+                # Set the index to the battery number.
+                case "$battery_num" in
+                    "all") battery_num="*" index=0 ;;
+                    *) index="$battery_num" ;;
+                esac
+
+                batteries=($(cat /sys/class/power_supply/BAT${battery_num}/capacity))
+                battery_state=($(cat /sys/class/power_supply/BAT${battery_num}/status))
+
+                # Get the subtitle and reassign it so it doesn't change.
+                title="$subtitle"
+
+                # If shorthand is on, print each value on the same line
+                if [ "$battery_shorthand" == "on" ] || [ "$stdout_mode" == "on" ]; then
+                    battery=${batteries[*]}
+                    battery=${battery// /%, }
+                    battery="${battery}%"
+
+                else
+                    if [ "${#batteries[@]}" -gt 1 ]; then
+                        unset battery
+
+                        # Print each battery on a separate line.
+                        index=0
+                        for bat in "${batteries[@]}"; do
+                            case "$battery_display" in
+                                "bar") prin "${title}${index}" "$(bar ${bat/'%'} 100)" ;;
+                                "infobar") prin "${title}${index}" "${bat}% $(bar "${bat/'%'}" 100)" ;;
+                                "barinfo") prin "${title}${index}" "$(bar "${bat/'%'}" 100) ${bat}%" ;;
+                                *) prin "${title}${index}" "${bat}%" ;;
+                            esac
+                            index=$((index + 1))
+                        done
+                        return
+                    fi
+                    battery="${batteries[0]}%"
+                fi
+            fi
+        ;;
+
+        "BSD")
+            case "$distro" in
+                "FreeBSD"*)
+                    battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
+                    battery_state=$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')
+                ;;
+
+                "NetBSD"*)
+                    battery=$(envstat | awk '\\(|\\)' '/charge:/ {print $2}')
+                    battery="${battery/\.*}%"
+                ;;
+            esac
+        ;;
+
+        "OpenBSD")
+            battery0full=$(sysctl -n hw.sensors.acpibat0.watthour0)
+            battery0full=${battery0full/ Wh*}
+
+            battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
+            battery0now="${battery0now/ Wh*}"
+
+            [ ! -z "$battery0full" ] && \
+                battery="$(printf "%s\n" "100 * $battery0now / $battery0full" | bc)%"
+        ;;
+
+        "Mac OS X")
+            battery="$(pmset -g batt | grep -o '[0-9]*%')"
+            battery_state="$(pmset -g batt | awk 'NR==2 {print $3}')"
+        ;;
+
+        "Windows")
+            battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
+            battery=${battery/EstimatedChargeRemaining'='}
+            battery=${battery//[[:space:]]/ }
+            battery=${battery// }
+            [ ! -z "$battery" ] && \
+                battery+="%"
+        ;;
+    esac
+
+    case "$battery_state" in
+        "charging"*) battery+=" Charging" ;;
+    esac
+
+    case "$battery_display" in
+        "bar") battery="$(bar ${battery/'%'*} 100)" ;;
+        "infobar") battery="${battery} $(bar "${battery/'%'*}" 100)" ;;
+        "barinfo") battery="$(bar "${battery/'%'*}" 100) ${battery}" ;;
+    esac
+}

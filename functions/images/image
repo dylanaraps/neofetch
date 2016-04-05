@@ -1,0 +1,152 @@
+#!/usr/bin/env bash
+getimage () {
+    # Fallback to ascii mode if imagemagick isn't installed.
+    type -p convert >/dev/null 2>&1 || image="ascii"
+
+    # Get terminal lines
+    lines=$(tput lines)
+
+    case "$image" in
+        "wall") getwallpaper ;;
+        "ascii") getascii; return ;;
+        *)
+            if [ "${image: -1}" == "/" ]; then
+                files=("$image"*.png "$image"*.jpg)
+                img="$(printf "%s" "${files[RANDOM % ${#files[@]}]}")"
+            else
+                img="$image"
+            fi
+        ;;
+    esac
+
+    # Get terminal width and height
+    stty -echo
+    if [ -n "$TMUX" ]; then
+        printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+    else
+        printf "%b%s" "\033[14t\033[c"
+    fi
+
+    # The ascape code above prints the output AFTER the prompt so this
+    # loop below reads it as input. wtf xterm
+    read -d c -s -r term_size; stty echo
+
+    # Split the string
+    term_size=${term_size//'['}
+    term_size=${term_size/';'}
+    term_size=${term_size/$'\E4'}
+    term_size=${term_size/t*}
+    term_height=${term_size/';'*}
+    term_width=${term_size/*';'}
+
+
+    # If $img isn't a file or the terminal doesn't support xterm escape sequences,
+    # fallback to ascii mode.
+    if [ ! -f "$img" ] || [ ${#term_size} -le 5 ]; then
+        image="ascii"
+        getascii
+        return
+    fi
+
+    # Get terminal columns
+    columns=$(tput cols)
+
+    # Calculate font size
+    font_width=$((term_width / columns))
+    font_height=$((term_height / lines))
+
+    # Image size is half of the terminal
+    case "$image_size" in
+        "auto")
+            image_size=$((columns * font_width / 2))
+            term_height=$((term_height - term_height / 4))
+
+            [ "$term_height" -lt "$image_size" ] && \
+                image_size="$term_height"
+        ;;
+
+        *"%")
+            percent=${image_size/\%}
+            image_size=$((percent * term_width / 100))
+
+            [ "$((percent * term_height / 50))" -lt "$image_size" ] && \
+                image_size=$((percent * term_height / 100))
+        ;;
+    esac
+    image_size=${image_size/px}
+
+    # Where to draw the image
+    case "$image_position" in
+        "left")
+            # Padding is half the terminal width + gap
+            padding="\033[$((image_size / font_width + gap + xoffset/font_width))C"
+        ;;
+
+        "right")
+            padding="\033[0C"
+            xoffset=$((columns * font_width / 2 - gap))
+        ;;
+    esac
+
+    # Make the directory if it doesn't exist
+    mkdir -p "$thumbnail_dir"
+
+    # Check to see if the image has a file extension, if it doesn't
+    # then add one.
+    case "${img##*/}" in
+        *"."*) imgname="$crop_mode-$crop_offset-$image_size-${img##*/}" ;;
+        *) imgname="$crop_mode-$crop_offset-$image_size-${img##*/}.jpg" ;;
+    esac
+
+    # Check to see if the thumbnail exists before we do any cropping.
+    if [ ! -f "$thumbnail_dir/$imgname" ]; then
+        # Get image size so that we can do a better crop
+        size=$(identify -format "%w %h" "$img")
+        width=${size%% *}
+        height=${size##* }
+
+        # This checks to see if height is geater than width
+        # so we can do a better crop of portrait images.
+        size=$height
+        [ "$height" -gt "$width" ] && size=$width
+
+        case "$crop_mode" in
+            fit)
+                c=$(convert "$img" \
+                    -colorspace srgb \
+                    -format "%[pixel:p{0,0}]" info:)
+
+                convert \
+                    "$img" \
+                    -trim +repage \
+                    -gravity south \
+                    -background "$c" \
+                    -extent "$size"x"$size" \
+                    -scale "$image_size"x"$image_size" \
+                    "$thumbnail_dir/$imgname"
+            ;;
+
+            fill)
+                convert \
+                    "$img" \
+                    -trim +repage \
+                    -scale "$image_size"x"$image_size"^ \
+                    -extent "$image_size"x"$image_size" \
+                    "$thumbnail_dir/$imgname"
+            ;;
+
+            *)
+                convert \
+                    "$img" \
+                    -gravity $crop_offset \
+                    -crop "$size"x"$size"+0+0 \
+                    -quality 95 \
+                    -scale "$image_size"x"$image_size" \
+                    "$thumbnail_dir/$imgname"
+            ;;
+        esac
+    fi
+
+    # The final image
+    img="$thumbnail_dir/$imgname"
+}

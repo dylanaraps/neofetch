@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+takescrot () {
+    $scrot_cmd "${scrot_dir}${scrot_name}"
+}

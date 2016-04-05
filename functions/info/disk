@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+getdisk () {
+    # df flags
+    case "$os" in
+        "Linux" | "Windows") df_flags="-h -l --total" ;;
+        "Mac OS X") df_flags="-H / -l" ;;
+
+        *"BSD")
+            case "$distro" in
+                "FreeBSD"*) df_flags="-h -c -l" ;;
+                *) return ;;
+            esac
+        ;;
+    esac
+
+    # Get the disk info
+    disk=$(df $df_flags 2>/dev/null | awk 'END{print $2 ":" $3 ":" $5}')
+
+    # Format the output
+    disk_used=${disk#*:}
+    disk_used=${disk_used%%:*}
+    disk_total=${disk%%:*}
+    disk_total_per=${disk#*:*:}
+
+    # Put it all together
+    disk="${disk_used} / ${disk_total} (${disk_total_per})"
+
+    # Add info bar
+    disk_used=${disk_used/G}
+    disk_total=${disk_total/G}
+
+    [[ "$disk_used" == *"T" ]] && \
+        disk_used=$(printf "%s\n" "${disk_used/T} * 1000" | bc)
+
+    [[ "$disk_total" == *"T" ]] && \
+        disk_total=$(printf "%s\n" "${disk_total/T} * 1000" | bc)
+
+    case "$disk_display" in
+        "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "infobar") disk+=" $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
+        "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+    esac
+}

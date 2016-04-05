@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+getlocalip () {
+    case "$os" in
+        "Linux")
+            localip="$(ip route get 1 | awk '{print $NF;exit}')"
+        ;;
+
+        "Mac OS X")
+            localip="$(ipconfig getifaddr en0)"
+            [ -z "$localip" ] && localip="$(ipconfig getifaddr en1)"
+        ;;
+
+        *"BSD")
+            localip="$(ifconfig | awk '/broadcast/ {print $2}')"
+        ;;
+
+        "Windows")
+            localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
+        ;;
+    esac
+}
+
+getpublicip () {
+    if type -p dig >/dev/null 2>&1; then
+        publicip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2>/dev/null)"
+    fi
+
+    if [ -z "$publicip" ] && type -p curl >/dev/null 2>&1; then
+        publicip="$(curl --max-time 10 -w '\n' "$public_ip_host" 2>/dev/null)"
+    fi
+
+    if [ -z "$publicip" ] && type -p wget >/dev/null 2>&1; then
+        publicip="$(wget -T 10 -qO- "$public_ip_host" 2>/dev/null; printf "%s")"
+    fi
+}

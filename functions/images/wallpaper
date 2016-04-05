@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+getwallpaper () {
+    case "$os" in
+        "Linux" | *"BSD")
+            if type -p feh >/dev/null 2>&1 && [ -f "$HOME/.fehbg" ]; then
+                img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
+
+            elif type -p nitrogen >/dev/null 2>&1; then
+                img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
+
+            elif type -p gsettings >/dev/null 2>&1; then
+                # Get DE if user has disabled the function.
+                [ -z "$de" ] && getde
+
+                case "$de" in
+                    "MATE"*) img="$(gsettings get org.mate.background picture-filename 2>/dev/null)" ;;
+                    *) img="$(gsettings get org.gnome.desktop.background picture-uri 2>/dev/null)" ;;
+                esac
+
+                # Strip quotes etc from the path.
+                img=${img/'file://'}
+                img=${img//\'}
+            fi
+        ;;
+
+        "Mac OS X")
+            img="$(osascript -e 'tell application "System Events" to picture of current desktop')"
+        ;;
+
+        "Windows")
+            case "$distro" in
+                "Windows XP")
+                    img="/cygdrive/c/Documents and Settings/${USER}"
+                    img+="/Local Settings/Application Data/Microsoft"
+                    img+="/Wallpaper1.bmp"
+                ;;
+
+                "Windows"*)
+                    img="$APPDATA/Microsoft/Windows/Themes"
+                    img+="/TranscodedWallpaper.jpg"
+                ;;
+            esac
+        ;;
+    esac
+
+    # If img is an xml file don't use it.
+    [ "${img/*\./}" == "xml" ] && img=""
+}

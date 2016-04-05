@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+getgpu () {
+   case "$os" in
+       "Linux")
+            gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
+
+            # If a GPU with a prefix of '3D' doesn't exist
+            # fallback to looking for a prefix of 'VGA'
+            [ -z "$gpu" ] && \
+                gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
+
+            gpu=${gpu//??':'??'.'?}
+
+            # Count the number of GPUs
+            count="$(printf "%s" "$gpu" | uniq -c)"
+            count=${count/ VGA*}
+            count=${count/ 3D*}
+            count=${count//[[:space:]]}
+
+            # If there's more than one gpu
+            # Display the count.
+            if [ "$count" -gt 1 ]; then
+                count=" x $count"
+            else
+                unset count
+            fi
+
+            # Format the output
+            gpu=${gpu/* VGA compatible controller: }
+            gpu=${gpu/* 3D controller: }
+            gpu=${gpu/(rev*)}
+
+            case "$gpu" in
+                intel*)
+                    gpu="Intel Integrated Graphics"
+                ;;
+
+                advanced*)
+                    gpu=${gpu/Advanced Micro Devices, Inc\. }
+                    gpu=${gpu/'[AMD/ATI]' }
+                    gpu=${gpu/Tahiti PRO}
+                    gpu=${gpu/Seymour}
+                    gpu=${gpu/Cayman}
+                    gpu=${gpu/Richland}
+                    gpu=${gpu/Pitcairn}
+                    gpu=${gpu/Broadway}
+                    gpu=${gpu/XTMobility}
+                    gpu=${gpu/Mobility}
+                    gpu=${gpu/Hawaii}
+                    gpu=${gpu/Bonaire}
+                    gpu=${gpu/XTX}
+                    gpu=${gpu/ OEM}
+                    gpu=${gpu/ Cape Verde}
+                    gpu=${gpu/ \[}
+                    gpu=${gpu/\]}
+
+                    brand="AMD "
+                ;;
+
+                nvidia*)
+                    gpu=${gpu/NVIDIA Corporation }
+                    gpu=${gpu/G????M }
+                    gpu=${gpu/G???? }
+                    gpu=${gpu/\[}
+                    gpu=${gpu/\] }
+
+                    brand="NVIDIA "
+                ;;
+
+                *virtualbox*)
+                    gpu="VirtualBox Graphics Adapter"
+                ;;
+            esac
+
+            gpu="${brand}${gpu}"
+        ;;
+
+        "Mac OS X")
+            # Use cache if it exists
+            if [ -f "/Library/Caches/neofetch/gpu" ]; then
+                source "/Library/Caches/neofetch/gpu"
+            else
+                gpu=$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')
+                gpu=${gpu//'/ $'}
+                gpu=${gpu%,*}
+                cache "gpu" "$gpu" "/Library/Caches/"
+            fi
+        ;;
+
+        *"BSD")
+            case "$distro" in
+                "FreeBSD"*)
+                    gpu=$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")
+                    gpu=${gpu/device*= }
+                    gpu=${gpu//\'}
+                ;;
+            esac
+        ;;
+
+
+        "Windows")
+            gpu=$(wmic path Win32_VideoController get caption /value)
+            gpu=${gpu/Caption'='}
+            gpu=${gpu//[[:space:]]/ }
+            gpu=${gpu//  }
+        ;;
+    esac
+
+    case "$gpu_shorthand" in
+        "on" | "tiny")
+            gpu=${gpu// Rev\. ?}
+            gpu=${gpu//AMD*\/ATI\]/AMD}
+            gpu=${gpu// Tahiti}
+            gpu=${gpu// PRO}
+            gpu=${gpu// OEM}
+            gpu=${gpu// Mars}
+            gpu=${gpu// Series}
+            gpu=${gpu// Controller}
+            gpu=${gpu/\/*}
+
+            case "$gpu_shorthand" in
+                "tiny")
+                    gpu=${gpu/Graphics }
+                    gpu=${gpu/GeForce }
+                    gpu=${gpu/Radeon }
+                ;;
+            esac
+        ;;
+    esac
+
+    gpu=${gpu//+( )/ }
+    gpu="${gpu}${count}"
+}

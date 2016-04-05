@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+prin () {
+    if [ -z "$2" ]; then
+        string="${info_color}${1}"
+        length=${#1}
+
+    else
+        string="${bold}${subtitle_color}${1}${clear}"
+        string+="${colon_color}: ${info_color}${2}"
+        length=$((${#subtitle} +  ${#2} + 1))
+    fi
+
+    # Print the info
+    printf "%b%s\n" "${padding}${string}${clear}"
+}

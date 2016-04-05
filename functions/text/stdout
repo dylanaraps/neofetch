@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+stdout () {
+    # Read args early for the separator
+    stdout_separator_flag="$(awk -F '--stdout_separator ' '{printf $2}' <<< "${args[@]}")"
+    stdout_separator_flag=${stdout_separator_flag/ '--'*}
+
+    [ ! -z "$stdout_separator_flag" ] && \
+        stdout_separator="$stdout_separator_flag"
+
+    for func in "${args[@]}"; do
+        case "$func" in
+            "--"*) break ;;
+            *)
+                "get$func" 2>/dev/null
+                eval output="\$$func"
+                stdout+="${output}${stdout_separator}"
+            ;;
+        esac
+    done
+
+    printf "%s" "${stdout%%${stdout_separator}}"
+    exit
+}

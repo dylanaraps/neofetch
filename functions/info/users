@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+getusers () {
+    users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
+    users=${users%\,*}
+}
