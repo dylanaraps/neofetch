@@ -876,14 +876,22 @@ kdeconfigdir () {
 
 
 source_func () {
-    getscriptdir
+    if [ -d "/usr/share/neofetch/functions" ]; then
+        func_dir="/usr/share/neofetch"
+
+    elif [ -d "/usr/local/share/neofetch/functions" ]; then
+        func_dir="/usr/local/share/neofetch"
+
+    else
+        getscriptdir
+        func_dir="$script_dir"
+    fi
 
     for func in "$script_dir/functions/"**/*; do
         source "$func"
     done
 }
 
-source_func
 
 # }}}
 
@@ -1210,6 +1218,7 @@ done
 trap 'printf "\033[?25h"; clear; exit' 2
 
 getdistro
+source_func
 colors
 bold
 
