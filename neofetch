@@ -640,11 +640,11 @@ getuptime () {
 getpackages () {
     case "$os" in
         "Linux")
-            if type -p dpkg >/dev/null 2>&1; then
-                packages="$(dpkg --get-selections | grep -cv deinstall$)"
-
-            elif type -p pacman >/dev/null 2>&1; then
+            if type -p pacman >/dev/null 2>&1; then
                 packages="$(pacman -Qq --color never | wc -l)"
+
+            elif type -p dpkg >/dev/null 2>&1; then
+                packages="$(dpkg --get-selections | grep -cv deinstall$)"
 
             elif type -p /sbin/pkgtool >/dev/null 2>&1; then
                 packages="$(ls -1 /var/log/packages | wc -l)"
