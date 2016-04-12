@@ -7,5 +7,8 @@ Neofetch version
 Verbose log
 -----------
 
-Uncomment line 2 of the script, run neofetch again and upload the output to pastebin, gist or equiv.
+1. Uncomment line 2 of the script.
+2. Run `neofetch 2> neofetchlog`
+3. Upload the contents of `neofetchlog` to pastebin, gist or equivalent.
+
 

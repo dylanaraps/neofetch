@@ -976,7 +976,7 @@ getcpu () {
                             scaling_max) speed_type="scaling_max_freq" ;;
                         esac
 
-                        read -r speed < \
+                        read -t 1 -r speed < \
                             /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
 
                         speed=$((speed / 100000))
@@ -1991,7 +1991,7 @@ getimage () {
 
     # The ascape code above prints the output AFTER the prompt so this
     # loop below reads it as input. wtf xterm
-    read -d c -s -r term_size; stty echo
+    read -t 1 -d c -s -r term_size; stty echo
 
     # Split the string
     term_size=${term_size//'['}
