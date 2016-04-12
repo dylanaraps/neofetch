@@ -2034,8 +2034,9 @@ getimage () {
             [ "$((percent * term_height / 50))" -lt "$image_size" ] && \
                 image_size=$((percent * term_height / 100))
         ;;
+
+        *) image_size=${image_size/px} ;;
     esac
-    image_size=${image_size/px}
 
     # Where to draw the image
     case "$image_position" in
