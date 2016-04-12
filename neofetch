@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# set -x
 # vim: fdm=marker:noai:ts=4:sw=4
 #
 # Neofetch info about your system
