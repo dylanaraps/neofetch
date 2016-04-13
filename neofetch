@@ -2885,6 +2885,7 @@ while [ "$1" ]; do
             }
         ;;
 
+        --verbose) set -x ;;
         --help) usage ;;
     esac
 
