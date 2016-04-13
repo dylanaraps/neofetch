@@ -513,7 +513,6 @@ getdistro () {
         ;;
     esac
     distro=${distro//+( )/ }
-    ascii_distro="$distro"
 
     # Get architecture
     [ "$os_arch" == "on" ] && \
@@ -2902,7 +2901,11 @@ done
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
 
+# Distro detection
 getdistro
+[ -z "$ascii_distro" ] && ascii_distro="$distro"
+
+# Text formatting
 colors
 bold
 
