@@ -2297,6 +2297,11 @@ colors () {
             setcolors 7 5
         ;;
 
+        "KDE"*)
+            setcolors 2 7
+            ascii_distro="kde"
+        ;;
+
         "Kali"*)
             setcolors 4 8
         ;;
