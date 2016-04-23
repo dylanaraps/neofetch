@@ -2434,11 +2434,11 @@ setcolors () {
 }
 
 color () {
-    if [ "$1" == 7 ]; then
-        printf "%b%s" "\033[0m"
-    else
-        printf "%b%s" "\033[0m\033[3${1}m"
-    fi
+    case "$1" in
+        [0-6]) printf "%b%s" "\033[0m\033[3${1}m" ;;
+        7) printf "%b%s" "\033[0m" ;;
+        *) printf "%b%s" "\033[38;5;${1}m" ;;
+    esac
 }
 
 
