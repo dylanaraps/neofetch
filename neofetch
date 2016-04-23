@@ -2014,7 +2014,6 @@ getimage () {
 
     # Calculate font size
     font_width=$((term_width / columns))
-    font_height=$((term_height / lines))
 
     # Image size is half of the terminal
     case "$image_size" in
