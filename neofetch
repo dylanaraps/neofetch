@@ -1117,6 +1117,7 @@ getgpu () {
                     gpu=${gpu/Mobility}
                     gpu=${gpu/Hawaii}
                     gpu=${gpu/Thames}
+                    gpu=${gpu/Kabini}
                     gpu=${gpu/Bonaire}
                     gpu=${gpu/XTX}
                     gpu=${gpu/ OEM}
