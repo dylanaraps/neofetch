@@ -3002,6 +3002,8 @@ if [ "$scrot" == "on" ]; then
 fi
 
 # Show error messages
-[ "$verbose" == "on" ] && printf "$err"
+if [ "$verbose" == "on" ]; then
+    printf "$err"
+fi
 
 # }}}
