@@ -1890,6 +1890,9 @@ getwallpaper () {
 
     # If img is an xml file don't use it.
     [ "${img/*\./}" == "xml" ] && img=""
+
+    [ -z "$img" ] && \
+        err "Wallpaper detection failed, falling back to ascii mode."
 }
 
 # }}}
@@ -1898,6 +1901,9 @@ getwallpaper () {
 
 getascii () {
     if [ ! -f "$ascii" ] || [ "$ascii" == "distro" ]; then
+        # Error message
+        [ ! -f "$ascii" ] && err "Ascii file not found, using distro ascii"
+
         # Lowercase the distro name
         if [ "$version" -le 3 ]; then
             ascii=$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")
@@ -1921,6 +1927,7 @@ getascii () {
             if [ ! -f "$script_dir/ascii/distro/${ascii/ *}" ]; then
                 padding="\033[0C"
                 image="off"
+                err "Ascii file not found, falling back to text mode."
                 return
             fi
 
@@ -2008,6 +2015,11 @@ getimage () {
     if [ ! -f "$img" ] || [ ${#term_size} -le 5 ]; then
         image="ascii"
         getascii
+
+        # Error messages
+        [ ! -f "$img" ] && err "\$img, isn't a file, falling back to ascii mode."
+        [ ${#term_size} -le 5 ] && err "Your terminal doesn't support \\\033[14t, falling back to ascii mode."
+
         return
     fi
 
@@ -2141,6 +2153,7 @@ getw3m_img_path () {
 
     else
         image="ascii"
+        err "w3m-img wasn't found on your system, falling back to ascii mode."
     fi
 }
 
@@ -2582,6 +2595,9 @@ kdeconfigdir () {
 
 # }}}
 
+err () {
+    err+="$(color 1)[!]$(color fg) $1 \n"
+}
 
 # }}}
 
@@ -2891,7 +2907,8 @@ while [ "$1" ]; do
             }
         ;;
 
-        --verbose) set -x ;;
+        -v) verbose="on" ;;
+        -vv) set -x; verbose="on" ;;
         --help) usage ;;
     esac
 
@@ -2982,5 +2999,8 @@ fi
 if [ "$scrot" == "on" ]; then
     takescrot
 fi
+
+# Show error messages
+[ "$verbose" == "on" ] && printf "$err"
 
 # }}}
