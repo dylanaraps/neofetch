@@ -236,6 +236,8 @@ block_width=3
 # the text in this order:
 # title, @, underline, subtitle, colon, info
 # colors=(4 6 1 8 8 6)
+# You can also specify:
+# fg (foreground color)
 colors=(distro)
 
 
@@ -2420,7 +2422,7 @@ setcolors () {
     fi
 
     if [ "$progress_color_elapsed" == "distro" ]; then
-        progress_color_elapsed="$(color 7)"
+        progress_color_elapsed="$(color fg)"
     else
         progress_color_elapsed="$(color $progress_color_elapsed)"
     fi
@@ -2434,8 +2436,8 @@ setcolors () {
 
 color () {
     case "$1" in
-        [0-6]) printf "%b%s" "\033[0m\033[3${1}m" ;;
-        7) printf "%b%s" "\033[0m" ;;
+        [0-7]) printf "%b%s" "\033[0m\033[3${1}m" ;;
+        "fg") printf "%b%s" "\033[0m" ;;
         *) printf "%b%s" "\033[38;5;${1}m" ;;
     esac
 }

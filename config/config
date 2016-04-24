@@ -211,6 +211,8 @@ block_width=3
 # the text in this order:
 # title, @, underline, subtitle, colon, info
 # colors=(4 6 1 8 8 6)
+# You can also specify:
+# fg (foreground color)
 colors=(distro)
 
 
