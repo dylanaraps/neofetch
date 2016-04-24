@@ -6,7 +6,7 @@
 
 #### Operating system
 
-## Image (If relevant)
+## Screenshot (If relevant)
 
 ## Verbose log
 
