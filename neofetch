@@ -1891,8 +1891,8 @@ getwallpaper () {
     # If img is an xml file don't use it.
     [ "${img/*\./}" == "xml" ] && img=""
 
-    [ -z "$img" ] && \
-        err "Wallpaper detection failed, falling back to ascii mode."
+    # Error msg
+    [ -z "$img" ] && err "Wallpaper detection failed, falling back to ascii mode."
 }
 
 # }}}
