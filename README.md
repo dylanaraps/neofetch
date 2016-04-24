@@ -6,6 +6,10 @@ This is the home of my fetch script! This script gathers info <br />
 about your system and prints it to the terminal next to an image, <br \>
 your distro's logo or any ascii art of your choice!
 
+Checkout the wiki, I've updated/added some new pages!
+
+https://github.com/dylanaraps/neofetch/wiki
+
 ![1](https://ipfs.pics/ipfs/QmZFLzjhASmCVmMwfLFfnRgEYc74T3JAkFJugQnaRoobAS)
 
 
