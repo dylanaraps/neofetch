@@ -2797,7 +2797,7 @@ while [ "$1" ]; do
         ;;
 
         # Text Formatting
-        --underline) underline="$2" ;;
+        --underline) underline_enabled="$2" ;;
         --underline_char) underline_char="$2" ;;
         --line_wrap) line_wrap="$2" ;;
         --bold) bold="$2" ;;
