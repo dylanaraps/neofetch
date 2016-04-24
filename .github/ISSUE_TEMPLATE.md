@@ -6,6 +6,8 @@
 
 #### Operating system
 
+## Screenshot (If relevant)
+
 ## Verbose log
 
 **Neofetch 1.6**
@@ -16,7 +18,7 @@
 
 **Neofetch 1.7**
 
-2. Run `neofetch --verbose 2> neofetchlog`
+2. Run `neofetch -vv 2> neofetchlog`
 3. Upload the contents of `neofetchlog` to pastebin, gist or equivalent.
 
 
