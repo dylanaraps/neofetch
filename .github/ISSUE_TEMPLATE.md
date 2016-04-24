@@ -6,6 +6,8 @@
 
 #### Operating system
 
+## Image (If relevant)
+
 ## Verbose log
 
 **Neofetch 1.6**
