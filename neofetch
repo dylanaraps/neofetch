@@ -1902,6 +1902,7 @@ getwallpaper () {
 getascii () {
     if [ ! -f "$ascii" ] || [ "$ascii" == "distro" ]; then
         # Error message
+        [ "$ascii" != "distro" ] && \
         [ ! -f "$ascii" ] && err "Ascii file not found, using distro ascii"
 
         # Lowercase the distro name
