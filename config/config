@@ -250,8 +250,13 @@ prompt_height=1
 
 
 # Progress bar character
-# --progress_char char
-progress_char="━"
+# --progress_char elapsed_char total_char
+progress_char_elapsed="-"
+progress_char_total="="
+
+# Progress vorder
+# --progress_border on/off
+progress_border="on"
 
 # Progress bar length in spaces
 # Number of chars long to make the progress bars.

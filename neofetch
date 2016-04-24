@@ -275,8 +275,13 @@ prompt_height=1
 
 
 # Progress bar character
-# --progress_char char
-progress_char="━"
+# --progress_char elapsed_char total_char
+progress_char_elapsed="="
+progress_char_total="-"
+
+# Progress vorder
+# --progress_border on/off
+progress_border="on"
 
 # Progress bar length in spaces
 # Number of chars long to make the progress bars.
@@ -2561,8 +2566,15 @@ bar() {
     total=$(printf %"$((progress_length - elapsed))"s)
 
     # Set the colors and swap the spaces for $progress_char
-    bar="${progress_color_elapsed}${prog// /$progress_char}"
-    bar+="${progress_color_total}${total// /$progress_char}"
+    bar+="${progress_color_elapsed}${prog// /$progress_char_elapsed}"
+    bar+="${progress_color_total}${total// /$progress_char_total}"
+
+    # Borders
+    if [ "$progress_border" == "on" ]; then
+        bar+="$(color fg)]"
+        bar="$(color fg)[$bar"
+    fi
+
     printf "%b%s\n" "${bar}${clear}"
 }
 
@@ -2796,7 +2808,11 @@ while [ "$1" ]; do
         --block_width) block_width="$2" ;;
 
         # Progress Bars
-        --progress_char) progress_char="$2" ;;
+        --progress_char)
+            progress_char_elapsed="$2"
+            progress_char_total="$3"
+        ;;
+        --progress_border) progress_border="$2" ;;
         --progress_length) progress_length="$2" ;;
         --progress_colors)
             progress_color_elapsed="$2"
