@@ -2359,7 +2359,7 @@ colors () {
         ;;
 
         "OpenBSD"*)
-            setcolors 3 3 6 1 8
+            setcolors 3 7 6 1 8
         ;;
 
         "OpenSuse"* | "Manjaro"* | "Deepin"*)
