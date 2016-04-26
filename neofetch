@@ -687,25 +687,17 @@ getpackages () {
         ;;
 
         "Mac OS X")
-            if [ -d "/usr/local/bin" ]; then
-                local_packages=$(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l)
-                packages=$((local_packages - 1))
-            fi
+            [ -d "/usr/local/bin" ] && \
+                packages=$(($(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l) - 1))
 
-            if type -p port >/dev/null 2>&1; then
-                port_packages=$(port installed 2>/dev/null | wc -l)
-                packages=$((packages + port_packages - 1))
-            fi
+            type -p port >/dev/null 2>&1 && \
+                packages=$((packages + $(port installed 2>/dev/null | wc -l) - 1))
 
-            if type -p brew >/dev/null 2>&1; then
-                brew_packages=$(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l)
-                packages=$((packages + brew_packages - 1))
-            fi
+            type -p brew >/dev/null 2>&1 && \
+                packages=$((packages + $(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l) - 1))
 
-            if type -p pkgin >/dev/null 2>&1; then
-                pkgsrc_packages=$(pkgin list 2>/dev/null | wc -l)
-                packages=$((packages + pkgsrc_packages))
-            fi
+            type -p pkgin >/dev/null 2>&1 && \
+                packages=$((packages + $(pkgin list 2>/dev/null | wc -l)))
         ;;
 
         *"BSD")
@@ -721,10 +713,8 @@ getpackages () {
             packages=$(cygcheck -cd | wc -l)
 
             # Count chocolatey packages
-            if [ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]; then
-                choco_packages=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)
-                packages=$((packages + choco_packages))
-            fi
+            [ -d "/cygdrive/c/ProgramData/chocolatey/lib" ] && \
+                packages=$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))
         ;;
     esac
     packages=${packages// }
