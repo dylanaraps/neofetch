@@ -649,44 +649,41 @@ getpackages () {
             type -p pacman >/dev/null 2>&1 && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
-            [ -z "$packages" ] && type -p dpkg >/dev/null 2>&1 && \
-                packages="$(dpkg --get-selections | grep -cv deinstall$)"
+            type -p dpkg >/dev/null 2>&1 && \
+                let packages+="$(dpkg --get-selections | grep -cv deinstall$)"
 
-            [ -z "$packages" ] && type -p /sbin/pkgtool >/dev/null 2>&1 && \
-                packages="$(ls -1 /var/log/packages | wc -l)"
+            type -p /sbin/pkgtool >/dev/null 2>&1 && \
+                let packages+="$(ls -1 /var/log/packages | wc -l)"
 
-            [ -z "$packages" ] && type -p rpm >/dev/null 2>&1 && \
-                packages="$(rpm -qa | wc -l)"
+            type -p rpm >/dev/null 2>&1 && \
+                let packages+="$(rpm -qa | wc -l)"
 
-            [ -z "$packages" ] && type -p xbps-query >/dev/null 2>&1 && \
-                packages="$(xbps-query -l | wc -l)"
+            type -p xbps-query >/dev/null 2>&1 && \
+                let packages+="$(xbps-query -l | wc -l)"
 
-            [ -z "$packages" ] && type -p pkginfo >/dev/null 2>&1 && \
-                packages="$(pkginfo -i | wc -l)"
+            type -p pkginfo >/dev/null 2>&1 && \
+                let packages+="$(pkginfo -i | wc -l)"
 
-            [ -z "$packages" ] && type -p pisi >/dev/null 2>&1 && \
-                packages="$(pisi list-installed | wc -l)"
+            type -p pisi >/dev/null 2>&1 && \
+                let packages+="$(pisi list-installed | wc -l)"
 
-            [ -z "$packages" ] && type -p pkg >/dev/null 2>&1 && \
-                packages="$(ls -1 /var/db/pkg | wc -l)"
+            type -p pkg >/dev/null 2>&1 && \
+                let packages+="$(ls -1 /var/db/pkg | wc -l)"
 
-            [ -z "$packages" ] && type -p emerge >/dev/null 2>&1 && \
-                packages="$(ls -d /var/db/pkg/*/* | wc -l)"
+            type -p emerge >/dev/null 2>&1 && \
+                let packages+="$(ls -d /var/db/pkg/*/* | wc -l)"
 
-            [ -z "$packages" ] && type -p nix-env >/dev/null 2>&1 && \
-                packages="$(ls -d -1 /nix/store/*/ | wc -l)"
+            type -p nix-env >/dev/null 2>&1 && \
+                let packages+="$(ls -d -1 /nix/store/*/ | wc -l)"
 
-            [ -z "$packages" ] && type -p apk >/dev/null 2>&1 && \
-                packages="$(apk info | wc -l)"
+            type -p apk >/dev/null 2>&1 && \
+                let packages+="$(apk info | wc -l)"
 
-            [ -z "$packages" ] && type -p pacman-g2 >/dev/null 2>&1 && \
-                packages="$(pacman-g2 -Q | wc -l)"
+            type -p pacman-g2 >/dev/null 2>&1 && \
+                let packages+="$(pacman-g2 -Q | wc -l)"
 
-            if [ -z "$packages" ] && type -p cave >/dev/null 2>&1; then
-                cross_packages=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* | wc -l)
-                packages=$(ls -d -1 /var/db/paludis/repositories/installed/data/* | wc -l)
-                packages=$((packages + cross_packages))
-            fi
+            type -p cave >/dev/null 2>&1 && \
+                let packages+=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)
         ;;
 
         "Mac OS X")
