@@ -1016,6 +1016,8 @@ getcpu () {
     cpu=${cpu//Processor}
     cpu=${cpu//Six-Core}
     cpu=${cpu//Eight-Core}
+    cpu=${cpu/Dual-Core}
+    cpu=${cpu/Quad-Core}
     cpu=${cpu//with Radeon HD Graphics}
 
     # Add cpu cores to output
