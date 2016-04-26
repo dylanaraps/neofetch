@@ -646,43 +646,43 @@ getuptime () {
 getpackages () {
     case "$os" in
         "Linux")
-            if type -p pacman >/dev/null 2>&1; then
+            type -p pacman >/dev/null 2>&1 && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
-            elif type -p dpkg >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p dpkg >/dev/null 2>&1 && \
                 packages="$(dpkg --get-selections | grep -cv deinstall$)"
 
-            elif type -p /sbin/pkgtool >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p /sbin/pkgtool >/dev/null 2>&1 && \
                 packages="$(ls -1 /var/log/packages | wc -l)"
 
-            elif type -p rpm >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p rpm >/dev/null 2>&1 && \
                 packages="$(rpm -qa | wc -l)"
 
-            elif type -p xbps-query >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p xbps-query >/dev/null 2>&1 && \
                 packages="$(xbps-query -l | wc -l)"
 
-            elif type -p pkginfo >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p pkginfo >/dev/null 2>&1 && \
                 packages="$(pkginfo -i | wc -l)"
 
-            elif type -p pisi >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p pisi >/dev/null 2>&1 && \
                 packages="$(pisi list-installed | wc -l)"
 
-            elif type -p pkg >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p pkg >/dev/null 2>&1 && \
                 packages="$(ls -1 /var/db/pkg | wc -l)"
 
-            elif type -p emerge >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p emerge >/dev/null 2>&1 && \
                 packages="$(ls -d /var/db/pkg/*/* | wc -l)"
 
-            elif type -p nix-env >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p nix-env >/dev/null 2>&1 && \
                 packages="$(ls -d -1 /nix/store/*/ | wc -l)"
 
-            elif type -p apk >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p apk >/dev/null 2>&1 && \
                 packages="$(apk info | wc -l)"
 
-            elif type -p pacman-g2 >/dev/null 2>&1; then
+            [ -z "$packages" ] && type -p pacman-g2 >/dev/null 2>&1 && \
                 packages="$(pacman-g2 -Q | wc -l)"
 
-            elif type -p cave >/dev/null 2>&1; then
+            if [ -z "$packages" ] && type -p cave >/dev/null 2>&1; then
                 cross_packages=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* | wc -l)
                 packages=$(ls -d -1 /var/db/paludis/repositories/installed/data/* | wc -l)
                 packages=$((packages + cross_packages))
