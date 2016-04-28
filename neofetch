@@ -591,22 +591,22 @@ getuptime () {
             days=$((uptime / 86400))
 
             # Format the output like Linux's "uptime -p" cmd.
-            if [ "$mins" == 1 ]; then
-                uptime="$mins minute"
-            elif [ "$mins" != 0 ]; then
+            if [ "$mins" != 0 ]; then
                 uptime="$mins minutes"
+            else
+                uptime="$mins minute"
             fi
 
-            if [ "$hours" == 1 ]; then
-                uptime="$hours hour, $uptime"
-            elif [ "$mins" != 0 ]; then
+            if [ "$mins" != 0 ]; then
                 uptime="$hours hours, $uptime"
+            else
+                uptime="$hours hour, $uptime"
             fi
 
-            if [ "$days" == 1 ]; then
-                uptime="$days day, $uptime"
-            elif [ "$days" != 0 ]; then
+            if [ "$days" != 0 ]; then
                 uptime="$days days, $uptime"
+            else
+                uptime="$days day, $uptime"
             fi
 
             uptime="up $uptime"
