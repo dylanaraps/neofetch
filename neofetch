@@ -594,26 +594,11 @@ getuptime () {
             echo "$hours"
             echo "$days"
 
-            # Format the output like Linux's "uptime -p" cmd.
-            if [ "$mins" == 1 ]; then
-                uptime="$mins minute"
-            elif [ "$mins" != 0 ]; then
-                uptime="$mins minutes"
-            fi
+            days="$days days,"
+            hours="$hours hours,"
+            mins="$mins minutes"
 
-            if [ "$hours" == 1 ]; then
-                uptime="$hours hour, $uptime"
-            elif [ "$mins" != 0 ]; then
-                uptime="$hours hours, $uptime"
-            fi
-
-            if [ "$days" == 1 ]; then
-                uptime="$days day, $uptime"
-            elif [ "$days" != 0 ]; then
-                uptime="$days days, $uptime"
-            fi
-
-            uptime="up $uptime"
+            uptime="up ${days/0 days,} ${hours/ 0 hours,} ${mins/0 mins}"
         ;;
     esac
 
