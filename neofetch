@@ -594,7 +594,7 @@ getuptime () {
             hours="$hours hours,"
             mins="$mins minutes"
 
-            uptime="up ${days/0 days,} ${days/1 days/1 day} ${hours/0 hours,} ${hours/1 hours/1 hour} ${mins/0 minutes} ${mins/1 minutes/1 minute}"
+            uptime="up ${days/0 days,} ${hours/0 hours,} ${mins/0 minutes}"
         ;;
     esac
 
