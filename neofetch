@@ -597,16 +597,24 @@ getuptime () {
             esac
 
             case "$hours" in
-                1) hours="1 hour," ;;
+                1) hours="1 hour" ;;
                 0) unset hours ;;
-                *) hours="$hours hours," ;;
+                *) hours="$hours hours" ;;
             esac
 
             case "$days" in
-                1) days="1 day," ;;
-                0) unset days;;
-                *) days="$days days," ;;
+                1) days="1 day" ;;
+                0) unset days ;;
+                *) days="$days days" ;;
             esac
+
+            [ ! -z "$hours" ] && \
+            [ ! -z "$minutes" ] && \
+                hours+=","
+
+            [ ! -z "$days" ] && \
+            [ ! -z "$hours" ] && \
+                days+=","
 
             uptime="up $days $hours $minutes"
         ;;
