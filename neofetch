@@ -608,7 +608,7 @@ getuptime () {
                 *) days="$days days," ;;
             esac
 
-            uptime="up $days, $hours, $minutes"
+            uptime="up $days $hours $minutes"
         ;;
     esac
 
