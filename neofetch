@@ -56,11 +56,11 @@ printinfo () {
     info "WM Theme" wmtheme
     info "Theme" theme
     info "Icons" icons
+    info "Font" font
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
 
-    # info "Font" font
     # info "Disk" disk
     # info "Battery" battery
     # info "Song" song
