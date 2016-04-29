@@ -591,24 +591,32 @@ getuptime () {
             days=$((uptime / 86400))
 
             case "$minutes" in
-                1) uptime="1 minute" ;;
+                1) minutes="1 minute" ;;
                 0) unset minutes ;;
-                *) uptime="$minutes minutes" ;;
+                *) minutes="$minutes minutes" ;;
             esac
 
             case "$hours" in
-                1) uptime="1 hour, $uptime" ;;
+                1) hours="1 hour" ;;
                 0) unset hours ;;
-                *) uptime="$hours hours, $uptime" ;;
+                *) hours="$hours hours" ;;
             esac
 
             case "$days" in
-                1) uptime="1 day, $uptime" ;;
+                1) days="1 day" ;;
                 0) unset days ;;
-                *) uptime="$days days, $uptime" ;;
+                *) days="$days days" ;;
             esac
 
-            uptime="up $uptime"
+            [ ! -z "$hours" ] && \
+            [ ! -z "$minutes" ] && \
+                hours+=","
+
+            [ ! -z "$days" ] && \
+            [ ! -z "$hours" ] && \
+                days+=","
+
+            uptime="up $days $hours $minutes"
         ;;
     esac
 
