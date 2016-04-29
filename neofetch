@@ -623,7 +623,7 @@ getuptime () {
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
         "on")
-            uptime=${uptime/up}
+            uptime=${uptime/up }
             uptime=${uptime/minutes/mins}
             uptime=${uptime/minute/min}
             uptime=${uptime/seconds/secs}
@@ -631,7 +631,7 @@ getuptime () {
         ;;
 
         "tiny")
-            uptime=${uptime/up}
+            uptime=${uptime/up }
             uptime=${uptime/ days/d}
             uptime=${uptime/ day/d}
             uptime=${uptime/ hours/h}
