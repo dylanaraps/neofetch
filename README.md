@@ -350,6 +350,7 @@ alias fetch2="fetch \
     Text Formatting:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
+    --underline on/off          enable/disable the underline.
     --underline_char char       Character to use when underlining title
     --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
@@ -364,7 +365,9 @@ alias fetch2="fetch \
 
 
     Progress Bars:
-    --progress_char char        Character to use when drawing progress bars.
+    --progress_char 'elapsed char' 'total char'
+                                Characters to use when drawing progress bars.
+    --progress_border on/off    Whether or not to surround the bar with '[]'
     --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar.
                                 Set in this order: elapsed, total
@@ -384,7 +387,6 @@ alias fetch2="fetch \
                                 Possible values: wall, ascii,
                                 /path/to/img, /path/to/dir/, off
     --size 20px | --size 20%    Size to make the image, takes pixels or a percentage.
-    --image_backend w3m/iterm2  Which program to use to draw images.
     --image_position left/right Where to display the image: (Left/Right)
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
@@ -407,6 +409,8 @@ alias fetch2="fetch \
                                 distro, /path/to/ascii
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
+    --ascii_logo_size           Size of ascii logo.
+                                Supported distros: Arch, Gentoo, Crux, OpenBSD.
 
 
     Stdout:

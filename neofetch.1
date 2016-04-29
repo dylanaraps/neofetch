@@ -98,6 +98,10 @@ Format the birthday output. (Uses 'date' cmd format)
 .B \--colors x x x x x x
 Changes the text colors in this order:
 title, @, underline, subtitle, colon, info
+.TP
+.B \--underline on/off
+enable/disable the underline.
+.TP
 .B \--underline_char 'char'
 Character to use when underlining title
 .TP
@@ -124,8 +128,11 @@ Range of colors to print as blocks
 
 .SH PROGRESS BARS
 .TP
-.B \--progress_char 'char'
-Character to use when drawing progress bars.
+.B \--progress_char 'elapsed char' 'total char'
+Characters to use when drawing progress bars.
+.TP
+.B \--progress_border on/off
+Whether or not to surround the bar with '[]'
 .TP
 .B \--progress_length 'num'
 Length in spaces to make the progress bars.
@@ -210,6 +217,11 @@ Colors to print the ASCII art
 .TP
 .B \--ascii_distro 'distro'
 Which Distro\'s ASCII art to print
+.TP
+.B \--ascii_logo_size 'size'
+Size of ascii logo.
+Supported distros: Arch, Gentoo, Crux, OpenBSD.
+Possible values: small, normal
 
 .SH STDOUT
 .TP
@@ -233,11 +245,21 @@ Screenshot program to launch
 .TP
 .B \--config 'path'
 Specify a path to a custom config file
-.TP
-.B \--config none
-Launch the script without a config file
+.tp
+.b \--config none
+launch the script without a config file
 .TP
 .B \--help
+.TP
+.B \--test
+Launch the script with all functions / options enabled.
+This should only be used for testing purposes, ie Travis.CI.
+.TP
+.B \-v
+Display error messages.
+.TP
+.B \-vv
+Display a verbose log for error reporting.
 
 .SH "SEE ALSO"
 http://github.com/dylanaraps/neofetch

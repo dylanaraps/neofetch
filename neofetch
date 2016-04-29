@@ -2660,6 +2660,7 @@ usage () { cat << EOF
     Text Formatting:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
+    --underline on/off          enable/disable the underline.
     --underline_char char       Character to use when underlining title
     --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
@@ -2674,7 +2675,9 @@ usage () { cat << EOF
 
 
     Progress Bars:
-    --progress_char char        Character to use when drawing progress bars.
+    --progress_char 'elapsed char' 'total char'
+                                Characters to use when drawing progress bars.
+    --progress_border on/off    Whether or not to surround the bar with '[]'
     --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar.
                                 Set in this order: elapsed, total
@@ -2716,6 +2719,8 @@ usage () { cat << EOF
                                 distro, /path/to/ascii
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
+    --ascii_logo_size           Size of ascii logo.
+                                Supported distros: Arch, Gentoo, Crux, OpenBSD.
 
 
     Stdout:
