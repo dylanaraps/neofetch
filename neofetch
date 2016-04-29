@@ -538,7 +538,7 @@ getdistro () {
 # Title {{{
 
 gettitle () {
-    title="${USER}@$(hostname)"
+    title="${USER:-$(whoami)}@${HOSTNAME:-$(hostname)}"
 }
 
 # }}}
