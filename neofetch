@@ -586,14 +586,14 @@ getuptime () {
             uptime=$((now - boot))
 
             # Convert uptime to days/hours/mins
-            mins=$((uptime / 60%60))
+            minutes=$((uptime / 60%60))
             hours=$((uptime / 3600%24))
             days=$((uptime / 86400))
 
-            case "$mins" in
-                1) mins="1 minute" ;;
+            case "$minutes" in
+                1) minutes="1 minute" ;;
                 0) ;;
-                *) mins="$mins minutes" ;;
+                *) minutes="$minutes minutes" ;;
             esac
 
             case "$hours" in
