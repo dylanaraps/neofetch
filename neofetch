@@ -1207,10 +1207,9 @@ getgpu () {
 getmemory () {
     case "$os" in
         "Linux" | "Windows")
-            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo) 0 0)
-            memused=$((mem[0] - mem[1] - mem[2] - mem[3]))
-            memused=$((memused / 1024))
-            memtotal=$((mem[0] / 1024))
+            memtotal=$(($(awk '/MemTotal/ {print $2}' /proc/meminfo) / 1024))
+            memfree=$(($(awk '/MemAvail/ {print $2}' /proc/meminfo) / 1024))
+            memused=$(($memtotal - $memfree))
         ;;
 
         "Mac OS X")
