@@ -1869,6 +1869,11 @@ getwallpaper () {
                 # Strip quotes etc from the path.
                 img=${img/'file://'}
                 img=${img//\'}
+
+                # If image is the default GNOME wallpaper cycle, use the day image
+                if [[ $img == *adwaita-timed.xml ]]; then
+                    img=/usr/share/backgrounds/gnome/adwaita-day.jpg
+                fi
             fi
         ;;
 
