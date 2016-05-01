@@ -1207,8 +1207,8 @@ getgpu () {
 getmemory () {
     case "$os" in
         "Linux" | "Windows")
-            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo) 0 0)
-            memused=$((mem[0] - mem[1] - mem[2] - mem[3]))
+            mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached|SReclaimable|SUnreclaim|KernelStack/ {printf $2}' /proc/meminfo) 0 0)
+            memused=$((mem[0] - mem[1] - mem[2] - mem[3] + mem[4] + mem[5] + mem[6] - mem[7]))
             memused=$((memused / 1024))
             memtotal=$((mem[0] / 1024))
         ;;
