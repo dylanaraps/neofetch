@@ -102,6 +102,10 @@ Checkout the wiki, I've updated/added some new pages!<br \>
 
 - Resolution (quicker): `screenresolution`
 
+##### BSD
+
+- GPU: `glxinfo`
+    - Not required on FreeBSD.
 
 \[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
 
@@ -118,11 +122,6 @@ output.
 
 \[6\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and neofetch will use it instead of scrot.
-
-##### BSD
-
-- GPU: `glxinfo`
-    - Not required on FreeBSD.
 
 
 <!-- }}} -->
