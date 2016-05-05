@@ -1163,7 +1163,7 @@ getgpu () {
                     gpu=${gpu//\'}
                 ;;
 
-                "OpenBSD"*)
+                *)
                     gpu=$(glxinfo | grep -F 'OpenGL renderer string')
                     gpu=${gpu/'OpenGL renderer string: '}
                 ;;
