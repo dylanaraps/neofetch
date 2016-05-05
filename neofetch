@@ -1164,7 +1164,7 @@ getgpu () {
                 ;;
 
                 "OpenBSD"*)
-                    gpu=$(glxinfo | grep 'OpenGL renderer string')
+                    gpu=$(glxinfo | grep -F 'OpenGL renderer string')
                     gpu=${gpu/'OpenGL renderer string: '}
                 ;;
             esac
