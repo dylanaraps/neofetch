@@ -1162,6 +1162,11 @@ getgpu () {
                     gpu=${gpu/device*= }
                     gpu=${gpu//\'}
                 ;;
+
+                "OpenBSD"*)
+                    gpu=$(glxinfo | grep 'OpenGL renderer string')
+                    gpu=${gpu/'OpenGL renderer string: '}
+                ;;
             esac
         ;;
 
