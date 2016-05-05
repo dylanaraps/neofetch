@@ -2308,6 +2308,10 @@ colors () {
             ascii_distro="redhat"
         ;;
 
+        "Kogaion"*)
+            setcolors 3 4 1
+        ;;
+
         "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
             setcolors 7 4 1
         ;;
