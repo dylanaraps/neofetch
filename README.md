@@ -119,6 +119,11 @@ output.
 \[6\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and neofetch will use it instead of scrot.
 
+##### BSD
+
+- GPU: `glxinfo`
+    - Not required on FreeBSD.
+
 
 <!-- }}} -->
 
