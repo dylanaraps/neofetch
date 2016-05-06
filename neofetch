@@ -2314,7 +2314,7 @@ colors () {
         ;;
 
         "Kogaion"*)
-            setcolors 3 4 1
+            setcolors 4 7
         ;;
 
         "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
