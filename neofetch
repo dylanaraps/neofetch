@@ -1051,8 +1051,7 @@ getcpu () {
     # Trim whitespace
     cpu=${cpu//+( )/ }
 
-    # Add CPU info bar
-    prin "$subtitle" "$cpu"
+    [ ! -z "$cpu" ] && prin "$subtitle" "$cpu"
 
     if [ "$cpu_display" != "off" ]; then
         cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
