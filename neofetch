@@ -447,12 +447,13 @@ shopt -s nocasematch extglob
 
 # Operating System {{{
 
-case "$(uname)" in
-    "Linux")   os="Linux" ;;
-    "Darwin")  os="Mac OS X" ;;
-    "OpenBSD") os="OpenBSD" ;;
-    *"BSD")    os="BSD" ;;
-    "CYGWIN"*) os="Windows" ;;
+case "$(uname -sm)" in
+    "Linux"*)   os="Linux" ;;
+    "Darwin"*)  os="Mac OS X" ;;
+    "OpenBSD"*) os="OpenBSD" ;;
+    *"BSD"*)    os="BSD" ;;
+    "CYGWIN"*)  os="Windows" ;;
+    *"iPhone"* | *"iPad"* | *"iPod"*)  os="iOS" ;;
     *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
 esac
 
