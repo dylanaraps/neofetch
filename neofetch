@@ -2348,7 +2348,7 @@ colors () {
             setcolors 4 8
         ;;
 
-        *"OS X"* )
+        *"OS X"* | *"iOS"*)
             setcolors 2 3 1 1 5 4
             ascii_distro="mac"
         ;;
