@@ -449,11 +449,11 @@ shopt -s nocasematch extglob
 
 case "$(uname -sm)" in
     "Linux"*)   os="Linux" ;;
+    *"iPhone"* | *"iPad"* | *"iPod"*) os="iOS" ;;
     "Darwin"*)  os="Mac OS X" ;;
     "OpenBSD"*) os="OpenBSD" ;;
     "FreeBSD"* | "NetBSD"*) os="BSD" ;;
     "CYGWIN"*)  os="Windows" ;;
-    *"iPhone"* | *"iPad"* | *"iPod"*) os="iOS" ;;
     *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
 esac
 
