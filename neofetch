@@ -1779,8 +1779,8 @@ getusers () {
 
 getbirthday () {
     case "$os" in
-        "Linux")
-            birthday="$(ls -alct --full-time / | awk '/lost\+found/ {printf  $6 " " $7}')"
+        "linux" | "iPhone OS")
+            birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
             date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
 
