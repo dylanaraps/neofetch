@@ -447,13 +447,12 @@ shopt -s nocasematch extglob
 
 # Operating System {{{
 
-case "$(uname -sm)" in
-    "Linux"*)   os="Linux" ;;
-    *"iPhone"* | *"iPad"* | *"iPod"*) os="iOS" ;;
-    "Darwin"*)  os="Mac OS X" ;;
-    "OpenBSD"*) os="OpenBSD" ;;
-    "FreeBSD"* | "NetBSD"*) os="BSD" ;;
-    "CYGWIN"*)  os="Windows" ;;
+case "$(uname)" in
+    "Linux")   os="Linux" ;;
+    "Darwin")  os="$(sw_vers -productName)" ;;
+    "OpenBSD") os="OpenBSD" ;;
+    *"BSD")    os="BSD" ;;
+    "CYGWIN"*) os="Windows" ;;
     *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
 esac
 
@@ -499,6 +498,10 @@ getdistro () {
                 *) codename="Mac OS X" ;;
             esac
             distro="$codename $osx_version $osx_build"
+        ;;
+
+        "iPhone OS")
+            distro="iOS $(sw_vers -productVersion)"
         ;;
 
         "OpenBSD")
