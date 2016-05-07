@@ -579,7 +579,7 @@ getuptime () {
             esac
         ;;
 
-        "Mac OS X" | *"BSD")
+        "Mac OS X" | "iPhone OS" | *"BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
             boot="${boot/'{ sec = '}"
@@ -656,7 +656,7 @@ getuptime () {
 
 getpackages () {
     case "$os" in
-        "Linux")
+        "Linux" | "iPhone OS")
             type -p pacman >/dev/null 2>&1 && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
@@ -945,6 +945,10 @@ getcpu () {
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
             cores=$(sysctl -n hw.ncpu)
+        ;;
+
+        "iPhone OS")
+            cpu=""
         ;;
 
         *)
