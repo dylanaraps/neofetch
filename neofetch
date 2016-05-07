@@ -947,6 +947,7 @@ getcpu () {
             cores=$(sysctl -n hw.ncpu)
         ;;
 
+        "iPhone OS") ;;
         *)
             case "$distro" in
                 "OpenBSD"* | "FreeBSD"*)
