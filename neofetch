@@ -1585,7 +1585,7 @@ getfont () {
 getdisk () {
     # df flags
     case "$os" in
-        "Linux" | "iPhone Os" | "Windows") df_flags="-h -l --total" ;;
+        "Linux" | "iPhone OS" | "Windows") df_flags="-h -l --total" ;;
         "Mac OS X") df_flags="-H / -l" ;;
 
         *"BSD")
