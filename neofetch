@@ -1735,7 +1735,7 @@ getlocalip () {
             localip="$(ip route get 1 | awk '{print $NF;exit}')"
         ;;
 
-        "Mac OS X")
+        "Mac OS X" | "iPhone OS")
             localip="$(ipconfig getifaddr en0)"
             [ -z "$localip" ] && localip="$(ipconfig getifaddr en1)"
         ;;
