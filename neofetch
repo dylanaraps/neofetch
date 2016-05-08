@@ -783,6 +783,7 @@ getde () {
 
         case "$de" in
             "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
+            *"TDE_FULL_SESSION"*) de="Trinity" ;;
             *"MUFFIN"*) de="Cinnamon" ;;
             *"MARCO"*) de="MATE" ;;
             *"xfce4"*) de="XFCE4" ;;
