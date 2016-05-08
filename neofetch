@@ -1810,8 +1810,8 @@ getbattery () {
                     *) index="$battery_num" ;;
                 esac
 
-                batteries=($(cat /sys/class/power_supply/BAT${battery_num}/capacity))
-                battery_state=($(cat /sys/class/power_supply/BAT${battery_num}/status))
+                batteries=($(cat /sys/class/power_supply/battery/capacity /sys/class/power_supply/BAT${battery_num}/capacity))
+                battery_state=($(cat /sys/class/power_supply/battery/status /sys/class/power_supply/BAT${battery_num}/status))
 
                 # Get the subtitle and reassign it so it doesn't change.
                 title="$subtitle"
