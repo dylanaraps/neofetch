@@ -952,8 +952,92 @@ getcpu () {
         ;;
 
         "iPhone OS") 
-            cpu="$(awk -F '|' '/$idevice/ {printf $2}' idevicehw.csv)"
-            cores="$(awk -F '|' '/$idevice/ {printf $3}' idevicehw.csv)"
+            case "$(uname -m)" in
+                "iPhone1,1" | "iPhone1,2" | "iPod1,1")
+                    cpu="Samsung S5L8900 @ 412MHz"
+                    cores="1"
+                    ;;
+                "iPhone2,1")
+                    cpu="Samsung S5PC100 @ 600MHz"
+                    cores="1"
+                    ;;
+                "iPhone3,1" | "iPhone3,2" | "iPhone3,3" | "iPod4,1")
+                    cpu="Apple A4 @ 800MHz"
+                    cores="1"
+                    ;;
+                "iPhone4,1" | "iPod5,1")
+                    cpu="Apple A5 @ 800MHz"
+                    cores="2"
+                    ;;
+                "iPhone5,1" | "iPhone5,2" | "iPhone5,3" | "iPhone5,4")
+                    cpu="Apple A6 @ 1.3GHz"
+                    cores="2"
+                    ;;
+                "iPhone6,1" | "iPhone6,2")
+                    cpu="Apple A7 @ 1.3GHz"
+                    cores="2"
+                    ;;
+                "iPhone7,1" | "iPhone7,2")
+                    cpu="Apple A8 @ 1.4GHz"
+                    cores="2"
+                    ;;
+                "iPhone8,1" | "iPhone8,2" | "iPhone8,4")
+                    cpu="Apple A9 @ 1.85GHz"
+                    cores="2"
+                    ;;
+                "iPod2,1")
+                    cpu="Samsung S5L8720 @ 533MHz"
+                    cores="1"
+                    ;;
+                "iPod3,1")
+                    cpu="Samsung S5L8922 @ 600MHz"
+                    cores="1"
+                    ;;
+                "iPod7,1")
+                    cpu="Apple A8 @ 1.1GHz"
+                    cores="2"
+                    ;;
+                "iPad1,1")
+                    cpu="Apple A4 @ 1GHz"
+                    cores="1"
+                    ;;
+                "iPad2,1" | "iPad2,2" | "iPad2,3" | "iPad2,4" | "iPad2,5" | "iPad2,6" | "iPad2,7")
+                    cpu="Apple A5 @ 1GHz"
+                    cores="2"
+                    ;;
+                "iPad3,1" | "iPad3,2" | "iPad3,3")
+                    cpu="Apple A5X @ 1GHz"
+                    cores="2"
+                    ;;
+                "iPad3,4" | "iPad3,5" | "iPad3,6")
+                    cpu="Apple A6X @ 1.4GHz"
+                    cores="2"
+                    ;;
+                "iPad4,1" | "iPad4,2" | "iPad4,3")
+                    cpu="Apple A7 @ 1.4GHz"
+                    cores="2"
+                    ;;
+                "iPad4,4" | "iPad4,5" | "iPad4,6" | "iPad4,7" | "iPad4,8" | "iPad4,9")
+                    cpu="Apple A7 @ 1.4GHz"
+                    cores="2"
+                    ;;
+                "iPad5,1" | "iPad5,2")
+                    cpu="Apple A8 @ 1.5GHz"
+                    cores="2"
+                    ;;
+                "iPad5,3" | "iPad5,4")
+                    cpu="Apple A8X @ 1.5GHz"
+                    cores="3"
+                    ;;
+                "iPad6,3" | "iPad6,4")
+                    cpu="Apple A9X @ 2.16GHz"
+                    cores="2"
+                    ;;
+                "iPad6,7" | "iPad6,8")
+                    cpu="Apple A9X @ 2.26GHz"
+                    cores="2"
+                    ;;
+            esac
         ;;
 
         *)
@@ -1168,7 +1252,24 @@ getgpu () {
         ;;
 
         "iPhone OS")
-            gpu="$(awk -F '|' '/$idevice/ {printf $4}' idevicehw.csv)"
+            case "$(uname -m)" in
+                "iPhone1,1" | "iPhone1,2") gpu="PowerVR MBX Lite 3D" ;;
+                "iPhone2,1" | "iPhone3,1" | "iPhone3,2" | "iPhone3,3" | "iPod3,1" | "iPod4,1" | "iPad1,1") gpu="PowerVR SGX535" ;;
+                "iPhone4,1" | "iPad2,1" | "iPad2,2" | "iPad2,3" | "iPad2,4" | "iPad2,5" | "iPad2,6" | "iPad2,7" | "iPod5,1")
+                    gpu="PowerVR SGX543MP2"
+                    ;;
+                "iPhone5,1" | "iPhone5,2" | "iPhone5,3" | "iPhone5,4") gpu="PowerVR SGX543MP3" ;;
+                "iPhone6,1" | "iPhone6,2" | "iPad4,1" | "iPad4,2" | "iPad4,3" | "iPad4,4" | "iPad4,5" | "iPad4,6" | "iPad4,7" | "iPad4,8" | "iPad4,9")
+                    gpu="PowerVR G6430"
+                    ;;
+                "iPhone7,1" | "iPhone7,2" | "iPod7,1" | "iPad5,1" | "iPad5,2") gpu="PowerVR GX6450" ;;
+                "iPhone8,1" | "iPhone8,2" | "iPhone8,4") gpu="PowerVR GT7600" ;;
+                "iPod1,1" | "iPod2,1") gpu="PowerVR MBX Lite" ;;
+                "iPad3,1" | "iPad3,2" | "iPad3,3") gpu="PowerVR SGX534MP4" ;;
+                "iPad3,4" | "iPad3,5" | "iPad3,6") gpu="PowerVR SGX554MP4" ;;
+                "iPad5,3" | "iPad5,4") gpu="PowerVR GXA6850" ;;
+                "iPad6,3" | "iPad6,4" | "iPad6,7" | "iPad6,8") gpu="PowerVR 7XT" ;;
+            esac
         ;;
 
         *"BSD")
