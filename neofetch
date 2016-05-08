@@ -502,6 +502,7 @@ getdistro () {
 
         "iPhone OS")
             distro="iOS $(awk '/OS-Version:/ {printf $4}' /var/logs/AppleSupport/general.log)"
+            distro=$(printf "%s" "$distro" | awk '{printf $1 $2}')
         ;;
 
         "OpenBSD")
