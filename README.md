@@ -84,6 +84,17 @@ Checkout the wiki, I've updated/added some new pages!<br \>
 - `procps-ng`
     - Not required on OS X
 
+##### iOS
+
+These dependencies can all be installed through Cydia.
+
+- `Core Utilities`
+- `Core Utilities (/bin)`
+- `Darwin Tools`
+- `system-cmds`
+- `bc`
+- `Gawk`
+- `grep`
 
 ### Optional dependencies:
 
