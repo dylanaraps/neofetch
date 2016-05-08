@@ -950,7 +950,11 @@ getcpu () {
             cores=$(sysctl -n hw.ncpu)
         ;;
 
-        "iPhone OS") ;;
+        "iPhone OS") 
+            cpu="$(awk -F '|' '/$(uname -m)/ {printf $2}' idevicehw.csv)"
+            cores="$(awk -F '|' '/$(uname -m)/ {printf $3}' idevicehw.csv)"
+        ;;
+
         *)
             case "$distro" in
                 "OpenBSD"* | "FreeBSD"*)
@@ -1160,6 +1164,10 @@ getgpu () {
                 gpu=${gpu%,*}
                 cache "gpu" "$gpu" "/Library/Caches/"
             fi
+        ;;
+
+        "iPhone OS")
+            gpu=$(awk -F '|' '/$(uname -m)/ {printf $4}' idevicehw.csv)"
         ;;
 
         *"BSD")
