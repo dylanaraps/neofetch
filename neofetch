@@ -578,6 +578,10 @@ getuptime () {
                     uptime=$(uptime | awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')
                 ;;
 
+                "Android"*)
+                    uptime=$(uptime | awk -F ': |, ' '{printf $2}')
+                ;;
+
                 *)
                     uptime="$(uptime -p)"
                     [ "$uptime" == "up " ] && uptime="up $(awk -F'.' '{print $1}' /proc/uptime) seconds"
