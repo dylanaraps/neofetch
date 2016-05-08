@@ -501,8 +501,7 @@ getdistro () {
         ;;
 
         "iPhone OS")
-            ios_version="$(sw_vers -productVersion)"
-            distro="iOS ${ios_version/ *}"
+            distro="iOS $(sw_vers -productVersion 2>/dev/null)"
         ;;
 
         "OpenBSD")
