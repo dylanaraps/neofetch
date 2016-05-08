@@ -1,6 +1,6 @@
 ## Description
 
-Only fill in the fields below if you relevant. If you're
+Only fill in the fields below if relevant. If you're
 suggesting a new feature then just a description will suffice.
 
 
