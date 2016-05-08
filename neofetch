@@ -502,6 +502,7 @@ getdistro () {
 
         "iPhone OS")
             distro="iOS $(sw_vers -productVersion)"
+            idevice="$(uname -m)"
 
             # "uname -m" doesn't print architecture on iOS so we force it off.
             os_arch="off"
@@ -951,8 +952,8 @@ getcpu () {
         ;;
 
         "iPhone OS") 
-            cpu="$(awk -F '|' '/$(uname -m)/ {printf $2}' idevicehw.csv)"
-            cores="$(awk -F '|' '/$(uname -m)/ {printf $3}' idevicehw.csv)"
+            cpu="$(awk -F '|' '/$idevice/ {printf $2}' idevicehw.csv)"
+            cores="$(awk -F '|' '/$idevice/ {printf $3}' idevicehw.csv)"
         ;;
 
         *)
@@ -1167,7 +1168,7 @@ getgpu () {
         ;;
 
         "iPhone OS")
-            gpu="$(awk -F '|' '/$(uname -m)/ {printf $4}' idevicehw.csv)"
+            gpu="$(awk -F '|' '/$idevice/ {printf $4}' idevicehw.csv)"
         ;;
 
         *"BSD")
