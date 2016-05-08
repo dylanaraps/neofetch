@@ -501,8 +501,10 @@ getdistro () {
         ;;
 
         "iPhone OS")
-            # distro="iOS $(awk '/OS-Version:/ {printf $4}' /var/logs/AppleSupport/general.log)"
-            distro="iOS"
+            distro="iOS $(sw_vers -productVersion)"
+
+            # "uname -m" doesn't print architecture on iOS so we force it off.
+            os_arch="off"
         ;;
 
         "OpenBSD")
