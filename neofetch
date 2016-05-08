@@ -2471,6 +2471,10 @@ getunderline () {
 colors () {
     # Change color of logo based on distro
     case "$ascii_distro" in
+        "Android"*)
+            setcolors 2 7
+        ;;
+
         "Arch"* | "Antergos"*)
             setcolors 6 4
         ;;
