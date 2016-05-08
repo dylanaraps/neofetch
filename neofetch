@@ -449,7 +449,7 @@ shopt -s nocasematch extglob
 
 case "$(uname)" in
     "Linux")   os="Linux" ;;
-    "Darwin")  os="Mac OS X" ;;
+    "Darwin")  os="$(sw_vers -productName)" ;;
     "OpenBSD") os="OpenBSD" ;;
     *"BSD")    os="BSD" ;;
     "CYGWIN"*) os="Windows" ;;
@@ -498,6 +498,13 @@ getdistro () {
                 *) codename="Mac OS X" ;;
             esac
             distro="$codename $osx_version $osx_build"
+        ;;
+
+        "iPhone OS")
+            distro="iOS $(sw_vers -productVersion)"
+
+            # "uname -m" doesn't print architecture on iOS so we force it off.
+            os_arch="off"
         ;;
 
         "OpenBSD")
@@ -575,7 +582,7 @@ getuptime () {
             esac
         ;;
 
-        "Mac OS X" | *"BSD")
+        "Mac OS X" | "iPhone OS" | *"BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
             boot="${boot/'{ sec = '}"
@@ -652,7 +659,7 @@ getuptime () {
 
 getpackages () {
     case "$os" in
-        "Linux")
+        "Linux" | "iPhone OS")
             type -p pacman >/dev/null 2>&1 && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
@@ -944,6 +951,116 @@ getcpu () {
             cores=$(sysctl -n hw.ncpu)
         ;;
 
+        "iPhone OS")
+            ios_model=${ios_model:-$(uname -m)}
+            case "$ios_model" in
+                "iPhone1,1" | "iPhone1,2" | "iPod1,1")
+                    cpu="Samsung S5L8900 @ 412MHz"
+                    cores="1"
+                ;;
+
+                "iPhone2,1")
+                    cpu="Samsung S5PC100 @ 600MHz"
+                    cores="1"
+                ;;
+
+                "iPhone3,1" | "iPhone3,2" | "iPhone3,3" | "iPod4,1")
+                    cpu="Apple A4 @ 800MHz"
+                    cores="1"
+                ;;
+
+                "iPhone4,1" | "iPod5,1")
+                    cpu="Apple A5 @ 800MHz"
+                    cores="2"
+                ;;
+
+                "iPhone5,1" | "iPhone5,2" | "iPhone5,3" | "iPhone5,4")
+                    cpu="Apple A6 @ 1.3GHz"
+                    cores="2"
+                ;;
+
+                "iPhone6,1" | "iPhone6,2")
+                    cpu="Apple A7 @ 1.3GHz"
+                    cores="2"
+                ;;
+
+                "iPhone7,1" | "iPhone7,2")
+                    cpu="Apple A8 @ 1.4GHz"
+                    cores="2"
+                ;;
+
+                "iPhone8,1" | "iPhone8,2" | "iPhone8,4")
+                    cpu="Apple A9 @ 1.85GHz"
+                    cores="2"
+                ;;
+
+                "iPod2,1")
+                    cpu="Samsung S5L8720 @ 533MHz"
+                    cores="1"
+                ;;
+
+                "iPod3,1")
+                    cpu="Samsung S5L8922 @ 600MHz"
+                    cores="1"
+                ;;
+
+                "iPod7,1")
+                    cpu="Apple A8 @ 1.1GHz"
+                    cores="2"
+                ;;
+
+                "iPad1,1")
+                    cpu="Apple A4 @ 1GHz"
+                    cores="1"
+                ;;
+
+                "iPad2,1" | "iPad2,2" | "iPad2,3" | "iPad2,4" | "iPad2,5" | "iPad2,6" | "iPad2,7")
+                    cpu="Apple A5 @ 1GHz"
+                    cores="2"
+                ;;
+
+                "iPad3,1" | "iPad3,2" | "iPad3,3")
+                    cpu="Apple A5X @ 1GHz"
+                    cores="2"
+                ;;
+
+                "iPad3,4" | "iPad3,5" | "iPad3,6")
+                    cpu="Apple A6X @ 1.4GHz"
+                    cores="2"
+                ;;
+
+                "iPad4,1" | "iPad4,2" | "iPad4,3")
+                    cpu="Apple A7 @ 1.4GHz"
+                    cores="2"
+                ;;
+
+                "iPad4,4" | "iPad4,5" | "iPad4,6" | "iPad4,7" | "iPad4,8" | "iPad4,9")
+                    cpu="Apple A7 @ 1.4GHz"
+                    cores="2"
+                ;;
+
+                "iPad5,1" | "iPad5,2")
+                    cpu="Apple A8 @ 1.5GHz"
+                    cores="2"
+                ;;
+
+                "iPad5,3" | "iPad5,4")
+                    cpu="Apple A8X @ 1.5GHz"
+                    cores="3"
+                ;;
+
+                "iPad6,3" | "iPad6,4")
+                    cpu="Apple A9X @ 2.16GHz"
+                    cores="2"
+                ;;
+
+                "iPad6,7" | "iPad6,8")
+                    cpu="Apple A9X @ 2.26GHz"
+                    cores="2"
+                ;;
+            esac
+        ;;
+
         *)
             case "$distro" in
                 "OpenBSD"* | "FreeBSD"*)
@@ -1044,8 +1161,7 @@ getcpu () {
     # Trim whitespace
     cpu=${cpu//+( )/ }
 
-    # Add CPU info bar
-    prin "$subtitle" "$cpu"
+    [ ! -z "$cpu" ] && prin "$subtitle" "$cpu"
 
     if [ "$cpu_display" != "off" ]; then
         cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
@@ -1156,6 +1272,59 @@ getgpu () {
             fi
         ;;
 
+        "iPhone OS")
+            ios_model=${ios_model:-$(uname -m)}
+            case "$ios_model" in
+                "iPhone1,1" | "iPhone1,2")
+                    gpu="PowerVR MBX Lite 3D"
+                ;;
+
+                "iPhone2,1" | "iPhone3,1" | "iPhone3,2" | "iPhone3,3" | "iPod3,1" | "iPod4,1" | "iPad1,1")
+                    gpu="PowerVR SGX535"
+                ;;
+
+                "iPhone4,1" | "iPad2,1" | "iPad2,2" | "iPad2,3" | "iPad2,4" | "iPad2,5" | "iPad2,6" | "iPad2,7" | "iPod5,1")
+                    gpu="PowerVR SGX543MP2"
+                ;;
+
+                "iPhone5,1" | "iPhone5,2" | "iPhone5,3" | "iPhone5,4")
+                    gpu="PowerVR SGX543MP3"
+                ;;
+
+                "iPhone6,1" | "iPhone6,2" | "iPad4,1" | "iPad4,2" | "iPad4,3" | "iPad4,4" | "iPad4,5" | "iPad4,6" | "iPad4,7" | "iPad4,8" | "iPad4,9")
+                    gpu="PowerVR G6430"
+                ;;
+
+                "iPhone7,1" | "iPhone7,2" | "iPod7,1" | "iPad5,1" | "iPad5,2")
+                    gpu="PowerVR GX6450"
+                ;;
+
+                "iPhone8,1" | "iPhone8,2" | "iPhone8,4")
+                    gpu="PowerVR GT7600"
+                ;;
+
+                "iPod1,1" | "iPod2,1")
+                    gpu="PowerVR MBX Lite"
+                ;;
+
+                "iPad3,1" | "iPad3,2" | "iPad3,3")
+                    gpu="PowerVR SGX534MP4"
+                ;;
+
+                "iPad3,4" | "iPad3,5" | "iPad3,6")
+                    gpu="PowerVR SGX554MP4"
+                ;;
+
+                "iPad5,3" | "iPad5,4")
+                    gpu="PowerVR GXA6850"
+                ;;
+
+                "iPad6,3" | "iPad6,4" | "iPad6,7" | "iPad6,8")
+                    gpu="PowerVR 7XT"
+                ;;
+            esac
+        ;;
+
         *"BSD")
             case "$distro" in
                 "FreeBSD"*)
@@ -1225,7 +1394,7 @@ getmemory () {
             memtotal=$((mem[0] / 1024))
         ;;
 
-        "Mac OS X")
+        "Mac OS X" | "iPhone OS")
             memtotal=$(printf "%s\n" "$(sysctl -n hw.memsize)"/1024^2 | bc)
             memwired=$(vm_stat | awk '/wired/ { print $4 }')
             memactive=$(vm_stat | awk '/active / { printf $3 }')
@@ -1578,7 +1747,7 @@ getfont () {
 getdisk () {
     # df flags
     case "$os" in
-        "Linux" | "Windows") df_flags="-h -l --total" ;;
+        "Linux" | "iPhone OS" | "Windows") df_flags="-h -l --total" ;;
         "Mac OS X") df_flags="-H / -l" ;;
 
         *"BSD")
@@ -1728,7 +1897,7 @@ getlocalip () {
             localip="$(ip route get 1 | awk '{print $NF;exit}')"
         ;;
 
-        "Mac OS X")
+        "Mac OS X" | "iPhone OS")
             localip="$(ipconfig getifaddr en0)"
             [ -z "$localip" ] && localip="$(ipconfig getifaddr en1)"
         ;;
@@ -1772,8 +1941,8 @@ getusers () {
 
 getbirthday () {
     case "$os" in
-        "Linux")
-            birthday="$(ls -alct --full-time / | awk '/lost\+found/ {printf  $6 " " $7}')"
+        "linux" | "iPhone OS")
+            birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
             date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
 
@@ -2341,7 +2510,7 @@ colors () {
             setcolors 4 8
         ;;
 
-        *"OS X"* )
+        *"OS X"* | *"iOS"*)
             setcolors 2 3 1 1 5 4
             ascii_distro="mac"
         ;;
