@@ -502,7 +502,6 @@ getdistro () {
 
         "iPhone OS")
             distro="iOS $(sw_vers -productVersion)"
-            idevice="$(uname -m)"
 
             # "uname -m" doesn't print architecture on iOS so we force it off.
             os_arch="off"
