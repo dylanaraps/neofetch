@@ -122,7 +122,7 @@ shell_version="off"
 # Only works on Linux with cpufreq.
 # --speed_type current, min, max, bios,
 # scaling_current, scaling_min, scaling_max
-speed_type="max"
+speed_type="scaling_current"
 
 # CPU Display
 # Set shorthand setting and progress bar setting
