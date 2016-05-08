@@ -472,7 +472,7 @@ getdistro () {
             elif type -p crux >/dev/null 2>&1; then
                 distro="$(crux)"
 
-            elif [ -f /system/app/*.apk ]; then
+            elif [ -f "/system/app/SystemUI.apk" ]; then
                 distro="Android $(getprop ro.build.version.release)"
 
             else
