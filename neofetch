@@ -739,6 +739,7 @@ getpackages () {
         ;;
     esac
     packages=${packages// }
+    [ "$packages" == 0 ] && unset packages
 }
 
 # }}}
