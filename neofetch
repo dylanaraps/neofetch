@@ -2471,6 +2471,10 @@ colors () {
             setcolors 7 1 3
         ;;
 
+        "DragonFly"*)
+            setcolors 1 7 3
+        ;;
+
         "Red"*)
             setcolors 7 1 3
             ascii_distro="redhat"
