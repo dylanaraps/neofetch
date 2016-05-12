@@ -1103,6 +1103,8 @@ getcpu () {
 
             # Get cpu cores
             cores=$(sysctl -n hw.ncpu)
+
+            cpu="$cpu @ ${speed}GHz"
         ;;
     esac
 
