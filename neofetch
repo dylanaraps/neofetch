@@ -1105,7 +1105,8 @@ getcpu () {
             cpu=${cpu/ @*}
 
             # Get cpu speed
-            speed=$(sysctl -n hw.cpuspeed hw.clockrate 2>/dev/null)
+            speed=$(sysctl -n hw.cpuspeed)
+            [ -z "$speed" ] && speed=$(sysctl -n  hw.clockrate)
             speed=$((speed / 100))
 
             # Get cpu cores
