@@ -1104,9 +1104,17 @@ getcpu () {
             # Get cpu cores
             cores=$(sysctl -n hw.ncpu)
 
+            # Fix for speeds under 1ghz
+            if [ -z "${speed:1}" ]; then
+               speed="0.${speed}"
+            else
+               speed=${speed:0:1}.${speed:1}
+            fi
+
             cpu="$cpu @ ${speed}GHz"
         ;;
     esac
+
 
     # Remove uneeded patterns from cpu output
     # This is faster than sed/gsub
