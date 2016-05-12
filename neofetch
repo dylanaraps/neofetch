@@ -2173,9 +2173,6 @@ getimage () {
     # Fallback to ascii mode if imagemagick isn't installed.
     type -p convert >/dev/null 2>&1 || image="ascii"
 
-    # Get terminal lines
-    lines=$(tput lines)
-
     case "$image" in
         "wall") getwallpaper ;;
         "ascii") getascii; return ;;
@@ -2223,7 +2220,8 @@ getimage () {
         return
     fi
 
-    # Get terminal columns
+    # Get terminal lines and columns
+    lines=$(tput lines)
     columns=$(tput cols)
 
     # Calculate font size
