@@ -1849,7 +1849,7 @@ getbattery () {
 
                 "NetBSD"*)
                     battery=$(envstat | awk '\\(|\\)' '/charge:/ {print $2}')
-                    battery="${battery/\.*}%"
+                    battery="${battery:+/\.*}%"
                 ;;
             esac
         ;;
