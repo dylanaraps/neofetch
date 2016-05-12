@@ -507,7 +507,7 @@ getdistro () {
         ;;
 
         "BSD")
-            distro="$(uname -sr)"
+            distro="$(uname -s)"
         ;;
 
         "Windows")
