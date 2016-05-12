@@ -81,8 +81,10 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 - `Bash 3.0+`
     - Alpine Linux: You also need `ncurses`.
 - `xprop` \[1\]
-- `procps-ng`
-    - Not required on OS X
+
+**CYGWIN**
+
+- `procps-ng` or `procps`
 
 ##### iOS
 
