@@ -82,7 +82,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - Alpine Linux: You also need `ncurses`.
 - `xprop` \[1\]
 
-**CYGWIN**
+##### Windows (CYGWIN)
 
 - `procps-ng` or `procps`
 
