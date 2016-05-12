@@ -1329,6 +1329,7 @@ getgpu () {
                     gpu=$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")
                     gpu=${gpu/device*= }
                     gpu=${gpu//\'}
+                    gpu=${gpu//  / }
                 ;;
 
                 *)
