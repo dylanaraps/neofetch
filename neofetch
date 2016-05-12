@@ -938,6 +938,10 @@ getwmtheme () {
 # CPU {{{
 
 getcpu () {
+    case "$distro" in
+        "NetBSD"*) local os="Linux" ;;
+    esac
+
     case "$os" in
         "Linux" | "Windows")
             # Get cpu name
