@@ -1755,7 +1755,7 @@ getdisk () {
         "Linux" | "iPhone OS" | "Windows") df_flags="-h -l --total" ;;
         "Mac OS X" | "BSD")
             case "$distro" in
-                "OpenBSD"*) return ;;
+                "OpenBSD"* | "NetBSD"*) return ;;
                 "FreeBSD"* | *"OS X"* ) df_flags="-H / -l" ;;
                 *) df_flags="-h -c -l" ;;
             esac
