@@ -1409,23 +1409,9 @@ getmemory () {
         ;;
 
         "BSD")
-             case "$distro" in
-                "OpenBSD"*)
-                    memtotal=$(top -d 1 | awk -F ':  |/| |M' '/Memory:/ {printf $4}')
-                ;;
-
-                "FreeBSD"* | "DragonFly"*)
-                    memtotal=$(dmesg | awk -F '\\(| ' '/real mem/ {printf $7}')
-                ;;
-
-                "NetBSD"*)
-                    memtotal=$(awk -F ':|kB' '/MemTotal:/ {printf $2}' /proc/meminfo)
-                    memtotal=$((memtotal / 1024))
-                ;;
-            esac
-
+            memtotal=$(($(sysctl -n hw.physmem) / 1024 / 1024))
             memfree=$(($(vmstat | awk 'END{printf $4}') / 1000))
-            memused=$((memtotal - ${memfree/M}))
+            memused=$((memtotal - memfree))
         ;;
     esac
     memory="${memused}MB / ${memtotal}MB"
