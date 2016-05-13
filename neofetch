@@ -508,6 +508,7 @@ getdistro () {
 
         "BSD")
             distro="$(uname -s)"
+            distro=${distro/DragonFly/DragonFlyBSD}
         ;;
 
         "Windows")
