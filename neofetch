@@ -1386,13 +1386,6 @@ getgpu () {
 # Memory {{{
 
 getmemory () {
-    # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
-    # information so we have to use this block below which temporarily sets the
-    # OS to 'Linux' for the duration of this function.
-    case "$distro" in
-        "NetBSD"*) local os="Linux" ;;
-    esac
-
     case "$os" in
         "Linux" | "Windows")
             if [ ! -z "$(grep -F "MemAvail" /proc/meminfo)" ]; then
@@ -1418,6 +1411,7 @@ getmemory () {
         "BSD")
             memtotal=$(($(sysctl -n hw.physmem) / 1024 / 1024))
             memfree=$(($(vmstat | awk 'END{printf $5}') / 1024))
+            [ "$distro" == "NetBSD" ] && memfree=$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))
             memused=$((memtotal - memfree))
         ;;
     esac
