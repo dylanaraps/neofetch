@@ -1409,9 +1409,12 @@ getmemory () {
         ;;
 
         "BSD")
+            case "$distro" in
+                "NetBSD"*) memfree=$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024)) ;;
+                *) memfree=$(($(vmstat | awk 'END{printf $5}') / 1024)) ;;
+            esac
+
             memtotal=$(($(sysctl -n hw.physmem) / 1024 / 1024))
-            memfree=$(($(vmstat | awk 'END{printf $5}') / 1024))
-            [ "$distro" == "NetBSD" ] && memfree=$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))
             memused=$((memtotal - memfree))
         ;;
     esac
