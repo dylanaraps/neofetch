@@ -358,6 +358,12 @@ ascii_colors=(distro)
 # --ascii_logo_size small, normal
 ascii_logo_size="normal"
 
+# Bold ascii logo
+# Whether or not to bold the ascii logo.
+# --ascii_bold on/off
+ascii_bold="off"
+
+
 # }}}
 
 # Scrot Options {{{

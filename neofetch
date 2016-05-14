@@ -385,6 +385,11 @@ ascii_colors=(distro)
 # --ascii_logo_size small, normal
 ascii_logo_size="normal"
 
+# Bold ascii logo
+# Whether or not to bold the ascii logo.
+# --ascii_bold on/off
+ascii_bold="off"
+
 
 # }}}
 
@@ -2599,12 +2604,12 @@ colors () {
 }
 
 setcolors () {
-    c1="$(color $1)"
-    c2="$(color $2)"
-    c3="$(color $3)"
-    c4="$(color $4)"
-    c5="$(color $5)"
-    c6="$(color $6)"
+    c1="$(color $1)${ascii_bold}"
+    c2="$(color $2)${ascii_bold}"
+    c3="$(color $3)${ascii_bold}"
+    c4="$(color $4)${ascii_bold}"
+    c5="$(color $5)${ascii_bold}"
+    c6="$(color $6)${ascii_bold}"
 
     if [ "${colors[0]}" == "distro" ]; then
         title_color="$c1"
@@ -2652,6 +2657,11 @@ color () {
 # Bold {{{
 
 bold () {
+    case "$ascii_bold" in
+        "on") ascii_bold="\033[1m" ;;
+        "off") ascii_bold="" ;;
+    esac
+
     case "$bold" in
         "on") bold="\033[1m" ;;
         "off") bold="" ;;
@@ -2907,6 +2917,7 @@ usage () { cat << EOF
     --ascii_distro distro       Which Distro's ascii art to print
     --ascii_logo_size           Size of ascii logo.
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
+    --ascii_bold on/off         Whether or not to bold the ascii logo.
 
 
     Stdout:
@@ -3063,6 +3074,7 @@ while [ "$1" ]; do
         ;;
 
         --ascii_logo_size) ascii_logo_size="$2" ;;
+        --ascii_bold) ascii_bold="$2" ;;
 
         # Screenshot
         --scrot | -s)
@@ -3140,7 +3152,8 @@ trap 'printf "\033[?25h"; clear; exit' 2
 getdistro
 [ -z "$ascii_distro" ] && ascii_distro="$distro"
 
-# Get colors
+# Get colors and bold
+bold
 colors
 
 if [ "$image" != "off" ]; then
@@ -3190,7 +3203,6 @@ fi
 [ "$image" != "off" ] && printf "\033[0H"
 
 # Print the info
-bold
 printinfo
 
 if [ "$image" != "off" ]; then

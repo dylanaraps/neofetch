@@ -440,6 +440,7 @@ alias fetch2="fetch \
     --ascii_distro distro       Which Distro's ascii art to print
     --ascii_logo_size           Size of ascii logo.
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
+    --ascii_bold on/off         Whether or not to bold the ascii logo.
 
 
     Stdout:
