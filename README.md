@@ -80,7 +80,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 - `Bash 3.0+`
     - Alpine Linux: You also need `ncurses`.
-- `xprop` \[1\]
+
 
 ##### Windows (CYGWIN)
 
@@ -101,6 +101,7 @@ These dependencies can all be installed through Cydia.
 
 ### Optional dependencies:
 
+- Desktop Environment and Window Manager: `xprop` \[1\]
 - Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` \[4\]
 - Thumbnail creation: `imagemagick`
 - Displaying song information from Google Play Music Desktop Player: [`gpmdp`](https://github.com/iAndrewT/gpmdp-bash)
