@@ -2471,11 +2471,16 @@ colors () {
             ascii_distro="chrome"
         ;;
 
-        "Debian"* | "FreeBSD"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
+        "Debian"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
             setcolors 7 1 3
         ;;
 
-        "DragonFly"* | "PCBSD"*)
+        "FreeBSD"* | "PCBSD"*)
+            setcolors 7 1 3
+            ascii_distro="freebsd"
+        ;;
+
+        "DragonFly"*)
             setcolors 1 7 3
         ;;
 
