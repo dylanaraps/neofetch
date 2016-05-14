@@ -90,6 +90,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 These dependencies can all be installed through Cydia.
 
+- `Bourne-Again SHell`
 - `Core Utilities`
 - `Core Utilities (/bin)`
 - `Darwin Tools`
