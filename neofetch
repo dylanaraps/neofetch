@@ -2737,7 +2737,7 @@ getconfig () {
         source "$XDG_CONFIG_HOME/neofetch/config"
 
     else
-        getscriptdir
+        getscriptdir 2>/dev/null
 
         cp "$script_dir/config/config" "$XDG_CONFIG_HOME/neofetch"
         source "$XDG_CONFIG_HOME/neofetch/config"
@@ -2751,7 +2751,7 @@ case "$@" in
         config="off"
     ;;
 esac
-[ "$config" == "on" ] && getconfig
+[ "$config" == "on" ] && getconfig 2>/dev/null
 
 # }}}
 
