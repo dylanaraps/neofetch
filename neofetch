@@ -2173,9 +2173,10 @@ getimage () {
         printf "%b%s" "\033[14t\033[c"
     fi
 
-    # The ascape code above prints the output AFTER the prompt so this
+    # The escape code above prints the output AFTER the prompt so this
     # loop below reads it as input. wtf xterm
-    read -t 1 -d c -s -r term_size; stty echo
+    read -t 1 -d c -s -r term_size
+    stty echo
 
     # Split the string
     term_size=${term_size//'['}
