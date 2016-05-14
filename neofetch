@@ -450,8 +450,7 @@ shopt -s nocasematch extglob
 case "$(uname)" in
     "Linux")   os="Linux" ;;
     "Darwin")  os="$(sw_vers -productName)" ;;
-    "OpenBSD") os="OpenBSD" ;;
-    *"BSD")    os="BSD" ;;
+    *"BSD" | "DragonFly") os="BSD" ;;
     "CYGWIN"*) os="Windows" ;;
     *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
 esac
@@ -507,13 +506,12 @@ getdistro () {
             os_arch="off"
         ;;
 
-        "OpenBSD")
-            distro="OpenBSD"
-        ;;
-
         "BSD")
-            distro="$(uname -v)"
-            distro=${distro%% *}
+            distro="$(uname -s)"
+            distro=${distro/DragonFly/DragonFlyBSD}
+
+            # Workaround for PCBSD as uname still displays FreeBSD.
+            [ -f "/etc/pcbsd-lang" ] && distro="PCBSD"
         ;;
 
         "Windows")
@@ -582,7 +580,7 @@ getuptime () {
             esac
         ;;
 
-        "Mac OS X" | "iPhone OS" | *"BSD")
+        "Mac OS X" | "iPhone OS" | "BSD")
             # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
             boot="${boot/'{ sec = '}"
@@ -714,7 +712,7 @@ getpackages () {
                 packages=$((packages + $(pkgin list 2>/dev/null | wc -l)))
         ;;
 
-        *"BSD")
+        "BSD")
             if type -p pkg_info >/dev/null 2>&1; then
                 packages=$(pkg_info | wc -l)
 
@@ -944,7 +942,51 @@ getwmtheme () {
 # CPU {{{
 
 getcpu () {
+    # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
+    # information so we have to use this block below which temporarily sets the
+    # OS to 'Linux' for the duration of this function.
+    case "$distro" in
+        "NetBSD"*) local os="Linux" ;;
+    esac
+
     case "$os" in
+        "Linux" | "Windows")
+            # Get cpu name
+            cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
+
+            # Get cpu speed
+            if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
+                case "$speed_type" in
+                    current) speed_type="scaling_cur_freq" ;;
+                    min) speed_type="scaling_min_freq" ;;
+                    max) speed_type="scaling_max_freq" ;;
+                    bios) speed_type="bios_limit" ;;
+                    scaling_current) speed_type="scaling_cur_freq" ;;
+                    scaling_min) speed_type="scaling_min_freq" ;;
+                    scaling_max) speed_type="scaling_max_freq" ;;
+                esac
+
+                read -t 1 -r speed < \
+                    /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
+
+                speed=$((speed / 100000))
+            else
+                speed=$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
+                speed=$((speed / 100))
+            fi
+
+            cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
+
+            # Fix for speeds under 1ghz
+            if [ -z "${speed:1}" ]; then
+               speed="0.${speed}"
+            else
+               speed=${speed:0:1}.${speed:1}
+            fi
+
+            cpu="$cpu @ ${speed}GHz"
+        ;;
+
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
             cores=$(sysctl -n hw.ncpu)
@@ -1060,51 +1102,19 @@ getcpu () {
             esac
         ;;
 
-        *)
-            case "$distro" in
-                "OpenBSD"* | "FreeBSD"*)
-                    # Get cpu name
-                    cpu="$(sysctl -n hw.model)"
-                    cpu=${cpu/[0-9]\.*}
-                    cpu=${cpu/ @*}
+        "BSD")
+            # Get cpu name
+            cpu="$(sysctl -n hw.model)"
+            cpu=${cpu/[0-9]\.*}
+            cpu=${cpu/ @*}
 
-                    # Get cpu speed
-                    case "$distro" in
-                        "OpenBSD"*) speed=$(sysctl -n hw.cpuspeed) ;;
-                        "FreeBSD"*) speed=$(sysctl -n hw.clockrate) ;;
-                    esac
-                    speed=$((speed / 100))
-                    cores=$(sysctl -n hw.ncpu)
-                ;;
+            # Get cpu speed
+            speed=$(sysctl -n hw.cpuspeed)
+            [ -z "$speed" ] && speed=$(sysctl -n  hw.clockrate)
+            speed=$((speed / 100))
 
-                *)
-                    # Get cpu name
-                    cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
-
-                    # Get cpu speed
-                    if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
-                        case "$speed_type" in
-                            current) speed_type="scaling_cur_freq" ;;
-                            min) speed_type="scaling_min_freq" ;;
-                            max) speed_type="scaling_max_freq" ;;
-                            bios) speed_type="bios_limit" ;;
-                            scaling_current) speed_type="scaling_cur_freq" ;;
-                            scaling_min) speed_type="scaling_min_freq" ;;
-                            scaling_max) speed_type="scaling_max_freq" ;;
-                        esac
-
-                        read -t 1 -r speed < \
-                            /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
-
-                        speed=$((speed / 100000))
-                    else
-                        speed=$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)
-                        speed=$((speed / 100))
-                    fi
-
-                    cores=$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)
-                ;;
-            esac
+            # Get cpu cores
+            cores=$(sysctl -n hw.ncpu)
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
@@ -1116,6 +1126,7 @@ getcpu () {
             cpu="$cpu @ ${speed}GHz"
         ;;
     esac
+
 
     # Remove uneeded patterns from cpu output
     # This is faster than sed/gsub
@@ -1324,11 +1335,11 @@ getgpu () {
             esac
         ;;
 
-        *"BSD")
+        "BSD")
             case "$distro" in
                 "FreeBSD"*)
                     gpu=$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")
-                    gpu=${gpu/device*= }
+                    gpu=${gpu/*device*= }
                     gpu=${gpu//\'}
                 ;;
 
@@ -1401,31 +1412,14 @@ getmemory () {
             memused=$(((${memwired//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))
         ;;
 
-        "OpenBSD" | "BSD")
+        "BSD")
             case "$distro" in
-                "OpenBSD"*)
-                    mem=($(top -d 1 | awk -F ':  |/| |M' '/Memory:/ {printf $4 " " $6 " " $11 "\n"}'))
-                    memtotal=$((${mem[1]} + ${mem[2]}))
-                    memused=$((memtotal - ${mem[0]}))
-                ;;
-
-                "FreeBSD"*)
-                    memtotal=$(dmesg | awk '/real mem/ {printf $5}')
-                    memtotal=${memtotal/\(}
-                    memtotal=${memtotal/MB\)}
-                    memfree=$(top -d 1 | awk '/Mem:/ {printf $10}')
-                    memfree=${memfree/M}
-                    memused=$((memtotal - memfree))
-                ;;
-
-                "NetBSD"*)
-                    memfree=$(($(vmstat | awk 'END{printf $4}') / 1000))
-                    memused=$(($(vmstat | awk 'END{printf $3}') / 1000))
-                    memtotal=$((memused + memfree))
-                    memused=$((memtotal - memfree))
-                ;;
+                "NetBSD"*) memfree=$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024)) ;;
+                *) memfree=$(($(vmstat | awk 'END{printf $5}') / 1024)) ;;
             esac
 
+            memtotal=$(($(sysctl -n hw.physmem) / 1024 / 1024))
+            memused=$((memtotal - memfree))
         ;;
     esac
     memory="${memused}MB / ${memtotal}MB"
@@ -1522,7 +1516,7 @@ getsong () {
 
 getresolution () {
     case "$os" in
-        "Linux" | *"BSD")
+        "Linux" | "BSD")
             if type -p xrandr >/dev/null 2>&1; then
                 case "$refresh_rate" in
                     "on") resolution=$(xrandr --nograb --current | awk 'match($0,/[0-9]{2,3}.[0-9]{2}\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}') ;;
@@ -1747,11 +1741,9 @@ getdisk () {
     # df flags
     case "$os" in
         "Linux" | "iPhone OS" | "Windows") df_flags="-h -l --total" ;;
-        "Mac OS X") df_flags="-H / -l" ;;
-
-        *"BSD")
+        "Mac OS X" | "BSD")
             case "$distro" in
-                "FreeBSD"*) df_flags="-h -c -l" ;;
+                "FreeBSD"* | *"OS X"* ) df_flags="-H / -l" ;;
                 *) return ;;
             esac
         ;;
@@ -1837,14 +1829,14 @@ getbattery () {
 
         "BSD")
             case "$distro" in
-                "FreeBSD"*)
+                "FreeBSD"* | "DragonFly"*)
                     battery=$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')
                     battery_state=$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')
                 ;;
 
                 "NetBSD"*)
                     battery=$(envstat | awk '\\(|\\)' '/charge:/ {print $2}')
-                    battery="${battery/\.*}%"
+                    battery="${battery/\.*/%}"
                 ;;
             esac
         ;;
@@ -1901,7 +1893,7 @@ getlocalip () {
             [ -z "$localip" ] && localip="$(ipconfig getifaddr en1)"
         ;;
 
-        *"BSD")
+        "BSD")
             localip="$(ifconfig | awk '/broadcast/ {print $2}')"
         ;;
 
@@ -1960,7 +1952,7 @@ getbirthday () {
             birthday_shorthand="on"
         ;;
 
-        *"BSD")
+        "BSD")
             case "$distro" in
                 "OpenBSD"*)
                     birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
@@ -1972,7 +1964,7 @@ getbirthday () {
                     date_cmd="$(date -j -f "%b %d %Y" "$birthday" "$birthday_format")"
                 ;;
 
-                "NetBSD"*)
+                "NetBSD"* | "DragonFly"*)
                     birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
                     birthday_shorthand="on"
                 ;;
@@ -2030,7 +2022,7 @@ getcols () {
 
 getwallpaper () {
     case "$os" in
-        "Linux" | *"BSD")
+        "Linux" | "BSD")
             if type -p feh >/dev/null 2>&1 && [ -f "$HOME/.fehbg" ]; then
                 img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
 
@@ -2479,8 +2471,17 @@ colors () {
             ascii_distro="chrome"
         ;;
 
-        "Debian"* | "FreeBSD"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
+        "Debian"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
             setcolors 7 1 3
+        ;;
+
+        "FreeBSD"* | "PCBSD"*)
+            setcolors 7 1 3
+            ascii_distro="freebsd"
+        ;;
+
+        "DragonFly"*)
+            setcolors 1 7 3
         ;;
 
         "Red"*)
