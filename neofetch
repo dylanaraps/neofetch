@@ -2102,7 +2102,7 @@ getascii () {
             ascii="/usr/local/share/neofetch/ascii/distro/${ascii/ *}"
 
         else
-            getscriptdir
+            getscriptdir 2>/dev/null
 
             # If the ascii file doesn't exist fallback to text mode.
             if [ ! -f "$script_dir/ascii/distro/${ascii/ *}" ]; then
@@ -2136,9 +2136,12 @@ getascii () {
     ascii_strip=${ascii_strip//\\}
 
     # Get length of longest line
-    ascii_size=($(awk 'END {print NR}length>max{max=length}END{print max}' <<< "$ascii_strip"))
-    lines=$((ascii_size[0] + 1))
-    ascii_length=${ascii_size[1]}
+    # Get lines/columns of the ascii file in pure bash.
+    while read -r line 2>/dev/null; do
+        [ ${#line} -gt ${ascii_length:-0} ] && ascii_length=${#line}
+        lines=$((lines+=1))
+    done <<< "$ascii_strip"
+    lines=$((lines+=1))
 
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
@@ -2154,9 +2157,6 @@ getascii () {
 getimage () {
     # Fallback to ascii mode if imagemagick isn't installed.
     type -p convert >/dev/null 2>&1 || image="ascii"
-
-    # Get terminal lines
-    lines=$(tput lines)
 
     case "$image" in
         "wall") getwallpaper ;;
@@ -2204,6 +2204,9 @@ getimage () {
 
         return
     fi
+
+    # Get terminal lines
+    lines=$(tput lines)
 
     # Get terminal columns
     columns=$(tput cols)
@@ -2745,7 +2748,7 @@ case "$@" in
         config="off"
     ;;
 esac
-[ "$config" == "on" ] && getconfig
+[ "$config" == "on" ] && getconfig 2>/dev/null
 
 # }}}
 
@@ -3100,7 +3103,7 @@ while [ "$1" ]; do
         --config)
             case "$2" in
                 "none" | "off") config="off" ;;
-                *) config_file="$2"; config="on"; getconfig ;;
+                *) config_file="$2"; config="on"; getconfig 2>/dev/null ;;
             esac
         ;;
         --test)
