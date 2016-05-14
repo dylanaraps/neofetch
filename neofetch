@@ -1815,15 +1815,14 @@ getbattery () {
                         unset battery
 
                         # Print each battery on a separate line.
-                        index=0
                         for bat in "${batteries[@]}"; do
                             case "$battery_display" in
-                                "bar") prin "${title}${index}" "$(bar ${bat/'%'} 100)" ;;
-                                "infobar") prin "${title}${index}" "${bat}% $(bar "${bat/'%'}" 100)" ;;
-                                "barinfo") prin "${title}${index}" "$(bar "${bat/'%'}" 100) ${bat}%" ;;
-                                *) prin "${title}${index}" "${bat}%" ;;
+                                "bar") prin "${title}${index:-0}" "$(bar ${bat/'%'} 100)" ;;
+                                "infobar") prin "${title}${index:-0}" "${bat}% $(bar "${bat/'%'}" 100)" ;;
+                                "barinfo") prin "${title}${index:-0}" "$(bar "${bat/'%'}" 100) ${bat}%" ;;
+                                *) prin "${title}${index:-0}" "${bat}%" ;;
                             esac
-                            index=$((index + 1))
+                            index=$((index+=1))
                         done
                         return
                     fi
@@ -2007,7 +2006,7 @@ getcols () {
                 7) printf "\033[4${start}m%${block_width}s${clear}\n${padding}" ;;
                 *) printf "\033[48;5;${start}m%${block_width}s" ;;
             esac
-            start=$((start + 1))
+            start=$((start+=1))
         done
 
         # Clear formatting
