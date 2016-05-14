@@ -7,7 +7,6 @@
 #
 # Required Dependencies:
 #   Bash 3.0+
-
 #
 # Optional Dependencies: (You'll lose these features without them)
 #   Desktop Environment and Window Manager: xprop
