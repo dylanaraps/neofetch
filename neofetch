@@ -2464,7 +2464,7 @@ colors () {
         ;;
 
         "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"* | "Qubes"*)
-            setcolors 4 5 7
+            setcolors 4 5 7 6
         ;;
 
         "Chrom"*)
