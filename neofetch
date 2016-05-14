@@ -824,7 +824,7 @@ getwm () {
     else
         case "$os" in
             "Mac OS X") wm="Quartz Compositor" ;;
-            "Windows") wm="Explorer" ;;
+            "Windows")  wm="Explorer" ;;
         esac
     fi
 }
@@ -933,7 +933,6 @@ getwmtheme () {
             wmtheme="$(head -n1 "$path" 2>/dev/null)"
             wmtheme="${wmtheme##*\\}"
             wmtheme="${wmtheme%.*}"
-            wmtheme="${wmtheme^}"
         ;;
 
     esac
@@ -1143,8 +1142,8 @@ getcpu () {
     cpu=${cpu//Processor}
     cpu=${cpu//Six-Core}
     cpu=${cpu//Eight-Core}
-    cpu=${cpu/Dual-Core}
-    cpu=${cpu/Quad-Core}
+    cpu=${cpu//Dual-Core}
+    cpu=${cpu//Quad-Core}
     cpu=${cpu//with Radeon HD Graphics}
 
     # Add cpu cores to output
@@ -1153,13 +1152,8 @@ getcpu () {
 
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
-        "name")
-            cpu=${cpu/@*}
-        ;;
-
-        "speed")
-            cpu=${cpu#*@ }
-        ;;
+        "name")  cpu=${cpu/@*} ;;
+        "speed") cpu=${cpu#*@ } ;;
 
         "on" | "tiny")
             cpu=${cpu/Intel }
