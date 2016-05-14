@@ -511,7 +511,7 @@ getdistro () {
             distro=${distro/DragonFly/DragonFlyBSD}
 
             # Workaround for PCBSD as uname still displays FreeBSD.
-            [ -f "/etc/pcdbsd-lang" ] && distro="PCBSD"
+            [ -f "/etc/pcbsd-lang" ] && distro="PCBSD"
         ;;
 
         "Windows")
