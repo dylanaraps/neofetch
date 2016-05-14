@@ -912,6 +912,15 @@ getwmtheme () {
             fi
         ;;
 
+        'TWin')
+            type -p tde-config >/dev/null 2>&1 && \
+                tde_config_dir=${tde_config_dir:-$(tde-config --localprefix)}
+                tde_config_dir=${tde_config_dir%/}
+
+            [ -f "$tde_config_dir/share/config/kcmthememanagerrc" ] && \
+                wmtheme=$(awk '/CurrentTheme=/ {gsub(/CurrentTheme=/,"",$0); print $0; exit}' "$tde_config_dir/share/config/kcmthememanagerrc")
+        ;;
+
         'Quartz Compositor')
             wmtheme=$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)
             if [ -z "$wmtheme" ] || [ "$wmtheme" == "1" ]; then
