@@ -7,10 +7,9 @@
 #
 # Required Dependencies:
 #   Bash 3.0+
-#   xprop
-#   [Linux / BSD / Windows] Uptime detection: procps or procps-ng
 #
 # Optional Dependencies: (You'll lose these features without them)
+#   Desktop Environment and Window Manager: xprop
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
 #   Displaying song with Google Play Music: gpmdp-bash
@@ -19,6 +18,7 @@
 #   [ Linux ] Current Song: spotify
 #   [ Linux / BSD ] Resolution detection: xorg-xdpyinfo
 #   [ OS X ] Getting screen resolution (faster): screenresolution
+#   [Windows] Uptime detection: procps or procps-ng
 #
 # Created by Dylan Araps
 # https://github.com/dylanaraps/
