@@ -509,6 +509,9 @@ getdistro () {
         "BSD")
             distro="$(uname -s)"
             distro=${distro/DragonFly/DragonFlyBSD}
+
+            # Workaround for PCBSD as uname still displays FreeBSD.
+            [ -f "/etc/pcdbsd-lang" ] && distro="PCBSD"
         ;;
 
         "Windows")
@@ -2472,7 +2475,7 @@ colors () {
             setcolors 7 1 3
         ;;
 
-        "DragonFly"*)
+        "DragonFly"* | "PCBSD"*)
             setcolors 1 7 3
         ;;
 
