@@ -2372,8 +2372,8 @@ info () {
 
     case "$1" in
         title)
-            string="${bold}${title_color}${output}"
-            string="${string/@/${at_color}@${title_color}}"
+            string="${title_color}${bold}${output}"
+            string="${string/@/${at_color}@${title_color}${bold}}"
             length=${#output}
         ;;
 
@@ -2382,7 +2382,7 @@ info () {
         ;;
 
         *)
-            string="${bold}${subtitle_color}${subtitle}${clear}"
+            string="${subtitle_color}${bold}${subtitle}${clear}"
             string+="${colon_color}: ${info_color}${output}"
             length=$((${#subtitle} +  ${#output} + 2))
         ;;
@@ -2405,7 +2405,7 @@ prin () {
         length=${#1}
 
     else
-        string="${bold}${subtitle_color}${1}${clear}"
+        string="${subtitle_color}${bold}${1}${clear}"
         string+="${colon_color}: ${info_color}${2}"
         length=$((${#subtitle} +  ${#2} + 1))
     fi
@@ -3138,9 +3138,8 @@ trap 'printf "\033[?25h"; clear; exit' 2
 getdistro
 [ -z "$ascii_distro" ] && ascii_distro="$distro"
 
-# Text formatting
+# Get colors
 colors
-bold
 
 if [ "$image" != "off" ]; then
     # If the script exits for any reason, unhide the cursor.
@@ -3189,6 +3188,7 @@ fi
 [ "$image" != "off" ] && printf "\033[0H"
 
 # Print the info
+bold
 printinfo
 
 if [ "$image" != "off" ]; then
