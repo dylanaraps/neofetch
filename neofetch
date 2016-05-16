@@ -56,7 +56,8 @@ printinfo () {
     info "WM Theme" wmtheme
     info "Theme" theme
     info "Icons" icons
-    info "Font" font
+    info "Terminal Emulator" term
+    info "Terminal Font" termfont
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
@@ -1730,6 +1731,38 @@ geticons () {
 getfont () {
     getstyle font
     font="$theme"
+}
+
+# }}}
+
+# Terminal Emulator {{{
+
+getterm () {
+    parent="$(ps -p ${1:-$PPID} -o ppid=)"
+    name="$(ps -p $parent -o comm=)"
+
+    case "$name" in
+        "${SHELL/*\/}" | *"sh") getterm "$parent" ;;
+        *) term="$name" ;;
+    esac
+}
+
+# }}}
+
+# Terminal Emulator Font {{{
+
+gettermfont () {
+    [ -z "$term" ] && getterm
+
+    case "$term" in
+        "urxvt"*)
+            # Need to figure out how to best parse the Xresources file.
+        ;;
+
+        "xfce4-terminal")
+            termfont="$(awk -F '=' '/FontName/ {printf $2}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
+        ;;
+    esac
 }
 
 # }}}
