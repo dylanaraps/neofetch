@@ -1543,12 +1543,12 @@ getresolution () {
         ;;
 
         "Windows")
-            width=$(wmic desktopmonitor get screenwidth /value 2>/dev/null)
-            width=${width/ScreenWidth'='/}
+            width=$(wmic path Win32_VideoController get CurrentHorizontalResolution /value 2>/dev/null)
+            width=${width/CurrentHorizontalResolution'='/}
             width=${width//[[:space:]]}
 
-            height=$(wmic desktopmonitor get screenheight /value 2>/dev/null)
-            height=${height/ScreenHeight'='/}
+            height=$(wmic path Win32_VideoController get CurrentVerticalResolution /value 2>/dev/null)
+            height=${height/CurrentVerticalResolution'='/}
             height=${height//[[:space:]]}
 
             [ ! -z "$width" ] && \
