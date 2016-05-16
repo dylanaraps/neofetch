@@ -1766,6 +1766,13 @@ gettermfont () {
         "termite")
             termfont="$(awk -F '= ' '/font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
         ;;
+
+        "terminator")
+            # This only works on a global basis right now.
+            # We need to figure out a way to get the current
+            # profile in use.
+            termfont="$(awk -F '= ' '/font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/terminator/config")"
+        ;;
     esac
 }
 
