@@ -1742,7 +1742,7 @@ getterm () {
     name="$(ps -p $parent -o comm=)"
 
     case "$name" in
-        "${SHELL/*\/}" | *"sh") getterm "$parent" ;;
+        "${SHELL/*\/}" | *"sh" | "tmux") getterm "$parent" ;;
         *) term="$name" ;;
     esac
 }
