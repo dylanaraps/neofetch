@@ -1760,18 +1760,22 @@ gettermfont () {
     [ -z "$term" ] && getterm
 
     case "$term" in
-        "urxvt"*)
-            termfont="$(awk -F ': ' '!/^($|!)/ && /\*font/ {printf $2}' "$HOME/.Xresources")"
+        "urxvt"* | "xterm")
+            # Check for a different font line if the term is urxvt or xterm.
+            case "$term" in
+                "urxvt"*) termfont="$(awk -F ': ' '!/^($|!)/ && /t\*font/ {printf $2}' "$HOME/.Xresources")" ;;
+                "xterm")  termfont="$(awk -F ': ' '!/^($|!)/ && /m\*font/ {printf $2}' "$HOME/.Xresources")" ;;
+            esac
 
+            # Xresources has two different font syntax, this checks which
+            # one is in use and formats it accordingly.
             case "$termfont" in
                 "xft:"*)
                     termfont=${termfont/xft:}
                     termfont=${termfont/:*}
                 ;;
 
-                "-"*)
-                    termfont="$(awk -F '\\-' '{printf $3}' <<< "$termfont")"
-                ;;
+                "-"*) termfont="$(awk -F '\\-' '{printf $3}' <<< "$termfont")" ;;
             esac
         ;;
 
