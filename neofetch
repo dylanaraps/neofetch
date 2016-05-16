@@ -1441,7 +1441,7 @@ getsong () {
         state=$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)
 
     elif [ -n "$(ps x | awk '!(/awk/) && /cmus/')" ]; then
-        song="$(cmus-remote -Q | grep "tag artist\|title" 2>/dev/null)"
+        song="$(cmus-remote -Q | grep "tag artist \|title" 2>/dev/null)"
         song=${song/tag artist }
         song=${song/tag title/-}
         song=${song//[[:space:]]/ }
