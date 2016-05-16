@@ -1762,6 +1762,10 @@ gettermfont () {
         "xfce4-terminal")
             termfont="$(awk -F '=' '/FontName/ {printf $2}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
         ;;
+
+        "termite")
+            termfont="$(awk -F '= ' '/font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
+        ;;
     esac
 }
 
