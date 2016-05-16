@@ -1746,7 +1746,7 @@ getterm () {
         name="$(ps -p $parent -o comm=)"
 
         case "$name" in
-            "${SHELL/*\/}" | *"sh" | "tmux") getterm "$parent" ;;
+            "${SHELL/*\/}" | *"sh" | "tmux" | "systemd") getterm "$parent" ;;
             *) term="$name" ;;
         esac
     fi
@@ -1761,22 +1761,33 @@ gettermfont () {
 
     case "$term" in
         "urxvt"*)
-            # Need to figure out how to best parse the Xresources file.
+            termfont="$(awk -F ': ' '!/^($|!)/ && /\*font/ {printf $2}' "$HOME/.Xresources")"
+
+            case "$termfont" in
+                "xft:"*)
+                    termfont=${termfont/xft:}
+                    termfont=${termfont/:*}
+                ;;
+
+                "-"*)
+                    termfont="$(awk -F '\\-' '{printf $3}' <<< "$termfont")"
+                ;;
+            esac
         ;;
 
         "xfce4-terminal")
-            termfont="$(awk -F '=' '/FontName/ {printf $2}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
+            termfont="$(awk -F '=' '!/^($|\/\/)/ && /FontName/ {printf $2}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
         ;;
 
         "termite")
-            termfont="$(awk -F '= ' '/font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
+            termfont="$(awk -F '= ' '!/^($|#)/ && /font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
         ;;
 
         "terminator")
             # This only works on a global basis right now.
             # We need to figure out a way to get the current
             # profile in use.
-            termfont="$(awk -F '= ' '/font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/terminator/config")"
+            termfont="$(awk -F '= ' '!/^($|#)/ && /font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/terminator/config")"
         ;;
     esac
 }
