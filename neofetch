@@ -1738,13 +1738,18 @@ getfont () {
 # Terminal Emulator {{{
 
 getterm () {
-    parent="$(ps -p ${1:-$PPID} -o ppid=)"
-    name="$(ps -p $parent -o comm=)"
+    [ -n "$ITERM_PROFILE" ] && term="iTerm2"
 
-    case "$name" in
-        "${SHELL/*\/}" | *"sh" | "tmux") getterm "$parent" ;;
-        *) term="$name" ;;
-    esac
+    # Check $PPID for terminal emulator.
+    if [ -z "$term" ]; then
+        parent="$(ps -p ${1:-$PPID} -o ppid=)"
+        name="$(ps -p $parent -o comm=)"
+
+        case "$name" in
+            "${SHELL/*\/}" | *"sh" | "tmux") getterm "$parent" ;;
+            *) term="$name" ;;
+        esac
+    fi
 }
 
 # }}}
