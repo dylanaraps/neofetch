@@ -1738,7 +1738,13 @@ getfont () {
 # Terminal Emulator {{{
 
 getterm () {
-    [ -n "$ITERM_PROFILE" ] && term="iTerm2"
+    # Workaround for OS X systems that
+    # don't support the block below.
+    case "$TERM_PROGRAM" in
+        "iTerm.app") term="iTerm2" ;;
+        "Terminal.app") term="Apple Terminal" ;;
+        *) term="${TERM_PROGRAM/\.app}" ;;
+    esac
 
     # Check $PPID for terminal emulator.
     if [ -z "$term" ]; then
