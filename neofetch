@@ -1799,8 +1799,7 @@ gettermfont () {
 
         "iTerm2")
             termfile="$(/usr/libexec/plistbuddy -c Print ~/Library/Preferences/com.googlecode.iterm2.plist)"
-            termfont="$(awk -v pattern="Name = $ITERM_PROFILE" -F '= ' '$0 ~ pattern {printf $2 " "} /Normal Font/ {printf $2 " "}' <<< "$termfile")"
-            termfont=${termfont/ $ITERM_PROFILE*}
+            termfont="$(awk -F '= ' '/Normal Font/ {printf $2; exit}' <<< "$termfile")"
         ;;
     esac
 }
