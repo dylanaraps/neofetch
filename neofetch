@@ -2158,7 +2158,7 @@ getimage () {
         *)
             if [ "${image: -1}" == "/" ]; then
                 files=("$image"*.png "$image"*.jpg)
-                img="$(printf "%s" "${files[RANDOM % ${#files[@]}]}")"
+                img="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
             else
                 img="$image"
             fi
