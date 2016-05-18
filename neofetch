@@ -64,6 +64,7 @@ printinfo () {
 
     # info "Disk" disk
     # info "Battery" battery
+    # info "Font" font
     # info "Song" song
     # info "Local IP" localip
     # info "Public IP" publicip
