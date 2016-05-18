@@ -1749,8 +1749,21 @@ getterm () {
 
     # Check $PPID for terminal emulator.
     if [ -z "$term" ]; then
-        parent="$(ps -p ${1:-$PPID} -o ppid=)"
-        name="$(ps -p $parent -o comm=)"
+        case "$os" in
+            "Windows")
+                parent="$(ps -p ${1:-$PPID} | awk '{printf $2}')"
+                parent=${parent/'PPID'}
+
+                name="$(ps -p $parent | awk '{printf $8}')"
+                name=${name/'COMMAND'}
+                name=${name/*\/}
+            ;;
+
+            *)
+                parent="$(ps -p ${1:-$PPID} -o ppid=)"
+                name="$(ps -p $parent -o comm=)"
+            ;;
+        esac
 
         case "$name" in
             "${SHELL/*\/}" | *"sh" | "tmux" | "screen" | "systemd") getterm "$parent" ;;
