@@ -1789,18 +1789,6 @@ gettermfont () {
         "termite")
             termfont="$(awk -F '= ' '!/^($|#)/ && /font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
         ;;
-
-        # This only works on a global basis right now.
-        # We need to figure out a way to get the current
-        # profile in use.
-        "terminator")
-            termfont="$(awk -F '= ' '!/^($|#)/ && /font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/terminator/config")"
-        ;;
-
-        "iTerm2")
-            termfile="$(/usr/libexec/plistbuddy -c Print ~/Library/Preferences/com.googlecode.iterm2.plist)"
-            termfont="$(awk -F '= ' '/Normal Font/ {printf $2; exit}' <<< "$termfile")"
-        ;;
     esac
 }
 
