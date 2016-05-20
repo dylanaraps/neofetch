@@ -1781,7 +1781,7 @@ gettermfont () {
 
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
-            termfont="$(grep -i "${term/d}\*font" "$HOME/.Xresources")"
+            termfont="$(grep -i "${term/d}\*font" <<< $(xrdb -query))"
             termfont=${termfont/*font: }
 
             # Xresources has two different font syntax, this checks which
