@@ -770,6 +770,10 @@ getshell () {
                 shell=${shell/tcsh}
                 shell=${shell/\(*}
             ;;
+
+            *"fish"*)
+                shell+="$("$SHELL" -c 'printf "%s" "$FISH_VERSION"')"
+            ;;
         esac
 
         shell="${shell/\(*\)}"
