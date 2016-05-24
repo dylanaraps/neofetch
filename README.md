@@ -26,8 +26,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [CRUX](#crux)
     - [Ubuntu](#ubuntu)
     - [Debian](#debian)
-    - [Fedora](#fedora)
-    - [RHEL / CentOS](#rhel--centos)
+    - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
     - [Void Linux](#void-linux)
     - [Mac OS X](#mac-os-x)
     - [Others](#others)
@@ -158,8 +157,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [CRUX](#crux)
 - [Ubuntu](#ubuntu)
 - [Debian](#debian)
-- [Fedora](#fedora)
-- [RHEL / CentOS](#rhel--centos)
+- [Fedora / RHEL / CentOS](#fedora--rhel--centos)
 - [Void Linux](#void-linux)
 - [Mac OS X](#mac-os-x)
 - [Others](#others)
@@ -227,24 +225,24 @@ Or alternatively use the [port](https://github.com/tudurom/crux-ports/blob/maste
     - `sudo apt-get install neofetch`
 
 
-### Fedora
+### Fedora / RHEL / CentOS
+
+**NOTE**: If you are using RHEL/CentOS, change `dnf` into `yum`.
 
 1. Make sure you have installed `dnf-plugins-core`
-    - `sudo dnf install dnf-plugins-core`
 2. Enable COPR repository
     - `sudo dnf copr enable konimex/neofetch`
 3. Install the package
     - `sudo dnf install neofetch`
 
-### RHEL / CentOS
+Alternatively:
 
-1. Change your working directory to `/etc/yum.repos.d`
-    - `cd /etc/yum.repos.d`
+1. Change your working directory to `/etc/yum.repos.d/`
 2. Fetch the repo file
     - `wget https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo`
+        * **NOTE**: If you are using Fedora, change `epel-7` to `fedora-23` or your Fedora version respectively. However if you are using RHEL/CentOS 6, change it to `epel-6`.
 3. Install the package
-    - `sudo yum install neofetch`
-        * NOTE: This will only work in RHEL/CentOS 7
+    - `sudo dnf install neofetch`
 
 ### Void Linux
 1. Install it from the official repositories
