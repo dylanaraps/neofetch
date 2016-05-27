@@ -2229,7 +2229,9 @@ getimage () {
 
         "none")
             # Get image size so that we can do a better crop
-            getimgsize "$img"
+            size=$(identify -format "%w %h" "$img")
+            width=${size%% *}
+            height=${size##* }
             crop_mode="none"
         ;;
 
@@ -2259,19 +2261,23 @@ getimage () {
     # Check to see if the image has a file extension, if it doesn't
     # then add one.
     case "${img##*/}" in
-        *"."*) imgname="$crop_mode-$crop_offset-$image_size-${img##*/}" ;;
-        *) imgname="$crop_mode-$crop_offset-$image_size-${img##*/}.jpg" ;;
+        *"."*) imgname="$crop_mode-$crop_offset-$width-$height-${img##*/}" ;;
+        *) imgname="$crop_mode-$crop_offset-$width-$height-${img##*/}.jpg" ;;
     esac
 
     # Check to see if the thumbnail exists before we do any cropping.
     if [ ! -f "$thumbnail_dir/$imgname" ]; then
         # Get image size so that we can do a better crop
-        getimgsize "$img"
+        if [ -z "$size" ]; then
+            size=$(identify -format "%w %h" "$img")
+            og_width=${size%% *}
+            og_height=${size##* }
+        fi
 
         # This checks to see if height is geater than width
         # so we can do a better crop of portrait images.
-        size=$height
-        [ "$height" -gt "$width" ] && size=$width
+        size=$og_height
+        [ "$og_height" -gt "$og_width" ] && size=$og_width
 
         case "$crop_mode" in
             fit)
@@ -2344,16 +2350,6 @@ getw3m_img_path () {
         image="ascii"
         err "w3m-img wasn't found on your system, falling back to ascii mode."
     fi
-}
-
-# }}}
-
-# Get Image Size {{{
-
-getimgsize () {
-    size=$(identify -format "%w %h" "$1")
-    width=${size%% *}
-    height=${size##* }
 }
 
 # }}}
