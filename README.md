@@ -9,7 +9,7 @@ your distro's logo or any ascii art of your choice!
 Have a look at the wiki, I've updated/added some new pages!<br \>
 **https://github.com/dylanaraps/neofetch/wiki**
 
-![1](https://ipfs.pics/ipfs/QmZFLzjhASmCVmMwfLFfnRgEYc74T3JAkFJugQnaRoobAS)
+![1](https://ipfs.pics/ipfs/QmXFpT6jnoXMtbBfr2FzB8v7zwQfpcohbR1DcRk6azmr7c)
 
 
 <!-- Table of Contents {{{ -->
@@ -46,10 +46,10 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 ## Screenshots
 
-![Linux](https://u.teknik.io/sW22K.png)
-![Windows](https://i.imgur.com/oVv5gHn.png)
-![Mac OS X](http://i.imgur.com/KEi9EEi.png)
-![Linux](https://ipfs.pics/ipfs/QmbqDatmoA9zyxBSXXsgj21XxaTvc5jsmvhWNccTeJVeUC)
+![Linux](https://ipfs.pics/ipfs/QmRRYwcSRz1FHNx8VQiBixZq3qvBNk487fKGwUNTs7GQjA)
+![Windows](https://ipfs.pics/ipfs/Qmf5GpmqnMRhEzC1qoQ2tM4699tEXLManZTs5pz4mWJbCg)
+![Mac OS X](https://ipfs.pics/ipfs/QmWA8XX6pFkEuLLcrq5JZBx1KFEUaXanTy1jMxzKVRpwaT)
+![BSD](https://ipfs.pics/ipfs/QmSpyCGzSgYnyfbMetKqxy9cU3UFbneS3G8JrbdxkiNLgm)
 
 
 <!-- }}} -->
