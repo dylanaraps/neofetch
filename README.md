@@ -395,7 +395,8 @@ alias fetch2="fetch \
 
     Color Blocks:
     --color_blocks on/off       Enable/Disable the color blocks
-    --block_width num           Width of color blocks
+    --block_width num           Width of color blocks in spaces
+    --block_height num          Height of color blocks in lines
     --block_range start end     Range of colors to print as blocks
 
 

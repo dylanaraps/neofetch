@@ -210,22 +210,6 @@ birthday_time="on"
 birthday_format="%a %d %b %Y %l:%M %p"
 
 
-# Color Blocks
-
-# Color block range
-# --block_range start end
-start=0
-end=7
-
-# Toggle color blocks
-# --color_blocks on/off
-color_blocks="on"
-
-# Color block width
-# --color_block_width num
-block_width=3
-
-
 # }}}
 
 # Text Colors {{{
@@ -267,6 +251,29 @@ underline_char="-"
 # prompt is greater than 2 lines high.
 # --prompt_height num
 prompt_height=1
+
+
+# }}}
+
+# Color Blocks {{{
+
+
+# Color block range
+# --block_range start end
+start=0
+end=7
+
+# Toggle color blocks
+# --color_blocks on/off
+color_blocks="on"
+
+# Color block width in spaces
+# --block_width num
+block_width=3
+
+# Color block height in lines
+# --block_height num
+block_height=1
 
 
 # }}}
@@ -1999,18 +2006,30 @@ getbirthday () {
 
 getcols () {
     if [ "$color_blocks" == "on" ]; then
-        printf "${padding}%s"
+        # Convert the width to space chars.
+        block_width=$(printf "%$((block_width-=1))s")
+
+        # Generate the string.
         while [ $start -le $end ]; do
             case "$start" in
-                [0-6]) printf "\033[4${start}m%${block_width}s" ;;
-                7) printf "\033[4${start}m%${block_width}s${clear}\n${padding}" ;;
-                *) printf "\033[48;5;${start}m%${block_width}s" ;;
+                [0-6]) blocks+="\033[0m\033[3${start}m\033[4${start}m%${block_width}s" ;;
+                7) blocks+="\033[0m\033[3${start}m\033[4${start}m%${block_width}s" ;;
+                *) blocks2+="\033[38;5;${start}m\033[48;5;${start}m%${block_width}s" ;;
             esac
             start=$((start+=1))
         done
 
-        # Clear formatting
-        printf "%b%s" "$clear"
+        # Add padding and newline to the end of the blocks.
+        blocks+="${clear}\n${padding}"
+        blocks2+="${clear}\n${padding}"
+
+        # Convert height into spaces.
+        cols="$(printf "%${block_height}s")"
+        cols2="$(printf "%${block_height}s")"
+
+        # Print the blocks.
+        cols=${cols// /${blocks}}
+        cols+=${cols2// /${blocks2}}
     fi
 }
 
@@ -2867,7 +2886,8 @@ usage () { cat << EOF
 
     Color Blocks:
     --color_blocks on/off       Enable/Disable the color blocks
-    --block_width num           Width of color blocks
+    --block_width num           Width of color blocks in spaces
+    --block_height num          Height of color blocks in lines
     --block_range start end     Range of colors to print as blocks
 
 
@@ -3012,6 +3032,7 @@ while [ "$1" ]; do
         --color_blocks) color_blocks="$2" ;;
         --block_range) start=$2; end=$3 ;;
         --block_width) block_width="$2" ;;
+        --block_height) block_height="$2" ;;
 
         # Progress Bars
         --progress_char)

@@ -185,22 +185,6 @@ birthday_time="on"
 birthday_format="+%a %d %b %Y %l:%M %p"
 
 
-# Color Blocks
-
-# Color block range
-# --block_range start end
-start=0
-end=7
-
-# Toggle color blocks
-# --color_blocks on/off
-color_blocks="on"
-
-# Color block width
-# --color_block_width num
-block_width=3
-
-
 # }}}
 
 # Text Colors {{{
@@ -242,6 +226,29 @@ underline_char="-"
 # prompt is greater than 2 lines high.
 # --prompt_height num
 prompt_height=1
+
+
+# }}}
+
+# Color Blocks {{{
+
+
+# Color block range
+# --block_range start end
+start=0
+end=7
+
+# Toggle color blocks
+# --color_blocks on/off
+color_blocks="on"
+
+# Color block width in spaces
+# --block_width num
+block_width=3
+
+# Color block height in lines
+# --block_height num
+block_height=1
 
 
 # }}}
