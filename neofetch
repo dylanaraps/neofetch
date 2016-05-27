@@ -1713,6 +1713,7 @@ getstyle () {
         theme="${gtk2theme}${gtk3theme}"
         theme=${theme//\"}
         theme=${theme//\'}
+        theme=${theme//  / }
 
         # Make the output shorter by removing "[GTKX]" from the string
         if [ "$gtk_shorthand" == "on" ]; then
