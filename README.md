@@ -9,7 +9,7 @@ your distro's logo or any ascii art of your choice!
 Have a look at the wiki, I've updated/added some new pages!<br \>
 **https://github.com/dylanaraps/neofetch/wiki**
 
-![1](https://ipfs.pics/ipfs/QmXFpT6jnoXMtbBfr2FzB8v7zwQfpcohbR1DcRk6azmr7c)
+![1](https://ipfs.pics/ipfs/QmRzqYduDQpxBLBj8WdsvvDS9ZAB89beHpCzCyAgsGTomx)
 
 
 <!-- Table of Contents {{{ -->
