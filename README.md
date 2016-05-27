@@ -28,6 +28,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [Debian](#debian)
     - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
     - [Void Linux](#void-linux)
+    - [BunsenLabs](#bunsenlabs)
     - [Mac OS X](#mac-os-x)
     - [Others](#others)
 - [Post Install](#post-install)
@@ -159,6 +160,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Debian](#debian)
 - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
 - [Void Linux](#void-linux)
+- [BunsenLabs](#bunsenlabs)
 - [Mac OS X](#mac-os-x)
 - [Others](#others)
 
@@ -247,6 +249,12 @@ Alternatively:
 ### Void Linux
 1. Install it from the official repositories
     - `sudo xbps-install -S neofetch`
+
+### BunsenLabs
+Neofetch is available in the official repos.
+
+1. `sudo apt-get update`
+2. `sudo apt-get install neofetch`
 
 ### Mac OS X
 
