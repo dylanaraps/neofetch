@@ -2202,10 +2202,8 @@ getimage () {
         return
     fi
 
-    # Get terminal lines
+    # Get terminal lines and columns
     lines=$(tput lines)
-
-    # Get terminal columns
     columns=$(tput cols)
 
     # Calculate font size
@@ -2229,14 +2227,24 @@ getimage () {
                 image_size=$((percent * term_height / 100))
         ;;
 
+        "none")
+            # Get image size so that we can do a better crop
+            getimgsize "$img"
+            crop_mode="none"
+        ;;
+
         *) image_size=${image_size/px} ;;
     esac
+
+    # Fallback if width / height are empty.
+    width=${width:-$image_size}
+    height=${height:-$image_size}
 
     # Where to draw the image
     case "$image_position" in
         "left")
             # Padding is half the terminal width + gap
-            padding="\033[$((image_size / font_width + gap + xoffset/font_width))C"
+            padding="\033[$((width / font_width + gap + xoffset/font_width))C"
         ;;
 
         "right")
@@ -2258,9 +2266,7 @@ getimage () {
     # Check to see if the thumbnail exists before we do any cropping.
     if [ ! -f "$thumbnail_dir/$imgname" ]; then
         # Get image size so that we can do a better crop
-        size=$(identify -format "%w %h" "$img")
-        width=${size%% *}
-        height=${size##* }
+        getimgsize "$img"
 
         # This checks to see if height is geater than width
         # so we can do a better crop of portrait images.
@@ -2279,7 +2285,7 @@ getimage () {
                     -gravity south \
                     -background "$c" \
                     -extent "$size"x"$size" \
-                    -scale "$image_size"x"$image_size" \
+                    -scale "$width"x"$height" \
                     "$thumbnail_dir/$imgname"
             ;;
 
@@ -2287,18 +2293,19 @@ getimage () {
                 convert \
                     "$img" \
                     -trim +repage \
-                    -scale "$image_size"x"$image_size"^ \
-                    -extent "$image_size"x"$image_size" \
+                    -scale "$width"x"$height"^ \
+                    -extent "$width"x"$height" \
                     "$thumbnail_dir/$imgname"
             ;;
 
+            none) cp "$img" "$thumbnail_dir/$imgname" ;;
             *)
                 convert \
                     "$img" \
                     -gravity $crop_offset \
                     -crop "$size"x"$size"+0+0 \
                     -quality 95 \
-                    -scale "$image_size"x"$image_size" \
+                    -scale "$width"x"$height" \
                     "$thumbnail_dir/$imgname"
             ;;
         esac
@@ -2337,6 +2344,16 @@ getw3m_img_path () {
         image="ascii"
         err "w3m-img wasn't found on your system, falling back to ascii mode."
     fi
+}
+
+# }}}
+
+# Get Image Size {{{
+
+getimgsize () {
+    size=$(identify -format "%w %h" "$1")
+    width=${size%% *}
+    height=${size##* }
 }
 
 # }}}
@@ -3186,12 +3203,12 @@ fi
 if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
     case "$image_backend" in
         "w3m")
-            printf "%b%s\n" "0;1;$xoffset;$yoffset;$image_size;$image_size;;;;;$img\n4;\n3;" |\
+            printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
             $w3m_img_path 2>/dev/null || padding="\033[0C"
         ;;
 
         "iterm2")
-            printf "%b%s\a\n" "\033]1337;File=width=${image_size}px;height=${image_size}px;inline=1:$(base64 < "$img")"
+            printf "%b%s\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$img")"
         ;;
     esac
 fi
