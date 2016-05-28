@@ -2207,7 +2207,12 @@ getimage () {
     columns=$(tput cols)
 
     # Calculate font size
-    font_width=$((term_width / columns))
+    if [ "$os" == "Mac OS X" ]; then
+        font_width=$((term_width / columns))
+    else
+        # Fixes padding issues in iTerm2.
+        font_width=$((term_width / columns / 2))
+    fi
 
     # Image size is half of the terminal
     case "$image_size" in
