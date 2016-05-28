@@ -1767,6 +1767,7 @@ getterm () {
 
         case "$name" in
             "${SHELL/*\/}" | *"sh" | "tmux" | "screen" | "systemd") getterm "$parent" ;;
+            "login" | "init") term="$(tty)"; term=${term/*\/} ;;
             *) term="$name" ;;
         esac
     fi
