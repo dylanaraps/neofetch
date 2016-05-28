@@ -2208,10 +2208,10 @@ getascii () {
     # Turn the file into a variable and strip escape codes.
     ascii_strip=$(<"$ascii")
     ascii_strip=${ascii_strip//\$\{??\}}
-    ascii_strip=${ascii_strip//'\\'}
+    ascii_strip=${ascii_strip//'\\'/ }
     ascii_strip=${ascii_strip//'\'}
 
-    # Get length of longest line
+    # Get ascii file size in rows/cols
     ascii_size="$(awk 'END {printf NR " "}length>max{max=length}END{printf max}' <<< "$ascii_strip")"
     lines=${ascii_size/ *}
     ascii_length=${ascii_size/$lines}
