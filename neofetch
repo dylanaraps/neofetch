@@ -1184,7 +1184,7 @@ getcpu () {
     [ ! -z "$cpu" ] && prin "$subtitle" "$cpu"
 
     if [ "$cpu_display" != "off" ]; then
-        cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
+        cpu_usage="$(iostat cpu | tail -n 1 | awk '{print $3 + $4 + $5 + $6}')"
         cpu_usage="${cpu_usage/\.*}%"
 
         case "$cpu_display" in
