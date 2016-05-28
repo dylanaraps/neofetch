@@ -1489,7 +1489,7 @@ getsong () {
         state="$(gpmdp status)"
 
     elif [ -n "$(ps x | awk '!(/awk/ || /Helper/) && /iTunes/')" ]; then
-        song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " name of current track as string')"
+        song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
         state="$(osascript -e 'tell application "iTunes" to player state as string')"
 
     else
