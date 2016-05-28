@@ -56,7 +56,7 @@ printinfo () {
     info "WM Theme" wmtheme
     info "Theme" theme
     info "Icons" icons
-    info "Terminal Emulator" term
+    info "Terminal" term
     info "Terminal Font" termfont
     info "CPU" cpu
     info "GPU" gpu
