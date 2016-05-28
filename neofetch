@@ -3183,7 +3183,7 @@ while [ "$1" ]; do
             esac
         ;;
         --test)
-            info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu gpu memory font disk battery song localip publicip users birthday)
+            info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu gpu memory font disk battery song localip publicip users birthday term termfont)
 
             refresh_rate="on"
             shell_version="on"
