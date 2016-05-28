@@ -2208,9 +2208,9 @@ getimage () {
 
     # Calculate font size
     if [ "$os" == "Mac OS X" ]; then
+        # Fixes padding issues in iTerm2.
         font_width=$((term_width / columns / 2))
     else
-        # Fixes padding issues in iTerm2.
         font_width=$((term_width / columns))
     fi
 
