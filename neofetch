@@ -2277,12 +2277,12 @@ getimage () {
             size=$(identify -format "%w %h" "$img")
             og_width=${size%% *}
             og_height=${size##* }
-        fi
 
-        # This checks to see if height is geater than width
-        # so we can do a better crop of portrait images.
-        size=$og_height
-        [ "$og_height" -gt "$og_width" ] && size=$og_width
+            # This checks to see if height is geater than width
+            # so we can do a better crop of portrait images.
+            size=$og_height
+            [ "$og_height" -gt "$og_width" ] && size=$og_width
+        fi
 
         case "$crop_mode" in
             fit)
