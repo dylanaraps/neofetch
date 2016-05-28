@@ -1805,6 +1805,10 @@ gettermfont () {
         "mintty")
             termfont="$(awk -F '=' '!/^($|#)/ && /Font/ {printf $2; exit}' "${HOME}/.minttyrc")"
         ;;
+
+        "Apple_Terminal")
+            termfont="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
+        ;;
     esac
 }
 
