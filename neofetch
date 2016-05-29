@@ -2019,17 +2019,16 @@ getcols () {
             start=$((start+=1))
         done
 
-        # Add padding and newline to the end of the blocks.
-        blocks+="${clear}\n${padding}"
-        blocks2+="${clear}\n${padding}"
-
         # Convert height into spaces.
-        cols="$(printf "%${block_height}s")"
-        cols2="$(printf "%${block_height}s")"
+        spaces="$(printf "%${block_height}s")"
 
-        # Print the blocks.
-        cols=${cols// /${blocks}}
-        cols+=${cols2// /${blocks2}}
+        # Convert the spaces into rows of blocks.
+        [ ! -z "$blocks" ] &&  cols+=${spaces// /${blocks}${clear}nl}
+        [ ! -z "$blocks2" ] && cols+=${spaces// /${blocks2}${clear}nl}
+
+        # Add newlines to the string.
+        cols=${cols%%'nl'}
+        cols=${cols//nl/\\n${padding}}
     fi
 }
 
