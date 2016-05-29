@@ -49,7 +49,8 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 ![Linux](https://ipfs.pics/ipfs/QmRRYwcSRz1FHNx8VQiBixZq3qvBNk487fKGwUNTs7GQjA)
 ![Windows](https://ipfs.pics/ipfs/Qmf5GpmqnMRhEzC1qoQ2tM4699tEXLManZTs5pz4mWJbCg)
 ![Mac OS X](https://ipfs.pics/ipfs/QmWA8XX6pFkEuLLcrq5JZBx1KFEUaXanTy1jMxzKVRpwaT)
-![BSD](https://ipfs.pics/ipfs/QmSpyCGzSgYnyfbMetKqxy9cU3UFbneS3G8JrbdxkiNLgm)
+![bsd](https://ipfs.pics/ipfs/qmspycgzsgynyfbmetkqxy9cu3ufbnes3g8jrbdxkinlgm)
+![bsd](https://ipfs.pics/ipfs/QmeZhs3CwGtM8CSVoorA2d2CqLxRzbJkdD7aYxa4Dixsea)
 
 
 <!-- }}} -->
