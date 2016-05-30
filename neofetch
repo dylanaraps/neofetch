@@ -2957,6 +2957,7 @@ usage () { cat << EOF
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
     --help                      Print this text and exit
+    --version                   Show neofetch version
     --test                      Launch the script with all functions / options enabled.
                                 This should only be used for testing purposes, ie Travis.CI.
     -v                          Display error messages.
@@ -3154,6 +3155,7 @@ while [ "$1" ]; do
         -v) verbose="on" ;;
         -vv) set -x; verbose="on" ;;
         --help) usage ;;
+        --version) printf "%s\n" "Neofetch 1.8"; exit ;;
     esac
 
     shift

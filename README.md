@@ -468,6 +468,11 @@ alias fetch2="fetch \
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
     --help                      Print this text and exit
+    --version                   Show neofetch version
+    --test                      Launch the script with all functions / options enabled.
+                                This should only be used for testing purposes, ie Travis.CI.
+    -v                          Display error messages.
+    -vv                         Display a verbose log for error reporting.
 
 
 <!-- }}} -->
