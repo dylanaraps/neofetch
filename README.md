@@ -423,7 +423,8 @@ alias fetch2="fetch \
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, ascii,
                                 /path/to/img, /path/to/dir/, off
-    --size 20px | --size 20%    Size to make the image, takes pixels or a percentage.
+    --size 00px | --size 00%    How to size the image.
+                                Possible values: auto, 00px, 00%, none
     --image_position left/right Where to display the image: (Left/Right)
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
