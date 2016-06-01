@@ -2508,37 +2508,29 @@ colors () {
             ascii_distro="chrome"
         ;;
 
-        "Debian"* | "Elementary"* | "CrunchBang"* | "Ubuntu"*)
-            setcolors 7 1 3
-        ;;
-
-        "FreeBSD"* | "PCBSD"*)
-            setcolors 7 1 3
-            ascii_distro="freebsd"
-        ;;
-
-        "DragonFly"*)
+        "Debian"* | "Ubuntu"* | "DragonFly"*)
             setcolors 1 7 3
         ;;
 
+        "FreeBSD"* | "PCBSD"*)
+            setcolors 1 7 3
+            ascii_distro="freebsd"
+        ;;
+
         "Red"*)
-            setcolors 7 1 3
+            setcolors 1 7 3
             ascii_distro="redhat"
         ;;
 
-        "Kogaion"*)
+        "Kogaion"* | "Elementary"*)
             setcolors 4 7
         ;;
 
         "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
-            setcolors 7 4 1
+            setcolors 4 7 1
         ;;
 
-        "Gentoo"* | "Funtoo"* | "SteamOS"*)
-            setcolors 7 5
-        ;;
-
-        "Devuan"*)
+        "Gentoo"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
             setcolors 5 7
         ;;
 
@@ -2561,20 +2553,20 @@ colors () {
         ;;
 
         "Mageia"*)
-            setcolors 7 6
+            setcolors 6 7
         ;;
 
         "Peppermint"*)
-            setcolors 7 1
+            setcolors 1 7
         ;;
 
         *"Mint"*)
-            setcolors 7 2
+            setcolors 2 7
             ascii_distro="mint"
         ;;
 
         "LMDE"* | "Chapeau"*)
-            setcolors 7 2
+            setcolors 2 7
         ;;
 
         "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)

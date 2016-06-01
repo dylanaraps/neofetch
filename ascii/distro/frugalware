@@ -1,5 +1,5 @@
 "\
-${c2}          \`++/::-.\`
+${c1}          \`++/::-.\`
          /o+++++++++/::-.\`
         \`o+++++++++++++++o++/::-.\`
         /+++++++++++++++++++++++oo++/:-.\`\`
@@ -7,13 +7,13 @@ ${c2}          \`++/::-.\`
        ++osoooooooooooosssssssssssssyyo+++++++o:
       -o+ssoooooooooooosssssssssssssyyo+++++++s\`
       o++ssoooooo++++++++++++++sssyyyyo++++++o:
-     :o++ssoooooo${c1}/-------------${c2}+syyyyyo+++++oo
-    \`o+++ssoooooo${c1}/-----${c2}+++++ooosyyyyyyo++++os:
-    /o+++ssoooooo${c1}/-----${c2}ooooooosyyyyyyyo+oooss
-   .o++++ssooooos${c1}/------------${c2}syyyyyyhsosssy-
-   ++++++ssooooss${c1}/-----${c2}+++++ooyyhhhhhdssssso
-  -s+++++syssssss${c1}/-----${c2}yyhhhhhhhhhhhddssssy.
-  sooooooyhyyyyyh${c1}/-----${c2}hhhhhhhhhhhddddyssy+
+     :o++ssoooooo${c2}/-------------${c1}+syyyyyo+++++oo
+    \`o+++ssoooooo${c2}/-----${c1}+++++ooosyyyyyyo++++os:
+    /o+++ssoooooo${c2}/-----${c1}ooooooosyyyyyyyo+oooss
+   .o++++ssooooos${c2}/------------${c1}syyyyyyhsosssy-
+   ++++++ssooooss${c2}/-----${c1}+++++ooyyhhhhhdssssso
+  -s+++++syssssss${c2}/-----${c1}yyhhhhhhhhhhhddssssy.
+  sooooooyhyyyyyh${c2}/-----${c1}hhhhhhhhhhhddddyssy+
  :yooooooyhyyyhhhyyyyyyhhhhhhhhhhdddddyssy\`
  yoooooooyhyyhhhhhhhhhhhhhhhhhhhddddddysy/
 -ysooooooydhhhhhhhhhhhddddddddddddddddssy
