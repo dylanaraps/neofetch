@@ -105,7 +105,7 @@ These dependencies can all be installed through Cydia.
 - Desktop Environment and Window Manager: `xprop` \[1\]
 - Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` \[4\]
 - Thumbnail creation: `imagemagick`
-- Displaying song information from Google Play Music Desktop Player: [`gpmdp`](https://github.com/iAndrewT/gpmdp-bash)
+- Displaying song information from Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
 
 ##### Linux / BSD
 
