@@ -2538,6 +2538,10 @@ colors () {
             setcolors 7 5
         ;;
 
+        "Devuan"*)
+            setcolors 5 7
+        ;;
+
         "KDE"*)
             setcolors 2 7
             ascii_distro="kde"
