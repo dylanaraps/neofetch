@@ -597,6 +597,9 @@ Thanks to:
 - [@mclado](https://github.com/mclado): Helping me with Max OS X testing
 - [@xDemonessx](https://github.com/xDemonessx): Helping me test the Windows version.
 - [@tudurom](https://github.com/tudurom): Helping me test **everything**.
+- [@iandrewt](https://github.com/iandrewt): OS X related bug fixes and features.
+- [@konimex](https://github.com/konimex): Packaging neofetch for a wide range of distros.
+- [@dawidd6](https://github.com/dawidd6): Packaging neofetch for Debian / Ubuntu.
 - Everyone else who has helped test the script, given feedback or reported bugs.
 
 
