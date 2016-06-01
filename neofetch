@@ -12,7 +12,7 @@
 #   Desktop Environment and Window Manager: xprop
 #   Displaying Images: w3m + w3m-img
 #   Image Cropping: ImageMagick
-#   Displaying song with Google Play Music: gpmdp-bash
+#   Displaying song with Google Play Music: gpmdp-remote
 #   [ Linux / BSD ] Wallpaper Display: feh, nitrogen or gsettings
 #   [ Linux / BSD ] Current Song: mpc, cmus, moc
 #   [ Linux ] Current Song: spotify
@@ -1484,9 +1484,9 @@ getsong () {
             ;;
         esac
 
-    elif [ -n "$(ps x | awk '!(/awk/ || /Helper/) && /Google Play Music Desktop Player/')" ] && type -p gpmdp >/dev/null 2>&1; then
-        song="$(gpmdp current)"
-        state="$(gpmdp status)"
+    elif [ -n "$(ps x | awk '!(/awk/ || /Helper/) && /Google Play Music Desktop Player/')" ] && type -p gpmdp-remote >/dev/null 2>&1; then
+        song="$(gpmdp-remote current)"
+        state="$(gpmdp-remote status)"
 
     elif [ -n "$(ps x | awk '!(/awk/ || /Helper/) && /iTunes/')" ]; then
         song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
