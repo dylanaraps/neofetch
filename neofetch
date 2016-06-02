@@ -1771,6 +1771,7 @@ getterm () {
         "${SHELL/*\/}" | *"sh" | "tmux" | "screen") getterm "$parent" ;;
         "login" | "init") term="$(tty)"; term=${term/*\/} ;;
         "ruby" | "1" | "systemd" | "sshd") unset term ;;
+        "gnome-terminal-") term="gnome-terminal" ;;
         *) term="$name" ;;
     esac
 }
