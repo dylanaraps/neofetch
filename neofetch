@@ -2023,8 +2023,8 @@ getcols () {
         spaces="$(printf "%${block_height}s")"
 
         # Convert the spaces into rows of blocks.
-        [ ! -z "$blocks" ] &&  cols+=${spaces// /${blocks}${clear}nl}
-        [ ! -z "$blocks2" ] && cols+=${spaces// /${blocks2}${clear}nl}
+        [ ! -z "$blocks" ] &&  cols+=${spaces// /${blocks}\033[0mnl}
+        [ ! -z "$blocks2" ] && cols+=${spaces// /${blocks2}\033[0mnl}
 
         # Add newlines to the string.
         cols=${cols%%'nl'}
@@ -2411,7 +2411,7 @@ info () {
         ;;
 
         *)
-            string="${subtitle_color}${bold}${subtitle}${clear}"
+            string="${subtitle_color}${bold}${subtitle}\033[0m"
             string+="${colon_color}: ${info_color}${output}"
             length=$((${#subtitle} +  ${#output} + 2))
         ;;
@@ -2421,7 +2421,7 @@ info () {
     [ -z "$2" ] && string=${string/*: }
 
     # Print the string
-    printf "%b%s\n" "${padding}${string}${clear}"
+    printf "%b%s\n" "${padding}${string}\033[0m"
 }
 
 # }}}
@@ -2434,13 +2434,13 @@ prin () {
         length=${#1}
 
     else
-        string="${subtitle_color}${bold}${1}${clear}"
+        string="${subtitle_color}${bold}${1}\033[0m"
         string+="${colon_color}: ${info_color}${2}"
         length=$((${#subtitle} +  ${#2} + 1))
     fi
 
     # Print the info
-    printf "%b%s\n" "${padding}${string}${clear}"
+    printf "%b%s\n" "${padding}${string}\033[0m"
 }
 
 # }}}
@@ -2706,8 +2706,6 @@ getlinebreak () {
 
 # }}}
 
-clear="\033[0m"
-
 
 # }}}
 
@@ -2798,7 +2796,7 @@ bar() {
         bar="$(color fg)[$bar"
     fi
 
-    printf "%b%s\n" "${bar}${clear}"
+    printf "%b%s\n" "${bar}\033[0m"
 }
 
 # }}}
