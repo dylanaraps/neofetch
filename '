@@ -26,15 +26,8 @@
 
 ### Terminal and Terminal Font
 
-![img](https://ipfs.pics/ipfs/QmbAJRzx3so9d2NUGskdYYk3fXpqMk7eXPqEimwLXNYLu2)
-
-- Added `term` function to display current terminal emulator. \[1\]
-- Added `termfont` function to display current terminal font. \[2\]
-
-
-\[1\] Both of these functions are enabled by default.
-
-\[2\] See this wiki page for more info about the functions: [Link](https://github.com/dylanaraps/neofetch/wiki/Terminal-and-Terminal-Font-detection)
+- Added function to display current terminal emulator.
+- Added function to display current terminal font.
 
 
 ### Info
