@@ -24,7 +24,6 @@
 # https://github.com/dylanaraps/
 
 version="${BASH_VERSION/.*}"
-
 SYS_LOCALE="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
