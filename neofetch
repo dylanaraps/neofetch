@@ -24,6 +24,7 @@
 # https://github.com/dylanaraps/
 
 version="${BASH_VERSION/.*}"
+
 SYS_LOCALE="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
@@ -2110,8 +2111,8 @@ getcols () {
         spaces="$(printf "%${block_height}s")"
 
         # Convert the spaces into rows of blocks.
-        [ ! -z "$blocks" ] &&  cols+=${spaces// /${blocks}\033[0mnl}
-        [ ! -z "$blocks2" ] && cols+=${spaces// /${blocks2}\033[0mnl}
+        [ ! -z "$blocks" ] &&  cols+=${spaces// /${blocks}"\033[0m"nl}
+        [ ! -z "$blocks2" ] && cols+=${spaces// /${blocks2}"\033[0m"nl}
 
         # Add newlines to the string.
         cols=${cols%%'nl'}
