@@ -2283,15 +2283,11 @@ getimage () {
 
     else
         printf "%b%s" "\033[14t\033[c"
+        read_flags="-d c"
     fi
 
     # The escape code above prints the output AFTER the prompt so this
-    # loop below reads it as input. wtf xterm / terminology
-    if [ "$image_backend" == "tycat" ]; then
-        read -t 1 -s -r term_size
-    else
-        read -t 1 -d c -s -r term_size
-    fi
+    read -t 1 ${read_flags} -s -r term_size
     stty echo
 
     # Split the string
