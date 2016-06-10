@@ -2290,9 +2290,6 @@ getimage () {
     read -t 1 ${read_flags} -s -r term_size
     stty echo
 
-
-    # 83;28;8;15
-
     # Split the string
     if [ "$image_backend" == "tycat" ]; then
         term_size=(${term_size//;/ })
