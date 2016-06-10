@@ -103,7 +103,7 @@ These dependencies can all be installed through Cydia.
 ### Optional dependencies:
 
 - Desktop Environment and Window Manager: `xprop` \[1\]
-- Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` \[4\]
+- Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` or `Terminator` \[4\]
 - Thumbnail creation: `imagemagick`
 - Displaying song information from Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
 
@@ -130,8 +130,7 @@ These dependencies can all be installed through Cydia.
 \[3\] Image support only works in certain terminal emulators. The script will fallback to ascii mode on<br \>
 terminal emulators that don't support the xterm escape sequences we're using for image sizing.
 
-\[4\] You can enable the `iTerm2` image backend by using the launch flag `--image_backend iterm2` or by<br \>
-changing the config option `$image_backend` to `iterm2`.
+\[4\] Image support is built into terminator and doesn't require w3m-img.
 
 \[5\] Xrandr is prefered over xdpyinfo as Xrandr supports multi monitor and refresh rate display in the<br \>
 output.
