@@ -2277,23 +2277,39 @@ getimage () {
     stty -echo
     if [ -n "$TMUX" ]; then
         printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+    elif [ "$term" = "terminology" ]; then
+        printf "%b%s" "\033}qs\000"
     else
         printf "%b%s" "\033[14t\033[c"
     fi
 
     # The escape code above prints the output AFTER the prompt so this
     # loop below reads it as input. wtf xterm
-    read -t 1 -d c -s -r term_size
+    if [ "$term" = "terminology" ]; then
+      read -t 1 -s -r term_size
+    else
+      read -t 1 -d c -s -r term_size
+    fi
     stty echo
 
     # Split the string
-    term_size=${term_size//'['}
-    term_size=${term_size/';'}
-    term_size=${term_size/$'\E4'}
-    term_size=${term_size/t*}
-    term_height=${term_size/';'*}
-    term_width=${term_size/*';'}
-
+    if [ "$term" = "terminology" ]; then
+      lines=${term_size%%';'*}
+      columns=${term_size%';'*';'*}
+      columns=${columns#*';'}
+      font_height=${term_size##*';'}
+      font_weight=${term_size#*';'*';'}
+      font_weight=${font_weight%';'*}
+      term_height=$((font_height * columns))
+      term_width=$((font_weight * lines))
+    else
+      term_size=${term_size//'['}
+      term_size=${term_size/';'}
+      term_size=${term_size/$'\E4'}
+      term_size=${term_size/t*}
+      term_height=${term_size/';'*}
+      term_width=${term_size/*';'}
+    fi
 
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
@@ -3284,9 +3300,14 @@ if [ "$image" != "off" ]; then
     # Hide the cursor
     printf "\033[?25l"
 
+    # Fetch the terminal name in $term
+    [ -z "$term" ] && getterm
+
     # If iterm2 is detected use iterm2 backend.
     if [ -n "$ITERM_PROFILE" ]; then
         image_backend="iterm2"
+    elif [ "$term" = "terminology" ]; then
+        image_backend="tycat"
     else
         image_backend="w3m"
     fi
@@ -3311,6 +3332,8 @@ if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
         "iterm2")
             printf "%b%s\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$img")"
         ;;
+        "tycat")
+            tycat "$img"
     esac
 fi
 
