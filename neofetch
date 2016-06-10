@@ -2277,27 +2277,37 @@ getimage () {
     stty -echo
     if [ -n "$TMUX" ]; then
         printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+
+    elif [ "$image_backend" == "tycat" ]; then
+        printf "%b%s" "\033}qs\000"
+
     else
         printf "%b%s" "\033[14t\033[c"
+        read_flags="-d c"
     fi
 
     # The escape code above prints the output AFTER the prompt so this
-    # loop below reads it as input. wtf xterm
-    read -t 1 -d c -s -r term_size
+    read -t 1 ${read_flags} -s -r term_size
     stty echo
 
     # Split the string
-    term_size=${term_size//'['}
-    term_size=${term_size/';'}
-    term_size=${term_size/$'\E4'}
-    term_size=${term_size/t*}
-    term_height=${term_size/';'*}
-    term_width=${term_size/*';'}
+    if [ "$image_backend" == "tycat" ]; then
+        term_size=(${term_size//;/ })
+        term_width=$((term_size[2] * term_size[0]))
+        term_height=$((term_size[3] * term_size[1]))
 
+    else
+        term_size=${term_size//'['}
+        term_size=${term_size/';'}
+        term_size=${term_size/$'\E4'}
+        term_size=${term_size/t*}
+        term_height=${term_size/';'*}
+        term_width=${term_size/*';'}
+    fi
 
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
-    if [ ! -f "$img" ] || [ ${#term_size} -le 5 ]; then
+    if [ ! -f "$img" ] || [ ${#term_size} -le 5 ] && [ "$image_backend" != "tycat" ]; then
         image="ascii"
         getascii
 
@@ -3287,6 +3297,10 @@ if [ "$image" != "off" ]; then
     # If iterm2 is detected use iterm2 backend.
     if [ -n "$ITERM_PROFILE" ]; then
         image_backend="iterm2"
+
+    elif [ ! -z "$(tycat 2>/dev/null)" ]; then
+        image_backend="tycat"
+
     else
         image_backend="w3m"
     fi
@@ -3310,6 +3324,10 @@ if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
 
         "iterm2")
             printf "%b%s\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$img")"
+        ;;
+
+        "tycat")
+            tycat "$img"
         ;;
     esac
 fi
