@@ -2290,16 +2290,15 @@ getimage () {
     read -t 1 ${read_flags} -s -r term_size
     stty echo
 
+
+    # 83;28;8;15
+
     # Split the string
     if [ "$image_backend" == "tycat" ]; then
-        lines=${term_size%%';'*}
-        columns=${term_size%';'*';'*}
-        columns=${columns#*';'}
-        font_height=${term_size##*';'}
-        font_weight=${term_size#*';'*';'}
-        font_weight=${font_weight%';'*}
-        term_height=$((font_height * columns))
-        term_width=$((font_weight * lines))
+        term_size=(${term_size//;/ })
+        term_width=$((term_size[2] * term_size[0]))
+        term_height=$((term_size[3] * term_size[1]))
+
     else
         term_size=${term_size//'['}
         term_size=${term_size/';'}
@@ -2311,7 +2310,7 @@ getimage () {
 
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
-    if [ ! -f "$img" ] || [ ${#term_size} -le 5 ]; then
+    if [ ! -f "$img" ] || [ ${#term_size} -le 5 ] && [ "$image_backend" != "tycat" ]; then
         image="ascii"
         getascii
 
