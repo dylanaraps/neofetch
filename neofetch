@@ -2265,7 +2265,7 @@ getimage () {
         "ascii") getascii; return ;;
         *)
             if [ -d "$image" ]; then
-                files=("$image"*.{png,jpg,jpeg})
+                files=("${image%/}"/*.{png,jpg,jpeg})
                 img="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
             else
                 img="$image"
