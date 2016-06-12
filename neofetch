@@ -1661,7 +1661,6 @@ getstyle () {
 
             elif type -p gsettings >/dev/null 2>&1; then
                 gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
-                gtk3theme=${gtk3theme//\'}
 
             elif [ -f "/usr/share/gtk-3.0/settings.ini" ]; then
                 gtk3theme=$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)
