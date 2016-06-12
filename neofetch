@@ -474,7 +474,7 @@ esac
 # Distro {{{
 
 getdistro () {
-    [ ! -z "$distro" ] && return
+    [ "$distro" ] && return
 
     case "$os" in
         "Linux" )
@@ -627,12 +627,12 @@ getuptime () {
                 *) days="$days days" ;;
             esac
 
-            [ ! -z "$hours" ] && \
-            [ ! -z "$minutes" ] && \
+            [ "$hours" ] && \
+            [ "$minutes" ] && \
                 hours+=","
 
-            [ ! -z "$days" ] && \
-            [ ! -z "$hours" ] && \
+            [ "$days" ] && \
+            [ "$hours" ] && \
                 days+=","
 
             uptime="up $days $hours $minutes"
@@ -1160,7 +1160,7 @@ getcpu () {
     cpu=${cpu//with Radeon HD Graphics}
 
     # Add cpu cores to output
-    [ "$cpu_cores" == "on" ] && [ ! -z "$cores" ] && \
+    [ "$cpu_cores" == "on" ] && [ "$cores" ] && \
         cpu=${cpu/@/\(${cores}\) @}
 
     # Make the output of cpu shorter
@@ -1183,7 +1183,7 @@ getcpu () {
     # Trim whitespace
     cpu=${cpu//+( )/ }
 
-    [ ! -z "$cpu" ] && prin "$subtitle" "$cpu"
+    [ "$cpu" ] && prin "$subtitle" "$cpu"
 
     if [ "$cpu_display" != "off" ]; then
         cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
@@ -1566,7 +1566,7 @@ getresolution () {
             height=${height/CurrentVerticalResolution'='/}
             height=${height//[[:space:]]}
 
-            [ ! -z "$width" ] && \
+            [ "$width" ] && \
                 resolution="${width}x${height}"
         ;;
     esac
@@ -1946,7 +1946,7 @@ getbattery () {
             battery0now=$(sysctl -n hw.sensors.acpibat0.watthour3)
             battery0now="${battery0now/ Wh*}"
 
-            [ ! -z "$battery0full" ] && \
+            [ "$battery0full" ] && \
                 battery="$(printf "%s\n" "100 * $battery0now / $battery0full" | bc)%"
         ;;
 
@@ -1960,7 +1960,7 @@ getbattery () {
             battery=${battery/EstimatedChargeRemaining'='}
             battery=${battery//[[:space:]]/ }
             battery=${battery// }
-            [ ! -z "$battery" ] && \
+            [ "$battery" ] && \
                 battery+="%"
         ;;
     esac
@@ -2110,8 +2110,8 @@ getcols () {
         spaces="$(printf "%${block_height}s")"
 
         # Convert the spaces into rows of blocks.
-        [ ! -z "$blocks" ] &&  cols+=${spaces// /${blocks}"\033[0m"nl}
-        [ ! -z "$blocks2" ] && cols+=${spaces// /${blocks2}"\033[0m"nl}
+        [ "$blocks" ] &&  cols+=${spaces// /${blocks}"\033[0m"nl}
+        [ "$blocks2" ] && cols+=${spaces// /${blocks2}"\033[0m"nl}
 
         # Add newlines to the string.
         cols=${cols%%'nl'}
@@ -2549,7 +2549,7 @@ stdout () {
     stdout_separator_flag="$(awk -F '--stdout_separator ' '{printf $2}' <<< "${args[@]}")"
     stdout_separator_flag=${stdout_separator_flag/ '--'*}
 
-    [ ! -z "$stdout_separator_flag" ] && \
+    [ "$stdout_separator_flag" ] && \
         stdout_separator="$stdout_separator_flag"
 
     for func in "${args[@]}"; do
@@ -3241,7 +3241,7 @@ while [ "$1" ]; do
             disk_display="infobar"
 
             printinfo () {
-                if [ ! -z "$TRAVIS_OS_NAME" ]; then
+                if [ "$TRAVIS_OS_NAME" ]; then
                     info linebreak
                     info linebreak
                 fi
@@ -3298,7 +3298,7 @@ if [ "$image" != "off" ]; then
     if [ -n "$ITERM_PROFILE" ]; then
         image_backend="iterm2"
 
-    elif [ ! -z "$(tycat 2>/dev/null)" ]; then
+    elif [ "$(tycat 2>/dev/null)" ]; then
         image_backend="tycat"
 
     else
