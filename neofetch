@@ -717,7 +717,7 @@ getpackages () {
                 packages="$(("$(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l)" - 1))"
 
             type -p port >/dev/null 2>&1 && \
-                packages="$((packages + :$(port installed 2>/dev/null | wc -l) - 1))"
+                packages="$((packages + "$(port installed 2>/dev/null | wc -l)" - 1))"
 
             type -p brew >/dev/null 2>&1 && \
                 packages="$((packages + "$(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l)" - 1))"
