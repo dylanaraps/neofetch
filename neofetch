@@ -2788,9 +2788,18 @@ getlinebreak () {
 
 # Trim whitespace {{{
 
+# When a string is passed to 'echo' all trailing and leading
+# whitespace is removed and inside the string multiple spaces are
+# condensed into single spaces.
+#
+# The 'set -f/+f' is here so that 'echo' doesn't cause any expansion
+# of special characters.
+#
+# The whitespace trim doesn't work with multiline strings so we use
+# '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
 trim() {
     set -f
-    builtin echo -E $1
+    builtin echo -E ${1//[[:space:]]/ }
     set +f
 }
 
