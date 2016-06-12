@@ -480,7 +480,6 @@ getdistro () {
         "Linux" )
             if type -p lsb_release >/dev/null 2>&1; then
                 distro="$(lsb_release -d 2>/dev/null | awk -F ':' '/Description/ {printf $2}')"
-                distro="${distro/[[:space:]]}"
 
             elif type -p crux >/dev/null 2>&1; then
                 distro="$(crux)"
@@ -533,12 +532,9 @@ getdistro () {
 
             # Strip crap from the output of wmic
             distro="${distro/Caption'='}"
-            distro="${distro//[[:space:]]/ }"
-            distro="${distro//  }"
             distro="${distro/Microsoft }"
         ;;
     esac
-    distro="${distro//+( )/ }"
 
     # Get architecture
     [ "$os_arch" == "on" ] && \
@@ -646,7 +642,6 @@ getuptime () {
             uptime="${uptime/minutes/mins}"
             uptime="${uptime/minute/min}"
             uptime="${uptime/seconds/secs}"
-            uptime="${uptime# }"
         ;;
 
         "tiny")
@@ -659,10 +654,8 @@ getuptime () {
             uptime="${uptime/ minute/m}"
             uptime="${uptime/ seconds/s}"
             uptime="${uptime/,}"
-            uptime="${uptime# }"
         ;;
     esac
-    uptime="${uptime//+( )/ }"
 }
 
 # }}}
@@ -743,7 +736,6 @@ getpackages () {
                 packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
         ;;
     esac
-    packages="${packages// }"
 }
 
 # }}}
@@ -784,7 +776,6 @@ getshell () {
                 shell+="$("$SHELL" -c 'printf "%s" "$FISH_VERSION"')"
             ;;
         esac
-
         shell="${shell/\(*\)}"
     fi
 }
@@ -1180,9 +1171,6 @@ getcpu () {
         ;;
     esac
 
-    # Trim whitespace
-    cpu="${cpu//+( )/ }"
-
     [ "$cpu" ] && prin "$subtitle" "$cpu"
 
     if [ "$cpu_display" != "off" ]; then
@@ -1219,7 +1207,6 @@ getgpu () {
             count="$(printf "%s" "$gpu" | uniq -c)"
             count="${count/ VGA*}"
             count="${count/ 3D*}"
-            count="${count//[[:space:]]}"
 
             # If there's more than one gpu
             # Display the count.
@@ -1366,8 +1353,6 @@ getgpu () {
         "Windows")
             gpu="$(wmic path Win32_VideoController get caption /value)"
             gpu="${gpu/Caption'='}"
-            gpu="${gpu//[[:space:]]/ }"
-            gpu="${gpu//  }"
         ;;
     esac
 
@@ -1393,7 +1378,6 @@ getgpu () {
         ;;
     esac
 
-    gpu="${gpu//+( )/ }"
     gpu="${gpu}${count}"
 }
 
@@ -1560,11 +1544,9 @@ getresolution () {
         "Windows")
             width="$(wmic path Win32_VideoController get CurrentHorizontalResolution /value 2>/dev/null)"
             width="${width/CurrentHorizontalResolution'='/}"
-            width="${width//[[:space:]]}"
 
             height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value 2>/dev/null)"
             height="${height/CurrentVerticalResolution'='/}"
-            height="${height//[[:space:]]}"
 
             [ "$width" ] && \
                 resolution="${width}x${height}"
@@ -1632,7 +1614,6 @@ getstyle () {
             *"Cinnamon")
                 if type -p gsettings >/dev/null 2>&1; then
                     gtk3theme="$(gsettings get org.cinnamon.desktop.interface "$gsettings")"
-                    gtk3theme="${gtk3theme//"'"}"
                     gtk2theme="${gtk3theme}"
                 fi
             ;;
@@ -1640,7 +1621,6 @@ getstyle () {
             "Gnome"* | "Unity"* | "Budgie")
                 if type -p gsettings >/dev/null 2>&1; then
                     gtk3theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
-                    gtk3theme="${gtk3theme//\'}"
                     gtk2theme="${gtk3theme}"
 
                 elif type -p gconftool-2 >/dev/null 2>&1; then
@@ -1672,7 +1652,6 @@ getstyle () {
             fi
 
             gtk2theme="${gtk2theme/${name}*=}"
-            gtk2theme="${gtk2theme//\"}"
         fi
 
         # Check for gtk3 theme
@@ -1682,7 +1661,6 @@ getstyle () {
 
             elif type -p gsettings >/dev/null 2>&1; then
                 gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
-                gtk3theme="${gtk3theme//\'}"
 
             elif [ -f "/usr/share/gtk-3.0/settings.ini" ]; then
                 gtk3theme="$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)"
@@ -1692,9 +1670,13 @@ getstyle () {
             fi
 
             gtk3theme="${gtk3theme/${name}*=}"
-            gtk3theme="${gtk3theme//\"}"
-            gtk3theme="${gtk3theme/[[:space:]]/ }"
         fi
+
+        # Remove quotes
+        gtk2theme=${gtk2theme//\"}
+        gtk2theme=${gtk2theme//\'}
+        gtk3theme=${gtk3theme//\"}
+        gtk3theme=${gtk3theme//\'}
 
         # Uppercase the first letter of each gtk theme
         if [ "$version" -ge 4 ]; then
@@ -1721,9 +1703,6 @@ getstyle () {
 
         # Final string
         theme="${gtk2theme}${gtk3theme}"
-        theme="${theme//\"}"
-        theme="${theme//\'}"
-        theme="${theme//  / }"
 
         # Make the output shorter by removing "[GTKX]" from the string
         if [ "$gtk_shorthand" == "on" ]; then
@@ -1958,8 +1937,6 @@ getbattery () {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
             battery="${battery/EstimatedChargeRemaining'='}"
-            battery="${battery//[[:space:]]/ }"
-            battery="${battery// }"
             [ "$battery" ] && \
                 battery+="%"
         ;;
@@ -2496,6 +2473,9 @@ info () {
     # If the output is empty, don't print anything
     [ -z "$output" ] && return
 
+    # Trim whitespace
+    output="$(trim "$output")"
+
     case "$1" in
         title)
             string="${title_color}${bold}${output}"
@@ -2535,6 +2515,9 @@ prin () {
         string+="${colon_color}: ${info_color}${2}"
         length="$((${#subtitle} +  ${#2} + 1))"
     fi
+
+    # Trim whitespace
+    string="$(trim "$string")"
 
     # Print the info
     printf "%b%s\n" "${padding}${string}\033[0m"
@@ -2799,6 +2782,25 @@ bold () {
 
 getlinebreak () {
    linebreak=" "
+}
+
+# }}}
+
+# Trim whitespace {{{
+
+# When a string is passed to 'echo' all trailing and leading
+# whitespace is removed and inside the string multiple spaces are
+# condensed into single spaces.
+#
+# The 'set -f/+f' is here so that 'echo' doesn't cause any expansion
+# of special characters.
+#
+# The whitespace trim doesn't work with multiline strings so we use
+# '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
+trim() {
+    set -f
+    builtin echo -E ${1//[[:space:]]/ }
+    set +f
 }
 
 # }}}
@@ -3278,7 +3280,7 @@ trap 'printf "\033[?25h"; clear; exit' 2
 
 # Distro detection
 getdistro
-[ -z "$ascii_distro" ] && ascii_distro="$distro"
+[ -z "$ascii_distro" ] && ascii_distro="$(trim "$distro")"
 
 # Get colors and bold
 bold
