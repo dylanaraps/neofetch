@@ -776,6 +776,7 @@ getshell () {
                 shell+="$("$SHELL" -c 'printf "%s" "$FISH_VERSION"')"
             ;;
         esac
+        shell="${shell/\(*\)}"
     fi
 }
 
