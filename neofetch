@@ -676,54 +676,54 @@ getpackages () {
                 packages="$(pacman -Qq --color never | wc -l)"
 
             type -p dpkg >/dev/null 2>&1 && \
-                packages="$((packages+="$(dpkg --get-selections | grep -cv deinstall$)"))"
+                packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
 
             type -p /sbin/pkgtool >/dev/null 2>&1 && \
-                packages="$((packages+="$(ls -1 /var/log/packages | wc -l)"))"
+                packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
 
             type -p rpm >/dev/null 2>&1 && \
-                packages="$((packages+="$(rpm -qa | wc -l)"))"
+                packages="$((packages+=$(rpm -qa | wc -l)))"
 
             type -p xbps-query >/dev/null 2>&1 && \
-                packages="$((packages+="$(xbps-query -l | wc -l)"))"
+                packages="$((packages+=$(xbps-query -l | wc -l)))"
 
             type -p pkginfo >/dev/null 2>&1 && \
-                packages="$((packages+="$(pkginfo -i | wc -l)"))"
+                packages="$((packages+=$(pkginfo -i | wc -l)))"
 
             type -p pisi >/dev/null 2>&1 && \
-                packages="$((packages+="$(pisi list-installed | wc -l)"))"
+                packages="$((packages+=$(pisi list-installed | wc -l)))"
 
             type -p pkg >/dev/null 2>&1 && \
-                packages="$((packages+="$(ls -1 /var/db/pkg | wc -l)"))"
+                packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
 
             type -p emerge >/dev/null 2>&1 && \
-                packages="$((packages+="$(ls -d /var/db/pkg/*/* | wc -l)"))"
+                packages="$((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))"
 
             type -p nix-env >/dev/null 2>&1 && \
-                packages="$((packages+="$(ls -d -1 /nix/store/*/ | wc -l)"))"
+                packages="$((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))"
 
             type -p apk >/dev/null 2>&1 && \
-                packages="$((packages+="$(apk info | wc -l)"))"
+                packages="$((packages+=$(apk info | wc -l)))"
 
             type -p pacman-g2 >/dev/null 2>&1 && \
-                packages="$((packages+="$(pacman-g2 -Q | wc -l)"))"
+                packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
 
             type -p cave >/dev/null 2>&1 && \
-                packages="$((packages+="$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)"))"
+                packages="$((packages+=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)))"
         ;;
 
         "Mac OS X")
             [ -d "/usr/local/bin" ] && \
-                packages="$(("$(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l)" - 1))"
+                packages="$(($(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l) - 1))"
 
             type -p port >/dev/null 2>&1 && \
-                packages="$((packages + "$(port installed 2>/dev/null | wc -l)" - 1))"
+                packages="$((packages + $(port installed 2>/dev/null | wc -l) - 1))"
 
             type -p brew >/dev/null 2>&1 && \
-                packages="$((packages + "$(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l)" - 1))"
+                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l) - 1))"
 
             type -p pkgin >/dev/null 2>&1 && \
-                packages="$((packages + "$(pkgin list 2>/dev/null | wc -l)"))"
+                packages="$((packages + $(pkgin list 2>/dev/null | wc -l)))"
         ;;
 
         "BSD")
@@ -740,7 +740,7 @@ getpackages () {
 
             # Count chocolatey packages
             [ -d "/cygdrive/c/ProgramData/chocolatey/lib" ] && \
-                packages="$((packages+="$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)"))"
+                packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
         ;;
     esac
     packages="${packages// }"
