@@ -538,7 +538,7 @@ getdistro () {
             distro=${distro/Microsoft }
         ;;
     esac
-    distro=${distro//+( )/ }
+    distro="${distro%"${distro##*[![:space:]]}"}"
 
     # Get architecture
     [ "$os_arch" == "on" ] && \
