@@ -1410,11 +1410,11 @@ getmemory () {
 
         "BSD")
             case "$distro" in
-                "NetBSD"*) memfree="$(("$(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo)" / 1024))" ;;
-                *) memfree="$(("$(vmstat | awk 'END{printf $5}')" / 1024))" ;;
+                "NetBSD"*) memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
+                *) memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
             esac
 
-            memtotal="$(("$(sysctl -n hw.physmem)" / 1024 / 1024))"
+            memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))"
             memused="$((memtotal - memfree))"
         ;;
     esac
@@ -1843,11 +1843,17 @@ getdisk () {
     disk_used="${disk_used/G}"
     disk_total="${disk_total/G}"
 
-    [[ "$disk_used" == *"T" ]] && \
-        disk_used="$(printf "%s\n" "${disk_used/T} * 1000" | bc)"
+    # Convert Terabytes to Gigabytes.
+    if [ "$disk_display" != "off" ]; then
+        disk_used="${disk_used/\.}"
+        disk_total="${disk_total/\.}"
 
-    [[ "$disk_total" == *"T" ]] && \
-        disk_total="$(printf "%s\n" "${disk_total/T} * 1000" | bc)"
+        [[ "$disk_used" == *"T" ]] && \
+            disk_used="$((${disk_used/T} * 100))"
+
+        [[ "$disk_total" == *"T" ]] && \
+            disk_total="$((${disk_total/T} * 100))"
+    fi
 
     case "$disk_display" in
         "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
