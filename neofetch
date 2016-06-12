@@ -2697,7 +2697,6 @@ colors () {
 
         "Windows"*)
             setcolors 1 2 4 3
-            ascii_distro="windows"
         ;;
 
         "Raspbian"* | *)
@@ -3281,7 +3280,7 @@ trap 'printf "\033[?25h"; clear; exit' 2
 
 # Distro detection
 getdistro
-[ -z "$ascii_distro" ] && ascii_distro="$distro"
+[ -z "$ascii_distro" ] && ascii_distro="$(trim $distro)"
 
 # Get colors and bold
 bold
