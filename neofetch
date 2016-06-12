@@ -1614,7 +1614,6 @@ getstyle () {
             *"Cinnamon")
                 if type -p gsettings >/dev/null 2>&1; then
                     gtk3theme=$(gsettings get org.cinnamon.desktop.interface $gsettings)
-                    gtk3theme=${gtk3theme//"'"}
                     gtk2theme=${gtk3theme}
                 fi
             ;;
@@ -1622,7 +1621,6 @@ getstyle () {
             "Gnome"* | "Unity"* | "Budgie")
                 if type -p gsettings >/dev/null 2>&1; then
                     gtk3theme=$(gsettings get org.gnome.desktop.interface $gsettings)
-                    gtk3theme=${gtk3theme//"'"}
                     gtk2theme=${gtk3theme}
 
                 elif type -p gconftool-2 >/dev/null 2>&1; then
@@ -1654,7 +1652,6 @@ getstyle () {
             fi
 
             gtk2theme=${gtk2theme/${name}*=}
-            gtk2theme=${gtk2theme//\"}
         fi
 
         # Check for gtk3 theme
@@ -1674,8 +1671,13 @@ getstyle () {
             fi
 
             gtk3theme=${gtk3theme/${name}*=}
-            gtk3theme=${gtk3theme//\"}
         fi
+
+        # Remove quotes
+        gtk2theme=${gtk2theme//\"}
+        gtk2theme=${gtk2theme//\'}
+        gtk3theme=${gtk3theme//\"}
+        gtk3theme=${gtk3theme//\'}
 
         # Uppercase the first letter of each gtk theme
         if [ "$version" -ge 4 ]; then
@@ -1702,8 +1704,6 @@ getstyle () {
 
         # Final string
         theme="${gtk2theme}${gtk3theme}"
-        theme=${theme//\"}
-        theme=${theme//\'}
 
         # Make the output shorter by removing "[GTKX]" from the string
         if [ "$gtk_shorthand" == "on" ]; then
