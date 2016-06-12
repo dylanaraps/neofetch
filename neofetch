@@ -881,19 +881,19 @@ getwmtheme () {
 
         'E17' | 'Enlightenment')
             if type -p eet >/dev/null 2>&1; then
-                wmtheme="$(eet -d $HOME/.e/e/config/standard/e.cfg config | awk '/value \"file\" string.*.edj/ {print $4}')"
+                wmtheme="$(eet -d "$HOME/.e/e/config/standard/e.cfg" config | awk '/value \"file\" string.*.edj/ {print $4}')"
                 wmtheme=${wmtheme##*/}
                 wmtheme=${wmtheme%.*}
             fi
         ;;
 
         'Fluxbox')
-            [ -f $HOME/.fluxbox/init ] && \
+            [ -f "$HOME/.fluxbox/init" ] && \
                 wmtheme="$(awk -F "/" '/styleFile/ {print $NF}' "$HOME/.fluxbox/init")"
         ;;
 
         'IceWM'*)
-            [ -f $HOME/.icewm/theme ] && \
+            [ -f "$HOME/.icewm/theme" ] && \
                 wmtheme="$(awk -F "[\",/]" '!/#/ {print $2}' "$HOME/.icewm/theme")"
         ;;
 
@@ -909,7 +909,7 @@ getwmtheme () {
         ;;
 
         'PekWM')
-            [ -f $HOME/.pekwm/config ] && \
+            [ -f "$HOME/.pekwm/config" ] && \
                 wmtheme="$(awk -F "/" '/Theme/ {gsub(/\"/,""); print $NF}' "$HOME/.pekwm/config")"
         ;;
 
@@ -1404,7 +1404,7 @@ getgpu () {
 getmemory () {
     case "$os" in
         "Linux" | "Windows")
-            if [ ! -z "$(grep -F "MemAvail" /proc/meminfo)" ]; then
+            if grep -F "MemAvail" /proc/meminfo >/dev/null 2>&1; then
                 mem=($(awk -F ':| kB' '/MemTotal|MemAvail/ {printf $2}' /proc/meminfo))
                 memused=$((mem[0] - mem[1]))
             else
@@ -1892,8 +1892,8 @@ getbattery () {
                     *) index="$battery_num" ;;
                 esac
 
-                batteries=($(cat /sys/class/power_supply/BAT${battery_num}/capacity))
-                battery_state=($(cat /sys/class/power_supply/BAT${battery_num}/status))
+                batteries=($(cat "/sys/class/power_supply/BAT$battery_num/capacity"))
+                battery_state=($(cat "/sys/class/power_supply/BAT${battery_num}/status"))
 
                 # Get the subtitle and reassign it so it doesn't change.
                 title="$subtitle"
@@ -1911,7 +1911,7 @@ getbattery () {
                         # Print each battery on a separate line.
                         for bat in "${batteries[@]}"; do
                             case "$battery_display" in
-                                "bar") prin "${title}${index:-0}" "$(bar ${bat/'%'} 100)" ;;
+                                "bar") prin "${title}${index:-0}" "$(bar "${bat/'%'}" 100)" ;;
                                 "infobar") prin "${title}${index:-0}" "${bat}% $(bar "${bat/'%'}" 100)" ;;
                                 "barinfo") prin "${title}${index:-0}" "$(bar "${bat/'%'}" 100) ${bat}%" ;;
                                 *) prin "${title}${index:-0}" "${bat}%" ;;
@@ -1970,7 +1970,7 @@ getbattery () {
     esac
 
     case "$battery_display" in
-        "bar") battery="$(bar ${battery/'%'*} 100)" ;;
+        "bar") battery="$(bar "${battery/'%'*}" 100)" ;;
         "infobar") battery="${battery} $(bar "${battery/'%'*}" 100)" ;;
         "barinfo") battery="$(bar "${battery/'%'*}" 100) ${battery}" ;;
     esac
@@ -2728,12 +2728,12 @@ colors () {
 }
 
 setcolors () {
-    c1="$(color $1)${ascii_bold}"
-    c2="$(color $2)${ascii_bold}"
-    c3="$(color $3)${ascii_bold}"
-    c4="$(color $4)${ascii_bold}"
-    c5="$(color $5)${ascii_bold}"
-    c6="$(color $6)${ascii_bold}"
+    c1="$(color "$1")${ascii_bold}"
+    c2="$(color "$2")${ascii_bold}"
+    c3="$(color "$3")${ascii_bold}"
+    c4="$(color "$4")${ascii_bold}"
+    c5="$(color "$5")${ascii_bold}"
+    c6="$(color "$6")${ascii_bold}"
 
     if [ "${colors[0]}" == "distro" ]; then
         title_color="$c1"
@@ -2747,24 +2747,24 @@ setcolors () {
         [ "$2" == 7 ] && subtitle_color="\033[0m\033[3${1}m"
         [ "$1" == 7 ] && title_color="\033[0m"
     else
-        title_color="$(color ${colors[0]})"
-        at_color="$(color ${colors[1]})"
-        underline_color="$(color ${colors[2]})"
-        subtitle_color="$(color ${colors[3]})"
-        colon_color="$(color ${colors[4]})"
-        info_color="$(color ${colors[5]})"
+        title_color="$(color "${colors[0]}")"
+        at_color="$(color "${colors[1]}")"
+        underline_color="$(color "${colors[2]}")"
+        subtitle_color="$(color "${colors[3]}")"
+        colon_color="$(color "${colors[4]}")"
+        info_color="$(color "${colors[5]}")"
     fi
 
     if [ "$progress_color_elapsed" == "distro" ]; then
         progress_color_elapsed="$(color fg)"
     else
-        progress_color_elapsed="$(color $progress_color_elapsed)"
+        progress_color_elapsed="$(color "$progress_color_elapsed")"
     fi
 
     case "$progress_color_total $1" in
         distro\ [736]) progress_color_total="$c2" ;;
         distro\ [0-9]) progress_color_total="$c1" ;;
-        *) progress_color_total="$(color $progress_color_total)" ;;
+        *) progress_color_total="$(color "$progress_color_total")" ;;
     esac
 }
 
@@ -3247,7 +3247,7 @@ while [ "$1" ]; do
                 fi
 
                 for func in "${info[@]}"; do
-                    info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" $func
+                    info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" "$func"
                 done
 
                 info linebreak
@@ -3361,7 +3361,7 @@ fi
 
 # Show error messages
 if [ "$verbose" == "on" ]; then
-    printf "$err"
+    printf "%s" "$err"
 fi
 
 # }}}
