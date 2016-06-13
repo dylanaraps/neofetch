@@ -173,15 +173,15 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 ### Gentoo / Funtoo
 
 1. Add the 3rd party repo
-    - `layman -o https://gist.githubusercontent.com/z1lt0id/24d45b15800b98975260/raw/2fdf6645cdc3c1ca0b0af83a7bf8f86598e386ae/fs0ciety.xml -f -a fs0ciety`
-2. Sync the repos
-    - `layman -S`
-3. To enable w3m and scrot support, enable the appropriate flags.
-    - `echo "x11-apps/neofetch" >> /etc/portage/package.use`
+    - `# wget https://git.io/vocNV -O /etc/portage/repos.conf/konimex.conf`
+2. Sync the repo
+    - `# emerge --sync konimex`
+3. To enable additional features such as w3m and music support, enable the appropriate USE flags. For example:
+    - `# echo "app-misc/neofetch X -moc" >> /etc/portage/package.use`
 4. Install the package
-    - `emerge -a x11-apps/neofetch`
+    - `# emerge -a app-misc/neofetch`
 
-There is also a git version available: `emerge --autounmask-write =x11-apps/neofetch-9999`
+To install the git version, just add `app-misc/neofetch ~<your architecture>` to `package.accept_keywords`
 
 
 ### CRUX
