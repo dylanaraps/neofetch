@@ -47,6 +47,7 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
+    # info "CPU Usage" cpu_usage
     # info "Disk" disk
     # info "Battery" battery
     # info "Font" font
@@ -111,11 +112,10 @@ shell_version="off"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
-# CPU Display
-# Set shorthand setting and progress bar setting
-# --cpu_display (name, speed, tiny, on, off) (bar, infobar, barinfo, off)
+# CPU Shorthand
+# Set shorthand setting
+# --cpu_shorthand name, speed, tiny, on, off
 cpu_shorthand="off"
-cpu_display="off"
 
 # CPU Cores
 # Display CPU cores in output
@@ -289,9 +289,11 @@ progress_color_total="distro"
 # barinfo: The bar is displayed before the info.
 # off: Only the info is displayed.
 #
+# --cpu_display bar/infobar/barinfo/off
 # --memory_display bar/infobar/barinfo/off
 # --battery_display bar/infobar/barinfo/off
 # --disk_display bar/infobar/barinfo/off
+cpu_display="off"
 memory_display="off"
 battery_display="off"
 disk_display="off"
@@ -1147,18 +1149,42 @@ getcpu () {
 
     [ "$cpu" ] && prin "$subtitle" "$cpu"
 
-    if [ "$cpu_display" != "off" ]; then
-        cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
-        cpu_usage="${cpu_usage/\.*}%"
-
-        case "$cpu_display" in
-            "info") prin "$subtitle Usage" "$cpu_usage" ;;
-            "bar") prin "$subtitle Usage" "$(bar "${cpu_usage/'%'}" $(( 100 * cores )))" ;;
-            "infobar") prin "$subtitle Usage" "${cpu_usage} $(bar "${cpu_usage/'%'}" $(( 100 * cores )))" ;;
-            "barinfo") prin "$subtitle Usage" "$(bar "${cpu_usage/'%'}" $(( 100 * cores ))) $cpu_usage" ;;
-        esac
-    fi
     [ "$stdout_mode" != "on" ] && unset cpu
+}
+
+# }}}
+
+# CPU Usage {{{
+
+getcpu_usage () {
+    case "$os" in
+        "Windows")
+            cpu_usage="$(wmic cpu get loadpercentage /value)"
+            cpu_usage="${cpu_usage/LoadPercentage'='}"
+            cpu_usage="${cpu_usage//[[:space:]]}"
+        ;;
+
+        "Linux" | "Mac OS X" | "iPhone OS" | "BSD")
+            # Get cores if unset
+            if [ -z "$cores" ]; then
+                case "$os" in
+                    "Linux") cores="$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)" ;;
+                    "Mac OS X" | "BSD") cores="$(sysctl -n hw.ncpu)" ;;
+                esac
+            fi
+
+            cpu_usage="$(ps aux | awk 'BEGIN {sum=0} {sum+=$3 }; END {print sum}')"
+            cpu_usage="$((${cpu_usage/\.*} / ${cores:-1}))"
+        ;;
+    esac
+
+    # Print the bar
+    case "$cpu_display" in
+        "info") cpu_usage="${cpu_usage}%" ;;
+        "bar") cpu_usage="$(bar $cpu_usage 100)" ;;
+        "infobar") cpu_usage="${cpu_usage}% $(bar $cpu_usage 100)" ;;
+        "barinfo") cpu_usage="$(bar $cpu_usage 100) ${cpu_usage}%" ;;
+    esac
 }
 
 # }}}
@@ -2512,6 +2538,7 @@ stdout () {
             *)
                 "get$func" 2>/dev/null
                 eval output="\$$func"
+                output="$(trim "$output")"
                 stdout+="${output}${stdout_separator}"
             ;;
         esac
@@ -2977,15 +3004,14 @@ usage () { cat << EOF
     --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar.
                                 Set in this order: elapsed, total
-    --cpu_display mode1 mode2   Which shorthand to use and how CPU usage should be printed
-                                mode1 takes: name, speed, tiny, on, off
-                                mode2 takes: info, bar, infobar, barinfo
-    --memory_display mode       Which way should the memory progress bar be added
-                                Takes bar, infobar, barinfo
-    --battery_display mode      Which way should the battery progress bar be added
-                                Takes bar, infobar, barinfo
-    --disk_display mode         Which way should the disk progress bar be added
-                                Takes bar, infobar, barinfo, perc
+    --cpu_display mode          Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --memory_display mode       Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --battery_display mode      Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --disk_display mode         Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
 
 
     Image:
@@ -3124,10 +3150,7 @@ while [ "$1" ]; do
             progress_color_elapsed="$2"
             progress_color_total="$3"
         ;;
-        --cpu_display)
-            cpu_shorthand="$2"
-            cpu_display="$3"
-        ;;
+        --cpu_display) cpu_display="$2" ;;
         --memory_display) memory_display="$2" ;;
         --battery_display) battery_display="$2" ;;
         --disk_display) disk_display="$2" ;;
@@ -3205,7 +3228,7 @@ while [ "$1" ]; do
             esac
         ;;
         --test)
-            info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu gpu memory font disk battery song localip publicip users birthday term termfont)
+            info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
 
             refresh_rate="on"
             shell_version="on"

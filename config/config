@@ -35,6 +35,7 @@ printinfo () {
     info "GPU" gpu
     info "Memory" memory
 
+    # info "CPU Usage" cpu_usage
     # info "Disk" disk
     # info "Battery" battery
     # info "Font" font
@@ -99,10 +100,14 @@ shell_version="off"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
-# CPU Display
-# Set shorthand setting and progress bar setting
-# --cpu_display (name, speed, tiny, on, off) (bar, infobar, barinfo, off)
+# CPU Shorthand
+# Set shorthand setting
+# --cpu_shorthand name, speed, tiny, on, off
 cpu_shorthand="off"
+
+# CPU Usage display
+# Set CPU usage display setting
+# --cpu_display bar, infobar, barinfo, off
 cpu_display="off"
 
 # CPU Cores
