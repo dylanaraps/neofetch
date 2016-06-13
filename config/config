@@ -115,7 +115,6 @@ cpu_display="off"
 cpu_cores="on"
 
 
-
 # GPU
 
 # Shorten output of the getgpu funcion
