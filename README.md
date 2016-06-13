@@ -389,8 +389,6 @@ alias fetch2="fetch \
     --underline_char char       Character to use when underlining title
     --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
-    --prompt_height num         Set this to your prompt height to fix issues with
-                                the text going off screen at the top
 
 
     Color Blocks:
@@ -407,9 +405,8 @@ alias fetch2="fetch \
     --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar.
                                 Set in this order: elapsed, total
-    --cpu_display mode1 mode2   Which shorthand to use and how CPU usage should be printed
-                                mode1 takes: name, speed, tiny, on, off
-                                mode2 takes: info, bar, infobar, barinfo
+    --cpu_display mode          Which way should the cpu progress bar be added
+                                Takes bar, infobar, barinfo
     --memory_display mode       Which way should the memory progress bar be added
                                 Takes bar, infobar, barinfo
     --battery_display mode      Which way should the battery progress bar be added
