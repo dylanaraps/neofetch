@@ -223,12 +223,6 @@ underline_enabled="on"
 # --underline_char char
 underline_char="-"
 
-# Prompt height
-# You should only have to change this if your
-# prompt is greater than 2 lines high.
-# --prompt_height num
-prompt_height=1
-
 
 # }}}
 
