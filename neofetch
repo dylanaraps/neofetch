@@ -1177,6 +1177,7 @@ getcpu_usage () {
         "Windows")
             cpu_usage="$(wmic cpu get loadpercentage /value)"
             cpu_usage="${cpu_usage/LoadPercentage'='}"
+            cpu_usage="${cpu_usage// }"
         ;;
 
         "BSD")
@@ -2799,10 +2800,12 @@ getlinebreak () {
 #
 # The 'set -f/+f' is here so that 'echo' doesn't cause any expansion
 # of special characters.
+#
+# The whitespace trim doesn't work with multiline strings so we use
+# '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
 trim() {
     set -f
-    builtin echo -En ${1//
-}
+    builtin echo -E ${1//[[:space:]]/ }
     set +f
 }
 
