@@ -455,8 +455,8 @@ config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
 # Gather Info {{{
 
 
-# Set no case match and extended globbing.
-shopt -s nocasematch extglob
+# Set no case match.
+shopt -s nocasematch
 
 
 # Operating System {{{
