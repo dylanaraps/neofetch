@@ -1149,13 +1149,13 @@ getcpu () {
 
     if [ "$cpu_display" != "off" ]; then
         cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
-        cpu_usage="${cpu_usage/\.*}%"
+        cpu_usage=$((${cpu_usage/\.*} / cores))
 
         case "$cpu_display" in
-            "info") prin "$subtitle Usage" "$cpu_usage" ;;
-            "bar") prin "$subtitle Usage" "$(bar "${cpu_usage/'%'}" $(( 100 * cores )))" ;;
-            "infobar") prin "$subtitle Usage" "${cpu_usage} $(bar "${cpu_usage/'%'}" $(( 100 * cores )))" ;;
-            "barinfo") prin "$subtitle Usage" "$(bar "${cpu_usage/'%'}" $(( 100 * cores ))) $cpu_usage" ;;
+            "info") prin "$subtitle Usage" "${cpu_usage}%" ;;
+            "bar") prin "$subtitle Usage" "$(bar "$cpu_usage" 100)" ;;
+            "infobar") prin "$subtitle Usage" "${cpu_usage}% $(bar $cpu_usage 100)" ;;
+            "barinfo") prin "$subtitle Usage" "$(bar $cpu_usage 100) ${cpu_usage}%" ;;
         esac
     fi
     [ "$stdout_mode" != "on" ] && unset cpu
