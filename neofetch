@@ -3002,14 +3002,14 @@ usage () { cat << EOF
     --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar.
                                 Set in this order: elapsed, total
-    --cpu_display mode          Which way should the cpu progress bar be added
-                                Takes bar, infobar, barinfo
-    --memory_display mode       Which way should the memory progress bar be added
-                                Takes bar, infobar, barinfo
-    --battery_display mode      Which way should the battery progress bar be added
-                                Takes bar, infobar, barinfo
-    --disk_display mode         Which way should the disk progress bar be added
-                                Takes bar, infobar, barinfo, perc
+    --cpu_display mode          Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --memory_display mode       Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --battery_display mode      Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --disk_display mode         Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
 
 
     Image:
