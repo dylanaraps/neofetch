@@ -3343,6 +3343,8 @@ printinfo
 if [ "$image" != "off" ]; then
     # Get cursor position
     info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
+
+    # Calculate image height in terminal cells.
     lines="$((${width:-1} / ${font_width:-1} / 2 + 3))"
 
     # Set cursor position dynamically based on height of ascii/text.
