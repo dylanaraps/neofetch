@@ -1173,7 +1173,7 @@ getcpu_usage () {
                 esac
             fi
 
-            cpu_usage="$(ps aux | awk 'BEGIN { sum = 0 }  { sum += $3 }; END { print sum }')"
+            cpu_usage="$(ps aux | awk 'BEGIN {sum=0} {sum+=$3 }; END {print sum}')"
             cpu_usage="$((${cpu_usage/\.*} / ${cores:-1}))"
         ;;
     esac
