@@ -248,12 +248,6 @@ underline_enabled="on"
 # --underline_char char
 underline_char="-"
 
-# Prompt height
-# You should only have to change this if your
-# prompt is greater than 2 lines high.
-# --prompt_height num
-prompt_height=1
-
 
 # }}}
 
@@ -2991,8 +2985,6 @@ usage () { cat << EOF
     --underline_char char       Character to use when underlining title
     --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
-    --prompt_height num         Set this to your prompt height to fix issues with
-                                the text going off screen at the top
 
 
     Color Blocks:
@@ -3139,7 +3131,6 @@ while [ "$1" ]; do
         --underline_char) underline_char="$2" ;;
         --line_wrap) line_wrap="$2" ;;
         --bold) bold="$2" ;;
-        --prompt_height) prompt_height="$2" ;;
 
         # Color Blocks
         --color_blocks) color_blocks="$2" ;;
@@ -3353,10 +3344,13 @@ if [ "$image" != "off" ]; then
     # Get cursor position
     info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
 
+    # Calculate image height in terminal cells.
+    lines="$((${width:-1} / ${font_width:-1} / 2 + 3))"
+
     # Set cursor position dynamically based on height of ascii/text.
     [ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
 
-    printf "%b%s" "\033[${lines}H\033[${prompt_height}A"
+    printf "%b%s" "\033[${lines}H"
 fi
 
 # Re-enable line wrap
