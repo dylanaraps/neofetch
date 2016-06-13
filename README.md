@@ -424,7 +424,6 @@ alias fetch2="fetch \
                                 /path/to/img, /path/to/dir/, off
     --size 00px | --size 00%    How to size the image.
                                 Possible values: auto, 00px, 00%, none
-    --image_position left/right Where to display the image: (Left/Right)
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
     --crop_offset value         Change the crop offset for normal mode.
