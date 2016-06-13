@@ -2234,6 +2234,7 @@ getimage () {
     stty -echo
     if [ -n "$TMUX" ]; then
         printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+        read_flags="-d c"
 
     elif [ "$image_backend" == "tycat" ]; then
         printf "%b%s" "\033}qs\000"
