@@ -3309,18 +3309,25 @@ fi
 # Print the info
 printinfo
 
-if [ "$image" != "off" ]; then
-    # Get cursor position
-    info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
+# Dynamic prompt location.
+case "$image" in
+    "ascii")
+        # Get cursor position
+        info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
+
+        # Set cursor position dynamically based on height of ascii/text.
+        [ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
+    ;;
+
+    "off") ;;
 
     # Calculate image height in terminal cells.
-    lines="$((${width:-1} / ${font_width:-1} / 2 + 3))"
+    *) lines="$((${width:-1} / ${font_width:-1} / 2 + 3))" ;;
 
-    # Set cursor position dynamically based on height of ascii/text.
-    [ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
+esac
 
-    printf "%b%s" "\033[${lines}H"
-fi
+# Set the prompt location
+printf "%b%s" "\033[${lines}H"
 
 # Re-enable line wrap
 [ "$line_wrap" == "off" ] && printf "%b%s" "\033[?7h"
