@@ -2866,7 +2866,7 @@ bar() {
         bar="$(color fg)[$bar"
     fi
 
-    printf "%b%s\n" "${bar}\033[0m"
+    printf "%b%s\n" "${bar}${info_color}"
 }
 
 # }}}
@@ -2899,9 +2899,14 @@ kdeconfigdir () {
 
 # }}}
 
+# Error {{{
+
 err () {
     err+="$(color 1)[!]$(color fg) $1 \n"
 }
+
+# }}}
+
 
 # }}}
 
