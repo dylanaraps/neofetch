@@ -117,11 +117,6 @@ speed_type="max"
 # --cpu_shorthand name, speed, tiny, on, off
 cpu_shorthand="off"
 
-# CPU Usage display
-# Set CPU usage display setting
-# --cpu_display bar, infobar, barinfo, off
-cpu_display="off"
-
 # CPU Cores
 # Display CPU cores in output
 # --cpu_cores on/off
@@ -294,9 +289,11 @@ progress_color_total="distro"
 # barinfo: The bar is displayed before the info.
 # off: Only the info is displayed.
 #
+# --cpu_display bar/infobar/barinfo/off
 # --memory_display bar/infobar/barinfo/off
 # --battery_display bar/infobar/barinfo/off
 # --disk_display bar/infobar/barinfo/off
+cpu_display="off"
 memory_display="off"
 battery_display="off"
 disk_display="off"
