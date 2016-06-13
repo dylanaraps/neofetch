@@ -2801,7 +2801,8 @@ getlinebreak () {
 # of special characters.
 trim() {
     set -f
-    builtin echo -En $1
+    builtin echo -En ${1//
+}
     set +f
 }
 
