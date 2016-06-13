@@ -1177,7 +1177,7 @@ getcpu_usage () {
         "Windows")
             cpu_usage="$(wmic cpu get loadpercentage /value)"
             cpu_usage="${cpu_usage/LoadPercentage'='}"
-            cpu_usage="${cpu_usage// }"
+            cpu_usage="${cpu_usage//[[:space:]]}"
         ;;
 
         "BSD")
