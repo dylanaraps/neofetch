@@ -2545,6 +2545,7 @@ stdout () {
             *)
                 "get$func" 2>/dev/null
                 eval output="\$$func"
+                output="$(trim "$output")"
                 stdout+="${output}${stdout_separator}"
             ;;
         esac
@@ -2803,7 +2804,7 @@ getlinebreak () {
 # '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
 trim() {
     set -f
-    builtin echo -E ${1//[[:space:]]/ }
+    builtin echo -E ${1//$'\n'/ }
     set +f
 }
 
