@@ -1822,10 +1822,10 @@ getdisk () {
         disk_used="${disk_used/\.}"
         disk_total="${disk_total/\.}"
 
-        [[ "$disk_used" == *"T" ]] && \
+        [ "${disk_used: -1}" == "T" ] && \
             disk_used="$((${disk_used/T} * 100))"
 
-        [[ "$disk_total" == *"T" ]] && \
+        [ "${disk_total: -1}" == "T" ] && \
             disk_total="$((${disk_total/T} * 100))"
     fi
 
