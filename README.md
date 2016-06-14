@@ -173,15 +173,15 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 ### Gentoo / Funtoo
 
 1. Add the 3rd party repo
-    - `layman -o https://gist.githubusercontent.com/z1lt0id/24d45b15800b98975260/raw/2fdf6645cdc3c1ca0b0af83a7bf8f86598e386ae/fs0ciety.xml -f -a fs0ciety`
-2. Sync the repos
-    - `layman -S`
-3. To enable w3m and scrot support, enable the appropriate flags.
-    - `echo "x11-apps/neofetch" >> /etc/portage/package.use`
+    - `# wget https://git.io/vocNV -O /etc/portage/repos.conf/konimex.conf`
+2. Sync the repo
+    - `# emerge --sync konimex`
+3. To enable additional features such as w3m and music support, enable the appropriate USE flags. For example:
+    - `# echo "app-misc/neofetch X -moc" >> /etc/portage/package.use`
 4. Install the package
-    - `emerge -a x11-apps/neofetch`
+    - `# emerge -a app-misc/neofetch`
 
-There is also a git version available: `emerge --autounmask-write =x11-apps/neofetch-9999`
+To install the git version, just add `app-misc/neofetch ~<your architecture>` to `package.accept_keywords`
 
 
 ### CRUX
@@ -389,8 +389,6 @@ alias fetch2="fetch \
     --underline_char char       Character to use when underlining title
     --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
-    --prompt_height num         Set this to your prompt height to fix issues with
-                                the text going off screen at the top
 
 
     Color Blocks:
@@ -407,15 +405,14 @@ alias fetch2="fetch \
     --progress_length num       Length in spaces to make the progress bars.
     --progress_colors num num   Colors to make the progress bar.
                                 Set in this order: elapsed, total
-    --cpu_display mode1 mode2   Which shorthand to use and how CPU usage should be printed
-                                mode1 takes: name, speed, tiny, on, off
-                                mode2 takes: info, bar, infobar, barinfo
-    --memory_display mode       Which way should the memory progress bar be added
-                                Takes bar, infobar, barinfo
-    --battery_display mode      Which way should the battery progress bar be added
-                                Takes bar, infobar, barinfo
-    --disk_display mode         Which way should the disk progress bar be added
-                                Takes bar, infobar, barinfo, perc
+    --cpu_display mode          Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --memory_display mode       Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --battery_display mode      Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
+    --disk_display mode         Progress bar mode.
+                                Takes: bar, infobar, barinfo, off
 
 
     Image:
