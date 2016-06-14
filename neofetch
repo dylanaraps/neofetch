@@ -1538,8 +1538,8 @@ getresolution () {
                     awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
-            [[ "$refresh_rate" == "off" ]] && \
-                 resolution="${resolution// @ *([0-9])Hz}"
+            [[ "$refresh_rate" == "off" ]] || [[ "$resolution" =~ "@ 0Hz" ]] && \
+                resolution="${resolution// @ *[0-9]Hz}"
         ;;
 
         "Windows")
