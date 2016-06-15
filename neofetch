@@ -1538,15 +1538,13 @@ getresolution () {
                     awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
-            if [ "$refresh_rate" == "off" ] || [ "${resolution// * @ }" == "0Hz" ]; then 
-                IFS=","
-                for res in $resolution; do
-                    res="${res// @ *[0-9]Hz}"
-                    newres="$newres, $res"
-                done
-                unset IFS
-                resolution="${newres:2}"
+            if [ "$refresh_rate" == "off" ]; then 
+                resolution="${resolution// @ [0-9][0-9]Hz}"
+                resolution="${resolution// @ [0-9][0-9][0-9]Hz}"
             fi
+
+            [[ "$resolution" =~ "0Hz" ]] && \
+                resolution="${resolution// @ 0Hz}"
         ;;
 
         "Windows")
