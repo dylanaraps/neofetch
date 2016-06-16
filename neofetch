@@ -1538,7 +1538,7 @@ getresolution () {
                     awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
-            if [ "$refresh_rate" == "off" ]; then 
+            if [ "$refresh_rate" == "off" ]; then
                 resolution="${resolution// @ [0-9][0-9]Hz}"
                 resolution="${resolution// @ [0-9][0-9][0-9]Hz}"
             fi
@@ -3361,7 +3361,7 @@ case "$image" in
 esac
 
 # Set the prompt location
-printf "%b%s" "\033[${lines}H"
+[ "$image" != "off" ] && printf "%b%s" "\033[${lines:-0}H"
 
 # Re-enable line wrap
 [ "$line_wrap" == "off" ] && printf "%b%s" "\033[?7h"
