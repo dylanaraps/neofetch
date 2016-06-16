@@ -1816,7 +1816,7 @@ gettermfont () {
         ;;
 
         "terminology")
-            termfont="$(strings ${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg | grep -B1 font.name | head -1)"
+            termfont="$(strings ${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg | awk '/^font.name$/{print a}{a=$0}')"
             termfont="${termfont/.pcf}"
             termfont="${termfont/:*}"
         ;;
