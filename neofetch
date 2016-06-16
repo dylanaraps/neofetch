@@ -3286,16 +3286,16 @@ getdistro
 bold
 colors
 
+# If the script exits for any reason, unhide the cursor.
+trap 'printf "\033[?25h"' EXIT
+
+# Clear the scren
+clear
+
+# Hide the cursor
+printf "\033[?25l"
+
 if [ "$image" != "off" ]; then
-    # If the script exits for any reason, unhide the cursor.
-    trap 'printf "\033[?25h"' EXIT
-
-    # Clear the scren
-    clear
-
-    # Hide the cursor
-    printf "\033[?25l"
-
     # If iterm2 is detected use iterm2 backend.
     if [ -n "$ITERM_PROFILE" ]; then
         image_backend="iterm2"
