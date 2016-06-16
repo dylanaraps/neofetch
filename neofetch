@@ -2291,6 +2291,7 @@ getimage () {
         term_size="${term_size/';'}"
         term_size="${term_size/$'\E4'}"
         term_size="${term_size/t*}"
+        term_size="${term_size/\?}"
         term_height="${term_size/';'*}"
         term_width="${term_size/*';'}"
     fi
