@@ -1814,6 +1814,12 @@ gettermfont () {
         "Apple_Terminal")
             termfont="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
         ;;
+
+        "terminology")
+            termfont="$(strings ${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg | grep -B1 font.name | head -1)"
+            termfont="${termfont/.pcf}"
+            termfont="${termfont/:*}"
+        ;;
     esac
 }
 
