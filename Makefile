@@ -14,15 +14,15 @@ install:
 	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/bin
 	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/share/man/man1
 	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/share/neofetch/ascii/distro
-	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/share/neofetch/ascii/functions/info
+	$(INSTALL_DIR) $(DESTDIR)$(PREFIX)/share/neofetch/functions/info
 	#
 	# Install files
 	#
 	$(INSTALL_PROG) neofetch $(DESTDIR)$(PREFIX)/bin/neofetch
-	$(INSTALL_PROG) config/config $(DESTDIR)$(PREFIX)/share/neofetch/config
 	$(INSTALL_FILE) neofetch.1 $(DESTDIR)$(PREFIX)/share/man/man1/neofetch.1
-	$(install_prog) ascii/distro/* $(destdir)$(prefix)/share/neofetch/ascii/distro
-	$(install_prog) functions/info/* $(destdir)$(prefix)/share/neofetch/functions/info
+	$(INSTALL_PROG) ascii/distro/* $(DESTDIR)$(PREFIX)/share/neofetch/ascii/distro
+	$(INSTALL_PROG) functions/info/* $(DESTDIR)$(PREFIX)/share/neofetch/functions/info
+	$(INSTALL_PROG) config/config $(DESTDIR)$(PREFIX)/share/neofetch/config
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/bin/neofetch

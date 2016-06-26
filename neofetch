@@ -449,17 +449,17 @@ esac
 getfunc () {
     if [ -d "/usr/share/neofetch/functions" ]; then
         source <(cat \
-            "/usr/share/functions/info/"* 2>/dev/null
-            "/usr/share/functions/image/"* 2>/dev/null
-            "/usr/share/functions/text/"* 2>/dev/null
+            "/usr/share/neofetch/functions/info/"* 2>/dev/null
+            "/usr/share/neofetch/functions/image/"* 2>/dev/null
+            "/usr/share/neofetch/functions/text/"* 2>/dev/null
         )
         err "Sourced functions from /usr/share/neofetch/functions"
 
     elif [ -d "/usr/local/share/neofetch/functions" ]; then
         source <(cat \
-            "/usr/local/share/functions/info/"* 2>/dev/null
-            "/usr/local/share/functions/image/"* 2>/dev/null
-            "/usr/local/share/functions/text/"* 2>/dev/null
+            "/usr/local/share/neofetch/functions/info/"* 2>/dev/null
+            "/usr/local/share/neofetch/functions/image/"* 2>/dev/null
+            "/usr/local/share/neofetch/functions/text/"* 2>/dev/null
         )
         err "Sourced functions from /usr/local/neofetch/functions"
 
