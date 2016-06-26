@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch user/hostname detection.
+
+getdisk () {
+    # df flags
+    case "$os" in
+        "Linux" | "iPhone OS" | "Windows") df_flags="-h -l --total" ;;
+        "Mac OS X" | "BSD")
+            case "$distro" in
+                "FreeBSD"* | *"OS X"* ) df_flags="-H / -l" ;;
+                *) return ;;
+            esac
+        ;;
+    esac
+
+    # Get the disk info
+    disk="$(df $df_flags 2>/dev/null | awk 'END{print $2 ":" $3 ":" $5}')"
+
+    # Format the output
+    disk_used="${disk#*:}"
+    disk_used="${disk_used%%:*}"
+    disk_total="${disk%%:*}"
+    disk_total_per="${disk#*:*:}"
+
+    # Put it all together
+    disk="${disk_used} / ${disk_total} (${disk_total_per})"
+
+    # Add info bar
+    disk_used="${disk_used/G}"
+    disk_total="${disk_total/G}"
+
+    # Convert Terabytes to Gigabytes.
+    if [ "$disk_display" != "off" ]; then
+        disk_used="${disk_used/\.}"
+        disk_total="${disk_total/\.}"
+
+        [ "${disk_used: -1}" == "T" ] && \
+            disk_used="$((${disk_used/T} * 100))"
+
+        [ "${disk_total: -1}" == "T" ] && \
+            disk_total="$((${disk_total/T} * 100))"
+    fi
+
+    case "$disk_display" in
+        "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "infobar") disk+=" $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
+        "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+    esac
+}

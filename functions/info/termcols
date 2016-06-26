@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch termnal colors detection.
+
+getcols () {
+    if [ "$color_blocks" == "on" ]; then
+        # Convert the width to space chars.
+        block_width="$(printf "%$((block_width-=1))s")"
+
+        # Generate the string.
+        while [ $start -le $end ]; do
+            case "$start" in
+                [0-6]) blocks+="\033[0m\033[3${start}m\033[4${start}m%${block_width}s" ;;
+                7) blocks+="\033[0m\033[3${start}m\033[4${start}m%${block_width}s" ;;
+                *) blocks2+="\033[38;5;${start}m\033[48;5;${start}m%${block_width}s" ;;
+            esac
+            start="$((start+=1))"
+        done
+
+        # Convert height into spaces.
+        spaces="$(printf "%${block_height}s")"
+
+        # Convert the spaces into rows of blocks.
+        [ "$blocks" ] &&  cols+="${spaces// /${blocks}"\033[0m"nl}"
+        [ "$blocks2" ] && cols+="${spaces// /${blocks2}"\033[0m"nl}"
+
+        # Add newlines to the string.
+        cols="${cols%%'nl'}"
+        cols="${cols//nl/\\n${padding}}"
+    fi
+}

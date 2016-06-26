@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch user/hostname detection.
+
+gettitle () {
+    title="${USER:-$(whoami)}@${HOSTNAME:-$(hostname)}"
+}
+

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch shell detection.
+
+getshell () {
+    case "$shell_path" in
+        "on")  shell="$SHELL" ;;
+        "off") shell="${SHELL##*/}" ;;
+    esac
+
+    if [ "$shell_version" == "on" ]; then
+        shell+=" "
+        case "$shell" in
+            *"bash"*)
+                shell+="$(bash --version | head -n 1)"
+                shell="${shell/ *, version}"
+            ;;
+
+            *"zsh"*)
+                shell+="$(zsh --version)"
+                shell="${shell/ zsh}"
+            ;;
+
+            *"mksh"* | *"ksh")
+                shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
+                shell="${shell/ * KSH}"
+            ;;
+
+            *"tcsh"* | *"csh"*)
+                shell+="$("$SHELL" --version)"
+                shell="${shell/tcsh}"
+                shell="${shell/\(*}"
+            ;;
+
+            *"fish"*)
+                shell+="$("$SHELL" -c 'printf "%s" "$FISH_VERSION"')"
+            ;;
+        esac
+        shell="${shell/\(*\)}"
+    fi
+}

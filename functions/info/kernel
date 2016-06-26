@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch kernel detection.
+
+getkernel() {
+    case "$kernel_shorthand" in
+        "on")  kernel="$(uname -r)" ;;
+        "off") kernel="$(uname -srm)" ;;
+    esac
+}

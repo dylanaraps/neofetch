@@ -19,7 +19,6 @@ export LANG=C
 # Set no case match.
 shopt -s nocasematch
 
-
 # Config Options {{{
 
 
@@ -431,7 +430,10 @@ config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
 # }}}
 
 
-# Detect Operating System {{{
+# Gather Info {{{
+
+
+# Operating System {{{
 
 case "$(uname)" in
     "Linux")   os="Linux" ;;
@@ -443,34 +445,109 @@ esac
 
 # }}}
 
+# Logged In Users {{{
 
-# Source functions {{{
+getusers () {
+    users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
+    users="${users%\,*}"
+}
 
-getfunc () {
-    if [ -d "/usr/share/neofetch/functions" ]; then
-        source <(cat \
-            "/usr/share/functions/info/"* 2>/dev/null
-            "/usr/share/functions/image/"* 2>/dev/null
-            "/usr/share/functions/text/"* 2>/dev/null
-        )
+# }}}
 
-    elif [ -d "/usr/local/share/neofetch/functions" ]; then
-        source <(cat \
-            "/usr/local/share/functions/info/"* 2>/dev/null
-            "/usr/local/share/functions/image/"* 2>/dev/null
-            "/usr/local/share/functions/text/"* 2>/dev/null
-        )
+# Birthday {{{
 
-    else
-        getscriptdir
+getbirthday () {
+    case "$os" in
+        "linux" | "iPhone OS")
+            birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
+            date_cmd="$(date -d"$birthday" "$birthday_format")"
+        ;;
 
-        source <(cat \
-            "${script_dir}/functions/info/"* 2>/dev/null
-            "${script_dir}/functions/image/"* 2>/dev/null
-            "${script_dir}/functions/text/"* 2>/dev/null
-        )
+        "Mac OS X")
+            birthday="$(ls -lUT /var/log/install.log | awk '{printf $6 " " $7 " " $9 " " $8}')"
+
+            # Split the string into Date + time
+            time="${birthday/*???? }"
+            birthday="${birthday/$time}"
+
+            case "${time/:*}" in
+                0? | 10 | 11) time+=" AM" ;;
+                *) time+=" PM" ;;
+            esac
+            birthday+="$time"
+            birthday_shorthand="on"
+        ;;
+
+        "BSD")
+            case "$distro" in
+                "OpenBSD"*)
+                    birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
+                    birthday_shorthand="on"
+                ;;
+
+                "FreeBSD"*)
+                    birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
+                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" "$birthday_format")"
+                ;;
+
+                "NetBSD"* | "DragonFly"*)
+                    birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
+                    birthday_shorthand="on"
+                ;;
+            esac
+        ;;
+
+        "Windows")
+            birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
+            date_cmd="$(date -d"$birthday" "$birthday_format")"
+        ;;
+    esac
+
+    # Strip seconds from time output
+    birthday="${birthday/:?? / }"
+
+    # Pretty output
+    [ "$birthday_shorthand" == "off" ] && \
+        birthday="${date_cmd//+( )/ }"
+
+    # Toggle showing the time
+    [ "$birthday_time" == "off" ] && \
+        birthday="${birthday/??:??*}"
+}
+
+# }}}
+
+# Terminal colors {{{
+
+getcols () {
+    if [ "$color_blocks" == "on" ]; then
+        # Convert the width to space chars.
+        block_width="$(printf "%$((block_width-=1))s")"
+
+        # Generate the string.
+        while [ $start -le $end ]; do
+            case "$start" in
+                [0-6]) blocks+="\033[0m\033[3${start}m\033[4${start}m%${block_width}s" ;;
+                7) blocks+="\033[0m\033[3${start}m\033[4${start}m%${block_width}s" ;;
+                *) blocks2+="\033[38;5;${start}m\033[48;5;${start}m%${block_width}s" ;;
+            esac
+            start="$((start+=1))"
+        done
+
+        # Convert height into spaces.
+        spaces="$(printf "%${block_height}s")"
+
+        # Convert the spaces into rows of blocks.
+        [ "$blocks" ] &&  cols+="${spaces// /${blocks}"\033[0m"nl}"
+        [ "$blocks2" ] && cols+="${spaces// /${blocks2}"\033[0m"nl}"
+
+        # Add newlines to the string.
+        cols="${cols%%'nl'}"
+        cols="${cols//nl/\\n${padding}}"
     fi
 }
+
+# }}}
 
 # }}}
 
@@ -1636,8 +1713,6 @@ done
 
 # Call Functions and Finish Up {{{
 
-# Source the functions
-getfunc
 
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
@@ -1737,7 +1812,7 @@ fi
 
 # Show error messages
 if [ "$verbose" == "on" ]; then
-    printf "%b%s" "$err"
+    printf "%s" "$err"
 fi
 
 # }}}
