@@ -453,6 +453,7 @@ getfunc () {
             "/usr/share/functions/image/"* 2>/dev/null
             "/usr/share/functions/text/"* 2>/dev/null
         )
+        err "Sourced functions from /usr/share/neofetch/functions"
 
     elif [ -d "/usr/local/share/neofetch/functions" ]; then
         source <(cat \
@@ -460,6 +461,7 @@ getfunc () {
             "/usr/local/share/functions/image/"* 2>/dev/null
             "/usr/local/share/functions/text/"* 2>/dev/null
         )
+        err "Sourced functions from /usr/local/neofetch/functions"
 
     else
         getscriptdir
@@ -469,6 +471,7 @@ getfunc () {
             "${script_dir}/functions/image/"* 2>/dev/null
             "${script_dir}/functions/text/"* 2>/dev/null
         )
+        err "Sourced functions from ${script_dir}/functions"
     fi
 }
 
