@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch memory detection.
+
+getmemory () {
+    case "$os" in
+        "Linux" | "Windows")
+            if grep -F "MemAvail" /proc/meminfo >/dev/null 2>&1; then
+                mem=($(awk -F ':| kB' '/MemTotal|MemAvail/ {printf $2}' /proc/meminfo))
+                memused="$((mem[0] - mem[1]))"
+            else
+                mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo) 0 0)
+                memused="$((mem[0] - mem[1] - mem[2] - mem[3]))"
+            fi
+
+            memused="$((memused / 1024))"
+            memtotal="$((mem[0] / 1024))"
+        ;;
+
+        "Mac OS X" | "iPhone OS")
+            memtotal="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
+            memwired="$(vm_stat | awk '/wired/ { print $4 }')"
+            memactive="$(vm_stat | awk '/active / { printf $3 }')"
+            memcompressed="$(vm_stat | awk '/occupied/ { printf $5 }')"
+            memused="$(((${memwired//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))"
+        ;;
+
+        "BSD")
+            case "$distro" in
+                "NetBSD"*) memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
+                *) memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
+            esac
+
+            memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))"
+            memused="$((memtotal - memfree))"
+        ;;
+    esac
+    memory="${memused}MB / ${memtotal}MB"
+
+    # Progress bars
+    case "$memory_display" in
+        "bar") memory="$(bar "${memused}" "${memtotal}")" ;;
+        "infobar") memory="${memory} $(bar "${memused}" "${memtotal}")" ;;
+        "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
+    esac
+}

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch public IP detection.
+
+getpublicip () {
+    if type -p dig >/dev/null 2>&1; then
+        publicip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2>/dev/null)"
+    fi
+
+    if [ -z "$publicip" ] && type -p curl >/dev/null 2>&1; then
+        publicip="$(curl --max-time 10 -w '\n' "$public_ip_host" 2>/dev/null)"
+    fi
+
+    if [ -z "$publicip" ] && type -p wget >/dev/null 2>&1; then
+        publicip="$(wget -T 10 -qO- "$public_ip_host" 2>/dev/null; printf "%s")"
+    fi
+}

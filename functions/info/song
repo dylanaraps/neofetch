@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch song detection.
+
+getsong () {
+    if mpc version >/dev/null 2>&1; then
+        song="$(mpc current 2>/dev/null)"
+        state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
+
+    elif [ -n "$(ps x | awk '!(/awk/) && /cmus/')" ]; then
+        IFS=$'\n'
+        song=("$(cmus-remote -Q | grep "tag artist \|title \|status" 2>/dev/null | sort)")
+        artist="${song[1]/tag artist }"
+        title="${song[2]/tag title }"
+        state="${song[0]/status }"
+
+        song="$artist - $title"
+
+    elif pgrep "mocp" >/dev/null 2>&1; then
+        song="$(mocp -Q "%artist - %song" 2>/dev/null)"
+        state="$(mocp -Q "%state" 2>/dev/null)"
+
+    elif [ -n "$(ps x | awk '!(/awk/) && /spotify/')" ]; then
+        case "$os" in
+            "Linux")
+                # This command is way too long
+                song="$(\
+                    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
+                    org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
+                    awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
+                    awk -F '"' '/artist|title/ {printf $2 " - "}'
+                )"
+                song="${song% - }"
+                song="${song/'('*}"
+                song="${song//'['*}"
+            ;;
+
+            "Mac OS X")
+                song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
+                state="$(osascript -e 'tell application "Spotify" to player state as string')"
+            ;;
+        esac
+
+    elif [ -n "$(ps x | awk '!(/awk/ || /Helper/) && /Google Play Music Desktop Player/')" ] && type -p gpmdp-remote >/dev/null 2>&1; then
+        song="$(gpmdp-remote current)"
+        state="$(gpmdp-remote status)"
+
+    elif [ -n "$(ps x | awk '!(/awk/ || /Helper/) && /iTunes/')" ]; then
+        song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
+        state="$(osascript -e 'tell application "iTunes" to player state as string')"
+
+    else
+        song="Not Playing"
+    fi
+
+    case "$state" in
+        "paused" | "PAUSE")
+            song="Paused"
+        ;;
+
+        "stopped" | "STOP")
+            song="Stopped"
+        ;;
+    esac
+
+    # Display Artist and Title on seperate lines.
+    if [ "$song_shorthand" == "on" ] && [ "$stdout_mode" != "on" ]; then
+        artist="${song/ -*}"
+        song="${song/$artist - }"
+
+        if [ "$song" != "$artist" ]; then
+            prin "Artist" "$artist"
+            prin "Song" "$song"
+        else
+            prin "$subtitle" "$song"
+        fi
+        unset song
+    fi
+}

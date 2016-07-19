@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch resolution detection.
+
+getresolution () {
+    case "$os" in
+        "Linux" | "BSD")
+            if type -p xrandr >/dev/null 2>&1; then
+                case "$refresh_rate" in
+                    "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
+                    "off") resolution="$(xrandr --nograb --current | awk '/\*/ {printf $1 ", "}')" ;;
+                esac
+                resolution="${resolution//\*}"
+                resolution="${resolution//\.[0-9][0-9]}"
+
+            elif type -p xdpyinfo >/dev/null 2>&1; then
+                resolution="$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')"
+            fi
+        ;;
+
+        "Mac OS X")
+            if type -p screenresolution >/dev/null 2>&1; then
+                resolution="$(screenresolution get 2>&1 | awk '/Display/ {printf $6 "Hz, "}')"
+                resolution="${resolution//x??@/ @ }"
+
+            else
+                resolution="$(system_profiler SPDisplaysDataType |\
+                    awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
+            fi
+
+            if [ "$refresh_rate" == "off" ]; then
+                resolution="${resolution// @ [0-9][0-9]Hz}"
+                resolution="${resolution// @ [0-9][0-9][0-9]Hz}"
+            fi
+
+            [[ "$resolution" =~ "0Hz" ]] && \
+                resolution="${resolution// @ 0Hz}"
+        ;;
+
+        "Windows")
+            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution /value 2>/dev/null)"
+            width="${width/CurrentHorizontalResolution'='/}"
+
+            height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value 2>/dev/null)"
+            height="${height/CurrentVerticalResolution'='/}"
+
+            [ "$width" ] && \
+                resolution="${width}x${height}"
+        ;;
+    esac
+
+    resolution="${resolution%,*}"
+}

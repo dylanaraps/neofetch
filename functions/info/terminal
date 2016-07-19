@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch terminal detection.
+
+getterm () {
+    # Check $PPID for terminal emulator.
+    case "$os" in
+        "Mac OS X")
+            # Workaround for OS X systems that
+            # don't support the block below.
+            case "$TERM_PROGRAM" in
+                "iTerm.app") term="iTerm2" ;;
+                "Terminal.app") term="Apple Terminal" ;;
+                *) term="${TERM_PROGRAM/\.app}" ;;
+            esac
+            return
+        ;;
+
+        "Windows")
+            parent="$(ps -p ${1:-$PPID} | awk '{printf $2}')"
+            parent="${parent/'PPID'}"
+
+            name="$(ps -p $parent | awk '{printf $8}')"
+            name="${name/'COMMAND'}"
+            name="${name/*\/}"
+        ;;
+
+        *)
+            parent="$(ps -p ${1:-$PPID} -o ppid=)"
+            name="$(ps -p $parent -o comm=)"
+        ;;
+    esac
+
+    case "${name// }" in
+        "${SHELL/*\/}" | *"sh" | "tmux" | "screen") getterm "$parent" ;;
+        "login" | "init") term="$(tty)"; term="${term/*\/}" ;;
+        "ruby" | "1" | "systemd" | "sshd" | "python"*) unset term ;;
+        "gnome-terminal-") term="gnome-terminal" ;;
+        *) term="$name" ;;
+    esac
+}

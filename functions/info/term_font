@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch terminal font detection.
+
+gettermfont () {
+    [ -z "$term" ] && getterm
+
+    case "$term" in
+        "urxvt" | "urxvtd" | "xterm")
+            termfont="$(grep -i "${term/d}\*font" <<< $(xrdb -query))"
+            termfont="${termfont/*font: }"
+
+            # Xresources has two different font syntax, this checks which
+            # one is in use and formats it accordingly.
+            case "$termfont" in
+                "xft:"*)
+                    termfont="${termfont/xft:}"
+                    termfont="${termfont/:*}"
+                ;;
+
+                "-"*) termfont="$(awk -F '\\-' '{printf $3}' <<< "$termfont")" ;;
+            esac
+        ;;
+
+        "xfce4-terminal")
+            termfont="$(awk -F '=' '!/^($|\/\/)/ && /FontName/ {printf $2}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
+        ;;
+
+        "termite")
+            termfont="$(awk -F '= ' '!/^($|#)/ && /font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
+        ;;
+
+        "mintty")
+            termfont="$(awk -F '=' '!/^($|#)/ && /Font/ {printf $2; exit}' "${HOME}/.minttyrc")"
+        ;;
+
+        "Apple_Terminal")
+            termfont="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
+        ;;
+
+        "terminology")
+            termfont="$(strings ${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg | awk '/^font\.name$/{print a}{a=$0}')"
+            termfont="${termfont/.pcf}"
+            termfont="${termfont/:*}"
+        ;;
+    esac
+}

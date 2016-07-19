@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch DE detection.
+
+getde () {
+    case "$os" in
+        "Mac OS X") de="Aqua" ;;
+        *)
+            de="${XDG_CURRENT_DESKTOP/i3}"
+            de="${de/'X-'}"
+        ;;
+    esac
+
+    if [ -n "$DISPLAY" ] && [ -z "$de" ]; then
+        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/' 2>/dev/null)"
+
+        case "$de" in
+            "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
+            *"TDE_FULL_SESSION"*) de="Trinity" ;;
+            *"MUFFIN"*) de="Cinnamon" ;;
+            *"xfce4"*) de="XFCE4" ;;
+            *"xfce5"*) de="XFCE5" ;;
+        esac
+    fi
+}

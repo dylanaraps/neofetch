@@ -1,0 +1,231 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch user/hostname detection.
+
+getcpu () {
+    # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
+    # information so we have to use this block below which temporarily sets the
+    # OS to 'Linux' for the duration of this function.
+    case "$distro" in
+        "NetBSD"*) local os="Linux" ;;
+    esac
+
+    case "$os" in
+        "Linux" | "Windows")
+            # Get cpu name
+            cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
+
+            # Get cpu speed
+            if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
+                case "$speed_type" in
+                    current) speed_type="scaling_cur_freq" ;;
+                    min) speed_type="scaling_min_freq" ;;
+                    max) speed_type="scaling_max_freq" ;;
+                    bios) speed_type="bios_limit" ;;
+                    scaling_current) speed_type="scaling_cur_freq" ;;
+                    scaling_min) speed_type="scaling_min_freq" ;;
+                    scaling_max) speed_type="scaling_max_freq" ;;
+                esac
+
+                read -t 1 -r speed < \
+                    /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
+
+                speed="$((speed / 100000))"
+            else
+                speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
+                speed="$((speed / 100))"
+            fi
+
+            cores="$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)"
+
+            # Fix for speeds under 1ghz
+            if [ -z "${speed:1}" ]; then
+               speed="0.${speed}"
+            else
+               speed="${speed:0:1}.${speed:1}"
+            fi
+
+            cpu="$cpu @ ${speed}GHz"
+        ;;
+
+        "Mac OS X")
+            cpu="$(sysctl -n machdep.cpu.brand_string)"
+            cores="$(sysctl -n hw.ncpu)"
+        ;;
+
+        "iPhone OS")
+            ios_model="${ios_model:-$(uname -m)}"
+            case "$ios_model" in
+                "iPhone1,1" | "iPhone1,2" | "iPod1,1")
+                    cpu="Samsung S5L8900 @ 412MHz"
+                    cores="1"
+                ;;
+
+                "iPhone2,1")
+                    cpu="Samsung S5PC100 @ 600MHz"
+                    cores="1"
+                ;;
+
+                "iPhone3,1" | "iPhone3,2" | "iPhone3,3" | "iPod4,1")
+                    cpu="Apple A4 @ 800MHz"
+                    cores="1"
+                ;;
+
+                "iPhone4,1" | "iPod5,1")
+                    cpu="Apple A5 @ 800MHz"
+                    cores="2"
+                ;;
+
+                "iPhone5,1" | "iPhone5,2" | "iPhone5,3" | "iPhone5,4")
+                    cpu="Apple A6 @ 1.3GHz"
+                    cores="2"
+                ;;
+
+                "iPhone6,1" | "iPhone6,2")
+                    cpu="Apple A7 @ 1.3GHz"
+                    cores="2"
+                ;;
+
+                "iPhone7,1" | "iPhone7,2")
+                    cpu="Apple A8 @ 1.4GHz"
+                    cores="2"
+                ;;
+
+                "iPhone8,1" | "iPhone8,2" | "iPhone8,4")
+                    cpu="Apple A9 @ 1.85GHz"
+                    cores="2"
+                ;;
+
+                "iPod2,1")
+                    cpu="Samsung S5L8720 @ 533MHz"
+                    cores="1"
+                ;;
+
+                "iPod3,1")
+                    cpu="Samsung S5L8922 @ 600MHz"
+                    cores="1"
+                ;;
+
+                "iPod7,1")
+                    cpu="Apple A8 @ 1.1GHz"
+                    cores="2"
+                ;;
+
+                "iPad1,1")
+                    cpu="Apple A4 @ 1GHz"
+                    cores="1"
+                ;;
+
+                "iPad2,1" | "iPad2,2" | "iPad2,3" | "iPad2,4" | "iPad2,5" | "iPad2,6" | "iPad2,7")
+                    cpu="Apple A5 @ 1GHz"
+                    cores="2"
+                ;;
+
+                "iPad3,1" | "iPad3,2" | "iPad3,3")
+                    cpu="Apple A5X @ 1GHz"
+                    cores="2"
+                ;;
+
+                "iPad3,4" | "iPad3,5" | "iPad3,6")
+                    cpu="Apple A6X @ 1.4GHz"
+                    cores="2"
+                ;;
+
+                "iPad4,1" | "iPad4,2" | "iPad4,3")
+                    cpu="Apple A7 @ 1.4GHz"
+                    cores="2"
+                ;;
+
+                "iPad4,4" | "iPad4,5" | "iPad4,6" | "iPad4,7" | "iPad4,8" | "iPad4,9")
+                    cpu="Apple A7 @ 1.4GHz"
+                    cores="2"
+                ;;
+
+                "iPad5,1" | "iPad5,2")
+                    cpu="Apple A8 @ 1.5GHz"
+                    cores="2"
+                ;;
+
+                "iPad5,3" | "iPad5,4")
+                    cpu="Apple A8X @ 1.5GHz"
+                    cores="3"
+                ;;
+
+                "iPad6,3" | "iPad6,4")
+                    cpu="Apple A9X @ 2.16GHz"
+                    cores="2"
+                ;;
+
+                "iPad6,7" | "iPad6,8")
+                    cpu="Apple A9X @ 2.26GHz"
+                    cores="2"
+                ;;
+            esac
+        ;;
+
+        "BSD")
+            # Get cpu name
+            cpu="$(sysctl -n hw.model)"
+            cpu="${cpu/[0-9]\.*}"
+            cpu="${cpu/ @*}"
+
+            # Get cpu speed
+            speed="$(sysctl -n hw.cpuspeed)"
+            [ -z "$speed" ] && speed="$(sysctl -n  hw.clockrate)"
+            speed="$((speed / 100))"
+
+            # Get cpu cores
+            cores="$(sysctl -n hw.ncpu)"
+
+            # Fix for speeds under 1ghz
+            if [ -z "${speed:1}" ]; then
+               speed="0.${speed}"
+            else
+               speed="${speed:0:1}.${speed:1}"
+            fi
+
+            cpu="$cpu @ ${speed}GHz"
+        ;;
+    esac
+
+
+    # Remove uneeded patterns from cpu output
+    # This is faster than sed/gsub
+    cpu="${cpu//(tm)}"
+    cpu="${cpu//(TM)}"
+    cpu="${cpu//(r)}"
+    cpu="${cpu//(R)}"
+    cpu="${cpu//CPU}"
+    cpu="${cpu//Processor}"
+    cpu="${cpu//Six-Core}"
+    cpu="${cpu//Eight-Core}"
+    cpu="${cpu//Dual-Core}"
+    cpu="${cpu//Quad-Core}"
+    cpu="${cpu//with Radeon HD Graphics}"
+
+    # Add cpu cores to output
+    [ "$cpu_cores" == "on" ] && [ "$cores" ] && \
+        cpu="${cpu/@/\(${cores}\) @}"
+
+    # Make the output of cpu shorter
+    case "$cpu_shorthand" in
+        "name")  cpu="${cpu/@*}" ;;
+        "speed") cpu="${cpu#*@ }" ;;
+
+        "on" | "tiny")
+            cpu="${cpu/Intel }"
+            cpu="${cpu/Core }"
+            cpu="${cpu/Core? Duo }"
+            cpu="${cpu/AMD }"
+
+            case "$cpu_shorthand" in
+                "tiny") cpu="${cpu/@*}" ;;
+            esac
+        ;;
+    esac
+
+    [ "$cpu" ] && prin "$subtitle" "$cpu"
+
+    [ "$stdout_mode" != "on" ] && unset cpu
+}

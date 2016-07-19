@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch uptime detection.
+
+getuptime () {
+    case "$os" in
+        "Linux" | "Windows")
+            case "$distro" in
+                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "Windows"*)
+                    uptime="$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')"
+                ;;
+
+                "openSUSE"*)
+                    uptime="$(uptime | awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')"
+                ;;
+
+                *)
+                    uptime="$(uptime -p)"
+                    [ "$uptime" == "up " ] && uptime="up $(awk -F'.' '{print $1}' /proc/uptime) seconds"
+                ;;
+            esac
+        ;;
+
+        "Mac OS X" | "iPhone OS" | "BSD")
+            # Get boot time in seconds
+            boot="$(sysctl -n kern.boottime)"
+            boot="${boot/'{ sec = '}"
+            boot="${boot/,*}"
+
+            # Get current date in seconds
+            now="$(date +%s)"
+            uptime="$((now - boot))"
+
+            # Convert uptime to days/hours/mins
+            minutes="$((uptime / 60%60))"
+            hours="$((uptime / 3600%24))"
+            days="$((uptime / 86400))"
+
+            case "$minutes" in
+                1) minutes="1 minute" ;;
+                0) unset minutes ;;
+                *) minutes="$minutes minutes" ;;
+            esac
+
+            case "$hours" in
+                1) hours="1 hour" ;;
+                0) unset hours ;;
+                *) hours="$hours hours" ;;
+            esac
+
+            case "$days" in
+                1) days="1 day" ;;
+                0) unset days ;;
+                *) days="$days days" ;;
+            esac
+
+            [ "$hours" ] && \
+            [ "$minutes" ] && \
+                hours+=","
+
+            [ "$days" ] && \
+            [ "$hours" ] && \
+                days+=","
+
+            uptime="up $days $hours $minutes"
+        ;;
+    esac
+
+    # Make the output of uptime smaller.
+    case "$uptime_shorthand" in
+        "on")
+            uptime="${uptime/up }"
+            uptime="${uptime/minutes/mins}"
+            uptime="${uptime/minute/min}"
+            uptime="${uptime/seconds/secs}"
+        ;;
+
+        "tiny")
+            uptime="${uptime/up }"
+            uptime="${uptime/ days/d}"
+            uptime="${uptime/ day/d}"
+            uptime="${uptime/ hours/h}"
+            uptime="${uptime/ hour/h}"
+            uptime="${uptime/ minutes/m}"
+            uptime="${uptime/ minute/m}"
+            uptime="${uptime/ seconds/s}"
+            uptime="${uptime/,}"
+        ;;
+    esac
+}

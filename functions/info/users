@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# vim: fdm=marker:noai:ts=4:sw=4
+#
+# Neofetch users detection.
+
+getusers () {
+    users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
+    users="${users%\,*}"
+}
