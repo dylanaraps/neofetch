@@ -1,3 +1,11 @@
+**Development paused for a while**<br \>
+
+I'm currently taking a break from working on neofetch, I have a<br \>
+broken wrist and I'm struggling to work at my usual pace. I'll<br \>
+be back soon. - Dylan
+
+--------
+
 # Neofetch
 
 [![Gitter](https://badges.gitter.im/dylanaraps/fetch.svg)](https://gitter.im/dylanaraps/fetch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Build Status](https://travis-ci.org/dylanaraps/neofetch.svg?branch=master)](https://travis-ci.org/dylanaraps/neofetch) [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md) [![Latest release](https://img.shields.io/github/release/dylanaraps/neofetch.svg)](https://github.com/dylanaraps/neofetch/releases)
