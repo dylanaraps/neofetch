@@ -37,6 +37,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
     - [Void Linux](#void-linux)
     - [BunsenLabs](#bunsenlabs)
+    - [Slackware](#slackware)
     - [Mac OS X](#mac-os-x)
     - [Others](#others)
 - [Post Install](#post-install)
@@ -169,6 +170,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
 - [Void Linux](#void-linux)
 - [BunsenLabs](#bunsenlabs)
+- [Slackware](#slackware)
 - [Mac OS X](#mac-os-x)
 - [Others](#others)
 
@@ -181,7 +183,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 ### Gentoo / Funtoo
 
 1. Add the 3rd party repo
-    - `# wget https://git.io/vocNV -O /etc/portage/repos.conf/konimex.conf`
+    - `# wget -O /etc/portage/repos.conf/konimex.conf https://git.io/vocNV`
 2. Sync the repo
     - `# emerge --sync konimex`
 3. To enable additional features such as w3m and music support, enable the appropriate USE flags. For example:
@@ -255,14 +257,19 @@ Alternatively:
     - `sudo dnf install neofetch`
 
 ### Void Linux
-1. Install it from the official repositories
-    - `sudo xbps-install -S neofetch`
+Install it from the official repositories
+
+- `sudo xbps-install -S neofetch`
 
 ### BunsenLabs
 Neofetch is available in the official repos.
 
 1. `sudo apt-get update`
 2. `sudo apt-get install neofetch`
+
+### Slackware
+
+Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/desktop/neofetch/) and follow [their instructions](https://slackbuilds.org/howto/).
 
 ### Mac OS X
 
