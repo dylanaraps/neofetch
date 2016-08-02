@@ -46,7 +46,6 @@ printinfo () {
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
-    prin "sdddddddddddddddddddddddddddddddddddddasdasdasdasd"
 
     # info "CPU Usage" cpu_usage
     # info "Disk" disk
@@ -2521,15 +2520,19 @@ info () {
 # Prin {{{
 
 prin () {
-    if [ -z "$2" ]; then
-        string="${info_color}${1}"
-        length="${#1}"
+    string="$1${2:+: $2}"
 
-    else
-        string="${subtitle_color}${bold}${1}\033[0m"
-        string+="${colon_color}: ${info_color}${2}"
-        length="$((${#subtitle} +  ${#2} + 1))"
+    # Fix rendering issues with w3m and lines that
+    # wrap to the next line by adding a max line
+    # length.
+    if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
+        padding_num="${padding/\\033\[}"
+        string="$(printf "%.$((columns - ${padding_num/C} - gap))s" "$string")"
     fi
+
+    # Format the output
+    string="${string/:/"\033[0m"${colon_color}:${info_color}}"
+    string="${subtitle_color}${bold}${string}"
 
     # Trim whitespace
     string="$(trim "$string")"
@@ -3147,7 +3150,6 @@ while [ "$1" ]; do
         # Text Formatting
         --underline) underline_enabled="$2" ;;
         --underline_char) underline_char="$2" ;;
-        --line_wrap) line_wrap="$2" ;;
         --bold) bold="$2" ;;
 
         # Color Blocks
