@@ -46,6 +46,7 @@ printinfo () {
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
+    prin "sdddddddddddddddddddddddddddddddddddddasdasdasdasd"
 
     # info "CPU Usage" cpu_usage
     # info "Disk" disk
@@ -3345,7 +3346,7 @@ if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
 fi
 
 # Disable line wrap
-[ "$line_wrap" == "off" ] && printf "\033[?7l"
+printf "\033[?7l"
 
 # Move cursor to the top
 [ "$image" != "off" ] && printf "\033[0H"
@@ -3374,7 +3375,7 @@ esac
 [ "$image" != "off" ] && printf "%b%s" "\033[${lines:-0}H"
 
 # Re-enable line wrap
-[ "$line_wrap" == "off" ] && printf "%b%s" "\033[?7h"
+printf "%b%s" "\033[?7h"
 
 # If enabled take a screenshot
 if [ "$scrot" == "on" ]; then
