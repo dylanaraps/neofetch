@@ -335,7 +335,6 @@ Here's what my fetch alias looks like:
 ```sh
 alias fetch2="fetch \
 --block_range 1 8 \
---line_wrap off \
 --bold off \
 --uptime_shorthand on \
 --gtk_shorthand on \
@@ -395,7 +394,6 @@ alias fetch2="fetch \
                                 title, @, underline, subtitle, colon, info
     --underline on/off          enable/disable the underline.
     --underline_char char       Character to use when underlining title
-    --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
 
 
@@ -516,33 +514,6 @@ know where it's stored then adding support won't be a problem!<br \>
 
 
 ## Issues and Workarounds
-
-
-#### The text is too long for my terminal window and wraps to the next line
-
-There are a few ways to fix this.
-
-* Disable line wrapping with `line_wrap=off` in the script or with the launch flag `--line_wrap off`
-* The uptime and gtk info lines each have a shorthand option that makes their output smaller. You can <br \>
-  enable them by changing these variables or using these flags.
-
-```sh
-# Config options
-uptime_shorthand="on"
-gtk_shorthand="on"
-gpu_shorthand="on"
-birthday_shorthand="on"
-
-# Launch flags
---uptime_shorthand on
---gtk_shorthand on
---gpu_shorthand on
---birthday_shorthand on
-
-```
-
-* Edit the config to make the subtitles shorter
-* Resizing the terminal so that the lines don't wrap.
 
 
 #### The text is pushed over too far to the right
