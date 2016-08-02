@@ -2530,6 +2530,12 @@ prin () {
         string="$(printf "%.$((columns - ${padding_num/C} - gap))s" "$string")"
     fi
 
+    # If $2 doesn't exist we format $1 as info
+    if [ -z "$2" ]; then
+        subtitle_color="$info_color"
+        bold=
+    fi
+
     # Format the output
     string="${string/:/"\033[0m"${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
