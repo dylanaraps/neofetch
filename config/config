@@ -212,10 +212,6 @@ colors=(distro)
 # Text Options {{{
 
 
-# Toggle line wrapping
-# --line_wrap on/off
-line_wrap="off"
-
 # Toggle bold text
 # --bold on/off
 bold="on"

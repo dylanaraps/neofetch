@@ -217,10 +217,6 @@ colors=(distro)
 # Text Options {{{
 
 
-# Toggle line wrapping
-# --line_wrap on/off
-line_wrap="off"
-
 # Toggle bold text
 # --bold on/off
 bold="on"
@@ -2486,6 +2482,14 @@ info () {
     # Trim whitespace
     output="$(trim "$output")"
 
+    # Fix rendering issues with w3m and lines that
+    # wrap to the next line by adding a max line
+    # length.
+    if [ "$image" != "off" ] && [ "$image" != "ascii" ] && [ "$1" != "cols" ]; then
+        padding_num="${padding/\\033\[}"
+        output="$(printf "%.$((columns - ${padding_num/C} - gap - ${#subtitle}))s" "$output")"
+    fi
+
     case "$1" in
         title)
             string="${title_color}${bold}${output}"
@@ -2999,7 +3003,6 @@ usage () { cat << EOF
                                 title, @, underline, subtitle, colon, info
     --underline on/off          enable/disable the underline.
     --underline_char char       Character to use when underlining title
-    --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
 
 
