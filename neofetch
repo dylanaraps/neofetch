@@ -2215,17 +2215,10 @@ getascii () {
 
             ascii="$script_dir/ascii/distro/${ascii/ *}"
         fi
-
-        # We only use eval in the distro ascii files.
-        print="$(eval printf "$(<"$ascii")")"
-    else
-        case "${ascii_colors[0]}" in
-            "distro") ascii_color="$c1" ;;
-            *) ascii_color="\033[38;5;${ascii_colors[0]}m" ;;
-        esac
-
-        print="${ascii_color}$(<"$ascii")"
     fi
+
+    # Eval colors
+    print="$(eval printf "$(<"$ascii")")"
 
     # Set locale to get correct padding
     export LC_ALL="$SYS_LOCALE"
