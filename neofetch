@@ -217,10 +217,6 @@ colors=(distro)
 # Text Options {{{
 
 
-# Toggle line wrapping
-# --line_wrap on/off
-line_wrap="off"
-
 # Toggle bold text
 # --bold on/off
 bold="on"
@@ -2215,17 +2211,10 @@ getascii () {
 
             ascii="$script_dir/ascii/distro/${ascii/ *}"
         fi
-
-        # We only use eval in the distro ascii files.
-        print="$(eval printf "$(<"$ascii")")"
-    else
-        case "${ascii_colors[0]}" in
-            "distro") ascii_color="$c1" ;;
-            *) ascii_color="\033[38;5;${ascii_colors[0]}m" ;;
-        esac
-
-        print="${ascii_color}$(<"$ascii")"
     fi
+
+    # Eval colors
+    print="$(eval printf "$(<"$ascii")")"
 
     # Set locale to get correct padding
     export LC_ALL="$SYS_LOCALE"
@@ -2321,6 +2310,7 @@ getimage () {
 
     # Calculate font size
     font_width="$((term_width / columns))"
+    font_height="$((term_height / lines))"
 
     # Image size is half of the terminal
     case "$image_size" in
@@ -2486,6 +2476,14 @@ info () {
     # Trim whitespace
     output="$(trim "$output")"
 
+    # Fix rendering issues with w3m and lines that
+    # wrap to the next line by adding a max line
+    # length.
+    if [ "$image" != "off" ] && [ "$image" != "ascii" ] && [ "$1" != "cols" ]; then
+        padding_num="${padding/\\033\[}"
+        output="$(printf "%.$((columns - ${padding_num/C} - gap - ${#subtitle}))s" "$output")"
+    fi
+
     case "$1" in
         title)
             string="${title_color}${bold}${output}"
@@ -2516,15 +2514,25 @@ info () {
 # Prin {{{
 
 prin () {
-    if [ -z "$2" ]; then
-        string="${info_color}${1}"
-        length="${#1}"
+    string="$1${2:+: $2}"
 
-    else
-        string="${subtitle_color}${bold}${1}\033[0m"
-        string+="${colon_color}: ${info_color}${2}"
-        length="$((${#subtitle} +  ${#2} + 1))"
+    # Fix rendering issues with w3m and lines that
+    # wrap to the next line by adding a max line
+    # length.
+    if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
+        padding_num="${padding/\\033\[}"
+        string="$(printf "%.$((columns - ${padding_num/C} - gap))s" "$string")"
     fi
+
+    # If $2 doesn't exist we format $1 as info
+    if [ -z "$2" ]; then
+        subtitle_color="$info_color"
+        bold=
+    fi
+
+    # Format the output
+    string="${string/:/"\033[0m"${colon_color}:${info_color}}"
+    string="${subtitle_color}${bold}${string}"
 
     # Trim whitespace
     string="$(trim "$string")"
@@ -2999,7 +3007,6 @@ usage () { cat << EOF
                                 title, @, underline, subtitle, colon, info
     --underline on/off          enable/disable the underline.
     --underline_char char       Character to use when underlining title
-    --line_wrap on/off          Enable/Disable line wrapping
     --bold on/off               Enable/Disable bold text
 
 
@@ -3143,7 +3150,6 @@ while [ "$1" ]; do
         # Text Formatting
         --underline) underline_enabled="$2" ;;
         --underline_char) underline_char="$2" ;;
-        --line_wrap) line_wrap="$2" ;;
         --bold) bold="$2" ;;
 
         # Color Blocks
@@ -3342,7 +3348,7 @@ if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
 fi
 
 # Disable line wrap
-[ "$line_wrap" == "off" ] && printf "\033[?7l"
+printf "\033[?7l"
 
 # Move cursor to the top
 [ "$image" != "off" ] && printf "\033[0H"
@@ -3350,28 +3356,27 @@ fi
 # Print the info
 printinfo
 
-# Dynamic prompt location.
-case "$image" in
-    "ascii")
-        # Get cursor position
-        info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
+# Dynamic prompt location {{{
 
-        # Set cursor position dynamically based on height of ascii/text.
-        [ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
-    ;;
+# Get cursor position
+info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
 
-    "off") ;;
+# Calculate image height in terminal cells.
+# The '+ 3' adds a gap between the prompt and the content.
+[ "$image" != "ascii" ] && [ "$image" != "off" ] && \
+    lines="$((${height:-1} / ${font_height:-1} + 3))"
 
-    # Calculate image height in terminal cells.
-    *) lines="$((${width:-1} / ${font_width:-1} / 2 + 3))" ;;
-
-esac
+# If the info is higher than the ascii/image place the prompt
+# based on the info height instead of the ascii/image height.
+[ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
 
 # Set the prompt location
 [ "$image" != "off" ] && printf "%b%s" "\033[${lines:-0}H"
 
+# }}}
+
 # Re-enable line wrap
-[ "$line_wrap" == "off" ] && printf "%b%s" "\033[?7h"
+printf "%b%s" "\033[?7h"
 
 # If enabled take a screenshot
 if [ "$scrot" == "on" ]; then
