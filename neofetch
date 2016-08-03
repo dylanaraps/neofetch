@@ -2314,6 +2314,7 @@ getimage () {
 
     # Calculate font size
     font_width="$((term_width / columns))"
+    font_height="$((term_height / lines))"
 
     # Image size is half of the terminal
     case "$image_size" in
@@ -3343,25 +3344,24 @@ fi
 # Print the info
 printinfo
 
-# Dynamic prompt location.
-case "$image" in
-    "ascii")
-        # Get cursor position
-        info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
+# Dynamic prompt location {{{
 
-        # Set cursor position dynamically based on height of ascii/text.
-        [ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
-    ;;
+# Get cursor position
+info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
 
-    "off") ;;
+# Calculate image height in terminal cells.
+# The '+ 3' adds a gap between the prompt and the content.
+[ "$image" != "ascii" ] && [ "$image" != "off" ] && \
+    lines="$((${height:-1} / ${font_height:-1} + 3))"
 
-    # Calculate image height in terminal cells.
-    *) lines="$((${width:-1} / ${font_width:-1} / 2 + 3))" ;;
-
-esac
+# If the info is higher than the ascii/image place the prompt
+# based on the info height instead of the ascii/image height.
+[ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
 
 # Set the prompt location
 [ "$image" != "off" ] && printf "%b%s" "\033[${lines:-0}H"
+
+# }}}
 
 # Re-enable line wrap
 [ "$line_wrap" == "off" ] && printf "%b%s" "\033[?7h"
