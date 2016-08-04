@@ -16,16 +16,13 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export LC_ALL=C
 export LANG=C
 
+# Set no case match.
+shopt -s nocasematch
 
 # Config Options {{{
+# DO NOT edit these options, edit the options in
+# your config file. ("$HOME/.config/neofetch/config")
 
-
-# Info Options {{{
-
-
-# Info
-# See this wiki page for more info:
-# https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 printinfo () {
     info title
     info underline
@@ -60,376 +57,75 @@ printinfo () {
     info linebreak
     info cols
     info linebreak
-    info linebreak
 }
 
-
-# Kernel
-
-# Show more kernel info
-# --kernel_shorthand on/off
+# Default values
 kernel_shorthand="on"
-
-
-# Distro
-
-# Mac OS X hide/show build version
-# --osx_buildversion on/off
 osx_buildversion="on"
-
-# Mac OS X hide/show codename
-# --osx_codename on/off
 osx_codename="on"
-
-# Show 'x86_64' and 'x86' in 'Distro:' output.
-# --os_arch on/off
 os_arch="on"
-
-
-# Uptime
-
-# Shorten the output of the uptime function
-# --uptime_shorthand tiny, on, off
 uptime_shorthand="off"
-
-
-# Shell
-
-# Show the path to $SHELL
-# --shell_path on/off
 shell_path="on"
-
-# Show $SHELL's version
-# --shell_version on/off
 shell_version="off"
-
-
-# CPU
-
-# CPU speed type
-# Only works on Linux with cpufreq.
-# --speed_type current, min, max, bios,
-# scaling_current, scaling_min, scaling_max
 speed_type="max"
-
-# CPU Shorthand
-# Set shorthand setting
-# --cpu_shorthand name, speed, tiny, on, off
 cpu_shorthand="off"
-
-# CPU Cores
-# Display CPU cores in output
-# --cpu_cores on/off
 cpu_cores="on"
-
-# GPU
-
-# Shorten output of the getgpu funcion
-# --gpu_shorthand on/off/tiny
 gpu_shorthand="on"
-
-# Resolution
-
-# Display refresh rate next to each monitor
-# Unsupported on Windows
-# --refresh_rate on/off
 refresh_rate="off"
-
-# Gtk Theme / Icons
-
-# Shorten output (Hide [GTK2] etc)
-# --gtk_shorthand on/off
 gtk_shorthand="off"
-
-
-# Enable/Disable gtk2 theme/icons output
-# --gtk2 on/off
 gtk2="on"
-
-# Enable/Disable gtk3 theme/icons output
-# --gtk3 on/off
 gtk3="on"
-
-
-# Battery
-
-# Which battery to display.
-# By default we display all batteries.
-# NOTE: Only works on Linux.
-# --battery_num all, 0, 1, 2, etc
 battery_num="all"
-
-# Whether or not to print each battery on the same line.
-# By default each battery gets its own line and title.
-# NOTE: Only works on Linux.
-# --battery_shorthand on/off
 battery_shorthand="off"
-
-
-# IP Address
-
-# Website to ping for the public IP
-# --ip_host url
 public_ip_host="http://ident.me"
-
-
-# Song
-
-# Print the Artist and Title on seperate lines
-# --song_shorthand on/off
 song_shorthand="off"
-
-
-# Birthday
-
-# Whether to show a long pretty output
-# or a shortened one
-# NOTE: Long pretty output doesn't work on OpenBSD or NetBSD.
-# --birthday_shorthand on/off
 birthday_shorthand="off"
-
-# Whether to show the time in the output
-# --birthday_time on/off
 birthday_time="on"
-
-# Date format to use when printing birthday
-# --birthday_format "format"
 birthday_format="%a %d %b %Y %l:%M %p"
-
-
-# }}}
-
-# Text Colors {{{
-
-
-# Text Colors
-# Each number represents a different part of
-# the text in this order:
-# title, @, underline, subtitle, colon, info
-# colors=(4 6 1 8 8 6)
-# You can also specify:
-# fg (foreground color)
 colors=(distro)
-
-
-# }}}
-
-# Text Options {{{
-
-
-# Toggle bold text
-# --bold on/off
 bold="on"
-
-# Enable/Disable Underline
-# --underline on/off
 underline_enabled="on"
-
-# Underline character
-# --underline_char char
 underline_char="-"
-
-
-# }}}
-
-# Color Blocks {{{
-
-
-# Color block range
-# --block_range start end
 start=0
 end=7
-
-# Toggle color blocks
-# --color_blocks on/off
 color_blocks="on"
-
-# Color block width in spaces
-# --block_width num
 block_width=2
-
-# Color block height in lines
-# --block_height num
 block_height=1
-
-
-# }}}
-
-# Progress Bars {{{
-
-
-# Progress bar character
-# --progress_char elapsed_char total_char
 progress_char_elapsed="="
 progress_char_total="-"
-
-# Progress vorder
-# --progress_border on/off
 progress_border="on"
-
-# Progress bar length in spaces
-# Number of chars long to make the progress bars.
-# --progress_length num
 progress_length="15"
-
-# Progress bar colors
-# When set to distro, uses your distro's logo colors
-# Takes: num, "distro"
-# --progress_colors col col
 progress_color_elapsed="distro"
 progress_color_total="distro"
-
-# Customize how the info is displayed.
-# bar: Only the progress bar is displayed.
-# infobar: The bar is displayed after the info.
-# barinfo: The bar is displayed before the info.
-# off: Only the info is displayed.
-#
-# --cpu_display bar/infobar/barinfo/off
-# --memory_display bar/infobar/barinfo/off
-# --battery_display bar/infobar/barinfo/off
-# --disk_display bar/infobar/barinfo/off
 cpu_display="off"
 memory_display="off"
 battery_display="off"
 disk_display="off"
-
-
-# }}}
-
-# Image Options {{{
-
-
-# Image Source
-# --image wall, ascii, /path/to/img, /path/to/dir/, off
 image="wall"
-
-# Thumbnail directory
 thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
-
-# W3m-img path
-# This is automatically detected, this variable
-# should only be set to w3m-img's location if the
-# builtin detection doesn't work.
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
-
-# Crop mode
-# --crop_mode normal/fit/fill
 crop_mode="normal"
-
-# Crop offset
-# Only affects normal mode.
-# --crop_offset northwest/north/northeast/west/center
-#               east/southwest/south/southeast
 crop_offset="center"
-
-# Image size
-# The image is half the terminal width by default.
-# --size auto, 00px, 00%, none
 image_size="auto"
-
-# Right gap between image and text
-# --gap num
 gap=2
-
-# Image offsets
-# --xoffset px
-# --yoffset px
 yoffset=0
 xoffset=0
-
-
-# }}}
-
-# Ascii Options {{{
-
-
-# Default ascii image to use
-# When this is set to distro it will use your
-# distro's logo as the ascii.
-# --ascii 'distro', path/to/ascii
 ascii="distro"
-
-# Ascii colors
-# When this is set to distro it will use your
-# ditro's colors to color the ascii.
-# NOTE: You can also set this to a range of colors
-# which will allow you to custom color distro logos
-# --ascii_colors distro
-# --ascii_colors 2 4 5 6
 ascii_colors=(distro)
-
-# Logo size
-# Arch, Crux and Gentoo have a smaller logo
-# variant. Changing the value below to 'small'
-# will make neofetch use the small logo.
-# --ascii_logo_size small, normal
 ascii_logo_size="normal"
-
-# Bold ascii logo
-# Whether or not to bold the ascii logo.
-# --ascii_bold on/off
 ascii_bold="off"
-
-
-# }}}
-
-# Scrot Options {{{
-
-
-# Whether or not to always take a screenshot
-# You can manually take a screenshot with "--scrot" or "-s"
 scrot="off"
-
-# Screenshot program to launch
-# --scrot_cmd
 scrot_cmd="scrot -c -d 3"
-
-# Scrot dir
-# Where to save the screenshots
-# --scrot_dir /path/to/screenshot/folder
 scrot_dir="$HOME/Pictures/"
-
-# Scrot filename
-# What to name the screenshots
-# --scrot_name str
 scrot_name="neofetch-$(date +%F-%T).png"
-
-
-# }}}
-
-# Stdout options {{{
-
-# Separator for stdout mode
-# --stdout_separator string
 stdout_separator="  "
-
-# }}}
-
-# Config Options {{{
-
-
-# Enable/Disable config file
-# --config off, none
 config="on"
-
-# Path to custom config file location
-# --config path/to/config
 config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
-
-
-# }}}
-
 
 # }}}
 
 
 # Gather Info {{{
-
-
-# Set no case match.
-shopt -s nocasematch
-
 
 # Operating System {{{
 
