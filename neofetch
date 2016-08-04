@@ -60,7 +60,6 @@ printinfo () {
     info linebreak
     info cols
     info linebreak
-    info linebreak
 }
 
 
