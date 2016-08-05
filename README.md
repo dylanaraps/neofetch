@@ -91,10 +91,6 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - Alpine Linux: You also need `ncurses`.
 
 
-##### Windows (CYGWIN)
-
-- `procps-ng` or `procps`
-
 ##### iOS
 
 These dependencies can all be installed through Cydia.
@@ -130,6 +126,10 @@ These dependencies can all be installed through Cydia.
 
 - GPU: `glxinfo`
     - Not required on FreeBSD.
+
+##### Windows (CYGWIN)
+
+- `procps-ng` or `procps`
 
 \[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
 
