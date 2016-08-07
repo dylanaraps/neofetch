@@ -437,7 +437,7 @@ case "$(uname)" in
     "Darwin")  os="$(sw_vers -productName)" ;;
     *"BSD" | "DragonFly") os="BSD" ;;
     "CYGWIN"*) os="Windows" ;;
-    *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
+    *) os="Others" ;;
 esac
 
 # }}}
@@ -505,6 +505,10 @@ getdistro () {
             # Strip crap from the output of wmic
             distro="${distro/Caption'='}"
             distro="${distro/Microsoft }"
+        ;;
+
+         "Others")
+             distro="Unknown"
         ;;
     esac
 
@@ -706,6 +710,10 @@ getpackages () {
             # Count chocolatey packages
             [ -d "/cygdrive/c/ProgramData/chocolatey/lib" ] && \
                 packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
+        ;;
+
+       "Others")
+           packages="Unknown"
         ;;
     esac
 }
@@ -1105,6 +1113,10 @@ getcpu () {
 
             cpu="$cpu @ ${speed}GHz"
         ;;
+
+        "Others")
+            cpu="Unknown"
+        ;;
     esac
 
 
@@ -1330,7 +1342,7 @@ getgpu () {
             esac
         ;;
 
-        "BSD")
+        "BSD" | "Others")
             case "$distro" in
                 "FreeBSD"*)
                     gpu="$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")"
@@ -1510,7 +1522,7 @@ getsong () {
 
 getresolution () {
     case "$os" in
-        "Linux" | "BSD")
+        "Linux" | "BSD" | "Others")
             if type -p xrandr >/dev/null 2>&1; then
                 case "$refresh_rate" in
                     "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
@@ -2717,8 +2729,13 @@ colors () {
             setcolors 1 2 4 3
         ;;
 
-        "Raspbian"* | *)
+        "Raspbian"*)
             setcolors 2 1
+        ;;
+
+        *)
+            setcolors 2 1
+            ascii_distro="others"
         ;;
     esac
 
