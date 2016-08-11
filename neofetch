@@ -2663,7 +2663,7 @@ colors () {
             ascii_distro="chrome"
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"*)
+        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"*)
             setcolors 1 7 3
         ;;
 
