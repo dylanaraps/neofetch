@@ -2549,15 +2549,18 @@ esac
 
 getdefaultconfig () {
     if [ -f "/usr/share/neofetch/config" ]; then
-        source "/usr/share/neofetch/config"
+        default_config="/usr/share/neofetch/config"
 
     elif [ -f "/usr/local/share/neofetch/config" ]; then
-        source "/usr/local/share/neofetch/config"
+        default_config="/usr/local/share/neofetch/config"
 
     else
         getscriptdir
-        source "${script_dir}/config/config"
+        default_config="${script_dir}/config/config"
     fi
+
+    source "$default_config"
+    err "Sourced default config ($default_config)"
 }
 
 # }}}
