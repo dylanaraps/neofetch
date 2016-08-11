@@ -2663,7 +2663,7 @@ colors () {
             ascii_distro="chrome"
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"*)
+        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"*)
             setcolors 1 7 3
         ;;
 
@@ -2772,6 +2772,10 @@ colors () {
 
         "Windows"*)
             setcolors 1 2 4 3
+        ;;
+
+        "OpenIndiana"*)
+            setcolors 7 4
         ;;
 
         "Raspbian"* | *)

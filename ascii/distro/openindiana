@@ -2,15 +2,15 @@
 ${c1}                         .sy/
                          .yh+
 
-           -+syyyo+-      /+.
-         +ddo/---/sdh/    ym-
-       \`hm+        \`sms   ym-\`\`\`\`\`\`\`.-.
-       sm+           sm/  ym-         +s
-       hm.           /mo  ym-         /h
-       omo           ym:  ym-       \`os\`
-        smo\`       .ym+   ym-     .os-
-     \`\`  :ymy+///oyms-    ym-  .+s+.
-   ..\`     \`:+oo+/-\`      -//oyo-
+           ${c2}-+syyyo+-     ${c1} /+.
+         ${c2}+ddo/---/sdh/   ${c1} ym-
+       ${c2}\`hm+        \`sms${c1}   ym-\`\`\`\`\`\`\`.-.
+       ${c2}sm+           sm/ ${c1} ym-         +s
+       ${c2}hm.           /mo ${c1} ym-         /h
+       ${c2}omo           ym: ${c1} ym-       \`os\`
+        ${c2}smo\`       .ym+ ${c1}  ym-     .os-
+     \`\`  ${c2}:ymy+///oyms- ${c1}   ym-  .+s+.
+   ..\`     ${c2}\`:+oo+/-\`  ${c1}    -//oyo-
  -:\`                   .:oys/.
 +-               \`./oyys/.
 h+\`      \`.-:+oyyyo/-\`
