@@ -695,16 +695,18 @@ getpackages () {
         ;;
 
         "BSD")
-            # PacBSD has both pacman and pkg, but only pacman is used
-            if [[ "$distro" == "PacBSD"* ]]; then
-                packages="$(pacman -Qq --color never | wc -l)"
-            else
-                if type -p pkg_info >/dev/null 2>&1; then
-                    packages="$(pkg_info | wc -l)"
-                elif type -p pkg >/dev/null 2>&1; then
-                    packages="$(pkg info | wc -l)"
-                fi
-            fi
+            case "$distro" in
+                # PacBSD has both pacman and pkg, but only pacman is used
+                "PacBSD"*) packages="$(pacman -Qq --color never | wc -l)" ;;
+
+                *)
+                    if type -p pkg_info >/dev/null 2>&1; then
+                        packages="$(pkg_info | wc -l)"
+                    elif type -p pkg >/dev/null 2>&1; then
+                        packages="$(pkg info | wc -l)"
+                    fi
+                ;;
+            esac
         ;;
 
         "Windows")
