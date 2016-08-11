@@ -2736,7 +2736,7 @@ colors () {
             setcolors 2 7
         ;;
 
-        "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"*)
+        "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"* | "OpenIndiana"*)
             setcolors 4 7 1
         ;;
 
@@ -2772,10 +2772,6 @@ colors () {
 
         "Windows"*)
             setcolors 1 2 4 3
-        ;;
-
-        "OpenIndiana"*)
-            setcolors 7 4
         ;;
 
         "Raspbian"* | *)
