@@ -498,6 +498,9 @@ getdistro () {
 
             # Workaround for PCBSD as uname still displays FreeBSD.
             [ -f "/etc/pcbsd-lang" ] && distro="PCBSD"
+
+            # Workaround for PacBSD as uname displays FreeBSD.
+            [ -f "/etc/pacbsd-release" ] && distro="PacBSD"
         ;;
 
         "Windows")
@@ -701,12 +704,18 @@ getpackages () {
         ;;
 
         "BSD")
-            if type -p pkg_info >/dev/null 2>&1; then
-                packages="$(pkg_info | wc -l)"
+            case "$distro" in
+                # PacBSD has both pacman and pkg, but only pacman is used
+                "PacBSD"*) packages="$(pacman -Qq --color never | wc -l)" ;;
 
-            elif type -p pkg >/dev/null 2>&1; then
-                packages="$(pkg info | wc -l)"
-            fi
+                *)
+                    if type -p pkg_info >/dev/null 2>&1; then
+                        packages="$(pkg_info | wc -l)"
+                    elif type -p pkg >/dev/null 2>&1; then
+                        packages="$(pkg info | wc -l)"
+                    fi
+                ;;
+            esac
         ;;
 
         "Windows")
