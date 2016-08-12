@@ -2524,8 +2524,7 @@ getdefaultconfig () {
         default_config="${script_dir}/config/config"
     fi
 
-    if [ -f "$default_config" ]; then
-        source "$default_config"
+    if source "$default_config"; then
         err "Sourced default config ($default_config)"
     else
         err "Default config not found, continuing..."
