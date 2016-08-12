@@ -93,7 +93,6 @@ These dependencies can all be installed through Cydia.
 - `Core Utilities (/bin)`
 - `Darwin Tools`
 - `system-cmds`
-- `bc`
 - `Gawk`
 - `grep`
 
