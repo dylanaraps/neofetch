@@ -31,6 +31,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [BunsenLabs](#bunsenlabs)
     - [Slackware](#slackware)
     - [Mac OS X](#mac-os-x)
+    - [iOS](#ios)
     - [Others](#others)
 - [Post Install](#post-install)
 - [Usage](#usage)
@@ -163,6 +164,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [BunsenLabs](#bunsenlabs)
 - [Slackware](#slackware)
 - [Mac OS X](#mac-os-x)
+- [iOS](#ios)
 - [Others](#others)
 
 
@@ -267,6 +269,10 @@ Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/de
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
 
+### iOS
+
+1. Add `http://dylanaraps.com/repo` to your cydia sources.
+2. Install `neofetch` through cydia.
 
 ### Others
 
