@@ -2483,7 +2483,8 @@ trim() {
 # Error {{{
 
 err () {
-    err+="$(color 1)[!]$(color fg) $1 \n"
+    err+="$(color 1)[!]$(color fg) $1
+"
 }
 
 # }}}
@@ -2580,6 +2581,7 @@ case "$@" in
     ;;
 esac
 [ "${config:-on}" == "on" ] && getconfig 2>/dev/null
+
 
 # }}}
 
@@ -3069,8 +3071,7 @@ fi
 
 # Show error messages
 if [ "$verbose" == "on" ]; then
-    printf "%s" "${err//\\n/
-}"
+    printf "%s" "$err"
 fi
 
 # }}}
