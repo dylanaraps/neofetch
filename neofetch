@@ -2979,7 +2979,9 @@ trap 'printf "\033[?25h"; clear; exit' 2
 
 # Distro detection
 getdistro
-[ -z "$ascii_distro" ] && ascii_distro="$(trim "$distro")"
+case "${ascii_distro:-auto}" in
+    "auto") ascii_distro="$(trim "$distro")" ;;
+esac
 
 # Get colors and bold
 bold

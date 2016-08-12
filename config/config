@@ -345,6 +345,11 @@ xoffset=0
 # --ascii 'distro', path/to/ascii
 ascii="distro"
 
+# Ascii distro
+# Which distro's ascii art to display.
+# --ascii_distro 'auto', 'distro_name'
+ascii_distro="auto"
+
 # Ascii colors
 # When this is set to distro it will use your
 # ditro's colors to color the ascii.
