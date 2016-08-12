@@ -38,7 +38,7 @@ esac
 
 # Distro {{{
 
-getdistro () {
+getdistro() {
     [ "$distro" ] && return
 
     case "$os" in
@@ -125,7 +125,7 @@ getdistro () {
 
 # Title {{{
 
-gettitle () {
+gettitle() {
     title="${USER:-$(whoami)}@${HOSTNAME:-$(hostname)}"
 }
 
@@ -144,7 +144,7 @@ getkernel() {
 
 # Uptime {{{
 
-getuptime () {
+getuptime() {
     case "$os" in
         "Linux" | "Windows")
             case "$distro" in
@@ -239,7 +239,7 @@ getuptime () {
 
 # Package Count {{{
 
-getpackages () {
+getpackages() {
     case "$os" in
         "Linux" | "iPhone OS")
             type -p pacman >/dev/null 2>&1 && \
@@ -329,7 +329,7 @@ getpackages () {
 
 # Shell {{{
 
-getshell () {
+getshell() {
     case "$shell_path" in
         "on")  shell="$SHELL" ;;
         "off") shell="${SHELL##*/}" ;;
@@ -370,7 +370,7 @@ getshell () {
 # }}}
 
 # Desktop Environment {{{
-getde () {
+getde() {
     case "$os" in
         "Mac OS X") de="Aqua" ;;
         *)
@@ -396,7 +396,7 @@ getde () {
 
 # Window Manager {{{
 
-getwm () {
+getwm() {
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
         id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}' 2>/dev/null)"
         wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t 2>/dev/null)"
@@ -424,7 +424,7 @@ getwm () {
 
 # Window Manager Theme {{{
 
-getwmtheme () {
+getwmtheme() {
     [ -z "$wm" ] && getwm
     [ -z "$de" ] && getde
 
@@ -536,7 +536,7 @@ getwmtheme () {
 
 # CPU {{{
 
-getcpu () {
+getcpu() {
     # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
     # information so we have to use this block below which temporarily sets the
     # OS to 'Linux' for the duration of this function.
@@ -790,7 +790,7 @@ getcpu () {
 
 # CPU Usage {{{
 
-getcpu_usage () {
+getcpu_usage() {
     case "$os" in
         "Windows")
             cpu_usage="$(wmic cpu get loadpercentage /value)"
@@ -826,7 +826,7 @@ getcpu_usage () {
 
 # GPU {{{
 
-getgpu () {
+getgpu() {
    case "$os" in
        "Linux")
             gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
@@ -1020,7 +1020,7 @@ getgpu () {
 
 # Memory {{{
 
-getmemory () {
+getmemory() {
     case "$os" in
         "Linux" | "Windows")
             if grep -F "MemAvail" /proc/meminfo >/dev/null 2>&1; then
@@ -1073,7 +1073,7 @@ getmemory () {
 
 # Song {{{
 
-getsong () {
+getsong() {
     if mpc version >/dev/null 2>&1; then
         song="$(mpc current 2>/dev/null)"
         state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
@@ -1153,7 +1153,7 @@ getsong () {
 
 # Resolution {{{
 
-getresolution () {
+getresolution() {
     case "$os" in
         "Linux" | "BSD" | "Solaris")
             if type -p xrandr >/dev/null 2>&1; then
@@ -1207,7 +1207,7 @@ getresolution () {
 
 # Theme/Icons/Font {{{
 
-getstyle () {
+getstyle() {
     # Fix weird output when the function
     # is run multiple times.
     unset gtk2theme gtk3theme theme path
@@ -1360,16 +1360,16 @@ getstyle () {
     fi
 }
 
-gettheme () {
+gettheme() {
     getstyle theme
 }
 
-geticons () {
+geticons() {
     getstyle icons
     icons="$theme"
 }
 
-getfont () {
+getfont() {
     getstyle font
     font="$theme"
 }
@@ -1378,7 +1378,7 @@ getfont () {
 
 # Terminal Emulator {{{
 
-getterm () {
+getterm() {
     # Check $PPID for terminal emulator.
     case "$os" in
         "Mac OS X")
@@ -1420,7 +1420,7 @@ getterm () {
 
 # Terminal Emulator Font {{{
 
-gettermfont () {
+gettermfont() {
     [ -z "$term" ] && getterm
 
     case "$term" in
@@ -1468,7 +1468,7 @@ gettermfont () {
 
 # Disk Usage {{{
 
-getdisk () {
+getdisk() {
     # df flags
     case "$os" in
         "Linux" | "iPhone OS" | "Windows" | "Solaris") df_flags="-h -l --total" ;;
@@ -1520,7 +1520,7 @@ getdisk () {
 
 # Battery Usage {{{
 
-getbattery () {
+getbattery() {
     case "$os" in
         "Linux")
             if [ "$(ls /sys/class/power_supply/)" ]; then
@@ -1616,7 +1616,7 @@ getbattery () {
 
 # IP Address {{{
 
-getlocalip () {
+getlocalip() {
     case "$os" in
         "Linux")
             localip="$(ip route get 1 | awk '{print $NF;exit}')"
@@ -1637,7 +1637,7 @@ getlocalip () {
     esac
 }
 
-getpublicip () {
+getpublicip() {
     if type -p dig >/dev/null 2>&1; then
         publicip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2>/dev/null)"
     fi
@@ -1655,7 +1655,7 @@ getpublicip () {
 
 # Logged In Users {{{
 
-getusers () {
+getusers() {
     users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
     users="${users%\,*}"
 }
@@ -1664,7 +1664,7 @@ getusers () {
 
 # Birthday {{{
 
-getbirthday () {
+getbirthday() {
     case "$os" in
         "linux" | "iPhone OS")
             birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
@@ -1732,7 +1732,7 @@ getbirthday () {
 
 # Terminal colors {{{
 
-getcols () {
+getcols() {
     if [ "$color_blocks" == "on" ]; then
         # Convert the width to space chars.
         block_width="$(printf "%$((block_width-=1))s")"
@@ -1770,7 +1770,7 @@ getcols () {
 
 # Wallpaper {{{
 
-getwallpaper () {
+getwallpaper() {
     case "$os" in
         "Linux" | "BSD")
             if type -p feh >/dev/null 2>&1 && [ -f "$HOME/.fehbg" ]; then
@@ -1825,7 +1825,7 @@ getwallpaper () {
 
 # Ascii {{{
 
-getascii () {
+getascii() {
     if [ ! -f "$ascii" ] || [ "$ascii" == "distro" ]; then
         # Error message
         [ "$ascii" != "distro" ] && \
@@ -1890,7 +1890,7 @@ getascii () {
 
 # Image {{{
 
-getimage () {
+getimage() {
     # Fallback to ascii mode if imagemagick isn't installed.
     type -p convert >/dev/null 2>&1 || image="ascii"
 
@@ -2063,7 +2063,7 @@ getimage () {
     img="$thumbnail_dir/$imgname"
 }
 
-takescrot () {
+takescrot() {
     $scrot_cmd "${scrot_dir}${scrot_name}"
 }
 
@@ -2072,7 +2072,7 @@ takescrot () {
 # Find w3m-img {{{
 
 # Find w3mimgdisplay automatically
-getw3m_img_path () {
+getw3m_img_path() {
     if [ -x "$w3m_img_path" ]; then
         return
 
@@ -2105,7 +2105,7 @@ getw3m_img_path () {
 
 # Info {{{
 
-info () {
+info() {
     # $1 is the subtitle
     subtitle="$1"
 
@@ -2162,7 +2162,7 @@ info () {
 
 # Prin {{{
 
-prin () {
+prin() {
     string="$1${2:+: $2}"
 
     # Fix rendering issues with w3m and lines that
@@ -2194,7 +2194,7 @@ prin () {
 
 # Stdout {{{
 
-stdout () {
+stdout() {
     # Read args early for the separator
     stdout_separator_flag="$(awk -F '--stdout_separator ' '{printf $2}' <<< "${args[@]}")"
     stdout_separator_flag="${stdout_separator_flag/ '--'*}"
@@ -2222,7 +2222,7 @@ stdout () {
 
 # Underline {{{
 
-getunderline () {
+getunderline() {
     case "$underline_enabled" in
         "on")
             underline="$(printf %"$length"s)"
@@ -2236,7 +2236,7 @@ getunderline () {
 
 # Colors {{{
 
-colors () {
+colors() {
     # Change color of logo based on distro
     case "$ascii_distro" in
         "Arch"* | "Antergos"*)
@@ -2378,7 +2378,7 @@ colors () {
         setcolors ${ascii_colors[@]}
 }
 
-setcolors () {
+setcolors() {
     c1="$(color "$1")${ascii_bold}"
     c2="$(color "$2")${ascii_bold}"
     c3="$(color "$3")${ascii_bold}"
@@ -2419,7 +2419,7 @@ setcolors () {
     esac
 }
 
-color () {
+color() {
     case "$1" in
         [0-7]) printf "%b%s" "\033[0m\033[3${1}m" ;;
         "fg") printf "%b%s" "\033[0m" ;;
@@ -2432,7 +2432,7 @@ color () {
 
 # Bold {{{
 
-bold () {
+bold() {
     case "$ascii_bold" in
         "on") ascii_bold="\033[1m" ;;
         "off") ascii_bold="" ;;
@@ -2448,7 +2448,7 @@ bold () {
 
 # Linebreak {{{
 
-getlinebreak () {
+getlinebreak() {
    linebreak=" "
 }
 
@@ -2482,7 +2482,7 @@ trim() {
 
 # Error {{{
 
-err () {
+err() {
     err+="$(color 1)[!]$(color fg) $1
 "
 }
@@ -2491,7 +2491,7 @@ err () {
 
 # Get script directory {{{
 
-getscriptdir () {
+getscriptdir() {
     [ "$script_dir" ] && return
 
     # Use $0 to get the script's physical path.
@@ -2513,7 +2513,7 @@ getscriptdir () {
 
 # Source default config {{{
 
-getdefaultconfig () {
+getdefaultconfig() {
     if [ -f "/usr/share/neofetch/config" ]; then
         default_config="/usr/share/neofetch/config"
 
@@ -2536,7 +2536,7 @@ getdefaultconfig () {
 
 # Source Config {{{
 
-getuserconfig () {
+getuserconfig() {
     # Check $config_file
     if [ -f "$config_file" ]; then
         source "$config_file"
@@ -2610,7 +2610,7 @@ bar() {
 
 # Cache {{{
 
-cache () {
+cache() {
     mkdir -p "$3/neofetch"
     echo "${1/*-}=\"$2\"" > "$3/neofetch/${1/*-}"
 }
@@ -2619,7 +2619,7 @@ cache () {
 
 # KDE Config directory {{{
 
-kdeconfigdir () {
+kdeconfigdir() {
     if [ -n "$KDE_CONFIG_DIR" ]; then
         kde_config_dir="$KDE_CONFIG_DIR"
 
@@ -2643,7 +2643,7 @@ kdeconfigdir () {
 # Usage {{{
 
 
-usage () { cat << EOF
+usage() { cat << EOF
 
     usage: neofetch --option "value" --option "value"
 
@@ -2936,7 +2936,7 @@ while [ "$1" ]; do
             readonly memory_display="infobar"
             readonly disk_display="infobar"
 
-            printinfo () {
+            printinfo() {
                 if [ "$TRAVIS_OS_NAME" ]; then
                     info linebreak
                     info linebreak
@@ -2972,7 +2972,7 @@ done
 
 # Call Functions and Finish Up {{{
 
-main () {
+main() {
     # Restore cursor and clear screen on ctrl+c
     trap 'printf "\033[?25h"; clear; exit' 2
 
