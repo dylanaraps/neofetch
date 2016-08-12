@@ -16,11 +16,11 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export LC_ALL=C
 export LANG=C
 
-# Gather Info {{{
-
-
 # Set no case match.
 shopt -s nocasematch
+
+
+# Gather Info {{{
 
 
 # Operating System {{{
