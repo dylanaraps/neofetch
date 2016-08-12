@@ -2480,6 +2480,14 @@ trim() {
 # Other {{{
 
 
+# Error {{{
+
+err () {
+    err+="$(color 1)[!]$(color fg) $1 \n"
+}
+
+# }}}
+
 # Get script directory {{{
 
 getscriptdir () {
@@ -2499,6 +2507,34 @@ getscriptdir () {
     # Final directory
     script_dir="$(pwd -P)"
 }
+
+# }}}
+
+# Source default config {{{
+
+getdefaultconfig () {
+    if [ -f "/usr/share/neofetch/config" ]; then
+        default_config="/usr/share/neofetch/config"
+
+    elif [ -f "/usr/local/share/neofetch/config" ]; then
+        default_config="/usr/local/share/neofetch/config"
+
+    else
+        getscriptdir
+        default_config="${script_dir}/config/config"
+    fi
+
+    if [ -f "$default_config" ]; then
+        source "$default_config"
+        err "Sourced default config ($default_config)"
+    else
+        err "Default config not found, continuing..."
+    fi
+}
+
+# Source config file
+getdefaultconfig 2>/dev/null
+
 
 # }}}
 
@@ -2541,27 +2577,7 @@ case "$@" in
         config="off"
     ;;
 esac
-[ "$config" == "on" ] && getconfig 2>/dev/null
-
-# }}}
-
-# Source default config {{{
-
-getdefaultconfig () {
-    if [ -f "/usr/share/neofetch/config" ]; then
-        default_config="/usr/share/neofetch/config"
-
-    elif [ -f "/usr/local/share/neofetch/config" ]; then
-        default_config="/usr/local/share/neofetch/config"
-
-    else
-        getscriptdir
-        default_config="${script_dir}/config/config"
-    fi
-
-    source "$default_config"
-    err "Sourced default config ($default_config)"
-}
+[ "${config:-on}" == "on" ] && getconfig 2>/dev/null
 
 # }}}
 
@@ -2614,14 +2630,6 @@ kdeconfigdir () {
     elif type -p kde-config >/dev/null 2>&1; then
         kde_config_dir="$(kde-config --localprefix)"
     fi
-}
-
-# }}}
-
-# Error {{{
-
-err () {
-    err+="$(color 1)[!]$(color fg) $1 \n"
 }
 
 # }}}
@@ -2961,10 +2969,6 @@ done
 
 
 # Call Functions and Finish Up {{{
-
-
-# Source config file
-getdefaultconfig
 
 # Restore cursor and clear screen on ctrl+c
 trap 'printf "\033[?25h"; clear; exit' 2
