@@ -2935,6 +2935,10 @@ while [ "$1" ]; do
                 info linebreak
                 printf "%b%s" "\033[$(tput lines)H"
             }
+
+            # Set the test func to readonly so a config source
+            # doesn't overwrite it.
+            readonly -f printinfo
         ;;
 
         -v) verbose="on" ;;
