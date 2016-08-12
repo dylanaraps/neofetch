@@ -2535,7 +2535,6 @@ getdefaultconfig () {
 # Source config file
 getdefaultconfig 2>/dev/null
 
-
 # }}}
 
 # Source Config {{{
