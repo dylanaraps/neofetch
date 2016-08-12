@@ -2920,11 +2920,11 @@ while [ "$1" ]; do
         --test)
             info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
 
-            refresh_rate="on"
-            shell_version="on"
-            cpu_display="infobar"
-            memory_display="infobar"
-            disk_display="infobar"
+            readonly refresh_rate="on"
+            readonly shell_version="on"
+            readonly cpu_display="infobar"
+            readonly memory_display="infobar"
+            readonly disk_display="infobar"
 
             printinfo () {
                 if [ "$TRAVIS_OS_NAME" ]; then
