@@ -11,4 +11,4 @@ before_install:
 
 script:
     - sudo make install
-    - time neofetch --test --ascii --config off --ascii_distro travis
+    - time neofetch --ascii --config off --ascii_distro travis -v --test
