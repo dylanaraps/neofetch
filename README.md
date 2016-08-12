@@ -31,7 +31,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [BunsenLabs](#bunsenlabs)
     - [Slackware](#slackware)
     - [Mac OS X](#mac-os-x)
-    - [iOS](#ios)
+    - [iOS](#ios-1)
     - [Others](#others)
 - [Post Install](#post-install)
 - [Usage](#usage)
@@ -164,7 +164,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [BunsenLabs](#bunsenlabs)
 - [Slackware](#slackware)
 - [Mac OS X](#mac-os-x)
-- [iOS](#ios)
+- [iOS](##ios-1)
 - [Others](#others)
 
 
