@@ -728,11 +728,11 @@ getcpu() {
             cpu="${cpu/ @*}"
 
             # Get cpu speed
-            speed="$(psrinfo -v | tail -2 | head -1 | awk '{print $6}')"
+            speed="$(psrinfo -v | awk '/operates at/ {print $6}')"
             speed="$((speed / 100))"
 
             # Get cpu cores
-            cores="$(kstat -m cpu_info | grep "chip_id" | wc -l | tr -d ' ')"
+            cores="$(kstat -m cpu_info | grep -c "chip_id")"
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
