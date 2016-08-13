@@ -2992,8 +2992,8 @@ main() {
     # Clear the scren
     clear
 
-    # Hide the cursor
-    printf "\033[?25l"
+    # Hide the cursor and disable line wrap
+    printf "\033[?25l\033[?7l"
 
     # Images {{{
 
@@ -3038,9 +3038,6 @@ main() {
     fi
 
     # }}}
-
-    # Disable line wrap
-    printf "\033[?7l"
 
     # Move cursor to the top
     [ "$image" != "off" ] && printf "\033[0H"
