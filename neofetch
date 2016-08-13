@@ -19,20 +19,20 @@ export LANG=C
 # Set no case match.
 shopt -s nocasematch
 
-
 # Gather Info {{{
-
 
 # Operating System {{{
 
-case "$(uname)" in
-    "Linux")   os="Linux" ;;
-    "Darwin")  os="$(sw_vers -productName)" ;;
-    *"BSD" | "DragonFly") os="BSD" ;;
-    "CYGWIN"*) os="Windows" ;;
-    "SunOS") os="Solaris" ;;
-    *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
-esac
+getos() {
+    case "$(uname)" in
+        "Linux")   os="Linux" ;;
+        "Darwin")  os="$(sw_vers -productName)" ;;
+        *"BSD" | "DragonFly") os="BSD" ;;
+        "CYGWIN"*) os="Windows" ;;
+        "SunOS") os="Solaris" ;;
+        *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
+    esac
+}
 
 # }}}
 
@@ -1764,9 +1764,7 @@ getcols() {
 
 # }}}
 
-
 # Images {{{
-
 
 # Wallpaper {{{
 
@@ -2135,12 +2133,9 @@ getimagebackend() {
 
 # }}}
 
-
 # }}}
 
-
 # Text Formatting {{{
-
 
 # Info {{{
 
@@ -2512,12 +2507,9 @@ trim() {
 
 # }}}
 
-
 # }}}
 
-
 # Other {{{
-
 
 # Error {{{
 
@@ -2696,12 +2688,9 @@ dynamicprompt() {
 
 # }}}
 
-
 # }}}
 
-
 # Usage {{{
-
 
 usage() { cat << EOF
 
@@ -2834,12 +2823,9 @@ EOF
 exit 1
 }
 
-
 # }}}
 
-
 # Args {{{
-
 
 while [ "$1" ]; do
     case $1 in
@@ -3026,13 +3012,13 @@ while [ "$1" ]; do
     shift
 done
 
-
 # }}}
-
 
 # Call Functions and Finish Up {{{
 
 main() {
+    getos
+
     # Restore cursor and clear screen on ctrl+c
     trap 'printf "\033[?25h"; clear; exit' 2
 
