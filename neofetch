@@ -2981,9 +2981,8 @@ main() {
 
     # Distro detection
     getdistro
-    case "${ascii_distro:-auto}" in
-        "auto") ascii_distro="$(trim "$distro")" ;;
-    esac
+    [ "${ascii_distro:-auto}" == "auto" ] && \
+        ascii_distro="$(trim "$distro")"
 
     # Get colors and bold
     bold
@@ -3073,7 +3072,7 @@ main() {
     # Show error messages
     [ "$verbose" == "on" ] && printf "%s" "$err"
 
-    # Reset exit status of the tests above.
+    # Reset exit status of the tests above
     printf "%s"
 }
 
