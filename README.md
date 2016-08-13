@@ -89,6 +89,8 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 These dependencies can all be installed through Cydia.
 
+Note: The cydia package installs these dependencies for you.
+
 - `Bourne-Again SHell`
 - `Core Utilities`
 - `Core Utilities (/bin)`
