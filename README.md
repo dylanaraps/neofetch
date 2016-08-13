@@ -386,7 +386,6 @@ alias neofetch2="neofetch \
     --birthday_time on/off      Enable/Disable showing the time in birthday output
     --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
-
     Text Formatting:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
@@ -394,13 +393,11 @@ alias neofetch2="neofetch \
     --underline_char char       Character to use when underlining title
     --bold on/off               Enable/Disable bold text
 
-
     Color Blocks:
     --color_blocks on/off       Enable/Disable the color blocks
     --block_width num           Width of color blocks in spaces
     --block_height num          Height of color blocks in lines
     --block_range start end     Range of colors to print as blocks
-
 
     Progress Bars:
     --progress_char 'elapsed char' 'total char'
@@ -417,7 +414,6 @@ alias neofetch2="neofetch \
                                 Takes: bar, infobar, barinfo, off
     --disk_display mode         Progress bar mode.
                                 Takes: bar, infobar, barinfo, off
-
 
     Image:
     --image type                Image source. Where and what image we display.
@@ -440,7 +436,6 @@ alias neofetch2="neofetch \
                                 move the text closer to the left side.
     --clean                     Remove all cropped images
 
-
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
                                 distro, /path/to/ascii
@@ -450,19 +445,16 @@ alias neofetch2="neofetch \
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
     --ascii_bold on/off         Whether or not to bold the ascii logo.
 
-
     Stdout:
     --stdout info info          Launch neofetch in stdout mode which prints the info
                                 in a plain-text format that you can use with
                                 lemonbar etc.
     --stdout_separator string   String to use as a separator in stdout mode.
 
-
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     --scrot_cmd cmd             Screenshot program to launch
-
 
     Other:
     --config /path/to/config    Specify a path to a custom config file
