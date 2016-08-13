@@ -87,8 +87,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 ##### iOS
 
-These dependencies can all be installed through Cydia.
-
+These dependencies can all be installed through Cydia.<br \>
 Note: The cydia package installs these dependencies for you.
 
 - `Bourne-Again SHell`
