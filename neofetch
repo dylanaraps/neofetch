@@ -83,10 +83,7 @@ getmodel() {
             esac
         ;;
 
-		"Mac OS X")
-			model="$(sysctl hw.model)"
-			model="${model//hw.model: /}"
-		;;
+		"Mac OS X") model="$(sysctl -n hw.model)" ;;
     esac
 }
 
