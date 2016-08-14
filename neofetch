@@ -82,6 +82,8 @@ getmodel() {
                 "ipod7,1") model="iPod touch 6G" ;;
             esac
         ;;
+
+		"Mac OS X") model="$(sysctl -n hw.model)" ;;
     esac
 }
 
