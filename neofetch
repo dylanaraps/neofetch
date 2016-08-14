@@ -63,16 +63,16 @@ getdistro() {
             osx_version="$(sw_vers -productVersion)"
             osx_build="$(sw_vers -buildVersion)"
 
-            case "${osx_version%.*}" in
-                "10.4") codename="Mac OS X Tiger" ;;
-                "10.5") codename="Mac OS X Leopard" ;;
-                "10.6") codename="Mac OS X Snow Leopard" ;;
-                "10.7") codename="Mac OS X Lion" ;;
-                "10.8") codename="OS X Mountain Lion" ;;
-                "10.9") codename="OS X Mavericks" ;;
-                "10.10") codename="OS X Yosemite" ;;
-                "10.11") codename="OS X El Capitan" ;;
-                "10.12") codename="macOS Sierra" ;;
+            case "$osx_version" in
+                "10.4"*) codename="Mac OS X Tiger" ;;
+                "10.5"*) codename="Mac OS X Leopard" ;;
+                "10.6"*) codename="Mac OS X Snow Leopard" ;;
+                "10.7"*) codename="Mac OS X Lion" ;;
+                "10.8"*) codename="OS X Mountain Lion" ;;
+                "10.9"*) codename="OS X Mavericks" ;;
+                "10.10"*) codename="OS X Yosemite" ;;
+                "10.11"*) codename="OS X El Capitan" ;;
+                "10.12"*) codename="macOS Sierra" ;;
                 *) codename="Mac OS X" ;;
             esac
             distro="$codename $osx_version $osx_build"
@@ -2324,7 +2324,7 @@ colors() {
             setcolors 4 8
         ;;
 
-        *"OS X"* | *"iOS"* | "Mac")
+        *"OS X"* | *"iOS"* | "Mac" | *"macOS"*)
             setcolors 2 3 1 1 5 4
             ascii_distro="mac"
         ;;
