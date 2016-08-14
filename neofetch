@@ -2512,7 +2512,7 @@ trim() {
 # Error {{{
 
 err() {
-    err+="$(color 1)[!]$(color fg) $1
+    err+="$(color 1)[!]\033[0m $1
 "
 }
 
@@ -2597,17 +2597,6 @@ getuserconfig() {
     source "$config_file"
     err "Sourced user config    ($config_file)"
 }
-
-# Check the commandline flags early for '--config none/off'
-case "$@" in
-    *"--config off"* | *'--config "off"'* | *"--config 'off'"* | \
-    *"--config none"* | *'--config "none"'* | *"--config 'none'"* | *"--stdout"*)
-        config="off"
-    ;;
-esac
-
-getdefaultconfig 2>/dev/null
-[ "${config:-on}" == "on" ] && getuserconfig 2>/dev/null
 
 # }}}
 
@@ -2816,196 +2805,213 @@ exit 1
 
 # Args {{{
 
-while [ "$1" ]; do
-    case $1 in
-        # Info
-        --os_arch) os_arch="$2" ;;
-        --osx_buildversion) osx_buildversion="$2" ;;
-        --osx_codename) osx_codename="$2" ;;
-        --cpu_cores) cpu_cores="$2" ;;
-        --speed_type) speed_type="$2" ;;
-        --kernel_shorthand) kernel_shorthand="$2" ;;
-        --uptime_shorthand) uptime_shorthand="$2" ;;
-        --cpu_shorthand) cpu_shorthand="$2" ;;
-        --gpu_shorthand) gpu_shorthand="$2" ;;
-        --refresh_rate) refresh_rate="$2" ;;
-        --gtk_shorthand) gtk_shorthand="$2" ;;
-        --gtk2) gtk2="$2" ;;
-        --gtk3) gtk3="$2" ;;
-        --shell_path) shell_path="$2" ;;
-        --shell_version) shell_version="$2" ;;
-        --battery_num) battery_num="$2" ;;
-        --battery_shorthand) battery_shorthand="$2" ;;
-        --ip_host) public_ip_host="$2" ;;
-        --song_shorthand) song_shorthand="$2" ;;
-        --birthday_shorthand) birthday_shorthand="$2" ;;
-        --birthday_time) birthday_time="$2" ;;
-        --birthday_format) birthday_format="$2" ;;
-        --disable)
-            for func in "$@"; do
-                case "$func" in
-                    "--disable") continue ;;
-                    "--"*) return ;;
-                    *) unset -f "get$func" ;;
-                esac
-            done
-        ;;
-
-        # Text Colors
-        --colors)
-            unset colors
-            for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
-                case "$arg" in
-                    "--"*) break ;;
-                    *) colors+=($arg)
-                esac
-            done
-            colors+=(7 7 7 7 7 7)
-        ;;
-
-        # Text Formatting
-        --underline) underline_enabled="$2" ;;
-        --underline_char) underline_char="$2" ;;
-        --bold) bold="$2" ;;
-
-        # Color Blocks
-        --color_blocks) color_blocks="$2" ;;
-        --block_range) start="$2"; end="$3" ;;
-        --block_width) block_width="$2" ;;
-        --block_height) block_height="$2" ;;
-
-        # Progress Bars
-        --progress_char)
-            progress_char_elapsed="$2"
-            progress_char_total="$3"
-        ;;
-        --progress_border) progress_border="$2" ;;
-        --progress_length) progress_length="$2" ;;
-        --progress_colors)
-            progress_color_elapsed="$2"
-            progress_color_total="$3"
-        ;;
-        --cpu_display) cpu_display="$2" ;;
-        --memory_display) memory_display="$2" ;;
-        --battery_display) battery_display="$2" ;;
-        --disk_display) disk_display="$2" ;;
-
-        # Image
-        --image)
-            image="$2"
-            case "$2" in "--"* | "") image="ascii" ;; esac
-        ;;
-
-        --size) image_size="$2" ;;
-        --crop_mode) crop_mode="$2" ;;
-        --crop_offset) crop_offset="$2" ;;
-        --xoffset) xoffset="$2" ;;
-        --yoffset) yoffset="$2" ;;
-        --gap) gap="$2" ;;
-        --clean)
-            rm -rf "$thumbnail_dir"
-            rm -rf "/Library/Caches/neofetch/"
-            exit
-        ;;
-
-        # Ascii
-        --ascii)
-            image="ascii"
-            ascii="$2"
-            case "$2" in "--"* | "") ascii="distro" ;; esac
-        ;;
-
-        --ascii_colors)
-            unset ascii_colors
-            for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
-                case "$arg" in
-                    "--"*) break ;;
-                    *) ascii_colors+=($arg)
-                esac
-            done
-            ascii_colors+=(7 7 7 7 7 7)
-        ;;
-
-        --ascii_distro)
-            ascii_distro="$2"
-            case "$2" in "--"* | "") ascii_distro="$distro" ;; esac
-        ;;
-
-        --ascii_logo_size) ascii_logo_size="$2" ;;
-        --ascii_bold) ascii_bold="$2" ;;
-
-        # Screenshot
-        --scrot | -s)
-            scrot="on"
-            if [ "$2" ]; then
-                scrot_name="${2##*/}"
-                scrot_dir="${2/$scrot_name}"
-            fi
-        ;;
-        --scrot_cmd) scrot_cmd="$2" ;;
-
-        # Stdout
-        --stdout)
-            unset info_color prin clear bar
-            stdout_mode="on"
+getargs() {
+    # Check the commandline flags early for '--config none/off'
+    case "$@" in
+        *"--config off"* | *'--config "off"'* | *"--config 'off'"* | \
+        *"--config none"* | *'--config "none"'* | *"--config 'none'"* | *"--stdout"*)
             config="off"
-            case "$2" in
-                "--"* | "") printf "%s\n" "--stdout requires at least one argument"; exit ;;
-                *) shift; args=("$@"); stdout ;;
-            esac
         ;;
 
-        # Other
-        --config)
-            case "$2" in
-                "none" | "off") config="off" ;;
-                *) config_file="$2"; config="on"; getuserconfig 2>/dev/null ;;
-            esac
-        ;;
-        --test)
-            info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
-
-            readonly refresh_rate="on"
-            readonly shell_version="on"
-            readonly cpu_display="infobar"
-            readonly memory_display="infobar"
-            readonly disk_display="infobar"
-
-            printinfo() {
-                if [ "$TRAVIS_OS_NAME" ]; then
-                    info linebreak
-                    info linebreak
-                fi
-
-                for func in "${info[@]}"; do
-                    info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" "$func"
-                done
-
-                info linebreak
-                info cols
-                info linebreak
-                printf "%b%s" "\033[$(tput lines)H"
-            }
-
-            # Set the test func to readonly so a config source
-            # doesn't overwrite it.
-            readonly -f printinfo
-        ;;
-
-        -v) verbose="on" ;;
-        -vv) set -x; verbose="on" ;;
-        --help) usage ;;
-        --version) printf "%s\n" "Neofetch 1.8"; exit ;;
+        *"--config --"*) ;;
+        *"--config"*) config="off" ;;
     esac
 
-    shift
-done
+    [ "${config:-on}" == "on" ] && getuserconfig 2>/dev/null
+
+    while [ "$1" ]; do
+        case $1 in
+            # Info
+            --os_arch) os_arch="$2" ;;
+            --osx_buildversion) osx_buildversion="$2" ;;
+            --osx_codename) osx_codename="$2" ;;
+            --cpu_cores) cpu_cores="$2" ;;
+            --speed_type) speed_type="$2" ;;
+            --kernel_shorthand) kernel_shorthand="$2" ;;
+            --uptime_shorthand) uptime_shorthand="$2" ;;
+            --cpu_shorthand) cpu_shorthand="$2" ;;
+            --gpu_shorthand) gpu_shorthand="$2" ;;
+            --refresh_rate) refresh_rate="$2" ;;
+            --gtk_shorthand) gtk_shorthand="$2" ;;
+            --gtk2) gtk2="$2" ;;
+            --gtk3) gtk3="$2" ;;
+            --shell_path) shell_path="$2" ;;
+            --shell_version) shell_version="$2" ;;
+            --battery_num) battery_num="$2" ;;
+            --battery_shorthand) battery_shorthand="$2" ;;
+            --ip_host) public_ip_host="$2" ;;
+            --song_shorthand) song_shorthand="$2" ;;
+            --birthday_shorthand) birthday_shorthand="$2" ;;
+            --birthday_time) birthday_time="$2" ;;
+            --birthday_format) birthday_format="$2" ;;
+            --disable)
+                for func in "$@"; do
+                    case "$func" in
+                        "--disable") continue ;;
+                        "--"*) return ;;
+                        *) unset -f "get$func" ;;
+                    esac
+                done
+            ;;
+
+            # Text Colors
+            --colors)
+                unset colors
+                for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
+                    case "$arg" in
+                        "--"*) break ;;
+                        *) colors+=($arg)
+                    esac
+                done
+                colors+=(7 7 7 7 7 7)
+            ;;
+
+            # Text Formatting
+            --underline) underline_enabled="$2" ;;
+            --underline_char) underline_char="$2" ;;
+            --bold) bold="$2" ;;
+
+            # Color Blocks
+            --color_blocks) color_blocks="$2" ;;
+            --block_range) start="$2"; end="$3" ;;
+            --block_width) block_width="$2" ;;
+            --block_height) block_height="$2" ;;
+
+            # Progress Bars
+            --progress_char)
+                progress_char_elapsed="$2"
+                progress_char_total="$3"
+            ;;
+            --progress_border) progress_border="$2" ;;
+            --progress_length) progress_length="$2" ;;
+            --progress_colors)
+                progress_color_elapsed="$2"
+                progress_color_total="$3"
+            ;;
+            --cpu_display) cpu_display="$2" ;;
+            --memory_display) memory_display="$2" ;;
+            --battery_display) battery_display="$2" ;;
+            --disk_display) disk_display="$2" ;;
+
+            # Image
+            --image)
+                image="$2"
+                case "$2" in "--"* | "") image="ascii" ;; esac
+            ;;
+
+            --size) image_size="$2" ;;
+            --crop_mode) crop_mode="$2" ;;
+            --crop_offset) crop_offset="$2" ;;
+            --xoffset) xoffset="$2" ;;
+            --yoffset) yoffset="$2" ;;
+            --gap) gap="$2" ;;
+            --clean)
+                rm -rf "$thumbnail_dir"
+                rm -rf "/Library/Caches/neofetch/"
+                exit
+            ;;
+
+            # Ascii
+            --ascii)
+                image="ascii"
+                ascii="$2"
+                case "$2" in "--"* | "") ascii="distro" ;; esac
+            ;;
+
+            --ascii_colors)
+                unset ascii_colors
+                for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
+                    case "$arg" in
+                        "--"*) break ;;
+                        *) ascii_colors+=($arg)
+                    esac
+                done
+                ascii_colors+=(7 7 7 7 7 7)
+            ;;
+
+            --ascii_distro)
+                ascii_distro="$2"
+                case "$2" in "--"* | "") ascii_distro="$distro" ;; esac
+            ;;
+
+            --ascii_logo_size) ascii_logo_size="$2" ;;
+            --ascii_bold) ascii_bold="$2" ;;
+
+            # Screenshot
+            --scrot | -s)
+                scrot="on"
+                if [ "$2" ]; then
+                    scrot_name="${2##*/}"
+                    scrot_dir="${2/$scrot_name}"
+                fi
+            ;;
+            --scrot_cmd) scrot_cmd="$2" ;;
+
+            # Stdout
+            --stdout)
+                unset info_color prin clear bar
+                stdout_mode="on"
+                config="off"
+                case "$2" in
+                    "--"* | "") printf "%s\n" "--stdout requires at least one argument"; exit ;;
+                    *) shift; args=("$@"); stdout ;;
+                esac
+            ;;
+
+            # Other
+            --config)
+                case "$2" in
+                    "none" | "off") config="off" ;;
+                    *) config_file="$2"; config="on"; getuserconfig 2>/dev/null ;;
+                esac
+            ;;
+            --test)
+                info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
+
+                readonly refresh_rate="on"
+                readonly shell_version="on"
+                readonly cpu_display="infobar"
+                readonly memory_display="infobar"
+                readonly disk_display="infobar"
+
+                printinfo() {
+                    if [ "$TRAVIS_OS_NAME" ]; then
+                        info linebreak
+                        info linebreak
+                    fi
+
+                    for func in "${info[@]}"; do
+                        info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" "$func"
+                    done
+
+                    info linebreak
+                    info cols
+                    info linebreak
+                    printf "%b%s" "\033[$(tput lines)H"
+                }
+
+                # Set the test func to readonly so a config source
+                # doesn't overwrite it.
+                readonly -f printinfo
+            ;;
+
+            -v) verbose="on" ;;
+            -vv) set -x; verbose="on" ;;
+            --help) usage ;;
+            --version) printf "%s\n" "Neofetch 1.8"; exit ;;
+        esac
+
+        shift
+    done
+}
 
 # }}}
 
 # Call Functions and Finish Up {{{
 
 main() {
+    getdefaultconfig 2>/dev/null
+    getargs "$@"
     getos
 
     # Restore cursor and clear screen on ctrl+c
@@ -3058,12 +3064,12 @@ main() {
     [ "$scrot" == "on" ] && takescrot
 
     # Show error messages
-    [ "$verbose" == "on" ] && printf "%s" "$err"
+    [ "$verbose" == "on" ] && printf "%b%s" "$err"
 
     # Reset exit status of the tests above
     printf "%s"
 }
 
-main
+main "$@"
 
 # }}}
