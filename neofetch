@@ -2648,6 +2648,8 @@ getuserconfig() {
     err "Sourced user config    ($config_file)"
 }
 
+getdefaultconfig 2>/dev/null
+
 # Check the commandline flags early for '--config none/off'
 case "$@" in
     *"--config off"* | *'--config "off"'* | *"--config 'off'"* | \
@@ -2656,7 +2658,6 @@ case "$@" in
     ;;
 esac
 
-getdefaultconfig 2>/dev/null
 [ "${config:-on}" == "on" ] && getuserconfig 2>/dev/null
 
 # }}}
