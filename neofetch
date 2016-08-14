@@ -2209,15 +2209,18 @@ prin() {
         bold=
     fi
 
+    # Reset colors/bold
+    reset="\033[0m"
+
     # Format the output
-    string="${string/:/"\033[0m"${colon_color}:${info_color}}"
+    string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
 
     # Trim whitespace
     string="$(trim "$string")"
 
     # Print the info
-    printf "%b%s\n" "${padding}${string}\033[0m"
+    printf "%b%s\n" "${padding}${string}${reset}"
 }
 
 # }}}
