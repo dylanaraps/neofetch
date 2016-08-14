@@ -45,6 +45,7 @@ getmodel() {
             model="${model/To Be Filled*}"
         ;;
 
+        "Mac OS X") model="$(sysctl -n hw.model)" ;;
         "iPhone OS")
             case "${ios_model:-$(uname -m)}" in
                 "iPad1,1") model="iPad" ;;
@@ -82,8 +83,6 @@ getmodel() {
                 "ipod7,1") model="iPod touch 6G" ;;
             esac
         ;;
-
-		"Mac OS X") model="$(sysctl -n hw.model)" ;;
     esac
 }
 
@@ -3018,7 +3017,7 @@ getargs() {
                 esac
             ;;
             --test)
-                info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
+                info=(title underline model distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
 
                 refresh_rate="on"
                 shell_version="on"
