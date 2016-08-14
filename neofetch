@@ -1737,8 +1737,8 @@ getcols() {
         # Generate the string.
         while [ $start -le $end ]; do
             case "$start" in
-                [0-6]) blocks+="\033[0m\033[3${start}m\033[4${start}m%${block_width}s" ;;
-                7) blocks+="\033[0m\033[3${start}m\033[4${start}m%${block_width}s" ;;
+                [0-6]) blocks+="${reset}\033[3${start}m\033[4${start}m%${block_width}s" ;;
+                7) blocks+="${reset}\033[3${start}m\033[4${start}m%${block_width}s" ;;
                 *) blocks2+="\033[38;5;${start}m\033[48;5;${start}m%${block_width}s" ;;
             esac
             start="$((start+=1))"
@@ -1748,8 +1748,8 @@ getcols() {
         spaces="$(printf "%${block_height}s")"
 
         # Convert the spaces into rows of blocks.
-        [ "$blocks" ] &&  cols+="${spaces// /${blocks}"\033[0m"nl}"
-        [ "$blocks2" ] && cols+="${spaces// /${blocks2}"\033[0m"nl}"
+        [ "$blocks" ] &&  cols+="${spaces// /${blocks}${reset}nl}"
+        [ "$blocks2" ] && cols+="${spaces// /${blocks2}${reset}nl}"
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
@@ -2175,7 +2175,7 @@ info() {
         ;;
 
         *)
-            string="${subtitle_color}${bold}${subtitle}\033[0m"
+            string="${subtitle_color}${bold}${subtitle}${reset}"
             string+="${colon_color}: ${info_color}${output}"
             length="$((${#subtitle} +  ${#output} + 2))"
         ;;
@@ -2185,7 +2185,7 @@ info() {
     [ -z "$2" ] && string="${string/*: }"
 
     # Print the string
-    printf "%b%s\n" "${padding}${string}\033[0m"
+    printf "%b%s\n" "${padding}${string}${reset}"
 }
 
 # }}}
@@ -2208,9 +2208,6 @@ prin() {
         subtitle_color="$info_color"
         bold=
     fi
-
-    # Reset colors/bold
-    reset="\033[0m"
 
     # Format the output
     string="${string/:/${reset}${colon_color}:${info_color}}"
@@ -2270,6 +2267,9 @@ getunderline() {
 # Colors {{{
 
 colors() {
+    # Reset colors/bold
+    reset="\033[0m"
+
     # Change color of logo based on distro
     case "$ascii_distro" in
         "Arch"* | "Antergos"*)
@@ -2421,15 +2421,15 @@ setcolors() {
 
     if [ "${colors[0]}" == "distro" ]; then
         title_color="$c1"
-        at_color="\033[0m"
-        underline_color="\033[0m"
+        at_color="$reset"
+        underline_color="$reset"
         subtitle_color="$c2"
-        colon_color="\033[0m"
-        info_color="\033[0m"
+        colon_color="$reset"
+        info_color="$reset"
 
         # If the second color is white use the first for the subtitle
-        [ "$2" == 7 ] && subtitle_color="\033[0m\033[3${1}m"
-        [ "$1" == 7 ] && title_color="\033[0m"
+        [ "$2" == 7 ] && subtitle_color="$(color "$1")"
+        [ "$1" == 7 ] && title_color="$reset"
     else
         title_color="$(color "${colors[0]}")"
         at_color="$(color "${colors[1]}")"
@@ -2454,8 +2454,8 @@ setcolors() {
 
 color() {
     case "$1" in
-        [0-7]) printf "%b%s" "\033[0m\033[3${1}m" ;;
-        "fg") printf "%b%s" "\033[0m" ;;
+        [0-7]) printf "%b%s" "${reset}\033[3${1}m" ;;
+        "fg") printf "%b%s" "$reset" ;;
         *) printf "%b%s" "\033[38;5;${1}m" ;;
     esac
 }
