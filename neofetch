@@ -83,6 +83,12 @@ getmodel() {
                 "ipod7,1") model="iPod touch 6G" ;;
             esac
         ;;
+
+        "Windows")
+            model="$(wmic computersystem get manufacturer,model /value)"
+            model="${model/Manufacturer'='}"
+            model="${model/Model'='}"
+        ;;
     esac
 }
 
