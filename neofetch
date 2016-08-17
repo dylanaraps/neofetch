@@ -2303,7 +2303,7 @@ colors() {
             ascii_distro="redhat"
         ;;
 
-        "Kogaion"* | "Elementary"* | "GalliumOS"*)
+        "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"*)
             setcolors 4 7
         ;;
 
