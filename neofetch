@@ -118,6 +118,9 @@ getdistro() {
 
     [ "$osx_buildversion" == "off" ] && \
         distro="${distro/ ${osx_build}}"
+
+    [ "${ascii_distro:-auto}" == "auto" ] && \
+        ascii_distro="$(trim "$distro")"
 }
 
 # }}}
@@ -3018,8 +3021,6 @@ main() {
 
     # Distro detection
     getdistro
-    [ "${ascii_distro:-auto}" == "auto" ] && \
-        ascii_distro="$(trim "$distro")"
 
     # Get colors and bold
     bold
