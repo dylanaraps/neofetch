@@ -1951,8 +1951,9 @@ getimage() {
     fi
 
     # Get terminal lines and columns
-    lines="$(tput lines)"
-    columns="$(tput cols)"
+    term_blocks="$(stty size)"
+    columns="${term_blocks/* }"
+    lines="${term_blocks/ *}"
 
     # Calculate font size
     font_width="$((term_width / columns))"
