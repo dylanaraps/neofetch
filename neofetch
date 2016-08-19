@@ -118,6 +118,9 @@ getdistro() {
 
     [ "$osx_buildversion" == "off" ] && \
         distro="${distro/ ${osx_build}}"
+
+    [ "${ascii_distro:-auto}" == "auto" ] && \
+        ascii_distro="$(trim "$distro")"
 }
 
 # }}}
@@ -1948,8 +1951,9 @@ getimage() {
     fi
 
     # Get terminal lines and columns
-    lines="$(tput lines)"
-    columns="$(tput cols)"
+    term_blocks="$(stty size)"
+    columns="${term_blocks/* }"
+    lines="${term_blocks/ *}"
 
     # Calculate font size
     font_width="$((term_width / columns))"
@@ -2303,7 +2307,7 @@ colors() {
             ascii_distro="redhat"
         ;;
 
-        "Kogaion"* | "Elementary"* | "GalliumOS"* | "OpenWrt"*)
+        "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"*)
             setcolors 4 7
         ;;
 
@@ -3006,24 +3010,20 @@ getargs() {
 # Call Functions and Finish Up {{{
 
 main() {
+    getos
     getdefaultconfig 2>/dev/null
     getargs "$@"
-    getos
+    getdistro
+
+    # Get colors and bold
+    bold
+    colors
 
     # Restore cursor and clear screen on ctrl+c
     trap 'printf "\033[?25h"; clear; exit' 2
 
     # If the script exits for any reason, unhide the cursor.
     trap 'printf "\033[?25h"' EXIT
-
-    # Distro detection
-    getdistro
-    [ "${ascii_distro:-auto}" == "auto" ] && \
-        ascii_distro="$(trim "$distro")"
-
-    # Get colors and bold
-    bold
-    colors
 
     # Clear the scren
     clear
@@ -3048,7 +3048,7 @@ main() {
     fi
 
     # Move cursor to the top
-    [ "$image" != "off" ] && printf "\033[0H"
+    printf "\033[0H"
 
     # Print the info
     printinfo
