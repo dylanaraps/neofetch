@@ -93,6 +93,10 @@ getmodel() {
             model="${model/Manufacturer'='}"
             model="${model/Model'='}"
         ;;
+
+        "Solaris")
+            model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
+        ;;
     esac
 }
 
