@@ -3009,9 +3009,9 @@ getargs() {
 # Call Functions and Finish Up {{{
 
 main() {
+    getos
     getdefaultconfig 2>/dev/null
     getargs "$@"
-    getos
 
     # Restore cursor and clear screen on ctrl+c
     trap 'printf "\033[?25h"; clear; exit' 2
