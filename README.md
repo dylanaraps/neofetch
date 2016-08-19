@@ -446,12 +446,6 @@ alias neofetch2="neofetch \
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
     --ascii_bold on/off         Whether or not to bold the ascii logo.
 
-    Stdout:
-    --stdout info info          Launch neofetch in stdout mode which prints the info
-                                in a plain-text format that you can use with
-                                lemonbar etc.
-    --stdout_separator string   String to use as a separator in stdout mode.
-
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.

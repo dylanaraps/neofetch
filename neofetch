@@ -783,8 +783,6 @@ getcpu() {
     esac
 
     [ "$cpu" ] && prin "$subtitle" "$cpu"
-
-    [ "$stdout_mode" != "on" ] && unset cpu
 }
 
 # }}}
@@ -1135,7 +1133,7 @@ getsong() {
     esac
 
     # Display Artist and Title on seperate lines.
-    if [ "$song_shorthand" == "on" ] && [ "$stdout_mode" != "on" ]; then
+    if [ "$song_shorthand" == "on" ]; then
         artist="${song/ -*}"
         song="${song/$artist - }"
 
@@ -1537,7 +1535,7 @@ getbattery() {
                 title="$subtitle"
 
                 # If shorthand is on, print each value on the same line
-                if [ "$battery_shorthand" == "on" ] || [ "$stdout_mode" == "on" ]; then
+                if [ "$battery_shorthand" == "on" ]; then
                     battery="${batteries[*]}"
                     battery="${battery// /%, }"
                     battery="${battery}%"
@@ -2226,34 +2224,6 @@ prin() {
 
 # }}}
 
-# Stdout {{{
-
-stdout() {
-    # Read args early for the separator
-    stdout_separator_flag="$(awk -F '--stdout_separator ' '{printf $2}' <<< "${args[@]}")"
-    stdout_separator_flag="${stdout_separator_flag/ '--'*}"
-
-    [ "$stdout_separator_flag" ] && \
-        stdout_separator="$stdout_separator_flag"
-
-    for func in "${args[@]}"; do
-        case "$func" in
-            "--"*) break ;;
-            *)
-                "get$func" 2>/dev/null
-                eval output="\$$func"
-                output="$(trim "$output")"
-                stdout+="${output}${stdout_separator}"
-            ;;
-        esac
-    done
-
-    printf "%s" "${stdout%%${stdout_separator}}"
-    exit
-}
-
-# }}}
-
 # Underline {{{
 
 getunderline() {
@@ -2780,12 +2750,6 @@ usage() { cat << EOF
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
     --ascii_bold on/off         Whether or not to bold the ascii logo.
 
-    Stdout:
-    --stdout info info          Launch neofetch in stdout mode which prints the info
-                                in a plain-text format that you can use with
-                                lemonbar etc.
-    --stdout_separator string   String to use as a separator in stdout mode.
-
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
@@ -2813,7 +2777,7 @@ getargs() {
     # Check the commandline flags early for '--config none/off'
     case "$@" in
         *"--config off"* | *'--config "off"'* | *"--config 'off'"* | \
-        *"--config none"* | *'--config "none"'* | *"--config 'none'"* | *"--stdout"*)
+        *"--config none"* | *'--config "none"'* | *"--config 'none'"*)
             config="off"
         ;;
 
@@ -2950,17 +2914,6 @@ getargs() {
                 fi
             ;;
             --scrot_cmd) scrot_cmd="$2" ;;
-
-            # Stdout
-            --stdout)
-                unset info_color prin clear bar
-                stdout_mode="on"
-                config="off"
-                case "$2" in
-                    "--"* | "") printf "%s\n" "--stdout requires at least one argument"; exit ;;
-                    *) shift; args=("$@"); stdout ;;
-                esac
-            ;;
 
             # Other
             --config)
