@@ -41,7 +41,7 @@ getos() {
 getmodel() {
     case "$os" in
         "Linux")
-            model="$(< /sys/devices/virtual/dmi/id/product_version)"
+            model="$(< /sys/devices/virtual/dmi/id/product_{name,version} 2>/dev/null)"
             model="${model/To Be Filled*}"
         ;;
 
