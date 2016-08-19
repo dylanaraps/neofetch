@@ -781,8 +781,6 @@ getcpu() {
             esac
         ;;
     esac
-
-    [ "$cpu" ] && prin "$subtitle" "$cpu"
 }
 
 # }}}
