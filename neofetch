@@ -3049,7 +3049,7 @@ main() {
     fi
 
     # Move cursor to the top
-    [ "$image" != "off" ] && printf "\033[0H"
+    printf "\033[0H"
 
     # Print the info
     printinfo
