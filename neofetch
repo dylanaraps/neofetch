@@ -56,6 +56,7 @@ getdistro() {
                 # Workaround for distros that store the value differently.
                 [ -z "$distro" ] && distro="$(awk -F 'TAILS_PRODUCT_NAME="|"' '/^TAILS_PRODUCT_NAME=/ {printf $2}' /etc/*ease)"
                 [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
+                [ -z "$distro" ] && distro="$(awk -F "'" '/^DISTRIB_DESCRIPTION/ {print $2}' /etc/openwrt_release)"
             fi
         ;;
 
