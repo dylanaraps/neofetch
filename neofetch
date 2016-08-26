@@ -151,7 +151,7 @@ getuptime() {
     case "$os" in
         "Linux" | "Windows")
             case "$distro" in
-                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "Windows"*)
+                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "OpenWRT"* | "Windows"*)
                     uptime="$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')"
                 ;;
 
