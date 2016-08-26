@@ -56,6 +56,7 @@ getdistro() {
                 # Workaround for distros that store the value differently.
                 [ -z "$distro" ] && distro="$(awk -F 'TAILS_PRODUCT_NAME="|"' '/^TAILS_PRODUCT_NAME=/ {printf $2}' /etc/*ease)"
                 [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
+                [ -z "$distro" ] && distro="$(awk -F "'" '/^DISTRIB_DESCRIPTION/ {print $2}' /etc/openwrt_release)"
             fi
         ;;
 
@@ -128,7 +129,7 @@ getdistro() {
 # Title {{{
 
 gettitle() {
-    title="${USER:-$(whoami)}@${HOSTNAME:-$(hostname)}"
+    title="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}@${HOSTNAME:-$(hostname)}"
 }
 
 # }}}
@@ -150,7 +151,7 @@ getuptime() {
     case "$os" in
         "Linux" | "Windows")
             case "$distro" in
-                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "Windows"*)
+                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "OpenWRT"* | "Windows"*)
                     uptime="$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')"
                 ;;
 
@@ -276,6 +277,9 @@ getpackages() {
 
             type -p apk >/dev/null 2>&1 && \
                 packages="$((packages+=$(apk info | wc -l)))"
+
+            type -p opkg >/dev/null 2>&1 && \
+                packages="$((packages+=$(opkg list-installed | wc -l)))"
 
             type -p pacman-g2 >/dev/null 2>&1 && \
                 packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
@@ -572,7 +576,7 @@ getcpu() {
                 speed="$((speed / 100))"
             fi
 
-            cores="$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)"
+            cores="$(grep -c ^processor /proc/cpuinfo)"
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
@@ -1467,17 +1471,29 @@ gettermfont() {
 getdisk() {
     # df flags
     case "$os" in
-        "Linux" | "iPhone OS" | "Windows" | "Solaris") df_flags="-h -l --total" ;;
+        "Linux" | "iPhone OS" | "Windows" | "Solaris")
+            df_flags="-h -l --total"
+            df_dir="total"
+
+            case "$distro" in
+                "OpenWRT"*) df_flags="-h"; df_dir="rootfs" ;;
+            esac
+        ;;
+
         "Mac OS X" | "BSD")
             case "$distro" in
-                "FreeBSD"* | *"OS X"* ) df_flags="-H / -l" ;;
+                "FreeBSD"* | *"OS X"* )
+                    df_flags="-l -H /"
+                    df_dir="/"
+                ;;
+
                 *) return ;;
             esac
         ;;
     esac
 
     # Get the disk info
-    disk="$(df $df_flags 2>/dev/null | awk 'END{print $2 ":" $3 ":" $5}')"
+    disk="$(df $df_flags 2>/dev/null | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
 
     # Format the output
     disk_used="${disk#*:}"
@@ -1868,14 +1884,16 @@ getascii() {
     ascii_strip="${ascii_strip//'\\'/ }"
     ascii_strip="${ascii_strip//'\'}"
 
-    # Get ascii file size in rows/cols
-    ascii_size="$(awk 'END {printf NR " "}length>max{max=length}END{printf max}' <<< "$ascii_strip")"
-    lines="${ascii_size/ *}"
-    ascii_length="${ascii_size/$lines}"
+    # Get lines/columns of the ascii file in pure bash.
+    ascii_length=0
+    lines=1
+    while IFS='\n' read -r line 2>/dev/null; do
+        [ ${#line} -gt "$ascii_length" ] && ascii_length=${#line}
+        lines=$((lines+=1))
+    done <<< "$ascii_strip"
 
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
-
     export LC_ALL=C
 }
 
@@ -1901,7 +1919,6 @@ getimage() {
     esac
 
     # Get terminal width and height
-    stty -echo
     if [ -n "$TMUX" ]; then
         printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
         read_flags="-d c"
@@ -1915,8 +1932,7 @@ getimage() {
     fi
 
     # The escape code above prints the output AFTER the prompt so this
-    read -t 1 ${read_flags} -s -r term_size
-    stty echo
+    builtin read -s -t 1 ${read_flags} -r term_size
 
     # Split the string
     if [ "$image_backend" == "tycat" ]; then
@@ -2629,7 +2645,7 @@ kdeconfigdir() {
 
 dynamicprompt() {
     # Get cursor position
-    info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
+    info_height="$(IFS=';' builtin read -srdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}")"
 
     # Calculate image height in terminal cells.
     # The '+ 3' adds a gap between the prompt and the content.
