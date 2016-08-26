@@ -1869,14 +1869,16 @@ getascii() {
     ascii_strip="${ascii_strip//'\\'/ }"
     ascii_strip="${ascii_strip//'\'}"
 
-    # Get ascii file size in rows/cols
-    ascii_size="$(awk 'END {printf NR " "}length>max{max=length}END{printf max}' <<< "$ascii_strip")"
-    lines="${ascii_size/ *}"
-    ascii_length="${ascii_size/$lines}"
+    # Get lines/columns of the ascii file in pure bash.
+    ascii_length=0
+    lines=1
+    while IFS='\n' read -r line 2>/dev/null; do
+        [ ${#line} -gt "$ascii_length" ] && ascii_length=${#line}
+        lines=$((lines+=1))
+    done <<< "$ascii_strip"
 
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
-
     export LC_ALL=C
 }
 
