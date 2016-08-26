@@ -278,6 +278,9 @@ getpackages() {
             type -p apk >/dev/null 2>&1 && \
                 packages="$((packages+=$(apk info | wc -l)))"
 
+            type -p opkg >/dev/null 2>&1 && \
+                packages="$((packages+=$(opkg list-installed | wc -l)))"
+
             type -p pacman-g2 >/dev/null 2>&1 && \
                 packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
 
