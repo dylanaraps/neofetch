@@ -41,8 +41,17 @@ getos() {
 getmodel() {
     case "$os" in
         "Linux")
-            model="$(cat /sys/devices/virtual/dmi/id/product_{name,version} 2>/dev/null)"
-            model="${model/To Be Filled*}"
+            if [ -f /sys/devices/virtual/dmi/id/product_name ] ||\
+               [ -f /sys/devices/virtual/dmi/id/product_version ]; then
+                model="$(cat /sys/devices/virtual/dmi/id/product_{name,version} 2>/dev/null)"
+                model="${model/To Be Filled*}"
+
+            elif [ -f /sys/firmware/devicetree/base/model ]; then
+                model="$(< /sys/firmware/devicetree/base/model)"
+
+            elif [ -f /tmp/sysinfo/model ]; then
+                model="$(< /tmp/sysinfo/model)"
+            fi
         ;;
 
         "Mac OS X") model="$(sysctl -n hw.model)" ;;
