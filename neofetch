@@ -3006,7 +3006,7 @@ main() {
 
     # Print the info
     printinfo
-    dynamicprompt
+    dynamicprompt 2>/dev/null
 
     # Re-enable line wrap
     printf "%b%s" "\033[?7h"
