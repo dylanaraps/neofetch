@@ -36,6 +36,72 @@ getos() {
 
 # }}}
 
+# Model {{{
+
+getmodel() {
+    case "$os" in
+        "Linux")
+            model="$(cat /sys/devices/virtual/dmi/id/product_{name,version} 2>/dev/null)"
+            model="${model/To Be Filled*}"
+        ;;
+
+        "Mac OS X") model="$(sysctl -n hw.model)" ;;
+        "iPhone OS")
+            case "${ios_model:-$(uname -m)}" in
+                "iPad1,1") model="iPad" ;;
+                "iPad2,"[1-4]) model="iPad2" ;;
+                "iPad3,"[1-3]) model="iPad3" ;;
+                "iPad3,"[4-6]) model="iPad4" ;;
+                "iPad4,"[1-3]) model="iPad Air" ;;
+                "iPad5,"[3-4]) model="iPad Air 2" ;;
+                "iPad6,"[7-8]) model="iPad Pro (12.9 Inch)" ;;
+                "iPad6,"[3-4]) model="iPad Pro (9.7 Inch)" ;;
+                "iPad2,"[5-7]) model="iPad mini" ;;
+                "iPad4,"[4-6]) model="iPad mini 2" ;;
+                "iPad4,"[7-9]) model="iPad mini 3" ;;
+                "iPad5,"[1-2]) model="iPad mini 4" ;;
+
+                "iPhone1,1") model="iPhone" ;;
+                "iPhone1,2") model="iPhone 3G" ;;
+                "iPhone2,1") model="iPhone 3GS" ;;
+                "iPhone3,"[1-3]) model="iPhone 4" ;;
+                "iPhone4,1") model="iPhone 4S" ;;
+                "iPhone5,"[1-2]) model="iPhone 4" ;;
+                "iPhone5,"[3-4]) model="iPhone 5c" ;;
+                "iPhone6,"[1-2]) model="iPhone 5s" ;;
+                "iPhone7,2") model="iPhone 6" ;;
+                "iPhone7,1") model="iPhone 6 Plus" ;;
+                "iPhone8,1") model="iPhone 6s" ;;
+                "iPhone8,2") model="iPhone 6s Plus" ;;
+                "iPhone8,4") model="iPhone SE" ;;
+
+                "iPod1,1") model="iPod touch" ;;
+                "ipod2,1") model="iPod touch 2G" ;;
+                "ipod3,1") model="iPod touch 3G" ;;
+                "ipod4,1") model="iPod touch 4G" ;;
+                "ipod5,1") model="iPod touch 5G" ;;
+                "ipod7,1") model="iPod touch 6G" ;;
+            esac
+        ;;
+
+        "BSD")
+            model="$(sysctl -n hw.vendor hw.product 2>/dev/null)"
+        ;;
+
+        "Windows")
+            model="$(wmic computersystem get manufacturer,model /value)"
+            model="${model/Manufacturer'='}"
+            model="${model/Model'='}"
+        ;;
+
+        "Solaris")
+            model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
+        ;;
+    esac
+}
+
+# }}}
+
 # Distro {{{
 
 getdistro() {
@@ -594,8 +660,7 @@ getcpu() {
         ;;
 
         "iPhone OS")
-            ios_model="${ios_model:-$(uname -m)}"
-            case "$ios_model" in
+            case "${ios_model:-$(uname -m)}" in
                 "iPhone1,1" | "iPhone1,2" | "iPod1,1")
                     cpu="Samsung S5L8900 @ 412MHz"
                     cores="1"
@@ -2937,7 +3002,7 @@ getargs() {
                 esac
             ;;
             --test)
-                info=(title underline distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
+                info=(title underline model distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
 
                 refresh_rate="on"
                 shell_version="on"

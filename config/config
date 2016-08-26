@@ -18,6 +18,7 @@ printinfo () {
     info title
     info underline
 
+    info "Model" model
     info "OS" distro
     info "Kernel" kernel
     info "Uptime" uptime
