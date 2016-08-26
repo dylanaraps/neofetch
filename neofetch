@@ -2632,7 +2632,7 @@ kdeconfigdir() {
 
 dynamicprompt() {
     # Get cursor position
-    info_height="$(stty -echo; IFS=';' read -rdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}"; stty echo)"
+    info_height="$(IFS=';' read -srdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}")"
 
     # Calculate image height in terminal cells.
     # The '+ 3' adds a gap between the prompt and the content.
@@ -3006,7 +3006,7 @@ main() {
 
     # Print the info
     printinfo
-    dynamicprompt 2>/dev/null
+    dynamicprompt
 
     # Re-enable line wrap
     printf "%b%s" "\033[?7h"
