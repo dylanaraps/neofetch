@@ -129,7 +129,7 @@ getdistro() {
 # Title {{{
 
 gettitle() {
-    title="${USER:-$(whoami)}@${HOSTNAME:-$(hostname)}"
+    title="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}@${HOSTNAME:-$(hostname)}"
 }
 
 # }}}
@@ -1468,7 +1468,15 @@ gettermfont() {
 getdisk() {
     # df flags
     case "$os" in
-        "Linux" | "iPhone OS" | "Windows" | "Solaris") df_flags="-h -l --total" ;;
+        "Linux" | "iPhone OS" | "Windows" | "Solaris")
+            df_flags="-h -l --total"
+            df_dir="total"
+
+            case "$distro" in
+                "OpenWRT"*) df_flags="-h"; df_dir="rootfs" ;;
+            esac
+        ;;
+
         "Mac OS X" | "BSD")
             case "$distro" in
                 "FreeBSD"* | *"OS X"* ) df_flags="-H / -l" ;;
@@ -1478,7 +1486,8 @@ getdisk() {
     esac
 
     # Get the disk info
-    disk="$(df $df_flags 2>/dev/null | awk 'END{print $2 ":" $3 ":" $5}')"
+    disk="$(df $df_flags 2>/dev/null | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
+
 
     # Format the output
     disk_used="${disk#*:}"
