@@ -1491,7 +1491,6 @@ getdisk() {
     # Get the disk info
     disk="$(df $df_flags 2>/dev/null | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
 
-
     # Format the output
     disk_used="${disk#*:}"
     disk_used="${disk_used%%:*}"
@@ -2978,6 +2977,11 @@ main() {
     getdefaultconfig 2>/dev/null
     getargs "$@"
     getdistro
+
+    # Temp command to test travis
+    if [ "$os" == "Mac OS X" ]; then
+        df -H / -l
+    fi
 
     # Get colors and bold
     bold
