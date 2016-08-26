@@ -1904,7 +1904,6 @@ getimage() {
     esac
 
     # Get terminal width and height
-    stty -echo
     if [ -n "$TMUX" ]; then
         printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
         read_flags="-d c"
@@ -1918,8 +1917,7 @@ getimage() {
     fi
 
     # The escape code above prints the output AFTER the prompt so this
-    read -t 1 ${read_flags} -s -r term_size
-    stty echo
+    builtin read -s -t 1 ${read_flags} -r term_size
 
     # Split the string
     if [ "$image_backend" == "tycat" ]; then
@@ -2632,7 +2630,7 @@ kdeconfigdir() {
 
 dynamicprompt() {
     # Get cursor position
-    info_height="$(IFS=';' read -srdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}")"
+    info_height="$(IFS=';' builtin read -srdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}")"
 
     # Calculate image height in terminal cells.
     # The '+ 3' adds a gap between the prompt and the content.
