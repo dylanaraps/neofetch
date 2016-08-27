@@ -237,6 +237,10 @@ getuptime() {
                     uptime="$(uptime | awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')"
                 ;;
 
+                "Android"*)
+                    uptime=$(uptime | awk -F ': |, ' '{printf $2}')
+                ;;
+
                 *)
                     uptime="$(uptime -p)"
                     [ "$uptime" == "up " ] && uptime="up $(awk -F'.' '{print $1}' /proc/uptime) seconds"
@@ -407,6 +411,8 @@ getpackages() {
             packages="$(pkg list | wc -l)"
         ;;
     esac
+
+    [ "$packages" == 0 ] && unset packages
 }
 
 # }}}
@@ -1554,6 +1560,7 @@ getdisk() {
 
             case "$distro" in
                 "OpenWRT"*) df_flags="-h"; df_dir="rootfs" ;;
+                "Android"*) return ;;
             esac
         ;;
 
@@ -1619,8 +1626,8 @@ getbattery() {
                     *) index="$battery_num" ;;
                 esac
 
-                batteries=($(cat "/sys/class/power_supply/BAT$battery_num/capacity"))
-                battery_state=($(cat "/sys/class/power_supply/BAT${battery_num}/status"))
+                batteries=($(cat /sys/class/power_supply/battery/capacity /sys/class/power_supply/BAT${battery_num}/capacity))
+                battery_state=($(cat /sys/class/power_supply/battery/status /sys/class/power_supply/BAT${battery_num}/status))
 
                 # Get the subtitle and reassign it so it doesn't change.
                 title="$subtitle"
@@ -2411,7 +2418,7 @@ colors() {
             ascii_distro="mint"
         ;;
 
-        "LMDE"* | "Chapeau"*)
+        "LMDE"* | "Chapeau"* | "Android"*)
             setcolors 2 7
         ;;
 
