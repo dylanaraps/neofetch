@@ -61,6 +61,10 @@ kernel_shorthand="on"
 
 # Distro
 
+# Shorten the output of distro
+# NOTE: This is only possible on Linux with lsb_release
+distro_shorthand="off"
+
 # Mac OS X hide/show build version
 # --osx_buildversion on/off
 osx_buildversion="on"
