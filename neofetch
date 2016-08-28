@@ -1974,6 +1974,11 @@ getascii() {
         [ "${#line}" -gt "$ascii_length" ] && ascii_length="${#line}"
     done <<< "$ascii_strip"
 
+    # Workaround for calculating length of block chars
+    # when locale is set to 'C'
+    block_char="█"
+    [ "${#block_char}" == 3 ] && ascii_length="$((ascii_length / 3 + 2))"
+
     lines="$(printf "%s\n" "$ascii_strip" | wc -l)"
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
