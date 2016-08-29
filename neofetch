@@ -41,7 +41,10 @@ getos() {
 getmodel() {
     case "$os" in
         "Linux")
-            if [ -f /sys/devices/virtual/dmi/id/product_name ] ||\
+            if [ -d "/system/app/" ] && [ -d "/system/priv-app" ]; then
+                model="$(getprop ro.product.brand) $(getprop ro.product.model)"
+
+            elif [ -f /sys/devices/virtual/dmi/id/product_name ] ||\
                [ -f /sys/devices/virtual/dmi/id/product_version ]; then
                 model="$(cat /sys/devices/virtual/dmi/id/product_{name,version} 2>/dev/null)"
                 model="${model/To Be Filled*}"
@@ -640,7 +643,12 @@ getcpu() {
     case "$os" in
         "Linux" | "Windows")
             # Get cpu name
-            cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)"
+            case "$distro" in
+                "Android"*)
+                    cpu="$(getprop ro.product.board)" ;;
+                *)
+                    cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)" ;;
+            esac
 
             # Get cpu speed
             if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
