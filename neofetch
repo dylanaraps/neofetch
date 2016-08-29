@@ -121,6 +121,9 @@ getdistro() {
             if type -p lsb_release >/dev/null 2>&1; then
                 distro="$(lsb_release -d 2>/dev/null | awk -F ':' '/Description/ {printf $2}')"
 
+            elif type -p guix >/dev/null 2>&1; then
+                distro="GuixSD"
+
             elif type -p crux >/dev/null 2>&1; then
                 distro="$(crux)"
 
@@ -349,6 +352,9 @@ getpackages() {
 
             type -p nix-env >/dev/null 2>&1 && \
                 packages="$((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))"
+
+            type -p guix >/dev/null 2>&1 && \
+                packages="$((packages+=$(ls -d -1 /gnu/store/*/ | wc -l)))"
 
             type -p apk >/dev/null 2>&1 && \
                 packages="$((packages+=$(apk info | wc -l)))"
@@ -2416,7 +2422,7 @@ colors() {
             setcolors 5 7
         ;;
 
-        "OpenBSD"*)
+        "OpenBSD"* | "GuixSD"*)
             setcolors 3 7 6 1 8
         ;;
 
