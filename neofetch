@@ -240,7 +240,7 @@ getuptime() {
                 "Android"*)
                     uptime=$(uptime | awk -F ' up' '{print $2}')
                     time="${time//[0-9] user*}"
-                    time="${time//load average:*}"
+                    time="${time//load average*}"
                     time="${time%,*} ${time##*,}"
                 ;;
 
