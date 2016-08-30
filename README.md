@@ -105,7 +105,7 @@ Note: The cydia package installs these dependencies for you.
 - Thumbnail creation: `imagemagick`
 - Displaying song information from Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
 
-##### Linux / BSD
+##### Linux / BSD / Solaris
 
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc`, `cmus`, `moc`, `spotify`, `gpmdc`
@@ -116,7 +116,7 @@ Note: The cydia package installs these dependencies for you.
 
 - Resolution (quicker): `screenresolution`
 
-##### BSD
+##### BSD / Solaris
 
 - GPU: `glxinfo`
     - Not required on FreeBSD.
