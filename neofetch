@@ -119,7 +119,11 @@ getdistro() {
     case "$os" in
         "Linux" )
             if type -p lsb_release >/dev/null 2>&1; then
-                distro="$(lsb_release -d 2>/dev/null | awk -F ':' '/Description/ {printf $2}')"
+                case "$distro_shorthand" in
+                    "on")  distro="$(lsb_release -sir 2>/dev/null)" ;;
+                    "off") distro="$(lsb_release -sd 2>/dev/null)"
+                           distro="${distro//\"}" ;;
+                esac
 
             elif type -p guix >/dev/null 2>&1; then
                 distro="GuixSD"
@@ -2767,6 +2771,8 @@ usage() { cat << EOF
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
+    --distro_shorthand on/off   Shorten the output of distro
+                                NOTE: This is only possible on Linux with lsb_release
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
@@ -2889,6 +2895,7 @@ getargs() {
             --osx_codename) osx_codename="$2" ;;
             --cpu_cores) cpu_cores="$2" ;;
             --speed_type) speed_type="$2" ;;
+            --distro_shorthand) distro_shorthand="$2" ;;
             --kernel_shorthand) kernel_shorthand="$2" ;;
             --uptime_shorthand) uptime_shorthand="$2" ;;
             --cpu_shorthand) cpu_shorthand="$2" ;;
