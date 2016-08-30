@@ -369,6 +369,8 @@ alias neofetch2="neofetch \
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
+    --distro_shorthand on/off   Shorten the output of distro
+                                NOTE: This is only possible on Linux with lsb_release
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
