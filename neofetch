@@ -644,10 +644,8 @@ getcpu() {
         "Linux" | "Windows")
             # Get cpu name
             case "$distro" in
-                "Android"*)
-                    cpu="$(getprop ro.product.board)" ;;
-                *)
-                    cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)" ;;
+                "Android"*) cpu="$(getprop ro.product.board)" ;;
+                *) cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)" ;;
             esac
 
             # Get cpu speed
