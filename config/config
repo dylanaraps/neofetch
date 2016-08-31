@@ -61,8 +61,8 @@ kernel_shorthand="on"
 
 # Distro
 
-# Shorten the output of distro
-# NOTE: This is only possible on Linux with lsb_release
+# Shorten the output of distro (tiny, on, off)
+# NOTE: This is only possible on Linux
 distro_shorthand="off"
 
 # Mac OS X hide/show build version
