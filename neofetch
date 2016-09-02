@@ -120,9 +120,9 @@ getdistro() {
         "Linux" )
             if type -p lsb_release >/dev/null 2>&1; then
                 case "$distro_shorthand" in
-                    "on")  distro="$(lsb_release -sir 2>/dev/null)" ;;
-                    "off") distro="$(lsb_release -sd 2>/dev/null)"
-                           distro="${distro//\"}" ;;
+                    "on")   distro="$(lsb_release -sir 2>/dev/null)" ;;
+                    "tiny") distro="$(lsb_release -si 2>/dev/null)" ;;
+                    *)      distro="$(lsb_release -sd 2>/dev/null)" ;;
                 esac
 
             elif type -p guix >/dev/null 2>&1; then
@@ -130,16 +130,35 @@ getdistro() {
 
             elif type -p crux >/dev/null 2>&1; then
                 distro="$(crux)"
+                case "$distro_shorthand" in
+                    "on")   distro="${distro//version}" ;;
+                    "tiny") distro="${distro//version*}" ;;
+                esac
 
             else
-                distro="$(awk -F 'NAME=' '/^NAME=/ {printf $2}' /etc/*ease)"
-                distro="${distro//\"}"
+                # Workarounds are included in every shorthand option
+                case "$distro_shorthand" in
+                    "on")
+                        distro="$(awk -F'=' '/^NAME|VERSION_ID=/ {print $2}' /etc/*ease)"
+                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_ID|DISTRIB_RELEASE=/ {print $2}' /etc/openwrt_release)"
+                        ;;
 
-                # Workaround for distros that store the value differently.
-                [ -z "$distro" ] && distro="$(awk -F 'TAILS_PRODUCT_NAME="|"' '/^TAILS_PRODUCT_NAME=/ {printf $2}' /etc/*ease)"
-                [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
-                [ -z "$distro" ] && distro="$(awk -F "'" '/^DISTRIB_DESCRIPTION/ {print $2}' /etc/openwrt_release)"
+                    "tiny")
+                        distro="$(awk -F'=' '/^NAME=/ {print $2}' /etc/*ease)"
+                        [ -z "$distro" ] && distro="$(awk -F'=' '/^TAILS_PRODUCT_NAME=/ {print $2}' /etc/*ease)"
+                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_ID=/ {print $2}' /etc/openwrt_release)"
+                        ;;
+
+                     *)
+                        distro="$(awk -F'=' '/^PRETTY_NAME=/ {print $2}' /etc/*ease)"
+                        [ -z "$distro" ] && distro="$(awk -F'=' '{print $2}' /etc/*ease)"
+                        [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
+                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_DESCRIPTION=/ {print $2}' /etc/openwrt_release)"
+                        ;;
+                esac
             fi
+            distro="${distro//\"}"
+            distro="${distro//\'}"
         ;;
 
         "Mac OS X")
@@ -2771,8 +2790,8 @@ usage() { cat << EOF
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
-    --distro_shorthand on/off   Shorten the output of distro
-                                NOTE: This is only possible on Linux with lsb_release
+    --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
+                                NOTE: This is only possible on Linux
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
