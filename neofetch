@@ -1670,19 +1670,19 @@ getbattery() {
                     battery="$(envstat | awk '\\(|\\)' '/charge:/ {print $2}')"
                     battery="${battery/\.*/%}"
                 ;;
+
+                "OpenBSD"*)
+                    battery0full="$(sysctl -n hw.sensors.acpibat0.watthour0)"
+                    battery0full="${battery0full/ Wh*}"
+
+                    battery0now="$(sysctl -n hw.sensors.acpibat0.watthour3)"
+                    battery0now="${battery0now/ Wh*}"
+
+                    [ "$battery0full" ] && \
+                    battery="$((100 * ${battery0now/\.} / ${battery0full/\.}))%"
+                 ;;
             esac
-        ;;
-
-        "OpenBSD")
-            battery0full="$(sysctl -n hw.sensors.acpibat0.watthour0)"
-            battery0full="${battery0full/ Wh*}"
-
-            battery0now="$(sysctl -n hw.sensors.acpibat0.watthour3)"
-            battery0now="${battery0now/ Wh*}"
-
-            [ "$battery0full" ] && \
-                battery="$((100 * ${battery0now/\.} / ${battery0full/\.}))%"
-        ;;
+         ;;
 
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
