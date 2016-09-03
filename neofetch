@@ -919,10 +919,10 @@ getcpu_usage() {
 
     # Print the bar
     case "$cpu_display" in
-        "info") cpu_usage="${cpu_usage}%" ;;
         "bar") cpu_usage="$(bar $cpu_usage 100)" ;;
         "infobar") cpu_usage="${cpu_usage}% $(bar $cpu_usage 100)" ;;
         "barinfo") cpu_usage="$(bar $cpu_usage 100) ${cpu_usage}%" ;;
+        *) cpu_usage="${cpu_usage}%" ;;
     esac
 }
 
