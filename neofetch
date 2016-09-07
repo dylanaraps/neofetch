@@ -1237,6 +1237,11 @@ getsong() {
         song="$artist - $title"
         state="$(banshee --query-current-state | awk -F':' '{print $2}')"
 
+    elif [ -n "$(ps x | awk '!(/awk/) && /amarok/')" ]; then
+        artist="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {print $2}')"
+        title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
+        song="$artist - $title"
+
     else
         song="Not Playing"
     fi
