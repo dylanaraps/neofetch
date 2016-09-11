@@ -1242,6 +1242,9 @@ getsong() {
         title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
         song="$artist - $title"
 
+    elif [ -n "$(ps x | awk '!(/awk/) && /deadbeef/')" ]; then
+        song="$(deadbeef --nowplaying '%a - %t')"
+
     else
         song="Not Playing"
     fi
