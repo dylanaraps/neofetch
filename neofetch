@@ -1223,16 +1223,38 @@ getsong() {
         song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
         state="$(osascript -e 'tell application "iTunes" to player state as string')"
 
+    elif [ -n "$(ps x | awk '!(/awk/) && /rhythmbox/')" ]; then
+        song="$(rhythmbox-client --print-playing)"
+        # Well, what can you expect? It's dbus after all.
+        state="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.rhythmbox /org/mpris/MediaPlayer2 \
+                 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string: 'PlayBackStatus' |\
+                 awk -F 'string "' '{printf $2}')"
+        state="${state//\"}"
+
+    elif [ -n "$(ps x | awk '!(/awk/) && /banshee/')" ]; then
+        artist="$(banshee --query-artist | awk -F':' '{print $2}')"
+        title="$(banshee --query-title | awk -F':' '{print $2}')"
+        song="$artist - $title"
+        state="$(banshee --query-current-state | awk -F':' '{print $2}')"
+
+    elif [ -n "$(ps x | awk '!(/awk/) && /amarok/')" ]; then
+        artist="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {print $2}')"
+        title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
+        song="$artist - $title"
+
+    elif [ -n "$(ps x | awk '!(/awk/) && /deadbeef/')" ]; then
+        song="$(deadbeef --nowplaying '%a - %t')"
+
     else
         song="Not Playing"
     fi
 
     case "$state" in
-        "paused" | "PAUSE")
+        "paused" | "PAUSE" | "Paused")
             song="Paused"
         ;;
 
-        "stopped" | "STOP")
+        "stopped" | "STOP" | "Stopped")
             song="Stopped"
         ;;
     esac
