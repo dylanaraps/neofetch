@@ -2776,7 +2776,7 @@ kdeconfigdir() {
 
 dynamicprompt() {
     # Calculate image height in terminal cells.
-    # The '+ 3' adds a gap between the prompt and the content.
+    # The '+ 4' adds a gap between the prompt and the content.
     [ "$image" != "ascii" ] && [ "$image" != "off" ] && \
         lines="$((${height:-1} / ${font_height:-1} + 4))"
 
@@ -3158,12 +3158,9 @@ main() {
     # Reset horizontal cursor position
     printf "\033[9999999D"
 
-    # Save cursor position
-    printf "\0337"
-
     # Move cursor to top of ascii art
     case "$image" in
-        "ascii" | "off") printf "\0338" ;;
+        "ascii" | "off") ;;
         *) printf "\033[0H" ;;
     esac
 
