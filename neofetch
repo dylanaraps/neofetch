@@ -3121,7 +3121,10 @@ main() {
     trap 'printf "\033[?25h"' EXIT
 
     # Clear the screen
-    clear
+    case "$image" in
+        "ascii" | "off") ;;
+        *) clear ;;
+    esac
 
     # Hide the cursor and disable line wrap
     printf "\033[?25l\033[?7l"
@@ -3142,8 +3145,14 @@ main() {
         displayimage
     fi
 
-    # Move cursor to the top
-    printf "\033[0H"
+    printf "\033[$((${lines:-0} - 4))A"
+    printf "\0337"
+
+    # Move cursor to top of ascii art
+    case "$image" in
+        "ascii" | "off") printf "\0338" ;;
+        *) printf "\033[0H" ;;
+    esac
 
     # Print the info
     printinfo
