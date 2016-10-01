@@ -29,6 +29,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
     - [Void Linux](#void-linux)
     - [BunsenLabs](#bunsenlabs)
+    - [Solus](#solus)
     - [Slackware](#slackware)
     - [Mac OS X](#mac-os-x)
     - [iOS](#ios-1)
@@ -163,6 +164,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
 - [Void Linux](#void-linux)
 - [BunsenLabs](#bunsenlabs)
+- [Solus](#solus)
 - [Slackware](#slackware)
 - [Mac OS X](#mac-os-x)
 - [iOS](##ios-1)
@@ -260,6 +262,10 @@ Neofetch is available in the official repos.
 
 1. `sudo apt-get update`
 2. `sudo apt-get install neofetch`
+
+### Solus
+
+Use the Software Center or type `sudo eopkg it neofetch`.
 
 ### Slackware
 
