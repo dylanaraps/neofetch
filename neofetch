@@ -2489,7 +2489,7 @@ colors() {
         ;;
 
         "Solus"*)
-            setcolors 7 8
+            setcolors 7 4 0
         ;;
 
         "Trisquel"* | "NixOS"* | "Zorin"*)

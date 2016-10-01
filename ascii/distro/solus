@@ -1,20 +1,23 @@
 "\
-${c1}              e         e
-            eee       ee
-           eeee     eee
-${c2}       wwwwwwwww${c1}eeeeee
-${c2}    wwwwwwwwwwwwwww${c1}eee
-${c2}  wwwwwwwwwwwwwwwwwww${c1}eeeeeeee
-${c2} wwwww     ${c1}eeeee${c2}wwwwww${c1}eeee
-${c2}www          ${c1}eeee${c2}wwwwww${c1}e
-${c2}ww             ${c1}ee${c2}wwwwww
-w                 wwwww
-                  wwwww
-                 wwwww
-                wwwww
-               wwww
-              wwww
-            wwww
-          www
-        ww
+             ${c1}.    ${c3} ...                    
+            '${c1}::${c3}dddddddddddd'..            
+        ..ddd${c1}0Nl${c3}ddddddddddddddd'.         
+      .ddddd${c1}oMMMx${c3}ddddddddddddddddd.       
+    .dddddd:${c1}WMMMM0${c3};ddddddddddddddddd.     
+   'dddddd;${c1}XMMMMMMNc${c3}dddddddddddddddddd.   
+  'ddddddd${c1}KMMMMMMMMWc${c3}dddddddddddddddddd.  
+ 'ddddddd${c1}0MMMMMMMMMMx${c3}d${c1}od${c3};ddddddddddddddd  
+.ddddddd${c1}0MMMMMMMMMMMO${c3}dd${c1}KNx${c3};ddddddddddddd' 
+'dddddd${c1}0MMMMMMMMMMMMX${c3}dd${c1}cMMWd${c3};${c1}lxOxl${c3};dddddd 
+ddddd;${c1}0MMMMMMMMMMMMMW${c3}ddd${c1}KMMMNl${c3}d;${c1}xNMNOd${c3}:dd.
+dddd;${c1}KMMMMMMMMMMMMMMM;${c3}dd${c1}kMMMMM0${c3};d;${c1}OMMMMXd${c3}d
+'dd:${c1}XMMMMMMMMMMMMMMMMc${c3}dd${c1}kMMMMMMNl${c3}dd${c1}OMMMNlo${c3}
+.d:${c1}NMMMMMMMMMMMMMMMMMo${c3}dd${c1}0MMMMMMMWd${c3}d:${c1}MNx:o. 
+.d${c1}dk0XNWMMMMMMMMMMMMMx${c3}d;${c1}WMMMMMMMMWc${c3}d${c3}clOX. 
+  ${c3}'dddddd;;:cllodxxkOddo000OOkdlclx0KO${c1}d.  
+   ${c3}dc::;;;ddddddddddd;;:${c1}clodkO0KKOxool.   
+    ${c1}cOKKKKKKKKKKKKKKKKK00Okxdo${c2}oooooo;     
+      ${c2}dooooooooooooooooooooooooooo:.      
+        .:oooooooooooooooooooooc'         
+           .':looooooooooolcd.     
 "
