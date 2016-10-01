@@ -2329,7 +2329,7 @@ info() {
     printf "%b%s\n" "${padding}${string}${reset}"
 
     # Calculate info height
-    info_height="$((info_height + 1))"
+    info_height="$((info_height+=1))"
 }
 
 # }}}
@@ -2364,7 +2364,7 @@ prin() {
     printf "%b%s\n" "${padding}${string}${reset}"
 
     # Calculate info height
-    info_height="$((info_height + 1))"
+    info_height="$((info_height+=1))"
 }
 
 # }}}
