@@ -2789,7 +2789,7 @@ dynamicprompt() {
     fi
 
     # Set the prompt location
-    [ "$image" != "off" ] && printf "%b%s" "\033[${lines:-0}B"
+    [ "$image" != "off" ] && printf "\033[${lines/-*/0}B"
 }
 
 # }}}
