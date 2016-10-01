@@ -192,19 +192,19 @@ To install the git version, just add `app-misc/neofetch ~<your architecture>` to
 
 1. Install git and the git ports(8) driver
     - `sudo prt-get depinst git`
-2. Add the 3rd party repo
-    - `sudo wget -O /etc/ports/tudurom.git https://git.io/vV46y`
+2. Add the `6c36-git` repository
+    - `sudo wget -O /etc/ports/6c37-git.git "https://raw.githubusercontent.com/6c37/cross/master/git-driver/6c37-git.git"`
 3. Sync the repos
     - `sudo ports -u`
 4. Add the repo to /etc/prt-get.conf with your text editor of choice
-    - `prtdir /usr/ports/tudurom`
+    - `prtdir /usr/ports/6c37-git`
 5. Install the package
     - `sudo prt-get depinst neofetch`
 
-Or alternatively use the [port](https://github.com/tudurom/crux-ports/blob/master/neofetch/Pkgfile):
+Or alternatively use the [port](https://raw.githubusercontent.com/6c37/crux-ports-git/3.2/neofetch/Pkgfile):
 
 1. Download port
-    - `wget -O ~/work/neofetch/Pkgfile https://raw.githubusercontent.com/tudurom/crux-ports/master/neofetch/Pkgfile`
+    - `wget -O ~/work/neofetch/Pkgfile "https://raw.githubusercontent.com/6c37/crux-ports-git/3.2/neofetch/Pkgfile"`
 2. Build the package
     - `fakeroot pkgmk -d`
 3. Install the package
