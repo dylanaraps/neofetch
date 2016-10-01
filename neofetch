@@ -3144,8 +3144,8 @@ main() {
         # Display the image if enabled
         displayimage
     fi
-
     printf "\033[$((${lines:-0} - 4))A"
+    printf "\033[9999999D"
     printf "\0337"
 
     # Move cursor to top of ascii art
