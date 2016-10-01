@@ -1,23 +1,20 @@
 "\
-             ${c1}.    ${c3} ...                    
-            '${c1}::${c3}dddddddddddd'..            
-        ..ddd${c1}0Nl${c3}ddddddddddddddd'.         
-      .ddddd${c1}oMMMx${c3}ddddddddddddddddd.       
-    .dddddd:${c1}WMMMM0${c3};ddddddddddddddddd.     
-   'dddddd;${c1}XMMMMMMNc${c3}dddddddddddddddddd.   
-  'ddddddd${c1}KMMMMMMMMWc${c3}dddddddddddddddddd.  
- 'ddddddd${c1}0MMMMMMMMMMx${c3}d${c1}od${c3};ddddddddddddddd  
-.ddddddd${c1}0MMMMMMMMMMMO${c3}dd${c1}KNx${c3};ddddddddddddd' 
-'dddddd${c1}0MMMMMMMMMMMMX${c3}dd${c1}cMMWd${c3};${c1}lxOxl${c3};dddddd 
-ddddd;${c1}0MMMMMMMMMMMMMW${c3}ddd${c1}KMMMNl${c3}d;${c1}xNMNOd${c3}:dd.
-dddd;${c1}KMMMMMMMMMMMMMMM;${c3}dd${c1}kMMMMM0${c3};d;${c1}OMMMMXd${c3}d
-'dd:${c1}XMMMMMMMMMMMMMMMMc${c3}dd${c1}kMMMMMMNl${c3}dd${c1}OMMMNlo${c3}
-.d:${c1}NMMMMMMMMMMMMMMMMMo${c3}dd${c1}0MMMMMMMWd${c3}d:${c1}MNx:o. 
-.d${c1}dk0XNWMMMMMMMMMMMMMx${c3}d;${c1}WMMMMMMMMWc${c3}d${c3}clOX. 
-  ${c3}'dddddd;;:cllodxxkOddo000OOkdlclx0KO${c1}d.  
-   ${c3}dc::;;;ddddddddddd;;:${c1}clodkO0KKOxool.   
-    ${c1}cOKKKKKKKKKKKKKKKKK00Okxdo${c2}oooooo;     
-      ${c2}dooooooooooooooooooooooooooo:.      
-        .:oooooooooooooooooooooc'         
-           .':looooooooooolcd.     
+             ${c3}......               
+         .'${c1}D${c3}lddddddddddd'.          
+      .'ddd${c1}XM${c3}xdddddddddddddd.       
+    .dddddx${c1}MMM0${c3};dddddddddddddd.     
+   'dddddl${c1}MMMMMN${c3}cddddddddddddddd.   
+  ddddddc${c1}WMMMMMMW${c3}lddddddddddddddd.  
+ ddddddc${c1}WMMMMMMMMO${c3}ddoddddddddddddd. 
+.ddddd:${c1}NMMMMMMMMMK${c3}dd${c1}NX${c3}od;c${c1}lxl${c3}dddddd 
+dddddc${c1}WMMMMMMMMMMNN${c3}dd${c1}MMXl${c3};d${c1}00xl;${c3}ddd.
+ddddl${c1}WMMMMMMMMMMMMM${c3}d;${c1}MMMM0${c3}:dl${c1}XMMXk:${c3}'
+dddo${c1}WMMMMMMMMMMMMMM${c3}dd${c1}MMMMMW${c3}od${c3};${c1}XMMMOd
+${c3}.dd${c1}MMMMMMMMMMMMMMMM${c3}d:${c1}MMMMMMM${c3}kd${c1}lMKll 
+${c3}.;dk0${c1}KXNWWMMMMMMMMM${c3}dx${c1}MMMMMMM${c3}Xl;lxK; 
+${c3}  'dddddddd;:cclodcddxddolloxO0O${c1}d'  
+${c1}   ckkxxxddddddddxxkOOO000Okdool.   
+    ${c2}.lddddxxxxxxddddooooooooood     
+      .:oooooooooooooooooooc'       
+         .,:looooooooooc;.  
 "
