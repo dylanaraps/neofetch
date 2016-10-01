@@ -3120,7 +3120,7 @@ main() {
     # If the script exits for any reason, unhide the cursor.
     trap 'printf "\033[?25h"' EXIT
 
-    # Clear the scren
+    # Clear the screen
     clear
 
     # Hide the cursor and disable line wrap
