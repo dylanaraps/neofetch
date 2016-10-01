@@ -2085,6 +2085,8 @@ getimage() {
         [ "${#term_size}" -le 5 ] && err "Your terminal doesn't support \\\033[14t, falling back to ascii mode."
 
         return
+    else
+        clear
     fi
 
     # Get terminal lines and columns
@@ -3126,12 +3128,6 @@ main() {
 
     # If the script exits for any reason, unhide the cursor.
     trap 'printf "\033[?25h"' EXIT
-
-    # Clear the screen
-    case "$image" in
-        "ascii" | "off") ;;
-        *) clear ;;
-    esac
 
     # Hide the cursor and disable line wrap
     printf "\033[?25l\033[?7l"
