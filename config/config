@@ -402,7 +402,12 @@ scrot_dir="$HOME/Pictures/"
 # Scrot filename
 # What to name the screenshots
 # --scrot_name str
-scrot_name="neofetch-$(date +%F-%T).png"
+scrot_name="neofetch-$(date +%F-%I-%M).png"
+
+# Image upload host
+# Where to upload the image.
+# Possible values: teknik,
+image_host="teknik"
 
 
 # }}}

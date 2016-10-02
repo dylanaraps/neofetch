@@ -2290,44 +2290,25 @@ getimagebackend() {
 
 takescrot() {
     $scrot_cmd "${scrot_dir}${scrot_name}"
+    [ "$scrot_upload" == "on" ] && scrot_upload
 }
 
 # }}}
 
 # Screenshot Upload {{{
 
-image_host="imgur"
-
 scrot_upload() {
     image_file="${scrot_dir}${scrot_name}"
+    printf "%s\n" "Uploading image..."
 
     case "$image_host" in
         "teknik")
-            baseurl='https://u.teknik.io'
-            uploadurl='https://api.teknik.io/v1/Upload'
-            ret="$(curl -sf -F file="@${image_file}" ${uploadurl})"
-            url="$(awk -F 'url:\"|\"' '{printf $2}' <<< "$ret")"
-        ;;
-
-        "mediacrush")
-            baseurl='https://mediacru.sh'
-            uploadurl='https://mediacru.sh/api/upload/file'
-            ret="$(curl -sf -F file="@${image_file};type=image/png" ${uploadurl})"
-            filehash=$(echo "${ret}" | grep "hash" | cut -d '"' -f4)
-            desturl="${baseurl}/${filehash}"
-        ;;
-
-        "imgur")
-            baseurl='http://imgur.com'
-            uploadurl='http://imgur.com/upload'
-            ret="$(curl -sf -F file="@${image_file}" ${uploadurl})"
-            filehash="${ret##*hash\":\"}"
-            filehash="${filehash%%\"*}"
-            desturl="${baseurl}/${filehash}"
+            image_url="$(curl -sf -F file="@${image_file}" 'https://api.teknik.io/v1/Upload')"
+            image_url="$(awk -F 'url:|,' '{printf $2}' <<< "${image_url//\"}")"
         ;;
     esac
 
-    printf "%s\n" "your screenshot can be viewed at $desturl"
+    [ "$image_url" ] && printf "%s\n" "$image_url"
 }
 
 # }}}
@@ -3125,6 +3106,10 @@ getargs() {
                     scrot_name="${2##*/}"
                     scrot_dir="${2/$scrot_name}"
                 fi
+            ;;
+            --upload | -su)
+                scrot="on"
+                scrot_upload="on"
             ;;
             --scrot_cmd) scrot_cmd="$2" ;;
 
