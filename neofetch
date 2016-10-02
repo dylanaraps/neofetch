@@ -2218,10 +2218,6 @@ getimage() {
     img="$thumbnail_dir/$imgname"
 }
 
-takescrot() {
-    $scrot_cmd "${scrot_dir}${scrot_name}"
-}
-
 # }}}
 
 # Find w3m-img {{{
@@ -2286,6 +2282,54 @@ getimagebackend() {
     else
         image_backend="w3m"
     fi
+}
+
+# }}}
+
+# Screenshot {{{
+
+takescrot() {
+    $scrot_cmd "${scrot_dir}${scrot_name}"
+}
+
+# }}}
+
+# Screenshot Upload {{{
+
+image_host="imgur"
+
+scrot_upload() {
+    image_file="${scrot_dir}${scrot_name}"
+
+    case "$image_host" in
+        "teknik")
+            baseurl='https://u.teknik.io'
+            uploadurl='https://api.teknik.io/upload/post'
+            ret="$(curl -sf -F file="@${image_file}" ${uploadurl})"
+            desturl="${ret##*url\":\"}"
+            desturl="${desturl%%\"*}"
+            desturl="${desturl//\\}"
+        ;;
+
+        "mediacrush")
+            baseurl='https://mediacru.sh'
+            uploadurl='https://mediacru.sh/api/upload/file'
+            ret="$(curl -sf -F file="@${image_file};type=image/png" ${uploadurl})"
+            filehash=$(echo "${ret}" | grep "hash" | cut -d '"' -f4)
+            desturl="${baseurl}/${filehash}"
+        ;;
+
+        "imgur")
+            baseurl='http://imgur.com'
+            uploadurl='http://imgur.com/upload'
+            ret="$(curl -sf -F file="@${image_file}" ${uploadurl})"
+            filehash="${ret##*hash\":\"}"
+            filehash="${filehash%%\"*}"
+            desturl="${baseurl}/${filehash}"
+        ;;
+    esac
+
+    printf "%s\n" "your screenshot can be viewed at $desturl"
 }
 
 # }}}
