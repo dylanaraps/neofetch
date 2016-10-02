@@ -20,7 +20,7 @@ suggesting a new feature then just a description will suffice.
 2. Run `neofetch 2> neofetchlog`
 3. Upload the contents of `neofetchlog` to pastebin, gist or equivalent.
 
-**Neofetch 1.7**
+**Neofetch 1.7 and newer**
 
 2. Run `neofetch -vv 2> neofetchlog`
 3. Upload the contents of `neofetchlog` to pastebin, gist or equivalent.
