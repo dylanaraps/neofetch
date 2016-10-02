@@ -2298,6 +2298,11 @@ takescrot() {
 # Screenshot Upload {{{
 
 scrot_upload() {
+    if ! type -p curl >/dev/null 2>&1; then
+        printf "%s\n" "[!] Install curl to upload images"
+        return
+    fi
+
     image_file="${scrot_dir}${scrot_name}"
     printf "%s\n" "Uploading image..."
 
