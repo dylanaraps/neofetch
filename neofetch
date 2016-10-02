@@ -2943,8 +2943,10 @@ usage() { cat << EOF
     --ascii_bold on/off         Whether or not to bold the ascii logo.
 
     Screenshot:
-    --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
+    --scrot | -s /path/to/img   Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
+    --upload | -su              Same as --scrot but uploads the scrot to a website.
+    --image_host                Website to upload scrots to. Takes: teknik,
     --scrot_cmd cmd             Screenshot program to launch
 
     Other:
@@ -3111,6 +3113,7 @@ getargs() {
                 scrot="on"
                 scrot_upload="on"
             ;;
+            --image_host) image_host="$2" ;;
             --scrot_cmd) scrot_cmd="$2" ;;
 
             # Other
