@@ -2315,11 +2315,15 @@ scrot_upload() {
         "imgur")
             image_url="$(curl -sH "Authorization: Client-ID $imgur_client_id" -F "image=@${image_file}" "https://api.imgur.com/3/upload")"
             image_url="$(awk -F 'id:|,' '{printf $2}' <<< "${image_url//\"}")"
-            image_url="https://i.imgur.com/${image_url}.png"
+            [ "$image_url" ] && image_url="https://i.imgur.com/${image_url}.png"
         ;;
     esac
 
-    [ "$image_url" ] && printf "%s\n" "$image_url"
+    if [ "$image_url" ]; then
+        printf "%s\n" "$image_url"
+    else
+        printf "%s\n" "[!] Image failed to upload"
+    fi
 }
 
 # }}}

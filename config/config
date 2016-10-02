@@ -407,7 +407,7 @@ scrot_name="neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png"
 # Image upload host
 # Where to upload the image.
 # Possible values: teknik,
-image_host="teknik"
+image_host="imgur"
 
 # Imgur api key
 # This is an api key for neofetch, you can sign up for your own
