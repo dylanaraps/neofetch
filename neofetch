@@ -505,7 +505,7 @@ getde() {
         case "$de" in
             "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
             *"TDE_FULL_SESSION"*) de="Trinity" ;;
-            *"MUFFIN"*) de="Cinnamon" ;;
+            *"MUFFIN"*) de="$(cinnamon --version 2>/dev/null)"; de="${de:-Cinnamon}" ;;
             *"xfce4"*) de="XFCE4" ;;
             *"xfce5"*) de="XFCE5" ;;
         esac
