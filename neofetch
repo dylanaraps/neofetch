@@ -1124,7 +1124,6 @@ getgpu() {
                     gpu="${gpu/GeForce }"
                     gpu="${gpu/Radeon }"
                 ;;
-
             esac
         ;;
     esac
