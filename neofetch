@@ -2304,11 +2304,9 @@ scrot_upload() {
     case "$image_host" in
         "teknik")
             baseurl='https://u.teknik.io'
-            uploadurl='https://api.teknik.io/upload/post'
+            uploadurl='https://api.teknik.io/v1/Upload'
             ret="$(curl -sf -F file="@${image_file}" ${uploadurl})"
-            desturl="${ret##*url\":\"}"
-            desturl="${desturl%%\"*}"
-            desturl="${desturl//\\}"
+            url="$(awk -F 'url:\"|\"' '{printf $2}' <<< "$ret")"
         ;;
 
         "mediacrush")
