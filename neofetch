@@ -101,7 +101,7 @@ getmodel() {
             model="$(wmic computersystem get manufacturer,model /value)"
             model="${model/Manufacturer'='}"
             model="${model/Model'='}"
-            model="${model//To Be Filled*}"
+            model="${model//*To Be Filled*}"
         ;;
 
         "Solaris")
