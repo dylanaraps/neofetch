@@ -2961,7 +2961,7 @@ usage() { cat << EOF
     --scrot | -s /path/to/img   Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     --upload | -su              Same as --scrot but uploads the scrot to a website.
-    --image_host                Website to upload scrots to. Takes: teknik,
+    --image_host                Website to upload scrots to. Takes: imgur, teknik
     --scrot_cmd cmd             Screenshot program to launch
 
     Other:
@@ -3127,6 +3127,11 @@ getargs() {
             --upload | -su)
                 scrot="on"
                 scrot_upload="on"
+
+                if [ "$2" ]; then
+                    scrot_name="${2##*/}"
+                    scrot_dir="${2/$scrot_name}"
+                fi
             ;;
             --image_host) image_host="$2" ;;
             --scrot_cmd) scrot_cmd="$2" ;;
