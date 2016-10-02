@@ -1124,9 +1124,16 @@ getgpu() {
                     gpu="${gpu/GeForce }"
                     gpu="${gpu/Radeon }"
                 ;;
+
             esac
         ;;
     esac
+
+    if [ "$gpu_brand" == "off" ]; then
+        gpu="${gpu/AMD}"
+        gpu="${gpu/NVIDIA}"
+        gpu="${gpu/Intel}"
+    fi
 
     gpu="${gpu}${count}"
 }
@@ -2840,6 +2847,7 @@ usage() { cat << EOF
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
     --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
+    --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
@@ -2962,6 +2970,7 @@ getargs() {
             --uptime_shorthand) uptime_shorthand="$2" ;;
             --cpu_shorthand) cpu_shorthand="$2" ;;
             --gpu_shorthand) gpu_shorthand="$2" ;;
+            --gpu_brand) gpu_brand="$2" ;;
             --refresh_rate) refresh_rate="$2" ;;
             --gtk_shorthand) gtk_shorthand="$2" ;;
             --gtk2) gtk2="$2" ;;
