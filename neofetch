@@ -2513,7 +2513,7 @@ colors() {
             setcolors 2 8
         ;;
 
-        "Windows 8"* | "Windows 10"*)
+        "Windows 8"* | "Windows 10"* | "Ubuntu"*"Windows")
             setcolors 6
             ascii_distro="windows10"
         ;;
