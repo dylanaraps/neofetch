@@ -1947,6 +1947,7 @@ getwallpaper() {
                 # Strip quotes etc from the path.
                 img="${img/'file://'}"
                 img="${img//\'}"
+                img="${img//\%20/ }"
             fi
         ;;
 
