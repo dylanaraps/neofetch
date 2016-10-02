@@ -667,9 +667,10 @@ getcpu() {
         "Linux" | "Windows")
             # Get cpu name
             cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
+            cpu_dir="/sys/devices/system/cpu/cpu0/cpufreq"
 
             # Get cpu speed
-            if [ -d "/sys/devices/system/cpu/cpu0/cpufreq" ]; then
+            if [ -d "$cpu_dir" ]; then
                 case "$speed_type" in
                     current) speed_type="scaling_cur_freq" ;;
                     min) speed_type="scaling_min_freq" ;;
@@ -680,8 +681,9 @@ getcpu() {
                     scaling_max) speed_type="scaling_max_freq" ;;
                 esac
 
-                read -t 1 -r speed < \
-                    /sys/devices/system/cpu/cpu0/cpufreq/${speed_type}
+                # Fallback to cpuinfo_max_freq if $speed_type fails
+                read -t 1 -r speed < "${cpu_dir}/${speed_type}" || \
+                read -t 1 -r speed < "${cpu_dir}/cpuinfo_max_freq"
 
                 speed="$((speed / 100000))"
             else
