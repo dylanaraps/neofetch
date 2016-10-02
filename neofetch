@@ -2852,6 +2852,21 @@ dynamicprompt() {
 
 # }}}
 
+# Scrot args {{{
+
+scrot_args() {
+    scrot="on"
+    case "$2" in
+        "--"* | "") ;;
+        *)
+            scrot_name="${2##*/}"
+            scrot_dir="${2/$scrot_name}"
+        ;;
+    esac
+}
+
+# }}}
+
 # }}}
 
 # Usage {{{
@@ -3118,26 +3133,13 @@ getargs() {
 
             # Screenshot
             --scrot | -s)
-                scrot="on"
-                case "$2" in
-                    "--"* | "") ;;
-                    *)
-                        scrot_name="${2##*/}"
-                        scrot_dir="${2/$scrot_name}"
-                    ;;
-                esac
+                scrot_args "$@"
             ;;
             --upload | -su)
-                scrot="on"
                 scrot_upload="on"
-                case "$2" in
-                    "--"* | "") ;;
-                    *)
-                        scrot_name="${2##*/}"
-                        scrot_dir="${2/$scrot_name}"
-                    ;;
-                esac
+                scrot_args "$@"
             ;;
+
             --image_host) image_host="$2" ;;
             --scrot_cmd) scrot_cmd="$2" ;;
 
