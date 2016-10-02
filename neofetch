@@ -151,20 +151,20 @@ getdistro() {
                     "on")
                         distro="$(awk -F'=' '/^NAME|VERSION_ID=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
                         [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_ID|DISTRIB_RELEASE=/ {print $2}' /etc/openwrt_release)"
-                        ;;
+                    ;;
 
                     "tiny")
                         distro="$(awk -F'=' '/^NAME=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
                         [ -z "$distro" ] && distro="$(awk -F'=' '/^TAILS_PRODUCT_NAME=/ {print $2}' /etc/*ease)"
                         [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_ID=/ {print $2}' /etc/openwrt_release)"
-                        ;;
+                    ;;
 
-                     *)
+                    *)
                         distro="$(awk -F'=' '/^PRETTY_NAME=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
                         [ -z "$distro" ] && distro="$(awk -F'=' '{print $2}' /etc/*ease)"
                         [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
                         [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_DESCRIPTION=/ {print $2}' /etc/openwrt_release)"
-                        ;;
+                    ;;
                 esac
             fi
             distro="${distro//\"}"
@@ -696,9 +696,9 @@ getcpu() {
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
-               speed="0.${speed}"
+                speed="0.${speed}"
             else
-               speed="${speed:0:1}.${speed:1}"
+                speed="${speed:0:1}.${speed:1}"
             fi
 
             cpu="$cpu @ ${speed}GHz"
@@ -834,9 +834,9 @@ getcpu() {
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
-               speed="0.${speed}"
+                speed="0.${speed}"
             else
-               speed="${speed:0:1}.${speed:1}"
+                speed="${speed:0:1}.${speed:1}"
             fi
 
             cpu="$cpu @ ${speed}GHz"
@@ -857,9 +857,9 @@ getcpu() {
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
-               speed="0.${speed}"
+                speed="0.${speed}"
             else
-               speed="${speed:0:1}.${speed:1}"
+                speed="${speed:0:1}.${speed:1}"
             fi
 
             cpu="$cpu @ ${speed}GHz"
@@ -943,8 +943,8 @@ getcpu_usage() {
 # GPU {{{
 
 getgpu() {
-   case "$os" in
-       "Linux")
+    case "$os" in
+        "Linux")
             gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
 
             # If a GPU with a prefix of '3D' doesn't exist
@@ -1733,9 +1733,9 @@ getbattery() {
 
                     [ "$battery0full" ] && \
                     battery="$((100 * ${battery0now/\.} / ${battery0full/\.}))%"
-                 ;;
+                ;;
             esac
-         ;;
+        ;;
 
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
@@ -2382,7 +2382,7 @@ getunderline() {
         "on")
             underline="$(printf %"$length"s)"
             underline="${underline// /$underline_char}"
-         ;;
+        ;;
         "off") underline="" ;;
     esac
 }
@@ -2606,7 +2606,7 @@ bold() {
 # Linebreak {{{
 
 getlinebreak() {
-   linebreak=" "
+    linebreak=" "
 }
 
 # }}}
