@@ -125,7 +125,7 @@ getdistro() {
                     "tiny") distro="Windows 10" ;;
                     *)      distro="$(lsb_release -sd 2>/dev/null) on Windows 10" ;;
                 esac
-                ascii_distro="windows10"
+                ascii_distro="Windows 10"
 
             elif type -p lsb_release >/dev/null 2>&1; then
                 case "$distro_shorthand" in
@@ -2513,7 +2513,7 @@ colors() {
             setcolors 2 8
         ;;
 
-        "Windows 8"* | "Windows 10"* | "Ubuntu"*"Windows")
+        "Windows 8"* | "Windows 10"*)
             setcolors 6
             ascii_distro="windows10"
         ;;
