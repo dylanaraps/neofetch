@@ -2303,8 +2303,14 @@ scrot_upload() {
 
     case "$image_host" in
         "teknik")
-            image_url="$(curl -sf -F file="@${image_file}" 'https://api.teknik.io/v1/Upload')"
+            image_url="$(curl -sf -F file="@${image_file}" "https://api.teknik.io/v1/Upload")"
             image_url="$(awk -F 'url:|,' '{printf $2}' <<< "${image_url//\"}")"
+        ;;
+
+        "imgur")
+            image_url="$(curl -sH "Authorization: Client-ID $imgur_client_id" -F "image=@${image_file}" "https://api.imgur.com/3/upload")"
+            image_url="$(awk -F 'id:|,' '{printf $2}' <<< "${image_url//\"}")"
+            image_url="https://i.imgur.com/${image_url}.png"
         ;;
     esac
 

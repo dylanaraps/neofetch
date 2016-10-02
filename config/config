@@ -409,6 +409,11 @@ scrot_name="neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png"
 # Possible values: teknik,
 image_host="teknik"
 
+# Imgur api key
+# This is an api key for neofetch, you can sign up for your own
+# here: http://api.imgur.com/oauth2/addclient
+imgur_client_id="0e8b44d15e9fc95"
+
 
 # }}}
 
