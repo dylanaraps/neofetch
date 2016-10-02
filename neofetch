@@ -3119,19 +3119,24 @@ getargs() {
             # Screenshot
             --scrot | -s)
                 scrot="on"
-                if [ "$2" ]; then
-                    scrot_name="${2##*/}"
-                    scrot_dir="${2/$scrot_name}"
-                fi
+                case "$2" in
+                    "--"* | "") ;;
+                    *)
+                        scrot_name="${2##*/}"
+                        scrot_dir="${2/$scrot_name}"
+                    ;;
+                esac
             ;;
             --upload | -su)
                 scrot="on"
                 scrot_upload="on"
-
-                if [ "$2" ]; then
-                    scrot_name="${2##*/}"
-                    scrot_dir="${2/$scrot_name}"
-                fi
+                case "$2" in
+                    "--"* | "") ;;
+                    *)
+                        scrot_name="${2##*/}"
+                        scrot_dir="${2/$scrot_name}"
+                    ;;
+                esac
             ;;
             --image_host) image_host="$2" ;;
             --scrot_cmd) scrot_cmd="$2" ;;
