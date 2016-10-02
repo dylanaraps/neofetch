@@ -3155,10 +3155,8 @@ main() {
     printf "\033[9999999D"
 
     # Move cursor to top of ascii art
-    case "$image" in
-        "ascii" | "off") ;;
-        *) printf "\033[0H" ;;
-    esac
+    [ "$image" != "ascii" ] && [ "$image" != "off" ] && \
+        printf "\033[0H"
 
     # Print the info
     printinfo
