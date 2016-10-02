@@ -2097,6 +2097,8 @@ getimage() {
         [ "${#term_size}" -le 5 ] && err "Your terminal doesn't support \\\033[14t, falling back to ascii mode."
 
         return
+    else
+        clear
     fi
 
     # Get terminal lines and columns
@@ -2339,6 +2341,9 @@ info() {
 
     # Print the string
     printf "%b%s\n" "${padding}${string}${reset}"
+
+    # Calculate info height
+    info_height="$((info_height+=1))"
 }
 
 # }}}
@@ -2371,6 +2376,9 @@ prin() {
 
     # Print the info
     printf "%b%s\n" "${padding}${string}${reset}"
+
+    # Calculate info height
+    info_height="$((info_height+=1))"
 }
 
 # }}}
@@ -2781,20 +2789,21 @@ kdeconfigdir() {
 # Dynamic prompt location {{{
 
 dynamicprompt() {
-    # Get cursor position
-    info_height="$(IFS=';' builtin read -srdR -t 1 -d c -p $'\033[6n\033[c' ROW COL; printf "%s" "${ROW#*[}")"
-
     # Calculate image height in terminal cells.
-    # The '+ 3' adds a gap between the prompt and the content.
+    # The '+ 4' adds a gap between the prompt and the content.
     [ "$image" != "ascii" ] && [ "$image" != "off" ] && \
-        lines="$((${height:-1} / ${font_height:-1} + 3))"
+        lines="$((${height:-1} / ${font_height:-1} + 4))"
 
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
-    [ "${lines:-0}" -lt "${info_height:-0}" ] && lines="$info_height"
+    if [ "${lines:-0}" -lt "${info_height:-0}" ]; then
+        lines="$((info_height - lines - 2))"
+    else
+        lines="$((lines - info_height - 2))"
+    fi
 
     # Set the prompt location
-    [ "$image" != "off" ] && printf "%b%s" "\033[${lines:-0}H"
+    [ "$image" != "off" ] && printf "\033[${lines/-*/0}B"
 }
 
 # }}}
@@ -3132,9 +3141,6 @@ main() {
     # If the script exits for any reason, unhide the cursor.
     trap 'printf "\033[?25h"' EXIT
 
-    # Clear the screen
-    clear
-
     # Hide the cursor and disable line wrap
     printf "\033[?25l\033[?7l"
 
@@ -3154,8 +3160,15 @@ main() {
         displayimage
     fi
 
-    # Move cursor to the top
-    printf "\033[0H"
+    # Set cursor position next to ascii art
+    printf "\033[$((${lines:-0} - 4))A"
+
+    # Reset horizontal cursor position
+    printf "\033[9999999D"
+
+    # Move cursor to top of ascii art
+    [ "$image" != "ascii" ] && [ "$image" != "off" ] && \
+        printf "\033[0H"
 
     # Print the info
     printinfo
