@@ -3042,7 +3042,7 @@ getargs() {
                 case "$2" in "--"* | "") image="ascii" ;; esac
             ;;
 
-            --size) image_size="$2" ;;
+            --image_size | --size) image_size="$2" ;;
             --crop_mode) crop_mode="$2" ;;
             --crop_offset) crop_offset="$2" ;;
             --xoffset) xoffset="$2" ;;
