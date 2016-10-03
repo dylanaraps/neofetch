@@ -454,6 +454,7 @@ alias neofetch2="neofetch \
     --ascii_logo_size           Size of ascii logo.
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
     --ascii_bold on/off         Whether or not to bold the ascii logo.
+    --logo | -L                 Hide the info text and only show the ascii logo.
 
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-

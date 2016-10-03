@@ -561,7 +561,10 @@ getwmtheme() {
 
         'Compiz' | 'Mutter'* | 'GNOME Shell' | 'Gala')
             if type -p gsettings >/dev/null 2>&1; then
-                wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
+                wmtheme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
+
+                [ -z "$wmtheme" ] && \
+                    wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
 
             elif type -p gconftool-2 >/dev/null 2>&1; then
                 wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
@@ -1551,7 +1554,7 @@ getterm() {
     esac
 
     case "${name// }" in
-        "${SHELL/*\/}" | *"sh" | "tmux" | "screen") getterm "$parent" ;;
+        "${SHELL/*\/}" | *"sh" | "tmux"* | "screen") getterm "$parent" ;;
         "login" | "init") term="$(tty)"; term="${term/*\/}" ;;
         "ruby" | "1" | "systemd" | "sshd"* | "python"*) unset term ;;
         "gnome-terminal-") term="gnome-terminal" ;;
@@ -1588,7 +1591,7 @@ gettermfont() {
         ;;
 
         "termite")
-            termfont="$(awk -F '= ' '!/^($|#)/ && /font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
+            termfont="$(awk -F '= ' '!/^($|#|;)/ && /font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
         ;;
 
         "mintty")
@@ -1685,8 +1688,8 @@ getbattery() {
                     *) index="$battery_num" ;;
                 esac
 
-                batteries=($(cat "/sys/class/power_supply/BAT$battery_num/capacity"))
-                battery_state=($(cat "/sys/class/power_supply/BAT${battery_num}/status"))
+                batteries=("$(cat /sys/class/power_supply/BAT$battery_num/capacity)")
+                battery_state=("$(cat /sys/class/power_supply/BAT${battery_num}/status)")
 
                 # Get the subtitle and reassign it so it doesn't change.
                 title="$subtitle"
@@ -1944,6 +1947,7 @@ getwallpaper() {
                 # Strip quotes etc from the path.
                 img="${img/'file://'}"
                 img="${img//\'}"
+                img="${img//\%20/ }"
             fi
         ;;
 
@@ -2253,6 +2257,9 @@ displayimage() {
     if [ "$image" != "ascii" ]; then
         case "$image_backend" in
             "w3m")
+                # Add a tiny delay to fix issues with images not
+                # appearing in specific terminal emulators.
+                sleep 0.05
                 printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
                 $w3m_img_path 2>/dev/null || padding="\033[0C"
             ;;
@@ -2841,13 +2848,18 @@ dynamicprompt() {
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
     if [ "${lines:-0}" -lt "${info_height:-0}" ]; then
-        lines="$((info_height - lines - 2))"
+        lines="0"
     else
-        lines="$((lines - info_height - 2))"
+        lines="$((lines - info_height - 4))"
     fi
 
     # Set the prompt location
     [ "$image" != "off" ] && printf "\033[${lines/-*/0}B"
+
+    # Add some padding if the lines are above 0
+    if [ "$lines" -gt 0 ]; then
+        printf "\n\n"
+    fi
 }
 
 # }}}
@@ -2971,6 +2983,7 @@ usage() { cat << EOF
     --ascii_logo_size           Size of ascii logo.
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
     --ascii_bold on/off         Whether or not to bold the ascii logo.
+    --logo | -L                 Hide the info text and only show the ascii logo.
 
     Screenshot:
     --scrot | -s /path/to/img   Take a screenshot, if path is left empty the screen-
@@ -3093,7 +3106,7 @@ getargs() {
                 case "$2" in "--"* | "") image="ascii" ;; esac
             ;;
 
-            --size) image_size="$2" ;;
+            --image_size | --size) image_size="$2" ;;
             --crop_mode) crop_mode="$2" ;;
             --crop_offset) crop_offset="$2" ;;
             --xoffset) xoffset="$2" ;;
@@ -3130,6 +3143,11 @@ getargs() {
 
             --ascii_logo_size) ascii_logo_size="$2" ;;
             --ascii_bold) ascii_bold="$2" ;;
+            --logo | -L)
+                image="ascii"
+                printinfo() { info linebreak; }
+            ;;
+
 
             # Screenshot
             --scrot | -s)
@@ -3230,10 +3248,6 @@ main() {
 
     # Reset horizontal cursor position
     printf "\033[9999999D"
-
-    # Move cursor to top of ascii art
-    [ "$image" != "ascii" ] && [ "$image" != "off" ] && \
-        printf "\033[0H"
 
     # Print the info
     printinfo

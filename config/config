@@ -48,7 +48,6 @@ printinfo () {
 
     info linebreak
     info cols
-    info linebreak
 }
 
 
@@ -266,7 +265,7 @@ block_height=1
 progress_char_elapsed="-"
 progress_char_total="="
 
-# Progress vorder
+# Progress border
 # --progress_border on/off
 progress_border="on"
 
