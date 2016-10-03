@@ -2807,13 +2807,18 @@ dynamicprompt() {
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
     if [ "${lines:-0}" -lt "${info_height:-0}" ]; then
-        lines="$((info_height - lines - 2))"
+        lines="0"
     else
-        lines="$((lines - info_height - 2))"
+        lines="$((lines - info_height - 4))"
     fi
 
     # Set the prompt location
     [ "$image" != "off" ] && printf "\033[${lines/-*/0}B"
+
+    # Add some padding if the lines are above 0
+    if [ "$lines" -gt 0 ]; then
+        printf "\n\n"
+    fi
 }
 
 # }}}
