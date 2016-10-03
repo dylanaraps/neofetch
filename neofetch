@@ -2361,14 +2361,6 @@ info() {
     # Trim whitespace
     output="$(trim "$output")"
 
-    # Fix rendering issues with w3m and lines that
-    # wrap to the next line by adding a max line
-    # length.
-    if [ "$image" != "off" ] && [ "$image" != "ascii" ] && [ "$1" != "cols" ]; then
-        padding_num="${padding/\\033\[}"
-        output="$(printf "%.$((columns - ${padding_num/C} - gap - ${#subtitle}))s" "$output")"
-    fi
-
     case "$1" in
         title)
             string="${title_color}${bold}${output}"
@@ -2403,14 +2395,6 @@ info() {
 
 prin() {
     string="$1${2:+: $2}"
-
-    # Fix rendering issues with w3m and lines that
-    # wrap to the next line by adding a max line
-    # length.
-    if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
-        padding_num="${padding/\\033\[}"
-        string="$(printf "%.$((columns - ${padding_num/C} - gap))s" "$string")"
-    fi
 
     # If $2 doesn't exist we format $1 as info
     if [ -z "$2" ]; then
