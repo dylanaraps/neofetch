@@ -1554,7 +1554,7 @@ getterm() {
     esac
 
     case "${name// }" in
-        "${SHELL/*\/}" | *"sh" | "tmux" | "screen") getterm "$parent" ;;
+        "${SHELL/*\/}" | *"sh" | "tmux"* | "screen") getterm "$parent" ;;
         "login" | "init") term="$(tty)"; term="${term/*\/}" ;;
         "ruby" | "1" | "systemd" | "sshd"* | "python"*) unset term ;;
         "gnome-terminal-") term="gnome-terminal" ;;
