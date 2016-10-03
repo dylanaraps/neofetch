@@ -458,6 +458,8 @@ alias neofetch2="neofetch \
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
+    --upload | -su /pth/t/img   Same as --scrot but uploads the scrot to a website.
+    --image_host                Website to upload scrots to. Takes: imgur, teknik
     --scrot_cmd cmd             Screenshot program to launch
 
     Other:
