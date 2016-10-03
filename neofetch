@@ -3055,6 +3055,11 @@ getargs() {
             ;;
 
             # Ascii
+            --logo | -L)
+                image="ascii"
+                printinfo() { info linebreak; }
+            ;;
+
             --ascii)
                 image="ascii"
                 ascii="$2"
