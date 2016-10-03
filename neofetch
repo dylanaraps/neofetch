@@ -2222,10 +2222,6 @@ getimage() {
     img="$thumbnail_dir/$imgname"
 }
 
-takescrot() {
-    $scrot_cmd "${scrot_dir}${scrot_name}"
-}
-
 # }}}
 
 # Find w3m-img {{{
@@ -2292,6 +2288,48 @@ getimagebackend() {
 
     else
         image_backend="w3m"
+    fi
+}
+
+# }}}
+
+# Screenshot {{{
+
+takescrot() {
+    $scrot_cmd "${scrot_dir}${scrot_name}"
+    [ "$scrot_upload" == "on" ] && scrot_upload
+}
+
+# }}}
+
+# Screenshot Upload {{{
+
+scrot_upload() {
+    if ! type -p curl >/dev/null 2>&1; then
+        printf "%s\n" "[!] Install curl to upload images"
+        return
+    fi
+
+    image_file="${scrot_dir}${scrot_name}"
+    printf "%s\n" "Uploading image..."
+
+    case "$image_host" in
+        "teknik")
+            image_url="$(curl -sf -F file="@${image_file}" "https://api.teknik.io/v1/Upload")"
+            image_url="$(awk -F 'url:|,' '{printf $2}' <<< "${image_url//\"}")"
+        ;;
+
+        "imgur")
+            image_url="$(curl -sH "Authorization: Client-ID $imgur_client_id" -F image="@${image_file}" "https://api.imgur.com/3/upload")"
+            image_url="$(awk -F 'id:|,' '{printf $2}' <<< "${image_url//\"}")"
+            [ "$image_url" ] && image_url="https://i.imgur.com/${image_url}.png"
+        ;;
+    esac
+
+    if [ "$image_url" ]; then
+        printf "%s\n" "$image_url"
+    else
+        printf "%s\n" "[!] Image failed to upload"
     fi
 }
 
@@ -2826,6 +2864,21 @@ dynamicprompt() {
 
 # }}}
 
+# Scrot args {{{
+
+scrot_args() {
+    scrot="on"
+    case "$2" in
+        "--"* | "") ;;
+        *)
+            scrot_name="${2##*/}"
+            scrot_dir="${2/$scrot_name}"
+        ;;
+    esac
+}
+
+# }}}
+
 # }}}
 
 # Usage {{{
@@ -2933,8 +2986,10 @@ usage() { cat << EOF
     --logo | -L                 Hide the info text and only show the ascii logo.
 
     Screenshot:
-    --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
+    --scrot | -s /path/to/img   Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
+    --upload | -su /pth/t/img   Same as --scrot but uploads the scrot to a website.
+    --image_host                Website to upload scrots to. Takes: imgur, teknik
     --scrot_cmd cmd             Screenshot program to launch
 
     Other:
@@ -3096,12 +3151,14 @@ getargs() {
 
             # Screenshot
             --scrot | -s)
-                scrot="on"
-                if [ "$2" ]; then
-                    scrot_name="${2##*/}"
-                    scrot_dir="${2/$scrot_name}"
-                fi
+                scrot_args "$@"
             ;;
+            --upload | -su)
+                scrot_upload="on"
+                scrot_args "$@"
+            ;;
+
+            --image_host) image_host="$2" ;;
             --scrot_cmd) scrot_cmd="$2" ;;
 
             # Other

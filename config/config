@@ -401,7 +401,17 @@ scrot_dir="$HOME/Pictures/"
 # Scrot filename
 # What to name the screenshots
 # --scrot_name str
-scrot_name="neofetch-$(date +%F-%T).png"
+scrot_name="neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png"
+
+# Image upload host
+# Where to upload the image.
+# Possible values: imgur, teknik
+image_host="imgur"
+
+# Imgur api key
+# This is an api key for neofetch, you can sign up for your own
+# here: http://api.imgur.com/oauth2/addclient
+imgur_client_id="0e8b44d15e9fc95"
 
 
 # }}}
