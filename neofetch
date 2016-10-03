@@ -3178,10 +3178,6 @@ main() {
     # Reset horizontal cursor position
     printf "\033[9999999D"
 
-    # Move cursor to top of ascii art
-    [ "$image" != "ascii" ] && [ "$image" != "off" ] && \
-        printf "\033[0H"
-
     # Print the info
     printinfo
     dynamicprompt
