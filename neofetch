@@ -2261,6 +2261,9 @@ displayimage() {
     if [ "$image" != "ascii" ]; then
         case "$image_backend" in
             "w3m")
+                # Add a tiny delay to fix issues with images not
+                # appearing in specific terminal emulators.
+                sleep 0.05
                 printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
                 $w3m_img_path 2>/dev/null || padding="\033[0C"
             ;;
