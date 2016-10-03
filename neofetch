@@ -2869,7 +2869,7 @@ dynamicprompt() {
 scrot_args() {
     scrot="on"
     case "$2" in
-        "--"* | "") ;;
+        "-"* | "") ;;
         *)
             scrot_name="${2##*/}"
             scrot_dir="${2/$scrot_name}"
@@ -3018,7 +3018,7 @@ getargs() {
             config="off"
         ;;
 
-        *"--config --"*) ;;
+        *"--config -"*) ;;
         *"--config"*) config="off" ;;
     esac
 
@@ -3055,7 +3055,7 @@ getargs() {
                 for func in "$@"; do
                     case "$func" in
                         "--disable") continue ;;
-                        "--"*) return ;;
+                        "-"*) return ;;
                         *) unset -f "get$func" ;;
                     esac
                 done
@@ -3066,7 +3066,7 @@ getargs() {
                 unset colors
                 for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
                     case "$arg" in
-                        "--"*) break ;;
+                        "-"*) break ;;
                         *) colors+=($arg)
                     esac
                 done
@@ -3103,7 +3103,7 @@ getargs() {
             # Image
             --image)
                 image="$2"
-                case "$2" in "--"* | "") image="ascii" ;; esac
+                case "$2" in "-"* | "") image="ascii" ;; esac
             ;;
 
             --image_size | --size) image_size="$2" ;;
@@ -3122,14 +3122,14 @@ getargs() {
             --ascii)
                 image="ascii"
                 ascii="$2"
-                case "$2" in "--"* | "") ascii="distro" ;; esac
+                case "$2" in "-"* | "") ascii="distro" ;; esac
             ;;
 
             --ascii_colors)
                 unset ascii_colors
                 for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
                     case "$arg" in
-                        "--"*) break ;;
+                        "-"*) break ;;
                         *) ascii_colors+=($arg)
                     esac
                 done
@@ -3138,7 +3138,7 @@ getargs() {
 
             --ascii_distro)
                 ascii_distro="$2"
-                case "$2" in "--"* | "") ascii_distro="$distro" ;; esac
+                case "$2" in "-"* | "") ascii_distro="$distro" ;; esac
             ;;
 
             --ascii_logo_size) ascii_logo_size="$2" ;;
