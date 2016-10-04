@@ -2395,7 +2395,6 @@ info() {
         padding_num="${padding/\\033\[}"
         output="$(printf "%.$((columns - ${padding_num/C} - gap - ${#subtitle}))s" "$output")"
     fi
-
 }
 
 # }}}
