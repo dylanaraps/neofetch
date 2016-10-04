@@ -2387,6 +2387,15 @@ info() {
 
     # Calculate info height
     info_height="$((info_height+=1))"
+
+    # Fix rendering issues with w3m and lines that
+    # wrap to the next line by adding a max line
+    # length.
+    if [ "$image" != "off" ] && [ "$image" != "ascii" ] && [ "$1" != "cols" ]; then
+        padding_num="${padding/\\033\[}"
+        output="$(printf "%.$((columns - ${padding_num/C} - gap - ${#subtitle}))s" "$output")"
+    fi
+
 }
 
 # }}}
@@ -2414,6 +2423,14 @@ prin() {
 
     # Calculate info height
     info_height="$((info_height+=1))"
+
+    # Fix rendering issues with w3m and lines that
+    # wrap to the next line by adding a max line
+    # length.
+    if [ "$image" != "off" ] && [ "$image" != "ascii" ]; then
+        padding_num="${padding/\\033\[}"
+        string="$(printf "%.$((columns - ${padding_num/C} - gap))s" "$string")"
+    fi
 }
 
 # }}}
