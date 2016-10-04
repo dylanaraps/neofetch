@@ -1995,8 +1995,10 @@ getascii() {
             ascii="${ascii_distro,,}"
         fi
 
-        [ "$ascii_logo_size" == "small" ] && \
+        if [ "$ascii_logo_size" == "small" ]; then
             ascii="${ascii/ *}_small"
+            prompt_loc="3"
+        fi
 
         if [ -f "/usr/share/neofetch/ascii/distro/${ascii/ *}" ]; then
             ascii="/usr/share/neofetch/ascii/distro/${ascii/ *}"
@@ -3244,7 +3246,7 @@ main() {
     fi
 
     # Set cursor position next to ascii art
-    printf "\033[$((${lines:-0} - 4))A"
+    printf "\033[$((${lines:-0} - ${prompt_loc:-4}))A"
 
     # Reset horizontal cursor position
     printf "\033[9999999D"
