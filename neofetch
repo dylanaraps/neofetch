@@ -217,7 +217,7 @@ getdistro() {
         ;;
 
         "Solaris")
-            distro="$(nawk 'NR==1{gsub(/^ \t]+|[ \t]+$/,""); printf $1 " " $2;}' /etc/release)"
+            distro="$(awk 'NR==1{print $1 " " $2;}' /etc/release)"
         ;;
     esac
 
