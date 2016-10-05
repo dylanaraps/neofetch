@@ -8,6 +8,7 @@ os:
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update                  ; fi
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install screenresolution; fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export PREFIX=/usr/local     ; fi
 
 script:
     - sudo make install
