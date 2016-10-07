@@ -2886,7 +2886,7 @@ usage() { cat << EOF
                                 'neofetch --disable cpu gpu disk shell'
     --osx_buildversion on/off   Hide/Show Mac OS X build version.
     --osx_codename on/off       Hide/Show Mac OS X codename.
-    --os_arch on/off            Hide/Show Windows architecture.
+    --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
