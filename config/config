@@ -62,16 +62,8 @@ kernel_shorthand="on"
 # Distro
 
 # Shorten the output of distro (tiny, on, off)
-# NOTE: This is only possible on Linux
+# NOTE: This is only possible on Linux and Mac OS X
 distro_shorthand="off"
-
-# Mac OS X hide/show build version
-# --osx_buildversion on/off
-osx_buildversion="on"
-
-# Mac OS X hide/show codename
-# --osx_codename on/off
-osx_codename="on"
 
 # Show 'x86_64' and 'x86' in 'Distro:' output.
 # --os_arch on/off

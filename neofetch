@@ -188,6 +188,20 @@ getdistro() {
                 *) codename="Mac OS X" ;;
             esac
             distro="$codename $osx_version $osx_build"
+
+            case "$distro_shorthand" in
+                "on") distro="${distro/ ${osx_build}}" ;;
+                "tiny")
+                    case "$osx_version" in
+                        "10.4"*|"10.5"*|"10.6"*|"10.7"*)
+                            distro="${distro/${codename}/Mac OS X}" ;;
+                        "10.8"*|"10.9"*|"10.10"*|"10.11"*)
+                            distro="${distro/${codename}/OS X}" ;;
+                        "10.12"*)
+                            distro="${distro/${codename}/macOS}" ;;
+                    esac
+                    distro="${distro/ ${osx_build}}" ;;
+            esac
         ;;
 
         "iPhone OS")
@@ -224,12 +238,6 @@ getdistro() {
     # Get architecture
     [ "$os_arch" == "on" ] && \
         distro+=" $(uname -m)"
-
-    [ "$osx_codename" == "off" ] && \
-        distro="${distro/${codename}/Mac OS X}"
-
-    [ "$osx_buildversion" == "off" ] && \
-        distro="${distro/ ${osx_build}}"
 
     [ "${ascii_distro:-auto}" == "auto" ] && \
         ascii_distro="$(trim "$distro")"
@@ -2884,8 +2892,6 @@ usage() { cat << EOF
                                 in the output.
                                 NOTE: You can supply multiple args. eg.
                                 'neofetch --disable cpu gpu disk shell'
-    --osx_buildversion on/off   Hide/Show Mac OS X build version.
-    --osx_codename on/off       Hide/Show Mac OS X codename.
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -2895,7 +2901,7 @@ usage() { cat << EOF
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
-                                NOTE: This is only possible on Linux
+                                NOTE: This is only possible on Linux and Mac OS X
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
@@ -3018,8 +3024,6 @@ getargs() {
         case $1 in
             # Info
             --os_arch) os_arch="$2" ;;
-            --osx_buildversion) osx_buildversion="$2" ;;
-            --osx_codename) osx_codename="$2" ;;
             --cpu_cores) cpu_cores="$2" ;;
             --speed_type) speed_type="$2" ;;
             --distro_shorthand) distro_shorthand="$2" ;;
