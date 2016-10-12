@@ -3234,7 +3234,7 @@ main() {
     fi
 
     # Set cursor position next to ascii art
-    printf "\033[$((${lines:-0} - ${prompt_loc:-4}))A"
+    printf "\033[$((${lines:-4} - ${prompt_loc:-4}))A"
 
     # Reset horizontal cursor position
     printf "\033[9999999D"
