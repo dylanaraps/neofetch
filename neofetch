@@ -1905,7 +1905,7 @@ getcols() {
 
         # Add image border to all block lines.
         if [ "$image_border" == "on" ]; then
-            cols="${cols//nl/\\n${padding}${border_char} }"
+            cols="${cols//nl/\\n${padding}$(color ${border_color})${border_char} }"
         else
             cols="${cols//nl/\\n${padding}}"
         fi
@@ -2380,7 +2380,7 @@ info() {
 
     # Add a border to fix issues with urxvt/xft fonts
     [ "$image_border" == "on" ] && \
-        string="${clear}${border_char} $string"
+        string="${clear}$(color ${border_color})${border_char} $string"
 
     # Print the string
     printf "%b%s\n" "${padding}${string}${reset}"
@@ -2419,7 +2419,7 @@ prin() {
 
     # Add a border to fix issues with urxvt/xft fonts
     [ "$image_border" == "on" ] && \
-        string="${clear}${border_char} $string"
+        string="${clear}$(color ${border_color})${border_char} $string"
 
     # Print the info
     printf "%b%s\n" "${padding}${string}${reset}"
@@ -2969,10 +2969,6 @@ usage() { cat << EOF
     --crop_offset value         Change the crop offset for normal mode.
                                 Possible values: northwest, north, northeast,
                                 west, center, east, southwest, south, southeast
-    --image_border on/off       Add a border around the info in image
-                                mode to fix issues with URxvt and XFT
-                                fonts.
-    --border_char char          Character to draw the border with.
 
     --xoffset px                How close the image will be to the left edge of the
                                 window. This only works with w3m.
@@ -2982,6 +2978,11 @@ usage() { cat << EOF
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.
     --clean                     Remove all cropped images
+    --image_border on/off       Add a border around the info in image
+                                mode to fix issues with URxvt and XFT
+                                fonts.
+    --border_char char          Character to draw the border with.
+    --border_color fg, 000      Change color of border.
 
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
@@ -3115,8 +3116,6 @@ getargs() {
             ;;
 
             --image_size | --size) image_size="$2" ;;
-            --image_border) image_border="$2" ;;
-            --border_char) border_char="$2" ;;
             --crop_mode) crop_mode="$2" ;;
             --crop_offset) crop_offset="$2" ;;
             --xoffset) xoffset="$2" ;;
@@ -3127,6 +3126,9 @@ getargs() {
                 rm -rf "/Library/Caches/neofetch/"
                 exit
             ;;
+            --image_border) image_border="$2" ;;
+            --border_char) border_char="$2" ;;
+            --border_color) border_color="$2" ;;
 
             # Ascii
             --ascii)

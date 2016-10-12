@@ -331,6 +331,16 @@ crop_offset="center"
 # --size auto, 00px, 00%, none
 image_size="auto"
 
+# Right gap between image and text
+# --gap num
+gap=2
+
+# Image offsets
+# --xoffset px
+# --yoffset px
+yoffset=0
+xoffset=0
+
 # Image border
 # When 'on', adds a border between the image and the info to
 # fix issues with URxvt and XFT fonts.
@@ -341,15 +351,9 @@ image_border="off"
 # Character to draw the border with.
 border_char="|"
 
-# Right gap between image and text
-# --gap num
-gap=2
-
-# Image offsets
-# --xoffset px
-# --yoffset px
-yoffset=0
-xoffset=0
+# Image border color
+# Takes: fg, 000
+border_color="fg"
 
 
 # }}}
