@@ -341,6 +341,20 @@ gap=2
 yoffset=0
 xoffset=0
 
+# Image border
+# When 'on', adds a border between the image and the info to
+# fix issues with URxvt and XFT fonts.
+# --image_border on, off
+image_border="off"
+
+# Image border character
+# Character to draw the border with.
+border_char="|"
+
+# Image border color
+# Takes: fg, 000
+border_color="fg"
+
 
 # }}}
 

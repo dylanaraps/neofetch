@@ -437,6 +437,11 @@ alias neofetch2="neofetch \
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.
     --clean                     Remove all cropped images
+    --image_border on/off       Add a border around the info in image
+                                mode to fix issues with URxvt and XFT
+                                fonts.
+    --border_char char          Character to draw the border with.
+    --border_color fg, 000      Change color of border.
 
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
@@ -449,7 +454,7 @@ alias neofetch2="neofetch \
     --logo | -L                 Hide the info text and only show the ascii logo.
 
     Screenshot:
-    --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
+    --scrot | -s /path/to/img   Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     --upload | -su /pth/t/img   Same as --scrot but uploads the scrot to a website.
     --image_host                Website to upload scrots to. Takes: imgur, teknik

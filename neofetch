@@ -1902,7 +1902,13 @@ getcols() {
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
-        cols="${cols//nl/\\n${padding}}"
+
+        # Add image border to all block lines.
+        if [ "$image_border" == "on" ]; then
+            cols="${cols//nl/\\n${padding}$(color ${border_color})${border_char} }"
+        else
+            cols="${cols//nl/\\n${padding}}"
+        fi
     fi
 }
 
@@ -2044,7 +2050,7 @@ getimage() {
 
     case "$image" in
         "wall") getwallpaper ;;
-        "ascii") getascii; return ;;
+        "ascii") image_border="off"; getascii; return ;;
         *)
             if [ -d "$image" ]; then
                 files=("${image%/}"/*.{png,jpg,jpeg})
@@ -2372,6 +2378,10 @@ info() {
     # If there's no subtitle don't print one
     [ -z "$2" ] && string="${string/*: }"
 
+    # Add a border to fix issues with urxvt/xft fonts
+    [ "$image_border" == "on" ] && \
+        string="${clear}$(color ${border_color})${border_char} $string"
+
     # Print the string
     printf "%b%s\n" "${padding}${string}${reset}"
 
@@ -2406,6 +2416,10 @@ prin() {
 
     # Trim whitespace
     string="$(trim "$string")"
+
+    # Add a border to fix issues with urxvt/xft fonts
+    [ "$image_border" == "on" ] && \
+        string="${clear}$(color ${border_color})${border_char} $string"
 
     # Print the info
     printf "%b%s\n" "${padding}${string}${reset}"
@@ -2964,6 +2978,11 @@ usage() { cat << EOF
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.
     --clean                     Remove all cropped images
+    --image_border on/off       Add a border around the info in image
+                                mode to fix issues with URxvt and XFT
+                                fonts.
+    --border_char char          Character to draw the border with.
+    --border_color fg, 000      Change color of border.
 
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
@@ -3107,6 +3126,9 @@ getargs() {
                 rm -rf "/Library/Caches/neofetch/"
                 exit
             ;;
+            --image_border) image_border="$2" ;;
+            --border_char) border_char="$2" ;;
+            --border_color) border_color="$2" ;;
 
             # Ascii
             --ascii)
@@ -3231,6 +3253,8 @@ main() {
 
         # Display the image if enabled
         displayimage
+    else
+        image_border="off"
     fi
 
     # Set cursor position next to ascii art
