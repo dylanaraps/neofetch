@@ -64,7 +64,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 ## Features
 
-- Supports **Linux**, **Mac OS X**, **iOS**, **BSD**, **Solaris** and **Windows** (Cygwin)
+- Supports **Linux**, **Mac OS X**, **iOS**, **BSD**, **Solaris** and **Windows** (Cygwin/Windows 10 Linux subsystem)
 - Display a **full color image**, a file containing **ascii art** or your **distro's logo** in ascii next to the info.
 - The script is **fast**. We use bash builtins wherever possible and only spawn external processes when necessary.
 - Take a screenshot of your desktop on script finish.
@@ -178,17 +178,9 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 
 ### Gentoo / Funtoo
 
-1. Add the 3rd party repo
-    - `# wget -O /etc/portage/repos.conf/konimex.conf https://git.io/vocNV`
-2. Sync the repo
-    - `# emerge --sync konimex`
-3. To enable additional features such as w3m and music support, enable the appropriate USE flags. For example:
-    - `# echo "app-misc/neofetch X -moc" >> /etc/portage/package.use`
-4. Install the package
-    - `# emerge -a app-misc/neofetch`
+You can install `app-misc/neofetch` from Gentoo/Funtoo's official repositories.
 
-To install the git version, just add `app-misc/neofetch ~<your architecture>` to `package.accept_keywords`
-
+To install the git version of neofetch, use `=app-misc/neofetch-9999` instead.
 
 ### CRUX
 
@@ -367,7 +359,7 @@ alias neofetch2="neofetch \
                                 'neofetch --disable cpu gpu disk shell'
     --osx_buildversion on/off   Hide/Show Mac OS X build version.
     --osx_codename on/off       Hide/Show Mac OS X codename.
-    --os_arch on/off            Hide/Show Windows architecture.
+    --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
