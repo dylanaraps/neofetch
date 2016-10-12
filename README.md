@@ -428,10 +428,6 @@ alias neofetch2="neofetch \
     --crop_offset value         Change the crop offset for normal mode.
                                 Possible values: northwest, north, northeast,
                                 west, center, east, southwest, south, southeast
-    --image_border on/off       Add a border around the info in image
-                                mode to fix issues with URxvt and XFT
-                                fonts.
-    --border_char char          Character to draw the border with.
 
     --xoffset px                How close the image will be to the left edge of the
                                 window. This only works with w3m.
@@ -441,6 +437,11 @@ alias neofetch2="neofetch \
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.
     --clean                     Remove all cropped images
+    --image_border on/off       Add a border around the info in image
+                                mode to fix issues with URxvt and XFT
+                                fonts.
+    --border_char char          Character to draw the border with.
+    --border_color fg, 000      Change color of border.
 
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
