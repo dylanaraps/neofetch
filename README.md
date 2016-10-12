@@ -428,6 +428,10 @@ alias neofetch2="neofetch \
     --crop_offset value         Change the crop offset for normal mode.
                                 Possible values: northwest, north, northeast,
                                 west, center, east, southwest, south, southeast
+    --image_border on/off       Add a border around the info in image
+                                mode to fix issues with URxvt and XFT
+                                fonts.
+    --border_char char          Character to draw the border with.
 
     --xoffset px                How close the image will be to the left edge of the
                                 window. This only works with w3m.
@@ -449,7 +453,7 @@ alias neofetch2="neofetch \
     --logo | -L                 Hide the info text and only show the ascii logo.
 
     Screenshot:
-    --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
+    --scrot | -s /path/to/img   Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     --upload | -su /pth/t/img   Same as --scrot but uploads the scrot to a website.
     --image_host                Website to upload scrots to. Takes: imgur, teknik
