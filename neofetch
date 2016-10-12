@@ -1902,7 +1902,13 @@ getcols() {
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
-        cols="${cols//nl/\\n${padding}}"
+
+        # Add image border to all block lines.
+        if [ "$image_border" == "on" ]; then
+            cols="${cols//nl/\\n${padding}${border_char} }"
+        else
+            cols="${cols//nl/\\n${padding}}"
+        fi
     fi
 }
 
@@ -2372,6 +2378,10 @@ info() {
     # If there's no subtitle don't print one
     [ -z "$2" ] && string="${string/*: }"
 
+    # Add a border to fix issues with urxvt/xft fonts
+    [ "$image_border" == "on" ] && \
+        string="${clear}${border_char} $string"
+
     # Print the string
     printf "%b%s\n" "${padding}${string}${reset}"
 
@@ -2406,6 +2416,10 @@ prin() {
 
     # Trim whitespace
     string="$(trim "$string")"
+
+    # Add a border to fix issues with urxvt/xft fonts
+    [ "$image_border" == "on" ] && \
+        string="${clear}${border_char} $string"
 
     # Print the info
     printf "%b%s\n" "${padding}${string}${reset}"
@@ -3097,6 +3111,8 @@ getargs() {
             ;;
 
             --image_size | --size) image_size="$2" ;;
+            --image_border) image_border="$2" ;;
+            --border_char) border_char="$2" ;;
             --crop_mode) crop_mode="$2" ;;
             --crop_offset) crop_offset="$2" ;;
             --xoffset) xoffset="$2" ;;
