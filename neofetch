@@ -1351,7 +1351,7 @@ getstyle() {
             name="gtk-theme-name"
             gsettings="gtk-theme"
             gconf="gtk_theme"
-            xfconf="ThemeName"
+            xfconf="/Net/ThemeName"
             kde="widgetStyle"
         ;;
 
@@ -1359,7 +1359,7 @@ getstyle() {
             name="gtk-icon-theme-name"
             gsettings="icon-theme"
             gconf="icon_theme"
-            xfconf="IconThemeName"
+            xfconf="/Net/IconThemeName"
             kde="Theme"
         ;;
 
@@ -1367,7 +1367,7 @@ getstyle() {
             name="gtk-font-name"
             gsettings="font-name"
             gconf="font_theme"
-            xfconf="FontName"
+            xfconf="/Gtk/FontName"
             kde="font"
         ;;
     esac
@@ -1416,7 +1416,7 @@ getstyle() {
 
             "Xfce"*)
                 type -p xfconf-query >/dev/null 2>&1 && \
-                    gtk2theme="$(xfconf-query -c xsettings -p /Net/"$xfconf")"
+                    gtk2theme="$(xfconf-query -c xsettings -p "$xfconf")"
             ;;
         esac
 
