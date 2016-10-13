@@ -20,7 +20,7 @@
 
 **Fixed rendering issues in URxvt when using an XFT font.**
 
-\<screenshot here\>
+![scrot](https://i.sli.mg/6qp9Cg.png)
 
 This was first thought to be an issue between URxvt and W3m-img and I apologize for immediately closing bug reports and dismissing comments about this.
 
