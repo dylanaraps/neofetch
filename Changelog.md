@@ -10,13 +10,19 @@
 -
 -
 
+
+## Packages
+
+- Neofetch is now in Gentoo's official repos.
+
+
 ## Images
 
 **Fixed rendering issues in URxvt when using an XFT font.**
 
 \<screenshot here\>
 
-This was first thought to be an issue between URxvt and W3m-img and I apologize for immediately closing bug reports and dismissing comments about this. 
+This was first thought to be an issue between URxvt and W3m-img and I apologize for immediately closing bug reports and dismissing comments about this.
 
 I spent yesterday trying to fix this issue and found out that launching neofetch with `--bold off`
 reduced the rendering problems. I did more digging and found out that removing all text formatting fixes the issue entirely. I later found out that adding a single unformatted character before the formatted text fixed the issue while keeping the formatting the same.
@@ -27,6 +33,15 @@ The final fix was as simple as adding a zero-width space before the info, here's
 
 https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429af39d9
 
+
 ## Ascii
 
 - Fixed incorrect prompt location when using `ascii_logo_size small`.
+
+
+## Info
+
+**Theme Font**<br \>
+
+- [XFCE] Fixed incorrect font output.
+
