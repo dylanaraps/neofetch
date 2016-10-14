@@ -231,7 +231,10 @@ getdistro() {
         ;;
 
         "Solaris")
-            distro="$(awk 'NR==1{print $1 " " $2;}' /etc/release)"
+            case "$distro_shorthand" in
+                "on" | "tiny") distro="$(awk 'NR==1{print $1 " " $2;}' /etc/release)" ;;
+                *) distro="$(awk 'NR==1{print $1 " " $2 " " $3;}' /etc/release)" ;;
+            esac
         ;;
     esac
 
@@ -2901,7 +2904,7 @@ usage() { cat << EOF
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
-                                NOTE: This is only possible on Linux and Mac OS X
+                                NOTE: This is only possible on Linux, Mac OS X, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor

@@ -62,7 +62,7 @@ kernel_shorthand="on"
 # Distro
 
 # Shorten the output of distro (tiny, on, off)
-# NOTE: This is only possible on Linux and Mac OS X
+# NOTE: This is only possible on Linux, Mac OS X, and Solaris
 distro_shorthand="off"
 
 # Show 'x86_64' and 'x86' in 'Distro:' output.
