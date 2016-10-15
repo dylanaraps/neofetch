@@ -2703,6 +2703,15 @@ err() {
 
 # }}}
 
+# Check for old flags {{{
+
+checkoldflags() {
+    [ -n "$osx_buildversion" ] && err "\$osx_buildversion is deprecated, use \$distro_shorthand instead."
+    [ -n "$osx_codename" ] && err "\$osx_codename is deprecated, use \$distro_shorthand instead."
+}
+
+# }}}
+
 # Get script directory {{{
 
 getscriptdir() {
@@ -3208,6 +3217,7 @@ getargs() {
 main() {
     getos
     getdefaultconfig 2>/dev/null
+    checkoldflags
     getargs "$@"
     getdistro
 
