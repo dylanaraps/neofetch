@@ -185,7 +185,7 @@ getdistro() {
                 "10.10"*) codename="OS X Yosemite" ;;
                 "10.11"*) codename="OS X El Capitan" ;;
                 "10.12"*) codename="macOS Sierra" ;;
-                *) codename="Mac OS X" ;;
+                *) codename="macOS" ;;
             esac
             distro="$codename $osx_version $osx_build"
 
@@ -1527,7 +1527,7 @@ getterm() {
     # Check $PPID for terminal emulator.
     case "$os" in
         "Mac OS X")
-            # Workaround for OS X systems that
+            # Workaround for macOS systems that
             # don't support the block below.
             case "$TERM_PROGRAM" in
                 "iTerm.app") term="iTerm2" ;;
@@ -2917,7 +2917,7 @@ usage() { cat << EOF
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
-                                NOTE: This is only possible on Linux, Mac OS X, and Solaris
+                                NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor

@@ -31,7 +31,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [BunsenLabs](#bunsenlabs)
     - [Solus](#solus)
     - [Slackware](#slackware)
-    - [Mac OS X](#mac-os-x)
+    - [macOS](#mac-os-x)
     - [iOS](#ios-1)
     - [Others](#others)
 - [Post Install](#post-install)
@@ -51,7 +51,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 ![Linux](https://ipfs.pics/ipfs/QmRRYwcSRz1FHNx8VQiBixZq3qvBNk487fKGwUNTs7GQjA)
 ![Windows](https://ipfs.pics/ipfs/Qmf5GpmqnMRhEzC1qoQ2tM4699tEXLManZTs5pz4mWJbCg)
-![Mac OS X](https://ipfs.pics/ipfs/QmWA8XX6pFkEuLLcrq5JZBx1KFEUaXanTy1jMxzKVRpwaT)
+![macOS](https://ipfs.pics/ipfs/QmWA8XX6pFkEuLLcrq5JZBx1KFEUaXanTy1jMxzKVRpwaT)
 ![bsd](https://ipfs.pics/ipfs/QmSpyCGzSgYnyfbMetKqxy9cU3UFbneS3G8JrbdxkiNLgm)
 ![bsd](https://ipfs.pics/ipfs/QmeZhs3CwGtM8CSVoorA2d2CqLxRzbJkdD7aYxa4Dixsea)
 
@@ -64,7 +64,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 ## Features
 
-- Supports **Linux**, **Mac OS X**, **iOS**, **BSD**, **Solaris** and **Windows** (Cygwin/Windows 10 Linux subsystem)
+- Supports **Linux**, **macOS**, **iOS**, **BSD**, **Solaris** and **Windows** (Cygwin/Windows 10 Linux subsystem)
 - Display a **full color image**, a file containing **ascii art** or your **distro's logo** in ascii next to the info.
 - The script is **fast**. We use bash builtins wherever possible and only spawn external processes when necessary.
 - Take a screenshot of your desktop on script finish.
@@ -166,7 +166,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [BunsenLabs](#bunsenlabs)
 - [Solus](#solus)
 - [Slackware](#slackware)
-- [Mac OS X](#mac-os-x)
+- [macOS](#mac-os-x)
 - [iOS](##ios-1)
 - [Others](#others)
 
@@ -263,7 +263,7 @@ Use the Software Center or type `sudo eopkg it neofetch`.
 
 Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/desktop/neofetch/) and follow [their instructions](https://slackbuilds.org/howto/).
 
-### Mac OS X
+### macOS
 
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
@@ -366,7 +366,7 @@ alias neofetch2="neofetch \
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
-                                NOTE: This is only possible on Linux, Mac OS X, and Solaris
+                                NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
