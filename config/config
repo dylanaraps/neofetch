@@ -378,7 +378,7 @@ ascii_logo_size="normal"
 # Bold ascii logo
 # Whether or not to bold the ascii logo.
 # --ascii_bold on/off
-ascii_bold="off"
+ascii_bold="on"
 
 
 # }}}
