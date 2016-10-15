@@ -5,7 +5,7 @@
 
 <br \>
 
-**General**<br \>
+## General
 
 - Added new function called `checkoldflags` which informs users about deprecated config options.
 
