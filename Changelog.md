@@ -37,6 +37,7 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 ## Ascii
 
 - Fixed incorrect prompt location when using `ascii_logo_size small`.
+- Bold ascii art by default.
 
 
 ## Info
