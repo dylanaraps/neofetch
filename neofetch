@@ -1901,14 +1901,15 @@ getbirthday() {
 getcols() {
     if [ "$color_blocks" == "on" ]; then
         # Convert the width to space chars.
-        block_width="$(printf "%$((block_width-=1))s")"
+        block_width="$(printf "%${block_width}s")"
+        block_width="${block_width// /█}"
 
         # Generate the string.
         while [ $start -le $end ]; do
             case "$start" in
-                [0-6]) blocks+="${reset}\033[3${start}m\033[4${start}m%${block_width}s" ;;
-                7) blocks+="${reset}\033[3${start}m\033[4${start}m%${block_width}s" ;;
-                *) blocks2+="\033[38;5;${start}m\033[48;5;${start}m%${block_width}s" ;;
+                [0-6]) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
+                7) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
+                *) blocks2+="\033[38;5;${start}m\033[48;5;${start}m${block_width}" ;;
             esac
             start="$((start+=1))"
         done
