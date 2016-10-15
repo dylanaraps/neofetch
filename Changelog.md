@@ -43,7 +43,7 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 **Distro**<br \>
 
-- Expanded `distro_shorthand` to Mac OS X and Solaris. **[@konimex](https://github.com/konimex)**
+- Expanded `distro_shorthand` to macOS and Solaris. **[@konimex](https://github.com/konimex)**
 - Removed `osx_buildversion` and `osx_codename` in favour of `distro_shorthand`. **[@konimex](https://github.com/konimex)**
 
 **Theme Font**<br \>
