@@ -50,7 +50,10 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 - [XFCE] Fixed incorrect font output.
 
-
 **Color Blocks**<br \>
 
 - Show 16 colors by default instead of 8.
+
+**Terminal and Terminal Font**<br \>
+
+- Uppercase first letter of `term` and `termfont` outputs.
