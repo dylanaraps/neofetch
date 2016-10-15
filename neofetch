@@ -1326,9 +1326,8 @@ getresolution() {
 
             scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
 
-            if [ "${scale_factor%.*}" == "2" ]; then
+            [ "${scale_factor%.*}" == "2" ] && \
                 resolution="${resolution// @/@2x @}"
-            fi
 
             if [ "$refresh_rate" == "off" ]; then
                 resolution="${resolution// @ [0-9][0-9]Hz}"
