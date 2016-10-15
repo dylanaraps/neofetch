@@ -539,7 +539,7 @@ getwm() {
         case "$wm" in
             "xwlc")
                 wm="$(ps -e | grep -m 1 -oE "sway|orbment|velox|orbital")"
-                [ "$version" -ge 4 ] && wm="${wm^}"
+                wm="$(uppercase "$wm")"
             ;;
         esac
 
@@ -663,7 +663,7 @@ getwmtheme() {
     esac
 
     wmtheme="${wmtheme//\'}"
-    [ "$version" -ge 4 ] && wmtheme="${wmtheme^}"
+    wmtheme="$(uppercase "$wmtheme")"
 }
 
 # }}}
@@ -1396,7 +1396,7 @@ getstyle() {
 
                     theme="$(grep "^[^#]*$kde" "$kde_config_file")"
                     theme="${theme/${kde}*=}"
-                    [ "$version" -ge 4 ] && theme="${theme^}"
+                    theme="$(uppercase "$theme")"
 
                     gtk_shorthand="on"
                     return
@@ -1471,10 +1471,8 @@ getstyle() {
         gtk3theme=${gtk3theme//\'}
 
         # Uppercase the first letter of each gtk theme
-        if [ "$version" -ge 4 ]; then
-            gtk2theme="${gtk2theme^}"
-            gtk3theme="${gtk3theme^}"
-        fi
+        gtk2theme="$(uppercase "$gtk2theme")"
+        gtk3theme="$(uppercase "$gtk3theme")"
 
         # Toggle visibility of gtk themes.
         [ "$gtk2" == "off" ] && unset gtk2theme
@@ -1559,6 +1557,8 @@ getterm() {
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="$name" ;;
     esac
+
+    term="$(uppercase "$term")"
 }
 
 # }}}
@@ -1607,6 +1607,8 @@ gettermfont() {
             termfont="${termfont/:*}"
         ;;
     esac
+
+    termfont="$(uppercase "$termfont")"
 }
 
 # }}}
@@ -2659,6 +2661,15 @@ bold() {
         "on") bold="\033[1m" ;;
         "off") bold="" ;;
     esac
+}
+
+# }}}
+
+# Uppercase {{{
+
+# Uppercase the first letter of $1
+uppercase () {
+    [ "$version" -ge 4 ] && printf "%s" "${1^}"
 }
 
 # }}}
