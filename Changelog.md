@@ -11,6 +11,11 @@
 - Change all `OS X` references to `macOS`. **[@iandrewt](https://github.com/iandrewt)**
 
 
+## Operating System
+
+- Added support for Sparky Linux.
+
+
 ## Packages
 
 - Neofetch is now in Gentoo's official repos.
