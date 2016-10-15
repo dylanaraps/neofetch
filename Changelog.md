@@ -49,7 +49,11 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 **CPU**<br \>
 
-- [Mac OS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
+- [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
+
+**Resolution**<br \>
+
+- [macOS] Add @2x label for retina resolutions. **[@iandrewt](https://github.com/iandrewt)**
 
 **Theme Font**<br \>
 
