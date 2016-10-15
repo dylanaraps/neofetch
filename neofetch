@@ -2565,6 +2565,11 @@ colors() {
             ascii_distro="puppy"
         ;;
 
+        "Sparky"*)
+            setcolors 1 7
+            ascii_distro="sparky"
+        ;;
+
         "Scientific"*)
             setcolors 4 1 7
         ;;
