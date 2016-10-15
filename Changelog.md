@@ -8,7 +8,7 @@
 ## General
 
 - Added new function called `checkoldflags` which informs users about deprecated config options.
-- Change all `OS X` references to `Mac OS`. **[@iandrewt](https://github.com/iandrewt)**
+- Change all `OS X` references to `macOS`. **[@iandrewt](https://github.com/iandrewt)**
 
 
 ## Packages
