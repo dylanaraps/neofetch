@@ -1559,6 +1559,8 @@ getterm() {
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="$name" ;;
     esac
+
+    [ "$version" -ge 4 ] && term="${term^}"
 }
 
 # }}}
@@ -1607,6 +1609,8 @@ gettermfont() {
             termfont="${termfont/:*}"
         ;;
     esac
+
+    [ "$version" -ge 4 ] && termfont="${termfont^}"
 }
 
 # }}}
