@@ -8,6 +8,7 @@
 ## General
 
 - Added new function called `checkoldflags` which informs users about deprecated config options.
+- Change all `OS X` references to `Mac OS`. **[@iandrewt](https://github.com/iandrewt)**
 
 
 ## Packages
@@ -45,6 +46,10 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 - Expanded `distro_shorthand` to macOS and Solaris. **[@konimex](https://github.com/konimex)**
 - Removed `osx_buildversion` and `osx_codename` in favour of `distro_shorthand`. **[@konimex](https://github.com/konimex)**
+
+**CPU**<br \>
+
+- [Mac OS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
 
 **Theme Font**<br \>
 
