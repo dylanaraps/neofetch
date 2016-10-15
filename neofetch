@@ -2669,7 +2669,11 @@ bold() {
 
 # Uppercase the first letter of $1
 uppercase () {
-    [ "$version" -ge 4 ] && printf "%s" "${1^}"
+    if [ "$version" -ge 4 ]; then
+        printf "%s" "${1^}"
+    else
+        printf "%s" "${1}"
+    fi
 }
 
 # }}}
