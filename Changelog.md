@@ -41,8 +41,8 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 ## Ascii
 
-- Fixed incorrect prompt location when using `ascii_logo_size small`.
 - Bold ascii art by default.
+- Fixed incorrect prompt location when using `ascii_logo_size small`.
 
 
 ## Info
@@ -66,11 +66,10 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 **Color Blocks**<br \>
 
-- Show 16 colors by default instead of 8.
 - Fixed `block_width` not working.
 - Fixed `% s` appearing in color blocks when neofetch is run from `tty`
-- Fixed `block_width` being off by one. S value of `2` made the blocks `3` wide instead of `2` wide.
-
+- Fixed `block_width` being off by one. A value of `2` made the blocks `3` wide instead of `2` wide.
+- Show 16 colors by default instead of 8.
 
 **Terminal and Terminal Font**<br \>
 
