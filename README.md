@@ -357,8 +357,6 @@ alias neofetch2="neofetch \
                                 in the output.
                                 NOTE: You can supply multiple args. eg.
                                 'neofetch --disable cpu gpu disk shell'
-    --osx_buildversion on/off   Hide/Show Mac OS X build version.
-    --osx_codename on/off       Hide/Show Mac OS X codename.
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -368,7 +366,7 @@ alias neofetch2="neofetch \
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
-                                NOTE: This is only possible on Linux
+                                NOTE: This is only possible on Linux, Mac OS X, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
