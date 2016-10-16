@@ -1172,7 +1172,10 @@ getmemory() {
                 *) memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
             esac
 
-            memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))"
+            case "$distro" in
+                "NetBSD"*) memtotal="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
+                *) memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))" ;;
+            esac
             memused="$((memtotal - memfree))"
         ;;
 
