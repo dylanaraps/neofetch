@@ -10,6 +10,7 @@
 
 - Added new function called `checkoldflags` which informs users about deprecated config options.
 - Change all `OS X` references to `macOS`. **[@iandrewt](https://github.com/iandrewt)**
+- Fix corrupted text when long lines are cut-off.
 
 
 ## Operating System
