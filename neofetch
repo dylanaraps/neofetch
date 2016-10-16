@@ -2397,7 +2397,7 @@ info() {
     [ -z "$2" ] && string="${string/*: }"
 
     # Print the string
-    printf "%b%s\n" "${padding}​${string}${reset}"
+    printf "%b%s\n" "${padding}​${string}${reset} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
@@ -2432,7 +2432,7 @@ prin() {
     string="$(trim "$string")"
 
     # Print the info
-    printf "%b%s\n" "${padding}​${string}${reset}"
+    printf "%b%s\n" "${padding}​${string}${reset} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
