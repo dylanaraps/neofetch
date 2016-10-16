@@ -13,6 +13,7 @@
 
 ## Operating System
 
+- Added support for Bitrig. **[@konimex](https://github.com/konimex)**
 - Added support for Sparky Linux.
 
 
