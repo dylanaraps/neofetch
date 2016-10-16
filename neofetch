@@ -27,7 +27,7 @@ getos() {
     case "$(uname)" in
         "Linux")   os="Linux" ;;
         "Darwin")  os="$(sw_vers -productName)" ;;
-        *"BSD" | "DragonFly") os="BSD" ;;
+        *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
         "CYGWIN"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
         *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
@@ -1741,7 +1741,7 @@ getbattery() {
                     battery="${battery/\.*/%}"
                 ;;
 
-                "OpenBSD"*)
+                "OpenBSD"* | "Bitrig"*)
                     battery0full="$(sysctl -n hw.sensors.acpibat0.watthour0)"
                     battery0full="${battery0full/ Wh*}"
 
@@ -1854,7 +1854,7 @@ getbirthday() {
 
         "BSD")
             case "$distro" in
-                "OpenBSD"*)
+                "OpenBSD"* | "Bitrig"*)
                     birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
                     birthday_shorthand="on"
                 ;;
@@ -2541,7 +2541,7 @@ colors() {
             ascii_distro="mint"
         ;;
 
-        "LMDE"* | "Chapeau"*)
+        "LMDE"* | "Chapeau"* | "Bitrig"*)
             setcolors 2 7
         ;;
 
