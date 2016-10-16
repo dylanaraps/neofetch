@@ -2,6 +2,7 @@
 
 - **[@konimex](https://github.com/konimex)**
 - **[@iandrewt](https://github.com/iandrewt)**
+- **[@coypoop](https://github.com/coypoop)**
 
 <br \>
 
@@ -60,6 +61,10 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 **Resolution**<br \>
 
 - [macOS] Add @2x label for retina resolutions. **[@iandrewt](https://github.com/iandrewt)**
+
+**Memory**<br \>
+
+- [NetBSD] Fix memory output for sizes over 4GB. **[@coypoop](https://github.com/coypoop)**
 
 **Theme Font**<br \>
 
