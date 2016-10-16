@@ -1639,7 +1639,7 @@ getdisk() {
 
         "Mac OS X" | "BSD")
             case "$distro" in
-                "FreeBSD"* | *"OS X"* )
+                "FreeBSD"* | *"OS X"* | "Mac"* )
                     df_flags="-l -H /"
                     df_dir="/"
                 ;;
