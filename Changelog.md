@@ -81,3 +81,7 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 **Terminal and Terminal Font**<br \>
 
 - Uppercase first letter of `term` and `termfont` outputs.
+
+**Song**<br \>
+
+- [macOS] Fix iTunes automatically opening. **[@iandrewt](https://github.com/iandrewt)**
