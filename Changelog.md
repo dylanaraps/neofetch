@@ -61,6 +61,10 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
     - Neofetch now detects `blackbox`, `bugn`, `Windawesome`, `emerge` and `litestep`.
 - Uppercase first letter of `wm` output.
 
+**Window Manager Theme**<br \>
+
+- [Windows] Added support for Blackbox themes.
+
 **CPU**<br \>
 
 - [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
