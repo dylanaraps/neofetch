@@ -669,9 +669,9 @@ getwmtheme() {
             path="$(wmic process get ExecutablePath | grep "blackbox")"
             path="${path//'\'/'/'}"
 
-            wmtheme="$(grep "^session\.styleFile:" ${path/'.exe'/.rc})"
+            wmtheme="$(grep "^session\.styleFile:" ${path/\.exe/.rc})"
             wmtheme="${wmtheme/'session.styleFile: '}"
-            wmtheme="${wmtheme##*/}"
+            wmtheme="${wmtheme##*\\}"
             wmtheme="${wmtheme%.*}"
         ;;
     esac
