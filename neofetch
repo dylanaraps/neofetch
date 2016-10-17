@@ -656,7 +656,7 @@ getwmtheme() {
             fi
         ;;
 
-        'Explorer')
+        'Explorer' | 'Bugn' | 'Windawesome' | 'Emerge' | 'Litestep')
             path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
             path+="/Windows/CurrentVersion/Themes/CurrentTheme"
 
