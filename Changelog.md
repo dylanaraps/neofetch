@@ -55,6 +55,12 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 - Expanded `distro_shorthand` to macOS and Solaris. **[@konimex](https://github.com/konimex)**
 - Removed `osx_buildversion` and `osx_codename` in favour of `distro_shorthand`. **[@konimex](https://github.com/konimex)**
 
+**Window Manager**<br \>
+
+- [Windows] Added support for custom WMs/Shells.
+    - Neofetch now detects `blackbox`, `bugn`, `Windawesome`, `emerge` and `litestep`.
+- Uppercase first letter of `wm` output.
+
 **CPU**<br \>
 
 - [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
