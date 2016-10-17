@@ -545,9 +545,9 @@ getwm() {
             "Mac OS X") wm="Quartz Compositor" ;;
             "Windows")
                 wm="$(tasklist | grep -m 1 -o "bugn\|Windawesome\|blackbox\|emerge\|litestep")"
+                [ "$wm" == "Blackbox" ] && wm="bbLean (Blackbox)"
 
-                if ["$wm" ]; then
-                    [ "$wm" == "Blackbox" ] && wm="bbLean (Blackbox)"
+                if [ "$wm" ]; then
                     wm="$wm, Explorer"
                 else
                     wm="Explorer"
