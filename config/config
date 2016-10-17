@@ -81,11 +81,11 @@ uptime_shorthand="off"
 
 # Show the path to $SHELL
 # --shell_path on/off
-shell_path="on"
+shell_path="off"
 
 # Show $SHELL's version
 # --shell_version on/off
-shell_version="off"
+shell_version="on"
 
 
 # CPU
