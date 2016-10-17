@@ -154,7 +154,7 @@ getdistro() {
                 case "$distro_shorthand" in
                     "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
                     "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
-                    *) distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}}" ;;
+                    *) distro="${PRETTY_NAME/${VERSION_ID}:-${DISTRIB_DESCRIPTION}} ${VERSION:-${VERSION_ID}}" ;;
                 esac
             fi
             distro="${distro//\"}"
