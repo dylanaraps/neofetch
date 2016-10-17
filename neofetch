@@ -545,7 +545,13 @@ getwm() {
             "Mac OS X") wm="Quartz Compositor" ;;
             "Windows")
                 wm="$(tasklist | grep -m 1 -o "bugn\|Windawesome\|blackbox\|emerge\|litestep")"
-                [ -z "$wm" ] && wm="Explorer"
+
+                if ["$wm" ]; then
+                    [ "$wm" == "Blackbox" ] && wm="bbLean (Blackbox)"
+                    wm="$wm, Explorer"
+                else
+                    wm="Explorer"
+                fi
             ;;
         esac
     fi
@@ -665,7 +671,7 @@ getwmtheme() {
             wmtheme="${wmtheme%.*}"
         ;;
 
-        'Blackbox')
+        'Blackbox' | "bbLean"*)
             path="$(wmic process get ExecutablePath | grep "blackbox")"
             path="${path//'\'/'/'}"
 
