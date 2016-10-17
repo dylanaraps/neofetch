@@ -193,14 +193,12 @@ getdistro() {
                 "on") distro="${distro/ ${osx_build}}" ;;
                 "tiny")
                     case "$osx_version" in
-                        "10.4"*|"10.5"*|"10.6"*|"10.7"*)
-                            distro="${distro/${codename}/Mac OS X}" ;;
-                        "10.8"*|"10.9"*|"10.10"*|"10.11"*)
-                            distro="${distro/${codename}/OS X}" ;;
-                        "10.12"*)
-                            distro="${distro/${codename}/macOS}" ;;
+                        "10."[4-7]*) distro="${distro/${codename}/Mac OS X}" ;;
+                        "10."[8-11]*) distro="${distro/${codename}/OS X}" ;;
+                        "10.12"*) distro="${distro/${codename}/macOS}" ;;
                     esac
-                    distro="${distro/ ${osx_build}}" ;;
+                    distro="${distro/ ${osx_build}}"
+                ;;
             esac
         ;;
 
