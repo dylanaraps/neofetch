@@ -77,6 +77,11 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 - [NetBSD] Fix memory output for sizes over 4GB. **[@coypoop](https://github.com/coypoop)**
 
+**Shell**<br \>
+
+- Hide shell path by default.
+- Show shell version by default.
+
 **Theme Font**<br \>
 
 - [XFCE] Fixed incorrect font output.
