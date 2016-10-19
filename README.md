@@ -29,8 +29,9 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
     - [Void Linux](#void-linux)
     - [BunsenLabs](#bunsenlabs)
+    - [Solus](#solus)
     - [Slackware](#slackware)
-    - [Mac OS X](#mac-os-x)
+    - [macOS](#mac-os-x)
     - [iOS](#ios-1)
     - [Others](#others)
 - [Post Install](#post-install)
@@ -50,7 +51,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 ![Linux](https://ipfs.pics/ipfs/QmRRYwcSRz1FHNx8VQiBixZq3qvBNk487fKGwUNTs7GQjA)
 ![Windows](https://ipfs.pics/ipfs/Qmf5GpmqnMRhEzC1qoQ2tM4699tEXLManZTs5pz4mWJbCg)
-![Mac OS X](https://ipfs.pics/ipfs/QmWA8XX6pFkEuLLcrq5JZBx1KFEUaXanTy1jMxzKVRpwaT)
+![macOS](https://ipfs.pics/ipfs/QmWA8XX6pFkEuLLcrq5JZBx1KFEUaXanTy1jMxzKVRpwaT)
 ![bsd](https://ipfs.pics/ipfs/QmSpyCGzSgYnyfbMetKqxy9cU3UFbneS3G8JrbdxkiNLgm)
 ![bsd](https://ipfs.pics/ipfs/QmeZhs3CwGtM8CSVoorA2d2CqLxRzbJkdD7aYxa4Dixsea)
 
@@ -63,7 +64,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 ## Features
 
-- Supports **Linux**, **Mac OS X**, **iOS**, **BSD**, **Solaris** and **Windows** (Cygwin)
+- Supports **Linux**, **macOS**, **iOS**, **BSD**, **Solaris** and **Windows** (Cygwin/Windows 10 Linux subsystem)
 - Display a **full color image**, a file containing **ascii art** or your **distro's logo** in ascii next to the info.
 - The script is **fast**. We use bash builtins wherever possible and only spawn external processes when necessary.
 - Take a screenshot of your desktop on script finish.
@@ -105,7 +106,7 @@ Note: The cydia package installs these dependencies for you.
 - Thumbnail creation: `imagemagick`
 - Displaying song information from Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
 
-##### Linux / BSD
+##### Linux / BSD / Solaris
 
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc`, `cmus`, `moc`, `spotify`, `gpmdc`
@@ -116,7 +117,7 @@ Note: The cydia package installs these dependencies for you.
 
 - Resolution (quicker): `screenresolution`
 
-##### BSD
+##### BSD / Solaris
 
 - GPU: `glxinfo`
     - Not required on FreeBSD.
@@ -163,8 +164,9 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
 - [Void Linux](#void-linux)
 - [BunsenLabs](#bunsenlabs)
+- [Solus](#solus)
 - [Slackware](#slackware)
-- [Mac OS X](#mac-os-x)
+- [macOS](#mac-os-x)
 - [iOS](##ios-1)
 - [Others](#others)
 
@@ -176,35 +178,27 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 
 ### Gentoo / Funtoo
 
-1. Add the 3rd party repo
-    - `# wget -O /etc/portage/repos.conf/konimex.conf https://git.io/vocNV`
-2. Sync the repo
-    - `# emerge --sync konimex`
-3. To enable additional features such as w3m and music support, enable the appropriate USE flags. For example:
-    - `# echo "app-misc/neofetch X -moc" >> /etc/portage/package.use`
-4. Install the package
-    - `# emerge -a app-misc/neofetch`
+You can install `app-misc/neofetch` from Gentoo/Funtoo's official repositories.
 
-To install the git version, just add `app-misc/neofetch ~<your architecture>` to `package.accept_keywords`
-
+To install the git version of neofetch, use `=app-misc/neofetch-9999` instead.
 
 ### CRUX
 
 1. Install git and the git ports(8) driver
     - `sudo prt-get depinst git`
-2. Add the 3rd party repo
-    - `sudo wget -O /etc/ports/tudurom.git https://git.io/vV46y`
+2. Add the `6c36-git` repository
+    - `sudo wget -O /etc/ports/6c37-git.git "https://raw.githubusercontent.com/6c37/cross/master/git-driver/6c37-git.git"`
 3. Sync the repos
     - `sudo ports -u`
 4. Add the repo to /etc/prt-get.conf with your text editor of choice
-    - `prtdir /usr/ports/tudurom`
+    - `prtdir /usr/ports/6c37-git`
 5. Install the package
     - `sudo prt-get depinst neofetch`
 
-Or alternatively use the [port](https://github.com/tudurom/crux-ports/blob/master/neofetch/Pkgfile):
+Or alternatively use the [port](https://raw.githubusercontent.com/6c37/crux-ports-git/3.2/neofetch/Pkgfile):
 
 1. Download port
-    - `wget -O ~/work/neofetch/Pkgfile https://raw.githubusercontent.com/tudurom/crux-ports/master/neofetch/Pkgfile`
+    - `wget -O ~/work/neofetch/Pkgfile "https://raw.githubusercontent.com/6c37/crux-ports-git/3.2/neofetch/Pkgfile"`
 2. Build the package
     - `fakeroot pkgmk -d`
 3. Install the package
@@ -261,11 +255,15 @@ Neofetch is available in the official repos.
 1. `sudo apt-get update`
 2. `sudo apt-get install neofetch`
 
+### Solus
+
+Use the Software Center or type `sudo eopkg it neofetch`.
+
 ### Slackware
 
 Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/desktop/neofetch/) and follow [their instructions](https://slackbuilds.org/howto/).
 
-### Mac OS X
+### macOS
 
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
@@ -359,9 +357,7 @@ alias neofetch2="neofetch \
                                 in the output.
                                 NOTE: You can supply multiple args. eg.
                                 'neofetch --disable cpu gpu disk shell'
-    --osx_buildversion on/off   Hide/Show Mac OS X build version.
-    --osx_codename on/off       Hide/Show Mac OS X codename.
-    --os_arch on/off            Hide/Show Windows architecture.
+    --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
@@ -369,11 +365,14 @@ alias neofetch2="neofetch \
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores on/off          Whether or not to display the number of CPU cores
+    --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
+                                NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
     --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
+    --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
@@ -445,10 +444,13 @@ alias neofetch2="neofetch \
     --ascii_logo_size           Size of ascii logo.
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
     --ascii_bold on/off         Whether or not to bold the ascii logo.
+    --logo | -L                 Hide the info text and only show the ascii logo.
 
     Screenshot:
     --scrot /path/to/img        Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
+    --upload | -su /pth/t/img   Same as --scrot but uploads the scrot to a website.
+    --image_host                Website to upload scrots to. Takes: imgur, teknik
     --scrot_cmd cmd             Screenshot program to launch
 
     Other:

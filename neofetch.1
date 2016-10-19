@@ -19,14 +19,8 @@ NOTE: You can supply multiple args. eg.
 .br
 \'neofetch --disable cpu gpu disk shell\'
 .TP
-.B \--osx_buildversion 'on/off'
-Hide/Show Mac OS X build version.
-.TP
-.B \--osx_codename 'on/off'
-Hide/Show Mac OS X codename.
-.TP
 .B \--os_arch 'on/off'
-Hide/Show Windows architecture.
+Hide/Show OS architecture.
 .TP
 .B \--speed_type 'type'
 Change the type of cpu speed to display.
@@ -44,6 +38,11 @@ Possible values: name, speed, tiny, on, off
 .B \--cpu_cores 'on/off'
 Whether or not to display the number of CPU cores
 .TP
+.B \--distro_shorthand 'on/off'
+Shorten the output of distro (tiny, on, off)
+.br
+NOTE: This is only possible on Linux, macOS, and Solaris
+.TP
 .B \--kernel_shorthand 'on/off'
 Shorten the output of kernel
 .TP
@@ -57,6 +56,9 @@ Unsupported on Windows
 .B \--gpu_shorthand 'on/off'
 Shorten the output of GPU (tiny, on, off)
 .TP
+.B \--gpu_brand on/off
+Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
+.TP
 .B \--gtk_shorthand 'on/off'
 Shorten output of gtk theme/icons
 .TP
@@ -67,10 +69,10 @@ Enable/Disable GTK2 theme/icons output
 Enable/Disable gtk3 theme/icons output
 .TP
 .B \--shell_path 'on/off'
-Enable/Disable showing \$SHELL path
+Enable/Disable showing $SHELL path
 .TP
 .B \--shell_version 'on/off'
-Enable/Disable showing \$SHELL version
+Enable/Disable showing $SHELL version
 .TP
 .B \--battery_num 'num'
 Which battery to display, default value is 'all'
@@ -222,12 +224,21 @@ Possible values: small, normal
 .TP
 .B \--ascii_bold 'on/off'
 Whether or not to bold the ascii logo.
+.TP
+.B \--logo | -L
+Hide the info text and only show the ascii logo.
 
 .SH SCREENSHOT
 .TP
 .B \--scrot 'path'
 Take a screenshot, if path is left empty the screenshot
-function will use \$scrot_dir and \$scrot_name.
+function will use $scrot_dir and $scrot_name.
+.TP
+.B \--upload | -su 'path'
+Same as --scrot but uploads the scrot to a website.
+.TP
+.B \--image_host 'host'
+Website to upload scrots to. Takes: imgur, teknik
 .TP
 .B \--scrot_cmd 'cmd'
 Screenshot program to launch

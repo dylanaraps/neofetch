@@ -61,13 +61,9 @@ kernel_shorthand="on"
 
 # Distro
 
-# Mac OS X hide/show build version
-# --osx_buildversion on/off
-osx_buildversion="on"
-
-# Mac OS X hide/show codename
-# --osx_codename on/off
-osx_codename="on"
+# Shorten the output of distro (tiny, on, off)
+# NOTE: This is only possible on Linux, macOS, and Solaris
+distro_shorthand="off"
 
 # Show 'x86_64' and 'x86' in 'Distro:' output.
 # --os_arch on/off
@@ -89,7 +85,7 @@ shell_path="off"
 
 # Show $SHELL's version
 # --shell_version on/off
-shell_version="off"
+shell_version="on"
 
 
 # CPU
@@ -121,6 +117,10 @@ cpu_cores="on"
 # Shorten output of the getgpu funcion
 # --gpu_shorthand on/off/tiny
 gpu_shorthand="on"
+
+# Enable/Disable GPU Brand
+# --gpu_brand on/off
+gpu_brand="on"
 
 # Resolution
 
@@ -233,7 +233,7 @@ underline_char="-"
 # Color block range
 # --block_range start end
 start=0
-end=7
+end=15
 
 # Toggle color blocks
 # --color_blocks on/off
@@ -241,7 +241,7 @@ color_blocks="on"
 
 # Color block width in spaces
 # --block_width num
-block_width=2
+block_width=3
 
 # Color block height in lines
 # --block_height num
@@ -258,7 +258,7 @@ block_height=1
 progress_char_elapsed="-"
 progress_char_total="="
 
-# Progress vorder
+# Progress border
 # --progress_border on/off
 progress_border="on"
 
@@ -370,7 +370,7 @@ ascii_logo_size="normal"
 # Bold ascii logo
 # Whether or not to bold the ascii logo.
 # --ascii_bold on/off
-ascii_bold="off"
+ascii_bold="on"
 
 
 # }}}
@@ -394,7 +394,17 @@ scrot_dir="$HOME/Pictures/"
 # Scrot filename
 # What to name the screenshots
 # --scrot_name str
-scrot_name="neofetch-$(date +%F-%T).png"
+scrot_name="neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png"
+
+# Image upload host
+# Where to upload the image.
+# Possible values: imgur, teknik
+image_host="imgur"
+
+# Imgur api key
+# This is an api key for neofetch, you can sign up for your own
+# here: http://api.imgur.com/oauth2/addclient
+imgur_client_id="0e8b44d15e9fc95"
 
 
 # }}}
