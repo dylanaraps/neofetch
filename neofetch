@@ -307,8 +307,9 @@ getuptime() {
                 "1 minutes") minutes="${minutes/s}" ;;
             esac
 
-            uptime="up ${days:+$days,} ${hours:+$hours,} ${minutes}"
+            uptime="${days:+$days, }${hours:+$hours, }${minutes}"
             uptime="${uptime%', '}"
+            uptime="up ${uptime:-${seconds} seconds}"
         ;;
 
         "Solaris")
