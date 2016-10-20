@@ -465,8 +465,6 @@ getpackages() {
             packages="$(pkg list | wc -l)"
         ;;
     esac
-
-    [ "$packages" == 0 ] && unset packages
 }
 
 # }}}
@@ -1736,8 +1734,17 @@ getbattery() {
                     *) index="$battery_num" ;;
                 esac
 
-                batteries=($(cat /sys/class/power_supply/battery/capacity /sys/class/power_supply/BAT${battery_num}/capacity))
-                battery_state=($(cat /sys/class/power_supply/battery/status /sys/class/power_supply/BAT${battery_num}/status))
+                case "$distro" in
+                    "Android"*)
+                        batteries="$(< /sys/class/power_supply/battery/capacity)"
+                        battery_state="$(< /sys/class/power_supply/battery/status)"
+                    ;;
+
+                    *)
+                        batteries=($(< /sys/class/power_supply/BAT${battery_num}/capacity))
+                        battery_state=($(< /sys/class/power_supply/BAT${battery_num}/status))
+                    ;;
+                esac
 
                 # Get the subtitle and reassign it so it doesn't change.
                 title="$subtitle"
@@ -2082,10 +2089,12 @@ getascii() {
     ascii_strip="${ascii_strip//'\\'/ }"
     ascii_strip="${ascii_strip//'\'}"
 
-    # Get length of the ascii file.
+    # Get lines/columns of the ascii file.
     ascii_length=0
-    while IFS='' read -r line 2>/dev/null; do
+    lines=1
+    while IFS='\n' read -r line 2>/dev/null; do
         [ "${#line}" -gt "$ascii_length" ] && ascii_length="${#line}"
+        lines="$((lines+=1))"
     done <<< "$ascii_strip"
 
     # Workaround for calculating length of block chars
@@ -2093,7 +2102,6 @@ getascii() {
     block_char="█"
     [ "${#block_char}" == 3 ] && ascii_length="$((ascii_length / 3 + 2))"
 
-    lines="$(printf "%s\n" "$ascii_strip" | wc -l)"
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
     export LC_ALL=C
