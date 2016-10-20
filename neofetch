@@ -288,9 +288,9 @@ getuptime() {
                 ;;
             esac
 
-            days="$((seconds / 86400)) days"
-            hours="$((seconds / 3600)) hours"
-            minutes="$((seconds % 3600 / 60)) minutes"
+            days="$((seconds / 60 / 60 / 24)) days"
+            hours="$((seconds / 60 / 60 % 24)) hours"
+            minutes="$((seconds / 60 % 60)) minutes"
 
             case "$days" in
                 "0 days") unset days ;;
