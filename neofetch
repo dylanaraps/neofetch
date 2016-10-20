@@ -465,6 +465,8 @@ getpackages() {
             packages="$(pkg list | wc -l)"
         ;;
     esac
+
+    [ "$packages" == "0" ] && unset packages
 }
 
 # }}}
@@ -1597,7 +1599,7 @@ getterm() {
     case "${name// }" in
         "${SHELL/*\/}" | *"sh" | "tmux"* | "screen") getterm "$parent" ;;
         "login" | "init") term="$(tty)" ;;
-        "ruby" | "1" | "systemd" | "sshd"* | "python"*) unset term ;;
+        "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER PID"*) unset term ;;
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="${name##*/}" ;;
     esac
