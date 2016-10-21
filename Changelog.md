@@ -58,6 +58,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 - [w3m-img] Fix cursor position when using `yoffset`.
 - [w3m-img] Add `-bg` support with the new option `--bg_color`.
     - `neofetch --bg_color blue` will make the background behind the image blue.
+    - Note: The background color is only visible behind transparent parts of the image.
 
 
 ## Ascii
