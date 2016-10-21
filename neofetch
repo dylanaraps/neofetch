@@ -2923,7 +2923,7 @@ kdeconfigdir() {
 dynamicprompt() {
     # Calculate image height in terminal cells.
     # The '+ 4' adds a gap between the prompt and the content.
-    [ "$image" != "ascii" ] && [ "$image" != "off" ] && \
+    [ "$image" != "ascii" ] && \
         lines="$((${height:-1} / ${font_height:-1} + 4))"
 
     # If the info is higher than the ascii/image place the prompt
@@ -3319,17 +3319,18 @@ main() {
 
         # Display the image if enabled
         displayimage
+
+        # Set cursor position next to ascii art
+        printf "\033[$((${lines:-4} - ${prompt_loc:-4}))A"
+
+        # Reset horizontal cursor position
+        printf "\033[9999999D"
     fi
-
-    # Set cursor position next to ascii art
-    printf "\033[$((${lines:-4} - ${prompt_loc:-4}))A"
-
-    # Reset horizontal cursor position
-    printf "\033[9999999D"
 
     # Print the info
     printinfo
-    dynamicprompt
+
+    [ "$image" != "off" ] && dynamicprompt
 
     # Re-enable line wrap
     printf "%b%s" "\033[?7h"
