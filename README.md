@@ -122,6 +122,10 @@ These dependencies are required for image mode to work.
 - CMUS: `cmus`
 - MOC: `moc`
 - Spotify: `spotify`
+- Rhythmbox: `rhythmbox`
+- Banshee: `banshee`
+- Amarok: `amarok`
+- Deadbeef: `deadbeef`
 
 ### Desktop Environment and Window Manager
 
