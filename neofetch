@@ -1996,7 +1996,7 @@ getwallpaper() {
     [ "${img/*\./}" == "xml" ] && img=""
 
     # Error msg
-    [ -z "$img" ] && err "Wallpaper detection failed, falling back to ascii mode."
+    [ -z "$img" ] && err "Image: Wallpaper detection failed, falling back to ascii mode."
 }
 
 # }}}
@@ -2007,7 +2007,7 @@ getascii() {
     if [ ! -f "$ascii" ] || [ "$ascii" == "distro" ]; then
         # Error message
         [ "$ascii" != "distro" ] && \
-        [ ! -f "$ascii" ] && err "Ascii file not found, using distro ascii"
+        [ ! -f "$ascii" ] && err "Ascii: Ascii file not found, using distro ascii"
 
         # Lowercase the distro name
         if [ "$version" -le 3 ]; then
@@ -2034,7 +2034,7 @@ getascii() {
             if [ ! -f "$script_dir/ascii/distro/${ascii/ *}" ]; then
                 padding="\033[0C"
                 image="off"
-                err "Ascii file not found, falling back to text mode."
+                err "Ascii: Ascii file not found, falling back to text mode."
                 return
             fi
 
@@ -2153,8 +2153,8 @@ getimage() {
         getascii
 
         # Error messages
-        [ ! -f "$img" ] && err "\$img, isn't a file, falling back to ascii mode."
-        [ "${#term_size}" -le 5 ] && err "Your terminal doesn't support \\\033[14t, falling back to ascii mode."
+        [ ! -f "$img" ] && err "Image: \$img, isn't a file, falling back to ascii mode."
+        [ "${#term_size}" -le 5 ] && err "Image: Your terminal doesn't support \\\033[14t, falling back to ascii mode."
 
         return
     else
@@ -2296,7 +2296,7 @@ getw3m_img_path() {
 
     else
         image="ascii"
-        err "w3m-img wasn't found on your system, falling back to ascii mode."
+        err "Image: w3m-img wasn't found on your system, falling back to ascii mode."
     fi
 }
 
@@ -2761,8 +2761,10 @@ err() {
 # Check for old flags {{{
 
 checkoldflags() {
-    [ -n "$osx_buildversion" ] && err "\$osx_buildversion is deprecated, use \$distro_shorthand instead."
-    [ -n "$osx_codename" ] && err "\$osx_codename is deprecated, use \$distro_shorthand instead."
+    [ -n "$osx_buildversion" ] && err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
+    [ -n "$osx_codename" ] && err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
+    [ -n "$progress_char" ] && err "Config: \$progress_char is deprecated, use \$progress_char_elapsed and \$progress_char_total instead."
+    [ "$cpu_cores" == "on" ] && err "Config: \$cpu_cores='on' is deprecated, use \$cpu_cores='logical|physical|off' instead."
 }
 
 # }}}
@@ -2804,9 +2806,9 @@ getdefaultconfig() {
     fi
 
     if source "$default_config"; then
-        err "Sourced default config ($default_config)"
+        err "Config: Sourced default config ($default_config)"
     else
-        err "Default config not found, continuing..."
+        err "Config: Default config not found, continuing..."
     fi
 }
 
@@ -2818,7 +2820,7 @@ getuserconfig() {
     # Check $config_file
     if [ -f "$config_file" ]; then
         source "$config_file"
-        err "Sourced user config    ($config_file)"
+        err "Config: Sourced user config    ($config_file)"
         return
     fi
     mkdir -p "$XDG_CONFIG_HOME/neofetch/"
@@ -2844,7 +2846,7 @@ getuserconfig() {
     fi
 
     source "$config_file"
-    err "Sourced user config    ($config_file)"
+    err "Config: Sourced user config    ($config_file)"
 }
 
 # }}}
