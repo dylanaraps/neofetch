@@ -35,8 +35,10 @@ Shorten the output of CPU
 .br
 Possible values: name, speed, tiny, on, off
 .TP
-.B \--cpu_cores 'on/off'
+.B \--cpu_cores 'logical/physical/off'
 Whether or not to display the number of CPU cores
+.br
+Note: 'physical' doesn't work on BSD.
 .TP
 .B \--distro_shorthand 'on/off'
 Shorten the output of distro (tiny, on, off)
@@ -51,7 +53,8 @@ Shorten the output of uptime (tiny, on, off)
 .TP
 .B \--refresh_rate 'on/off'
 Whether to display the refresh rate of each monitor
-Unsupported on Windows
+.br
+Note: Unsupported on Windows
 .TP
 .B \--gpu_shorthand 'on/off'
 Shorten the output of GPU (tiny, on, off)
@@ -194,6 +197,10 @@ window in pixel. This only works with w3m.
 .B \--yoffset 'value'
 How close the image will be to the top edge
 of the window. This only works with w3m.
+.TP
+.B \--bg_color 'color'
+Background color to display behind transparent image.
+This only works with w3m.
 .TP
 .B \--gap 'num'
 Gap between image and text.

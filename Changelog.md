@@ -11,6 +11,7 @@
 - Added new function called `checkoldflags` which informs users about deprecated config options.
 - Change all `OS X` references to `macOS`. **[@iandrewt](https://github.com/iandrewt)**
 - Fix corrupted text when long lines are cut-off.
+- Don't dynamically place prompt in `image=off` mode.
 
 
 ## Operating System
@@ -41,6 +42,24 @@ The final fix was as simple as adding a zero-width space before the info, here's
 
 https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429af39d9
 
+**Removed hard dependency on `\033[14t`**
+
+Neofetch no longer requires a terminal emulator that supports `\033[14t` this means that neofetch now works in Konsole. Instead of using the escape sequence users now have three options for getting the terminal size in pixels.
+
+- `xdotool`
+- `xwininfo` + `xprop`
+- `xwininfo` + `xdpyinfo`
+
+Neofetch will detect whatever combination you have insalled and use these programs.
+
+Note: `\033[14t` is still supported, if images already work for you then you don't have to install anything else.
+
+- [w3m-img] Draw the image twice to fix rendering issues in Konsole.
+- [w3m-img] Fix cursor position when using `yoffset`.
+- [w3m-img] Add `-bg` support with the new option `--bg_color`.
+    - `neofetch --bg_color blue` will make the background behind the image blue.
+    - Note: The background color is only visible behind transparent parts of the image.
+
 
 ## Ascii
 
@@ -67,7 +86,15 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 **CPU**<br \>
 
+- Expanded `cpu_cores` option by adding two new values, `logical` and `physical`.
+    - `logical`: Show all virtual cores (hyperthreaded).
+    - `physical`: Only show physical cores.
 - [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
+
+**Uptime**<br \>
+
+- Rewrote uptime function to use seconds since boot instead of the `uptime` command.
+    - Every OS/Distro now has the pretty `uptime -p` output!
 
 **Resolution**<br \>
 
@@ -91,11 +118,11 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 - Fixed `block_width` not working.
 - Fixed `% s` appearing in color blocks when neofetch is run from `tty`
 - Fixed `block_width` being off by one. A value of `2` made the blocks `3` wide instead of `2` wide.
-- Show 16 colors by default instead of 8.
 
 **Terminal and Terminal Font**<br \>
 
 - Uppercase first letter of `term` and `termfont` outputs.
+- Don't print broken output of busybox's `ps`.
 - Remove path from output.
 
 **Song**<br \>

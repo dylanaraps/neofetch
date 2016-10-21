@@ -86,6 +86,21 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - Alpine Linux: You also need `ncurses`.
 
 
+##### Image mode
+
+These dependencies are required for image mode to work.
+
+- Displaying images: `w3m-img` \[1\] or `iTerm2` or `Terminology` \[2\]
+- Thumbnail creation: `imagemagick`
+- Window size: A terminal emulator that supports `\033[14t` \[3\] or `xdotool` or `xwininfo + xprop` or `xwininfo + xdpyinfo`
+
+\[1\] `w3m-img` is sometimes bundled together with `w3m`.
+
+\[2\] Image support is built into Terminology and iTerm2, and doesn't require w3m-img.
+
+\[3\] See this wiki page to find out if your terminal emulator supports `\033[14t` or if you need an additonal dependency.
+
+
 ##### iOS
 
 These dependencies can all be installed through Cydia.<br \>
@@ -99,19 +114,18 @@ Note: The cydia package installs these dependencies for you.
 - `Gawk`
 - `grep`
 
+
 ### Optional dependencies:
 
-- Desktop Environment and Window Manager: `xprop` \[1\]
-- Displaying images: `w3m-img` \[2\] \[3\] or `iTerm2` or `Terminology` \[4\]
-- Thumbnail creation: `imagemagick`
 - Displaying song information from Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
+- Desktop Environment and Window Manager: `xprop` \[1\]
 
 ##### Linux / BSD / Solaris
 
 - Wallpaper: `feh`, `nitrogen` or `gsettings`
 - Current Song: `mpc`, `cmus`, `moc`, `spotify`, `gpmdc`
-- Resolution: `xorg-xrandr` or `xorg-xdpyinfo` \[5\]
-- Screenshot: `scrot` \[6\]
+- Resolution: `xorg-xrandr` or `xorg-xdpyinfo` \[2\]
+- Screenshot: `scrot` \[3\]
 
 ##### OSX
 
@@ -128,17 +142,10 @@ Note: The cydia package installs these dependencies for you.
 
 \[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
 
-\[2\] `w3m-img` is sometimes bundled together with `w3m`.
-
-\[3\] Image support only works in certain terminal emulators. The script will fallback to ascii mode on<br \>
-terminal emulators that don't support the xterm escape sequences we're using for image sizing.
-
-\[4\] Image support is built into Terminology and iTerm2, and doesn't require w3m-img.
-
-\[5\] Xrandr is prefered over xdpyinfo as Xrandr supports multi monitor and refresh rate display in the<br \>
+\[2\] Xrandr is prefered over xdpyinfo as Xrandr supports multi monitor and refresh rate display in the<br \>
 output.
 
-\[6\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+\[3\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and neofetch will use it instead of scrot.
 
 
@@ -364,7 +371,9 @@ alias neofetch2="neofetch \
                                 NOTE: This only support Linux with cpufreq.
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
-    --cpu_cores on/off          Whether or not to display the number of CPU cores
+    --cpu_cores type            Whether or not to display the number of CPU cores
+                                Takes: logical, physical, off
+                                Note: 'physical' doesn't work on BSD.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
@@ -431,6 +440,8 @@ alias neofetch2="neofetch \
                                 window. This only works with w3m.
     --yoffset px                How close the image will be to the top edge of the
                                 window. This only works with w3m.
+    --bg_color color            Background color to display behind transparent image.
+                                This only works with w3m.
     --gap num                   Gap between image and text.
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.

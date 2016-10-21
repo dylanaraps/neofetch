@@ -274,79 +274,51 @@ getkernel() {
 # Uptime {{{
 
 getuptime() {
+    # Get uptime in seconds
     case "$os" in
         "Linux" | "Windows")
-            case "$distro" in
-                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "OpenWRT"* | "Windows"*)
-                    uptime="$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')"
-                ;;
-
-                "openSUSE"*)
-                    uptime="$(uptime | awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')"
-                ;;
-
-                "Android"*)
-                    uptime=$(uptime | awk -F ' up' '{print $2}')
-                    uptime="${uptime//[0-9] user*}"
-                    uptime="${uptime//load average*}"
-                    uptime="${uptime%,*} ${uptime##*,}"
-                ;;
-
-                *)
-                    uptime="$(uptime -p)"
-                    [ "$uptime" == "up " ] && uptime="up $(awk -F'.' '{print $1}' /proc/uptime) seconds"
-                ;;
-            esac
+            seconds="$(< /proc/uptime)"
+            seconds="${seconds/.*}"
         ;;
 
         "Mac OS X" | "iPhone OS" | "BSD")
-            # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
             boot="${boot/'{ sec = '}"
             boot="${boot/,*}"
 
             # Get current date in seconds
             now="$(date +%s)"
-            uptime="$((now - boot))"
-
-            # Convert uptime to days/hours/mins
-            minutes="$((uptime / 60%60))"
-            hours="$((uptime / 3600%24))"
-            days="$((uptime / 86400))"
-
-            case "$minutes" in
-                1) minutes="1 minute" ;;
-                0) unset minutes ;;
-                *) minutes="$minutes minutes" ;;
-            esac
-
-            case "$hours" in
-                1) hours="1 hour" ;;
-                0) unset hours ;;
-                *) hours="$hours hours" ;;
-            esac
-
-            case "$days" in
-                1) days="1 day" ;;
-                0) unset days ;;
-                *) days="$days days" ;;
-            esac
-
-            [ "$hours" ] && \
-            [ "$minutes" ] && \
-                hours+=","
-
-            [ "$days" ] && \
-            [ "$hours" ] && \
-                days+=","
-
-            uptime="up $days $hours $minutes"
+            seconds="$((now - boot))"
         ;;
 
         "Solaris")
-            uptime="$(uptime | /usr/xpg4/bin/awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')"
+            seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
+            seconds="${seconds/.*}"
         ;;
     esac
+
+    days="$((seconds / 60 / 60 / 24)) days"
+    hours="$((seconds / 60 / 60 % 24)) hours"
+    minutes="$((seconds / 60 % 60)) minutes"
+
+    case "$days" in
+        "0 days") unset days ;;
+        "1 days") days="${days/s}" ;;
+    esac
+
+    case "$hours" in
+        "0 hours") unset hours ;;
+        "1 hours") hours="${hours/s}" ;;
+    esac
+
+    case "$minutes" in
+        "0 minutes") unset minutes ;;
+        "1 minutes") minutes="${minutes/s}" ;;
+    esac
+
+    uptime="${days:+$days, }${hours:+$hours, }${minutes}"
+    uptime="${uptime%', '}"
+    uptime="up ${uptime:-${seconds} seconds}"
 
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
@@ -366,7 +338,7 @@ getuptime() {
             uptime="${uptime/ minutes/m}"
             uptime="${uptime/ minute/m}"
             uptime="${uptime/ seconds/s}"
-            uptime="${uptime/,}"
+            uptime="${uptime//,}"
         ;;
     esac
 }
@@ -742,7 +714,11 @@ getcpu() {
                 speed="$((speed / 100))"
             fi
 
-            cores="$(grep -c ^processor /proc/cpuinfo)"
+            # Show/hide hyperthreaded cores
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(grep -c ^processor /proc/cpuinfo)" ;;
+                "physical") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
+            esac
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
@@ -756,7 +732,12 @@ getcpu() {
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
-            cores="$(sysctl -n hw.ncpu)"
+
+            # Show/hide hyperthreaded cores
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(sysctl -n hw.logicalcpu_max)" ;;
+                "physical") cores="$(sysctl -n hw.physicalcpu_max)" ;;
+            esac
         ;;
 
         "iPhone OS")
@@ -902,8 +883,11 @@ getcpu() {
             speed="$(psrinfo -v | awk '/operates at/ {print $6}')"
             speed="$((speed / 100))"
 
-            # Get cpu cores
-            cores="$(kstat -m cpu_info | grep -c "chip_id")"
+            # Show/hide hyperthreaded cores
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(kstat -m cpu_info | grep -c "chip_id")" ;;
+                "physical") cores="$(psrinfo -p)" ;;
+            esac
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
@@ -931,7 +915,7 @@ getcpu() {
     cpu="${cpu//with Radeon HD Graphics}"
 
     # Add cpu cores to output
-    [ "$cpu_cores" == "on" ] && [ "$cores" ] && \
+    [ "$cpu_cores" != "off" ] && [ "$cores" ] && \
         cpu="${cpu/@/(${cores}) @}"
 
     # Make the output of cpu shorter
@@ -2033,7 +2017,7 @@ getwallpaper() {
     [ "${img/*\./}" == "xml" ] && img=""
 
     # Error msg
-    [ -z "$img" ] && err "Wallpaper detection failed, falling back to ascii mode."
+    [ -z "$img" ] && err "Image: Wallpaper detection failed, falling back to ascii mode."
 }
 
 # }}}
@@ -2044,7 +2028,7 @@ getascii() {
     if [ ! -f "$ascii" ] || [ "$ascii" == "distro" ]; then
         # Error message
         [ "$ascii" != "distro" ] && \
-        [ ! -f "$ascii" ] && err "Ascii file not found, using distro ascii"
+        [ ! -f "$ascii" ] && err "Ascii: Ascii file not found, using distro ascii"
 
         # Lowercase the distro name
         if [ "$version" -le 3 ]; then
@@ -2071,7 +2055,7 @@ getascii() {
             if [ ! -f "$script_dir/ascii/distro/${ascii/ *}" ]; then
                 padding="\033[0C"
                 image="off"
-                err "Ascii file not found, falling back to text mode."
+                err "Ascii: Ascii file not found, falling back to text mode."
                 return
             fi
 
@@ -2128,45 +2112,72 @@ getimage() {
     esac
 
     # Get terminal width and height
-    if [ -n "$TMUX" ]; then
-        printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
-        read_flags="-d c"
+    if type -p xdotool >/dev/null 2>&1 && \
+        [ "$image_backend" != "iterm2" ]; then
 
-    elif [ "$image_backend" == "tycat" ]; then
-        printf "%b%s" "\033}qs\000"
+        current_window="$(xdotool getactivewindow)"
+        eval "$(xdotool getwindowgeometry --shell "$current_window")"
+        term_height="$HEIGHT"
+        term_width="$WIDTH"
+
+    elif type -p xwininfo >/dev/null 2>&1 && \
+        type -p xdpyinfo >/dev/null 2>&1 || \
+        type -p xprop >/dev/null 2>&1 && \
+        [ "$image_backend" != "iterm2" ]; then
+
+        if type -p xdpyinfo >/dev/null 2>&1; then
+            current_window="$(xdpyinfo | grep focus | grep -E -o 0x[0-9a-f]+)"
+        elif type -p xprop >/dev/null 2>&1; then
+            current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
+        fi
+
+        term_size="$(xwininfo -id "$current_window" | awk -F ': ' '/Width|Height/ {printf $2 " "}')"
+        term_width="${term_size/ *}"
+        term_height="${term_size/${term_width}}"
 
     else
-        printf "%b%s" "\033[14t\033[c"
-        read_flags="-d c"
-    fi
+        if [ -n "$TMUX" ]; then
+            printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+            read_flags="-d c"
 
-    # The escape code above prints the output AFTER the prompt so this
-    builtin read -s -t 1 ${read_flags} -r term_size
+        elif [ "$image_backend" == "tycat" ]; then
+            printf "%b%s" "\033}qs\000"
 
-    # Split the string
-    if [ "$image_backend" == "tycat" ]; then
-        term_size=(${term_size//;/ })
-        term_width="$((term_size[2] * term_size[0]))"
-        term_height="$((term_size[3] * term_size[1]))"
+        else
+            printf "%b%s" "\033[14t\033[c"
+            read_flags="-d c"
+        fi
 
-    else
-        term_size="${term_size//'['}"
-        term_size="${term_size/';'}"
-        term_size="${term_size/$'\E4'}"
-        term_size="${term_size/t*}"
-        term_height="${term_size/';'*}"
-        term_width="${term_size/*';'}"
+        # The escape code above prints the output AFTER the prompt so this
+        builtin read -s -t 1 ${read_flags} -r term_size
+
+        # Split the string
+        if [ "$image_backend" == "tycat" ]; then
+            term_size=(${term_size//;/ })
+            term_width="$((term_size[2] * term_size[0]))"
+            term_height="$((term_size[3] * term_size[1]))"
+
+        else
+            term_size="${term_size//'['}"
+            term_size="${term_size/';'}"
+            term_size="${term_size/$'\E4'}"
+            term_size="${term_size/t*}"
+            term_height="${term_size/';'*}"
+            term_width="${term_size/*';'}"
+        fi
+
+        [ "${#term_size}" -le 5 ] && no_esc="1"
     fi
 
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
-    if [ ! -f "$img" ] || ([ "${#term_size}" -le 5 ] && [ "$image_backend" != "tycat" ]); then
+    if [ ! -f "$img" ] || ([ "$no_esc" == 1 ] && [ "$image_backend" != "tycat" ]); then
         image="ascii"
         getascii
 
         # Error messages
-        [ ! -f "$img" ] && err "\$img, isn't a file, falling back to ascii mode."
-        [ "${#term_size}" -le 5 ] && err "Your terminal doesn't support \\\033[14t, falling back to ascii mode."
+        [ ! -f "$img" ] && err "Image: \$img, isn't a file, falling back to ascii mode."
+        [ "${#term_size}" -le 5 ] && err "Image: Your terminal doesn't support \\\033[14t, falling back to ascii mode."
 
         return
     else
@@ -2308,7 +2319,7 @@ getw3m_img_path() {
 
     else
         image="ascii"
-        err "w3m-img wasn't found on your system, falling back to ascii mode."
+        err "Image: w3m-img wasn't found on your system, falling back to ascii mode."
     fi
 }
 
@@ -2324,7 +2335,7 @@ displayimage() {
                 # appearing in specific terminal emulators.
                 sleep 0.05
                 printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
-                $w3m_img_path 2>/dev/null || padding="\033[0C"
+                $w3m_img_path -bg "$background_color" 2>/dev/null || padding="\033[0C"
             ;;
 
             "iterm2")
@@ -2778,8 +2789,10 @@ err() {
 # Check for old flags {{{
 
 checkoldflags() {
-    [ -n "$osx_buildversion" ] && err "\$osx_buildversion is deprecated, use \$distro_shorthand instead."
-    [ -n "$osx_codename" ] && err "\$osx_codename is deprecated, use \$distro_shorthand instead."
+    [ -n "$osx_buildversion" ] && err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
+    [ -n "$osx_codename" ] && err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
+    [ -n "$progress_char" ] && err "Config: \$progress_char is deprecated, use \$progress_char_elapsed and \$progress_char_total instead."
+    [ "$cpu_cores" == "on" ] && err "Config: \$cpu_cores='on' is deprecated, use \$cpu_cores='logical|physical|off' instead."
 }
 
 # }}}
@@ -2821,9 +2834,9 @@ getdefaultconfig() {
     fi
 
     if source "$default_config"; then
-        err "Sourced default config ($default_config)"
+        err "Config: Sourced default config ($default_config)"
     else
-        err "Default config not found, continuing..."
+        err "Config: Default config not found, continuing..."
     fi
 }
 
@@ -2835,7 +2848,7 @@ getuserconfig() {
     # Check $config_file
     if [ -f "$config_file" ]; then
         source "$config_file"
-        err "Sourced user config    ($config_file)"
+        err "Config: Sourced user config    ($config_file)"
         return
     fi
     mkdir -p "$XDG_CONFIG_HOME/neofetch/"
@@ -2861,7 +2874,7 @@ getuserconfig() {
     fi
 
     source "$config_file"
-    err "Sourced user config    ($config_file)"
+    err "Config: Sourced user config    ($config_file)"
 }
 
 # }}}
@@ -2923,25 +2936,27 @@ kdeconfigdir() {
 
 dynamicprompt() {
     # Calculate image height in terminal cells.
-    # The '+ 4' adds a gap between the prompt and the content.
-    [ "$image" != "ascii" ] && \
-        lines="$((${height:-1} / ${font_height:-1} + 4))"
+    # The '+ 1' adds a gap between the prompt and the content.
+    if [ "$image" != "ascii" ]; then
+        lines="$((${height:-1} / ${font_height:-1} + 2))"
+        cursor_yoffset="$((${yoffset:-1} / ${font_height:-1}))"
+    fi
 
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
     if [ "${lines:-0}" -lt "${info_height:-0}" ]; then
         lines="0"
     else
-        lines="$((lines - info_height - 4))"
+        lines="$((lines - info_height + cursor_yoffset))"
     fi
 
     # Set the prompt location
     [ "$image" != "off" ] && printf "\033[${lines/-*/0}B"
 
-    # Add some padding if the lines are above 0
-    if [ "$lines" -gt 0 ]; then
+    # Add some padding
+    [ "$image_backend" != "w3m" ] && \
+    [ "$lines" -gt 0 ] && \
         printf "\n\n"
-    fi
 }
 
 # }}}
@@ -2983,7 +2998,9 @@ usage() { cat << EOF
                                 NOTE: This only support Linux with cpufreq.
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
-    --cpu_cores on/off          Whether or not to display the number of CPU cores
+    --cpu_cores type            Whether or not to display the number of CPU cores
+                                Takes: logical, physical, off
+                                Note: 'physical' doesn't work on BSD.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
@@ -3050,6 +3067,8 @@ usage() { cat << EOF
                                 window. This only works with w3m.
     --yoffset px                How close the image will be to the top edge of the
                                 window. This only works with w3m.
+    --bg_color color            Background color to display behind transparent image.
+                                This only works with w3m.
     --gap num                   Gap between image and text.
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.
@@ -3189,6 +3208,7 @@ getargs() {
             --crop_offset) crop_offset="$2" ;;
             --xoffset) xoffset="$2" ;;
             --yoffset) yoffset="$2" ;;
+            --background_color | --bg_color) background_color="$2" ;;
             --gap) gap="$2" ;;
             --clean)
                 rm -rf "$thumbnail_dir"
@@ -3330,8 +3350,11 @@ main() {
 
     # Print the info
     printinfo
-
     [ "$image" != "off" ] && dynamicprompt
+
+    # w3m-img: Draw the image a second time to fix
+    # rendering issues in specific terminal emulators.
+    [ "$image_backend" == "w3m" ] && displayimage
 
     # Re-enable line wrap
     printf "%b%s" "\033[?7h"
