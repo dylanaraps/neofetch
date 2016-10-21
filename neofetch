@@ -268,54 +268,51 @@ getkernel() {
 # Uptime {{{
 
 getuptime() {
+    # Get uptime in seconds
     case "$os" in
-        "Linux" | "Windows" | "Mac OS X" | "iPhone OS" | "BSD")
-            # Get uptime in seconds
-            case "$os" in
-                "Linux" | "Windows")
-                    seconds="$(< /proc/uptime)"
-                    seconds="${seconds/.*}"
-                ;;
+        "Linux" | "Windows")
+            seconds="$(< /proc/uptime)"
+            seconds="${seconds/.*}"
+        ;;
 
-                "Mac OS X" | "iPhone OS" | "BSD")
-                    boot="$(sysctl -n kern.boottime)"
-                    boot="${boot/'{ sec = '}"
-                    boot="${boot/,*}"
+        "Mac OS X" | "iPhone OS" | "BSD")
+            boot="$(sysctl -n kern.boottime)"
+            boot="${boot/'{ sec = '}"
+            boot="${boot/,*}"
 
-                    # Get current date in seconds
-                    now="$(date +%s)"
-                    seconds="$((now - boot))"
-                ;;
-            esac
-
-            days="$((seconds / 60 / 60 / 24)) days"
-            hours="$((seconds / 60 / 60 % 24)) hours"
-            minutes="$((seconds / 60 % 60)) minutes"
-
-            case "$days" in
-                "0 days") unset days ;;
-                "1 days") days="${days/s}" ;;
-            esac
-
-            case "$hours" in
-                "0 hours") unset hours ;;
-                "1 hours") hours="${hours/s}" ;;
-            esac
-
-            case "$minutes" in
-                "0 minutes") unset minutes ;;
-                "1 minutes") minutes="${minutes/s}" ;;
-            esac
-
-            uptime="${days:+$days, }${hours:+$hours, }${minutes}"
-            uptime="${uptime%', '}"
-            uptime="up ${uptime:-${seconds} seconds}"
+            # Get current date in seconds
+            now="$(date +%s)"
+            seconds="$((now - boot))"
         ;;
 
         "Solaris")
-            uptime="$(uptime | /usr/xpg4/bin/awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')"
+            seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
+            seconds="${seconds/.*}"
         ;;
     esac
+
+    days="$((seconds / 60 / 60 / 24)) days"
+    hours="$((seconds / 60 / 60 % 24)) hours"
+    minutes="$((seconds / 60 % 60)) minutes"
+
+    case "$days" in
+        "0 days") unset days ;;
+        "1 days") days="${days/s}" ;;
+    esac
+
+    case "$hours" in
+        "0 hours") unset hours ;;
+        "1 hours") hours="${hours/s}" ;;
+    esac
+
+    case "$minutes" in
+        "0 minutes") unset minutes ;;
+        "1 minutes") minutes="${minutes/s}" ;;
+    esac
+
+    uptime="${days:+$days, }${hours:+$hours, }${minutes}"
+    uptime="${uptime%', '}"
+    uptime="up ${uptime:-${seconds} seconds}"
 
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
