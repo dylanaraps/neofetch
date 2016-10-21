@@ -2098,9 +2098,6 @@ getascii() {
         lines="$((lines+=1))"
     done <<< "$ascii_strip"
 
-    # Overwrite padding if ascii_length_force is set.
-    [ "$ascii_length_force" ] && ascii_length="$ascii_length_force"
-
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
     export LC_ALL=C
@@ -2593,13 +2590,8 @@ colors() {
             ascii_distro="mint"
         ;;
 
-        "LMDE"* | "Chapeau"* | "Bitrig"*)
+        "LMDE"* | "Chapeau"* | "Bitrig"* | "Android"*)
             setcolors 2 7
-        ;;
-
-        "Android"*)
-            setcolors 2 7
-            ascii_length_force="19"
         ;;
 
         "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
