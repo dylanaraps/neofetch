@@ -111,7 +111,7 @@ cpu_display="off"
 # Logical: All virtual cores
 # Physical: All physical cores
 # --cpu_cores logical, physical, off
-cpu_cores="on"
+cpu_cores="logical"
 
 
 # GPU
