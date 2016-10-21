@@ -11,6 +11,7 @@
 - Added new function called `checkoldflags` which informs users about deprecated config options.
 - Change all `OS X` references to `macOS`. **[@iandrewt](https://github.com/iandrewt)**
 - Fix corrupted text when long lines are cut-off.
+- Don't dynamically place prompt in `image=off` mode.
 
 
 ## Operating System
@@ -67,7 +68,14 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 
 **CPU**<br \>
 
+- Expanded `cpu_cores` option by adding two new values, `logical` and `physical`.
+    - `logical`: Show all virtual cores (hyperthreaded).
+    - `physical`: Only show physical cores.
 - [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
+
+**Uptime**<br \>
+
+- Rewrote uptime function to use seconds since boot instead of the `uptime` command.
 
 **Resolution**<br \>
 
@@ -96,6 +104,7 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
 **Terminal and Terminal Font**<br \>
 
 - Uppercase first letter of `term` and `termfont` outputs.
+- Don't print broken output of busybox's `ps`.
 - Remove path from output.
 
 **Song**<br \>

@@ -268,72 +268,51 @@ getkernel() {
 # Uptime {{{
 
 getuptime() {
+    # Get uptime in seconds
     case "$os" in
         "Linux" | "Windows")
-            case "$distro" in
-                *"Puppy"* | "Quirky Werewolf"* | "Alpine Linux"* | "OpenWRT"* | "Windows"*)
-                    uptime="$(uptime | awk -F ':[0-9]{2}+ |(, ){1}+' '{printf $2}')"
-                ;;
-
-                "openSUSE"*)
-                    uptime="$(uptime | awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')"
-                ;;
-
-                *)
-                    uptime="$(uptime -p)"
-                    [ "$uptime" == "up " ] && uptime="up $(awk -F'.' '{print $1}' /proc/uptime) seconds"
-                ;;
-            esac
+            seconds="$(< /proc/uptime)"
+            seconds="${seconds/.*}"
         ;;
 
         "Mac OS X" | "iPhone OS" | "BSD")
-            # Get boot time in seconds
             boot="$(sysctl -n kern.boottime)"
             boot="${boot/'{ sec = '}"
             boot="${boot/,*}"
 
             # Get current date in seconds
             now="$(date +%s)"
-            uptime="$((now - boot))"
-
-            # Convert uptime to days/hours/mins
-            minutes="$((uptime / 60%60))"
-            hours="$((uptime / 3600%24))"
-            days="$((uptime / 86400))"
-
-            case "$minutes" in
-                1) minutes="1 minute" ;;
-                0) unset minutes ;;
-                *) minutes="$minutes minutes" ;;
-            esac
-
-            case "$hours" in
-                1) hours="1 hour" ;;
-                0) unset hours ;;
-                *) hours="$hours hours" ;;
-            esac
-
-            case "$days" in
-                1) days="1 day" ;;
-                0) unset days ;;
-                *) days="$days days" ;;
-            esac
-
-            [ "$hours" ] && \
-            [ "$minutes" ] && \
-                hours+=","
-
-            [ "$days" ] && \
-            [ "$hours" ] && \
-                days+=","
-
-            uptime="up $days $hours $minutes"
+            seconds="$((now - boot))"
         ;;
 
         "Solaris")
-            uptime="$(uptime | /usr/xpg4/bin/awk -F ':[0-9]{2}+[a-z][a-z]  |(, ){1}+' '{printf $2}')"
+            seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
+            seconds="${seconds/.*}"
         ;;
     esac
+
+    days="$((seconds / 60 / 60 / 24)) days"
+    hours="$((seconds / 60 / 60 % 24)) hours"
+    minutes="$((seconds / 60 % 60)) minutes"
+
+    case "$days" in
+        "0 days") unset days ;;
+        "1 days") days="${days/s}" ;;
+    esac
+
+    case "$hours" in
+        "0 hours") unset hours ;;
+        "1 hours") hours="${hours/s}" ;;
+    esac
+
+    case "$minutes" in
+        "0 minutes") unset minutes ;;
+        "1 minutes") minutes="${minutes/s}" ;;
+    esac
+
+    uptime="${days:+$days, }${hours:+$hours, }${minutes}"
+    uptime="${uptime%', '}"
+    uptime="up ${uptime:-${seconds} seconds}"
 
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
@@ -353,7 +332,7 @@ getuptime() {
             uptime="${uptime/ minutes/m}"
             uptime="${uptime/ minute/m}"
             uptime="${uptime/ seconds/s}"
-            uptime="${uptime/,}"
+            uptime="${uptime//,}"
         ;;
     esac
 }
@@ -724,7 +703,11 @@ getcpu() {
                 speed="$((speed / 100))"
             fi
 
-            cores="$(grep -c ^processor /proc/cpuinfo)"
+            # Show/hide hyperthreaded cores
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(grep -c ^processor /proc/cpuinfo)" ;;
+                "physical") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
+            esac
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
@@ -738,7 +721,12 @@ getcpu() {
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
-            cores="$(sysctl -n hw.ncpu)"
+
+            # Show/hide hyperthreaded cores
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(sysctl -n hw.logicalcpu_max)" ;;
+                "physical") cores="$(sysctl -n hw.physicalcpu_max)" ;;
+            esac
         ;;
 
         "iPhone OS")
@@ -884,8 +872,11 @@ getcpu() {
             speed="$(psrinfo -v | awk '/operates at/ {print $6}')"
             speed="$((speed / 100))"
 
-            # Get cpu cores
-            cores="$(kstat -m cpu_info | grep -c "chip_id")"
+            # Show/hide hyperthreaded cores
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(kstat -m cpu_info | grep -c "chip_id")" ;;
+                "physical") cores="$(psrinfo -p)" ;;
+            esac
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
@@ -913,7 +904,7 @@ getcpu() {
     cpu="${cpu//with Radeon HD Graphics}"
 
     # Add cpu cores to output
-    [ "$cpu_cores" == "on" ] && [ "$cores" ] && \
+    [ "$cpu_cores" != "off" ] && [ "$cores" ] && \
         cpu="${cpu/@/(${cores}) @}"
 
     # Make the output of cpu shorter
@@ -1581,7 +1572,7 @@ getterm() {
     case "${name// }" in
         "${SHELL/*\/}" | *"sh" | "tmux"* | "screen") getterm "$parent" ;;
         "login"* | *"Login"* | "init") term="$(tty)" ;;
-        "ruby" | "1" | "systemd" | "sshd"* | "python"*) unset term ;;
+        "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term ;;
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="${name##*/}" ;;
     esac
@@ -2916,7 +2907,7 @@ kdeconfigdir() {
 dynamicprompt() {
     # Calculate image height in terminal cells.
     # The '+ 4' adds a gap between the prompt and the content.
-    [ "$image" != "ascii" ] && [ "$image" != "off" ] && \
+    [ "$image" != "ascii" ] && \
         lines="$((${height:-1} / ${font_height:-1} + 4))"
 
     # If the info is higher than the ascii/image place the prompt
@@ -2975,7 +2966,9 @@ usage() { cat << EOF
                                 NOTE: This only support Linux with cpufreq.
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
-    --cpu_cores on/off          Whether or not to display the number of CPU cores
+    --cpu_cores type            Whether or not to display the number of CPU cores
+                                Takes: logical, physical, off
+                                Note: 'physical' doesn't work on BSD.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
@@ -3312,17 +3305,17 @@ main() {
 
         # Display the image if enabled
         displayimage
+
+        # Set cursor position next to ascii art
+        printf "\033[$((${lines:-4} - ${prompt_loc:-4}))A"
+
+        # Reset horizontal cursor position
+        printf "\033[9999999D"
     fi
-
-    # Set cursor position next to ascii art
-    printf "\033[$((${lines:-4} - ${prompt_loc:-4}))A"
-
-    # Reset horizontal cursor position
-    printf "\033[9999999D"
 
     # Print the info
     printinfo
-    dynamicprompt
+    [ "$image" != "off" ] && dynamicprompt
 
     # Re-enable line wrap
     printf "%b%s" "\033[?7h"

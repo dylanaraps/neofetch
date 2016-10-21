@@ -108,8 +108,11 @@ cpu_display="off"
 
 # CPU Cores
 # Display CPU cores in output
-# --cpu_cores on/off
-cpu_cores="on"
+# Logical: All virtual cores
+# Physical: All physical cores
+# --cpu_cores logical, physical, off
+# Note: 'physical' doesn't work on BSD.
+cpu_cores="logical"
 
 
 # GPU
