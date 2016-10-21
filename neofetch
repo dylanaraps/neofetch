@@ -724,7 +724,11 @@ getcpu() {
                 speed="$((speed / 100))"
             fi
 
-            cores="$(grep -c ^processor /proc/cpuinfo)"
+            # Show/hide hyperthreaded cores
+            case "$cores_ht" in
+                "on") cores="$(grep -c ^processor /proc/cpuinfo)" ;;
+                "off") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
+            esac
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
@@ -738,7 +742,12 @@ getcpu() {
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
-            cores="$(sysctl -n hw.ncpu)"
+
+            # Show/hide hyperthreaded cores
+            case "$cores_ht" in
+                "on") cores="$(sysctl -n hw.logicalcpu_max)" ;;
+                "off") cores="$(sysctl -n hw.physicalcpu_max)" ;;
+            esac
         ;;
 
         "iPhone OS")
