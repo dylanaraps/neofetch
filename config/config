@@ -304,11 +304,12 @@ image="wall"
 thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 
 # W3m-img path
+# Only works with the w3m backend.
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
 # Image position
-# Only works with the w3m backend
+# Only works with the w3m backend.
 # --image_position left/right
 image_position="left"
 
@@ -332,10 +333,17 @@ image_size="auto"
 gap=2
 
 # Image offsets
+# Only works with the w3m backend.
 # --xoffset px
 # --yoffset px
 yoffset=0
 xoffset=0
+
+# Image background color
+# Only works with the w3m backend.
+# Unset by default.
+# --bg_color 'color', blue
+background_color=
 
 
 # }}}
