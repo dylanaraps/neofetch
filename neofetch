@@ -2929,7 +2929,7 @@ dynamicprompt() {
 
     # Set the prompt location
     if [ "$lines" -lt 0 ]; then
-        printf "\033[${lines}A"
+        printf "\033[${lines/-}A"
     else
         printf "\033[${lines}B"
     fi
