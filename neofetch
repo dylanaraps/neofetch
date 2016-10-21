@@ -1944,7 +1944,7 @@ getcols() {
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
-        cols="${cols//nl/\\n${padding}​}"
+        cols="${cols//nl/\\n${padding}${zws}}"
     fi
 }
 
@@ -2141,6 +2141,7 @@ getimage() {
         return
     else
         clear
+        zws="​ "
     fi
 
     # Get terminal lines and columns
@@ -2415,7 +2416,7 @@ info() {
     [ -z "$2" ] && string="${string/*: }"
 
     # Print the string
-    printf "%b%s\n" "${padding}​${string}${reset} "
+    printf "%b%s\n" "${padding}${zws}${string}${reset} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
@@ -2450,7 +2451,7 @@ prin() {
     string="$(trim "$string")"
 
     # Print the info
-    printf "%b%s\n" "${padding}​${string}${reset} "
+    printf "%b%s\n" "${padding}${zws}${string}${reset} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
