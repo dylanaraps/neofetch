@@ -111,7 +111,7 @@ cpu_display="off"
 # Logical: All virtual cores
 # Physical: All physical cores
 # --cpu_cores logical, physical, off
-# Note: 'physical' only works on Linux, Windows and macOS.
+# Note: 'physical' doesn't work on BSD.
 cpu_cores="logical"
 
 
