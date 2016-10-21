@@ -1580,7 +1580,7 @@ getterm() {
 
     case "${name// }" in
         "${SHELL/*\/}" | *"sh" | "tmux"* | "screen") getterm "$parent" ;;
-        "login"* | "Login"* | "init") term="$(tty)" ;;
+        "login"* | *"Login"* | "init") term="$(tty)" ;;
         "ruby" | "1" | "systemd" | "sshd"* | "python"*) unset term ;;
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="${name##*/}" ;;
