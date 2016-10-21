@@ -92,13 +92,13 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 - [iOS dependencies](https://github.com/dylanaraps/neofetch#ios)
 
 
-## Required dependencies:
+### Required dependencies:
 
 - `Bash 3.0+`
     - Alpine Linux: You also need `ncurses`.
 
 
-## Image mode dependencies:
+### Image mode dependencies:
 
 These dependencies are required for image mode to work.
 
@@ -113,9 +113,9 @@ These dependencies are required for image mode to work.
 \[3\] See this wiki page to find out if your terminal emulator supports `\033[14t` or if you need an additonal dependency.
 
 
-## Optional dependencies:
+### Optional dependencies:
 
-### Song
+#### Song
 
 - Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
 - MPD: `mpc`
@@ -127,13 +127,13 @@ These dependencies are required for image mode to work.
 - Amarok: `amarok`
 - Deadbeef: `deadbeef`
 
-### Desktop Environment and Window Manager
+#### Desktop Environment and Window Manager
 
 - Desktop Environment and Window Manager: `xprop` \[1\]
 
 \[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
 
-### Wallpaper
+#### Wallpaper
 
 **Linux, BSD and Solaris**
 
@@ -143,7 +143,7 @@ These dependencies are required for image mode to work.
 
 - No additional dependencies needed.
 
-### Resolution
+#### Resolution
 
 **Linux, BSD and Solaris**
 
@@ -158,14 +158,14 @@ output.
 
 \[2\] `screenresolution` is installed for you when using homebrew.
 
-### Screenshot
+#### Screenshot
 
 - Screenshot: `scrot` \[1\]
 
 \[1\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
 program's cmd and neofetch will use it instead of scrot.
 
-### GPU
+#### GPU
 
 **BSD and Solaris**
 
@@ -173,7 +173,7 @@ program's cmd and neofetch will use it instead of scrot.
     - Not required on FreeBSD.
 
 
-### iOS
+#### iOS
 
 These dependencies can all be installed through Cydia.<br \>
 Note: The cydia package installs these dependencies for you.
