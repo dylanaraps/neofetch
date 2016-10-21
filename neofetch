@@ -738,7 +738,7 @@ getcpu() {
 
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
-            cores="$(sysctl -n hw.physicalcpu)"
+            cores="$(sysctl -n hw.ncpu)"
         ;;
 
         "iPhone OS")
