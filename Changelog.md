@@ -42,6 +42,21 @@ The final fix was as simple as adding a zero-width space before the info, here's
 
 https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429af39d9
 
+**Removed hard dependency on `\033[14t`**
+
+Neofetch no longer requires a terminal emulator that supports `\033[14t` this means that neofetch now works in Konsole. Instead of using the escape sequence users now have three options for getting the terminal size in pixels.
+
+- `xdotool`
+- `xwininfo` + `xprop`
+- `xwininfo` + `xdpyinfo`
+
+Neofetch will detect whatever combination you have insalled and use these programs.
+
+Note: `\033[14t` is still supported, if images already work for you then you don't have to install anything else.
+
+- [w3m-img] Draw the image twice to fix rendering issues in Konsole.
+- [w3m-img] Fix cursor position when using `yoffset`.
+
 
 ## Ascii
 
