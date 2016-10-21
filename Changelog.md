@@ -73,6 +73,10 @@ https://github.com/dylanaraps/neofetch/commit/3e9c3d648cb4c6f0d5fe5f0b96f9e29429
     - `physical`: Only show physical cores.
 - [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
 
+**Uptime**<br \>
+
+- Rewrote uptime function to use seconds since boot instead of the `uptime` command.
+
 **Resolution**<br \>
 
 - [macOS] Add @2x label for retina resolutions. **[@iandrewt](https://github.com/iandrewt)**
