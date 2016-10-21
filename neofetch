@@ -2940,6 +2940,8 @@ dynamicprompt() {
     if [ "$image" != "ascii" ]; then
         lines="$((${height:-1} / ${font_height:-1} + 2))"
         cursor_yoffset="$((${yoffset:-1} / ${font_height:-1}))"
+    else
+        cursor_yoffset="0 - 4"
     fi
 
     # If the info is higher than the ascii/image place the prompt
@@ -2954,7 +2956,7 @@ dynamicprompt() {
     [ "$image" != "off" ] && printf "\033[${lines/-*/0}B"
 
     # Add some padding
-    [ "$image_backend" != "w3m" ] && \
+    [ "$image" == "ascii" ] && \
     [ "$lines" -gt 0 ] && \
         printf "\n\n"
 }
