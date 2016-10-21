@@ -2091,18 +2091,15 @@ getascii() {
     ascii_strip="${ascii_strip//'\\'/ }"
     ascii_strip="${ascii_strip//'\'}"
 
-    # Workaround for calculating length of block chars
-    # when locale is set to 'C'
-    block_char="█"
-    [ "${#block_char}" == 3 ] && ascii_strip="${ascii_strip//${block_char}/ }"
-
     # Get lines/columns of the ascii file.
-    ascii_length=0
     lines=1
     while IFS='\n' read -r line 2>/dev/null; do
-        [ "${#line}" -gt "$ascii_length" ] && ascii_length="${#line}"
+        [ "${#line}" -gt "${ascii_length:-0}" ] && ascii_length="${#line}"
         lines="$((lines+=1))"
     done <<< "$ascii_strip"
+
+    # Overwrite padding if ascii_length_force is set.
+    [ "$ascii_length_force" ] && ascii_length="$ascii_length_force"
 
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
@@ -2595,8 +2592,13 @@ colors() {
             ascii_distro="mint"
         ;;
 
-        "LMDE"* | "Chapeau"* | "Bitrig"* | "Android"*)
+        "LMDE"* | "Chapeau"* | "Bitrig"*)
             setcolors 2 7
+        ;;
+
+        "Android"*)
+            setcolors 2 7
+            ascii_length_force="19"
         ;;
 
         "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
