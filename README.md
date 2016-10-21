@@ -213,7 +213,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Slackware](#slackware)
 - [macOS](#mac-os-x)
 - [iOS](##ios-1)
-- [Others](#others)
+- [Manual](#manual)
 
 
 ### Arch
@@ -226,6 +226,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 You can install `app-misc/neofetch` from Gentoo/Funtoo's official repositories.
 
 To install the git version of neofetch, use `=app-misc/neofetch-9999` instead.
+
 
 ### CRUX
 
@@ -249,6 +250,7 @@ Or alternatively use the [port](https://raw.githubusercontent.com/6c37/crux-port
 3. Install the package
     - `sudo pkgadd neofetch#git-*.pkg.tar.gz`
 
+
 ### Ubuntu
 
 1. Add PPA
@@ -257,6 +259,7 @@ Or alternatively use the [port](https://raw.githubusercontent.com/6c37/crux-port
     - `sudo apt update`
 3. Install the package
     - `sudo apt install neofetch`
+
 
 ### Debian
 
@@ -289,36 +292,45 @@ Alternatively:
 3. Install the package
     - `sudo dnf install neofetch`
 
+
 ### Void Linux
+
 Install it from the official repositories
 
 - `sudo xbps-install -S neofetch`
 
+
 ### BunsenLabs
+
 Neofetch is available in the official repos.
 
 1. `sudo apt-get update`
 2. `sudo apt-get install neofetch`
 
+
 ### Solus
 
 Use the Software Center or type `sudo eopkg it neofetch`.
 
+
 ### Slackware
 
 Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/desktop/neofetch/) and follow [their instructions](https://slackbuilds.org/howto/).
+
 
 ### macOS
 
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
 
+
 ### iOS
 
 1. Add `http://dylanaraps.com/repo` to your cydia sources.
 2. Install `neofetch` through cydia.
 
-### Others
+
+### Manual
 
 1. Download the latest source at https://github.com/dylanaraps/neofetch
 2. Run `make install` inside the script directory to install the script.
