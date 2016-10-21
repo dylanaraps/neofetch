@@ -725,9 +725,9 @@ getcpu() {
             fi
 
             # Show/hide hyperthreaded cores
-            case "$cores_ht" in
-                "on") cores="$(grep -c ^processor /proc/cpuinfo)" ;;
-                "off") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(grep -c ^processor /proc/cpuinfo)" ;;
+                "physical") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
             esac
 
             # Fix for speeds under 1ghz
@@ -744,9 +744,9 @@ getcpu() {
             cpu="$(sysctl -n machdep.cpu.brand_string)"
 
             # Show/hide hyperthreaded cores
-            case "$cores_ht" in
-                "on") cores="$(sysctl -n hw.logicalcpu_max)" ;;
-                "off") cores="$(sysctl -n hw.physicalcpu_max)" ;;
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(sysctl -n hw.logicalcpu_max)" ;;
+                "physical") cores="$(sysctl -n hw.physicalcpu_max)" ;;
             esac
         ;;
 
@@ -922,7 +922,7 @@ getcpu() {
     cpu="${cpu//with Radeon HD Graphics}"
 
     # Add cpu cores to output
-    [ "$cpu_cores" == "on" ] && [ "$cores" ] && \
+    [ "$cpu_cores" != "off" ] && [ "$cores" ] && \
         cpu="${cpu/@/(${cores}) @}"
 
     # Make the output of cpu shorter
@@ -2956,7 +2956,8 @@ usage() { cat << EOF
                                 NOTE: This only support Linux with cpufreq.
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
-    --cpu_cores on/off          Whether or not to display the number of CPU cores
+    --cpu_cores type            Whether or not to display the number of CPU cores
+                                Takes: logical. physical, off
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
