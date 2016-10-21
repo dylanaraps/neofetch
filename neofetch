@@ -893,8 +893,11 @@ getcpu() {
             speed="$(psrinfo -v | awk '/operates at/ {print $6}')"
             speed="$((speed / 100))"
 
-            # Get cpu cores
-            cores="$(kstat -m cpu_info | grep -c "chip_id")"
+            # Show/hide hyperthreaded cores
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(kstat -m cpu_info | grep -c "chip_id")" ;;
+                "physical") cores="$(psrinfo -p)" ;;
+            esac
 
             # Fix for speeds under 1ghz
             if [ -z "${speed:1}" ]; then
