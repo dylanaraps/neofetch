@@ -118,7 +118,6 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 - Fixed `block_width` not working.
 - Fixed `% s` appearing in color blocks when neofetch is run from `tty`
 - Fixed `block_width` being off by one. A value of `2` made the blocks `3` wide instead of `2` wide.
-- Show 16 colors by default instead of 8.
 
 **Terminal and Terminal Font**<br \>
 
