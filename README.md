@@ -20,6 +20,16 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 - [Screenshots](#screenshots)
 - [Features](#features)
 - [Dependencies](#dependencies)
+    - [Required dependencies](https://github.com/dylanaraps/neofetch#required-dependencies)
+    - [Image mode dependencies](https://github.com/dylanaraps/neofetch#image-mode-dependencies)
+    - [Optional dependencies](https://github.com/dylanaraps/neofetch#optional-dependencies)
+        - [Song](https://github.com/dylanaraps/neofetch#song)
+        - [Desktop Environment and Window Manager](https://github.com/dylanaraps/neofetch#desktop-environment-and-window-manager)
+        - [Wallpaper](https://github.com/dylanaraps/neofetch#wallpaper)
+        - [Resolution](https://github.com/dylanaraps/neofetch#resolution)
+        - [Screenshot](https://github.com/dylanaraps/neofetch#screenshot)
+        - [GPU](https://github.com/dylanaraps/neofetch#gpu)
+    - [iOS dependencies](https://github.com/dylanaraps/neofetch#ios)
 - [Installation](#installation)
     - [Arch Linux](#arch)
     - [Gentoo / Funtoo](#gentoo--funtoo)
@@ -31,9 +41,9 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [BunsenLabs](#bunsenlabs)
     - [Solus](#solus)
     - [Slackware](#slackware)
-    - [macOS](#mac-os-x)
+    - [macOS](#macos)
     - [iOS](#ios-1)
-    - [Others](#others)
+    - [Manual](#manual)
 - [Post Install](#post-install)
 - [Usage](#usage)
 - [Frequently Asked Questions](#frequently-asked-questions)
@@ -75,10 +85,22 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 <!-- }}} -->
 
 
-<!-- Dependences {{{ -->
+<!-- Dependencies {{{ -->
 
 
 ## Dependencies
+
+- [Required dependencies](https://github.com/dylanaraps/neofetch#required-dependencies)
+- [Image mode dependencies](https://github.com/dylanaraps/neofetch#image-mode-dependencies)
+- [Optional dependencies](https://github.com/dylanaraps/neofetch#optional-dependencies)
+    - [Song](https://github.com/dylanaraps/neofetch#song)
+    - [Desktop Environment and Window Manager](https://github.com/dylanaraps/neofetch#desktop-environment-and-window-manager)
+    - [Wallpaper](https://github.com/dylanaraps/neofetch#wallpaper)
+    - [Resolution](https://github.com/dylanaraps/neofetch#resolution)
+    - [Screenshot](https://github.com/dylanaraps/neofetch#screenshot)
+    - [GPU](https://github.com/dylanaraps/neofetch#gpu)
+- [iOS dependencies](https://github.com/dylanaraps/neofetch#ios)
+
 
 ### Required dependencies:
 
@@ -86,7 +108,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - Alpine Linux: You also need `ncurses`.
 
 
-##### Image mode
+### Image mode dependencies:
 
 These dependencies are required for image mode to work.
 
@@ -101,7 +123,67 @@ These dependencies are required for image mode to work.
 \[3\] See this wiki page to find out if your terminal emulator supports `\033[14t` or if you need an additonal dependency.
 
 
-##### iOS
+### Optional dependencies:
+
+#### Song
+
+- Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
+- MPD: `mpc`
+- CMUS: `cmus`
+- MOC: `moc`
+- Spotify: `spotify`
+- Rhythmbox: `rhythmbox`
+- Banshee: `banshee`
+- Amarok: `amarok`
+- Deadbeef: `deadbeef`
+
+#### Desktop Environment and Window Manager
+
+- Desktop Environment and Window Manager: `xprop` \[1\]
+
+\[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
+
+#### Wallpaper
+
+**Linux, BSD and Solaris**
+
+- Wallpaper: `feh`, `nitrogen` or `gsettings`
+
+**Windows and macOS**
+
+- No additional dependencies needed.
+
+#### Resolution
+
+**Linux, BSD and Solaris**
+
+- Resolution: `xorg-xrandr` or `xorg-xdpyinfo` \[1\]
+
+**macOS**
+
+- Resolution (quicker): `screenresolution` \[2\]
+
+\[1\] Xrandr is prefered over xdpyinfo as Xrandr supports multi monitor and refresh rate display in the<br \>
+output.
+
+\[2\] `screenresolution` is installed for you when using homebrew.
+
+#### Screenshot
+
+- Screenshot: `scrot` \[1\]
+
+\[1\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+program's cmd and neofetch will use it instead of scrot.
+
+#### GPU
+
+**BSD and Solaris**
+
+- GPU: `glxinfo`
+    - Not required on FreeBSD.
+
+
+#### iOS
 
 These dependencies can all be installed through Cydia.<br \>
 Note: The cydia package installs these dependencies for you.
@@ -113,40 +195,6 @@ Note: The cydia package installs these dependencies for you.
 - `system-cmds`
 - `Gawk`
 - `grep`
-
-
-### Optional dependencies:
-
-- Displaying song information from Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
-- Desktop Environment and Window Manager: `xprop` \[1\]
-
-##### Linux / BSD / Solaris
-
-- Wallpaper: `feh`, `nitrogen` or `gsettings`
-- Current Song: `mpc`, `cmus`, `moc`, `spotify`, `gpmdc`
-- Resolution: `xorg-xrandr` or `xorg-xdpyinfo` \[2\]
-- Screenshot: `scrot` \[3\]
-
-##### OSX
-
-- Resolution (quicker): `screenresolution`
-
-##### BSD / Solaris
-
-- GPU: `glxinfo`
-    - Not required on FreeBSD.
-
-##### Windows (CYGWIN)
-
-- `procps-ng` or `procps`
-
-\[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
-
-\[2\] Xrandr is prefered over xdpyinfo as Xrandr supports multi monitor and refresh rate display in the<br \>
-output.
-
-\[3\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
-program's cmd and neofetch will use it instead of scrot.
 
 
 <!-- }}} -->
@@ -175,7 +223,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Slackware](#slackware)
 - [macOS](#mac-os-x)
 - [iOS](##ios-1)
-- [Others](#others)
+- [Manual](#manual)
 
 
 ### Arch
@@ -188,6 +236,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 You can install `app-misc/neofetch` from Gentoo/Funtoo's official repositories.
 
 To install the git version of neofetch, use `=app-misc/neofetch-9999` instead.
+
 
 ### CRUX
 
@@ -211,6 +260,7 @@ Or alternatively use the [port](https://raw.githubusercontent.com/6c37/crux-port
 3. Install the package
     - `sudo pkgadd neofetch#git-*.pkg.tar.gz`
 
+
 ### Ubuntu
 
 1. Add PPA
@@ -219,6 +269,7 @@ Or alternatively use the [port](https://raw.githubusercontent.com/6c37/crux-port
     - `sudo apt update`
 3. Install the package
     - `sudo apt install neofetch`
+
 
 ### Debian
 
@@ -251,36 +302,45 @@ Alternatively:
 3. Install the package
     - `sudo dnf install neofetch`
 
+
 ### Void Linux
+
 Install it from the official repositories
 
 - `sudo xbps-install -S neofetch`
 
+
 ### BunsenLabs
+
 Neofetch is available in the official repos.
 
 1. `sudo apt-get update`
 2. `sudo apt-get install neofetch`
 
+
 ### Solus
 
 Use the Software Center or type `sudo eopkg it neofetch`.
 
+
 ### Slackware
 
 Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/desktop/neofetch/) and follow [their instructions](https://slackbuilds.org/howto/).
+
 
 ### macOS
 
 1. Install `neofetch` with Homebrew
     - `brew install neofetch`
 
+
 ### iOS
 
 1. Add `http://dylanaraps.com/repo` to your cydia sources.
 2. Install `neofetch` through cydia.
 
-### Others
+
+### Manual
 
 1. Download the latest source at https://github.com/dylanaraps/neofetch
 2. Run `make install` inside the script directory to install the script.
