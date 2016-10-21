@@ -2091,6 +2091,11 @@ getascii() {
     ascii_strip="${ascii_strip//'\\'/ }"
     ascii_strip="${ascii_strip//'\'}"
 
+    # Workaround for calculating length of block chars
+    # when locale is set to 'C'
+    block_char="█"
+    [ "${#block_char}" == 3 ] && ascii_strip="${ascii_strip//${block_char}/ }"
+
     # Get lines/columns of the ascii file.
     ascii_length=0
     lines=1
@@ -2098,11 +2103,6 @@ getascii() {
         [ "${#line}" -gt "$ascii_length" ] && ascii_length="${#line}"
         lines="$((lines+=1))"
     done <<< "$ascii_strip"
-
-    # Workaround for calculating length of block chars
-    # when locale is set to 'C'
-    block_char="█"
-    [ "${#block_char}" == 3 ] && ascii_length="$((ascii_length / 3 + 2))"
 
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
