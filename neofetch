@@ -2089,39 +2089,66 @@ getimage() {
     esac
 
     # Get terminal width and height
-    if [ -n "$TMUX" ]; then
-        printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
-        read_flags="-d c"
+    if type -p xdotool >/dev/null 2>&1 && \
+        [ "$image_backend" != "iterm2" ]; then
 
-    elif [ "$image_backend" == "tycat" ]; then
-        printf "%b%s" "\033}qs\000"
+        current_window="$(xdotool getactivewindow)"
+        eval "$(xdotool getwindowgeometry --shell "$current_window")"
+        term_height="$HEIGHT"
+        term_width="$WIDTH"
+
+    elif type -p xwininfo >/dev/null 2>&1 && \
+        type -p xdpyinfo >/dev/null 2>&1 || \
+        type -p xprop >/dev/null 2>&1 && \
+        [ "$image_backend" != "iterm2" ]; then
+
+        if type -p xdpyinfo >/dev/null 2>&1; then
+            current_window="$(xdpyinfo | grep focus | grep -E -o 0x[0-9a-f]+)"
+        elif type -p xprop >/dev/null 2>&1; then
+            current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
+        fi
+
+        term_size="$(xwininfo -id "$current_window" | awk -F ': ' '/Width|Height/ {printf $2 " "}')"
+        term_width="${term_size/ *}"
+        term_height="${term_size/${term_width}}"
 
     else
-        printf "%b%s" "\033[14t\033[c"
-        read_flags="-d c"
-    fi
+        if [ -n "$TMUX" ]; then
+            printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+            read_flags="-d c"
 
-    # The escape code above prints the output AFTER the prompt so this
-    builtin read -s -t 1 ${read_flags} -r term_size
+        elif [ "$image_backend" == "tycat" ]; then
+            printf "%b%s" "\033}qs\000"
 
-    # Split the string
-    if [ "$image_backend" == "tycat" ]; then
-        term_size=(${term_size//;/ })
-        term_width="$((term_size[2] * term_size[0]))"
-        term_height="$((term_size[3] * term_size[1]))"
+        else
+            printf "%b%s" "\033[14t\033[c"
+            read_flags="-d c"
+        fi
 
-    else
-        term_size="${term_size//'['}"
-        term_size="${term_size/';'}"
-        term_size="${term_size/$'\E4'}"
-        term_size="${term_size/t*}"
-        term_height="${term_size/';'*}"
-        term_width="${term_size/*';'}"
+        # The escape code above prints the output AFTER the prompt so this
+        builtin read -s -t 1 ${read_flags} -r term_size
+
+        # Split the string
+        if [ "$image_backend" == "tycat" ]; then
+            term_size=(${term_size//;/ })
+            term_width="$((term_size[2] * term_size[0]))"
+            term_height="$((term_size[3] * term_size[1]))"
+
+        else
+            term_size="${term_size//'['}"
+            term_size="${term_size/';'}"
+            term_size="${term_size/$'\E4'}"
+            term_size="${term_size/t*}"
+            term_height="${term_size/';'*}"
+            term_width="${term_size/*';'}"
+        fi
+
+        [ "${#term_size}" -le 5 ] && no_esc="1"
     fi
 
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
-    if [ ! -f "$img" ] || ([ "${#term_size}" -le 5 ] && [ "$image_backend" != "tycat" ]); then
+    if [ ! -f "$img" ] || ([ "$no_esc" == 1 ] && [ "$image_backend" != "tycat" ]); then
         image="ascii"
         getascii
 
@@ -2879,25 +2906,25 @@ kdeconfigdir() {
 
 dynamicprompt() {
     # Calculate image height in terminal cells.
-    # The '+ 4' adds a gap between the prompt and the content.
+    # The '+ 1' adds a gap between the prompt and the content.
     [ "$image" != "ascii" ] && \
-        lines="$((${height:-1} / ${font_height:-1} + 4))"
+        lines="$((${height:-1} / ${font_height:-1} + 1))"
 
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
     if [ "${lines:-0}" -lt "${info_height:-0}" ]; then
         lines="0"
     else
-        lines="$((lines - info_height - 4))"
+        lines="$((lines - info_height + $((${yoffset:-1} / ${font_height:-1}))))"
     fi
 
     # Set the prompt location
     [ "$image" != "off" ] && printf "\033[${lines/-*/0}B"
 
-    # Add some padding if the lines are above 0
-    if [ "$lines" -gt 0 ]; then
+    # Add some padding
+    [ "$image_backend" != "w3m" ] && \
+    [ "$lines" -gt 0 ] && \
         printf "\n\n"
-    fi
 }
 
 # }}}
@@ -3289,6 +3316,10 @@ main() {
     # Print the info
     printinfo
     [ "$image" != "off" ] && dynamicprompt
+
+    # w3m-img: Draw the image a second time to fix
+    # rendering issues in specific terminal emulators.
+    [ "$image_backend" == "w3m" ] && displayimage
 
     # Re-enable line wrap
     printf "%b%s" "\033[?7h"
