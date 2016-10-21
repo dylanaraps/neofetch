@@ -75,18 +75,30 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 <!-- }}} -->
 
 
-<!-- Dependences {{{ -->
+<!-- Dependencies {{{ -->
 
 
 ## Dependencies
 
-### Required dependencies:
+- [Required dependencies]()
+- [Image mode dependencies]()
+- [Optional dependencies]()
+    - [Song]()
+    - [Wallpaper]()
+    - [Resolution]()
+    - [Screenshot]()
+    - [GPU]()
+    - [Desktop Environment and Window Manager]()
+- [iOS dependencies]()
+
+
+## Required dependencies:
 
 - `Bash 3.0+`
     - Alpine Linux: You also need `ncurses`.
 
 
-##### Image mode
+## Image mode dependencies:
 
 These dependencies are required for image mode to work.
 
@@ -101,7 +113,63 @@ These dependencies are required for image mode to work.
 \[3\] See this wiki page to find out if your terminal emulator supports `\033[14t` or if you need an additonal dependency.
 
 
-##### iOS
+## Optional dependencies:
+
+### Song
+
+- Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
+- MPD: `mpc`
+- CMUS: `cmus`
+- MOC: `moc`
+- Spotify: `spotify`
+
+### Desktop Environment and Window Manager
+
+- Desktop Environment and Window Manager: `xprop` \[1\]
+
+\[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
+
+### Wallpaper
+
+**Linux, BSD and Solaris**
+
+- Wallpaper: `feh`, `nitrogen` or `gsettings`
+
+**Windows and macOS**
+
+- No additional dependencies needed.
+
+### Resolution
+
+**Linux, BSD and Solaris**
+
+- Resolution: `xorg-xrandr` or `xorg-xdpyinfo` \[1\]
+
+**macOS**
+
+- Resolution (quicker): `screenresolution` \[2\]
+
+\[1\] Xrandr is prefered over xdpyinfo as Xrandr supports multi monitor and refresh rate display in the<br \>
+output.
+
+\[2\] `screenresolution` is installed for you when using homebrew.
+
+### Screenshot
+
+- Screenshot: `scrot` \[1\]
+
+\[1\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
+program's cmd and neofetch will use it instead of scrot.
+
+### GPU
+
+**BSD and Solaris**
+
+- GPU: `glxinfo`
+    - Not required on FreeBSD.
+
+
+### iOS
 
 These dependencies can all be installed through Cydia.<br \>
 Note: The cydia package installs these dependencies for you.
@@ -113,40 +181,6 @@ Note: The cydia package installs these dependencies for you.
 - `system-cmds`
 - `Gawk`
 - `grep`
-
-
-### Optional dependencies:
-
-- Displaying song information from Google Play Music Desktop Player: [`gpmdp-remote`](https://github.com/iAndrewT/gpmdp-remote)
-- Desktop Environment and Window Manager: `xprop` \[1\]
-
-##### Linux / BSD / Solaris
-
-- Wallpaper: `feh`, `nitrogen` or `gsettings`
-- Current Song: `mpc`, `cmus`, `moc`, `spotify`, `gpmdc`
-- Resolution: `xorg-xrandr` or `xorg-xdpyinfo` \[2\]
-- Screenshot: `scrot` \[3\]
-
-##### OSX
-
-- Resolution (quicker): `screenresolution`
-
-##### BSD / Solaris
-
-- GPU: `glxinfo`
-    - Not required on FreeBSD.
-
-##### Windows (CYGWIN)
-
-- `procps-ng` or `procps`
-
-\[1\] See **[#79](https://github.com/dylanaraps/neofetch/issues/79)** about why this is now a required dependency.
-
-\[2\] Xrandr is prefered over xdpyinfo as Xrandr supports multi monitor and refresh rate display in the<br \>
-output.
-
-\[3\] You can use the launch flag `--scrot_cmd` or change the config option `$scrot_cmd` to your screenshot<br \>
-program's cmd and neofetch will use it instead of scrot.
 
 
 <!-- }}} -->
