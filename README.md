@@ -366,6 +366,7 @@ alias neofetch2="neofetch \
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores type            Whether or not to display the number of CPU cores
                                 Takes: logical, physical, off
+                                Note: 'physical' only works on Linux, Windows and macOS.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
