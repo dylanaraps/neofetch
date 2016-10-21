@@ -2919,7 +2919,7 @@ dynamicprompt() {
     if [ "${lines:-0}" -lt "${info_height:-0}" ]; then
         lines="0"
     else
-        lines="$((lines - info_height + cursor_yoffset - 1))"
+        lines="$((lines - info_height + cursor_yoffset))"
     fi
 
     # Set the prompt location

@@ -236,7 +236,7 @@ underline_char="-"
 # Color block range
 # --block_range start end
 start=0
-end=15
+end=7
 
 # Toggle color blocks
 # --color_blocks on/off
