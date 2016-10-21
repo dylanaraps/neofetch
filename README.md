@@ -440,6 +440,8 @@ alias neofetch2="neofetch \
                                 window. This only works with w3m.
     --yoffset px                How close the image will be to the top edge of the
                                 window. This only works with w3m.
+    --bg_color color            Background color to display behind transparent image.
+                                This only works with w3m.
     --gap num                   Gap between image and text.
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.

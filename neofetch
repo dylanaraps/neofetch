@@ -2312,7 +2312,7 @@ displayimage() {
                 # appearing in specific terminal emulators.
                 sleep 0.05
                 printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
-                $w3m_img_path 2>/dev/null || padding="\033[0C"
+                $w3m_img_path -bg "$background_color" 2>/dev/null || padding="\033[0C"
             ;;
 
             "iterm2")
@@ -3037,6 +3037,8 @@ usage() { cat << EOF
                                 window. This only works with w3m.
     --yoffset px                How close the image will be to the top edge of the
                                 window. This only works with w3m.
+    --bg_color color            Background color to display behind transparent image.
+                                This only works with w3m.
     --gap num                   Gap between image and text.
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.
@@ -3176,6 +3178,7 @@ getargs() {
             --crop_offset) crop_offset="$2" ;;
             --xoffset) xoffset="$2" ;;
             --yoffset) yoffset="$2" ;;
+            --background_color | --bg_color) background_color="$2" ;;
             --gap) gap="$2" ;;
             --clean)
                 rm -rf "$thumbnail_dir"
