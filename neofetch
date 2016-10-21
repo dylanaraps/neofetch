@@ -2722,6 +2722,9 @@ bold() {
 
 getlinebreak() {
     linebreak=" "
+
+    # Calculate info height
+    info_height="$((info_height+=1))"
 }
 
 # }}}
@@ -2910,10 +2913,10 @@ dynamicprompt() {
     # Calculate image height in terminal cells.
     # The '+ 1' adds a gap between the prompt and the content.
     if [ "$image" != "ascii" ]; then
-        lines="$((${height:-1} / ${font_height:-1} + 2))"
+        lines="$((${height:-1} / ${font_height:-1} + 3))"
         cursor_yoffset="$((${yoffset:-1} / ${font_height:-1}))"
     else
-        cursor_yoffset="0 - 4"
+        cursor_yoffset="0 - 2"
     fi
 
     # If the info is higher than the ascii/image place the prompt
