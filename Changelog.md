@@ -76,6 +76,12 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 - Expanded `distro_shorthand` to macOS and Solaris. **[@konimex](https://github.com/konimex)**
 - Removed `osx_buildversion` and `osx_codename` in favour of `distro_shorthand`. **[@konimex](https://github.com/konimex)**
 
+**Desktop Environment**<br \>
+
+- [Windows] Added support for showing DE.
+    - Windows 8 and above: `Modern UI/Metro`
+    - Windows 7 and below: `Aero`
+
 **Window Manager**<br \>
 
 - [Windows] Added support for custom WMs/Shells.
