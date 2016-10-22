@@ -1276,6 +1276,9 @@ getsong() {
 
     elif [ -n "$(ps x | awk '!(/awk/) && /deadbeef/')" ]; then
         song="$(deadbeef --nowplaying '%a - %t')"
+        
+    elif [ -n "$(ps x | awk '!(/awk/) && /audacious/')" ]; then
+        song="$(audtool current-song)"      
 
     else
         song="Not Playing"
