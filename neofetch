@@ -2646,6 +2646,11 @@ colors() {
         "Raspbian"* | *)
             setcolors 2 1
         ;;
+
+        "Porteus"*)
+            setcolors 6
+            ascii_distro="porteus" 
+        ;;
     esac
 
     # Overwrite distro colors if '$ascii_colors' doesn't
