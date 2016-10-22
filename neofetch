@@ -481,6 +481,13 @@ getshell() {
 getde() {
     case "$os" in
         "Mac OS X") de="Aqua" ;;
+        "Windows")
+            case "$distro" in
+                "Windows 8"* | "Windows 10"*) de="Modern UI/Metro" ;;
+                *) de="Aero" ;;
+            esac
+        ;;
+
         *)
             de="${XDG_CURRENT_DESKTOP/i3}"
             de="${de/'X-'}"
