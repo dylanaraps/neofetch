@@ -14,7 +14,7 @@ export LANG=C
 # Info
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
-printinfo () {
+printinfo() {
     info title
     info underline
 
