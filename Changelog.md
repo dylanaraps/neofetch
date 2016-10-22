@@ -3,6 +3,7 @@
 - **[@konimex](https://github.com/konimex)**
 - **[@iandrewt](https://github.com/iandrewt)**
 - **[@coypoop](https://github.com/coypoop)**
+- **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
 
 <br \>
 
@@ -128,3 +129,4 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 **Song**<br \>
 
 - [macOS] Fix iTunes automatically opening. **[@iandrewt](https://github.com/iandrewt)**
+- Added support for Audacious. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
