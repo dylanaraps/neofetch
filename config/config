@@ -106,6 +106,11 @@ cpu_shorthand="off"
 # --cpu_display bar, infobar, barinfo, off
 cpu_display="off"
 
+# CPU Speed
+# Hide/Show CPU speed.
+# --cpu_speed on, off
+cpu_speed="on"
+
 # CPU Cores
 # Display CPU cores in output
 # Logical: All virtual cores
@@ -113,6 +118,12 @@ cpu_display="off"
 # --cpu_cores logical, physical, off
 # Note: 'physical' doesn't work on BSD.
 cpu_cores="logical"
+
+# CPU Temperature
+# Hide/Show CPU temperature.
+# --cpu_temp on, off
+# Note: Only works on Linux.
+cpu_temp="on"
 
 
 # GPU

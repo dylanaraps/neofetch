@@ -686,10 +686,11 @@ getcpu() {
         "Linux" | "Windows")
             # Get cpu name
             cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
-            cpu_dir="/sys/devices/system/cpu/cpu0/cpufreq"
+            speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
+            temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
 
             # Get cpu speed
-            if [ -d "$cpu_dir" ]; then
+            if [ -d "$speed_dir" ]; then
                 case "$speed_type" in
                     current) speed_type="scaling_cur_freq" ;;
                     min) speed_type="scaling_min_freq" ;;
@@ -701,13 +702,20 @@ getcpu() {
                 esac
 
                 # Fallback to cpuinfo_max_freq if $speed_type fails
-                read -t 1 -r speed < "${cpu_dir}/${speed_type}" || \
-                read -t 1 -r speed < "${cpu_dir}/cpuinfo_max_freq"
+                read -t 1 -r speed < "${speed_dir}/${speed_type}" || \
+                read -t 1 -r speed < "${speed_dir}/cpuinfo_max_freq"
 
                 speed="$((speed / 100000))"
             else
                 speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
                 speed="$((speed / 100))"
+            fi
+
+            # Get cpu temp
+            if [ "$cpu_temp" == "on" ] && [ -f "$temp_dir" ]; then
+                temp="$(< "$temp_dir")"
+                temp="$((temp * 100 / 10000))"
+                temp="[${temp/${temp: -1}}.${temp: -1}°C]"
             fi
 
             # Show/hide hyperthreaded cores
@@ -723,7 +731,7 @@ getcpu() {
                 speed="${speed:0:1}.${speed:1}"
             fi
 
-            cpu="$cpu @ ${speed}GHz"
+            cpu="$cpu @ ${speed}GHz $temp"
         ;;
 
         "Mac OS X")
@@ -913,6 +921,10 @@ getcpu() {
     # Add cpu cores to output
     [ "$cpu_cores" != "off" ] && [ "$cores" ] && \
         cpu="${cpu/@/(${cores}) @}"
+
+    # Remove speed from output
+    [ "$cpu_speed" == "off" ] && \
+        cpu="${cpu/@ *GHz}"
 
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
@@ -2991,7 +3003,10 @@ usage() { cat << EOF
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores type            Whether or not to display the number of CPU cores
                                 Takes: logical, physical, off
-                                Note: 'physical' doesn't work on BSD.
+                                NOTE: 'physical' doesn't work on BSD.
+    --cpu_speed on/off          Hide/Show cpu speed.
+    --cpu_temp on/off           Hide/Show cpu temperature.
+                                NOTE This only works on linux.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
@@ -3119,6 +3134,8 @@ getargs() {
             # Info
             --os_arch) os_arch="$2" ;;
             --cpu_cores) cpu_cores="$2" ;;
+            --cpu_speed) cpu_speed="$2" ;;
+            --cpu_temp) cpu_temp="$2" ;;
             --speed_type) speed_type="$2" ;;
             --distro_shorthand) distro_shorthand="$2" ;;
             --kernel_shorthand) kernel_shorthand="$2" ;;

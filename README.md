@@ -434,6 +434,9 @@ alias neofetch2="neofetch \
     --cpu_cores type            Whether or not to display the number of CPU cores
                                 Takes: logical, physical, off
                                 Note: 'physical' doesn't work on BSD.
+    --cpu_speed on/off          Hide/Show cpu speed.
+    --cpu_temp on/off           Hide/Show cpu temperature.
+                                NOTE This only works on linux.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
