@@ -19,6 +19,7 @@
 
 - Added support for Bitrig. **[@konimex](https://github.com/konimex)**
 - Added support for Sparky Linux.
+- Added support for Porteus. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
 
 
 ## Packages
