@@ -94,9 +94,13 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 **CPU**<br \>
 
+- Added `cpu_speed` which lets you hide/show the speed in the output.
 - Expanded `cpu_cores` option by adding two new values, `logical` and `physical`.
     - `logical`: Show all virtual cores (hyperthreaded).
     - `physical`: Only show physical cores.
+- [Linux] Added support for showing CPU temperature.
+    - Added new option called `cpu_temp`.
+    - Note: This is disabled by default and can be enabled by changing the value of `cpu_temp` in your config to `on`.
 - [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
 
 **Uptime**<br \>
