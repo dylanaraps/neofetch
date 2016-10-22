@@ -2571,7 +2571,7 @@ colors() {
             setcolors 4 3
         ;;
 
-        "Mageia"*)
+        "Mageia"* | "Porteus"*)
             setcolors 6 7
         ;;
 
