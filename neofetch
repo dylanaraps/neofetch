@@ -1215,12 +1215,11 @@ getsong() {
 
     elif [ -n "$(ps x | awk '!(/awk/) && /cmus/')" ]; then
         IFS=$'\n'
-        song=("$(cmus-remote -Q | grep "tag artist \|title \|status" 2>/dev/null | sort)")
+        song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" 2>/dev/null | sort))
+        state="${song[0]/status }"
         artist="${song[1]/tag artist }"
         title="${song[2]/tag title }"
-        state="${song[0]/status }"
-
-        song="$artist - $title"
+        song="${artist/tag title } - ${title/tag artist }"
 
     elif pgrep "mocp" >/dev/null 2>&1; then
         song="$(mocp -Q "%artist - %song" 2>/dev/null)"
