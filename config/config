@@ -123,7 +123,7 @@ cpu_cores="logical"
 # Hide/Show CPU temperature.
 # --cpu_temp on, off
 # Note: Only works on Linux.
-cpu_temp="on"
+cpu_temp="off"
 
 
 # GPU
