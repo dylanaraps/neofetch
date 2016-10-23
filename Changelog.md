@@ -114,6 +114,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 **Memory**<br \>
 
+- [Linux] Correctly calculate used memory.
 - [NetBSD] Fix memory output for sizes over 4GB. **[@coypoop](https://github.com/coypoop)**
 
 **Shell**<br \>
