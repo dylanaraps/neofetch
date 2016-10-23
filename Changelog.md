@@ -13,6 +13,7 @@
 - Change all `OS X` references to `macOS`. **[@iandrewt](https://github.com/iandrewt)**
 - Fix corrupted text when long lines are cut-off.
 - Don't dynamically place prompt in `image=off` mode.
+- Cursor Position: Fix issues when using URxvt+Padding 
 
 
 ## Operating System
