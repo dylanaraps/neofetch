@@ -2932,12 +2932,38 @@ kdeconfigdir() {
 
 # }}}
 
+# Terminal info {{{
+#
+# Parse terminal config files to get
+# info about padding. Due to how w3m-img
+# works padding around the terminal throws
+# off the cursor placement calculation in
+# specific terminals.
+#
+# Note: This issue only seems to affect
+# URxvt.
+
+gettermpadding() {
+    [ -z "$term" ] && getterm
+
+    case "$term" in
+        "URxvt"*)
+            border="$(xrdb -query | grep -i "\(URxvt\|\*\)\.InternalBorder")"
+            border="${border/*:}"
+        ;;
+    esac
+}
+
+# }}}
+
 # Dynamic prompt location {{{
 
 dynamicprompt() {
     # Calculate image height in terminal cells.
     if [ "$image" != "ascii" ]; then
-        lines="$((height / font_height))"
+        gettermpadding
+
+        lines="$(((height + border) / font_height))"
         cursor_yoffset="$((${yoffset:-1} / font_height))"
     else
         cursor_yoffset="0 - 2"
