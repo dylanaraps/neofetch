@@ -1013,6 +1013,8 @@ getgpu() {
             gpu="${gpu/* VGA compatible controller: }"
             gpu="${gpu/* 3D controller: }"
             gpu="${gpu/(rev*)}"
+            gpu="${gpu/\[}"
+            gpu="${gpu/\]}"
 
             case "$gpu" in
                 intel*)
@@ -1025,8 +1027,6 @@ getgpu() {
                     gpu="${gpu/Tahiti PRO}"
                     gpu="${gpu/XTX}"
                     gpu="${gpu/ OEM}"
-                    gpu="${gpu/ \[}"
-                    gpu="${gpu/\]}"
                     gpu="${gpu/*Radeon/Radeon}"
 
                     brand="AMD "
@@ -1036,8 +1036,6 @@ getgpu() {
                     gpu="${gpu/NVIDIA Corporation }"
                     gpu="${gpu/G????M }"
                     gpu="${gpu/G???? }"
-                    gpu="${gpu/\[}"
-                    gpu="${gpu/\] }"
 
                     brand="NVIDIA "
                 ;;
