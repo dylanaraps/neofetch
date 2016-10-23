@@ -320,11 +320,6 @@ thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
-# Image position
-# Only works with the w3m backend.
-# --image_position left, right
-image_position="left"
-
 # Crop mode
 # --crop_mode normal, fit, fill
 crop_mode="normal"
