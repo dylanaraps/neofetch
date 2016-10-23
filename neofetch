@@ -3381,11 +3381,15 @@ main() {
 
     # Print the info
     printinfo
-    [ "$image" != "off" ] && dynamicprompt
 
-    # w3m-img: Draw the image a second time to fix
-    # rendering issues in specific terminal emulators.
-    [ "$image_backend" == "w3m" ] && displayimage
+    # Prompt calculation
+    if [ "$image" != "off" ]; then
+        dynamicprompt
+
+        # w3m-img: Draw the image a second time to fix
+        # rendering issues in specific terminal emulators.
+        [ "$image_backend" == "w3m" ] && displayimage
+    fi
 
     # Re-enable line wrap
     printf "%b%s" "\033[?7h"
