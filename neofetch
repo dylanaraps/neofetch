@@ -702,8 +702,8 @@ getcpu() {
                 esac
 
                 # Fallback to cpuinfo_max_freq if $speed_type fails
-                read -t 1 -r speed < "${speed_dir}/${speed_type}" || \
-                read -t 1 -r speed < "${speed_dir}/cpuinfo_max_freq"
+                speed="$(< "${speed_dir}/${speed_type}")" || \
+                speed="$(< "${speed_dir}/cpuinfo_max_freq")"
 
                 speed="$((speed / 100000))"
             else
