@@ -2962,11 +2962,9 @@ dynamicprompt() {
     # Calculate image height in terminal cells.
     if [ "$image" != "ascii" ]; then
         gettermpadding
-
-        lines="$(((height + border) / font_height))"
-        cursor_yoffset="$((${yoffset:-1} / font_height))"
+        lines="$(((height + ${border:-0} + ${yoffset:-0}) / font_height))"
     else
-        cursor_yoffset="0 - 2"
+        lines="$((lines-=2))"
     fi
 
     # If the info is higher than the ascii/image place the prompt
@@ -2974,7 +2972,7 @@ dynamicprompt() {
     if [ "${lines:-0}" -lt "${info_height:-0}" ]; then
         lines="-2"
     else
-        lines="$((lines - info_height + cursor_yoffset))"
+        lines="$((lines - info_height))"
     fi
 
     # Set the prompt location
