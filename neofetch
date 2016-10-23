@@ -1174,16 +1174,18 @@ getgpu() {
 getmemory() {
     case "$os" in
         "Linux" | "Windows")
-            if grep -F "MemAvail" /proc/meminfo >/dev/null 2>&1; then
-                mem=($(awk -F ':| kB' '/MemTotal|MemAvail/ {printf $2}' /proc/meminfo))
-                memused="$((mem[0] - mem[1]))"
-            else
-                mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo) 0 0)
-                memused="$((mem[0] - mem[1] - mem[2] - mem[3]))"
-            fi
+            # MemUsed = Memtotal + Shmem - MemFree - Buffers - Cached - SReclaimable
+            # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
+            while IFS=":" read -r a b; do
+                case "$a" in
+                    "MemTotal") memused="$((memused+=${b/kB}))"; memtotal="${b/kB}" ;;
+                    "Shmem") memused="$((memused+=${b/kB}))"  ;;
+                    "MemFree" | "Buffers" | "Cached" | "SReclaimable") memused="$((memused-=${b/kB}))" ;;
+                esac
+            done < /proc/meminfo
 
             memused="$((memused / 1024))"
-            memtotal="$((mem[0] / 1024))"
+            memtotal="$((memtotal / 1024))"
         ;;
 
         "Mac OS X" | "iPhone OS")
