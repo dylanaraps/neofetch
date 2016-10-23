@@ -233,6 +233,7 @@ getdistro() {
                 "on" | "tiny") distro="$(awk 'NR==1{print $1 " " $2;}' /etc/release)" ;;
                 *) distro="$(awk 'NR==1{print $1 " " $2 " " $3;}' /etc/release)" ;;
             esac
+            distro="${distro/\(*}"
         ;;
     esac
 
