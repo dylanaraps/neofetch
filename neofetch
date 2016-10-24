@@ -131,10 +131,11 @@ getdistro() {
 
             elif type -p lsb_release >/dev/null 2>&1; then
                 case "$distro_shorthand" in
-                    "on")   distro="$(lsb_release -sir 2>/dev/null)" ;;
-                    "tiny") distro="$(lsb_release -si 2>/dev/null)" ;;
-                    *)      distro="$(lsb_release -sd 2>/dev/null)" ;;
+                    "on")   lsb_flags="-sir" ;;
+                    "tiny") lsb_flags="-si" ;;
+                    *)      lsb_flags="-sd" ;;
                 esac
+                distro="$(lsb_release $lsb_flags 2>/dev/null)"
 
             elif type -p guix >/dev/null 2>&1; then
                 distro="GuixSD"
