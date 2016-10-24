@@ -2616,7 +2616,7 @@ colors() {
             setcolors 3 7 6 1 8
         ;;
 
-        "OpenSuse"* | "Manjaro"* | "Deepin"*)
+        *"SUSE"* | "Manjaro"* | "Deepin"*)
             setcolors 2 7
         ;;
 
