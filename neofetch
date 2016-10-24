@@ -43,7 +43,8 @@ getmodel() {
         "Linux")
             if [ -f /sys/devices/virtual/dmi/id/product_name ] ||\
                [ -f /sys/devices/virtual/dmi/id/product_version ]; then
-                model="$(cat /sys/devices/virtual/dmi/id/product_{name,version} 2>/dev/null)"
+                model="$(< /sys/devices/virtual/dmi/id/product_name)"
+                model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
                 model="${model/To Be Filled*}"
 
             elif [ -f /sys/firmware/devicetree/base/model ]; then
