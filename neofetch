@@ -987,12 +987,12 @@ getcpu_usage() {
 getgpu() {
     case "$os" in
         "Linux")
-            gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
+            gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
 
             # If a GPU with a prefix of '3D' doesn't exist
             # fallback to looking for a prefix of 'VGA'
-            [ -z "$gpu" ] && \
-                gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
+            # [ -z "$gpu" ] && \
+            #     gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
 
             gpu="${gpu//??':'??'.'?}"
 
@@ -2427,7 +2427,7 @@ info() {
         eval output="\$${1}"
 
     else
-        "get$2" 2>/dev/null
+        time "get$2" 2>/dev/null
         eval output="\$${2}"
     fi
 
