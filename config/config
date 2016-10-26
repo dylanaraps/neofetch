@@ -161,21 +161,6 @@ gtk2="on"
 gtk3="on"
 
 
-# Battery
-
-# Which battery to display.
-# By default we display all batteries.
-# NOTE: Only works on Linux.
-# --battery_num all, 0, 1, 2, etc
-battery_num="all"
-
-# Whether or not to print each battery on the same line.
-# By default each battery gets its own line and title.
-# NOTE: Only works on Linux.
-# --battery_shorthand on, off
-battery_shorthand="off"
-
-
 # IP Address
 
 # Website to ping for the public IP
