@@ -155,3 +155,4 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 - [macOS] Fix iTunes automatically opening. **[@iandrewt](https://github.com/iandrewt)**
 - Added support for Audacious. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
+- Rewrote song function, it's now much faster/cleaner.
