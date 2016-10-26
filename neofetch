@@ -989,63 +989,25 @@ getgpu() {
         "Linux")
             gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
 
-            # If a GPU with a prefix of '3D' doesn't exist
-            # fallback to looking for a prefix of 'VGA'
-            # [ -z "$gpu" ] && \
-            #     gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
-
-            gpu="${gpu//??':'??'.'?}"
-
-            # Count the number of GPUs
-            count="$(printf "%s" "$gpu" | uniq -c)"
-            count="${count/ VGA*}"
-            count="${count/ 3D*}"
-
-            # If there's more than one gpu
-            # Display the count.
-            if [ "$count" -gt 1 ]; then
-                count=" x $count"
-            else
-                unset count
-            fi
-
-            # Format the output
-            gpu="${gpu/* VGA compatible controller: }"
-            gpu="${gpu/* 3D controller: }"
-            gpu="${gpu/(rev*)}"
-            gpu="${gpu/\[}"
-            gpu="${gpu/\]}"
-
             case "$gpu" in
-                intel*)
-                    gpu="Intel Integrated Graphics"
-                ;;
+                intel*) gpu="Intel Integrated Graphics" ;;
 
                 advanced*)
-                    gpu="${gpu/Advanced Micro Devices, Inc\. }"
                     gpu="${gpu/'[AMD/ATI]' }"
-                    gpu="${gpu/Tahiti PRO}"
-                    gpu="${gpu/XTX}"
-                    gpu="${gpu/ OEM}"
-                    gpu="${gpu/*Radeon/Radeon}"
-
-                    brand="AMD "
+                    gpu="${gpu/'[AMD]' }"
+                    gpu="${gpu/*\[}"
+                    gpu="${gpu/\]*}"
                 ;;
 
                 nvidia*)
-                    gpu="${gpu/NVIDIA Corporation }"
-                    gpu="${gpu/G????M }"
-                    gpu="${gpu/G???? }"
-
-                    brand="NVIDIA "
+                    gpu="${gpu/*\[}"
+                    gpu="${gpu/\]*}"
                 ;;
 
                 *virtualbox*)
                     gpu="VirtualBox Graphics Adapter"
                 ;;
             esac
-
-            gpu="${brand}${gpu}"
         ;;
 
         "Mac OS X")
@@ -1137,11 +1099,7 @@ getgpu() {
     case "$gpu_shorthand" in
         "on" | "tiny")
             gpu="${gpu// Rev\. ?}"
-            gpu="${gpu//AMD*\/ATI\]/AMD}"
-            gpu="${gpu// Tahiti}"
-            gpu="${gpu// PRO}"
             gpu="${gpu// OEM}"
-            gpu="${gpu// Mars}"
             gpu="${gpu// Series}"
             gpu="${gpu// Controller}"
             gpu="${gpu/\/*}"
@@ -2427,7 +2385,7 @@ info() {
         eval output="\$${1}"
 
     else
-        time "get$2" 2>/dev/null
+        "get$2" 2>/dev/null
         eval output="\$${2}"
     fi
 
