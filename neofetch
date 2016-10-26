@@ -2294,11 +2294,7 @@ scrot_upload() {
         ;;
     esac
 
-    if [ "$image_url" ]; then
-        printf "%s\n" "$image_url"
-    else
-        printf "%s\n" "[!] Image failed to upload"
-    fi
+    printf "%s\n" "${image_url:-'[!] Image failed to upload'}"
 }
 
 # }}}
