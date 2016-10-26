@@ -46,7 +46,8 @@ getmodel() {
 
             elif [ -f /sys/devices/virtual/dmi/id/product_name ] ||\
                [ -f /sys/devices/virtual/dmi/id/product_version ]; then
-                model="$(cat /sys/devices/virtual/dmi/id/product_{name,version} 2>/dev/null)"
+                model="$(< /sys/devices/virtual/dmi/id/product_name)"
+                model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
                 model="${model/To Be Filled*}"
 
             elif [ -f /sys/firmware/devicetree/base/model ]; then
@@ -133,10 +134,11 @@ getdistro() {
 
             elif type -p lsb_release >/dev/null 2>&1; then
                 case "$distro_shorthand" in
-                    "on")   distro="$(lsb_release -sir 2>/dev/null)" ;;
-                    "tiny") distro="$(lsb_release -si 2>/dev/null)" ;;
-                    *)      distro="$(lsb_release -sd 2>/dev/null)" ;;
+                    "on")   lsb_flags="-sir" ;;
+                    "tiny") lsb_flags="-si" ;;
+                    *)      lsb_flags="-sd" ;;
                 esac
+                distro="$(lsb_release $lsb_flags 2>/dev/null)"
 
             elif type -p guix >/dev/null 2>&1; then
                 distro="GuixSD"
@@ -239,6 +241,7 @@ getdistro() {
                 "on" | "tiny") distro="$(awk 'NR==1{print $1 " " $2;}' /etc/release)" ;;
                 *) distro="$(awk 'NR==1{print $1 " " $2 " " $3;}' /etc/release)" ;;
             esac
+            distro="${distro/\(*}"
         ;;
     esac
 
@@ -349,7 +352,7 @@ getuptime() {
 
 getpackages() {
     case "$os" in
-        "Linux" | "iPhone OS")
+        "Linux" | "iPhone OS" | "Solaris")
             type -p pacman >/dev/null 2>&1 && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
@@ -371,8 +374,10 @@ getpackages() {
             type -p pisi >/dev/null 2>&1 && \
                 packages="$((packages+=$(pisi list-installed | wc -l)))"
 
-            type -p pkg >/dev/null 2>&1 && \
+            if type -p pkg >/dev/null 2>&1; then
                 packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
+                [ "$packages" == "0" ] && packages="$((packages+=$(pkg list | wc -l)))"
+            fi
 
             type -p emerge >/dev/null 2>&1 && \
                 packages="$((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))"
@@ -432,10 +437,6 @@ getpackages() {
             [ -d "/cygdrive/c/ProgramData/chocolatey/lib" ] && \
                 packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
         ;;
-
-        "Solaris")
-            packages="$(pkg list | wc -l)"
-        ;;
     esac
 
     [ "$packages" == "0" ] && unset packages
@@ -489,6 +490,13 @@ getshell() {
 getde() {
     case "$os" in
         "Mac OS X") de="Aqua" ;;
+        "Windows")
+            case "$distro" in
+                "Windows 8"* | "Windows 10"*) de="Modern UI/Metro" ;;
+                *) de="Aero" ;;
+            esac
+        ;;
+
         *)
             de="${XDG_CURRENT_DESKTOP/i3}"
             de="${de/'X-'}"
@@ -531,12 +539,7 @@ getwm() {
             "Windows")
                 wm="$(tasklist | grep -m 1 -o "bugn\|Windawesome\|blackbox\|emerge\|litestep")"
                 [ "$wm" == "blackbox" ] && wm="bbLean (Blackbox)"
-
-                if [ "$wm" ]; then
-                    wm="$wm, Explorer"
-                else
-                    wm="Explorer"
-                fi
+                wm="${wm:+$wm, }Explorer"
             ;;
         esac
     fi
@@ -690,10 +693,11 @@ getcpu() {
                 "Android"*) cpu="$(getprop ro.product.board)" ;;
                 *) cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)" ;;
             esac
-            cpu_dir="/sys/devices/system/cpu/cpu0/cpufreq"
+            speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
+            temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
 
             # Get cpu speed
-            if [ -d "$cpu_dir" ]; then
+            if [ -d "$speed_dir" ]; then
                 case "$speed_type" in
                     current) speed_type="scaling_cur_freq" ;;
                     min) speed_type="scaling_min_freq" ;;
@@ -705,13 +709,20 @@ getcpu() {
                 esac
 
                 # Fallback to cpuinfo_max_freq if $speed_type fails
-                read -t 1 -r speed < "${cpu_dir}/${speed_type}" || \
-                read -t 1 -r speed < "${cpu_dir}/cpuinfo_max_freq"
+                speed="$(< "${speed_dir}/${speed_type}")" || \
+                speed="$(< "${speed_dir}/cpuinfo_max_freq")"
 
                 speed="$((speed / 100000))"
             else
                 speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
                 speed="$((speed / 100))"
+            fi
+
+            # Get cpu temp
+            if [ "$cpu_temp" == "on" ] && [ -f "$temp_dir" ]; then
+                temp="$(< "$temp_dir")"
+                temp="$((temp * 100 / 10000))"
+                temp="[${temp/${temp: -1}}.${temp: -1}°C]"
             fi
 
             # Show/hide hyperthreaded cores
@@ -727,7 +738,7 @@ getcpu() {
                 speed="${speed:0:1}.${speed:1}"
             fi
 
-            cpu="$cpu @ ${speed}GHz"
+            cpu="$cpu @ ${speed}GHz $temp"
         ;;
 
         "Mac OS X")
@@ -742,110 +753,27 @@ getcpu() {
 
         "iPhone OS")
             case "${ios_model:-$(uname -m)}" in
-                "iPhone1,1" | "iPhone1,2" | "iPod1,1")
-                    cpu="Samsung S5L8900 @ 412MHz"
-                    cores="1"
-                ;;
-
-                "iPhone2,1")
-                    cpu="Samsung S5PC100 @ 600MHz"
-                    cores="1"
-                ;;
-
-                "iPhone3,1" | "iPhone3,2" | "iPhone3,3" | "iPod4,1")
-                    cpu="Apple A4 @ 800MHz"
-                    cores="1"
-                ;;
-
-                "iPhone4,1" | "iPod5,1")
-                    cpu="Apple A5 @ 800MHz"
-                    cores="2"
-                ;;
-
-                "iPhone5,1" | "iPhone5,2" | "iPhone5,3" | "iPhone5,4")
-                    cpu="Apple A6 @ 1.3GHz"
-                    cores="2"
-                ;;
-
-                "iPhone6,1" | "iPhone6,2")
-                    cpu="Apple A7 @ 1.3GHz"
-                    cores="2"
-                ;;
-
-                "iPhone7,1" | "iPhone7,2")
-                    cpu="Apple A8 @ 1.4GHz"
-                    cores="2"
-                ;;
-
-                "iPhone8,1" | "iPhone8,2" | "iPhone8,4")
-                    cpu="Apple A9 @ 1.85GHz"
-                    cores="2"
-                ;;
-
-                "iPod2,1")
-                    cpu="Samsung S5L8720 @ 533MHz"
-                    cores="1"
-                ;;
-
-                "iPod3,1")
-                    cpu="Samsung S5L8922 @ 600MHz"
-                    cores="1"
-                ;;
-
-                "iPod7,1")
-                    cpu="Apple A8 @ 1.1GHz"
-                    cores="2"
-                ;;
-
-                "iPad1,1")
-                    cpu="Apple A4 @ 1GHz"
-                    cores="1"
-                ;;
-
-                "iPad2,1" | "iPad2,2" | "iPad2,3" | "iPad2,4" | "iPad2,5" | "iPad2,6" | "iPad2,7")
-                    cpu="Apple A5 @ 1GHz"
-                    cores="2"
-                ;;
-
-                "iPad3,1" | "iPad3,2" | "iPad3,3")
-                    cpu="Apple A5X @ 1GHz"
-                    cores="2"
-                ;;
-
-                "iPad3,4" | "iPad3,5" | "iPad3,6")
-                    cpu="Apple A6X @ 1.4GHz"
-                    cores="2"
-                ;;
-
-                "iPad4,1" | "iPad4,2" | "iPad4,3")
-                    cpu="Apple A7 @ 1.4GHz"
-                    cores="2"
-                ;;
-
-                "iPad4,4" | "iPad4,5" | "iPad4,6" | "iPad4,7" | "iPad4,8" | "iPad4,9")
-                    cpu="Apple A7 @ 1.4GHz"
-                    cores="2"
-                ;;
-
-                "iPad5,1" | "iPad5,2")
-                    cpu="Apple A8 @ 1.5GHz"
-                    cores="2"
-                ;;
-
-                "iPad5,3" | "iPad5,4")
-                    cpu="Apple A8X @ 1.5GHz"
-                    cores="3"
-                ;;
-
-                "iPad6,3" | "iPad6,4")
-                    cpu="Apple A9X @ 2.16GHz"
-                    cores="2"
-                ;;
-
-                "iPad6,7" | "iPad6,8")
-                    cpu="Apple A9X @ 2.26GHz"
-                    cores="2"
-                ;;
+                "iPhone1,"[1-2] | "iPod1,1") cpu="Samsung S5L8900 (1) @ 412MHz" ;;
+                "iPhone2,1") cpu="Samsung S5PC100 (1) @ 600MHz" ;;
+                "iPhone3,"[1-3] | "iPod4,1") cpu="Apple A4 (1) @ 800MHz" ;;
+                "iPhone4,1" | "iPod5,1") cpu="Apple A5 (2) @ 800MHz" ;;
+                "iPhone5,"[1-4]) cpu="Apple A6 (2) @ 1.3GHz" ;;
+                "iPhone6,"[1-2]) cpu="Apple A7 (2) @ 1.3GHz" ;;
+                "iPhone7,"[1-2]) cpu="Apple A8 (2) @ 1.4GHz" ;;
+                "iPhone8,"[1-4]) cpu="Apple A9 (2) @ 1.85GHz" ;;
+                "iPod2,1") cpu="Samsung S5L8720 (1) @ 533MHz" ;;
+                "iPod3,1") cpu="Samsung S5L8922 (1) @ 600MHz" ;;
+                "iPod7,1") cpu="Apple A8 (2) @ 1.1GHz" ;;
+                "iPad1,1") cpu="Apple A4 (1) @ 1GHz" ;;
+                "iPad2,"[1-7]) cpu="Apple A5 (2) @ 1GHz" ;;
+                "iPad3,"[1-3]) cpu="Apple A5X (2) @ 1GHz" ;;
+                "iPad3,"[4-6]) cpu="Apple A6X (2) @ 1.4GHz" ;;
+                "iPad4,"[1-3]) cpu="Apple A7 (2) @ 1.4GHz" ;;
+                "iPad4,"[4-9]) cpu="Apple A7 (2) @ 1.4GHz" ;;
+                "iPad5,"[1-2]) cpu="Apple A8 (2) @ 1.5GHz" ;;
+                "iPad5,"[3-4]) cpu="Apple A8X (3) @ 1.5GHz" ;;
+                "iPad6,"[3-4]) cpu="Apple A9X (2) @ 2.16GHz" ;;
+                "iPad6,"[7-8]) cpu="Apple A9X (2) @ 2.26GHz" ;;
             esac
         ;;
 
@@ -918,6 +846,10 @@ getcpu() {
     [ "$cpu_cores" != "off" ] && [ "$cores" ] && \
         cpu="${cpu/@/(${cores}) @}"
 
+    # Remove speed from output
+    [ "$cpu_speed" == "off" ] && \
+        cpu="${cpu/@ *GHz}"
+
     # Make the output of cpu shorter
     case "$cpu_shorthand" in
         "name")  cpu="${cpu/@*}" ;;
@@ -979,67 +911,36 @@ getcpu_usage() {
 getgpu() {
     case "$os" in
         "Linux")
-            gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
-
-            # If a GPU with a prefix of '3D' doesn't exist
-            # fallback to looking for a prefix of 'VGA'
-            [ -z "$gpu" ] && \
-                gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
-
-            gpu="${gpu//??':'??'.'?}"
-
-            # Count the number of GPUs
-            count="$(printf "%s" "$gpu" | uniq -c)"
-            count="${count/ VGA*}"
-            count="${count/ 3D*}"
-
-            # If there's more than one gpu
-            # Display the count.
-            if [ "$count" -gt 1 ]; then
-                count=" x $count"
+            # Use cache if it exists
+            if [ -f "/tmp/neofetch/gpu" ]; then
+                source "/tmp/neofetch/gpu"
             else
-                unset count
+                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
+
+                case "$gpu" in
+                    intel*) gpu="Intel Integrated Graphics" ;;
+
+                    advanced*)
+                        gpu="${gpu/'[AMD/ATI]' }"
+                        gpu="${gpu/'[AMD]' }"
+                        gpu="${gpu/*\[}"
+                        gpu="${gpu/\]*}"
+                        gpu="${gpu/\/*}"
+                        gpu="AMD $gpu"
+                    ;;
+
+                    nvidia*)
+                        gpu="${gpu/*\[}"
+                        gpu="${gpu/\]*}"
+                        gpu="NVIDIA $gpu"
+                    ;;
+
+                    *virtualbox*)
+                        gpu="VirtualBox Graphics Adapter"
+                    ;;
+                esac
+                cache "gpu" "$gpu" "/tmp"
             fi
-
-            # Format the output
-            gpu="${gpu/* VGA compatible controller: }"
-            gpu="${gpu/* 3D controller: }"
-            gpu="${gpu/(rev*)}"
-
-            case "$gpu" in
-                intel*)
-                    gpu="Intel Integrated Graphics"
-                ;;
-
-                advanced*)
-                    gpu="${gpu/Advanced Micro Devices, Inc\. }"
-                    gpu="${gpu/'[AMD/ATI]' }"
-                    gpu="${gpu/Tahiti PRO}"
-                    gpu="${gpu/XTX}"
-                    gpu="${gpu/ OEM}"
-                    gpu="${gpu/ \[}"
-                    gpu="${gpu/\]}"
-                    gpu="${gpu/*Radeon/Radeon}"
-
-                    brand="AMD "
-                ;;
-
-                nvidia*)
-                    gpu="${gpu/NVIDIA Corporation }"
-                    gpu="${gpu/G????M }"
-                    gpu="${gpu/G???? }"
-                    gpu="${gpu/\[}"
-                    gpu="${gpu/\] }"
-
-                    brand="NVIDIA "
-                ;;
-
-                *virtualbox*)
-                    gpu="VirtualBox Graphics Adapter"
-                ;;
-            esac
-
-            gpu="${brand}${gpu}"
         ;;
 
         "Mac OS X")
@@ -1055,54 +956,33 @@ getgpu() {
         ;;
 
         "iPhone OS")
-            ios_model="${ios_model:-"$(uname -m)"}"
-            case "$ios_model" in
-                "iPhone1,1" | "iPhone1,2")
-                    gpu="PowerVR MBX Lite 3D"
-                ;;
+            case "${ios_model:-"$(uname -m)"}" in
+                "iPhone1,"[1-2]) gpu="PowerVR MBX Lite 3D" ;;
+                "iPhone5,"[1-4]) gpu="PowerVR SGX543MP3" ;;
+                "iPhone8,"[1-4]) gpu="PowerVR GT7600" ;;
+                "iPad3,"[1-3]) gpu="PowerVR SGX534MP4" ;;
+                "iPad3,"[4-6]) gpu="PowerVR SGX554MP4" ;;
+                "iPad5,"[3-4]) gpu="PowerVR GXA6850" ;;
+                "iPad6,"[3-8]) gpu="PowerVR 7XT" ;;
 
-                "iPhone2,1" | "iPhone3,1" | "iPhone3,2" | "iPhone3,3" | "iPod3,1" | "iPod4,1" | "iPad1,1")
+                "iPhone2,1" | "iPhone3,"[1-3] | "iPod3,1" | "iPod4,1" | "iPad1,1")
                     gpu="PowerVR SGX535"
                 ;;
 
-                "iPhone4,1" | "iPad2,1" | "iPad2,2" | "iPad2,3" | "iPad2,4" | "iPad2,5" | "iPad2,6" | "iPad2,7" | "iPod5,1")
+                "iPhone4,1" | "iPad2,"[1-7] | "iPod5,1")
                     gpu="PowerVR SGX543MP2"
                 ;;
 
-                "iPhone5,1" | "iPhone5,2" | "iPhone5,3" | "iPhone5,4")
-                    gpu="PowerVR SGX543MP3"
-                ;;
-
-                "iPhone6,1" | "iPhone6,2" | "iPad4,1" | "iPad4,2" | "iPad4,3" | "iPad4,4" | "iPad4,5" | "iPad4,6" | "iPad4,7" | "iPad4,8" | "iPad4,9")
+                "iPhone6,"[1-2] | "iPad4,"[1-9])
                     gpu="PowerVR G6430"
                 ;;
 
-                "iPhone7,1" | "iPhone7,2" | "iPod7,1" | "iPad5,1" | "iPad5,2")
+                "iPhone7,"[1-2] | "iPod7,1" | "iPad5,"[1-2])
                     gpu="PowerVR GX6450"
-                ;;
-
-                "iPhone8,1" | "iPhone8,2" | "iPhone8,4")
-                    gpu="PowerVR GT7600"
                 ;;
 
                 "iPod1,1" | "iPod2,1")
                     gpu="PowerVR MBX Lite"
-                ;;
-
-                "iPad3,1" | "iPad3,2" | "iPad3,3")
-                    gpu="PowerVR SGX534MP4"
-                ;;
-
-                "iPad3,4" | "iPad3,5" | "iPad3,6")
-                    gpu="PowerVR SGX554MP4"
-                ;;
-
-                "iPad5,3" | "iPad5,4")
-                    gpu="PowerVR GXA6850"
-                ;;
-
-                "iPad6,3" | "iPad6,4" | "iPad6,7" | "iPad6,8")
-                    gpu="PowerVR 7XT"
                 ;;
             esac
         ;;
@@ -1128,35 +1008,11 @@ getgpu() {
         ;;
     esac
 
-    case "$gpu_shorthand" in
-        "on" | "tiny")
-            gpu="${gpu// Rev\. ?}"
-            gpu="${gpu//AMD*\/ATI\]/AMD}"
-            gpu="${gpu// Tahiti}"
-            gpu="${gpu// PRO}"
-            gpu="${gpu// OEM}"
-            gpu="${gpu// Mars}"
-            gpu="${gpu// Series}"
-            gpu="${gpu// Controller}"
-            gpu="${gpu/\/*}"
-
-            case "$gpu_shorthand" in
-                "tiny")
-                    gpu="${gpu/Graphics }"
-                    gpu="${gpu/GeForce }"
-                    gpu="${gpu/Radeon }"
-                ;;
-            esac
-        ;;
-    esac
-
     if [ "$gpu_brand" == "off" ]; then
         gpu="${gpu/AMD}"
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
     fi
-
-    gpu="${gpu}${count}"
 }
 
 # }}}
@@ -1166,16 +1022,18 @@ getgpu() {
 getmemory() {
     case "$os" in
         "Linux" | "Windows")
-            if grep -F "MemAvail" /proc/meminfo >/dev/null 2>&1; then
-                mem=($(awk -F ':| kB' '/MemTotal|MemAvail/ {printf $2}' /proc/meminfo))
-                memused="$((mem[0] - mem[1]))"
-            else
-                mem=($(awk -F ':| kB' '/MemTotal|MemFree|Buffers|Cached/ {printf $2}' /proc/meminfo) 0 0)
-                memused="$((mem[0] - mem[1] - mem[2] - mem[3]))"
-            fi
+            # MemUsed = Memtotal + Shmem - MemFree - Buffers - Cached - SReclaimable
+            # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
+            while IFS=":" read -r a b; do
+                case "$a" in
+                    "MemTotal") memused="$((memused+=${b/kB}))"; memtotal="${b/kB}" ;;
+                    "Shmem") memused="$((memused+=${b/kB}))"  ;;
+                    "MemFree" | "Buffers" | "Cached" | "SReclaimable") memused="$((memused-=${b/kB}))" ;;
+                esac
+            done < /proc/meminfo
 
             memused="$((memused / 1024))"
-            memtotal="$((mem[0] / 1024))"
+            memtotal="$((memtotal / 1024))"
         ;;
 
         "Mac OS X" | "iPhone OS")
@@ -1220,77 +1078,93 @@ getmemory() {
 # Song {{{
 
 getsong() {
-    if mpc version >/dev/null 2>&1; then
-        song="$(mpc current 2>/dev/null)"
-        state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
+    # This is absurdly long.
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious/ {printf $5 " " $6; exit}')"
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /cmus/')" ]; then
-        IFS=$'\n'
-        song=("$(cmus-remote -Q | grep "tag artist \|title \|status" 2>/dev/null | sort)")
-        artist="${song[1]/tag artist }"
-        title="${song[2]/tag title }"
-        state="${song[0]/status }"
+    case "${player/*\/}" in
+        "mpd"*)
+            song="$(mpc current 2>/dev/null)"
+            state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
+        ;;
 
-        song="$artist - $title"
+        "cmus"*)
+            IFS=$'\n'
+            song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" 2>/dev/null | sort))
+            state="${song[0]/status }"
+            artist="${song[1]/tag artist }"
+            title="${song[2]/tag title }"
+            song="${artist/tag title } - ${title/tag artist }"
+        ;;
 
-    elif pgrep "mocp" >/dev/null 2>&1; then
-        song="$(mocp -Q "%artist - %song" 2>/dev/null)"
-        state="$(mocp -Q "%state" 2>/dev/null)"
+        "mocp"*)
+            song="$(mocp -Q "%artist - %song" 2>/dev/null)"
+            state="$(mocp -Q "%state" 2>/dev/null)"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /spotify/')" ]; then
-        case "$os" in
-            "Linux")
-                # This command is way too long
-                song="$(\
-                    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
-                    org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
-                    awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
-                    awk -F '"' '/artist|title/ {printf $2 " - "}'
-                )"
-                song="${song% - }"
-                song="${song/'('*}"
-                song="${song//'['*}"
-            ;;
+        "spotify"*)
+            case "$os" in
+                "Linux")
+                    # Thanks dbus
+                    song="$(\
+                        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
+                        org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
+                        awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
+                        awk -F '"' '/artist|title/ {printf $2 " - "}'
+                    )"
+                    song="${song% - }"
+                    song="${song/'('*}"
+                    song="${song//'['*}"
+                ;;
 
-            "Mac OS X")
-                song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
-                state="$(osascript -e 'tell application "Spotify" to player state as string')"
-            ;;
-        esac
+                "Mac OS X")
+                    song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
+                    state="$(osascript -e 'tell application "Spotify" to player state as string')"
+                ;;
+            esac
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/ || /Helper/) && /Google Play Music Desktop Player/')" ] && type -p gpmdp-remote >/dev/null 2>&1; then
-        song="$(gpmdp-remote current)"
-        state="$(gpmdp-remote status)"
+        "google play"*)
+            song="$(gpmdp-remote current 2>/dev/null)"
+            state="$(gpmdp-remote status 2>/dev/null)"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/ || /Helper/ || /Cache/) && /iTunes.app/')" ]; then
-        song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
-        state="$(osascript -e 'tell application "iTunes" to player state as string')"
+        "itunes"*)
+            song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
+            state="$(osascript -e 'tell application "iTunes" to player state as string')"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /rhythmbox/')" ]; then
-        song="$(rhythmbox-client --print-playing)"
-        # Well, what can you expect? It's dbus after all.
-        state="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.rhythmbox /org/mpris/MediaPlayer2 \
-                 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string: 'PlayBackStatus' |\
-                 awk -F 'string "' '{printf $2}')"
-        state="${state//\"}"
+        "rhythmbox"*)
+            song="$(rhythmbox-client --print-playing)"
+            # Thanks dbus
+            state="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.rhythmbox /org/mpris/MediaPlayer2 \
+                     org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string: 'PlayBackStatus' |\
+                     awk -F 'string "' '{printf $2}')"
+            state="${state//\"}"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /banshee/')" ]; then
-        artist="$(banshee --query-artist | awk -F':' '{print $2}')"
-        title="$(banshee --query-title | awk -F':' '{print $2}')"
-        song="$artist - $title"
-        state="$(banshee --query-current-state | awk -F':' '{print $2}')"
+        "banshee"*)
+            artist="$(banshee --query-artist | awk -F':' '{print $2}')"
+            title="$(banshee --query-title | awk -F':' '{print $2}')"
+            song="$artist - $title"
+            state="$(banshee --query-current-state | awk -F':' '{print $2}')"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /amarok/')" ]; then
-        artist="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {print $2}')"
-        title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
-        song="$artist - $title"
+        "amarok"*)
+            artist="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {print $2}')"
+            title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
+            song="$artist - $title"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /deadbeef/')" ]; then
-        song="$(deadbeef --nowplaying '%a - %t')"
+        "deadbeef"*)
+            song="$(deadbeef --nowplaying '%a - %t')"
+        ;;
 
-    else
-        song="Not Playing"
-    fi
+        "audacious"*)
+            song="$(audtool current-song)"
+        ;;
+
+        *) song="Not Playing" ;;
+    esac
 
     case "$state" in
         "paused" | "PAUSE" | "Paused")
@@ -1508,6 +1382,10 @@ getstyle() {
         [ "$gtk2" == "off" ] && unset gtk2theme
         [ "$gtk3" == "off" ] && unset gtk3theme
 
+        # Trim whitespace
+        gtk2theme="$(trim "$gtk2theme")"
+        gtk3theme="$(trim "$gtk3theme")"
+
         # Format the string based on which themes exist
         if  [ "$gtk2theme" ] && [ "$gtk2theme" == "$gtk3theme" ]; then
             gtk3theme+=" [GTK2/3]"
@@ -1713,53 +1591,25 @@ getdisk() {
 getbattery() {
     case "$os" in
         "Linux")
-            if [ "$(ls /sys/class/power_supply/)" ]; then
-                # Set the index to the battery number.
-                case "$battery_num" in
-                    "all") battery_num="*" index=0 ;;
-                    *) index="$battery_num" ;;
-                esac
+            # We use 'prin' here and exit the function early so that we can
+            # do multi battery support with a single battery per line.
+            if [ -f /sys/class/power_supply/**/capacity ]; then
+                for bat in "/sys/class/power_supply/BAT"*; do
+                    capacity="$(< ${bat}/capacity)"
+                    status="$(< ${bat}/status)"
+                    battery="${capacity}% [${status}]"
 
-                case "$distro" in
-                    "Android"*)
-                        batteries="$(< /sys/class/power_supply/battery/capacity)"
-                        battery_state="$(< /sys/class/power_supply/battery/status)"
-                    ;;
+                    case "$battery_display" in
+                        "bar") battery="$(bar "$capacity" 100)" ;;
+                        "infobar") battery+=" $(bar "$capacity" 100)" ;;
+                        "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
+                    esac
 
-                    *)
-                        batteries=($(< /sys/class/power_supply/BAT${battery_num}/capacity))
-                        battery_state=($(< /sys/class/power_supply/BAT${battery_num}/status))
-                    ;;
-                esac
-
-                # Get the subtitle and reassign it so it doesn't change.
-                title="$subtitle"
-
-                # If shorthand is on, print each value on the same line
-                if [ "$battery_shorthand" == "on" ]; then
-                    battery="${batteries[*]}"
-                    battery="${battery// /%, }"
-                    battery="${battery}%"
-
-                else
-                    if [ "${#batteries[@]}" -gt 1 ]; then
-                        unset battery
-
-                        # Print each battery on a separate line.
-                        for bat in "${batteries[@]}"; do
-                            case "$battery_display" in
-                                "bar") prin "${title}${index:-0}" "$(bar "${bat/'%'}" 100)" ;;
-                                "infobar") prin "${title}${index:-0}" "${bat}% $(bar "${bat/'%'}" 100)" ;;
-                                "barinfo") prin "${title}${index:-0}" "$(bar "${bat/'%'}" 100) ${bat}%" ;;
-                                *) prin "${title}${index:-0}" "${bat}%" ;;
-                            esac
-                            index="$((index+=1))"
-                        done
-                        return
-                    fi
-                    battery="${batteries[0]}%"
-                fi
+                    prin "${subtitle}${bat: -1}" "$battery"
+                done
             fi
+            unset battery
+            return
         ;;
 
         "BSD")
@@ -2400,11 +2250,7 @@ scrot_upload() {
         ;;
     esac
 
-    if [ "$image_url" ]; then
-        printf "%s\n" "$image_url"
-    else
-        printf "%s\n" "[!] Image failed to upload"
-    fi
+    printf "%s\n" "${image_url:-'[!] Image failed to upload'}"
 }
 
 # }}}
@@ -2591,7 +2437,7 @@ colors() {
             setcolors 4 3
         ;;
 
-        "Mageia"*)
+        "Mageia"* | "Porteus"*)
             setcolors 6 7
         ;;
 
@@ -2621,7 +2467,7 @@ colors() {
             setcolors 3 7 6 1 8
         ;;
 
-        "OpenSuse"* | "Manjaro"* | "Deepin"*)
+        *"SUSE"* | "Manjaro"* | "Deepin"*)
             setcolors 2 7
         ;;
 
@@ -2935,16 +2781,39 @@ kdeconfigdir() {
 
 # }}}
 
+# Terminal info {{{
+#
+# Parse terminal config files to get
+# info about padding. Due to how w3m-img
+# works padding around the terminal throws
+# off the cursor placement calculation in
+# specific terminals.
+#
+# Note: This issue only seems to affect
+# URxvt.
+
+gettermpadding() {
+    [ -z "$term" ] && getterm
+
+    case "$term" in
+        "URxvt"*)
+            border="$(xrdb -query | grep -i "\(URxvt\|\*\)\.InternalBorder")"
+            border="${border/*:}"
+        ;;
+    esac
+}
+
+# }}}
+
 # Dynamic prompt location {{{
 
 dynamicprompt() {
     # Calculate image height in terminal cells.
-    # The '+ 1' adds a gap between the prompt and the content.
     if [ "$image" != "ascii" ]; then
-        lines="$((${height:-1} / ${font_height:-1} + 3))"
-        cursor_yoffset="$((${yoffset:-1} / ${font_height:-1}))"
+        gettermpadding
+        lines="$(((height + ${border:-0} + ${yoffset:-0}) / font_height))"
     else
-        cursor_yoffset="0 - 2"
+        lines="$((lines-=2))"
     fi
 
     # If the info is higher than the ascii/image place the prompt
@@ -2952,7 +2821,7 @@ dynamicprompt() {
     if [ "${lines:-0}" -lt "${info_height:-0}" ]; then
         lines="-2"
     else
-        lines="$((lines - info_height + cursor_yoffset))"
+        lines="$((lines - info_height))"
     fi
 
     # Set the prompt location
@@ -2963,7 +2832,7 @@ dynamicprompt() {
     fi
 
     # Add some padding
-    [ "$image" == "ascii" ] && printf "\n\n"
+    printf "\n\n"
 }
 
 # }}}
@@ -3007,23 +2876,23 @@ usage() { cat << EOF
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores type            Whether or not to display the number of CPU cores
                                 Takes: logical, physical, off
-                                Note: 'physical' doesn't work on BSD.
+                                NOTE: 'physical' doesn't work on BSD.
+    --cpu_speed on/off          Hide/Show cpu speed.
+    --cpu_temp on/off           Hide/Show cpu temperature.
+                                NOTE This only works on linux.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
-    --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
-    --battery_num num           Which battery to display, default value is 'all'
-    --battery_shorthand on/off  Whether or not each battery gets its own line/title
-    --ip_host url               Url to ping for public IP
+    --ip_host url               Url to query for public IP
     --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
@@ -3135,12 +3004,13 @@ getargs() {
             # Info
             --os_arch) os_arch="$2" ;;
             --cpu_cores) cpu_cores="$2" ;;
+            --cpu_speed) cpu_speed="$2" ;;
+            --cpu_temp) cpu_temp="$2" ;;
             --speed_type) speed_type="$2" ;;
             --distro_shorthand) distro_shorthand="$2" ;;
             --kernel_shorthand) kernel_shorthand="$2" ;;
             --uptime_shorthand) uptime_shorthand="$2" ;;
             --cpu_shorthand) cpu_shorthand="$2" ;;
-            --gpu_shorthand) gpu_shorthand="$2" ;;
             --gpu_brand) gpu_brand="$2" ;;
             --refresh_rate) refresh_rate="$2" ;;
             --gtk_shorthand) gtk_shorthand="$2" ;;
@@ -3148,8 +3018,6 @@ getargs() {
             --gtk3) gtk3="$2" ;;
             --shell_path) shell_path="$2" ;;
             --shell_version) shell_version="$2" ;;
-            --battery_num) battery_num="$2" ;;
-            --battery_shorthand) battery_shorthand="$2" ;;
             --ip_host) public_ip_host="$2" ;;
             --song_shorthand) song_shorthand="$2" ;;
             --birthday_shorthand) birthday_shorthand="$2" ;;
@@ -3220,6 +3088,7 @@ getargs() {
             --clean)
                 rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
+                rm -rf "/tmp/neofetch/"
                 exit
             ;;
 
@@ -3281,6 +3150,7 @@ getargs() {
                 cpu_display="infobar"
                 memory_display="infobar"
                 disk_display="infobar"
+                cpu_temp="on"
 
                 printinfo() {
                     if [ "$TRAVIS_OS_NAME" ]; then
@@ -3357,11 +3227,15 @@ main() {
 
     # Print the info
     printinfo
-    [ "$image" != "off" ] && dynamicprompt
 
-    # w3m-img: Draw the image a second time to fix
-    # rendering issues in specific terminal emulators.
-    [ "$image_backend" == "w3m" ] && displayimage
+    # Prompt calculation
+    if [ "$image" != "off" ]; then
+        dynamicprompt
+
+        # w3m-img: Draw the image a second time to fix
+        # rendering issues in specific terminal emulators.
+        [ "$image_backend" == "w3m" ] && displayimage
+    fi
 
     # Re-enable line wrap
     printf "%b%s" "\033[?7h"

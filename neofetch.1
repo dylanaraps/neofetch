@@ -40,6 +40,14 @@ Whether or not to display the number of CPU cores
 .br
 Note: 'physical' doesn't work on BSD.
 .TP
+.B \--cpu_speed 'on/off'
+Hide/Show cpu speed.
+.TP
+.B \--cpu_temp 'on/off'
+Hide/Show cpu temperature.
+.br
+NOTE This only works on linux.
+.TP
 .B \--distro_shorthand 'on/off'
 Shorten the output of distro (tiny, on, off)
 .br
@@ -55,9 +63,6 @@ Shorten the output of uptime (tiny, on, off)
 Whether to display the refresh rate of each monitor
 .br
 Note: Unsupported on Windows
-.TP
-.B \--gpu_shorthand 'on/off'
-Shorten the output of GPU (tiny, on, off)
 .TP
 .B \--gpu_brand on/off
 Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
@@ -77,14 +82,8 @@ Enable/Disable showing $SHELL path
 .B \--shell_version 'on/off'
 Enable/Disable showing $SHELL version
 .TP
-.B \--battery_num 'num'
-Which battery to display, default value is 'all'
-.TP
-.B \--battery_shorthand 'on/off'
-Whether or not each battery gets its own line/title
-.TP
 .B \--ip_host 'url'
-URL to ping for public IP
+URL to query for public IP
 .TP
 .B \--song_shorthand 'on/off'
 Print the Artist/Title on seperate lines

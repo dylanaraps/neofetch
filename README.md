@@ -434,22 +434,22 @@ alias neofetch2="neofetch \
     --cpu_cores type            Whether or not to display the number of CPU cores
                                 Takes: logical, physical, off
                                 Note: 'physical' doesn't work on BSD.
+    --cpu_speed on/off          Hide/Show cpu speed.
+    --cpu_temp on/off           Hide/Show cpu temperature.
+                                NOTE This only works on linux.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
     --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
-    --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
-    --battery_num num           Which battery to display, default value is 'all'
-    --battery_shorthand on/off  Whether or not each battery gets its own line/title
-    --ip_host url               Url to ping for public IP
+    --ip_host url               Url to query for public IP
     --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output

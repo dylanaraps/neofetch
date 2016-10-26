@@ -14,7 +14,7 @@ export LANG=C
 # Info
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
-printinfo () {
+printinfo() {
     info title
     info underline
 
@@ -55,7 +55,7 @@ printinfo () {
 # Kernel
 
 # Show more kernel info
-# --kernel_shorthand on/off
+# --kernel_shorthand on, off
 kernel_shorthand="on"
 
 
@@ -66,7 +66,7 @@ kernel_shorthand="on"
 distro_shorthand="off"
 
 # Show 'x86_64' and 'x86' in 'Distro:' output.
-# --os_arch on/off
+# --os_arch on, off
 os_arch="on"
 
 
@@ -80,11 +80,11 @@ uptime_shorthand="off"
 # Shell
 
 # Show the path to $SHELL
-# --shell_path on/off
+# --shell_path on, off
 shell_path="off"
 
 # Show $SHELL's version
-# --shell_version on/off
+# --shell_version on, off
 shell_version="on"
 
 
@@ -106,6 +106,11 @@ cpu_shorthand="off"
 # --cpu_display bar, infobar, barinfo, off
 cpu_display="off"
 
+# CPU Speed
+# Hide/Show CPU speed.
+# --cpu_speed on, off
+cpu_speed="on"
+
 # CPU Cores
 # Display CPU cores in output
 # Logical: All virtual cores
@@ -114,54 +119,42 @@ cpu_display="off"
 # Note: 'physical' doesn't work on BSD.
 cpu_cores="logical"
 
+# CPU Temperature
+# Hide/Show CPU temperature.
+# --cpu_temp on, off
+# Note: Only works on Linux.
+cpu_temp="off"
+
 
 # GPU
 
-# Shorten output of the getgpu funcion
-# --gpu_shorthand on/off/tiny
-gpu_shorthand="on"
-
 # Enable/Disable GPU Brand
-# --gpu_brand on/off
+# --gpu_brand on, off
 gpu_brand="on"
+
 
 # Resolution
 
 # Display refresh rate next to each monitor
 # Unsupported on Windows
-# --refresh_rate on/off
+# --refresh_rate on, off
 refresh_rate="off"
 
 
 # Gtk Theme / Icons
 
 # Shorten output (Hide [GTK2] etc)
-# --gtk_shorthand on/off
+# --gtk_shorthand on, off
 gtk_shorthand="off"
 
 
 # Enable/Disable gtk2 theme/icons output
-# --gtk2 on/off
+# --gtk2 on, off
 gtk2="on"
 
 # Enable/Disable gtk3 theme/icons output
-# --gtk3 on/off
+# --gtk3 on, off
 gtk3="on"
-
-
-# Battery
-
-# Which battery to display.
-# By default we display all batteries.
-# NOTE: Only works on Linux.
-# --battery_num all, 0, 1, 2, etc
-battery_num="all"
-
-# Whether or not to print each battery on the same line.
-# By default each battery gets its own line and title.
-# NOTE: Only works on Linux.
-# --battery_shorthand on/off
-battery_shorthand="off"
 
 
 # IP Address
@@ -174,7 +167,7 @@ public_ip_host="http://ident.me"
 # Song
 
 # Print the Artist and Title on seperate lines
-# --song_shorthand on/off
+# --song_shorthand on, off
 song_shorthand="off"
 
 
@@ -183,11 +176,11 @@ song_shorthand="off"
 # Whether to show a long pretty output
 # or a shortened one
 # NOTE: Long pretty output doesn't work on OpenBSD or NetBSD.
-# --birthday_shorthand on/off
+# --birthday_shorthand on, off
 birthday_shorthand="off"
 
 # Whether to show the time in the output
-# --birthday_time on/off
+# --birthday_time on, off
 birthday_time="on"
 
 # Date format to use when printing birthday
@@ -216,11 +209,11 @@ colors=(distro)
 
 
 # Toggle bold text
-# --bold on/off
+# --bold on, off
 bold="on"
 
 # Enable/Disable Underline
-# --underline on/off
+# --underline on, off
 underline_enabled="on"
 
 # Underline character
@@ -239,7 +232,7 @@ start=0
 end=7
 
 # Toggle color blocks
-# --color_blocks on/off
+# --color_blocks on, off
 color_blocks="on"
 
 # Color block width in spaces
@@ -262,7 +255,7 @@ progress_char_elapsed="-"
 progress_char_total="="
 
 # Progress border
-# --progress_border on/off
+# --progress_border on, off
 progress_border="on"
 
 # Progress bar length in spaces
@@ -283,9 +276,9 @@ progress_color_total="distro"
 # barinfo: The bar is displayed before the info.
 # off: Only the info is displayed.
 #
-# --memory_display bar/infobar/barinfo/off
-# --battery_display bar/infobar/barinfo/off
-# --disk_display bar/infobar/barinfo/off
+# --memory_display bar, infobar, barinfo, off
+# --battery_display bar, infobar, barinfo, off
+# --disk_display bar, infobar, barinfo, off
 memory_display="off"
 battery_display="off"
 disk_display="off"
@@ -308,19 +301,14 @@ thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 # Some systems have this in another location
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
-# Image position
-# Only works with the w3m backend.
-# --image_position left/right
-image_position="left"
-
 # Crop mode
-# --crop_mode normal/fit/fill
+# --crop_mode normal, fit, fill
 crop_mode="normal"
 
 # Crop offset
 # Only affects normal mode.
-# --crop_offset northwest/north/northeast/west/center
-#               east/southwest/south/southeast
+# --crop_offset northwest, north, northeast, west, center
+#               east, southwest, south, southeast
 crop_offset="center"
 
 # Image size
@@ -380,7 +368,7 @@ ascii_logo_size="normal"
 
 # Bold ascii logo
 # Whether or not to bold the ascii logo.
-# --ascii_bold on/off
+# --ascii_bold on, off
 ascii_bold="on"
 
 

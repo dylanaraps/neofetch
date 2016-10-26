@@ -3,6 +3,7 @@
 - **[@konimex](https://github.com/konimex)**
 - **[@iandrewt](https://github.com/iandrewt)**
 - **[@coypoop](https://github.com/coypoop)**
+- **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
 
 <br \>
 
@@ -12,12 +13,14 @@
 - Change all `OS X` references to `macOS`. **[@iandrewt](https://github.com/iandrewt)**
 - Fix corrupted text when long lines are cut-off.
 - Don't dynamically place prompt in `image=off` mode.
+- Cursor Position: Fix issues when using URxvt+Padding
 
 
 ## Operating System
 
 - Added support for Bitrig. **[@konimex](https://github.com/konimex)**
 - Added support for Sparky Linux.
+- Added support for Porteus. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
 
 
 ## Packages
@@ -65,6 +68,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 - Bold ascii art by default.
 - Fixed incorrect prompt location when using `ascii_logo_size small`.
+- Update Void Linux ascii art. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
 
 
 ## Info
@@ -73,6 +77,12 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 - Expanded `distro_shorthand` to macOS and Solaris. **[@konimex](https://github.com/konimex)**
 - Removed `osx_buildversion` and `osx_codename` in favour of `distro_shorthand`. **[@konimex](https://github.com/konimex)**
+
+**Desktop Environment**<br \>
+
+- [Windows] Added support for showing DE.
+    - Windows 8 and above: `Modern UI/Metro`
+    - Windows 7 and below: `Aero`
 
 **Window Manager**<br \>
 
@@ -86,10 +96,21 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 **CPU**<br \>
 
+- Added `cpu_speed` which lets you hide/show the speed in the output.
 - Expanded `cpu_cores` option by adding two new values, `logical` and `physical`.
     - `logical`: Show all virtual cores (hyperthreaded).
     - `physical`: Only show physical cores.
+- [Linux] Added support for showing CPU temperature.
+    - Added new option called `cpu_temp`.
+    - Note: This is disabled by default and can be enabled by changing the value of `cpu_temp` in your config to `on`.
 - [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
+- [iOS] Rewrite CPU function.
+
+**GPU**
+
+- [iOS] Rewrite GPU function.
+- [Linux] Rewrite GPU function.
+    - Neofetch also caches the info until reboot.
 
 **Uptime**<br \>
 
@@ -102,12 +123,19 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 **Memory**<br \>
 
+- [Linux] Correctly calculate used memory.
 - [NetBSD] Fix memory output for sizes over 4GB. **[@coypoop](https://github.com/coypoop)**
 
 **Shell**<br \>
 
 - Hide shell path by default.
 - Show shell version by default.
+
+**Battery**<br \>
+
+- [Linux] Rewrote and simplified battery function.
+- Removed `battery_shorthand`
+- Removed `battery_num`
 
 **Theme Font**<br \>
 
@@ -128,3 +156,5 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 **Song**<br \>
 
 - [macOS] Fix iTunes automatically opening. **[@iandrewt](https://github.com/iandrewt)**
+- Added support for Audacious. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
+- Rewrote song function, it's now much faster/cleaner.
