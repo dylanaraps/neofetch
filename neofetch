@@ -1618,44 +1618,25 @@ getdisk() {
 getbattery() {
     case "$os" in
         "Linux")
-            if [ "$(ls /sys/class/power_supply/)" ]; then
-                # Set the index to the battery number.
-                case "$battery_num" in
-                    "all") battery_num="*" index=0 ;;
-                    *) index="$battery_num" ;;
-                esac
+            # We use 'prin' here and exit the function early so that we can
+            # do multi battery support with a single battery per line.
+            if [ -f /sys/class/power_supply/**/capacity ]; then
+                for bat in "/sys/class/power_supply/BAT"*; do
+                    capacity="$(< ${bat}/capacity)"
+                    status="$(< ${bat}/status)"
+                    battery="${capacity}% [${status}]"
 
-                batteries=("$(cat /sys/class/power_supply/BAT$battery_num/capacity)")
-                battery_state=("$(cat /sys/class/power_supply/BAT${battery_num}/status)")
+                    case "$battery_display" in
+                        "bar") battery="$(bar "$capacity" 100)" ;;
+                        "infobar") battery+=" $(bar "$capacity" 100)" ;;
+                        "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
+                    esac
 
-                # Get the subtitle and reassign it so it doesn't change.
-                title="$subtitle"
-
-                # If shorthand is on, print each value on the same line
-                if [ "$battery_shorthand" == "on" ]; then
-                    battery="${batteries[*]}"
-                    battery="${battery// /%, }"
-                    battery="${battery}%"
-
-                else
-                    if [ "${#batteries[@]}" -gt 1 ]; then
-                        unset battery
-
-                        # Print each battery on a separate line.
-                        for bat in "${batteries[@]}"; do
-                            case "$battery_display" in
-                                "bar") prin "${title}${index:-0}" "$(bar "${bat/'%'}" 100)" ;;
-                                "infobar") prin "${title}${index:-0}" "${bat}% $(bar "${bat/'%'}" 100)" ;;
-                                "barinfo") prin "${title}${index:-0}" "$(bar "${bat/'%'}" 100) ${bat}%" ;;
-                                *) prin "${title}${index:-0}" "${bat}%" ;;
-                            esac
-                            index="$((index+=1))"
-                        done
-                        return
-                    fi
-                    battery="${batteries[0]}%"
-                fi
+                    prin "${subtitle}${bat: -1}" "$battery"
+                done
             fi
+            unset battery
+            return
         ;;
 
         "BSD")
