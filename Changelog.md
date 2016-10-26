@@ -13,7 +13,7 @@
 - Change all `OS X` references to `macOS`. **[@iandrewt](https://github.com/iandrewt)**
 - Fix corrupted text when long lines are cut-off.
 - Don't dynamically place prompt in `image=off` mode.
-- Cursor Position: Fix issues when using URxvt+Padding 
+- Cursor Position: Fix issues when using URxvt+Padding
 
 
 ## Operating System
@@ -128,6 +128,12 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 - Hide shell path by default.
 - Show shell version by default.
+
+**Battery**<br \>
+
+- [Linux] Rewrote and simplified battery function.
+- Removed `battery_shorthand`
+- Removed `battery_num`
 
 **Theme Font**<br \>
 
