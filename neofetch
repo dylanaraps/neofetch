@@ -974,54 +974,33 @@ getgpu() {
         ;;
 
         "iPhone OS")
-            ios_model="${ios_model:-"$(uname -m)"}"
-            case "$ios_model" in
-                "iPhone1,1" | "iPhone1,2")
-                    gpu="PowerVR MBX Lite 3D"
-                ;;
+            case "${ios_model:-"$(uname -m)"}" in
+                "iPhone1,"[1-2]) gpu="PowerVR MBX Lite 3D" ;;
+                "iPhone5,"[1-4]) gpu="PowerVR SGX543MP3" ;;
+                "iPhone8,"[1-4]) gpu="PowerVR GT7600" ;;
+                "iPad3,"[1-3]) gpu="PowerVR SGX534MP4" ;;
+                "iPad3,"[4-6]) gpu="PowerVR SGX554MP4" ;;
+                "iPad5,"[3-4]) gpu="PowerVR GXA6850" ;;
+                "iPad6,"[3-8]) gpu="PowerVR 7XT" ;;
 
-                "iPhone2,1" | "iPhone3,1" | "iPhone3,2" | "iPhone3,3" | "iPod3,1" | "iPod4,1" | "iPad1,1")
+                "iPhone2,1" | "iPhone3,"[1-3] | "iPod3,1" | "iPod4,1" | "iPad1,1")
                     gpu="PowerVR SGX535"
                 ;;
 
-                "iPhone4,1" | "iPad2,1" | "iPad2,2" | "iPad2,3" | "iPad2,4" | "iPad2,5" | "iPad2,6" | "iPad2,7" | "iPod5,1")
+                "iPhone4,1" | "iPad2,"[1-7] | "iPod5,1")
                     gpu="PowerVR SGX543MP2"
                 ;;
 
-                "iPhone5,1" | "iPhone5,2" | "iPhone5,3" | "iPhone5,4")
-                    gpu="PowerVR SGX543MP3"
-                ;;
-
-                "iPhone6,1" | "iPhone6,2" | "iPad4,1" | "iPad4,2" | "iPad4,3" | "iPad4,4" | "iPad4,5" | "iPad4,6" | "iPad4,7" | "iPad4,8" | "iPad4,9")
+                "iPhone6,"[1-2] | "iPad4,"[1-9])
                     gpu="PowerVR G6430"
                 ;;
 
-                "iPhone7,1" | "iPhone7,2" | "iPod7,1" | "iPad5,1" | "iPad5,2")
+                "iPhone7,"[1-2] | "iPod7,1" | "iPad5,"[1-2])
                     gpu="PowerVR GX6450"
-                ;;
-
-                "iPhone8,1" | "iPhone8,2" | "iPhone8,4")
-                    gpu="PowerVR GT7600"
                 ;;
 
                 "iPod1,1" | "iPod2,1")
                     gpu="PowerVR MBX Lite"
-                ;;
-
-                "iPad3,1" | "iPad3,2" | "iPad3,3")
-                    gpu="PowerVR SGX534MP4"
-                ;;
-
-                "iPad3,4" | "iPad3,5" | "iPad3,6")
-                    gpu="PowerVR SGX554MP4"
-                ;;
-
-                "iPad5,3" | "iPad5,4")
-                    gpu="PowerVR GXA6850"
-                ;;
-
-                "iPad6,3" | "iPad6,4" | "iPad6,7" | "iPad6,8")
-                    gpu="PowerVR 7XT"
                 ;;
             esac
         ;;
