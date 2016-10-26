@@ -30,6 +30,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
         - [Screenshot](https://github.com/dylanaraps/neofetch#screenshot)
         - [GPU](https://github.com/dylanaraps/neofetch#gpu)
     - [iOS dependencies](https://github.com/dylanaraps/neofetch#ios)
+    - [Android dependencies](#android)
 - [Installation](#installation)
     - [Arch Linux](#arch)
     - [Gentoo / Funtoo](#gentoo--funtoo)
@@ -100,6 +101,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [Screenshot](https://github.com/dylanaraps/neofetch#screenshot)
     - [GPU](https://github.com/dylanaraps/neofetch#gpu)
 - [iOS dependencies](https://github.com/dylanaraps/neofetch#ios)
+- [Android dependencies](#android)
 
 
 ### Required dependencies:
@@ -195,6 +197,14 @@ Note: The cydia package installs these dependencies for you.
 - `system-cmds`
 - `Gawk`
 - `grep`
+
+
+#### Android
+
+- `bash`
+- `busybox`
+
+Note: I recommend installing `termux` from the Play Store or FDroid. Termux provides you with a fully working Linux environment, doesn't require root acess and includes all dependencies.
 
 
 <!-- }}} -->
