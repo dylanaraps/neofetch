@@ -997,11 +997,13 @@ getgpu() {
                     gpu="${gpu/'[AMD]' }"
                     gpu="${gpu/*\[}"
                     gpu="${gpu/\]*}"
+                    gpu="AMD $gpu"
                 ;;
 
                 nvidia*)
                     gpu="${gpu/*\[}"
                     gpu="${gpu/\]*}"
+                    gpu="NVIDIA $gpu"
                 ;;
 
                 *virtualbox*)
@@ -1119,8 +1121,6 @@ getgpu() {
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
     fi
-
-    gpu="${gpu}${count}"
 }
 
 # }}}
