@@ -41,7 +41,10 @@ getos() {
 getmodel() {
     case "$os" in
         "Linux")
-            if [ -f /sys/devices/virtual/dmi/id/product_name ] ||\
+            if [ -d "/system/app/" ] && [ -d "/system/priv-app" ]; then
+                model="$(getprop ro.product.brand) $(getprop ro.product.model)"
+
+            elif [ -f /sys/devices/virtual/dmi/id/product_name ] ||\
                [ -f /sys/devices/virtual/dmi/id/product_version ]; then
                 model="$(< /sys/devices/virtual/dmi/id/product_name)"
                 model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
@@ -146,6 +149,9 @@ getdistro() {
                     "on")   distro="${distro//version}" ;;
                     "tiny") distro="${distro//version*}" ;;
                 esac
+
+            elif [ -d "/system/app/" ] && [ -d "/system/priv-app" ]; then
+                distro="Android $(getprop ro.build.version.release)"
 
             else
                 # Workarounds are included in every shorthand option
@@ -432,6 +438,8 @@ getpackages() {
                 packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
         ;;
     esac
+
+    [ "$packages" == "0" ] && unset packages
 }
 
 # }}}
@@ -681,7 +689,10 @@ getcpu() {
     case "$os" in
         "Linux" | "Windows")
             # Get cpu name
-            cpu="$(awk -F ': | @' '/model name/ {printf $2; exit}' /proc/cpuinfo)"
+            case "$distro" in
+                "Android"*) cpu="$(getprop ro.product.board)" ;;
+                *) cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)" ;;
+            esac
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
             temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
 
@@ -1521,6 +1532,7 @@ getdisk() {
 
             case "$distro" in
                 "OpenWRT"*) df_flags="-h"; df_dir="rootfs" ;;
+                "Android"*) return ;;
             esac
         ;;
 
@@ -1913,13 +1925,15 @@ getascii() {
     ascii_strip="${ascii_strip//'\\'/ }"
     ascii_strip="${ascii_strip//'\'}"
 
-    # Get lines/columns of the ascii file in pure bash.
-    ascii_length=0
+    # Get lines/columns of the ascii file.
     lines=1
     while IFS='\n' read -r line 2>/dev/null; do
-        [ ${#line} -gt "$ascii_length" ] && ascii_length=${#line}
-        lines=$((lines+=1))
+        [ "${#line}" -gt "${ascii_length:-0}" ] && ascii_length="${#line}"
+        lines="$((lines+=1))"
     done <<< "$ascii_strip"
+
+    # Overwrite padding if ascii_length_force is set.
+    [ "$ascii_length_force" ] && ascii_length="$ascii_length_force"
 
     padding="\033[$((ascii_length + gap))C"
     printf "%b%s" "$print"
@@ -2438,6 +2452,11 @@ colors() {
 
         "LMDE"* | "Chapeau"* | "Bitrig"*)
             setcolors 2 7
+        ;;
+
+        "Android"*)
+            setcolors 2 7
+            ascii_length_force="19"
         ;;
 
         "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
