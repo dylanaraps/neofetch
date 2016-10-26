@@ -124,6 +124,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 - Rewrote uptime function to use seconds since boot instead of the `uptime` command.
     - Every OS/Distro now has the pretty `uptime -p` output!
+- Remove `up` from output.
 
 **Resolution**<br \>
 
