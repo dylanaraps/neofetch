@@ -23,7 +23,7 @@
 - Added support for Android.
     - Dependencies:
         - Required: `bash` and `busybox`
-        - Note: I recommend installing `termux` from the Play Store or FDroid. Termux provides you with a fully working Linux environment, doesn't require root acess and includes all dependencies.
+        - Note: I recommend installing `termux` from the Play Store or F-Droid. Termux provides you with a fully working Linux environment, doesn't require root acess and includes all dependencies.
 - Added support for Bitrig. **[@konimex](https://github.com/konimex)**
 - Added support for Sparky Linux.
 - Added support for Porteus. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
