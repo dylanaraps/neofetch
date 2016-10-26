@@ -3190,6 +3190,7 @@ getargs() {
             --clean)
                 rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
+                rm -rf "/tmp/neofetch/"
                 exit
             ;;
 
