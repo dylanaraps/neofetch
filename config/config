@@ -128,10 +128,6 @@ cpu_temp="off"
 
 # GPU
 
-# Shorten output of the getgpu funcion
-# --gpu_shorthand on, off, tiny
-gpu_shorthand="on"
-
 # Enable/Disable GPU Brand
 # --gpu_brand on, off
 gpu_brand="on"

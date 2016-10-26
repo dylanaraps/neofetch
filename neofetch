@@ -900,65 +900,36 @@ getcpu_usage() {
 getgpu() {
     case "$os" in
         "Linux")
-            gpu="$(PATH="/sbin:$PATH" lspci | grep -F "3D")"
-
-            # If a GPU with a prefix of '3D' doesn't exist
-            # fallback to looking for a prefix of 'VGA'
-            [ -z "$gpu" ] && \
-                gpu="$(PATH="/sbin:$PATH" lspci | grep -F "VGA")"
-
-            gpu="${gpu//??':'??'.'?}"
-
-            # Count the number of GPUs
-            count="$(printf "%s" "$gpu" | uniq -c)"
-            count="${count/ VGA*}"
-            count="${count/ 3D*}"
-
-            # If there's more than one gpu
-            # Display the count.
-            if [ "$count" -gt 1 ]; then
-                count=" x $count"
+            # Use cache if it exists
+            if [ -f "/tmp/neofetch/gpu" ]; then
+                source "/tmp/neofetch/gpu"
             else
-                unset count
+                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
+
+                case "$gpu" in
+                    intel*) gpu="Intel Integrated Graphics" ;;
+
+                    advanced*)
+                        gpu="${gpu/'[AMD/ATI]' }"
+                        gpu="${gpu/'[AMD]' }"
+                        gpu="${gpu/*\[}"
+                        gpu="${gpu/\]*}"
+                        gpu="${gpu/\/*}"
+                        gpu="AMD $gpu"
+                    ;;
+
+                    nvidia*)
+                        gpu="${gpu/*\[}"
+                        gpu="${gpu/\]*}"
+                        gpu="NVIDIA $gpu"
+                    ;;
+
+                    *virtualbox*)
+                        gpu="VirtualBox Graphics Adapter"
+                    ;;
+                esac
+                cache "gpu" "$gpu" "/tmp"
             fi
-
-            # Format the output
-            gpu="${gpu/* VGA compatible controller: }"
-            gpu="${gpu/* 3D controller: }"
-            gpu="${gpu/(rev*)}"
-            gpu="${gpu/\[}"
-            gpu="${gpu/\]}"
-
-            case "$gpu" in
-                intel*)
-                    gpu="Intel Integrated Graphics"
-                ;;
-
-                advanced*)
-                    gpu="${gpu/Advanced Micro Devices, Inc\. }"
-                    gpu="${gpu/'[AMD/ATI]' }"
-                    gpu="${gpu/Tahiti PRO}"
-                    gpu="${gpu/XTX}"
-                    gpu="${gpu/ OEM}"
-                    gpu="${gpu/*Radeon/Radeon}"
-
-                    brand="AMD "
-                ;;
-
-                nvidia*)
-                    gpu="${gpu/NVIDIA Corporation }"
-                    gpu="${gpu/G????M }"
-                    gpu="${gpu/G???? }"
-
-                    brand="NVIDIA "
-                ;;
-
-                *virtualbox*)
-                    gpu="VirtualBox Graphics Adapter"
-                ;;
-            esac
-
-            gpu="${brand}${gpu}"
         ;;
 
         "Mac OS X")
@@ -1026,35 +997,11 @@ getgpu() {
         ;;
     esac
 
-    case "$gpu_shorthand" in
-        "on" | "tiny")
-            gpu="${gpu// Rev\. ?}"
-            gpu="${gpu//AMD*\/ATI\]/AMD}"
-            gpu="${gpu// Tahiti}"
-            gpu="${gpu// PRO}"
-            gpu="${gpu// OEM}"
-            gpu="${gpu// Mars}"
-            gpu="${gpu// Series}"
-            gpu="${gpu// Controller}"
-            gpu="${gpu/\/*}"
-
-            case "$gpu_shorthand" in
-                "tiny")
-                    gpu="${gpu/Graphics }"
-                    gpu="${gpu/GeForce }"
-                    gpu="${gpu/Radeon }"
-                ;;
-            esac
-        ;;
-    esac
-
     if [ "$gpu_brand" == "off" ]; then
         gpu="${gpu/AMD}"
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
     fi
-
-    gpu="${gpu}${count}"
 }
 
 # }}}
@@ -2920,7 +2867,6 @@ usage() { cat << EOF
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
-    --gpu_shorthand on/off      Shorten the output of GPU (tiny, on, off)
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/icons output
@@ -3046,7 +2992,6 @@ getargs() {
             --kernel_shorthand) kernel_shorthand="$2" ;;
             --uptime_shorthand) uptime_shorthand="$2" ;;
             --cpu_shorthand) cpu_shorthand="$2" ;;
-            --gpu_shorthand) gpu_shorthand="$2" ;;
             --gpu_brand) gpu_brand="$2" ;;
             --refresh_rate) refresh_rate="$2" ;;
             --gtk_shorthand) gtk_shorthand="$2" ;;
@@ -3124,6 +3069,7 @@ getargs() {
             --clean)
                 rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
+                rm -rf "/tmp/neofetch/"
                 exit
             ;;
 
