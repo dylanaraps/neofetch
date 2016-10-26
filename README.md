@@ -450,8 +450,6 @@ alias neofetch2="neofetch \
     --gtk3 on/off               Enable/Disable gtk3 theme/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
-    --battery_num num           Which battery to display, default value is 'all'
-    --battery_shorthand on/off  Whether or not each battery gets its own line/title
     --ip_host url               Url to ping for public IP
     --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
