@@ -104,6 +104,11 @@ Note: `\033[14t` is still supported, if images already work for you then you don
     - Added new option called `cpu_temp`.
     - Note: This is disabled by default and can be enabled by changing the value of `cpu_temp` in your config to `on`.
 - [macOS] Print physical cores instead of hyper-threaded cores. **[@iandrewt](https://github.com/iandrewt)**
+- [iOS] Rewrite CPU function.
+
+**GPU**
+
+- [iOS] Rewrite GPU function.
 
 **Uptime**<br \>
 
