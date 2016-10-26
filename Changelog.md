@@ -68,7 +68,9 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 - Bold ascii art by default.
 - Fixed incorrect prompt location when using `ascii_logo_size small`.
+- Fixed incorrect colors used on light terminals.
 - Update Void Linux ascii art. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
+- Update Solus ascii art.
 
 
 ## Info
