@@ -987,29 +987,35 @@ getcpu_usage() {
 getgpu() {
     case "$os" in
         "Linux")
-            gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
+            # Use cache if it exists
+            if [ -f "/tmp/neofetch/gpu" ]; then
+                source "/tmp/neofetch/gpu"
+            else
+                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
 
-            case "$gpu" in
-                intel*) gpu="Intel Integrated Graphics" ;;
+                case "$gpu" in
+                    intel*) gpu="Intel Integrated Graphics" ;;
 
-                advanced*)
-                    gpu="${gpu/'[AMD/ATI]' }"
-                    gpu="${gpu/'[AMD]' }"
-                    gpu="${gpu/*\[}"
-                    gpu="${gpu/\]*}"
-                    gpu="AMD $gpu"
-                ;;
+                    advanced*)
+                        gpu="${gpu/'[AMD/ATI]' }"
+                        gpu="${gpu/'[AMD]' }"
+                        gpu="${gpu/*\[}"
+                        gpu="${gpu/\]*}"
+                        gpu="AMD $gpu"
+                    ;;
 
-                nvidia*)
-                    gpu="${gpu/*\[}"
-                    gpu="${gpu/\]*}"
-                    gpu="NVIDIA $gpu"
-                ;;
+                    nvidia*)
+                        gpu="${gpu/*\[}"
+                        gpu="${gpu/\]*}"
+                        gpu="NVIDIA $gpu"
+                    ;;
 
-                *virtualbox*)
-                    gpu="VirtualBox Graphics Adapter"
-                ;;
-            esac
+                    *virtualbox*)
+                        gpu="VirtualBox Graphics Adapter"
+                    ;;
+                esac
+                cache "gpu" "$gpu" "/tmp"
+            fi
         ;;
 
         "Mac OS X")
