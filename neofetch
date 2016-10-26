@@ -1122,7 +1122,7 @@ getmemory() {
 getsong() {
     player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious/ {printf $5 " " $6; exit}')"
 
-    case "$player" in
+    case "${player/*\/}" in
         "mpd"*)
             song="$(mpc current 2>/dev/null)"
             state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
