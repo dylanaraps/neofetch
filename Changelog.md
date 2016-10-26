@@ -109,6 +109,8 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 **GPU**
 
 - [iOS] Rewrite GPU function.
+- [Linux] Rewrite GPU function.
+    - Neofetch also caches the info until reboot.
 
 **Uptime**<br \>
 
