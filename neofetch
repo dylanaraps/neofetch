@@ -1120,79 +1120,92 @@ getmemory() {
 # Song {{{
 
 getsong() {
-    if mpc version >/dev/null 2>&1; then
-        song="$(mpc current 2>/dev/null)"
-        state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious/ {printf $5 " " $6; exit}')"
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /cmus/')" ]; then
-        IFS=$'\n'
-        song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" 2>/dev/null | sort))
-        state="${song[0]/status }"
-        artist="${song[1]/tag artist }"
-        title="${song[2]/tag title }"
-        song="${artist/tag title } - ${title/tag artist }"
+    case "$player" in
+        "mpd"*)
+            song="$(mpc current 2>/dev/null)"
+            state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
+        ;;
 
-    elif pgrep "mocp" >/dev/null 2>&1; then
-        song="$(mocp -Q "%artist - %song" 2>/dev/null)"
-        state="$(mocp -Q "%state" 2>/dev/null)"
+        "cmus"*)
+            IFS=$'\n'
+            song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" 2>/dev/null | sort))
+            state="${song[0]/status }"
+            artist="${song[1]/tag artist }"
+            title="${song[2]/tag title }"
+            song="${artist/tag title } - ${title/tag artist }"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /spotify/')" ]; then
-        case "$os" in
-            "Linux")
-                # This command is way too long
-                song="$(\
-                    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
-                    org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
-                    awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
-                    awk -F '"' '/artist|title/ {printf $2 " - "}'
-                )"
-                song="${song% - }"
-                song="${song/'('*}"
-                song="${song//'['*}"
-            ;;
+        "mocp"*)
+            song="$(mocp -Q "%artist - %song" 2>/dev/null)"
+            state="$(mocp -Q "%state" 2>/dev/null)"
+        ;;
 
-            "Mac OS X")
-                song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
-                state="$(osascript -e 'tell application "Spotify" to player state as string')"
-            ;;
-        esac
+        "spotify"*)
+            case "$os" in
+                "Linux")
+                    # Thanks dbus
+                    song="$(\
+                        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 \
+                        org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
+                        awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
+                        awk -F '"' '/artist|title/ {printf $2 " - "}'
+                    )"
+                    song="${song% - }"
+                    song="${song/'('*}"
+                    song="${song//'['*}"
+                ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/ || /Helper/) && /Google Play Music Desktop Player/')" ] && type -p gpmdp-remote >/dev/null 2>&1; then
-        song="$(gpmdp-remote current)"
-        state="$(gpmdp-remote status)"
+                "Mac OS X")
+                    song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
+                    state="$(osascript -e 'tell application "Spotify" to player state as string')"
+                ;;
+            esac
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/ || /Helper/ || /Cache/) && /iTunes.app/')" ]; then
-        song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
-        state="$(osascript -e 'tell application "iTunes" to player state as string')"
+        "google play"*)
+            song="$(gpmdp-remote current 2>/dev/null)"
+            state="$(gpmdp-remote status 2>/dev/null)"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /rhythmbox/')" ]; then
-        song="$(rhythmbox-client --print-playing)"
-        # Well, what can you expect? It's dbus after all.
-        state="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.rhythmbox /org/mpris/MediaPlayer2 \
-                 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string: 'PlayBackStatus' |\
-                 awk -F 'string "' '{printf $2}')"
-        state="${state//\"}"
+        "itunes.app"*)
+            song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
+            state="$(osascript -e 'tell application "iTunes" to player state as string')"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /banshee/')" ]; then
-        artist="$(banshee --query-artist | awk -F':' '{print $2}')"
-        title="$(banshee --query-title | awk -F':' '{print $2}')"
-        song="$artist - $title"
-        state="$(banshee --query-current-state | awk -F':' '{print $2}')"
+        "rhythmbox"*)
+            song="$(rhythmbox-client --print-playing)"
+            # Well, what can you expect? It's dbus after all.
+            state="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.rhythmbox /org/mpris/MediaPlayer2 \
+                     org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string: 'PlayBackStatus' |\
+                     awk -F 'string "' '{printf $2}')"
+            state="${state//\"}"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /amarok/')" ]; then
-        artist="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {print $2}')"
-        title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
-        song="$artist - $title"
+        "banshee"*)
+            artist="$(banshee --query-artist | awk -F':' '{print $2}')"
+            title="$(banshee --query-title | awk -F':' '{print $2}')"
+            song="$artist - $title"
+            state="$(banshee --query-current-state | awk -F':' '{print $2}')"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /deadbeef/')" ]; then
-        song="$(deadbeef --nowplaying '%a - %t')"
+        "amarok"*)
+            artist="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {print $2}')"
+            title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
+            song="$artist - $title"
+        ;;
 
-    elif [ -n "$(ps x | awk '!(/awk/) && /audacious/')" ]; then
-        song="$(audtool current-song)"
+        "deadbeef"*)
+            song="$(deadbeef --nowplaying '%a - %t')"
+        ;;
 
-    else
-        song="Not Playing"
-    fi
+        "audacious"*)
+            song="$(audtool current-song)"
+        ;;
+
+        *) song="Not Playing" ;;
+    esac
 
     case "$state" in
         "paused" | "PAUSE" | "Paused")
