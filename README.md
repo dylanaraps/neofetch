@@ -75,7 +75,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 
 ## Features
 
-- Supports **Linux**, **macOS**, **iOS**, **BSD**, **Solaris** and **Windows** (Cygwin/Windows 10 Linux subsystem)
+- Supports **Linux**, **macOS**, **iOS**, **BSD**, **Solaris**, **Android** and **Windows** (Cygwin/Windows 10 Linux subsystem)
 - Display a **full color image**, a file containing **ascii art** or your **distro's logo** in ascii next to the info.
 - The script is **fast**. We use bash builtins wherever possible and only spawn external processes when necessary.
 - Take a screenshot of your desktop on script finish.
@@ -204,7 +204,7 @@ Note: The cydia package installs these dependencies for you.
 - `bash`
 - `busybox`
 
-Note: I recommend installing `termux` from the Play Store or FDroid. Termux provides you with a fully working Linux environment, doesn't require root acess and includes all dependencies.
+Note: I recommend installing `termux` from the Play Store or F-Droid. Termux provides you with a fully working Linux environment, doesn't require root acess and includes all dependencies.
 
 
 <!-- }}} -->
