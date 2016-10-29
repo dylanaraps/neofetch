@@ -163,6 +163,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 **Terminal and Terminal Font**<br \>
 
+- Use `/proc/$PPID/comm` instead of parsing `ps`.
 - Uppercase first letter of `term` and `termfont` outputs.
 - Don't print broken output of busybox's `ps`.
 - Remove path from output.
