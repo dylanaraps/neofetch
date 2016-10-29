@@ -101,7 +101,6 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 - [Windows] Added support for custom WMs/Shells.
     - Neofetch now detects `blackbox`, `bugn`, `Windawesome`, `emerge` and `litestep`.
-- Uppercase first letter of `wm` output.
 
 **Window Manager Theme**<br \>
 
@@ -164,7 +163,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 **Terminal and Terminal Font**<br \>
 
 - Use `/proc/$PPID/comm` instead of parsing `ps`.
-- Uppercase first letter of `term` and `termfont` outputs.
+- Uppercase first letter of `termfont` output.
 - Don't print broken output of busybox's `ps`.
 - Remove path from output.
 
