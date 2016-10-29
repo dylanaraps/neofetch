@@ -55,7 +55,7 @@ printinfo() {
 # Kernel
 
 # Show more kernel info
-# --kernel_shorthand on, off
+# --kernel_shorthand on, off, tiny
 kernel_shorthand="on"
 
 

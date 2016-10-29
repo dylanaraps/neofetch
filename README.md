@@ -449,7 +449,8 @@ alias neofetch2="neofetch \
                                 NOTE This only works on linux.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
-    --kernel_shorthand on/off   Shorten the output of kernel
+    --kernel_shorthand          Shorten the output of kernel
+                                Takes: on, tiny, off
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
