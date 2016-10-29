@@ -1595,12 +1595,13 @@ getbattery() {
                 for bat in "/sys/class/power_supply/BAT"*; do
                     capacity="$(< ${bat}/capacity)"
                     status="$(< ${bat}/status)"
-                    battery="${capacity}% [${status}]"
 
                     # Fix for bash on Windows 10 which includes /proc files
                     # for battery usage despite there not being a battery
                     # installed.
                     [ -z "$capacity" ] && return
+
+                    battery="${capacity}% [${status}]"
 
                     case "$battery_display" in
                         "bar") battery="$(bar "$capacity" 100)" ;;
