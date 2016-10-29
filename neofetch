@@ -1453,8 +1453,8 @@ getterm() {
         ;;
 
         *)
-            parent="$(ps -p ${1:-$PPID} -o ppid=)"
-            name="$(ps -p $parent -o comm=)"
+            parent="$(grep -F "PPid:" "/proc/${1:-$PPID}/status")"
+            name="$(< "/proc/${parent/PPid:[[:space:]]}/comm")"
         ;;
     esac
 
