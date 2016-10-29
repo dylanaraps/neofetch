@@ -543,11 +543,6 @@ getwm() {
             ;;
         esac
     fi
-
-    # Don't uppercase i3
-    [ "$version" -ge 4 ] && \
-    [ "$wm" != "i3" ] && \
-         wm="${wm^}"
 }
 
 # }}}
@@ -1470,8 +1465,6 @@ getterm() {
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="${name##*/}" ;;
     esac
-
-    [ "$version" -ge 4 ] && term="${term^}"
 }
 
 # }}}
