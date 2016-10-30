@@ -448,8 +448,9 @@ alias neofetch2="neofetch \
     --cpu_temp on/off           Hide/Show cpu temperature.
                                 NOTE This only works on linux.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
-                                NOTE: This is only possible on Linux, macOS, and Solaris
+                                NOTE: This option won't work in Windows (Cygwin)
     --kernel_shorthand on/off   Shorten the output of kernel
+                                NOTE: This option won't work in BSDs (except PacBSD and PC-BSD)
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
