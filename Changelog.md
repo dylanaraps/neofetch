@@ -87,12 +87,6 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 - Expanded `distro_shorthand` to macOS and Solaris. **[@konimex](https://github.com/konimex)**
 - Removed `osx_buildversion` and `osx_codename` in favour of `distro_shorthand`. **[@konimex](https://github.com/konimex)**
 
-**Kernel**<br \>
-
-- Print kernel name by default
-- Added `kernel_shorthand="tiny"` to only print kernel version.
-- [BSD] Force `kernel_shorthand="tiny"`.
-
 **Desktop Environment**<br \>
 
 - [Windows] Added support for showing DE.
