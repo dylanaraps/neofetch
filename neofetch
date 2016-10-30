@@ -2025,7 +2025,7 @@ getimage() {
 
     # If $img isn't a file or the terminal doesn't support xterm escape sequences,
     # fallback to ascii mode.
-    if [ ! -f "$img" ] || ([ "$no_esc" == 1 ] && [ "$image_backend" != "tycat" ]); then
+    if [ ! -f "$img" ] || [ "$term_width" == 0 ] || ([ "$no_esc" == 1 ] && [ "$image_backend" != "tycat" ]); then
         image="ascii"
         getascii
 
