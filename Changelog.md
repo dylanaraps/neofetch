@@ -91,6 +91,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 - Print kernel name by default
 - Added `kernel_shorthand="tiny"` to only print kernel version.
+- [BSD] Force `kernel_shorthand="tiny"`.
 
 **Desktop Environment**<br \>
 
