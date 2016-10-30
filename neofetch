@@ -266,15 +266,9 @@ gettitle() {
 # Kernel {{{
 
 getkernel() {
-    # Hardcode kernel_shorthand=tiny on BSD systems.
-    case "$os" in
-        "BSD") kernel_shorthand="tiny" ;;
-    esac
-
     case "$kernel_shorthand" in
-        "on")   kernel_flags="-sr" ;;
-        "tiny") kernel_flags="-r" ;;
-        "off")  kernel_flags="-srm" ;;
+        "on")   kernel_flags="-r" ;;
+        "off")  kernel_flags="-sr" ;;
     esac
     kernel="$(uname $kernel_flags)"
 }
@@ -2891,8 +2885,7 @@ usage() { cat << EOF
                                 NOTE This only works on linux.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This is only possible on Linux, macOS, and Solaris
-    --kernel_shorthand          Shorten the output of kernel
-                                Takes: on, tiny, off
+    --kernel_shorthand on/off   Shorten the output of kernel
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
