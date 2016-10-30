@@ -272,9 +272,8 @@ getkernel() {
     esac
 
     case "$kernel_shorthand" in
-        "on")   kernel_flags="-sr" ;;
-        "tiny") kernel_flags="-r" ;;
-        "off")  kernel_flags="-srm" ;;
+        "tiny" | "on")   kernel_flags="-r" ;;
+        "off")  kernel_flags="-sr" ;;
     esac
     kernel="$(uname $kernel_flags)"
 }
