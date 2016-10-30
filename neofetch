@@ -266,6 +266,11 @@ gettitle() {
 # Kernel {{{
 
 getkernel() {
+    # Hardcode kernel_shorthand=tiny on BSD systems.
+    case "$os" in
+        "BSD") kernel_shorthand="tiny" ;;
+    esac
+
     case "$kernel_shorthand" in
         "on")   kernel_flags="-sr" ;;
         "tiny") kernel_flags="-r" ;;
