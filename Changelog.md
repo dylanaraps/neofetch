@@ -84,7 +84,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 
 **Distro**<br \>
 
-- Expanded `distro_shorthand` to macOS and Solaris. **[@konimex](https://github.com/konimex)**
+- Expanded `distro_shorthand` to macOS, BSD and Solaris. **[@konimex](https://github.com/konimex)**
 - Removed `osx_buildversion` and `osx_codename` in favour of `distro_shorthand`. **[@konimex](https://github.com/konimex)**
 
 **Desktop Environment**<br \>
