@@ -1964,67 +1964,65 @@ getimage() {
         ;;
     esac
 
-    # Get terminal width and height
-    if type -p xdotool >/dev/null 2>&1 && \
-        [ "$image_backend" != "iterm2" ]; then
+    if [ -n "$TMUX" ]; then
+        printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+        read_flags="-d c"
 
-        current_window="$(xdotool getactivewindow)"
-        eval "$(xdotool getwindowgeometry --shell "$current_window")"
-        term_height="$HEIGHT"
-        term_width="$WIDTH"
-
-    elif type -p xwininfo >/dev/null 2>&1 && \
-        type -p xdpyinfo >/dev/null 2>&1 || \
-        type -p xprop >/dev/null 2>&1 && \
-        [ "$image_backend" != "iterm2" ]; then
-
-        if type -p xdpyinfo >/dev/null 2>&1; then
-            current_window="$(xdpyinfo | grep focus | grep -E -o 0x[0-9a-f]+)"
-        elif type -p xprop >/dev/null 2>&1; then
-            current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
-        fi
-
-        term_size="$(xwininfo -id "$current_window" | awk -F ': ' '/Width|Height/ {printf $2 " "}')"
-        term_width="${term_size/ *}"
-        term_height="${term_size/${term_width}}"
+    elif [ "$image_backend" == "tycat" ]; then
+        printf "%b%s" "\033}qs\000"
 
     else
-        if [ -n "$TMUX" ]; then
-            printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
-            read_flags="-d c"
-
-        elif [ "$image_backend" == "tycat" ]; then
-            printf "%b%s" "\033}qs\000"
-
-        else
-            printf "%b%s" "\033[14t\033[c"
-            read_flags="-d c"
-        fi
-
-        # The escape code above prints the output AFTER the prompt so this
-        builtin read -s -t 1 ${read_flags} -r term_size
-
-        # Split the string
-        if [ "$image_backend" == "tycat" ]; then
-            term_size=(${term_size//;/ })
-            term_width="$((term_size[2] * term_size[0]))"
-            term_height="$((term_size[3] * term_size[1]))"
-
-        else
-            term_size="${term_size//'['}"
-            term_size="${term_size/';'}"
-            term_size="${term_size/$'\E4'}"
-            term_size="${term_size/t*}"
-            term_height="${term_size/';'*}"
-            term_width="${term_size/*';'}"
-        fi
-
-        [ "${#term_size}" -le 5 ] && no_esc="1"
+        printf "%b%s" "\033[14t\033[c"
+        read_flags="-d c"
     fi
 
-    # If $img isn't a file or the terminal doesn't support xterm escape sequences,
-    # fallback to ascii mode.
-    if [ ! -f "$img" ] || [ "$term_width" -le 10 ] || ([ "$no_esc" == 1 ] && [ "$image_backend" != "tycat" ]); then
+    # The escape code above prints the output AFTER the prompt so this
+    builtin read -s -t 1 ${read_flags} -r term_size
+
+    # Split the string
+    if [ "$image_backend" == "tycat" ]; then
+        term_size=(${term_size//;/ })
+        term_width="$((term_size[2] * term_size[0]))"
+        term_height="$((term_size[3] * term_size[1]))"
+
+    else
+        term_size="${term_size//'['}"
+        term_size="${term_size/';'}"
+        term_size="${term_size/$'\E4'}"
+        term_size="${term_size/t*}"
+        term_height="${term_size/';'*}"
+        term_width="${term_size/*';'}"
+    fi
+
+    # Get terminal width and height if \033[14t is unsupported.
+    if [ "${#term_size}" -le 5 ] && [ "$image_backend" != "tycat" ]; then
+        if type -p xdotool >/dev/null 2>&1 && \
+            [ "$image_backend" != "iterm2" ]; then
+
+            current_window="$(xdotool getactivewindow)"
+            eval "$(xdotool getwindowgeometry --shell "$current_window")"
+            term_height="$HEIGHT"
+            term_width="$WIDTH"
+
+        elif type -p xwininfo >/dev/null 2>&1 && \
+            type -p xdpyinfo >/dev/null 2>&1 || \
+            type -p xprop >/dev/null 2>&1 && \
+            [ "$image_backend" != "iterm2" ]; then
+
+            if type -p xdpyinfo >/dev/null 2>&1; then
+                current_window="$(xdpyinfo | grep focus | grep -E -o 0x[0-9a-f]+)"
+            elif type -p xprop >/dev/null 2>&1; then
+                current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
+            fi
+
+            term_size="$(xwininfo -id "$current_window" | awk -F ': ' '/Width|Height/ {printf $2 " "}')"
+            term_width="${term_size/ *}"
+            term_height="${term_size/${term_width}}"
+        fi
+    fi
+
+    # If $img isn't a file fallback to ascii mode.
+    if [ ! -f "$img" ] || [ "$term_width" -le 10 ]; then
         image="ascii"
         getascii
 
