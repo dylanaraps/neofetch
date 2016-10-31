@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # set -x
-# vim: fdm=marker:noai:ts=4:sw=4
+# vim: fdm=marker:noai:ts=4:sw=4:expandtab
 #
 # Neofetch info about your system
 # https://github.com/dylanaraps/neofetch
@@ -218,7 +218,11 @@ getdistro() {
         ;;
 
         "BSD")
-            distro="$(uname -s)"
+            case "$distro_shorthand" in
+                "tiny" | "on") distro="$(uname -s)" ;;
+                *) distro="$(uname -sr)" ;;
+            esac
+
             distro="${distro/DragonFly/DragonFlyBSD}"
 
             # Workaround for PCBSD as uname still displays FreeBSD.
@@ -270,7 +274,22 @@ getkernel() {
         "on")   kernel_flags="-r" ;;
         "off")  kernel_flags="-sr" ;;
     esac
-    kernel="$(uname $kernel_flags)"
+
+    # Hardcode kernel settings in BSDs
+    case "$os" in
+        "BSD")
+            case "$distro" in
+                "PacBSD"* | "PCBSD"*) kernel="$(uname $kernel_flags)" ;;
+                *)
+                    case "$distro_shorthand" in
+                        "on" | "tiny") kernel=$(uname -r) ;;
+                        *) unset kernel ;;
+                    esac
+                ;;
+            esac
+        ;;
+        *) kernel="$(uname $kernel_flags)" ;;
+    esac
 }
 
 # }}}
@@ -2882,8 +2901,9 @@ usage() { cat << EOF
     --cpu_temp on/off           Hide/Show cpu temperature.
                                 NOTE This only works on linux.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
-                                NOTE: This is only possible on Linux, macOS, and Solaris
+                                NOTE: This option won't work in Windows (Cygwin)
     --kernel_shorthand on/off   Shorten the output of kernel
+                                NOTE: This option won't work in BSDs (except PacBSD and PC-BSD)
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
