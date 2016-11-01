@@ -134,6 +134,8 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 **Memory**<br \>
 
 - [Linux] Correctly calculate used memory.
+    - The output should now match `conky`, `htop` and etc.
+    - Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
 - [NetBSD] Fix memory output for sizes over 4GB. **[@coypoop](https://github.com/coypoop)**
 
 **Shell**<br \>
