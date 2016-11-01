@@ -15,6 +15,8 @@
 
 ## Ascii
 
+- Update Tails ascii art.
+
 
 ## Info
 
