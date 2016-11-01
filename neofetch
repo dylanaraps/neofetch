@@ -2348,13 +2348,10 @@ info() {
 # Prin {{{
 
 prin() {
-    string="$1${2:+: $2}"
+    string="${1//$'\033[0m'}${2:+: $2}"
 
     # If $2 doesn't exist we format $1 as info
-    if [ -z "$2" ]; then
-        local subtitle_color="$info_color"
-        bold=
-    fi
+    [ -z "$2" ] && local subtitle_color="$info_color"
 
     # Format the output
     string="${string/:/${reset}${colon_color}:${info_color}}"
@@ -3193,6 +3190,12 @@ getargs() {
                     for func in "${info[@]}"; do
                         info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" "$func"
                     done
+
+                    info linebreak
+
+                    prin "PRIN TEST" "$(color 1)1$(color 2)2$(color 3)3"
+                    prin "SUBTITLE"
+                    prin "$(color 5)SUBTITLE2"
 
                     info linebreak
                     info cols
