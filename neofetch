@@ -2047,7 +2047,7 @@ getimage() {
     fi
 
     # If $img isn't a file fallback to ascii mode.
-    if [ ! -f "$img" ] || [ "$term_width" -le 10 ]; then
+    if [ ! -f "$img" ] || [ -z "$term_width" ] || [ "$term_width" -le 10 ]; then
         image="ascii"
         getascii
 
