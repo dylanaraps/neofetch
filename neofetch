@@ -593,7 +593,7 @@ getwmtheme() {
             if type -p gsettings >/dev/null 2>&1; then
                 wmtheme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
 
-                [ -z "$wmtheme" ] && \
+                [ -z "${wmtheme//\'}" ] && \
                     wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
 
             elif type -p gconftool-2 >/dev/null 2>&1; then
@@ -1332,7 +1332,7 @@ getstyle() {
                 fi
             ;;
 
-            "Gnome"* | "Unity"* | "Budgie")
+            "Gnome"* | "Unity"* | "Budgie"*)
                 if type -p gsettings >/dev/null 2>&1; then
                     gtk3theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
                     gtk2theme="${gtk3theme}"
