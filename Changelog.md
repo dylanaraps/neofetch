@@ -1,16 +1,9 @@
 ## Contributors
 
 
-## General
-
-
-## Operating System
-
-
-## Packages
-
-
 ## Images
+
+- Fix division by 0 error.
 
 
 ## Ascii
@@ -20,3 +13,17 @@
 
 ## Info
 
+**Prin**<br \>
+
+- Fix color breakage.
+- Fix bold not working.
+
+
+**Terminal**<br \>
+
+- Fix whitespace error.
+
+
+**Terminal Font**<br \>
+
+- [Termite] Fix incorrect Termite font chosen.
