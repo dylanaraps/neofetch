@@ -2599,7 +2599,7 @@ setcolors() {
 
 color() {
     case "$1" in
-        [0-6]) printf "%b%s" "${reset}${bold}\033[3${1}m" ;;
+        [0-6]) printf "%b%s" "${reset}\033[3${1}m" ;;
         7 | "fg") printf "%b%s" "$reset" ;;
         *) printf "%b%s" "\033[38;5;${1}m" ;;
     esac
