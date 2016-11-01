@@ -168,13 +168,13 @@ getdistro() {
 
                 case "$distro_shorthand" in
                     "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
-                    "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
+                    "tiny") distro="${NAME:-${DISTRIB_ID:-"${TAILS_PRODUCT_NAME}"}}" ;;
                     "off") distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
 
                 # Workarounds for distros that go against the os-release standard.
-                [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
-                [ -z "$distro" ] && distro="$(awk -F'=' '{print $2}' /etc/*ease)"
+                [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
+                [ -z "$distro" ] && distro="$(awk -F'=' '{print $2}' /etc/*ease /usr/lib/*ease)"
             fi
             distro="${distro//\"}"
             distro="${distro//\'}"
