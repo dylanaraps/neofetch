@@ -160,26 +160,21 @@ getdistro() {
                 distro="Android $(getprop ro.build.version.release)"
 
             else
-                # Workarounds are included in every shorthand option
+
+                # Source the os-release file
+                for file in /etc/*ease /usr/lib/*ease; do
+                    source "$file" 2>/dev/null
+                done
+
                 case "$distro_shorthand" in
-                    "on")
-                        distro="$(awk -F'=' '/^NAME|VERSION_ID=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_ID|DISTRIB_RELEASE=/ {print $2}' /etc/openwrt_release)"
-                    ;;
-
-                    "tiny")
-                        distro="$(awk -F'=' '/^NAME=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '/^TAILS_PRODUCT_NAME=/ {print $2}' /etc/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_ID=/ {print $2}' /etc/openwrt_release)"
-                    ;;
-
-                    *)
-                        distro="$(awk -F'=' '/^PRETTY_NAME=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '{print $2}' /etc/*ease)"
-                        [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_DESCRIPTION=/ {print $2}' /etc/openwrt_release)"
-                    ;;
+                    "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
+                    "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
+                    "off") distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
+
+                # Workarounds for distros that go against the os-release standard.
+                [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
+                [ -z "$distro" ] && distro="$(awk -F'=' '{print $2}' /etc/*ease)"
             fi
             distro="${distro//\"}"
             distro="${distro//\'}"
