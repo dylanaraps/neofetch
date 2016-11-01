@@ -132,6 +132,12 @@ getdistro() {
                 esac
                 ascii_distro="Windows 10"
 
+            elif [ -f "/etc/redstar-release" ]; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="Red Star OS" ;;
+                    *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
+                esac
+
             elif type -p lsb_release >/dev/null 2>&1; then
                 case "$distro_shorthand" in
                     "on")   lsb_flags="-sir" ;;
@@ -2415,6 +2421,11 @@ colors() {
 
         "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"*)
             setcolors 1 7 3
+        ;;
+
+        "Red Star"*)
+            setcolors 1 7 3
+            ascii_distro="rstar"
         ;;
 
         "FreeBSD"* | "PCBSD"*)
