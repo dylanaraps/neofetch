@@ -3204,7 +3204,7 @@ getargs() {
             -v) verbose="on" ;;
             -vv) set -x; verbose="on" ;;
             --help) usage ;;
-            --version) printf "%s\n" "Neofetch 1.9"; exit ;;
+            --version) printf "%s\n" "Neofetch 2.0"; exit ;;
         esac
 
         shift
