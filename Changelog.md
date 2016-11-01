@@ -1,15 +1,6 @@
 ## Contributors
 
 
-## General
-
-
-## Operating System
-
-
-## Packages
-
-
 ## Images
 
 - Fix division by 0 error.
@@ -22,7 +13,17 @@
 
 ## Info
 
-- prin: Fix color breakage.
-- prin: Fix bold not working.
-- term: Fix whitespace error.
-- termfont: [Termite] Fix incorrect Termite font chosen.
+**Prin**<br \>
+
+- Fix color breakage.
+- Fix bold not working.
+
+
+**Terminal**<br \>
+
+- Fix whitespace error.
+
+
+**Terminal Font**<br \>
+
+- [Termite] Fix incorrect Termite font chosen.
