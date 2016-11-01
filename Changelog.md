@@ -27,3 +27,8 @@
 **Terminal Font**<br \>
 
 - [Termite] Fix incorrect Termite font chosen.
+
+
+**Theme**<br \>
+
+- [Budgie] Fix incorrect GTK Theme/Icons
