@@ -1520,7 +1520,7 @@ gettermfont() {
         ;;
 
         "termite")
-            termfont="$(awk -F '= ' '!/^($|#|;)/ && /font/ {printf $2; exit}' "${XDG_CONFIG_HOME}/termite/config")"
+            termfont="$(awk -F '= ' '/^font/ {a=$0} END{print $2}' "${XDG_CONFIG_HOME}/termite/config")"
         ;;
 
         "mintty")
