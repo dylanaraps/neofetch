@@ -524,6 +524,7 @@ getde() {
         *)
             de="${XDG_CURRENT_DESKTOP/i3}"
             de="${de/'X-'}"
+            de="${de/Budgie:GNOME/Budgie}"
         ;;
     esac
 
