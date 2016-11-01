@@ -2423,9 +2423,9 @@ colors() {
             setcolors 1 7 3
         ;;
 
-        "Red Star"*)
+        "Red Star"* | "Redstar")
             setcolors 1 7 3
-            ascii_distro="rstar"
+            ascii_distro="redstar"
         ;;
 
         "FreeBSD"* | "PCBSD"*)
