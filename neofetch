@@ -160,7 +160,6 @@ getdistro() {
                 distro="Android $(getprop ro.build.version.release)"
 
             else
-
                 # Source the os-release file
                 for file in /etc/*ease /usr/lib/*ease; do
                     source "$file" 2>/dev/null
