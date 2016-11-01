@@ -6,7 +6,6 @@
 - **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
 - **[@koreacomputercenter](https://github.com/koreacomputercenter)**
 
-<br \>
 
 ## General
 
@@ -19,7 +18,7 @@
 
 ## Operating System
 
-![android]()
+![android](https://u.teknik.io/4XdJy.png)
 
 - Added support for Android.
     - Dependencies:
