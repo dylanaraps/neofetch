@@ -4,6 +4,7 @@
 - **[@iandrewt](https://github.com/iandrewt)**
 - **[@coypoop](https://github.com/coypoop)**
 - **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
+- **[@koreacomputercenter](https://github.com/koreacomputercenter)**
 
 <br \>
 
@@ -27,6 +28,7 @@
 - Added support for Bitrig. **[@konimex](https://github.com/konimex)**
 - Added support for Sparky Linux.
 - Added support for Porteus. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
+- Added support for Red Star OS. **[@koreacomputercenter](https://github.com/koreacomputercenter)**
 
 
 ## Packages
