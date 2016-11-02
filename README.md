@@ -349,6 +349,10 @@ Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/de
 2. Install `neofetch` through cydia.
 
 
+### Android (Termux)
+
+You can install it using `apt install neofetch`
+
 ### Manual
 
 1. Download the latest source at https://github.com/dylanaraps/neofetch

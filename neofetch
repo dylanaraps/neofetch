@@ -1927,6 +1927,10 @@ getascii() {
         elif [ -f "/usr/local/share/neofetch/ascii/distro/${ascii/ *}" ]; then
             ascii="/usr/local/share/neofetch/ascii/distro/${ascii/ *}"
 
+
+        elif [ -f "/data/data/com.termux/files/usr/share/neofetch/ascii/distro/${ascii/ *}" ]; then
+            ascii="/data/data/com.termux/files/usr/share/neofetch/ascii/distro/${ascii/ *}"
+
         else
             getscriptdir 2>/dev/null
 
