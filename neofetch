@@ -2406,6 +2406,10 @@ colors() {
             setcolors 6 4
         ;;
 
+        "BlankOn"*)
+            setcolors 1 7
+        ;;
+
         "CentOS"*)
             setcolors 3 2 4 5 7
         ;;
