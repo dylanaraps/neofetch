@@ -11,6 +11,11 @@
 - [Cursor Position] Fix cursor position in URxvt when using terminal padding.
 
 
+## Operating System
+
+- Added support for BlankOn Linux.
+
+
 ## Images
 
 - Fix division by 0 error.
