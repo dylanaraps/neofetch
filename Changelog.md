@@ -6,6 +6,11 @@
 - Neofetch is now in Termux`s repos.
 
 
+## General
+
+- [Cursor Position] Fix cursor position in URxvt when using terminal padding.
+
+
 ## Images
 
 - Fix division by 0 error.
