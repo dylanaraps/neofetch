@@ -44,6 +44,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [Slackware](#slackware)
     - [macOS](#macos)
     - [iOS](#ios-1)
+    - [Android (Termux)](#android-termux)
     - [Manual](#manual)
 - [Post Install](#post-install)
 - [Usage](#usage)
@@ -205,6 +206,8 @@ Note: The cydia package installs these dependencies for you.
 
 Note: I recommend installing `termux` from the Play Store or F-Droid. Termux provides you with a fully working Linux environment, doesn't require root acess and includes all dependencies.
 
+Note2: Neofetch is in Termux's official repos.
+
 
 <!-- }}} -->
 
@@ -232,6 +235,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Slackware](#slackware)
 - [macOS](#mac-os-x)
 - [iOS](##ios-1)
+- [Android (Termux)](#android-termux)
 - [Manual](#manual)
 
 
@@ -347,6 +351,11 @@ Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/de
 
 1. Add `http://dylanaraps.com/repo` to your cydia sources.
 2. Install `neofetch` through cydia.
+
+
+### Android (Termux)
+
+You can install it using `apt install neofetch`
 
 
 ### Manual

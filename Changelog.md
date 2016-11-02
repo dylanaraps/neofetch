@@ -1,6 +1,11 @@
 ## Contributors
 
 
+## Packages
+
+- Neofetch is now in Termux`s repos.
+
+
 ## Images
 
 - Fix division by 0 error.
