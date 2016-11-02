@@ -38,6 +38,7 @@
 
 - [Budgie] Fix incorrect GTK Theme/Icons
 
-**Window Manager Theme**>br \>
+
+**Window Manager Theme**<br \>
 
 - [Budgie (Mutter)] Don't print WM Theme.
