@@ -44,6 +44,7 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
     - [Slackware](#slackware)
     - [macOS](#macos)
     - [iOS](#ios-1)
+    - [Android (Termux)](#android-termux)
     - [Manual](#manual)
 - [Post Install](#post-install)
 - [Usage](#usage)
@@ -234,6 +235,7 @@ https://github.com/dylanaraps/neofetch/wiki/Following-HEAD
 - [Slackware](#slackware)
 - [macOS](#mac-os-x)
 - [iOS](##ios-1)
+- [Android (Termux)](#android-termux)
 - [Manual](#manual)
 
 
