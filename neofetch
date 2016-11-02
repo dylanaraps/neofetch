@@ -2712,6 +2712,9 @@ getdefaultconfig() {
     elif [ -f "/usr/local/share/neofetch/config" ]; then
         default_config="/usr/local/share/neofetch/config"
 
+    elif [ -f "/data/data/com.termux/files/usr/share/neofetch/config" ]; then
+        default_config="/data/data/com.termux/files/usr/share/neofetch/config"
+
     else
         getscriptdir
         default_config="${script_dir}/config/config"
