@@ -579,7 +579,6 @@ getwmtheme() {
     [ -z "$de" ] && getde
 
     case "$wm"  in
-        'BudgieWM') wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)" ;;
         'E16') wmtheme="$(awk -F "= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
         'Sawfish') wmtheme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "$HOME/.sawfish/custom")" ;;
 
@@ -589,7 +588,7 @@ getwmtheme() {
             wmtheme="$detheme (${wmtheme})"
         ;;
 
-        'Compiz' | 'Mutter'* | 'GNOME Shell' | 'Gala')
+        'Compiz' | 'Mutter' | 'GNOME Shell' | 'Gala')
             if type -p gsettings >/dev/null 2>&1; then
                 wmtheme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
 
