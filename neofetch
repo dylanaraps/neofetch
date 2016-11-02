@@ -2842,7 +2842,7 @@ dynamicprompt() {
     # Calculate image height in terminal cells.
     if [ "$image" != "ascii" ]; then
         gettermpadding
-        lines="$(((height + ${border:-0} + ${yoffset:-0}) / font_height))"
+        lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height))"
     else
         lines="$((lines-=2))"
     fi
