@@ -205,6 +205,8 @@ Note: The cydia package installs these dependencies for you.
 
 Note: I recommend installing `termux` from the Play Store or F-Droid. Termux provides you with a fully working Linux environment, doesn't require root acess and includes all dependencies.
 
+Note2: Neofetch is in Termux's official repos.
+
 
 <!-- }}} -->
 
@@ -352,6 +354,7 @@ Download the files from [SlackBuilds](https://slackbuilds.org/repository/14.2/de
 ### Android (Termux)
 
 You can install it using `apt install neofetch`
+
 
 ### Manual
 
