@@ -1073,7 +1073,11 @@ getmemory() {
                 "NetBSD"*) memtotal="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
                 *) memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))" ;;
             esac
-            memused="$((memtotal - memfree))"
+
+            case "$distro" in
+                "OpenBSD"*) memused="$(($(vmstat | awk 'END {printf $4}') / 1024))" ;;
+                *) memused="$((memtotal - memfree))" ;;
+            esac
         ;;
 
         "Solaris")
