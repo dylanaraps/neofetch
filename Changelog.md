@@ -1,5 +1,7 @@
 ## Contributors
 
+- **[@konimex](https://github.com/konimex)**
+- **[@fornwall](https://github.com/fornwall)**
 
 ## Packages
 
@@ -9,6 +11,8 @@
 ## General
 
 - [Cursor Position] Fix cursor position in URxvt when using terminal padding.
+- [Termux] Fix default ascii location. **[@konimex](https://github.com/konimex)**
+- [Termux] Fix default config location. **[@fornwall](https://github.com/fornwall)**
 
 
 ## Operating System
