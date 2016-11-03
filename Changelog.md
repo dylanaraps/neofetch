@@ -2,6 +2,7 @@
 
 - **[@konimex](https://github.com/konimex)**
 - **[@fornwall](https://github.com/fornwall)**
+- **[@Head-on-a-Stick](https://github.com/Head-on-a-Stick)**
 
 ## Packages
 
@@ -56,3 +57,7 @@
 **Window Manager Theme**<br \>
 
 - [Budgie (Mutter)] Don't print WM Theme.
+
+**Memory**<br \>
+
+- [OpenBSD] Fixed used memory usage. **[@Head-on-a-Stick](https://github.com/Head-on-a-Stick)**
