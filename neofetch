@@ -98,7 +98,7 @@ model() {
         ;;
 
         "BSD")
-            model="$(sysctl -n hw.vendor hw.product 2>/dev/null)"
+            model="$(sysctl -n hw.vendor hw.product)"
         ;;
 
         "Windows")
@@ -133,9 +133,9 @@ distro() {
             if grep -q 'Microsoft' /proc/version >/dev/null 2>&1 || \
                grep -q 'Microsoft' /proc/sys/kernel/osrelease >/dev/null 2>&1; then
                 case "$distro_shorthand" in
-                    "on")   distro="$(lsb_release -sir 2>/dev/null) [Windows 10]" ;;
+                    "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
-                    *)      distro="$(lsb_release -sd 2>/dev/null) on Windows 10" ;;
+                    *)      distro="$(lsb_release -sd) on Windows 10" ;;
                 esac
                 ascii_distro="Windows 10"
 
@@ -151,7 +151,7 @@ distro() {
                     "tiny") lsb_flags="-si" ;;
                     *)      lsb_flags="-sd" ;;
                 esac
-                distro="$(lsb_release $lsb_flags 2>/dev/null)"
+                distro="$(lsb_release $lsb_flags)"
 
             elif type -p guix >/dev/null 2>&1; then
                 distro="GuixSD"
@@ -445,13 +445,13 @@ packages() {
                 packages="$(($(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l) - 1))"
 
             type -p port >/dev/null 2>&1 && \
-                packages="$((packages + $(port installed 2>/dev/null | wc -l) - 1))"
+                packages="$((packages + $(port installed | wc -l) - 1))"
 
             type -p brew >/dev/null 2>&1 && \
-                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l) - 1))"
+                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))"
 
             type -p pkgin >/dev/null 2>&1 && \
-                packages="$((packages + $(pkgin list 2>/dev/null | wc -l)))"
+                packages="$((packages + $(pkgin list | wc -l)))"
         ;;
 
         "BSD")
@@ -548,12 +548,12 @@ de() {
     esac
 
     if [ -n "$DISPLAY" ] && [ -z "$de" ]; then
-        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/' 2>/dev/null)"
+        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
         case "$de" in
             "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
             *"TDE_FULL_SESSION"*) de="Trinity" ;;
-            *"MUFFIN"*) de="$(cinnamon --version 2>/dev/null)"; de="${de:-Cinnamon}" ;;
+            *"MUFFIN"*) de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
             *"xfce4"*) de="XFCE4" ;;
             *"xfce5"*) de="XFCE5" ;;
         esac
@@ -568,8 +568,8 @@ de() {
 
 wm() {
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
-        id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}' 2>/dev/null)"
-        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t 2>/dev/null)"
+        id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
+        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
         wm="${wm/*_NET_WM_NAME = }"
         wm="${wm/\"}"
         wm="${wm/\"*}"
@@ -625,10 +625,10 @@ wmtheme() {
 
         "Metacity"*)
             if [ "$de" == "Deepin" ]; then
-                wmtheme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme 2>/dev/null)"
+                wmtheme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme)"
 
             else
-                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme 2>/dev/null)"
+                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
             fi
         ;;
 
@@ -696,7 +696,7 @@ wmtheme() {
             path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
             path+="/Windows/CurrentVersion/Themes/CurrentTheme"
 
-            wmtheme="$(head -n1 "$path" 2>/dev/null)"
+            wmtheme="$(head -n1 "$path")"
             wmtheme="${wmtheme##*\\}"
             wmtheme="${wmtheme%.*}"
         ;;
@@ -1038,7 +1038,7 @@ gpu() {
         "BSD" | "Solaris")
             case "$distro" in
                 "FreeBSD"* | "DragonFlyBSD"* | "PacBSD"*)
-                    gpu="$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")"
+                    gpu="$(pciconf -lv | grep -B 4 "VGA" | grep "device")"
                     gpu="${gpu/*device*= }"
                     gpu="${gpu//\'}"
                 ;;
@@ -1139,13 +1139,13 @@ song() {
 
     case "${player/*\/}" in
         "mpd"*)
-            song="$(mpc current 2>/dev/null)"
-            state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
+            song="$(mpc current)"
+            state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}')"
         ;;
 
         "cmus"*)
             IFS=$'\n'
-            song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" 2>/dev/null | sort))
+            song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" | sort))
             state="${song[0]/status }"
             artist="${song[1]/tag artist }"
             title="${song[2]/tag title }"
@@ -1153,8 +1153,8 @@ song() {
         ;;
 
         "mocp"*)
-            song="$(mocp -Q "%artist - %song" 2>/dev/null)"
-            state="$(mocp -Q "%state" 2>/dev/null)"
+            song="$(mocp -Q "%artist - %song")"
+            state="$(mocp -Q "%state")"
         ;;
 
         "spotify"*)
@@ -1180,8 +1180,8 @@ song() {
         ;;
 
         "google play"*)
-            song="$(gpmdp-remote current 2>/dev/null)"
-            state="$(gpmdp-remote status 2>/dev/null)"
+            song="$(gpmdp-remote current)"
+            state="$(gpmdp-remote status)"
         ;;
 
         "itunes"*)
@@ -1264,7 +1264,7 @@ resolution() {
                 resolution="${resolution//\.[0-9][0-9]}"
 
             elif type -p xdpyinfo >/dev/null 2>&1; then
-                resolution="$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')"
+                resolution="$(xdpyinfo | awk '/dimensions:/ {printf $2}')"
             fi
         ;;
 
@@ -1293,10 +1293,10 @@ resolution() {
         ;;
 
         "Windows")
-            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution /value 2>/dev/null)"
+            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution /value)"
             width="${width/CurrentHorizontalResolution'='/}"
 
-            height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value 2>/dev/null)"
+            height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value)"
             height="${height/CurrentVerticalResolution'='/}"
 
             [ "$width" ] && \
@@ -1622,7 +1622,7 @@ disk() {
     esac
 
     # Get the disk info
-    disk="$(df $df_flags 2>/dev/null | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
+    disk="$(df $df_flags | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
 
     # Format the output
     disk_used="${disk#*:}"
@@ -1773,15 +1773,15 @@ localip() {
 
 publicip() {
     if type -p dig >/dev/null 2>&1; then
-        publicip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2>/dev/null)"
+        publicip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
     fi
 
     if [ -z "$publicip" ] && type -p curl >/dev/null 2>&1; then
-        publicip="$(curl --max-time 10 -w '\n' "$public_ip_host" 2>/dev/null)"
+        publicip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
     fi
 
     if [ -z "$publicip" ] && type -p wget >/dev/null 2>&1; then
-        publicip="$(wget -T 10 -qO- "$public_ip_host" 2>/dev/null; printf "%s")"
+        publicip="$(wget -T 10 -qO- "$public_ip_host"; printf "%s")"
     fi
 
     [ "$publicip" ] && prin "${1:-Public IP}" "$publicip"
