@@ -1618,7 +1618,7 @@ getdisk() {
             esac
         ;;
 
-        "Mac OS X" | "BSD")
+        "Mac OS X" | "BSD" | "Haiku")
             case "$distro" in
                 "FreeBSD"* | *"OS X"* | "Mac"* )
                     df_flags="-l -H /"
