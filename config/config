@@ -15,40 +15,42 @@ export LANG=C
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 printinfo() {
-    info title
-    info underline
+    title
+    underline
 
-    info "Model" model
-    info "OS" distro
-    info "Kernel" kernel
-    info "Uptime" uptime
-    info "Packages" packages
-    info "Shell" shell
-    info "Resolution" resolution
-    info "DE" de
-    info "WM" wm
-    info "WM Theme" wmtheme
-    info "Theme" theme
-    info "Icons" icons
-    info "Terminal" term
-    info "Terminal Font" termfont
-    info "CPU" cpu
-    info "GPU" gpu
-    info "Memory" memory
+#   Function    Subtitle
+    model       "Model"
+    distro      "OS"
+    kernel      "Kernel"
+    uptime      "Uptime"
+    packages    "Packages"
+    shell       "Shell"
+    resolution  "Resolution"
+    de          "DE"
+    wm          "WM"
+    wmtheme     "WM Theme"
+    theme       "Theme"
+    icons       "Icons"
+    term        "Terminal"
+    termfont    "Terminal Font"
+    cpu         "CPU"
+    gpu         "GPU"
+    memory      "Memory"
 
-    # info "CPU Usage" cpu_usage
-    # info "Disk" disk
-    # info "Battery" battery
-    # info "Font" font
-    # info "Song" song
-    # info "Local IP" localip
-    # info "Public IP" publicip
-    # info "Users" users
-    # info "Birthday" birthday
+# Remove the '#' to enable these
+    # cpu_usage   "CPU Usage"
+    # disk        "Disk"
+    # battery     "Battery"
+    # font        "Font"
+    # song        "Song"
+    # localip     "Local IP"
+    # publicip    "Public IP"
+    # users       "Users"
+    # birthday    "Birthday"
 
-    info linebreak
-    info cols
-    info linebreak
+    linebreak
+    cols
+    linebreak
 }
 
 
