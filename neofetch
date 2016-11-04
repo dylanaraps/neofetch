@@ -2279,7 +2279,7 @@ displayimage() {
                 # appearing in specific terminal emulators.
                 sleep 0.05
                 printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
-                $w3m_img_path -bg "$background_color" 2>/dev/null || padding="\033[0C"
+                $w3m_img_path -bg "$background_color" & 2>/dev/null || padding="\033[0C"
             ;;
 
             "iterm2")
@@ -2863,7 +2863,7 @@ dynamicprompt() {
     # Calculate image height in terminal cells.
     if [ "$image" != "ascii" ]; then
         termpadding
-        lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height))"
+        lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height + 2))"
     else
         lines="$((lines-=2))"
     fi
@@ -3275,7 +3275,7 @@ main() {
         image 2>/dev/null
 
         # Display the image if enabled
-        displayimage
+        displayimage >/dev/null
 
         # Set cursor position next to ascii art
         printf "\033[$((${lines:-4} - ${prompt_loc:-4}))A"
@@ -3293,7 +3293,7 @@ main() {
 
         # w3m-img: Draw the image a second time to fix
         # rendering issues in specific terminal emulators.
-        [ "$image_backend" == "w3m" ] && displayimage
+        [ "$image_backend" == "w3m" ] && displayimage >/dev/null
     fi
 
     # Re-enable line wrap
