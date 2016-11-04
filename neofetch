@@ -1461,6 +1461,7 @@ getterm() {
             case "$TERM_PROGRAM" in
                 "iTerm.app") term="iTerm2" ;;
                 "Terminal.app") term="Apple Terminal" ;;
+                "Hyper") term="HyperTerm" ;;
                 *) term="${TERM_PROGRAM/\.app}" ;;
             esac
             return
@@ -1539,6 +1540,10 @@ gettermfont() {
             termfont="$(strings ${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg | awk '/^font\.name$/{print a}{a=$0}')"
             termfont="${termfont/.pcf}"
             termfont="${termfont/:*}"
+        ;;
+
+        "HyperTerm")
+            termfont="$(awk -F "," '/fontFamily/ {a=$1} END{print a}' "${HOME}/.hyper.js" | awk -F "'" '{a=$2} END{print a}')"
         ;;
     esac
 
