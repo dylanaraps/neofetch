@@ -1739,8 +1739,8 @@ getbattery() {
         ;;
 
         "Haiku")
-            battery0full="$(awk -F '[^0-9]*' 'NR==5 {print $4}' /dev/power/acpi_battery/0)"
-            battery0now="$(awk -F '[^0-9]*' 'NR==2 {print $4}' /dev/power/acpi_battery/0)"
+            battery0full="$(awk -F '[^0-9]*' 'NR==2 {print $4}' /dev/power/acpi_battery/0)"
+            battery0now="$(awk -F '[^0-9]*' 'NR==5 {print $4}' /dev/power/acpi_battery/0)"
             battery="$((battery0full / battery0now * 100))%"
         ;;
     esac
