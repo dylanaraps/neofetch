@@ -3202,23 +3202,23 @@ args() {
 
                 printinfo() {
                     if [ "$TRAVIS_OS_NAME" ]; then
-                        info linebreak
-                        info linebreak
+                        linebreak
+                        linebreak
                     fi
 
                     for func in "${info[@]}"; do
-                        info "$(tr '[:lower:]' '[:upper:]' <<< "$func")" "$func"
+                        $func
                     done
 
-                    info linebreak
+                    linebreak
 
                     prin "PRIN TEST" "$(color 1)1$(color 2)2$(color 3)3"
                     prin "SUBTITLE"
                     prin "$(color 5)SUBTITLE2"
 
-                    info linebreak
-                    info cols
-                    info linebreak
+                    linebreak
+                    cols
+                    linebreak
                     printf "%b%s" "\033[$(tput lines)H"
                 }
             ;;
