@@ -1681,7 +1681,7 @@ battery() {
                         "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
                     esac
 
-                    prin "${subtitle}${bat: -1}" "$battery"
+                    prin "${1:-Battery}${bat: -1}" "$battery"
                 done
             fi
             unset battery
