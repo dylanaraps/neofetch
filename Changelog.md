@@ -14,6 +14,8 @@
 - [Cursor Position] Fix cursor position in URxvt when using terminal padding.
 - [Termux] Fix default ascii location. **[@konimex](https://github.com/konimex)**
 - [Termux] Fix default config location. **[@fornwall](https://github.com/fornwall)**
+- If a function fails to detect info, let the user know in verbose mode. (`-v`)
+- Removed `--test` in favor of a separate config file. Travis.ci now uses `neofetch --config travis` instead of a hacked together arg.
 
 
 ## Operating System
