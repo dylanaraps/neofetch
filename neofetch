@@ -2279,7 +2279,7 @@ displayimage() {
                 # appearing in specific terminal emulators.
                 sleep 0.05
                 printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
-                $w3m_img_path -bg "$background_color" & 2>/dev/null || padding="\033[0C"
+                $w3m_img_path -bg "$background_color" >/dev/null & 2>&1 || padding="\033[0C"
             ;;
 
             "iterm2")
@@ -3275,7 +3275,7 @@ main() {
         image 2>/dev/null
 
         # Display the image if enabled
-        displayimage >/dev/null
+        displayimage
 
         # Set cursor position next to ascii art
         printf "\033[$((${lines:-4} - ${prompt_loc:-4}))A"
