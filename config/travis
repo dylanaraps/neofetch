@@ -5,6 +5,11 @@
 # https://github.com/dylanaraps/neofetch
 
 printinfo() {
+    if [ "$TRAVIS_OS_NAME" ]; then
+        info linebreak
+        info linebreak
+    fi
+
     info title
     info underline
 
