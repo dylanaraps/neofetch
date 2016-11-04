@@ -316,53 +316,54 @@ getuptime() {
             uptime="$(uptime -u)"
             uptime="${uptime/up }"
         ;;
-    *)
-        # Get uptime in seconds
-        case "$os" in
-            "Linux" | "Windows")
-                seconds="$(< /proc/uptime)"
-                seconds="${seconds/.*}"
-            ;;
 
-            "Mac OS X" | "iPhone OS" | "BSD")
-                boot="$(sysctl -n kern.boottime)"
-                boot="${boot/'{ sec = '}"
-                boot="${boot/,*}"
+        *)
+            # Get uptime in seconds
+            case "$os" in
+                "Linux" | "Windows")
+                    seconds="$(< /proc/uptime)"
+                    seconds="${seconds/.*}"
+                ;;
 
-                # Get current date in seconds
-                now="$(date +%s)"
-                seconds="$((now - boot))"
-            ;;
+                "Mac OS X" | "iPhone OS" | "BSD")
+                    boot="$(sysctl -n kern.boottime)"
+                    boot="${boot/'{ sec = '}"
+                    boot="${boot/,*}"
 
-            "Solaris")
-                seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
-                seconds="${seconds/.*}"
-            ;;
-        esac
+                    # Get current date in seconds
+                    now="$(date +%s)"
+                    seconds="$((now - boot))"
+                ;;
 
-        days="$((seconds / 60 / 60 / 24)) days"
-        hours="$((seconds / 60 / 60 % 24)) hours"
-        minutes="$((seconds / 60 % 60)) minutes"
+                "Solaris")
+                    seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
+                    seconds="${seconds/.*}"
+                ;;
+            esac
 
-        case "$days" in
-            "0 days") unset days ;;
-            "1 days") days="${days/s}" ;;
-        esac
+            days="$((seconds / 60 / 60 / 24)) days"
+            hours="$((seconds / 60 / 60 % 24)) hours"
+            minutes="$((seconds / 60 % 60)) minutes"
 
-        case "$hours" in
-            "0 hours") unset hours ;;
-            "1 hours") hours="${hours/s}" ;;
-        esac
+            case "$days" in
+                "0 days") unset days ;;
+                "1 days") days="${days/s}" ;;
+            esac
 
-        case "$minutes" in
-            "0 minutes") unset minutes ;;
-            "1 minutes") minutes="${minutes/s}" ;;
-        esac
+            case "$hours" in
+                "0 hours") unset hours ;;
+                "1 hours") hours="${hours/s}" ;;
+            esac
 
-        uptime="${days:+$days, }${hours:+$hours, }${minutes}"
-        uptime="${uptime%', '}"
-        uptime="${uptime:-${seconds} seconds}"
-    ;;
+            case "$minutes" in
+                "0 minutes") unset minutes ;;
+                "1 minutes") minutes="${minutes/s}" ;;
+            esac
+
+            uptime="${days:+$days, }${hours:+$hours, }${minutes}"
+            uptime="${uptime%', '}"
+            uptime="${uptime:-${seconds} seconds}"
+        ;;
     esac
 
     # Make the output of uptime smaller.
@@ -1735,6 +1736,12 @@ getbattery() {
             battery="${battery/EstimatedChargeRemaining'='}"
             [ "$battery" ] && \
                 battery+="%"
+        ;;
+
+        "Haiku")
+            battery0full="$(awk -F '[^0-9]*' 'NR==2 {print $4}' /dev/power/acpi_battery/0)"
+            battery0now="$(awk -F '[^0-9]*' 'NR==5 {print $4}' /dev/power/acpi_battery/0)"
+            battery="$((battery0full / battery0now * 100))%"
         ;;
     esac
 
