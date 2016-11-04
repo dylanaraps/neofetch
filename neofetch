@@ -1461,6 +1461,7 @@ getterm() {
             case "$TERM_PROGRAM" in
                 "iTerm.app") term="iTerm2" ;;
                 "Terminal.app") term="Apple Terminal" ;;
+                "Hyper") term="HyperTerm" ;;
                 *) term="${TERM_PROGRAM/\.app}" ;;
             esac
             return
