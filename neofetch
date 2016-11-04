@@ -2581,10 +2581,10 @@ setcolors() {
     c6="$(color "$6")${ascii_bold}"
 
     if [ "${colors[0]}" == "distro" ]; then
-        title_color="$c1"
+        title_color="$(color "$1")"
         at_color="$reset"
         underline_color="$reset"
-        subtitle_color="$c2"
+        subtitle_color="$(color "$2")"
         colon_color="$reset"
         info_color="$reset"
 
@@ -2633,7 +2633,7 @@ bold() {
 
     case "$bold" in
         "on") bold="\033[1m" ;;
-        "off") bold="" ;;
+        *) unset bold ;;
     esac
 }
 
