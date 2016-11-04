@@ -2309,7 +2309,10 @@ info() {
     fi
 
     # If the output is empty, don't print anything
-    [ -z "$output" ] && return
+    if [ -z "$output" ]; then
+        err "Info: Couldn't detect $subtitle"
+        return
+    fi
 
     # Trim whitespace
     output="$(trim "$output")"
