@@ -48,6 +48,8 @@
 **Terminal Font**<br \>
 
 - [Termite] Fix incorrect Termite font chosen.
+- [Termite] Simplify `awk` command.
+- [xfce4-terminal] Simplify `awk` command.
 
 
 **Theme**<br \>
