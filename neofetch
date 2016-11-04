@@ -1520,11 +1520,11 @@ gettermfont() {
         ;;
 
         "xfce4-terminal")
-            termfont="$(awk -F '=' '!/^($|\/\/)/ && /FontName/ {printf $2}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
+            termfont="$(awk -F '=' '/^FontName/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
         ;;
 
         "termite")
-            termfont="$(awk -F '= ' '/^font/ {a=$0} END{print $2}' "${XDG_CONFIG_HOME}/termite/config")"
+            termfont="$(awk -F '= ' '/^font/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/termite/config")"
         ;;
 
         "mintty")
