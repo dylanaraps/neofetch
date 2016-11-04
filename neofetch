@@ -3293,7 +3293,7 @@ main() {
 
         # w3m-img: Draw the image a second time to fix
         # rendering issues in specific terminal emulators.
-        [ "$image_backend" == "w3m" ] && displayimage >/dev/null
+        [ "$image_backend" == "w3m" ] && displayimage
     fi
 
     # Re-enable line wrap
