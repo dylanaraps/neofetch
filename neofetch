@@ -130,8 +130,8 @@ distro() {
 
     case "$os" in
         "Linux" )
-            if grep -q 'Microsoft' /proc/version >/dev/null 2>&1 || \
-               grep -q 'Microsoft' /proc/sys/kernel/osrelease >/dev/null 2>&1; then
+            if grep -q 'Microsoft' /proc/version >/dev/null || \
+               grep -q 'Microsoft' /proc/sys/kernel/osrelease >/dev/null; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
@@ -145,7 +145,7 @@ distro() {
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
 
-            elif type -p lsb_release >/dev/null 2>&1; then
+            elif type -p lsb_release >/dev/null; then
                 case "$distro_shorthand" in
                     "on")   lsb_flags="-sir" ;;
                     "tiny") lsb_flags="-si" ;;
@@ -153,10 +153,10 @@ distro() {
                 esac
                 distro="$(lsb_release $lsb_flags)"
 
-            elif type -p guix >/dev/null 2>&1; then
+            elif type -p guix >/dev/null; then
                 distro="GuixSD"
 
-            elif type -p crux >/dev/null 2>&1; then
+            elif type -p crux >/dev/null; then
                 distro="$(crux)"
                 case "$distro_shorthand" in
                     "on")   distro="${distro//version}" ;;
@@ -392,51 +392,51 @@ uptime() {
 packages() {
     case "$os" in
         "Linux" | "iPhone OS" | "Solaris")
-            type -p pacman >/dev/null 2>&1 && \
+            type -p pacman >/dev/null && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
-            type -p dpkg >/dev/null 2>&1 && \
+            type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
 
-            type -p /sbin/pkgtool >/dev/null 2>&1 && \
+            type -p /sbin/pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
 
-            type -p rpm >/dev/null 2>&1 && \
+            type -p rpm >/dev/null && \
                 packages="$((packages+=$(rpm -qa | wc -l)))"
 
-            type -p xbps-query >/dev/null 2>&1 && \
+            type -p xbps-query >/dev/null && \
                 packages="$((packages+=$(xbps-query -l | wc -l)))"
 
-            type -p pkginfo >/dev/null 2>&1 && \
+            type -p pkginfo >/dev/null && \
                 packages="$((packages+=$(pkginfo -i | wc -l)))"
 
-            type -p pisi >/dev/null 2>&1 && \
+            type -p pisi >/dev/null && \
                 packages="$((packages+=$(pisi list-installed | wc -l)))"
 
-            if type -p pkg >/dev/null 2>&1; then
+            if type -p pkg >/dev/null; then
                 packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
                 [ "$packages" == "0" ] && packages="$((packages+=$(pkg list | wc -l)))"
             fi
 
-            type -p emerge >/dev/null 2>&1 && \
+            type -p emerge >/dev/null && \
                 packages="$((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))"
 
-            type -p nix-env >/dev/null 2>&1 && \
+            type -p nix-env >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))"
 
-            type -p guix >/dev/null 2>&1 && \
+            type -p guix >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /gnu/store/*/ | wc -l)))"
 
-            type -p apk >/dev/null 2>&1 && \
+            type -p apk >/dev/null && \
                 packages="$((packages+=$(apk info | wc -l)))"
 
-            type -p opkg >/dev/null 2>&1 && \
+            type -p opkg >/dev/null && \
                 packages="$((packages+=$(opkg list-installed | wc -l)))"
 
-            type -p pacman-g2 >/dev/null 2>&1 && \
+            type -p pacman-g2 >/dev/null && \
                 packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
 
-            type -p cave >/dev/null 2>&1 && \
+            type -p cave >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)))"
         ;;
 
@@ -444,13 +444,13 @@ packages() {
             [ -d "/usr/local/bin" ] && \
                 packages="$(($(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l) - 1))"
 
-            type -p port >/dev/null 2>&1 && \
+            type -p port >/dev/null && \
                 packages="$((packages + $(port installed | wc -l) - 1))"
 
-            type -p brew >/dev/null 2>&1 && \
+            type -p brew >/dev/null && \
                 packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))"
 
-            type -p pkgin >/dev/null 2>&1 && \
+            type -p pkgin >/dev/null && \
                 packages="$((packages + $(pkgin list | wc -l)))"
         ;;
 
@@ -460,9 +460,9 @@ packages() {
                 "PacBSD"*) packages="$(pacman -Qq --color never | wc -l)" ;;
 
                 *)
-                    if type -p pkg_info >/dev/null 2>&1; then
+                    if type -p pkg_info >/dev/null; then
                         packages="$(pkg_info | wc -l)"
-                    elif type -p pkg >/dev/null 2>&1; then
+                    elif type -p pkg >/dev/null; then
                         packages="$(pkg info | wc -l)"
                     fi
                 ;;
@@ -612,13 +612,13 @@ wmtheme() {
         ;;
 
         "Compiz" | "Mutter" | "GNOME Shell" | "Gala")
-            if type -p gsettings >/dev/null 2>&1; then
+            if type -p gsettings >/dev/null; then
                 wmtheme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
 
                 [ -z "${wmtheme//\'}" ] && \
                     wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
 
-            elif type -p gconftool-2 >/dev/null 2>&1; then
+            elif type -p gconftool-2 >/dev/null; then
                 wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
             fi
         ;;
@@ -633,7 +633,7 @@ wmtheme() {
         ;;
 
         "E17" | "Enlightenment")
-            if type -p eet >/dev/null 2>&1; then
+            if type -p eet >/dev/null; then
                 wmtheme="$(eet -d "$HOME/.e/e/config/standard/e.cfg" config | awk '/value \"file\" string.*.edj/ {print $4}')"
                 wmtheme="${wmtheme##*/}"
                 wmtheme="${wmtheme%.*}"
@@ -1255,7 +1255,7 @@ song() {
 resolution() {
     case "$os" in
         "Linux" | "BSD" | "Solaris")
-            if type -p xrandr >/dev/null 2>&1; then
+            if type -p xrandr >/dev/null; then
                 case "$refresh_rate" in
                     "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
                     "off") resolution="$(xrandr --nograb --current | awk '/\*/ {printf $1 ", "}')" ;;
@@ -1263,14 +1263,14 @@ resolution() {
                 resolution="${resolution//\*}"
                 resolution="${resolution//\.[0-9][0-9]}"
 
-            elif type -p xdpyinfo >/dev/null 2>&1; then
+            elif type -p xdpyinfo >/dev/null; then
                 resolution="$(xdpyinfo | awk '/dimensions:/ {printf $2}')"
             fi
         ;;
 
         "Mac OS X")
-            if type -p screenresolution >/dev/null 2>&1; then
-                resolution="$(screenresolution get 2>&1 | awk '/Display/ {printf $6 "Hz, "}')"
+            if type -p screenresolution >/dev/null; then
+                resolution="$(screenresolution get | awk '/Display/ {printf $6 "Hz, "}')"
                 resolution="${resolution//x??@/ @ }"
 
             else
@@ -1365,18 +1365,18 @@ style() {
             ;;
 
             *"Cinnamon")
-                if type -p gsettings >/dev/null 2>&1; then
+                if type -p gsettings >/dev/null; then
                     gtk3theme="$(gsettings get org.cinnamon.desktop.interface "$gsettings")"
                     gtk2theme="${gtk3theme}"
                 fi
             ;;
 
             "Gnome"* | "Unity"* | "Budgie"*)
-                if type -p gsettings >/dev/null 2>&1; then
+                if type -p gsettings >/dev/null; then
                     gtk3theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
                     gtk2theme="${gtk3theme}"
 
-                elif type -p gconftool-2 >/dev/null 2>&1; then
+                elif type -p gconftool-2 >/dev/null; then
                     gtk2theme="$(gconftool-2 -g /desktop/gnome/interface/"$gconf")"
                 fi
             ;;
@@ -1387,7 +1387,7 @@ style() {
             ;;
 
             "Xfce"*)
-                type -p xfconf-query >/dev/null 2>&1 && \
+                type -p xfconf-query >/dev/null && \
                     gtk2theme="$(xfconf-query -c xsettings -p "$xfconf")"
             ;;
         esac
@@ -1412,7 +1412,7 @@ style() {
             if [ -f "$XDG_CONFIG_HOME/gtk-3.0/settings.ini" ]; then
                 gtk3theme="$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")"
 
-            elif type -p gsettings >/dev/null 2>&1; then
+            elif type -p gsettings >/dev/null; then
                 gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
 
             elif [ -f "/usr/share/gtk-3.0/settings.ini" ]; then
@@ -1772,15 +1772,15 @@ localip() {
 }
 
 publicip() {
-    if type -p dig >/dev/null 2>&1; then
+    if type -p dig >/dev/null; then
         publicip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
     fi
 
-    if [ -z "$publicip" ] && type -p curl >/dev/null 2>&1; then
+    if [ -z "$publicip" ] && type -p curl >/dev/null; then
         publicip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
     fi
 
-    if [ -z "$publicip" ] && type -p wget >/dev/null 2>&1; then
+    if [ -z "$publicip" ] && type -p wget >/dev/null; then
         publicip="$(wget -T 10 -qO- "$public_ip_host"; printf "%s")"
     fi
 
@@ -1914,13 +1914,13 @@ cols() {
 wallpaper() {
     case "$os" in
         "Linux" | "BSD")
-            if type -p feh >/dev/null 2>&1 && [ -f "$HOME/.fehbg" ]; then
+            if type -p feh >/dev/null && [ -f "$HOME/.fehbg" ]; then
                 img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
 
-            elif type -p nitrogen >/dev/null 2>&1; then
+            elif type -p nitrogen >/dev/null; then
                 img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
 
-            elif type -p gsettings >/dev/null 2>&1; then
+            elif type -p gsettings >/dev/null; then
                 # Get DE if user has disabled the function.
                 [ -z "$de" ] && de >/dev/null
 
@@ -2042,7 +2042,7 @@ ascii() {
 
 image() {
     # Fallback to ascii mode if imagemagick isn't installed.
-    type -p convert >/dev/null 2>&1 || image="ascii"
+    type -p convert >/dev/null || image="ascii"
 
     case "$image" in
         "wall") wallpaper ;;
@@ -2089,7 +2089,7 @@ image() {
 
     # Get terminal width and height if \033[14t is unsupported.
     if [ "${#term_size}" -le 5 ] && [ "$image_backend" != "tycat" ]; then
-        if type -p xdotool >/dev/null 2>&1 && \
+        if type -p xdotool >/dev/null && \
             [ "$image_backend" != "iterm2" ]; then
 
             current_window="$(xdotool getactivewindow)"
@@ -2097,14 +2097,14 @@ image() {
             term_height="$HEIGHT"
             term_width="$WIDTH"
 
-        elif type -p xwininfo >/dev/null 2>&1 && \
-            type -p xdpyinfo >/dev/null 2>&1 || \
-            type -p xprop >/dev/null 2>&1 && \
+        elif type -p xwininfo >/dev/null && \
+            type -p xdpyinfo >/dev/null || \
+            type -p xprop >/dev/null && \
             [ "$image_backend" != "iterm2" ]; then
 
-            if type -p xdpyinfo >/dev/null 2>&1; then
+            if type -p xdpyinfo >/dev/null; then
                 current_window="$(xdpyinfo | grep focus | grep -E -o 0x[0-9a-f]+)"
-            elif type -p xprop >/dev/null 2>&1; then
+            elif type -p xprop >/dev/null; then
                 current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
             fi
 
@@ -2323,7 +2323,7 @@ takescrot() {
 # Screenshot Upload {{{
 
 scrot_upload() {
-    if ! type -p curl >/dev/null 2>&1; then
+    if ! type -p curl >/dev/null; then
         printf "%s\n" "[!] Install curl to upload images"
         return
     fi
@@ -2820,13 +2820,13 @@ kdeconfigdir() {
     if [ -n "$KDE_CONFIG_DIR" ]; then
         kde_config_dir="$KDE_CONFIG_DIR"
 
-    elif type -p kde5-config >/dev/null 2>&1; then
+    elif type -p kde5-config >/dev/null; then
         kde_config_dir="$(kde5-config --localprefix)"
 
-    elif type -p kde4-config >/dev/null 2>&1; then
+    elif type -p kde4-config >/dev/null; then
         kde_config_dir="$(kde4-config --localprefix)"
 
-    elif type -p kde-config >/dev/null 2>&1; then
+    elif type -p kde-config >/dev/null; then
         kde_config_dir="$(kde-config --localprefix)"
     fi
 }
