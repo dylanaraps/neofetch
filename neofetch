@@ -2884,7 +2884,7 @@ dynamicprompt() {
     fi
 
     # Add some padding
-    printf "\n\n"
+    printf "\n\n\n"
 }
 
 # }}}
