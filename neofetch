@@ -112,6 +112,8 @@ model() {
             model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
         ;;
     esac
+
+    [ "$model" ] && prin "${1:-Model}" "$model"
 }
 
 # }}}
@@ -261,6 +263,8 @@ distro() {
 
     [ "${ascii_distro:-auto}" == "auto" ] && \
         ascii_distro="$(trim "$distro")"
+
+    [ "$distro" ] && prin "${1:-Distro}" "$distro"
 }
 
 # }}}
@@ -269,6 +273,8 @@ distro() {
 
 title() {
     title="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}@${HOSTNAME:-$(hostname)}"
+
+   [ "$title" ] && prin "Title" "$title"
 }
 
 # }}}
@@ -296,6 +302,8 @@ kernel() {
         ;;
         *) kernel="$(uname $kernel_flags)" ;;
     esac
+
+    [ "$kernel" ] && prin "${1:-Kernel}" "$kernel"
 }
 
 # }}}
@@ -368,6 +376,8 @@ uptime() {
             uptime="${uptime//,}"
         ;;
     esac
+
+    [ "$uptime" ] && prin "${1:-Uptime}" "$uptime"
 }
 
 # }}}
@@ -464,6 +474,8 @@ packages() {
     esac
 
     [ "$packages" == "0" ] && unset packages
+
+    [ "$packages" ] && prin "${1:-Packages}" "$packages"
 }
 
 # }}}
@@ -506,6 +518,8 @@ shell() {
         esac
         shell="${shell/\(*\)}"
     fi
+
+    [ "$shell" ] && prin "${1:-Shell}" "$shell"
 }
 
 # }}}
@@ -539,6 +553,8 @@ de() {
             *"xfce5"*) de="XFCE5" ;;
         esac
     fi
+
+    [ "$de" ] && prin "${1:-DE}" "$de"
 }
 
 # }}}
@@ -568,6 +584,8 @@ wm() {
             ;;
         esac
     fi
+
+    [ "$wm" ] && prin "${1:-WM}" "$wm"
 }
 
 # }}}
@@ -575,8 +593,8 @@ wm() {
 # Window Manager Theme {{{
 
 wmtheme() {
-    [ -z "$wm" ] && wm
-    [ -z "$de" ] && de
+    [ -z "$wm" ] && wm >/dev/null
+    [ -z "$de" ] && de >/dev/null
 
     case "$wm"  in
         "E16") wmtheme="$(awk -F "= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
@@ -691,6 +709,8 @@ wmtheme() {
 
     wmtheme="${wmtheme//\'}"
     [ "$version" -ge 4 ] && wmtheme="${wmtheme^}"
+
+    [ "$wmtheme" ] && prin "${1:-WM Theme}" "$wmtheme"
 }
 
 # }}}
@@ -885,6 +905,8 @@ cpu() {
             esac
         ;;
     esac
+
+    [ "$cpu" ] && prin "${1:-CPU}" "$cpu"
 }
 
 # }}}
@@ -921,6 +943,8 @@ cpu_usage() {
         "barinfo") cpu_usage="$(bar $cpu_usage 100) ${cpu_usage}%" ;;
         *) cpu_usage="${cpu_usage}%" ;;
     esac
+
+    [ "$cpu_usage" ] && prin "${1:-CPU Usage}" "$cpu_usage"
 }
 
 # }}}
@@ -1032,6 +1056,8 @@ gpu() {
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
     fi
+
+    [ "$gpu" ] && prin "${1:-GPU}" "$gpu"
 }
 
 # }}}
@@ -1094,6 +1120,8 @@ memory() {
         "infobar") memory="${memory} $(bar "${memused}" "${memtotal}")" ;;
         "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
     esac
+
+    [ "$memory" ] && prin "${1:-Memory}" "$memory"
 }
 
 # }}}
@@ -1210,7 +1238,8 @@ song() {
         else
             prin "$subtitle" "$song"
         fi
-        unset song
+    else
+        prin "${1:-Song}" "$song"
     fi
 }
 
@@ -1271,6 +1300,8 @@ resolution() {
     esac
 
     resolution="${resolution%,*}"
+
+    [ "$resolution" ] && prin "${1:-Resolution}" "$resolution"
 }
 
 # }}}
@@ -1310,7 +1341,7 @@ style() {
 
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
         # Get DE if user has disabled the function.
-        [ -z "$de" ] && de
+        [ -z "$de" ] && de >/dev/null
 
         case "$de" in
             "KDE"*)
@@ -1436,16 +1467,17 @@ style() {
 
 theme() {
     style theme
+    [ "$theme" ] && "${1:-Theme}" "$theme"
 }
 
 icons() {
     style icons
-    icons="$theme"
+    [ "$theme" ] && "${1:-Icons}" "$theme"
 }
 
 font() {
     style font
-    font="$theme"
+    [ "$theme" ] && "${1:-Font}" "$theme"
 }
 
 # }}}
@@ -1493,6 +1525,8 @@ term() {
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="${name##*/}" ;;
     esac
+
+    [ "$term" ] && prin "${1:-Terminal}" "$term"
 }
 
 # }}}
@@ -1500,7 +1534,7 @@ term() {
 # Terminal Emulator Font {{{
 
 termfont() {
-    [ -z "$term" ] && term
+    [ -z "$term" ] && term >/dev/null
 
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
@@ -1543,6 +1577,8 @@ termfont() {
     esac
 
     [ "$version" -ge 4 ] && termfont="${termfont^}"
+
+    [ "$termfont" ] && prin "${1:-Terminal Font}" "$termfont"
 }
 
 # }}}
@@ -1608,6 +1644,8 @@ disk() {
         "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
         "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
     esac
+
+    [ "$disk" ] && prin "${1:-Disk}" "$disk"
 }
 
 # }}}
@@ -1691,6 +1729,8 @@ battery() {
         "infobar") battery="${battery} $(bar "${battery/'%'*}" 100)" ;;
         "barinfo") battery="$(bar "${battery/'%'*}" 100) ${battery}" ;;
     esac
+
+    [ "$battery" ] && prin "${1:-Battery}" "$battery"
 }
 
 # }}}
@@ -1716,6 +1756,8 @@ localip() {
             localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
         ;;
     esac
+
+    [ "$localip" ] && prin "${1:-Local IP}" "$localip"
 }
 
 publicip() {
@@ -1730,6 +1772,8 @@ publicip() {
     if [ -z "$publicip" ] && type -p wget >/dev/null 2>&1; then
         publicip="$(wget -T 10 -qO- "$public_ip_host" 2>/dev/null; printf "%s")"
     fi
+
+    [ "$publicip" ] && prin "${1:-Public IP}" "$publicip"
 }
 
 # }}}
@@ -1739,6 +1783,8 @@ publicip() {
 users() {
     users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
     users="${users%\,*}"
+
+    [ "$users" ] && prin "${1:-Users}" "$users"
 }
 
 # }}}
@@ -1807,6 +1853,8 @@ birthday() {
     # Toggle showing the time
     [ "$birthday_time" == "off" ] && \
         birthday="${birthday/??:??*}"
+
+    [ "$birthday" ] && prin "${1:-Birthday}" "$birthday"
 }
 
 # }}}
@@ -1839,6 +1887,8 @@ cols() {
         # Add newlines to the string.
         cols="${cols%%'nl'}"
         cols="${cols//nl/\\n${padding}${zws}}"
+
+        prin "$cols"
     fi
 }
 
@@ -1861,7 +1911,7 @@ wallpaper() {
 
             elif type -p gsettings >/dev/null 2>&1; then
                 # Get DE if user has disabled the function.
-                [ -z "$de" ] && de
+                [ -z "$de" ] && de >/dev/null
 
                 case "$de" in
                     "MATE"*) img="$(gsettings get org.mate.background picture-filename 2>/dev/null)" ;;
@@ -2292,80 +2342,29 @@ scrot_upload() {
 
 # Text Formatting {{{
 
-# Info {{{
-
-info() {
-    # $1 is the subtitle
-    subtitle="$1"
-
-    # Call the function and update variable
-    if [ -z "$2" ]; then
-        $1 2>/dev/null
-        eval output="\$${1}"
-
-    else
-        $2 2>/dev/null
-        eval output="\$${2}"
-    fi
-
-    # If the output is empty, don't print anything
-    [ -z "$output" ] && return
-
-    # Trim whitespace
-    output="$(trim "$output")"
-
-    case "$1" in
-        title)
-            string="${title_color}${bold}${output}"
-            string="${string/@/${at_color}@${title_color}${bold}}"
-            length="${#output}"
-        ;;
-
-        underline)
-            string="${underline_color}${output}"
-        ;;
-
-        *)
-            string="${subtitle_color}${bold}${subtitle}${reset}"
-            string+="${colon_color}: ${info_color}${output}"
-            length="$((${#subtitle} +  ${#output} + 2))"
-        ;;
-    esac
-
-    # If there's no subtitle don't print one
-    [ -z "$2" ] && string="${string/*: }"
-
-    # Print the string
-    printf "%b%s\n" "${padding}${zws}${string}${reset} "
-
-    # Calculate info height
-    info_height="$((info_height+=1))"
-
-    # Fix rendering issues with w3m and lines that
-    # wrap to the next line by adding a max line
-    # length.
-    if [ "$image" != "off" ] && [ "$image" != "ascii" ] && [ "$1" != "cols" ]; then
-        padding_num="${padding/\\033\[}"
-        output="$(printf "%.$((columns - ${padding_num/C} - gap - ${#subtitle}))s" "$output")"
-    fi
-}
-
-# }}}
-
 # Prin {{{
 
 prin() {
     string="${1//$'\033[0m'}${2:+: $2}"
+    string="$(trim "$string")"
 
     # If $2 doesn't exist we format $1 as info
     [ -z "$2" ] && local subtitle_color="$info_color"
 
     # Format the output
-    string="${string/:/${reset}${colon_color}:${info_color}}"
-    string="${subtitle_color}${bold}${string}"
+    case "$1" in
+        "Title")
+            length="${#2}"
+            string="${title_color}${bold}${2}"
+            string="${string/@/${at_color}@${title_color}${bold}}"
+        ;;
 
-    # Trim whitespace
-    string="$(trim "$string")"
+        *)
+            length="${#string}"
+            string="${string/:/${reset}${colon_color}:${info_color}}"
+            string="${subtitle_color}${bold}${string}"
+        ;;
+    esac
 
     # Print the info
     printf "%b%s\n" "${padding}${zws}${string}${reset} "
@@ -2387,13 +2386,11 @@ prin() {
 # Underline {{{
 
 underline() {
-    case "$underline_enabled" in
-        "on")
-            underline="$(printf %"$length"s)"
-            underline="${underline// /$underline_char}"
-        ;;
-        "off") underline="" ;;
-    esac
+    if [ "$underline_enabled" == "on" ]; then
+        underline="$(printf %"$length"s)"
+        underline="${underline// /$underline_char}"
+        prin "$underline"
+    fi
 }
 
 # }}}
@@ -2638,6 +2635,8 @@ linebreak() {
 
     # Calculate info height
     info_height="$((info_height+=1))"
+
+    prin "$linebreak"
 }
 
 # }}}
@@ -2835,7 +2834,7 @@ kdeconfigdir() {
 # URxvt.
 
 termpadding() {
-    [ -z "$term" ] && term
+    [ -z "$term" ] && term >/dev/null
 
     case "$term" in
         "URxvt"*)
