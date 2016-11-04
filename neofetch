@@ -3272,7 +3272,7 @@ main() {
             w3m_img_path
 
         # Get the image src
-        image
+        image 2>/dev/null
 
         # Display the image if enabled
         displayimage
