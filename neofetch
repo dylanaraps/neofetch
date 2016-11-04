@@ -2308,14 +2308,14 @@ info() {
         eval output="\$${2}"
     fi
 
+    # Trim whitespace
+    output="$(trim "$output")"
+
     # If the output is empty, don't print anything
     if [ -z "$output" ]; then
         err "Info: Couldn't detect $subtitle"
         return
     fi
-
-    # Trim whitespace
-    output="$(trim "$output")"
 
     case "$1" in
         title)
@@ -2637,7 +2637,7 @@ bold() {
 # Linebreak {{{
 
 getlinebreak() {
-    linebreak=" "
+    linebreak="​ "
 
     # Calculate info height
     info_height="$((info_height+=1))"
