@@ -121,7 +121,12 @@ model() {
 # Distro {{{
 
 distro() {
-    [ "$distro" ] && return
+    # We run distro early for the ascii art.
+    # This prevents us running the entire function twice.
+    if [ "$distro" ]; then
+        prin "${1:-Distro}" "$distro"
+        return
+    fi
 
     case "$os" in
         "Linux" )
@@ -3242,7 +3247,7 @@ main() {
     defaultconfig 2>/dev/null
     checkoldflags
     args "$@"
-    distro
+    distro >/dev/null
 
     # Get colors and bold
     bold
@@ -3280,7 +3285,7 @@ main() {
     fi
 
     # Print the info
-    printinfo
+    printinfo 2>/dev/null
 
     # Prompt calculation
     if [ "$image" != "off" ]; then
