@@ -28,7 +28,8 @@
 
 ## Ascii
 
-- Update Tails ascii art.
+- [Tails] Update ascii art.
+- [OpenBSD] Made ascii art thinner
 
 
 ## Info
