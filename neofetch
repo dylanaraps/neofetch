@@ -30,6 +30,7 @@ getos() {
         *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
         "CYGWIN"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
+        "Haiku") os="Haiku" ;;
         *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
     esac
 }
@@ -247,6 +248,10 @@ getdistro() {
             esac
             distro="${distro/\(*}"
         ;;
+
+        "Haiku")
+            distro="$(uname -sv | awk '{print $1 " " $2}')"
+        ;;
     esac
 
     # Get architecture
@@ -297,51 +302,63 @@ getkernel() {
 # Uptime {{{
 
 getuptime() {
-    # Get uptime in seconds
+
+    # Since Haiku's uptime cannot be fetched in seconds, a case outside
+    # the usual case is needed
     case "$os" in
-        "Linux" | "Windows")
-            seconds="$(< /proc/uptime)"
-            seconds="${seconds/.*}"
+        "Haiku")
+            uptime="$(uptime -u)"
+            uptime="${uptime/up }"
         ;;
 
-        "Mac OS X" | "iPhone OS" | "BSD")
-            boot="$(sysctl -n kern.boottime)"
-            boot="${boot/'{ sec = '}"
-            boot="${boot/,*}"
+        *)
+            # Get uptime in seconds
+            case "$os" in
+                "Linux" | "Windows")
+                    seconds="$(< /proc/uptime)"
+                    seconds="${seconds/.*}"
+                ;;
 
-            # Get current date in seconds
-            now="$(date +%s)"
-            seconds="$((now - boot))"
+                "Mac OS X" | "iPhone OS" | "BSD")
+                    boot="$(sysctl -n kern.boottime)"
+                    boot="${boot/'{ sec = '}"
+                    boot="${boot/,*}"
+
+                    # Get current date in seconds
+                    now="$(date +%s)"
+                    seconds="$((now - boot))"
+                ;;
+
+                "Solaris")
+                    seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
+                    seconds="${seconds/.*}"
+                ;;
+            esac
+
+            days="$((seconds / 60 / 60 / 24)) days"
+            hours="$((seconds / 60 / 60 % 24)) hours"
+            minutes="$((seconds / 60 % 60)) minutes"
+
+            case "$days" in
+                "0 days") unset days ;;
+                "1 days") days="${days/s}" ;;
+            esac
+
+            case "$hours" in
+                "0 hours") unset hours ;;
+                "1 hours") hours="${hours/s}" ;;
+            esac
+
+            case "$minutes" in
+                "0 minutes") unset minutes ;;
+                "1 minutes") minutes="${minutes/s}" ;;
+            esac
+
+            uptime="${days:+$days, }${hours:+$hours, }${minutes}"
+            uptime="${uptime%', '}"
+            uptime="${uptime:-${seconds} seconds}"
         ;;
-
-        "Solaris")
-            seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
-            seconds="${seconds/.*}"
-        ;;
     esac
-
-    days="$((seconds / 60 / 60 / 24)) days"
-    hours="$((seconds / 60 / 60 % 24)) hours"
-    minutes="$((seconds / 60 % 60)) minutes"
-
-    case "$days" in
-        "0 days") unset days ;;
-        "1 days") days="${days/s}" ;;
-    esac
-
-    case "$hours" in
-        "0 hours") unset hours ;;
-        "1 hours") hours="${hours/s}" ;;
-    esac
-
-    case "$minutes" in
-        "0 minutes") unset minutes ;;
-        "1 minutes") minutes="${minutes/s}" ;;
-    esac
-
-    uptime="${days:+$days, }${hours:+$hours, }${minutes}"
-    uptime="${uptime%', '}"
-    uptime="${uptime:-${seconds} seconds}"
 
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
@@ -454,6 +471,10 @@ getpackages() {
             # Count chocolatey packages
             [ -d "/cygdrive/c/ProgramData/chocolatey/lib" ] && \
                 packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
+        ;;
+
+        "Haiku")
+            packages="$(ls -1 /boot/system/package-links | wc -l)"
         ;;
     esac
 
@@ -839,6 +860,24 @@ getcpu() {
 
             cpu="$cpu @ ${speed}GHz"
         ;;
+
+        "Haiku")
+            cpu="$(sysinfo -cpu | awk -F '\\"' '/CPU #0/ {print $2}')"
+            cpu="${cpu/@*}"
+            speed="$(sysinfo -cpu | awk '/running at/ {print $NF; exit}')"
+            speed="${speed/MHz}"
+            speed="$((speed / 100))"
+            cores="$(sysinfo -cpu | grep -c 'CPU #')"
+
+            # Fix for speed under 1ghz
+            if [ -z ] "${speed:1}"; then
+                speed="0.${speed}"
+            else
+                speed="${speed:0:1}.${speed:1}"
+            fi
+
+            cpu="$cpu @ ${speed}GHz"
+        ;;
     esac
 
     # Remove uneeded patterns from cpu output
@@ -1019,6 +1058,10 @@ getgpu() {
             gpu="$(wmic path Win32_VideoController get caption /value)"
             gpu="${gpu/Caption'='}"
         ;;
+
+        "Haiku")
+            gpu="$(listdev | grep -A2 -e 'device Display controller' | awk -F':' '/device beef/ {print $2}')"
+        ;;
     esac
 
     if [ "$gpu_brand" == "off" ]; then
@@ -1078,6 +1121,12 @@ getmemory() {
             memtotal="$(prtconf | grep Memory | head -1 | awk 'BEGIN {FS=" "} {print $3}')"
             memfree="$(($(sar -r 1 1 | tail -1 | awk 'BEGIN {FS=" "} {print $2}') / 1024))"
             memused="$((memtotal - memfree))"
+        ;;
+
+        "Haiku")
+            memtotal=$(($(sysinfo -mem | head -n1 | cut -d'/' -f3 | tr -d ' ' | tr -d ')') / 1024 / 1024))
+            memused="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
+            memused="$((${memused/max} / 1024 / 1024))"
         ;;
     esac
     memory="${memused}MB / ${memtotal}MB"
@@ -1261,6 +1310,14 @@ getresolution() {
 
             [ "$width" ] && \
                 resolution="${width}x${height}"
+        ;;
+
+        "Haiku")
+            resolution="$(screenmode | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
+
+            case "$refresh_rate" in
+                "off") resolution="${resolution/ @*}" ;;
+            esac
         ;;
     esac
 
@@ -1556,7 +1613,7 @@ getdisk() {
             esac
         ;;
 
-        "Mac OS X" | "BSD")
+        "Mac OS X" | "BSD" | "Haiku")
             case "$distro" in
                 "FreeBSD"* | *"OS X"* | "Mac"* )
                     df_flags="-l -H /"
@@ -1674,6 +1731,12 @@ getbattery() {
             [ "$battery" ] && \
                 battery+="%"
         ;;
+
+        "Haiku")
+            battery0full="$(awk -F '[^0-9]*' 'NR==2 {print $4}' /dev/power/acpi_battery/0)"
+            battery0now="$(awk -F '[^0-9]*' 'NR==5 {print $4}' /dev/power/acpi_battery/0)"
+            battery="$((battery0full / battery0now * 100))%"
+        ;;
     esac
 
     case "$battery_state" in
@@ -1708,6 +1771,11 @@ getlocalip() {
 
         "Windows")
             localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
+        ;;
+
+        "Haiku")
+            localip="$(ifconfig | awk -F ': ' '/Bcast/ {print $2}')"
+            localip="${localip/', Bcast'}"
         ;;
     esac
 }
@@ -1787,6 +1855,11 @@ getbirthday() {
 
         "Solaris")
             birthday="$(ls -alct --full-time /var/sadm/system/logs/install_log | awk '{printf $6 " " $7}')"
+            date_cmd="$(date -d"$birthday" "$birthday_format")"
+        ;;
+
+        "Haiku")
+            birthday="$(ls -alctd --full-time /boot | awk '{printf $6 " " $7}')"
             date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
     esac
@@ -2548,6 +2621,10 @@ colors() {
 
         "Windows"*)
             setcolors 1 2 4 3
+        ;;
+
+        "Haiku"*)
+            setcolors 2 0
         ;;
 
         "Raspbian"* | *)
