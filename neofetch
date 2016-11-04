@@ -2732,6 +2732,7 @@ defaultconfig() {
     else
         scriptdir
         default_config="${script_dir}/config/config"
+        travis_config="${script_dir}/config/travis"
     fi
 
     if source "$default_config"; then
@@ -2750,6 +2751,11 @@ userconfig() {
     if [ -f "$config_file" ]; then
         source "$config_file"
         err "Config: Sourced user config    ($config_file)"
+        return
+
+    elif [ "$config_file" == "travis" ]; then
+        source "$travis_config"
+        err "Config: Sourced user config    ($travis_config)"
         return
     fi
     mkdir -p "$XDG_CONFIG_HOME/neofetch/"
@@ -3025,8 +3031,6 @@ usage() { cat << EOF
     --config none               Launch the script without a config file
     --help                      Print this text and exit
     --version                   Show neofetch version
-    --test                      Launch the script with all functions / options enabled.
-                                This should only be used for testing purposes, ie Travis.CI.
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
 
@@ -3195,39 +3199,6 @@ args() {
                     *) config_file="$2"; config="on"; userconfig 2>/dev/null ;;
                 esac
             ;;
-            --test)
-                info=(title underline model distro kernel uptime packages shell resolution de wm wmtheme theme icons cpu cpu_usage gpu memory font disk battery song localip publicip users birthday term termfont)
-
-                refresh_rate="on"
-                shell_version="on"
-                cpu_display="infobar"
-                memory_display="infobar"
-                disk_display="infobar"
-                cpu_temp="on"
-
-                printinfo() {
-                    if [ "$TRAVIS_OS_NAME" ]; then
-                        linebreak
-                        linebreak
-                    fi
-
-                    for func in "${info[@]}"; do
-                        $func
-                    done
-
-                    linebreak
-
-                    prin "PRIN TEST" "$(color 1)1$(color 2)2$(color 3)3"
-                    prin "SUBTITLE"
-                    prin "$(color 5)SUBTITLE2"
-
-                    linebreak
-                    cols
-                    linebreak
-                    printf "%b%s" "\033[$(tput lines)H"
-                }
-            ;;
-
             -v) verbose="on" ;;
             -vv) set -x; verbose="on" ;;
             --help) usage ;;

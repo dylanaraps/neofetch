@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# vim:fdm=marker
+#
+# Neofetch config file for travis.ci
+# https://github.com/dylanaraps/neofetch
+
+printinfo() {
+    if [ "$TRAVIS_OS_NAME" ]; then
+        info linebreak
+        info linebreak
+    fi
+
+    info title
+    info underline
+
+    info "Model" model
+    info "OS" distro
+    info "Kernel" kernel
+    info "Uptime" uptime
+    info "Packages" packages
+    info "Shell" shell
+    info "Resolution" resolution
+    info "DE" de
+    info "WM" wm
+    info "WM Theme" wmtheme
+    info "Theme" theme
+    info "Icons" icons
+    info "Terminal" term
+    info "Terminal Font" termfont
+    info "CPU" cpu
+    info "GPU" gpu
+    info "Memory" memory
+
+    info "CPU Usage" cpu_usage
+    info "Disk" disk
+    info "Battery" battery
+    info "Font" font
+    info "Song" song
+    info "Local IP" localip
+    info "Public IP" publicip
+    info "Users" users
+    info "Birthday" birthday
+
+    info linebreak
+    info cols
+    info linebreak
+}
+
+refresh_rate="on"
+shell_version="on"
+cpu_display="infobar"
+memory_display="infobar"
+disk_display="infobar"
+cpu_temp="on"
