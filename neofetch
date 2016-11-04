@@ -1467,17 +1467,17 @@ style() {
 
 theme() {
     style theme
-    [ "$theme" ] && "${1:-Theme}" "$theme"
+    [ "$theme" ] && prin "${1:-Theme}" "$theme"
 }
 
 icons() {
     style icons
-    [ "$theme" ] && "${1:-Icons}" "$theme"
+    [ "$theme" ] && prin "${1:-Icons}" "$theme"
 }
 
 font() {
     style font
-    [ "$theme" ] && "${1:-Font}" "$theme"
+    [ "$theme" ] && prin "${1:-Font}" "$theme"
 }
 
 # }}}
@@ -1498,6 +1498,22 @@ term() {
             return
         ;;
 
+        *) term_loop
+    esac
+
+    case "${name// }" in
+        "${SHELL/*\/}" | *"sh" | "tmux"* | "screen") term_loop "$parent" ;;
+        "login"* | *"Login"* | "init") term="$(tty)" ;;
+        "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term ;;
+        "gnome-terminal-") term="gnome-terminal" ;;
+        *) term="${name##*/}" ;;
+    esac
+
+    [ "$term" ] && prin "${1:-Terminal}" "$term"
+}
+
+term_loop() {
+    case "$os" in
         "Windows")
             parent="$(ps -p ${1:-$PPID} | awk '{printf $2}')"
             parent="${parent/'PPID'}"
@@ -1517,16 +1533,6 @@ term() {
             name="$(ps -p $parent -o comm=)"
         ;;
     esac
-
-    case "${name// }" in
-        "${SHELL/*\/}" | *"sh" | "tmux"* | "screen") term "$parent" ;;
-        "login"* | *"Login"* | "init") term="$(tty)" ;;
-        "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term ;;
-        "gnome-terminal-") term="gnome-terminal" ;;
-        *) term="${name##*/}" ;;
-    esac
-
-    [ "$term" ] && prin "${1:-Terminal}" "$term"
 }
 
 # }}}
