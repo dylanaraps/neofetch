@@ -4,6 +4,14 @@
 
 ## Contributors
 
+- **[@konimex](https://github.com/konimex)**
+
+
+## Ascii
+
+- Added Netrunner. **[@konimex](https://github.com/konimex)**
+- Added Korora. **[@konimex](https://github.com/konimex)**
+
 
 ## Info
 
