@@ -9,6 +9,7 @@
 
 ## Ascii
 
+- Added generic Linux ascii art to display if neofetch doesn't have the right logo for your distro.
 - Added Netrunner. **[@konimex](https://github.com/konimex)**
 - Added Korora. **[@konimex](https://github.com/konimex)**
 
