@@ -1455,6 +1455,7 @@ getterm() {
             case "$TERM_PROGRAM" in
                 "iTerm.app") term="iTerm2" ;;
                 "Terminal.app") term="Apple Terminal" ;;
+                "Hyper") term="HyperTerm" ;;
                 *) term="${TERM_PROGRAM/\.app}" ;;
             esac
             return
@@ -1533,6 +1534,10 @@ gettermfont() {
             termfont="$(strings ${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg | awk '/^font\.name$/{print a}{a=$0}')"
             termfont="${termfont/.pcf}"
             termfont="${termfont/:*}"
+        ;;
+
+        "Hyper"*)
+            termfont="$(awk -F "," '/fontFamily/ {a=$1} END{print a}' "${HOME}/.hyper.js" | awk -F "'" '{a=$2} END{print a}')"
         ;;
     esac
 
@@ -2302,14 +2307,14 @@ info() {
         eval output="\$${2}"
     fi
 
+    # Trim whitespace
+    output="$(trim "$output")"
+
     # If the output is empty, don't print anything
     if [ -z "$output" ]; then
         err "Info: Couldn't detect $subtitle"
         return
     fi
-
-    # Trim whitespace
-    output="$(trim "$output")"
 
     case "$1" in
         title)
@@ -2631,7 +2636,7 @@ bold() {
 # Linebreak {{{
 
 getlinebreak() {
-    linebreak=" "
+    linebreak="​ "
 
     # Calculate info height
     info_height="$((info_height+=1))"
@@ -3189,7 +3194,7 @@ getargs() {
             -v) verbose="on" ;;
             -vv) set -x; verbose="on" ;;
             --help) usage ;;
-            --version) printf "%s\n" "Neofetch 2.0"; exit ;;
+            --version) printf "%s\n" "Neofetch 1.9.1"; exit ;;
         esac
 
         shift
