@@ -2555,8 +2555,21 @@ colors() {
             setcolors 1 2 4 3
         ;;
 
-        "Raspbian"* | *)
+        "Raspbian"*)
             setcolors 2 1
+        ;;
+
+        "Linux")
+            setcolors fg 8 3
+        ;;
+
+        *)
+            case "$os" in
+                "Linux")
+                    ascii_distro="linux"
+                    setcolors fg 8 3
+                ;;
+            esac
         ;;
     esac
 
