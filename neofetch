@@ -934,8 +934,18 @@ getgpu() {
             if [ -f "/tmp/neofetch/gpu" ]; then
                 source "/tmp/neofetch/gpu"
             else
-                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
 
+                # Try to find out the BDF (bus:device.function number) of the currently used GPU
+                bdf_number="$(PATH="/sbin:$PATH" lspci -k | grep -P 'VGA(?=.*\n.*\n\tKernel driver in use)' | awk -F ' ' '{print $1}')"
+
+                if [ -z "$bdf_number" ]; then
+                    # Fallback if no kernel driver is in use
+                    gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
+                else
+                    # Find the currently used GPU by its BDF
+                    gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -v bdf_number="$bdf_number" -F '\\"|\\" \\"' '$0 ~ bdf_number {print $3 " " $4}')"
+                fi
+                
                 case "$gpu" in
                     intel*) gpu="Intel Integrated Graphics" ;;
 
