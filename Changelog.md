@@ -5,6 +5,7 @@
 ## Contributors
 
 - **[@konimex](https://github.com/konimex)**
+- **[@TonCherAmi](https://github.com/TonCherAmi)**
 
 
 ## Operating System
@@ -25,3 +26,7 @@
 **Distro**<br \>
 
 - [Linux] Source `/etc/*-release` files instead of having a dozen separate `awk` commands.
+
+**GPU**<br \>
+
+- [Linux] Properly detect gpu in multi gpu setups. **[@TonCherAmi](https://github.com/TonCherAmi)**
