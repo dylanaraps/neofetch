@@ -21,6 +21,11 @@
 - Added Korora. **[@konimex](https://github.com/konimex)**
 
 
+# Images
+
+- Fixed images not appearing in st.
+
+
 ## Info
 
 **Distro**<br \>
