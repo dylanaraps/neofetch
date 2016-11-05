@@ -2486,7 +2486,7 @@ colors() {
             setcolors 6 4
         ;;
 
-        "BlankOn"*)
+        "BlankOn"* | "DracOS"*)
             setcolors 1 7
         ;;
 
