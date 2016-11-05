@@ -7,6 +7,12 @@
 - **[@konimex](https://github.com/konimex)**
 
 
+## Operating System
+
+- Added support for Haiku OS. **[@konimex](https://github.com/konimex)**
+- Added support for GNU Hurd. **[@konimex](https://github.com/konimex)**
+
+
 ## Ascii
 
 - Added generic Linux ascii art to display if neofetch doesn't have the right logo for your distro.
