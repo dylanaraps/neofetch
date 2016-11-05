@@ -30,6 +30,7 @@ getos() {
         *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
         "CYGWIN"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
+        "GNU"*) os="GNU" ;;
         *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
     esac
 }
@@ -122,7 +123,7 @@ getdistro() {
     [ "$distro" ] && return
 
     case "$os" in
-        "Linux" )
+        "Linux" | "GNU")
             if grep -q 'Microsoft' /proc/version >/dev/null 2>&1 || \
                grep -q 'Microsoft' /proc/sys/kernel/osrelease >/dev/null 2>&1; then
                 case "$distro_shorthand" in
@@ -299,7 +300,7 @@ getkernel() {
 getuptime() {
     # Get uptime in seconds
     case "$os" in
-        "Linux" | "Windows")
+        "Linux" | "Windows" | "GNU")
             seconds="$(< /proc/uptime)"
             seconds="${seconds/.*}"
         ;;
@@ -370,7 +371,7 @@ getuptime() {
 
 getpackages() {
     case "$os" in
-        "Linux" | "iPhone OS" | "Solaris")
+        "Linux" | "iPhone OS" | "Solaris" | "GNU")
             type -p pacman >/dev/null 2>&1 && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
@@ -893,7 +894,7 @@ getcpu_usage() {
             cpu_usage="${cpu_usage//[[:space:]]}"
         ;;
 
-        "Linux" | "Mac OS X" | "iPhone OS" | "BSD" | "Solaris")
+        "Linux" | "Mac OS X" | "iPhone OS" | "BSD" | "Solaris" | "GNU")
             # Get cores if unset
             if [ -z "$cores" ]; then
                 case "$os" in
@@ -923,7 +924,7 @@ getcpu_usage() {
 
 getgpu() {
     case "$os" in
-        "Linux")
+        "Linux" | "GNU")
             # Use cache if it exists
             if [ -f "/tmp/neofetch/gpu" ]; then
                 source "/tmp/neofetch/gpu"
@@ -1034,7 +1035,7 @@ getgpu() {
 
 getmemory() {
     case "$os" in
-        "Linux" | "Windows")
+        "Linux" | "Windows" | "GNU")
             # MemUsed = Memtotal + Shmem - MemFree - Buffers - Cached - SReclaimable
             # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
             while IFS=":" read -r a b; do
@@ -1214,7 +1215,7 @@ getsong() {
 
 getresolution() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris")
+        "Linux" | "BSD" | "Solaris" | "GNU")
             if type -p xrandr >/dev/null 2>&1; then
                 case "$refresh_rate" in
                     "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
@@ -1551,7 +1552,7 @@ gettermfont() {
 getdisk() {
     # df flags
     case "$os" in
-        "Linux" | "iPhone OS" | "Windows" | "Solaris")
+        "Linux" | "iPhone OS" | "Windows" | "Solaris" | "GNU")
             df_flags="-h -l --total"
             df_dir="total"
 
@@ -1746,7 +1747,7 @@ getusers() {
 
 getbirthday() {
     case "$os" in
-        "linux" | "iPhone OS")
+        "Linux" | "GNU" | "iPhone OS")
             birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
             date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
