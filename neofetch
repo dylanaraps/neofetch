@@ -113,7 +113,7 @@ model() {
         ;;
     esac
 
-    [ "$model" ] && prin "${1:-Model}" "$model"
+    [ "$model" ] && prin "${1:-Model}" "$model" || err "Info: Couldn't detect ${1:-Model}"
 }
 
 # }}}
@@ -269,7 +269,7 @@ distro() {
     [ "${ascii_distro:-auto}" == "auto" ] && \
         ascii_distro="$(trim "$distro")"
 
-    [ "$distro" ] && prin "${1:-Distro}" "$distro"
+    [ "$distro" ] && prin "${1:-OS}" "$distro" || err "Info: Couldn't detect ${1:-OS}"
 }
 
 # }}}
@@ -308,7 +308,7 @@ kernel() {
         *) kernel="$(uname $kernel_flags)" ;;
     esac
 
-    [ "$kernel" ] && prin "${1:-Kernel}" "$kernel"
+    [ "$kernel" ] && prin "${1:-Kernel}" "$kernel" || err "Info: Couldn't detect ${1:-Kernel}"
 }
 
 # }}}
@@ -382,7 +382,7 @@ uptime() {
         ;;
     esac
 
-    [ "$uptime" ] && prin "${1:-Uptime}" "$uptime"
+    [ "$uptime" ] && prin "${1:-Uptime}" "$uptime" || err "Info: Couldn't detect ${1:-Uptime}"
 }
 
 # }}}
@@ -480,7 +480,7 @@ packages() {
 
     [ "$packages" == "0" ] && unset packages
 
-    [ "$packages" ] && prin "${1:-Packages}" "$packages"
+    [ "$packages" ] && prin "${1:-Packages}" "$packages" || err "Info: Couldn't detect ${1:-Package}"
 }
 
 # }}}
@@ -524,13 +524,16 @@ shell() {
         shell="${shell/\(*\)}"
     fi
 
-    [ "$shell" ] && prin "${1:-Shell}" "$shell"
+    [ "$shell" ] && prin "${1:-Shell}" "$shell" || err "Info: Couldn't detect ${1:-Shell}"
 }
 
 # }}}
 
 # Desktop Environment {{{
 de() {
+    # If the function has been run before print now.
+    [ "$de" ] && [ "$run" ] && prin "${1:-DE}" "$de"
+
     case "$os" in
         "Mac OS X") de="Aqua" ;;
         "Windows")
@@ -559,7 +562,13 @@ de() {
         esac
     fi
 
-    [ "$de" ] && prin "${1:-DE}" "$de"
+    # Log that the script has been run.
+    run=1
+
+    # If $1 exists don't print the output.
+    [ "$1" ] && return
+
+    [ "$de" ] && prin "${1:-DE}" "$de" || err "Info: Couldn't detect ${1:-DE}"
 }
 
 # }}}
@@ -567,6 +576,9 @@ de() {
 # Window Manager {{{
 
 wm() {
+    # If the function has been run before print now.
+    [ "$wm" ] && [ "$run" ] && prin "${1:-WM}" "$wm"
+
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
         id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
         wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
@@ -590,7 +602,13 @@ wm() {
         esac
     fi
 
-    [ "$wm" ] && prin "${1:-WM}" "$wm"
+    # Log that the script has been run.
+    run=1
+
+    # If $1 exists don't print the output.
+    [ "$1" ] && return
+
+    [ "$wm" ] && prin "${1:-WM}" "$wm" || err "Info: Couldn't detect ${1:-WM}"
 }
 
 # }}}
@@ -598,9 +616,6 @@ wm() {
 # Window Manager Theme {{{
 
 wmtheme() {
-    [ -z "$wm" ] && wm >/dev/null
-    [ -z "$de" ] && de >/dev/null
-
     case "$wm"  in
         "E16") wmtheme="$(awk -F "= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
         "Sawfish") wmtheme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "$HOME/.sawfish/custom")" ;;
@@ -715,7 +730,7 @@ wmtheme() {
     wmtheme="${wmtheme//\'}"
     [ "$version" -ge 4 ] && wmtheme="${wmtheme^}"
 
-    [ "$wmtheme" ] && prin "${1:-WM Theme}" "$wmtheme"
+    [ "$wmtheme" ] && prin "${1:-WM Theme}" "$wmtheme" || err "Info: Couldn't detect ${1:-WM Theme}"
 }
 
 # }}}
@@ -911,7 +926,7 @@ cpu() {
         ;;
     esac
 
-    [ "$cpu" ] && prin "${1:-CPU}" "$cpu"
+    [ "$cpu" ] && prin "${1:-CPU}" "$cpu" || err "Info: Couldn't detect ${1:-CPU}"
 }
 
 # }}}
@@ -949,7 +964,7 @@ cpu_usage() {
         *) cpu_usage="${cpu_usage}%" ;;
     esac
 
-    [ "$cpu_usage" ] && prin "${1:-CPU Usage}" "$cpu_usage"
+    [ "$cpu_usage" ] && prin "${1:-CPU Usage}" "$cpu_usage" || err "Info: Couldn't detect ${1:-CPU Usage}"
 }
 
 # }}}
@@ -1062,7 +1077,7 @@ gpu() {
         gpu="${gpu/Intel}"
     fi
 
-    [ "$gpu" ] && prin "${1:-GPU}" "$gpu"
+    [ "$gpu" ] && prin "${1:-GPU}" "$gpu" || err "Info: Couldn't detect ${1:-GPU}"
 }
 
 # }}}
@@ -1126,7 +1141,7 @@ memory() {
         "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
     esac
 
-    [ "$memory" ] && prin "${1:-Memory}" "$memory"
+    [ "$memory" ] && prin "${1:-Memory}" "$memory" || err "Info: Couldn't detect ${1:-Memory}"
 }
 
 # }}}
@@ -1306,7 +1321,7 @@ resolution() {
 
     resolution="${resolution%,*}"
 
-    [ "$resolution" ] && prin "${1:-Resolution}" "$resolution"
+    [ "$resolution" ] && prin "${1:-Resolution}" "$resolution" || err "Info: Couldn't detect ${1:-Resolution}"
 }
 
 # }}}
@@ -1345,9 +1360,6 @@ style() {
     esac
 
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
-        # Get DE if user has disabled the function.
-        [ -z "$de" ] && de >/dev/null
-
         case "$de" in
             "KDE"*)
                 kdeconfigdir
@@ -1472,17 +1484,17 @@ style() {
 
 theme() {
     style theme
-    [ "$theme" ] && prin "${1:-Theme}" "$theme"
+    [ "$theme" ] && prin "${1:-Theme}" "$theme" || err "Info: Couldn't detect ${1:-Theme}"
 }
 
 icons() {
     style icons
-    [ "$theme" ] && prin "${1:-Icons}" "$theme"
+    [ "$theme" ] && prin "${1:-Icons}" "$theme" || err "Info: Couldn't detect ${1:-Icons}"
 }
 
 font() {
     style font
-    [ "$theme" ] && prin "${1:-Font}" "$theme"
+    [ "$theme" ] && prin "${1:-Font}" "$theme" || err "Info: Couldn't detect ${1:-Font}"
 }
 
 # }}}
@@ -1490,6 +1502,9 @@ font() {
 # Terminal Emulator {{{
 
 term() {
+    # If the function has been run before print now.
+    [ "$term" ] && [ "$run" ] && prin "${1:-Terminal}" "$term"
+
     # Check $PPID for terminal emulator.
     case "$os" in
         "Mac OS X")
@@ -1515,7 +1530,13 @@ term() {
         *) term="${name##*/}" ;;
     esac
 
-    [ "$term" ] && prin "${1:-Terminal}" "$term"
+    # Log that the script has been run.
+    run=1
+
+    # If $1 exists don't print the output.
+    [ "$1" ] && return
+
+    [ "$term" ] && prin "${1:-Terminal}" "$term" || err "Info: Couldn't detect ${1:-Terminal}"
 }
 
 term_loop() {
@@ -1546,8 +1567,6 @@ term_loop() {
 # Terminal Emulator Font {{{
 
 termfont() {
-    [ -z "$term" ] && term >/dev/null
-
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
             termfont="$(grep -i "${term/d}\*font" <<< $(xrdb -query))"
@@ -1594,7 +1613,7 @@ termfont() {
 
     [ "$version" -ge 4 ] && termfont="${termfont^}"
 
-    [ "$termfont" ] && prin "${1:-Terminal Font}" "$termfont"
+    [ "$termfont" ] && prin "${1:-Terminal Font}" "$termfont" || err "Info: Couldn't detect ${1:-Terminal Font}"
 }
 
 # }}}
@@ -1661,7 +1680,7 @@ disk() {
         "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
     esac
 
-    [ "$disk" ] && prin "${1:-Disk}" "$disk"
+    [ "$disk" ] && prin "${1:-Disk}" "$disk" || err "Info: Couldn't detect ${1:-Disk}"
 }
 
 # }}}
@@ -1691,7 +1710,7 @@ battery() {
                         "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
                     esac
 
-                    prin "${1:-Battery}${bat: -1}" "$battery"
+                    prin "${1:-Battery}${bat: -1}" "$battery" || err "Info: Couldn't detect ${1:-Battery}${bat: -1}"
                 done
             fi
             unset battery
@@ -1746,7 +1765,7 @@ battery() {
         "barinfo") battery="$(bar "${battery/'%'*}" 100) ${battery}" ;;
     esac
 
-    [ "$battery" ] && prin "${1:-Battery}" "$battery"
+    [ "$battery" ] && prin "${1:-Battery}" "$battery" || err "Info: Couldn't detect ${1:-Battery}"
 }
 
 # }}}
@@ -1773,7 +1792,7 @@ localip() {
         ;;
     esac
 
-    [ "$localip" ] && prin "${1:-Local IP}" "$localip"
+    [ "$localip" ] && prin "${1:-Local IP}" "$localip" || err "Info: Couldn't detect ${1:-Local IP}"
 }
 
 publicip() {
@@ -1789,7 +1808,7 @@ publicip() {
         publicip="$(wget -T 10 -qO- "$public_ip_host"; printf "%s")"
     fi
 
-    [ "$publicip" ] && prin "${1:-Public IP}" "$publicip"
+    [ "$publicip" ] && prin "${1:-Public IP}" "$publicip" || err "Info: Couldn't detect ${1:-Public IP}"
 }
 
 # }}}
@@ -1800,7 +1819,7 @@ users() {
     users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
     users="${users%\,*}"
 
-    [ "$users" ] && prin "${1:-Users}" "$users"
+    [ "$users" ] && prin "${1:-Users}" "$users" || err "Info: Couldn't detect ${1:-Users}"
 }
 
 # }}}
@@ -1870,7 +1889,7 @@ birthday() {
     [ "$birthday_time" == "off" ] && \
         birthday="${birthday/??:??*}"
 
-    [ "$birthday" ] && prin "${1:-Birthday}" "$birthday"
+    [ "$birthday" ] && prin "${1:-Birthday}" "$birthday" || err "Info: Couldn't detect ${1:-Birthday}"
 }
 
 # }}}
@@ -1926,9 +1945,6 @@ wallpaper() {
                 img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
 
             elif type -p gsettings >/dev/null; then
-                # Get DE if user has disabled the function.
-                [ -z "$de" ] && de >/dev/null
-
                 case "$de" in
                     "MATE"*) img="$(gsettings get org.mate.background picture-filename 2>/dev/null)" ;;
                     *) img="$(gsettings get org.gnome.desktop.background picture-uri 2>/dev/null)" ;;
@@ -2856,8 +2872,6 @@ kdeconfigdir() {
 # URxvt.
 
 termpadding() {
-    [ -z "$term" ] && term >/dev/null
-
     case "$term" in
         "URxvt"*)
             border="$(xrdb -query | grep -i "\(URxvt\|\*\)\.InternalBorder")"
@@ -3224,6 +3238,11 @@ main() {
     checkoldflags
     args "$@"
     distro >/dev/null
+
+    # Run these functions early
+    wm -s 2>/dev/null
+    de -s 2>/dev/null
+    term -s 2>/dev/null
 
     # Get colors and bold
     bold
