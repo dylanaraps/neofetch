@@ -1125,7 +1125,7 @@ getmemory() {
         ;;
 
         "Haiku")
-            memtotal=$(($(sysinfo -mem | head -n1 | cut -d'/' -f3 | tr -d ' ' | tr -d ')') / 1024 / 1024))
+            memtotal="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))"
             memused="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
             memused="$((${memused/max} / 1024 / 1024))"
         ;;
