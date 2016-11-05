@@ -2358,72 +2358,6 @@ scrot_upload() {
 
 # Text Formatting {{{
 
-<<<<<<< HEAD
-=======
-# Info {{{
-
-info() {
-    # $1 is the subtitle
-    subtitle="$1"
-
-    # Call the function and update variable
-    if [ -z "$2" ]; then
-        "get$1" 2>/dev/null
-        eval output="\$${1}"
-
-    else
-        "get$2" 2>/dev/null
-        eval output="\$${2}"
-    fi
-
-    # Trim whitespace
-    output="$(trim "$output")"
-
-    # If the output is empty, don't print anything
-    if [ -z "$output" ]; then
-        err "Info: Couldn't detect $subtitle"
-        return
-    fi
-
-    case "$1" in
-        title)
-            string="${title_color}${bold}${output}"
-            string="${string/@/${at_color}@${title_color}${bold}}"
-            length="${#output}"
-        ;;
-
-        underline)
-            string="${underline_color}${output}"
-        ;;
-
-        *)
-            string="${subtitle_color}${bold}${subtitle}${reset}"
-            string+="${colon_color}: ${info_color}${output}"
-            length="$((${#subtitle} +  ${#output} + 2))"
-        ;;
-    esac
-
-    # If there's no subtitle don't print one
-    [ -z "$2" ] && string="${string/*: }"
-
-    # Print the string
-    printf "%b%s\n" "${padding}${zws}${string}${reset} "
-
-    # Calculate info height
-    info_height="$((info_height+=1))"
-
-    # Fix rendering issues with w3m and lines that
-    # wrap to the next line by adding a max line
-    # length.
-    if [ "$image" != "off" ] && [ "$image" != "ascii" ] && [ "$1" != "cols" ]; then
-        padding_num="${padding/\\033\[}"
-        output="$(printf "%.$((columns - ${padding_num/C} - gap - ${#subtitle}))s" "$output")"
-    fi
-}
-
-# }}}
-
->>>>>>> master
 # Prin {{{
 
 prin() {
@@ -2712,13 +2646,8 @@ bold() {
 
 # Linebreak {{{
 
-<<<<<<< HEAD
 linebreak() {
-    linebreak=" "
-=======
-getlinebreak() {
     linebreak="​ "
->>>>>>> master
 
     # Calculate info height
     info_height="$((info_height+=1))"
