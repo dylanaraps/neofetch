@@ -2448,11 +2448,11 @@ colors() {
             ascii_distro="redhat"
         ;;
 
-        "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"*)
+        "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"*)
             setcolors 4 7
         ;;
 
-        "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
+        "Fedora"* | "Korora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
             setcolors 4 7 1
         ;;
 
