@@ -1088,13 +1088,15 @@ getmemory() {
 
         "BSD")
             case "$distro" in
-                "NetBSD"*) memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
-                *) memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
-            esac
+                "NetBSD"*)
+                    memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))"
+                    memtotal="$(($(sysctl -n hw.physmem64) / 1024 / 1024))"
+                ;;
 
-            case "$distro" in
-                "NetBSD"*) memtotal="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
-                *) memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))" ;;
+                *)
+                    memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))"
+                    memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))"
+                ;;
             esac
 
             case "$distro" in
@@ -1269,8 +1271,7 @@ getresolution() {
                 resolution="${resolution//x??@/ @ }"
 
             else
-                resolution="$(system_profiler SPDisplaysDataType |\
-                    awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
+                resolution="$(system_profiler SPDisplaysDataType | awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
             scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
@@ -1294,16 +1295,13 @@ getresolution() {
             height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value)"
             height="${height/CurrentVerticalResolution'='/}"
 
-            [ "$width" ] && \
-                resolution="${width}x${height}"
+            [ "$width" ] && resolution="${width}x${height}"
         ;;
 
         "Haiku")
             resolution="$(screenmode | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
 
-            case "$refresh_rate" in
-                "off") resolution="${resolution/ @*}" ;;
-            esac
+            [ "$refresh_rate" == "off" ] && resolution="${resolution/ @*}"
         ;;
     esac
 
@@ -1719,8 +1717,7 @@ getbattery() {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
             battery="${battery/EstimatedChargeRemaining'='}"
-            [ "$battery" ] && \
-                battery+="%"
+            [ "$battery" ] && battery+="%"
         ;;
 
         "Haiku")
@@ -1730,9 +1727,7 @@ getbattery() {
         ;;
     esac
 
-    case "$battery_state" in
-        "charging"*) battery+=" Charging" ;;
-    esac
+    [ "$battery_state" ] && battery+=" Charging"
 
     case "$battery_display" in
         "bar") battery="$(bar "${battery/'%'*}" 100)" ;;
