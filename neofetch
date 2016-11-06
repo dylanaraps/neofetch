@@ -170,9 +170,9 @@ getdistro() {
                 done
 
                 case "$distro_shorthand" in
-                    "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
-                    "tiny") distro="${NAME:-${DISTRIB_ID:-"${TAILS_PRODUCT_NAME}"}}" ;;
-                    "off") distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
+                    "on") distro="${NAME:-"${DISTRIB_ID}"} ${VERSION_ID:-"${DISTRIB_RELEASE}"}" ;;
+                    "tiny") distro="${NAME:-"${DISTRIB_ID:-"${TAILS_PRODUCT_NAME}"}"}" ;;
+                    "off") distro="${PRETTY_NAME:-"${DISTRIB_DESCRIPTION}"} ${UBUNTU_CODENAME}" ;;
                 esac
 
                 # Workarounds for distros that go against the os-release standard.
@@ -202,14 +202,14 @@ getdistro() {
             distro="$codename $osx_version $osx_build"
 
             case "$distro_shorthand" in
-                "on") distro="${distro/ ${osx_build}}" ;;
+                "on") distro="${distro/ "${osx_build}"}" ;;
                 "tiny")
                     case "$osx_version" in
                         "10."[4-7]*) distro="${distro/${codename}/Mac OS X}" ;;
                         "10."[8-9]* | "10.1"[0-1]*) distro="${distro/${codename}/OS X}" ;;
                         "10.12"*) distro="${distro/${codename}/macOS}" ;;
                     esac
-                    distro="${distro/ ${osx_build}}"
+                    distro="${distro/ "${osx_build}"}"
                 ;;
             esac
         ;;
@@ -435,13 +435,13 @@ getpackages() {
                 packages="$(($(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l) - 1))"
 
             type -p port >/dev/null && \
-                packages="$((packages + $(port installed | wc -l) - 1))"
+                packages="$((packages + "$(port installed | wc -l)" - 1))"
 
             type -p brew >/dev/null && \
-                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))"
+                packages="$((packages + "$(find /usr/local/Cellar -maxdepth 1 | wc -l)" - 1))"
 
             type -p pkgin >/dev/null && \
-                packages="$((packages + $(pkgin list | wc -l)))"
+                packages="$((packages + "$(pkgin list | wc -l)"))"
         ;;
 
         "BSD")
@@ -692,7 +692,7 @@ getwmtheme() {
             path="$(wmic process get ExecutablePath | grep -F "blackbox")"
             path="${path//'\'/'/'}"
 
-            wmtheme="$(grep "^session\.styleFile:" ${path/\.exe/.rc})"
+            wmtheme="$(grep "^session\.styleFile:" "${path/\.exe/.rc}")"
             wmtheme="${wmtheme/'session.styleFile: '}"
             wmtheme="${wmtheme##*\\}"
             wmtheme="${wmtheme%.*}"
@@ -926,9 +926,9 @@ getcpu_usage() {
 
     # Print the bar
     case "$cpu_display" in
-        "bar") cpu_usage="$(bar $cpu_usage 100)" ;;
-        "infobar") cpu_usage="${cpu_usage}% $(bar $cpu_usage 100)" ;;
-        "barinfo") cpu_usage="$(bar $cpu_usage 100) ${cpu_usage}%" ;;
+        "bar") cpu_usage="$(bar "$cpu_usage" 100)" ;;
+        "infobar") cpu_usage="${cpu_usage}% $(bar "$cpu_usage" 100)" ;;
+        "barinfo") cpu_usage="$(bar "$cpu_usage" 100) ${cpu_usage}%" ;;
         *) cpu_usage="${cpu_usage}%" ;;
     esac
 }
@@ -1412,7 +1412,7 @@ getstyle() {
                 gtk3theme="$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")"
 
             elif type -p gsettings >/dev/null; then
-                gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
+                gtk3theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
 
             elif [ -f "/usr/share/gtk-3.0/settings.ini" ]; then
                 gtk3theme="$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)"
@@ -1503,10 +1503,10 @@ getterm() {
         ;;
 
         "Windows")
-            parent="$(ps -p ${1:-$PPID} | awk '{printf $2}')"
+            parent="$(ps -p "${1:-$PPID}" | awk '{printf $2}')"
             parent="${parent/'PPID'}"
 
-            name="$(ps -p $parent | awk '{printf $8}')"
+            name="$(ps -p "$parent" | awk '{printf $8}')"
             name="${name/'COMMAND'}"
             name="${name/*\/}"
         ;;
@@ -1517,8 +1517,8 @@ getterm() {
         ;;
 
         *)
-            parent="$(ps -p ${1:-$PPID} -o ppid=)"
-            name="$(ps -p $parent -o comm=)"
+            parent="$(ps -p "${1:-$PPID}" -o ppid=)"
+            name="$(ps -p "$parent" -o comm=)"
         ;;
     esac
 
@@ -1540,7 +1540,7 @@ gettermfont() {
 
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
-            termfont="$(grep -i -F "${term/d}*font" <<< $(xrdb -query))"
+            termfont="$(grep -i -F "${term/d}*font" <<< "$(xrdb -query)")"
             termfont="${termfont/*font: }"
 
             # Xresources has two different font syntax, this checks which
@@ -1572,7 +1572,7 @@ gettermfont() {
         ;;
 
         "terminology")
-            termfont="$(strings ${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg | awk '/^font\.name$/{print a}{a=$0}')"
+            termfont="$(strings "${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg" | awk '/^font\.name$/{print a}{a=$0}')"
             termfont="${termfont/.pcf}"
             termfont="${termfont/:*}"
         ;;
@@ -1661,8 +1661,8 @@ getbattery() {
             # do multi battery support with a single battery per line.
             if [ -f /sys/class/power_supply/**/capacity ]; then
                 for bat in "/sys/class/power_supply/BAT"*; do
-                    capacity="$(< ${bat}/capacity)"
-                    status="$(< ${bat}/status)"
+                    capacity="$(< "${bat}/capacity")"
+                    status="$(< "${bat}/status")"
 
                     # Fix for bash on Windows 10 which includes /proc files
                     # for battery usage despite there not being a battery
@@ -1873,7 +1873,7 @@ getcols() {
         block_width="${block_width// /█}"
 
         # Generate the string.
-        while [ $start -le $end ]; do
+        while [ "$start" -le "$end" ]; do
             case "$start" in
                 [0-6]) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
                 7) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
@@ -2353,7 +2353,7 @@ info() {
 
     # Call the function and update variable
     "get${2:-$1}" 2>/dev/null
-    eval output="\$${2:-$1}"
+    eval output="\$${2:-"$1"}"
 
     # Trim whitespace
     output="$(trim "$output")"
@@ -2405,7 +2405,7 @@ info() {
 # Prin {{{
 
 prin() {
-    string="${1//$'\033[0m'}${2:+: $2}"
+    string="${1//$'\033[0m'}${2:+: "$2"}"
 
     # If $2 doesn't exist we format $1 as info
     [ -z "$2" ] && local subtitle_color="$info_color"
