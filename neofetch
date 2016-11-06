@@ -176,8 +176,8 @@ getdistro() {
                 esac
 
                 # Workarounds for distros that go against the os-release standard.
-                [ -z "$(trim "$distro")" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
-                [ -z "$(trim "$distro")" ] && distro="$(awk -F'=' '{print $2; exit}' /etc/*ease /usr/lib/*ease)"
+                [ -z "${distro// }" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
+                [ -z "${distro// }" ] && distro="$(awk -F'=' '{print $2; exit}' /etc/*ease /usr/lib/*ease)"
             fi
             distro="${distro//\"}"
             distro="${distro//\'}"
@@ -2363,7 +2363,7 @@ info() {
         unset prin && return
 
     # If the output is empty, don't print anything.
-    [ -z "$output" ] && \
+    [ -z "${output// }" ] && \
         err "Info: Couldn't detect $subtitle" && return
 
     case "$1" in
