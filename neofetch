@@ -170,9 +170,9 @@ getdistro() {
                 done
 
                 case "$distro_shorthand" in
-                    "on") distro="${NAME:-"${DISTRIB_ID}"} ${VERSION_ID:-"${DISTRIB_RELEASE}"}" ;;
-                    "tiny") distro="${NAME:-"${DISTRIB_ID:-"${TAILS_PRODUCT_NAME}"}"}" ;;
-                    "off") distro="${PRETTY_NAME:-"${DISTRIB_DESCRIPTION}"} ${UBUNTU_CODENAME}" ;;
+                    "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
+                    "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
+                    "off") distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
 
                 # Workarounds for distros that go against the os-release standard.
@@ -1541,12 +1541,13 @@ gettermfont() {
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
             termfont="$(grep -i -F "${term/d}*font" <<< "$(xrdb -query)")"
-            termfont="${termfont/*font: }"
+            termfont="${termfont/*font:}"
+            termfont="$(trim "$termfont")"
 
             # Xresources has two different font syntax, this checks which
             # one is in use and formats it accordingly.
             case "$termfont" in
-                "xft:"*)
+                *"xft:"*)
                     termfont="${termfont/xft:}"
                     termfont="${termfont/:*}"
                 ;;
@@ -2353,7 +2354,7 @@ info() {
 
     # Call the function and update variable
     "get${2:-$1}" 2>/dev/null
-    eval output="\$${2:-"$1"}"
+    eval output="\$${2:-$1}"
 
     # Trim whitespace
     output="$(trim "$output")"
@@ -2405,7 +2406,7 @@ info() {
 # Prin {{{
 
 prin() {
-    string="${1//$'\033[0m'}${2:+: "$2"}"
+    string="${1//$'\033[0m'}${2:+: $2}"
 
     # If $2 doesn't exist we format $1 as info
     [ -z "$2" ] && local subtitle_color="$info_color"
