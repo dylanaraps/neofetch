@@ -16,6 +16,7 @@
 - Added support for DracOS.
 - Added support for Netrunner. **[@konimex](https://github.com/konimex)**
 - Added support for Korora. **[@konimex](https://github.com/konimex)**
+- Added support for iPhone 7 and 7 Plus.
 
 
 ## Ascii
@@ -46,3 +47,6 @@
 
 - Added support for HyperTerm. **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
 
+**CPU Usage**<br \>
+
+- [iOS] Fixed CPU usage.
