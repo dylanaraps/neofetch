@@ -839,7 +839,6 @@ getcpu() {
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
         ;;
     esac
->>>>>>> df2ecf9f4fd077872037c3d3a7e558fa0871b5fa
 
     # Format the output
     case "$os" in
