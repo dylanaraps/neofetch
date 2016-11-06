@@ -2440,13 +2440,10 @@ prin() {
 # Underline {{{
 
 getunderline() {
-    case "$underline_enabled" in
-        "on")
-            underline="$(printf %"$length"s)"
-            underline="${underline// /$underline_char}"
-        ;;
-        "off") underline="" ;;
-    esac
+    if [ "$underline_enabled" == "on" ]; then
+        underline="$(printf %"$length"s)"
+        underline="${underline// /$underline_char}"
+    fi
 }
 
 # }}}
