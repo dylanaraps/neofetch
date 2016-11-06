@@ -1,26 +1,37 @@
+# Neofetch 2.0
+
+
+
 ## Contributors
 
-- **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
-
-
-## General
-
-- Fixed issue where info wasn't detected properly but the subtitle was still displayed.
+- **[@konimex](https://github.com/konimex)**
+- **[@TonCherAmi](https://github.com/TonCherAmi)**
 
 
 ## Operating System
 
-- Added support for DracOS.
+- Added support for Haiku OS. **[@konimex](https://github.com/konimex)**
+- Added support for GNU Hurd. **[@konimex](https://github.com/konimex)**
+
+
+## Ascii
+
+- Added generic Linux ascii art to display if neofetch doesn't have the right logo for your distro.
+- Added Netrunner. **[@konimex](https://github.com/konimex)**
+- Added Korora. **[@konimex](https://github.com/konimex)**
+
+
+# Images
+
+- Fixed images not appearing in st.
 
 
 ## Info
 
-**Terminal**<br \>
+**Distro**<br \>
 
-- Added support for HyperTerm. **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
+- [Linux] Source `/etc/*-release` files instead of having a dozen separate `awk` commands.
 
+**GPU**<br \>
 
-**Terminal Font**<br \>
-
-- Added support for HyperTerm. **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
-
+- [Linux] Properly detect gpu in multi gpu setups. **[@TonCherAmi](https://github.com/TonCherAmi)**

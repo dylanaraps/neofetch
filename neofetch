@@ -30,6 +30,8 @@ getos() {
         *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
         "CYGWIN"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
+        "Haiku") os="Haiku" ;;
+        "GNU"*) os="GNU" ;;
         *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
     esac
 }
@@ -98,7 +100,7 @@ getmodel() {
         ;;
 
         "BSD")
-            model="$(sysctl -n hw.vendor hw.product 2>/dev/null)"
+            model="$(sysctl -n hw.vendor hw.product)"
         ;;
 
         "Windows")
@@ -122,13 +124,13 @@ getdistro() {
     [ "$distro" ] && return
 
     case "$os" in
-        "Linux" )
-            if grep -q 'Microsoft' /proc/version >/dev/null 2>&1 || \
-               grep -q 'Microsoft' /proc/sys/kernel/osrelease >/dev/null 2>&1; then
+        "Linux" | "GNU")
+            if grep -q 'Microsoft' /proc/version >/dev/null || \
+               grep -q 'Microsoft' /proc/sys/kernel/osrelease >/dev/null; then
                 case "$distro_shorthand" in
-                    "on")   distro="$(lsb_release -sir 2>/dev/null) [Windows 10]" ;;
+                    "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
-                    *)      distro="$(lsb_release -sd 2>/dev/null) on Windows 10" ;;
+                    *)      distro="$(lsb_release -sd) on Windows 10" ;;
                 esac
                 ascii_distro="Windows 10"
 
@@ -138,18 +140,18 @@ getdistro() {
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
 
-            elif type -p lsb_release >/dev/null 2>&1; then
+            elif type -p lsb_release >/dev/null; then
                 case "$distro_shorthand" in
                     "on")   lsb_flags="-sir" ;;
                     "tiny") lsb_flags="-si" ;;
                     *)      lsb_flags="-sd" ;;
                 esac
-                distro="$(lsb_release $lsb_flags 2>/dev/null)"
+                distro="$(lsb_release $lsb_flags)"
 
-            elif type -p guix >/dev/null 2>&1; then
+            elif type -p guix >/dev/null; then
                 distro="GuixSD"
 
-            elif type -p crux >/dev/null 2>&1; then
+            elif type -p crux >/dev/null; then
                 distro="$(crux)"
                 case "$distro_shorthand" in
                     "on")   distro="${distro//version}" ;;
@@ -160,26 +162,20 @@ getdistro() {
                 distro="Android $(getprop ro.build.version.release)"
 
             else
-                # Workarounds are included in every shorthand option
+                # Source the os-release file
+                for file in /etc/*ease /usr/lib/*ease; do
+                    source "$file"
+                done
+
                 case "$distro_shorthand" in
-                    "on")
-                        distro="$(awk -F'=' '/^NAME|VERSION_ID=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_ID|DISTRIB_RELEASE=/ {print $2}' /etc/openwrt_release)"
-                    ;;
-
-                    "tiny")
-                        distro="$(awk -F'=' '/^NAME=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '/^TAILS_PRODUCT_NAME=/ {print $2}' /etc/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_ID=/ {print $2}' /etc/openwrt_release)"
-                    ;;
-
-                    *)
-                        distro="$(awk -F'=' '/^PRETTY_NAME=/ {print $2; exit}' /etc/*ease /usr/lib/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '{print $2}' /etc/*ease)"
-                        [ -z "$distro" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease)"
-                        [ -z "$distro" ] && distro="$(awk -F'=' '/^DISTRIB_DESCRIPTION=/ {print $2}' /etc/openwrt_release)"
-                    ;;
+                    "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
+                    "tiny") distro="${NAME:-${DISTRIB_ID:-"${TAILS_PRODUCT_NAME}"}}" ;;
+                    "off") distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
+
+                # Workarounds for distros that go against the os-release standard.
+                [ -z "$(trim "$distro")" ] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
+                [ -z "$(trim "$distro")" ] && distro="$(awk -F'=' '{print $2; exit}' /etc/*ease /usr/lib/*ease)"
             fi
             distro="${distro//\"}"
             distro="${distro//\'}"
@@ -253,6 +249,10 @@ getdistro() {
             esac
             distro="${distro/\(*}"
         ;;
+
+        "Haiku")
+            distro="$(uname -sv | awk '{print $1 " " $2}')"
+        ;;
     esac
 
     # Get architecture
@@ -303,51 +303,63 @@ getkernel() {
 # Uptime {{{
 
 getuptime() {
-    # Get uptime in seconds
+
+    # Since Haiku's uptime cannot be fetched in seconds, a case outside
+    # the usual case is needed
     case "$os" in
-        "Linux" | "Windows")
-            seconds="$(< /proc/uptime)"
-            seconds="${seconds/.*}"
+        "Haiku")
+            uptime="$(uptime -u)"
+            uptime="${uptime/up }"
         ;;
 
-        "Mac OS X" | "iPhone OS" | "BSD")
-            boot="$(sysctl -n kern.boottime)"
-            boot="${boot/'{ sec = '}"
-            boot="${boot/,*}"
+        *)
+            # Get uptime in seconds
+            case "$os" in
+                "Linux" | "Windows")
+                    seconds="$(< /proc/uptime)"
+                    seconds="${seconds/.*}"
+                ;;
 
-            # Get current date in seconds
-            now="$(date +%s)"
-            seconds="$((now - boot))"
+                "Mac OS X" | "iPhone OS" | "BSD")
+                    boot="$(sysctl -n kern.boottime)"
+                    boot="${boot/'{ sec = '}"
+                    boot="${boot/,*}"
+
+                    # Get current date in seconds
+                    now="$(date +%s)"
+                    seconds="$((now - boot))"
+                ;;
+
+                "Solaris")
+                    seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
+                    seconds="${seconds/.*}"
+                ;;
+            esac
+
+            days="$((seconds / 60 / 60 / 24)) days"
+            hours="$((seconds / 60 / 60 % 24)) hours"
+            minutes="$((seconds / 60 % 60)) minutes"
+
+            case "$days" in
+                "0 days") unset days ;;
+                "1 days") days="${days/s}" ;;
+            esac
+
+            case "$hours" in
+                "0 hours") unset hours ;;
+                "1 hours") hours="${hours/s}" ;;
+            esac
+
+            case "$minutes" in
+                "0 minutes") unset minutes ;;
+                "1 minutes") minutes="${minutes/s}" ;;
+            esac
+
+            uptime="${days:+$days, }${hours:+$hours, }${minutes}"
+            uptime="${uptime%', '}"
+            uptime="${uptime:-${seconds} seconds}"
         ;;
-
-        "Solaris")
-            seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
-            seconds="${seconds/.*}"
-        ;;
     esac
-
-    days="$((seconds / 60 / 60 / 24)) days"
-    hours="$((seconds / 60 / 60 % 24)) hours"
-    minutes="$((seconds / 60 % 60)) minutes"
-
-    case "$days" in
-        "0 days") unset days ;;
-        "1 days") days="${days/s}" ;;
-    esac
-
-    case "$hours" in
-        "0 hours") unset hours ;;
-        "1 hours") hours="${hours/s}" ;;
-    esac
-
-    case "$minutes" in
-        "0 minutes") unset minutes ;;
-        "1 minutes") minutes="${minutes/s}" ;;
-    esac
-
-    uptime="${days:+$days, }${hours:+$hours, }${minutes}"
-    uptime="${uptime%', '}"
-    uptime="${uptime:-${seconds} seconds}"
 
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
@@ -376,52 +388,52 @@ getuptime() {
 
 getpackages() {
     case "$os" in
-        "Linux" | "iPhone OS" | "Solaris")
-            type -p pacman >/dev/null 2>&1 && \
+        "Linux" | "iPhone OS" | "Solaris" | "GNU")
+            type -p pacman >/dev/null && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
-            type -p dpkg >/dev/null 2>&1 && \
+            type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
 
-            type -p /sbin/pkgtool >/dev/null 2>&1 && \
+            type -p /sbin/pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
 
-            type -p rpm >/dev/null 2>&1 && \
+            type -p rpm >/dev/null && \
                 packages="$((packages+=$(rpm -qa | wc -l)))"
 
-            type -p xbps-query >/dev/null 2>&1 && \
+            type -p xbps-query >/dev/null && \
                 packages="$((packages+=$(xbps-query -l | wc -l)))"
 
-            type -p pkginfo >/dev/null 2>&1 && \
+            type -p pkginfo >/dev/null && \
                 packages="$((packages+=$(pkginfo -i | wc -l)))"
 
-            type -p pisi >/dev/null 2>&1 && \
+            type -p pisi >/dev/null && \
                 packages="$((packages+=$(pisi list-installed | wc -l)))"
 
-            if type -p pkg >/dev/null 2>&1; then
+            if type -p pkg >/dev/null; then
                 packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
                 [ "$packages" == "0" ] && packages="$((packages+=$(pkg list | wc -l)))"
             fi
 
-            type -p emerge >/dev/null 2>&1 && \
+            type -p emerge >/dev/null && \
                 packages="$((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))"
 
-            type -p nix-env >/dev/null 2>&1 && \
+            type -p nix-env >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))"
 
-            type -p guix >/dev/null 2>&1 && \
+            type -p guix >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /gnu/store/*/ | wc -l)))"
 
-            type -p apk >/dev/null 2>&1 && \
+            type -p apk >/dev/null && \
                 packages="$((packages+=$(apk info | wc -l)))"
 
-            type -p opkg >/dev/null 2>&1 && \
+            type -p opkg >/dev/null && \
                 packages="$((packages+=$(opkg list-installed | wc -l)))"
 
-            type -p pacman-g2 >/dev/null 2>&1 && \
+            type -p pacman-g2 >/dev/null && \
                 packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
 
-            type -p cave >/dev/null 2>&1 && \
+            type -p cave >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)))"
         ;;
 
@@ -429,14 +441,14 @@ getpackages() {
             [ -d "/usr/local/bin" ] && \
                 packages="$(($(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l) - 1))"
 
-            type -p port >/dev/null 2>&1 && \
-                packages="$((packages + $(port installed 2>/dev/null | wc -l) - 1))"
+            type -p port >/dev/null && \
+                packages="$((packages + $(port installed | wc -l) - 1))"
 
-            type -p brew >/dev/null 2>&1 && \
-                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 2>/dev/null | wc -l) - 1))"
+            type -p brew >/dev/null && \
+                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))"
 
-            type -p pkgin >/dev/null 2>&1 && \
-                packages="$((packages + $(pkgin list 2>/dev/null | wc -l)))"
+            type -p pkgin >/dev/null && \
+                packages="$((packages + $(pkgin list | wc -l)))"
         ;;
 
         "BSD")
@@ -445,9 +457,9 @@ getpackages() {
                 "PacBSD"*) packages="$(pacman -Qq --color never | wc -l)" ;;
 
                 *)
-                    if type -p pkg_info >/dev/null 2>&1; then
+                    if type -p pkg_info >/dev/null; then
                         packages="$(pkg_info | wc -l)"
-                    elif type -p pkg >/dev/null 2>&1; then
+                    elif type -p pkg >/dev/null; then
                         packages="$(pkg info | wc -l)"
                     fi
                 ;;
@@ -460,6 +472,10 @@ getpackages() {
             # Count chocolatey packages
             [ -d "/cygdrive/c/ProgramData/chocolatey/lib" ] && \
                 packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
+        ;;
+
+        "Haiku")
+            packages="$(ls -1 /boot/system/package-links | wc -l)"
         ;;
     esac
 
@@ -529,12 +545,12 @@ getde() {
     esac
 
     if [ -n "$DISPLAY" ] && [ -z "$de" ]; then
-        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/' 2>/dev/null)"
+        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
         case "$de" in
             "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
             *"TDE_FULL_SESSION"*) de="Trinity" ;;
-            *"MUFFIN"*) de="$(cinnamon --version 2>/dev/null)"; de="${de:-Cinnamon}" ;;
+            *"MUFFIN"*) de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
             *"xfce4"*) de="XFCE4" ;;
             *"xfce5"*) de="XFCE5" ;;
         esac
@@ -547,8 +563,8 @@ getde() {
 
 getwm() {
     if [ -n "$DISPLAY" ] && [ "$os" != "Mac OS X" ]; then
-        id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}' 2>/dev/null)"
-        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t 2>/dev/null)"
+        id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
+        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
         wm="${wm/*_NET_WM_NAME = }"
         wm="${wm/\"}"
         wm="${wm/\"*}"
@@ -589,28 +605,28 @@ getwmtheme() {
         ;;
 
         "Compiz" | "Mutter" | "GNOME Shell" | "Gala")
-            if type -p gsettings >/dev/null 2>&1; then
+            if type -p gsettings >/dev/null; then
                 wmtheme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
 
                 [ -z "${wmtheme//\'}" ] && \
                     wmtheme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
 
-            elif type -p gconftool-2 >/dev/null 2>&1; then
+            elif type -p gconftool-2 >/dev/null; then
                 wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
             fi
         ;;
 
         "Metacity"*)
             if [ "$de" == "Deepin" ]; then
-                wmtheme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme 2>/dev/null)"
+                wmtheme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme)"
 
             else
-                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme 2>/dev/null)"
+                wmtheme="$(gconftool-2 -g /apps/metacity/general/theme)"
             fi
         ;;
 
         "E17" | "Enlightenment")
-            if type -p eet >/dev/null 2>&1; then
+            if type -p eet >/dev/null; then
                 wmtheme="$(eet -d "$HOME/.e/e/config/standard/e.cfg" config | awk '/value \"file\" string.*.edj/ {print $4}')"
                 wmtheme="${wmtheme##*/}"
                 wmtheme="${wmtheme%.*}"
@@ -673,7 +689,7 @@ getwmtheme() {
             path="/proc/registry/HKEY_CURRENT_USER/Software/Microsoft"
             path+="/Windows/CurrentVersion/Themes/CurrentTheme"
 
-            wmtheme="$(head -n1 "$path" 2>/dev/null)"
+            wmtheme="$(head -n1 "$path")"
             wmtheme="${wmtheme##*\\}"
             wmtheme="${wmtheme%.*}"
         ;;
@@ -845,6 +861,24 @@ getcpu() {
 
             cpu="$cpu @ ${speed}GHz"
         ;;
+
+        "Haiku")
+            cpu="$(sysinfo -cpu | awk -F '\\"' '/CPU #0/ {print $2}')"
+            cpu="${cpu/@*}"
+            speed="$(sysinfo -cpu | awk '/running at/ {print $NF; exit}')"
+            speed="${speed/MHz}"
+            speed="$((speed / 100))"
+            cores="$(sysinfo -cpu | grep -c 'CPU #')"
+
+            # Fix for speed under 1ghz
+            if [ -z ] "${speed:1}"; then
+                speed="0.${speed}"
+            else
+                speed="${speed:0:1}.${speed:1}"
+            fi
+
+            cpu="$cpu @ ${speed}GHz"
+        ;;
     esac
 
     # Remove uneeded patterns from cpu output
@@ -899,7 +933,7 @@ getcpu_usage() {
             cpu_usage="${cpu_usage//[[:space:]]}"
         ;;
 
-        "Linux" | "Mac OS X" | "iPhone OS" | "BSD" | "Solaris")
+        "Linux" | "Mac OS X" | "iPhone OS" | "BSD" | "Solaris" | "GNU")
             # Get cores if unset
             if [ -z "$cores" ]; then
                 case "$os" in
@@ -929,12 +963,21 @@ getcpu_usage() {
 
 getgpu() {
     case "$os" in
-        "Linux")
+        "Linux" | "GNU")
             # Use cache if it exists
             if [ -f "/tmp/neofetch/gpu" ]; then
                 source "/tmp/neofetch/gpu"
             else
-                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
+                bdf_number="$(PATH="/sbin:$PATH" lspci -k | grep -A2 'VGA' | grep -B2 'Kernel driver in use' | awk '/^\w/ {print $1}')"
+
+                if [ -z "$bdf_number" ]; then
+                    # Fallback if no kernel driver is in use
+                    gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
+
+                else
+                    # Find the currently used GPU by its BDF
+                    gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -v bdf_number="$bdf_number" -F '\\"|\\" \\"' '$0 ~ bdf_number {print $3 " " $4}')"
+                fi
 
                 case "$gpu" in
                     intel*) gpu="Intel Integrated Graphics" ;;
@@ -1009,7 +1052,7 @@ getgpu() {
         "BSD" | "Solaris")
             case "$distro" in
                 "FreeBSD"* | "DragonFlyBSD"* | "PacBSD"*)
-                    gpu="$(pciconf -lv 2>/dev/null | grep -B 4 "VGA" | grep "device")"
+                    gpu="$(pciconf -lv | grep -B 4 "VGA" | grep "device")"
                     gpu="${gpu/*device*= }"
                     gpu="${gpu//\'}"
                 ;;
@@ -1024,6 +1067,10 @@ getgpu() {
         "Windows")
             gpu="$(wmic path Win32_VideoController get caption /value)"
             gpu="${gpu/Caption'='}"
+        ;;
+
+        "Haiku")
+            gpu="$(listdev | grep -A2 -e 'device Display controller' | awk -F':' '/device beef/ {print $2}')"
         ;;
     esac
 
@@ -1040,7 +1087,7 @@ getgpu() {
 
 getmemory() {
     case "$os" in
-        "Linux" | "Windows")
+        "Linux" | "Windows" | "GNU")
             # MemUsed = Memtotal + Shmem - MemFree - Buffers - Cached - SReclaimable
             # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
             while IFS=":" read -r a b; do
@@ -1085,6 +1132,12 @@ getmemory() {
             memfree="$(($(sar -r 1 1 | tail -1 | awk 'BEGIN {FS=" "} {print $2}') / 1024))"
             memused="$((memtotal - memfree))"
         ;;
+
+        "Haiku")
+            memtotal="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))"
+            memused="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
+            memused="$((${memused/max} / 1024 / 1024))"
+        ;;
     esac
     memory="${memused}MB / ${memtotal}MB"
 
@@ -1106,13 +1159,13 @@ getsong() {
 
     case "${player/*\/}" in
         "mpd"*)
-            song="$(mpc current 2>/dev/null)"
-            state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}' 2>/dev/null)"
+            song="$(mpc current)"
+            state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}')"
         ;;
 
         "cmus"*)
             IFS=$'\n'
-            song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" 2>/dev/null | sort))
+            song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" | sort))
             state="${song[0]/status }"
             artist="${song[1]/tag artist }"
             title="${song[2]/tag title }"
@@ -1120,8 +1173,8 @@ getsong() {
         ;;
 
         "mocp"*)
-            song="$(mocp -Q "%artist - %song" 2>/dev/null)"
-            state="$(mocp -Q "%state" 2>/dev/null)"
+            song="$(mocp -Q "%artist - %song")"
+            state="$(mocp -Q "%state")"
         ;;
 
         "spotify"*)
@@ -1147,8 +1200,8 @@ getsong() {
         ;;
 
         "google play"*)
-            song="$(gpmdp-remote current 2>/dev/null)"
-            state="$(gpmdp-remote status 2>/dev/null)"
+            song="$(gpmdp-remote current)"
+            state="$(gpmdp-remote status)"
         ;;
 
         "itunes"*)
@@ -1220,8 +1273,8 @@ getsong() {
 
 getresolution() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris")
-            if type -p xrandr >/dev/null 2>&1; then
+        "Linux" | "BSD" | "Solaris" | "GNU")
+            if type -p xrandr >/dev/null; then
                 case "$refresh_rate" in
                     "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
                     "off") resolution="$(xrandr --nograb --current | awk '/\*/ {printf $1 ", "}')" ;;
@@ -1229,14 +1282,14 @@ getresolution() {
                 resolution="${resolution//\*}"
                 resolution="${resolution//\.[0-9][0-9]}"
 
-            elif type -p xdpyinfo >/dev/null 2>&1; then
-                resolution="$(xdpyinfo 2>/dev/null | awk '/dimensions:/ {printf $2}')"
+            elif type -p xdpyinfo >/dev/null; then
+                resolution="$(xdpyinfo | awk '/dimensions:/ {printf $2}')"
             fi
         ;;
 
         "Mac OS X")
-            if type -p screenresolution >/dev/null 2>&1; then
-                resolution="$(screenresolution get 2>&1 | awk '/Display/ {printf $6 "Hz, "}')"
+            if type -p screenresolution >/dev/null; then
+                resolution="$(screenresolution get | awk '/Display/ {printf $6 "Hz, "}')"
                 resolution="${resolution//x??@/ @ }"
 
             else
@@ -1259,14 +1312,22 @@ getresolution() {
         ;;
 
         "Windows")
-            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution /value 2>/dev/null)"
+            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution /value)"
             width="${width/CurrentHorizontalResolution'='/}"
 
-            height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value 2>/dev/null)"
+            height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value)"
             height="${height/CurrentVerticalResolution'='/}"
 
             [ "$width" ] && \
                 resolution="${width}x${height}"
+        ;;
+
+        "Haiku")
+            resolution="$(screenmode | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
+
+            case "$refresh_rate" in
+                "off") resolution="${resolution/ @*}" ;;
+            esac
         ;;
     esac
 
@@ -1329,18 +1390,18 @@ getstyle() {
             ;;
 
             *"Cinnamon")
-                if type -p gsettings >/dev/null 2>&1; then
+                if type -p gsettings >/dev/null; then
                     gtk3theme="$(gsettings get org.cinnamon.desktop.interface "$gsettings")"
                     gtk2theme="${gtk3theme}"
                 fi
             ;;
 
             "Gnome"* | "Unity"* | "Budgie"*)
-                if type -p gsettings >/dev/null 2>&1; then
+                if type -p gsettings >/dev/null; then
                     gtk3theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
                     gtk2theme="${gtk3theme}"
 
-                elif type -p gconftool-2 >/dev/null 2>&1; then
+                elif type -p gconftool-2 >/dev/null; then
                     gtk2theme="$(gconftool-2 -g /desktop/gnome/interface/"$gconf")"
                 fi
             ;;
@@ -1351,7 +1412,7 @@ getstyle() {
             ;;
 
             "Xfce"*)
-                type -p xfconf-query >/dev/null 2>&1 && \
+                type -p xfconf-query >/dev/null && \
                     gtk2theme="$(xfconf-query -c xsettings -p "$xfconf")"
             ;;
         esac
@@ -1376,7 +1437,7 @@ getstyle() {
             if [ -f "$XDG_CONFIG_HOME/gtk-3.0/settings.ini" ]; then
                 gtk3theme="$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")"
 
-            elif type -p gsettings >/dev/null 2>&1; then
+            elif type -p gsettings >/dev/null; then
                 gtk3theme="$(gsettings get org.gnome.desktop.interface $gsettings)"
 
             elif [ -f "/usr/share/gtk-3.0/settings.ini" ]; then
@@ -1557,7 +1618,7 @@ gettermfont() {
 getdisk() {
     # df flags
     case "$os" in
-        "Linux" | "iPhone OS" | "Windows" | "Solaris")
+        "Linux" | "iPhone OS" | "Windows" | "Solaris" | "GNU")
             df_flags="-h -l --total"
             df_dir="total"
 
@@ -1567,7 +1628,7 @@ getdisk() {
             esac
         ;;
 
-        "Mac OS X" | "BSD")
+        "Mac OS X" | "BSD" | "Haiku")
             case "$distro" in
                 "FreeBSD"* | *"OS X"* | "Mac"* )
                     df_flags="-l -H /"
@@ -1580,7 +1641,7 @@ getdisk() {
     esac
 
     # Get the disk info
-    disk="$(df $df_flags 2>/dev/null | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
+    disk="$(df $df_flags | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
 
     # Format the output
     disk_used="${disk#*:}"
@@ -1685,6 +1746,12 @@ getbattery() {
             [ "$battery" ] && \
                 battery+="%"
         ;;
+
+        "Haiku")
+            battery0full="$(awk -F '[^0-9]*' 'NR==2 {print $4}' /dev/power/acpi_battery/0)"
+            battery0now="$(awk -F '[^0-9]*' 'NR==5 {print $4}' /dev/power/acpi_battery/0)"
+            battery="$((battery0full / battery0now * 100))%"
+        ;;
     esac
 
     case "$battery_state" in
@@ -1720,20 +1787,25 @@ getlocalip() {
         "Windows")
             localip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
         ;;
+
+        "Haiku")
+            localip="$(ifconfig | awk -F ': ' '/Bcast/ {print $2}')"
+            localip="${localip/', Bcast'}"
+        ;;
     esac
 }
 
 getpublicip() {
-    if type -p dig >/dev/null 2>&1; then
-        publicip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2>/dev/null)"
+    if type -p dig >/dev/null; then
+        publicip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
     fi
 
-    if [ -z "$publicip" ] && type -p curl >/dev/null 2>&1; then
-        publicip="$(curl --max-time 10 -w '\n' "$public_ip_host" 2>/dev/null)"
+    if [ -z "$publicip" ] && type -p curl >/dev/null; then
+        publicip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
     fi
 
-    if [ -z "$publicip" ] && type -p wget >/dev/null 2>&1; then
-        publicip="$(wget -T 10 -qO- "$public_ip_host" 2>/dev/null; printf "%s")"
+    if [ -z "$publicip" ] && type -p wget >/dev/null; then
+        publicip="$(wget -T 10 -qO- "$public_ip_host"; printf "%s")"
     fi
 }
 
@@ -1752,7 +1824,7 @@ getusers() {
 
 getbirthday() {
     case "$os" in
-        "linux" | "iPhone OS")
+        "Linux" | "GNU" | "iPhone OS")
             birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
             date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
@@ -1798,6 +1870,11 @@ getbirthday() {
 
         "Solaris")
             birthday="$(ls -alct --full-time /var/sadm/system/logs/install_log | awk '{printf $6 " " $7}')"
+            date_cmd="$(date -d"$birthday" "$birthday_format")"
+        ;;
+
+        "Haiku")
+            birthday="$(ls -alctd --full-time /boot | awk '{printf $6 " " $7}')"
             date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
     esac
@@ -1858,19 +1935,19 @@ getcols() {
 getwallpaper() {
     case "$os" in
         "Linux" | "BSD")
-            if type -p feh >/dev/null 2>&1 && [ -f "$HOME/.fehbg" ]; then
+            if type -p feh >/dev/null && [ -f "$HOME/.fehbg" ]; then
                 img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
 
-            elif type -p nitrogen >/dev/null 2>&1; then
+            elif type -p nitrogen >/dev/null; then
                 img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
 
-            elif type -p gsettings >/dev/null 2>&1; then
+            elif type -p gsettings >/dev/null; then
                 # Get DE if user has disabled the function.
                 [ -z "$de" ] && getde
 
                 case "$de" in
-                    "MATE"*) img="$(gsettings get org.mate.background picture-filename 2>/dev/null)" ;;
-                    *) img="$(gsettings get org.gnome.desktop.background picture-uri 2>/dev/null)" ;;
+                    "MATE"*) img="$(gsettings get org.mate.background picture-filename)" ;;
+                    *) img="$(gsettings get org.gnome.desktop.background picture-uri)" ;;
                 esac
 
                 # Strip quotes etc from the path.
@@ -1989,7 +2066,7 @@ getimage() {
     type -p convert >/dev/null 2>&1 || image="ascii"
 
     case "$image" in
-        "wall") getwallpaper ;;
+        "wall") getwallpaper 2>/dev/null ;;
         "ascii") getascii; return ;;
         *)
             if [ -d "$image" ]; then
@@ -2223,7 +2300,7 @@ displayimage() {
                 # appearing in specific terminal emulators.
                 sleep 0.05
                 printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
-                $w3m_img_path -bg "$background_color" 2>/dev/null || padding="\033[0C"
+                $w3m_img_path -bg "$background_color" >/dev/null & 2>&1 || padding="\033[0C"
             ;;
 
             "iterm2")
@@ -2454,11 +2531,11 @@ colors() {
             ascii_distro="redhat"
         ;;
 
-        "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"*)
+        "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"*)
             setcolors 4 7
         ;;
 
-        "Fedora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
+        "Fedora"* | "Korora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
             setcolors 4 7 1
         ;;
 
@@ -2561,8 +2638,25 @@ colors() {
             setcolors 1 2 4 3
         ;;
 
-        "Raspbian"* | *)
+        "Haiku"*)
+            setcolors 2 0
+        ;;
+
+        "Raspbian"*)
             setcolors 2 1
+        ;;
+
+        "Linux")
+            setcolors fg 8 3
+        ;;
+
+        *)
+            case "$os" in
+                "Linux")
+                    ascii_distro="linux"
+                    setcolors fg 8 3
+                ;;
+            esac
         ;;
     esac
 
@@ -2888,7 +2982,7 @@ dynamicprompt() {
     fi
 
     # Add some padding
-    printf "\n\n"
+    printf "\n\n\n"
 }
 
 # }}}
@@ -3254,7 +3348,7 @@ main() {
     fi
 
     # Print the info
-    printinfo
+    printinfo 2>/dev/null
 
     # Prompt calculation
     if [ "$image" != "off" ]; then
