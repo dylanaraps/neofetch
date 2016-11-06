@@ -9,6 +9,8 @@
 
 - Fixed issue where info wasn't detected properly but the subtitle was still displayed.
 - Fixed issue where `bold=off` wouldn't work.
+- Swap all tests from `[` to `[[`.
+- Cleaned up and rewrote various functions.
 
 ## Operating System
 
