@@ -2385,23 +2385,19 @@ info() {
     subtitle="$1"
 
     # Call the function and update variable
-    if [ -z "$2" ]; then
-        "get$1" 2>/dev/null
-        eval output="\$${1}"
-
-    else
-        "get$2" 2>/dev/null
-        eval output="\$${2}"
-    fi
+    "get${2:-$1}" 2>/dev/null
+    eval output="\$${2:-$1}"
 
     # Trim whitespace
     output="$(trim "$output")"
 
-    # If the output is empty, don't print anything
-    if [ -z "$output" ]; then
-        err "Info: Couldn't detect $subtitle"
-        return
-    fi
+    # If prin was used in the function, stop here.
+    [ "$prin" ] && \
+        unset prin && return
+
+    # If the output is empty, don't print anything.
+    [ -z "$output" ] && \
+        err "Info: Couldn't detect $subtitle" && return
 
     case "$1" in
         title)
@@ -2410,9 +2406,7 @@ info() {
             length="${#output}"
         ;;
 
-        underline)
-            string="${underline_color}${output}"
-        ;;
+        underline) string="${underline_color}${output}" ;;
 
         *)
             string="${subtitle_color}${bold}${subtitle}${reset}"
@@ -2469,6 +2463,9 @@ prin() {
         padding_num="${padding/\\033\[}"
         string="$(printf "%.$((columns - ${padding_num/C} - gap))s" "$string")"
     fi
+
+    # Tell info() that prin() was used.
+    prin=1
 }
 
 # }}}
