@@ -127,8 +127,8 @@ getdistro() {
 
     case "$os" in
         "Linux" | "GNU")
-            if grep -q 'Microsoft' /proc/version >/dev/null || \
-               grep -q 'Microsoft' /proc/sys/kernel/osrelease >/dev/null; then
+            if grep -q -F 'Microsoft' /proc/version >/dev/null || \
+               grep -q -F 'Microsoft' /proc/sys/kernel/osrelease >/dev/null; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
@@ -573,14 +573,14 @@ getwm() {
 
         # Fallback for Wayland wms
         case "$wm" in
-            "xwlc") wm="$(ps -e | grep -m 1 -oE "sway|orbment|velox|orbital")" ;;
+            "xwlc") wm="$(ps -e | grep -m 1 -o -F -e "sway" -e "orbment" -e "velox" -e "orbital")" ;;
         esac
 
     else
         case "$os" in
             "Mac OS X") wm="Quartz Compositor" ;;
             "Windows")
-                wm="$(tasklist | grep -m 1 -o "bugn\|Windawesome\|blackbox\|emerge\|litestep")"
+                wm="$(tasklist | grep -m 1 -o -F -e "bugn" -e "Windawesome" -e "blackbox" -e "emerge" -e "litestep")"
                 [ "$wm" == "blackbox" ] && wm="bbLean (Blackbox)"
                 wm="${wm:+$wm, }Explorer"
             ;;
@@ -697,7 +697,7 @@ getwmtheme() {
         ;;
 
         "Blackbox" | "bbLean"*)
-            path="$(wmic process get ExecutablePath | grep "blackbox")"
+            path="$(wmic process get ExecutablePath | grep -F "blackbox")"
             path="${path//'\'/'/'}"
 
             wmtheme="$(grep "^session\.styleFile:" ${path/\.exe/.rc})"
@@ -851,7 +851,7 @@ getcpu() {
 
             # Show/hide hyperthreaded cores
             case "$cpu_cores" in
-                "logical" | "on") cores="$(kstat -m cpu_info | grep -c "chip_id")" ;;
+                "logical" | "on") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
                 "physical") cores="$(psrinfo -p)" ;;
             esac
 
@@ -871,7 +871,7 @@ getcpu() {
             speed="$(sysinfo -cpu | awk '/running at/ {print $NF; exit}')"
             speed="${speed/MHz}"
             speed="$((speed / 100))"
-            cores="$(sysinfo -cpu | grep -c 'CPU #')"
+            cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
 
             # Fix for speed under 1ghz
             if [ -z ] "${speed:1}"; then
@@ -942,7 +942,7 @@ getcpu_usage() {
                 case "$os" in
                     "Linux") cores="$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)" ;;
                     "Mac OS X" | "BSD") cores="$(sysctl -n hw.ncpu)" ;;
-                    "Solaris") cores="$(kstat -m cpu_info | grep "chip_id" | wc -l | tr -d ' ')" ;;
+                    "Solaris") cores="$(kstat -m cpu_info | grep -F "chip_id" | wc -l | tr -d ' ')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                 esac
             fi
@@ -972,7 +972,7 @@ getgpu() {
             if [ -f "/tmp/neofetch/gpu" ]; then
                 source "/tmp/neofetch/gpu"
             else
-                bdf_number="$(PATH="/sbin:$PATH" lspci -k | grep -A2 'VGA' | grep -B2 'Kernel driver in use' | awk '/^\w/ {print $1}')"
+                bdf_number="$(PATH="/sbin:$PATH" lspci -k | grep -A2 -F 'VGA' | grep -B2 -F 'Kernel driver in use' | awk '/^\w/ {print $1}')"
 
                 if [ -z "$bdf_number" ]; then
                     # Fallback if no kernel driver is in use
@@ -1056,7 +1056,7 @@ getgpu() {
         "BSD" | "Solaris")
             case "$distro" in
                 "FreeBSD"* | "DragonFlyBSD"* | "PacBSD"*)
-                    gpu="$(pciconf -lv | grep -B 4 "VGA" | grep "device")"
+                    gpu="$(pciconf -lv | grep -B 4 -F "VGA" | grep -F "device")"
                     gpu="${gpu/*device*= }"
                     gpu="${gpu//\'}"
                 ;;
@@ -1074,7 +1074,7 @@ getgpu() {
         ;;
 
         "Haiku")
-            gpu="$(listdev | grep -A2 -e 'device Display controller' | awk -F':' '/device beef/ {print $2}')"
+            gpu="$(listdev | grep -A2 -F 'device Display controller' | awk -F':' '/device beef/ {print $2}')"
         ;;
     esac
 
@@ -1132,7 +1132,7 @@ getmemory() {
         ;;
 
         "Solaris")
-            memtotal="$(prtconf | grep Memory | head -1 | awk 'BEGIN {FS=" "} {print $3}')"
+            memtotal="$(prtconf | grep -F "Memory" | head -1 | awk 'BEGIN {FS=" "} {print $3}')"
             memfree="$(($(sar -r 1 1 | tail -1 | awk 'BEGIN {FS=" "} {print $2}') / 1024))"
             memused="$((memtotal - memfree))"
         ;;
@@ -1169,7 +1169,8 @@ getsong() {
 
         "cmus"*)
             IFS=$'\n'
-            song=($(cmus-remote -Q | grep "tag artist \|tag title \|status" | sort))
+            song=($(cmus-remote -Q | grep -F -e "tag artist" -e "tag title" -e "status" | sort))
+
             state="${song[0]/status }"
             artist="${song[1]/tag artist }"
             title="${song[2]/tag title }"
@@ -1542,7 +1543,7 @@ getterm() {
         ;;
 
         "Linux")
-            parent="$(grep -i "PPid:" "/proc/${1:-$PPID}/status")"
+            parent="$(grep -i -F "PPid:" "/proc/${1:-$PPID}/status")"
             name="$(< "/proc/$(trim "${parent/PPid:}")/comm")"
         ;;
 
@@ -1570,7 +1571,7 @@ gettermfont() {
 
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
-            termfont="$(grep -i "${term/d}\*font" <<< $(xrdb -query))"
+            termfont="$(grep -i -F "${term/d}*font" <<< $(xrdb -query))"
             termfont="${termfont/*font: }"
 
             # Xresources has two different font syntax, this checks which
@@ -2128,7 +2129,7 @@ getimage() {
             [ "$image_backend" != "iterm2" ]; then
 
             if type -p xdpyinfo >/dev/null 2>&1; then
-                current_window="$(xdpyinfo | grep focus | grep -E -o 0x[0-9a-f]+)"
+                current_window="$(xdpyinfo | grep -F "focus" | grep -E -o 0x[0-9a-f]+)"
             elif type -p xprop >/dev/null 2>&1; then
                 current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
             fi
