@@ -8,6 +8,7 @@
 ## General
 
 - Fixed issue where info wasn't detected properly but the subtitle was still displayed.
+- Fixed issue where `bold=off` wouldn't work.
 
 ## Operating System
 
