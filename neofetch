@@ -43,7 +43,7 @@ getos() {
 getmodel() {
     case "$os" in
         "Linux")
-            if [[ -d "/system/app/" ]] && [[ -d "/system/priv-app" ]]; then
+            if [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
             elif [[ -f /sys/devices/virtual/dmi/id/product_name ]] ||\
@@ -160,7 +160,7 @@ getdistro() {
                     "tiny") distro="${distro//version*}" ;;
                 esac
 
-            elif [[ -d "/system/app/" ]] && [[ -d "/system/priv-app" ]]; then
+            elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
             else
@@ -169,6 +169,7 @@ getdistro() {
                     source "$file"
                 done
 
+                # The 3rd line down matches the fold marker syntax. {{{
                 case "$distro_shorthand" in
                     "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
                     "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
@@ -282,7 +283,7 @@ getkernel() {
     esac
 
     # Hardcode kernel settings in BSDs
-    if [[ "$os" == "BSD" ]] && [[ ! "$distro" =~ (PacBSD|PCBSD) ]]; then
+    if [[ "$os" == "BSD" && ! "$distro" =~ (PacBSD|PCBSD) ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel=$(uname -r) ;;
             *) unset kernel ;;
@@ -538,7 +539,7 @@ getde() {
         ;;
     esac
 
-    if [[ -n "$DISPLAY" ]] && [[ -z "$de" ]]; then
+    if [[ -n "$DISPLAY" && -z "$de" ]]; then
         de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
         case "$de" in
@@ -556,7 +557,7 @@ getde() {
 # Window Manager {{{
 
 getwm() {
-    if [[ -n "$DISPLAY" ]] && [[ "$os" != "Mac OS X" ]]; then
+    if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
         wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
         wm="${wm/*_NET_WM_NAME = }"
@@ -638,7 +639,7 @@ getwmtheme() {
         ;;
 
         "Openbox")
-            if [[ "$de" == "LXDE" ]] && [[ -f "${HOME}/.config/openbox/lxde-rc.xml" ]]; then
+            if [[ "$de" == "LXDE" && -f "${HOME}/.config/openbox/lxde-rc.xml" ]]; then
                 ob_file="lxde-rc"
 
             elif [[ -f "${HOME}/.config/openbox/rc.xml" ]]; then
@@ -672,7 +673,7 @@ getwmtheme() {
 
         "Quartz Compositor")
             wmtheme="$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)"
-            if [[ -z "$wmtheme" ]] || [[ "$wmtheme" == "1" ]]; then
+            if [[ -z "$wmtheme" || "$wmtheme" == "1" ]]; then
                 wmtheme="Blue"
             else
                 wmtheme="Graphite"
@@ -748,7 +749,7 @@ getcpu() {
             fi
 
             # Get cpu temp
-            if [[ "$cpu_temp" == "on" ]] && [[ -f "$temp_dir" ]]; then
+            if [[ "$cpu_temp" == "on" && -f "$temp_dir" ]]; then
                 temp="$(< "$temp_dir")"
                 temp="$((temp * 100 / 10000))"
                 temp="[${temp/${temp: -1}}.${temp: -1}°C]"
@@ -871,7 +872,7 @@ getcpu() {
     cpu="${cpu//with Radeon HD Graphics}"
 
     # Add cpu cores to output
-    [[ "$cpu_cores" != "off" ]] && [[ "$cores" ]] && \
+    [[ "$cpu_cores" != "off" && "$cores" ]] && \
         cpu="${cpu/@/(${cores}) @}"
 
     # Remove speed from output
@@ -1343,7 +1344,7 @@ getstyle() {
         ;;
     esac
 
-    if [[ -n "$DISPLAY" ]] && [[ "$os" != "Mac OS X" ]]; then
+    if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
         [[ -z "$de" ]] && getde
 
@@ -1445,11 +1446,11 @@ getstyle() {
         gtk3theme="$(trim "$gtk3theme")"
 
         # Format the string based on which themes exist
-        if  [[ "$gtk2theme" ]] && [[ "$gtk2theme" == "$gtk3theme" ]]; then
+        if  [[ "$gtk2theme" && "$gtk2theme" == "$gtk3theme" ]]; then
             gtk3theme+=" [GTK2/3]"
             unset gtk2theme
 
-        elif [[ "$gtk2theme" ]] && [[ "$gtk3theme" ]]; then
+        elif [[ "$gtk2theme" && "$gtk3theme" ]]; then
             gtk2theme+=" [GTK2], "
             gtk3theme+=" [GTK3] "
         else
@@ -1961,7 +1962,7 @@ getwallpaper() {
 # Ascii {{{
 
 getascii() {
-    if [[ ! -f "$ascii" ]] || [[ "$ascii" == "distro" ]]; then
+    if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
         # Error message
         [[ "$ascii" != "distro" ]] && \
         [[ ! -f "$ascii" ]] && err "Ascii: Ascii file not found, using distro ascii"
@@ -2081,7 +2082,7 @@ getimage() {
     fi
 
     # Get terminal width and height if \033[14t is unsupported.
-    if [[ "${#term_size}" -le 5 ]] && [[ "$image_backend" != "tycat" ]]; then
+    if [[ "${#term_size}" -le 5 && "$image_backend" != "tycat" ]]; then
         if type -p xdotool >/dev/null 2>&1 && \
             [[ "$image_backend" != "iterm2" ]]; then
 
@@ -2108,7 +2109,7 @@ getimage() {
     fi
 
     # If $img isn't a file fallback to ascii mode.
-    if [[ ! -f "$img" ]] || [[ -z "$term_width" ]] || [[ "$term_width" -le 10 ]]; then
+    if [[ ! -f "$img" || -z "$term_width" || "$term_width" -le 10 ]]; then
         image="ascii"
         getascii
 
@@ -2395,7 +2396,7 @@ info() {
     # Fix rendering issues with w3m and lines that
     # wrap to the next line by adding a max line
     # length.
-    if [[ "$image" != "off" ]] && [[ "$image" != "ascii" ]] && [[ "$1" != "cols" ]]; then
+    if [[ "$image" != "off" && "$image" != "ascii" && "$1" != "cols" ]]; then
         padding_num="${padding/\\033\[}"
         output="$(printf "%.$((columns - ${padding_num/C} - gap - ${#subtitle}))s" "$output")"
     fi
@@ -2427,7 +2428,7 @@ prin() {
     # Fix rendering issues with w3m and lines that
     # wrap to the next line by adding a max line
     # length.
-    if [[ "$image" != "off" ]] && [[ "$image" != "ascii" ]]; then
+    if [[ "$image" != "off" && "$image" != "ascii" ]]; then
         padding_num="${padding/\\033\[}"
         string="$(printf "%.$((columns - ${padding_num/C} - gap))s" "$string")"
     fi
