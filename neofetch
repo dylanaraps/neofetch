@@ -202,14 +202,14 @@ getdistro() {
             distro="$codename $osx_version $osx_build"
 
             case "$distro_shorthand" in
-                "on") distro="${distro/ "${osx_build}"}" ;;
+                "on") distro="${distro/ ${osx_build}}" ;;
                 "tiny")
                     case "$osx_version" in
                         "10."[4-7]*) distro="${distro/${codename}/Mac OS X}" ;;
                         "10."[8-9]* | "10.1"[0-1]*) distro="${distro/${codename}/OS X}" ;;
                         "10.12"*) distro="${distro/${codename}/macOS}" ;;
                     esac
-                    distro="${distro/ "${osx_build}"}"
+                    distro="${distro/ ${osx_build}}"
                 ;;
             esac
         ;;
@@ -435,13 +435,13 @@ getpackages() {
                 packages="$(($(ls -l /usr/local/bin/ | grep -v "\(../Cellar/\|brew\)" | wc -l) - 1))"
 
             type -p port >/dev/null && \
-                packages="$((packages + "$(port installed | wc -l)" - 1))"
+                packages="$((packages + $(port installed | wc -l) - 1))"
 
             type -p brew >/dev/null && \
-                packages="$((packages + "$(find /usr/local/Cellar -maxdepth 1 | wc -l)" - 1))"
+                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))"
 
             type -p pkgin >/dev/null && \
-                packages="$((packages + "$(pkgin list | wc -l)"))"
+                packages="$((packages + $(pkgin list | wc -l)))"
         ;;
 
         "BSD")
