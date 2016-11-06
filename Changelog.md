@@ -23,7 +23,7 @@
 - Added generic Linux ascii art to display if neofetch doesn't have the right logo for your distro.
 
 
-# Images
+## Images
 
 - Fixed images not appearing in st.
 
