@@ -229,10 +229,8 @@ getdistro() {
 
             distro="${distro/DragonFly/DragonFlyBSD}"
 
-            # Workaround for PCBSD as uname still displays FreeBSD.
+            # Workarounds for FreeBSD based distros.
             [ -f "/etc/pcbsd-lang" ] && distro="PCBSD"
-
-            # Workaround for PacBSD as uname displays FreeBSD.
             [ -f "/etc/pacbsd-release" ] && distro="PacBSD"
         ;;
 
@@ -279,25 +277,19 @@ gettitle() {
 
 getkernel() {
     case "$kernel_shorthand" in
-        "on")   kernel_flags="-r" ;;
-        "off")  kernel_flags="-sr" ;;
+        "on")  kernel_flags="-r" ;;
+        "off") kernel_flags="-sr" ;;
     esac
 
     # Hardcode kernel settings in BSDs
-    case "$os" in
-        "BSD")
-            case "$distro" in
-                "PacBSD"* | "PCBSD"*) kernel="$(uname $kernel_flags)" ;;
-                *)
-                    case "$distro_shorthand" in
-                        "on" | "tiny") kernel=$(uname -r) ;;
-                        *) unset kernel ;;
-                    esac
-                ;;
-            esac
-        ;;
-        *) kernel="$(uname $kernel_flags)" ;;
-    esac
+    if [ "$os" == "BSD" ] && [[ ! "$distro" =~ (PacBSD|PCBSD) ]]; then
+        case "$distro_shorthand" in
+            "on" | "tiny") kernel=$(uname -r) ;;
+            *) unset kernel ;;
+        esac
+    else
+        kernel="$(uname $kernel_flags)"
+    fi
 }
 
 # }}}
@@ -305,7 +297,6 @@ getkernel() {
 # Uptime {{{
 
 getuptime() {
-
     # Since Haiku's uptime cannot be fetched in seconds, a case outside
     # the usual case is needed
     case "$os" in
@@ -496,30 +487,31 @@ getshell() {
 
     if [ "$shell_version" == "on" ]; then
         shell+=" "
-        case "$shell" in
-            *"bash"*)
-                shell+="$(bash --version | head -n 1)"
+        case "${SHELL##*/}" in
+            "bash")
+                shell+="$(bash --version)"
                 shell="${shell/ *, version}"
+                shell="${shell/$'\n'*}"
             ;;
 
-            *"zsh"*)
+            "zsh")
                 shell+="$(zsh --version)"
                 shell="${shell/ zsh}"
             ;;
 
-            *"mksh"* | *"ksh")
+            "mksh" | "ksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
                 shell="${shell/ * KSH}"
             ;;
 
-            *"tcsh"* | *"csh"*)
+            "tcsh" | "csh")
                 shell+="$("$SHELL" --version)"
                 shell="${shell/tcsh}"
                 shell="${shell/\(*}"
             ;;
 
-            *"fish"*)
-                shell+="$("$SHELL" -c 'printf "%s" "$FISH_VERSION"')"
+            "fish")
+                shell+="$(fish -c 'printf "%s" "$FISH_VERSION"')"
             ;;
         esac
         shell="${shell/\(*\)}"
@@ -767,15 +759,6 @@ getcpu() {
                 "logical" | "on") cores="$(grep -c ^processor /proc/cpuinfo)" ;;
                 "physical") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
             esac
-
-            # Fix for speeds under 1ghz
-            if [ -z "${speed:1}" ]; then
-                speed="0.${speed}"
-            else
-                speed="${speed:0:1}.${speed:1}"
-            fi
-
-            cpu="$cpu @ ${speed}GHz $temp"
         ;;
 
         "Mac OS X")
@@ -828,15 +811,6 @@ getcpu() {
 
             # Get cpu cores
             cores="$(sysctl -n hw.ncpu)"
-
-            # Fix for speeds under 1ghz
-            if [ -z "${speed:1}" ]; then
-                speed="0.${speed}"
-            else
-                speed="${speed:0:1}.${speed:1}"
-            fi
-
-            cpu="$cpu @ ${speed}GHz"
         ;;
 
         "Solaris")
@@ -854,15 +828,6 @@ getcpu() {
                 "logical" | "on") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
                 "physical") cores="$(psrinfo -p)" ;;
             esac
-
-            # Fix for speeds under 1ghz
-            if [ -z "${speed:1}" ]; then
-                speed="0.${speed}"
-            else
-                speed="${speed:0:1}.${speed:1}"
-            fi
-
-            cpu="$cpu @ ${speed}GHz"
         ;;
 
         "Haiku")
@@ -872,15 +837,22 @@ getcpu() {
             speed="${speed/MHz}"
             speed="$((speed / 100))"
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
+        ;;
+    esac
+>>>>>>> df2ecf9f4fd077872037c3d3a7e558fa0871b5fa
 
-            # Fix for speed under 1ghz
-            if [ -z ] "${speed:1}"; then
+    # Format the output
+    case "$os" in
+        "Mac OS X" | "iPhone OS") ;;
+        *)
+            # Fix for speeds under 1ghz
+            if [ -z "${speed:1}" ]; then
                 speed="0.${speed}"
             else
                 speed="${speed:0:1}.${speed:1}"
             fi
 
-            cpu="$cpu @ ${speed}GHz"
+            cpu="$cpu @ ${speed}GHz $temp"
         ;;
     esac
 
@@ -892,10 +864,11 @@ getcpu() {
     cpu="${cpu//(R)}"
     cpu="${cpu//CPU}"
     cpu="${cpu//Processor}"
-    cpu="${cpu//Six-Core}"
-    cpu="${cpu//Eight-Core}"
+    cpu="${cpu//Core}"
     cpu="${cpu//Dual-Core}"
     cpu="${cpu//Quad-Core}"
+    cpu="${cpu//Six-Core}"
+    cpu="${cpu//Eight-Core}"
     cpu="${cpu//with Radeon HD Graphics}"
 
     # Add cpu cores to output
@@ -1116,13 +1089,15 @@ getmemory() {
 
         "BSD")
             case "$distro" in
-                "NetBSD"*) memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
-                *) memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
-            esac
+                "NetBSD"*)
+                    memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))"
+                    memtotal="$(($(sysctl -n hw.physmem64) / 1024 / 1024))"
+                ;;
 
-            case "$distro" in
-                "NetBSD"*) memtotal="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
-                *) memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))" ;;
+                *)
+                    memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))"
+                    memtotal="$(($(sysctl -n hw.physmem) / 1024 / 1024))"
+                ;;
             esac
 
             case "$distro" in
@@ -1298,8 +1273,7 @@ getresolution() {
                 resolution="${resolution//x??@/ @ }"
 
             else
-                resolution="$(system_profiler SPDisplaysDataType |\
-                    awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
+                resolution="$(system_profiler SPDisplaysDataType | awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
             scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
@@ -1323,16 +1297,13 @@ getresolution() {
             height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value)"
             height="${height/CurrentVerticalResolution'='/}"
 
-            [ "$width" ] && \
-                resolution="${width}x${height}"
+            [ "$width" ] && resolution="${width}x${height}"
         ;;
 
         "Haiku")
             resolution="$(screenmode | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
 
-            case "$refresh_rate" in
-                "off") resolution="${resolution/ @*}" ;;
-            esac
+            [ "$refresh_rate" == "off" ] && resolution="${resolution/ @*}"
         ;;
     esac
 
@@ -1748,8 +1719,7 @@ getbattery() {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
             battery="${battery/EstimatedChargeRemaining'='}"
-            [ "$battery" ] && \
-                battery+="%"
+            [ "$battery" ] && battery+="%"
         ;;
 
         "Haiku")
@@ -1759,9 +1729,7 @@ getbattery() {
         ;;
     esac
 
-    case "$battery_state" in
-        "charging"*) battery+=" Charging" ;;
-    esac
+    [ "$battery_state" ] && battery+=" Charging"
 
     case "$battery_display" in
         "bar") battery="$(bar "${battery/'%'*}" 100)" ;;
@@ -2474,13 +2442,10 @@ prin() {
 # Underline {{{
 
 getunderline() {
-    case "$underline_enabled" in
-        "on")
-            underline="$(printf %"$length"s)"
-            underline="${underline// /$underline_char}"
-        ;;
-        "off") underline="" ;;
-    esac
+    if [ "$underline_enabled" == "on" ]; then
+        underline="$(printf %"$length"s)"
+        underline="${underline// /$underline_char}"
+    fi
 }
 
 # }}}
