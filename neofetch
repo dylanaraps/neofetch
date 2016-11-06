@@ -2219,7 +2219,7 @@ getimage() {
             *)
                 convert \
                     "$img" \
-                    -gravity $crop_offset \
+                    -gravity "$crop_offset" \
                     -crop "$size"x"$size"+0+0 \
                     -quality 95 \
                     -scale "$width"x"$height" \
@@ -2271,7 +2271,7 @@ displayimage() {
                 # appearing in specific terminal emulators.
                 sleep 0.05
                 printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
-                $w3m_img_path -bg "$background_color" >/dev/null & 2>&1 || padding="\033[0C"
+                "$w3m_img_path" -bg "$background_color" >/dev/null & 2>&1 || padding="\033[0C"
             ;;
 
             "iterm2")
@@ -2306,7 +2306,7 @@ getimagebackend() {
 # Screenshot {{{
 
 takescrot() {
-    $scrot_cmd "${scrot_dir}${scrot_name}"
+    "$scrot_cmd" "${scrot_dir}${scrot_name}"
     [ "$scrot_upload" == "on" ] && scrot_upload
 }
 
@@ -3114,7 +3114,7 @@ getargs() {
     [ "${config:-on}" == "on" ] && getuserconfig 2>/dev/null
 
     while [ "$1" ]; do
-        case $1 in
+        case "$1" in
             # Info
             --os_arch) os_arch="$2" ;;
             --cpu_cores) cpu_cores="$2" ;;
