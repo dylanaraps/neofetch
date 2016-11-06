@@ -2306,7 +2306,7 @@ getimagebackend() {
 # Screenshot {{{
 
 takescrot() {
-    "$scrot_cmd" "${scrot_dir}${scrot_name}"
+    $scrot_cmd "${scrot_dir}${scrot_name}"
     [ "$scrot_upload" == "on" ] && scrot_upload
 }
 
