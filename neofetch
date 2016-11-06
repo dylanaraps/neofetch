@@ -2,7 +2,7 @@
 # set -x
 # vim: fdm=marker:noai:ts=4:sw=4:expandtab
 #
-# Neofetch info about your system
+# Neofetch: Simple system information script.
 # https://github.com/dylanaraps/neofetch
 #
 # Created by Dylan Araps
@@ -89,6 +89,8 @@ getmodel() {
                 "iPhone8,1") model="iPhone 6s" ;;
                 "iPhone8,2") model="iPhone 6s Plus" ;;
                 "iPhone8,4") model="iPhone SE" ;;
+                "iPhone9,1" | "iPhone9,3") model="iPhone 7" ;;
+                "iPhone9,2" | "iPhone9,4") model="iPhone 7 Plus" ;;
 
                 "iPod1,1") model="iPod touch" ;;
                 "ipod2,1") model="iPod touch 2G" ;;
@@ -796,6 +798,7 @@ getcpu() {
                 "iPhone6,"[1-2]) cpu="Apple A7 (2) @ 1.3GHz" ;;
                 "iPhone7,"[1-2]) cpu="Apple A8 (2) @ 1.4GHz" ;;
                 "iPhone8,"[1-4]) cpu="Apple A9 (2) @ 1.85GHz" ;;
+                "iPhone9,"[1-4]) cpu="Apple A10 Fusion (4) @ 2.34GHz" ;;
                 "iPod2,1") cpu="Samsung S5L8720 (1) @ 533MHz" ;;
                 "iPod3,1") cpu="Samsung S5L8922 (1) @ 600MHz" ;;
                 "iPod7,1") cpu="Apple A8 (2) @ 1.1GHz" ;;
@@ -939,7 +942,8 @@ getcpu_usage() {
                 case "$os" in
                     "Linux") cores="$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)" ;;
                     "Mac OS X" | "BSD") cores="$(sysctl -n hw.ncpu)" ;;
-                    "Solaris") cores="$(kstat -m cpu_info | grep "chip_id" | wc -l | tr -d ' ')"
+                    "Solaris") cores="$(kstat -m cpu_info | grep "chip_id" | wc -l | tr -d ' ')" ;;
+                    "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                 esac
             fi
 
