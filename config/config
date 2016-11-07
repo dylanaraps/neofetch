@@ -298,7 +298,18 @@ thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
 
 # W3m-img path
 # Only works with the w3m backend.
-# Some systems have this in another location
+#
+# NOTE: Only change this if "neofetch -v" says that it couldn't find w3m-img.
+# Neofetch has a function that automatically finds w3m-img for you. It looks
+# in the following directories:
+#    /usr/lib/w3m/w3mimgdisplay
+#    /usr/libexec/w3m/w3mimgdisplay
+#    /usr/lib64/w3m/w3mimgdisplay
+#    /usr/libexec64/w3m/w3mimgdisplay
+# If w3m-img is installed elsewhere on your system, open an issue on the repo
+# and I'll add it to the function inside the script. If w3m-img is installed
+# in a non-standard way (in your home folder, etc) then change the variable
+# below to the custom location. Otherwise, don't touch this.
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
 # Crop mode
