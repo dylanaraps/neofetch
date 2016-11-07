@@ -25,6 +25,7 @@
 ## Ascii
 
 - Added generic Linux ascii art to display if neofetch doesn't have the right logo for your distro.
+- `neofetch --ascii_distro x` now sets the mode to ascii for you. You no longer have to use a combination of `--ascii` and `--ascii_distro`.
 
 
 ## Images
