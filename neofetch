@@ -691,7 +691,7 @@ getwmtheme() {
 
         "Blackbox" | "bbLean"*)
             path="$(wmic process get ExecutablePath | grep -F "blackbox")"
-            path="${path//'\'/'/'}"
+            path="${path//\\/\/}"
 
             wmtheme="$(grep "^session\.styleFile:" "${path/\.exe/.rc}")"
             wmtheme="${wmtheme/'session.styleFile: '}"
@@ -915,7 +915,7 @@ getcpu_usage() {
                 case "$os" in
                     "Linux") cores="$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)" ;;
                     "Mac OS X" | "BSD") cores="$(sysctl -n hw.ncpu)" ;;
-                    "Solaris") cores="$(kstat -m cpu_info | grep -F "chip_id" | wc -l | tr -d ' ')" ;;
+                    "Solaris") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                 esac
             fi
@@ -1661,27 +1661,26 @@ getbattery() {
         "Linux")
             # We use 'prin' here and exit the function early so that we can
             # do multi battery support with a single battery per line.
-            if [[ -f /sys/class/power_supply/**/capacity ]]; then
-                for bat in "/sys/class/power_supply/BAT"*; do
-                    capacity="$(< "${bat}/capacity")"
-                    status="$(< "${bat}/status")"
+            for bat in "/sys/class/power_supply/BAT"*; do
+                capacity="$(< "${bat}/capacity")"
+                status="$(< "${bat}/status")"
 
-                    # Fix for bash on Windows 10 which includes /proc files
-                    # for battery usage despite there not being a battery
-                    # installed.
-                    [[ -z "$capacity" ]] && return
+                # Fix for bash on Windows 10 which includes /proc files
+                # for battery usage despite there not being a battery
+                # installed.
+                [[ -z "$capacity" ]] && return
 
-                    battery="${capacity}% [${status}]"
+                battery="${capacity}% [${status}]"
 
-                    case "$battery_display" in
-                        "bar") battery="$(bar "$capacity" 100)" ;;
-                        "infobar") battery+=" $(bar "$capacity" 100)" ;;
-                        "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
-                    esac
+                case "$battery_display" in
+                    "bar") battery="$(bar "$capacity" 100)" ;;
+                    "infobar") battery+=" $(bar "$capacity" 100)" ;;
+                    "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
+                esac
 
-                    prin "${subtitle}${bat: -1}" "$battery"
-                done
-            fi
+                prin "${subtitle}${bat: -1}" "$battery"
+            done
+
             unset battery
             return
         ;;
@@ -1725,7 +1724,7 @@ getbattery() {
         "Haiku")
             battery0full="$(awk -F '[^0-9]*' 'NR==2 {print $4}' /dev/power/acpi_battery/0)"
             battery0now="$(awk -F '[^0-9]*' 'NR==5 {print $4}' /dev/power/acpi_battery/0)"
-            battery="$((battery0full / battery0now * 100))%"
+            battery="$((battery0full * 100 / battery0now))%"
         ;;
     esac
 
@@ -2017,7 +2016,7 @@ getascii() {
 
     # Get lines/columns of the ascii file.
     lines=1
-    while IFS='\n' read -r line 2>/dev/null; do
+    while IFS=$'\n' read -r line 2>/dev/null; do
         [[ "${#line}" -gt "${ascii_length:-0}" ]] && ascii_length="${#line}"
         lines="$((lines+=1))"
     done <<< "$ascii_strip"
@@ -2026,7 +2025,7 @@ getascii() {
     [[ "$ascii_length_force" ]] && ascii_length="$ascii_length_force"
 
     padding="\033[$((ascii_length + gap))C"
-    printf "%b%s" "$print"
+    printf "%b" "$print"
     export LC_ALL=C
 }
 
@@ -2052,14 +2051,14 @@ getimage() {
     esac
 
     if [[ -n "$TMUX" ]]; then
-        printf "%b%s" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+        printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
         read_flags="-d c"
 
     elif [[ "$image_backend" == "tycat" ]]; then
-        printf "%b%s" "\033}qs\000"
+        printf "%b" "\033}qs\000"
 
     else
-        printf "%b%s" "\033[14t\033[c"
+        printf "%b" "\033[14t\033[c"
         read_flags="-d c"
     fi
 
@@ -2097,7 +2096,7 @@ getimage() {
             [[ "$image_backend" != "iterm2" ]]; then
 
             if type -p xdpyinfo >/dev/null 2>&1; then
-                current_window="$(xdpyinfo | grep -F "focus" | grep -E -o 0x[0-9a-f]+)"
+                current_window="$(xdpyinfo | grep -F "focus" | grep -E -o "0x[0-9a-f]+")"
             elif type -p xprop >/dev/null 2>&1; then
                 current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
             fi
@@ -2272,12 +2271,12 @@ displayimage() {
                 # Add a tiny delay to fix issues with images not
                 # appearing in specific terminal emulators.
                 sleep 0.05
-                printf "%b%s\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
+                printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
                 "$w3m_img_path" -bg "$background_color" >/dev/null & 2>&1 || padding="\033[0C"
             ;;
 
             "iterm2")
-                printf "%b%s\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$img")"
+                printf "%b\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$img")"
             ;;
 
             "tycat")
@@ -2388,7 +2387,7 @@ info() {
     [[ -z "$2" ]] && string="${string/*: }"
 
     # Print the string
-    printf "%b%s\n" "${padding}${zws}${string}${reset} "
+    printf "%b\n" "${padding}${zws}${string}${reset} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
@@ -2420,7 +2419,7 @@ prin() {
     string="$(trim "$string")"
 
     # Print the info
-    printf "%b%s\n" "${padding}${zws}${string}${reset} "
+    printf "%b\n" "${padding}${zws}${string}${reset} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
@@ -2676,9 +2675,9 @@ setcolors() {
 
 color() {
     case "$1" in
-        [0-6]) printf "%b%s" "${reset}\033[3${1}m" ;;
-        7 | "fg") printf "%b%s" "$reset" ;;
-        *) printf "%b%s" "\033[38;5;${1}m" ;;
+        [0-6]) printf "%b" "${reset}\033[3${1}m" ;;
+        7 | "fg") printf "%b" "$reset" ;;
+        *) printf "%b" "\033[38;5;${1}m" ;;
     esac
 }
 
@@ -2865,7 +2864,7 @@ bar() {
         bar="$(color fg)[$bar"
     fi
 
-    printf "%b%s\n" "${bar}${info_color}"
+    printf "%b\n" "${bar}${info_color}"
 }
 
 # }}}
@@ -3327,12 +3326,12 @@ main() {
     fi
 
     # Re-enable line wrap
-    printf "%b%s" "\033[?7h"
+    printf "%b" "\033[?7h"
 
     [[ "$scrot" == "on" ]] && takescrot
 
     # Show error messages
-    [[ "$verbose" == "on" ]] && printf "%b%s" "$err"
+    [[ "$verbose" == "on" ]] && printf "%b" "$err"
 
     # Reset exit status of the tests above
     printf "%s"
