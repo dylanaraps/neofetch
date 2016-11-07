@@ -2355,10 +2355,10 @@ info() {
 
     # Call the function and update variable
     "get${2:-$1}" 2>/dev/null
-    eval output="\$${2:-$1}"
+    output="${2:-$1}"
 
     # Trim whitespace
-    output="$(trim "$output")"
+    output="$(trim "${!output}")"
 
     # If prin was used in the function, stop here.
     [[ "$prin" ]] && \
