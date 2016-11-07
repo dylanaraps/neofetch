@@ -3226,6 +3226,7 @@ getargs() {
             ;;
 
             --ascii_distro)
+                image="ascii"
                 ascii_distro="$2"
                 case "$2" in "-"* | "") ascii_distro="$distro" ;; esac
             ;;
