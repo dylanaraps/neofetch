@@ -2002,24 +2002,27 @@ getascii() {
         fi
     fi
 
-    # Eval colors
-    print="$(eval printf "$(<"$ascii")")"
-
     # Set locale to get correct padding
     export LC_ALL="$SYS_LOCALE"
 
-    # Turn the file into a variable and strip escape codes.
-    ascii_strip="$(<"$ascii")"
-    ascii_strip="${ascii_strip//\$\{??\}}"
-    ascii_strip="${ascii_strip//'\\'/ }"
-    ascii_strip="${ascii_strip//'\'}"
-
-    # Get lines/columns of the ascii file.
-    lines=1
+    # Turn file into variable
     while IFS=$'\n' read -r line 2>/dev/null; do
+        print+="${line} \n"
+
+        # Calculate size of ascii file in line length / line count.
+        line="${line//\$\{??\}}"
+        line="${line//'\\'/'\'}"
         [[ "${#line}" -gt "${ascii_length:-0}" ]] && ascii_length="${#line}"
         lines="$((lines+=1))"
-    done <<< "$ascii_strip"
+    done < "$ascii"
+
+    # Colors
+    print="${print//'${c1}'/$c1}"
+    print="${print//'${c2}'/$c2}"
+    print="${print//'${c3}'/$c3}"
+    print="${print//'${c4}'/$c4}"
+    print="${print//'${c5}'/$c5}"
+    print="${print//'${c6}'/$c6}"
 
     # Overwrite padding if ascii_length_force is set.
     [[ "$ascii_length_force" ]] && ascii_length="$ascii_length_force"
@@ -2086,7 +2089,7 @@ getimage() {
             [[ "$image_backend" != "iterm2" ]]; then
 
             current_window="$(xdotool getactivewindow)"
-            eval "$(xdotool getwindowgeometry --shell "$current_window")"
+            source <(xdotool getwindowgeometry --shell "$current_window")
             term_height="$HEIGHT"
             term_width="$WIDTH"
 
@@ -2518,6 +2521,10 @@ colors() {
             setcolors 4 8
         ;;
 
+        "BunsenLabs"*)
+            setcolors 8 7
+        ;;
+
         *"OS X"* | *"iOS"* | "Mac" | *"macOS"*)
             setcolors 2 3 1 1 5 4
             ascii_distro="mac"
@@ -2928,14 +2935,13 @@ dynamicprompt() {
     if [[ "$image" != "ascii" ]]; then
         gettermpadding 2>/dev/null
         lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height))"
-    else
-        lines="$((lines-=2))"
     fi
 
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
     if [[ "${lines:-0}" -lt "${info_height:-0}" ]]; then
-        lines="-2"
+        printf "\n"
+        return
     else
         lines="$((lines - info_height))"
     fi
@@ -2948,7 +2954,7 @@ dynamicprompt() {
     fi
 
     # Add some padding
-    printf "\n\n\n"
+    printf "\n\n\n\n"
 }
 
 # }}}
@@ -3308,7 +3314,7 @@ main() {
         displayimage
 
         # Set cursor position next to ascii art
-        printf "\033[$((${lines:-4} - ${prompt_loc:-4}))A"
+        printf "\033[$((${lines:-0} - ${prompt_loc:-0}))A"
 
         # Reset horizontal cursor position
         printf "\033[9999999D"

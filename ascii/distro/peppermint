@@ -1,4 +1,3 @@
-"\
 ${c1}          8ZZZZZZ${c2}MMMMM
 ${c1}       .ZZZZZZZZZ${c2}MMMMMMM.
 ${c2}     MM${c1}ZZZZZZZZZ${c2}MMMMMMM${c1}ZZZZ
@@ -18,4 +17,3 @@ ${c2}    .MMMMMMM${c1}ZZZZZZZZ${c2}MMMMM${c1}Z7Z
 ${c2}      MMMMM${c1}ZZZZZZZZZ${c2}MMMMMMM
 ${c1}        NZZZZZZZZZZZ${c2}MMMMM
 ${c1}           ZZZZZZZZZ${c2}MM)
-"
