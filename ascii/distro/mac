@@ -1,18 +1,16 @@
-"\
 ${c1}                -/+:.
                :++++.
               /+++/.
-      .:-::- .+/:-\`\`.::-
-   .:/++++++/::::/++++++/:\`
-${c2} .:///////////////////////:\`
- ////////////////////////\`
-${c3}-+++++++++++++++++++++++\`
+      .:-::- .+/:-``.::-
+   .:/++++++/::::/++++++/:`
+${c2} .:///////////////////////:`
+ ////////////////////////`
+${c3}-+++++++++++++++++++++++`
 /++++++++++++++++++++++/
 ${c4}/sssssssssssssssssssssss.
 :ssssssssssssssssssssssss-
-${c5} osssssssssssssssssssssssso/\`
- \`syyyyyyyyyyyyyyyyyyyyyyyy+\`
-${c6}  \`ossssssssssssssssssssss/
+${c5} osssssssssssssssssssssssso/`
+ `syyyyyyyyyyyyyyyyyyyyyyyy+`
+${c6}  `ossssssssssssssssssssss/
     :ooooooooooooooooooo+.
-     \`:+oo+/:-..-:/+o+/-
-"
+     `:+oo+/:-..-:/+o+/-

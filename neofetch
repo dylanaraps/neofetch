@@ -2009,6 +2009,7 @@ getascii() {
         # Calculate size of ascii file in line length / line count.
         line="${line//\$\{??\}}"
         line="${line//'\\'/'\'}"
+        line="${line//█/.}"
         [[ "${#line}" -gt "${ascii_length:-0}" ]] && ascii_length="${#line}"
         lines="$((lines+=1))"
     done < "$ascii"
@@ -2935,8 +2936,6 @@ dynamicprompt() {
     if [[ "$image" != "ascii" ]]; then
         gettermpadding
         lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height))"
-    else
-        lines="$((lines-=2))"
     fi
 
     # If the info is higher than the ascii/image place the prompt
