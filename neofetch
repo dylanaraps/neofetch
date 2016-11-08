@@ -2002,6 +2002,9 @@ getascii() {
         fi
     fi
 
+    # Set locale to get correct padding
+    export LC_ALL="$SYS_LOCALE"
+
     # Turn file into variable
     while IFS=$'\n' read -r line 2>/dev/null; do
         print+="${line} \n"
@@ -2009,7 +2012,6 @@ getascii() {
         # Calculate size of ascii file in line length / line count.
         line="${line//\$\{??\}}"
         line="${line//'\\'/'\'}"
-        line="${line//█/.}"
         [[ "${#line}" -gt "${ascii_length:-0}" ]] && ascii_length="${#line}"
         lines="$((lines+=1))"
     done < "$ascii"
@@ -2021,9 +2023,6 @@ getascii() {
     print="${print//'${c4}'/$c4}"
     print="${print//'${c5}'/$c5}"
     print="${print//'${c6}'/$c6}"
-
-    # Set locale to get correct padding
-    export LC_ALL="$SYS_LOCALE"
 
     # Overwrite padding if ascii_length_force is set.
     [[ "$ascii_length_force" ]] && ascii_length="$ascii_length_force"
@@ -2941,7 +2940,8 @@ dynamicprompt() {
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
     if [[ "${lines:-0}" -lt "${info_height:-0}" ]]; then
-        lines="-2"
+        printf "\n"
+        return
     else
         lines="$((lines - info_height))"
     fi
@@ -2954,7 +2954,7 @@ dynamicprompt() {
     fi
 
     # Add some padding
-    printf "\n\n\n"
+    printf "\n\n\n\n"
 }
 
 # }}}
