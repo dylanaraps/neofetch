@@ -12,6 +12,8 @@
 - Swap all tests from `[` to `[[`.
 - Cleaned up and rewrote various functions.
 - Removed all traces of `eval` from neofetch.
+- All functions/variables now follow the same naming scheme. `example_func_name`
+
 
 ## Operating System
 
@@ -26,7 +28,7 @@
 ## Ascii
 
 - Ascii art is no longer read as a script and is now read as plain text.
-  - See this wiki page about the new ascii art format. 
+  - See this wiki page about the new ascii art format.
   - https://github.com/dylanaraps/neofetch/wiki/Custom-Ascii-art-file-format
 - Added generic Linux ascii art to display if neofetch doesn't have the right logo for your distro.
 - `neofetch --ascii_distro x` now sets the mode to ascii for you. You no longer have to use a combination of `--ascii` and `--ascii_distro`.
