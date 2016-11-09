@@ -4,10 +4,10 @@
 # Neofetch config file for travis.ci
 # https://github.com/dylanaraps/neofetch
 
-printinfo() {
+print_info() {
     if [ "$TRAVIS_OS_NAME" ]; then
-        info linebreak
-        info linebreak
+        info line_break
+        info line_break
     fi
 
     info title
@@ -22,11 +22,11 @@ printinfo() {
     info "Resolution" resolution
     info "DE" de
     info "WM" wm
-    info "WM Theme" wmtheme
+    info "WM Theme" wm_theme
     info "Theme" theme
     info "Icons" icons
     info "Terminal" term
-    info "Terminal Font" termfont
+    info "Terminal Font" term_font
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
@@ -36,14 +36,14 @@ printinfo() {
     info "Battery" battery
     info "Font" font
     info "Song" song
-    info "Local IP" localip
-    info "Public IP" publicip
+    info "Local IP" local_ip
+    info "Public IP" public_ip
     info "Users" users
     info "Birthday" birthday
 
-    info linebreak
+    info line_break
     info cols
-    info linebreak
+    info line_break
 }
 
 refresh_rate="on"
