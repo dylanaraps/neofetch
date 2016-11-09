@@ -406,7 +406,7 @@ get_packages() {
 
             if type -p pkg >/dev/null; then
                 packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
-                [[ "$packages" == "0" ]] && packages="$((packages+=$(pkg list | wc -l)))"
+                (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
             fi
 
             type -p emerge >/dev/null && \
@@ -473,7 +473,7 @@ get_packages() {
         ;;
     esac
 
-    [[ "$packages" == "0" ]] && unset packages
+    (("$packages" == "0")) && unset packages
 }
 
 # }}}
@@ -673,7 +673,7 @@ get_wm_theme() {
 
         "Quartz Compositor")
             wm_theme="$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)"
-            if [[ -z "$wm_theme" || "$wm_theme" == "1" ]]; then
+            if [[ -z "$wm_theme" ]] || (("$wm_theme" == 1)); then
                 wm_theme="Blue"
             else
                 wm_theme="Graphite"
@@ -701,7 +701,7 @@ get_wm_theme() {
     esac
 
     wm_theme="${wm_theme//\'}"
-    [[ "$version" -ge 4 ]] && wm_theme="${wm_theme^}"
+    (("$version" >= 4)) && wm_theme="${wm_theme^}"
 }
 
 # }}}
@@ -1277,7 +1277,7 @@ get_resolution() {
 
             scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
 
-            [[ "${scale_factor%.*}" == "2" ]] && \
+            (("${scale_factor%.*}" == 2)) && \
                 resolution="${resolution// @/@2x @}"
 
             if [[ "$refresh_rate" == "off" ]]; then
@@ -1357,7 +1357,7 @@ get_style() {
 
                     theme="$(grep "^[^#]*$kde" "$kde_config_file")"
                     theme="${theme/${kde}*=}"
-                    [[ "$version" -ge 4 ]] && theme="${theme^}"
+                    (("$version" >= 4)) && theme="${theme^}"
 
                     gtk_shorthand="on"
                     return
@@ -1432,7 +1432,7 @@ get_style() {
         gtk3theme=${gtk3theme//\'}
 
         # Uppercase the first letter of each gtk theme
-        if [[ "$version" -ge 4 ]]; then
+        if (("$version" >= 4)); then
             gtk2theme="${gtk2theme^}"
             gtk3theme="${gtk3theme^}"
         fi
@@ -1584,7 +1584,7 @@ get_term_font() {
         ;;
     esac
 
-    [[ "$version" -ge 4 ]] && term_font="${term_font^}"
+    (("$version" >= 4)) && term_font="${term_font^}"
 }
 
 # }}}
@@ -1874,7 +1874,7 @@ get_cols() {
         block_width="${block_width// /█}"
 
         # Generate the string.
-        while [[ "$start" -le "$end" ]]; do
+        while (("$start" <= "$end")); do
             case "$start" in
                 [0-6]) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
                 7) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
@@ -1967,7 +1967,7 @@ get_ascii() {
         [[ ! -f "$ascii" ]] && err "Ascii: Ascii file not found, using distro ascii"
 
         # Lowercase the distro name
-        if [[ "$version" -le 3 ]]; then
+        if (("$version" <= 3)); then
             ascii="$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")"
         else
             ascii="${ascii_distro,,}"
@@ -2012,7 +2012,7 @@ get_ascii() {
         # Calculate size of ascii file in line length / line count.
         line="${line//\$\{??\}}"
         line="${line//'\\'/'\'}"
-        [[ "${#line}" -gt "${ascii_length:-0}" ]] && ascii_length="${#line}"
+        (("${#line}" > "${ascii_length:-0}")) && ascii_length="${#line}"
         lines="$((lines+=1))"
     done < "$ascii"
 
@@ -2084,7 +2084,7 @@ get_image() {
     fi
 
     # Get terminal width and height if \033[14t is unsupported.
-    if [[ "${#term_size}" -le 5 && "$image_backend" != "tycat" ]]; then
+    if (("${#term_size}" <= 5)) && [[ "$image_backend" != "tycat" ]]; then
         if type -p xdotool >/dev/null 2>&1 && \
             [[ "$image_backend" != "iterm2" ]]; then
 
@@ -2111,13 +2111,13 @@ get_image() {
     fi
 
     # If $img isn't a file fallback to ascii mode.
-    if [[ ! -f "$img" || -z "$term_width" || "$term_width" -le 10 ]]; then
+    if [[ ! -f "$img" || -z "$term_width" ]] || (("$term_width" <= 10)); then
         image="ascii"
         get_ascii
 
         # Error messages
         [[ ! -f "$img" ]] && err "Image: \$img, isn't a file, falling back to ascii mode."
-        [[ "${#term_size}" -le 5 ]] && err "Image: Your terminal doesn't support \\\033[14t, falling back to ascii mode."
+        (("${#term_size}" <= 5)) && err "Image: Your terminal doesn't support \\\033[14t, falling back to ascii mode."
 
         return
     else
@@ -2140,7 +2140,7 @@ get_image() {
             image_size="$((columns * font_width / 2))"
             term_height="$((term_height - term_height / 4))"
 
-            [[ "$term_height" -lt "$image_size" ]] && \
+            (("$term_height" < "$image_size")) && \
                 image_size="$term_height"
         ;;
 
@@ -2148,7 +2148,7 @@ get_image() {
             percent="${image_size/\%}"
             image_size="$((percent * term_width / 100))"
 
-            [[ "$((percent * term_height / 50))" -lt "$image_size" ]] && \
+            (("$((percent * term_height / 50))" < "$image_size")) && \
                 image_size="$((percent * term_height / 100))"
         ;;
 
@@ -2191,7 +2191,7 @@ get_image() {
             # This checks to see if height is geater than width
             # so we can do a better crop of portrait images.
             size="$og_height"
-            [[ "$og_height" -gt "$og_width" ]] && size="$og_width"
+            (("$og_height" > "$og_width")) && size="$og_width"
         fi
 
         case "$crop_mode" in
@@ -2656,8 +2656,8 @@ setcolors() {
         info_color="$reset"
 
         # If the second color is white use the first for the subtitle
-        [[ "$2" == 7 ]] && subtitle_color="$(color "$1")"
-        [[ "$1" == 7 ]] && title_color="$reset"
+        (("$2" == 7)) && subtitle_color="$(color "$1")"
+        (("$1" == 7)) && title_color="$reset"
     else
         title_color="$(color "${colors[0]}")"
         at_color="$(color "${colors[1]}")"
@@ -2942,7 +2942,7 @@ dynamic_prompt() {
 
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
-    if [[ "${lines:-0}" -lt "${info_height:-0}" ]]; then
+    if (("${lines:-0}" < "${info_height:-0}")); then
         printf "\n"
         return
     else
@@ -2950,7 +2950,7 @@ dynamic_prompt() {
     fi
 
     # Set the prompt location
-    if [[ "$lines" -lt 0 ]]; then
+    if (("$lines" < 0)); then
         printf "\033[${lines/-}A"
     else
         printf "\033[${lines}B"
