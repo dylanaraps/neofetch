@@ -6,8 +6,8 @@
 
 print_info() {
     if [ "$TRAVIS_OS_NAME" ]; then
-        info linebreak
-        info linebreak
+        info line_break
+        info line_break
     fi
 
     info title
@@ -41,9 +41,9 @@ print_info() {
     info "Users" users
     info "Birthday" birthday
 
-    info linebreak
+    info line_break
     info cols
-    info linebreak
+    info line_break
 }
 
 refresh_rate="on"

@@ -646,7 +646,7 @@ get_wm_theme() {
                 ob_file="rc"
             fi
 
-            wm_theme="$(awk -F "[<,>]" '/<theme/ {get_line; print $3}' "$XDG_CONFIG_HOME/openbox/${ob_file}.xml")";
+            wm_theme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$XDG_CONFIG_HOME/openbox/${ob_file}.xml")";
         ;;
 
         "PekWM")
@@ -2708,8 +2708,8 @@ bold() {
 
 # Linebreak {{{
 
-get_linebreak() {
-    linebreak="​ "
+get_line_break() {
+    line_break="​ "
 
     # Calculate info height
     info_height="$((info_height+=1))"
@@ -2906,7 +2906,7 @@ kde_config_dir() {
 
 # Terminal info {{{
 #
-# Parse terminal config files to get_
+# Parse terminal config files to get
 # info about padding. Due to how w3m-img
 # works padding around the terminal throws
 # off the cursor placement calculation in
@@ -3241,7 +3241,7 @@ get_args() {
             --ascii_bold) ascii_bold="$2" ;;
             --logo | -L)
                 image="ascii"
-                printinfo() { info linebreak; }
+                print_info() { info line_break; }
             ;;
 
 
@@ -3267,7 +3267,7 @@ get_args() {
             -v) verbose="on" ;;
             -vv) set -x; verbose="on" ;;
             --help) usage ;;
-            --version) printf "%s\n" "Neofetch 1.9.1"; exit ;;
+            --version) printf "%s\n" "Neofetch 2.0"; exit ;;
         esac
 
         shift
