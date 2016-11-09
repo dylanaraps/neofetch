@@ -14,7 +14,7 @@ export LANG=C
 # Info
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
-printinfo() {
+print_info() {
     info title
     info underline
 
@@ -27,11 +27,11 @@ printinfo() {
     info "Resolution" resolution
     info "DE" de
     info "WM" wm
-    info "WM Theme" wmtheme
+    info "WM Theme" wm_theme
     info "Theme" theme
     info "Icons" icons
     info "Terminal" term
-    info "Terminal Font" termfont
+    info "Terminal Font" term_font
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
@@ -41,8 +41,8 @@ printinfo() {
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
-    # info "Local IP" localip
-    # info "Public IP" publicip
+    # info "Local IP" local_ip
+    # info "Public IP" public_ip
     # info "Users" users
     # info "Birthday" birthday
 
