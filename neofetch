@@ -2974,6 +2974,24 @@ scrot_args() {
 
 # }}}
 
+# Deprecated functions {{{
+# Neofetch 2.0 changed the names of a few variables.
+# This function adds backwards compatibility for the
+# old variable names.
+
+old_functions() {
+    if type printinfo >/dev/null 2>&1; then
+        print_info() { printinfo ; }
+        get_wmtheme() { get_wm_theme; wmtheme="$wm_theme"; }
+        get_termfont() { get_term_font; termfont="$term_font"; }
+        get_localip() { get_local_ip; localip="$local_ip"; }
+        get_publicip() { get_public_ip; publicip="$public_ip"; }
+        get_linebreak() { get_line_break; linebreak="$line_break"; }
+    fi
+}
+
+# }}}
+
 # }}}
 
 # Usage {{{
@@ -3321,6 +3339,7 @@ main() {
     fi
 
     # Print the info
+    old_functions
     print_info 2>/dev/null
 
     # Prompt calculation
