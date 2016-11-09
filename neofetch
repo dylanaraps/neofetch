@@ -2007,7 +2007,7 @@ getascii() {
 
     # Turn file into variable
     while IFS=$'\n' read -r line 2>/dev/null; do
-        print+="${line} \n"
+        print+="$line \n"
 
         # Calculate size of ascii file in line length / line count.
         line="${line//\$\{??\}}"
@@ -2978,9 +2978,10 @@ scrot_args() {
 
 # Usage {{{
 
-usage() { cat << EOF
+usage() { printf "%s" "
+    NEOFETCH
 
-    usage: neofetch --option "value" --option "value"
+    USAGE: neofetch --option "value" --option "value"
 
     NOTE: There's also a config option for each flag below.
 
@@ -3097,8 +3098,7 @@ usage() { cat << EOF
     --version                   Show neofetch version
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
-
-EOF
+"
 exit 1
 }
 
