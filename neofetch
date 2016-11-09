@@ -2888,7 +2888,10 @@ cache() {
 # KDE config directory {{{
 
 kde_config_dir() {
-    if [[ -n "$KDE_CONFIG_DIR" ]]; then
+    if [[ "$kde_config_dir" ]]; then
+        return
+
+    elif [[ -n "$KDE_CONFIG_DIR" ]]; then
         kde_config_dir="$KDE_CONFIG_DIR"
 
     elif type -p kde5-config >/dev/null 2>&1; then
