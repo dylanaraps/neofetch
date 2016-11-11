@@ -235,7 +235,7 @@ get_distro() {
 
         "Solaris")
             case "$distro_shorthand" in
-                "on" | "tiny") distro="$(awk 'NR==1{print $1 " " $2;}' /etc/release)" ;;
+                "on" | "tiny") distro="$(awk 'NR==1{print $1 " " $3;}' /etc/release)" ;;
                 *) distro="$(awk 'NR==1{print $1 " " $2 " " $3;}' /etc/release)" ;;
             esac
             distro="${distro/\(*}"
@@ -694,6 +694,7 @@ get_cpu() {
                 speed="$(< "${speed_dir}/cpuinfo_max_freq")"
 
                 speed="$((speed / 100000))"
+                echo "$speed"
             else
                 speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
                 speed="$((speed / 100))"
@@ -767,12 +768,13 @@ get_cpu() {
 
         "Solaris")
             # Get cpuname
-            cpu="$(psrinfo -pv | tail -1)"
+            cpu="$(psrinfo -pv)"
+            cpu="${cpu//*$'\n'}"
             cpu="${cpu/[0-9]\.*}"
             cpu="${cpu/ @*}"
 
             # Get cpu speed
-            speed="$(psrinfo -v | awk '/operates at/ {print $6}')"
+            speed="$(psrinfo -v | awk '/operates at/ {print $6; exit}')"
             speed="$((speed / 100))"
 
             # Show/hide hyperthreaded cores
@@ -815,11 +817,11 @@ get_cpu() {
     cpu="${cpu//(R)}"
     cpu="${cpu//CPU}"
     cpu="${cpu//Processor}"
-    cpu="${cpu//Core}"
     cpu="${cpu//Dual-Core}"
     cpu="${cpu//Quad-Core}"
     cpu="${cpu//Six-Core}"
     cpu="${cpu//Eight-Core}"
+    cpu="${cpu//Core}"
     cpu="${cpu//with Radeon HD Graphics}"
 
     # Add cpu cores to output
@@ -1046,8 +1048,8 @@ get_memory() {
         ;;
 
         "Solaris")
-            memtotal="$(prtconf | grep -F "Memory" | head -1 | awk 'BEGIN {FS=" "} {print $3}')"
-            memfree="$(($(sar -r 1 1 | tail -1 | awk 'BEGIN {FS=" "} {print $2}') / 1024))"
+            memtotal="$(prtconf | awk '/Memory/ {print $3}')"
+            memfree="$(($(sar -r 1 1 | awk 'NR==5 {print $2}') / 1024))"
             memused="$((memtotal - memfree))"
         ;;
 
