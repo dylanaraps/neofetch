@@ -14,6 +14,8 @@
 - Removed all traces of `eval` from neofetch.
 - All functions/variables now follow the same naming scheme. `example_func_name`
 - Convert math tests to correct syntax.
+- Removed all vim fold markers and stopped enforcing folding for vim users.
+    - See [#431](https://github.com/dylanaraps/neofetch/pull/431)
 
 
 ## Operating System
@@ -61,3 +63,7 @@
 **CPU Usage**<br \>
 
 - [iOS] Fixed CPU usage.
+
+**Shell**<br \>
+
+- [bash] Simplify bash version.
