@@ -2143,6 +2143,18 @@ get_w3m_img_path() {
     fi
 }
 
+get_image_backend() {
+    if [[ -n "$ITERM_PROFILE" ]]; then
+        image_backend="iterm2"
+
+    elif [[ "$(tycat 2>/dev/null)" ]]; then
+        image_backend="tycat"
+
+    else
+        image_backend="w3m"
+    fi
+}
+
 display_image() {
     if [[ "$image" != "ascii" ]]; then
         case "$image_backend" in
@@ -2162,18 +2174,6 @@ display_image() {
                 tycat "$img"
             ;;
         esac
-    fi
-}
-
-get_image_backend() {
-    if [[ -n "$ITERM_PROFILE" ]]; then
-        image_backend="iterm2"
-
-    elif [[ "$(tycat 2>/dev/null)" ]]; then
-        image_backend="tycat"
-
-    else
-        image_backend="w3m"
     fi
 }
 
@@ -2730,7 +2730,6 @@ get_term_padding() {
     #
     # Note: This issue only seems to affect
     # URxvt.
-
     [[ -z "$term" ]] && get_term
 
     case "$term" in
@@ -2773,7 +2772,6 @@ old_functions() {
     # Neofetch 2.0 changed the names of a few variables.
     # This function adds backwards compatibility for the
     # old variable names.
-
     if type printinfo >/dev/null 2>&1; then
         print_info() { printinfo ; }
         get_wmtheme() { get_wm_theme; wmtheme="$wm_theme"; }
@@ -2784,7 +2782,7 @@ old_functions() {
     fi
 }
 
-# FINISH uP
+# FINISH UP
 
 usage() { printf "%s" "
     NEOFETCH
