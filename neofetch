@@ -22,7 +22,7 @@ shopt -s nocasematch
 # DETECT INFORMATION
 
 get_os() {
-    case "$(uname)" in
+    case "$kernel_name" in
         "Linux")   os="Linux" ;;
         "Darwin")  os="$(sw_vers -productName)" ;;
         *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
@@ -30,7 +30,7 @@ get_os() {
         "SunOS") os="Solaris" ;;
         "Haiku") os="Haiku" ;;
         "GNU"*) os="GNU" ;;
-        *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
+        *) printf "%s\n" "Unknown OS detected: $kernel_name"; exit 1 ;;
     esac
 }
 
@@ -56,7 +56,7 @@ get_model() {
 
         "Mac OS X") model="$(sysctl -n hw.model)" ;;
         "iPhone OS")
-            case "${ios_model:="$(uname -m)"}" in
+            case "$machine_arch" in
                 "iPad1,1") model="iPad" ;;
                 "iPad2,"[1-4]) model="iPad2" ;;
                 "iPad3,"[1-3]) model="iPad3" ;;
@@ -214,8 +214,8 @@ get_distro() {
 
         "BSD")
             case "$distro_shorthand" in
-                "tiny" | "on") distro="$(uname -s)" ;;
-                *) distro="$(uname -sr)" ;;
+                "tiny" | "on") distro="$kernel_name" ;;
+                *) distro="$kernel_name $kernel_version" ;;
             esac
 
             distro="${distro/DragonFly/DragonFlyBSD}"
@@ -248,7 +248,7 @@ get_distro() {
 
     # Get architecture
     [[ "$os_arch" == "on" ]] && \
-        distro+=" $(uname -m)"
+        distro+=" ${machine_arch}"
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
@@ -260,18 +260,16 @@ get_title() {
 
 get_kernel() {
     case "$kernel_shorthand" in
-        "on")  kernel_flags="-r" ;;
-        "off") kernel_flags="-sr" ;;
+        "on")  kernel="$kernel_version" ;;
+        "off") kernel="$kernel_name $kernel_version" ;;
     esac
 
     # Hardcode kernel settings in BSDs
     if [[ "$os" == "BSD" && ! "$distro" =~ (PacBSD|PCBSD) ]]; then
         case "$distro_shorthand" in
-            "on" | "tiny") kernel=$(uname -r) ;;
+            "on" | "tiny") kernel="$kernel_version" ;;
             *) unset kernel ;;
         esac
-    else
-        kernel="$(uname $kernel_flags)"
     fi
 }
 
@@ -726,7 +724,7 @@ get_cpu() {
         ;;
 
         "iPhone OS")
-            case "${ios_model:="$(uname -m)"}" in
+            case "$machine_arch" in
                 "iPhone1,"[1-2] | "iPod1,1") cpu="Samsung S5L8900 (1) @ 412MHz" ;;
                 "iPhone2,1") cpu="Samsung S5PC100 (1) @ 600MHz" ;;
                 "iPhone3,"[1-3] | "iPod4,1") cpu="Apple A4 (1) @ 800MHz" ;;
@@ -940,7 +938,7 @@ get_gpu() {
         ;;
 
         "iPhone OS")
-            case "${ios_model:="$(uname -m)"}" in
+            case "$machine_arch" in
                 "iPhone1,"[1-2]) gpu="PowerVR MBX Lite 3D" ;;
                 "iPhone5,"[1-4]) gpu="PowerVR SGX543MP3" ;;
                 "iPhone8,"[1-4]) gpu="PowerVR GT7600" ;;
@@ -2780,6 +2778,16 @@ old_functions() {
     fi
 }
 
+cache_uname() {
+    # Cache the output of uname so we don't
+    # have to spawn it multiple times.
+    uname=($(uname -srm))
+
+    kernel_name="${uname[0]}"
+    kernel_version="${uname[1]}"
+    machine_arch="${uname[2]}"
+}
+
 # FINISH UP
 
 usage() { printf "%s" "
@@ -3075,6 +3083,7 @@ get_args() {
 }
 
 main() {
+    cache_uname
     get_os
     get_default_config 2>/dev/null
     check_old_flags
