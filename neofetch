@@ -248,7 +248,7 @@ get_distro() {
 
     # Get architecture
     [[ "$os_arch" == "on" ]] && \
-        distro+=" $(uname -m)"
+        distro+=" ${HOSTTYPE:-=$(uname -m)}"
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
