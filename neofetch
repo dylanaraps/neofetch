@@ -490,9 +490,7 @@ get_shell() {
         shell+=" "
         case "${SHELL##*/}" in
             "bash")
-                shell+="$(bash --version)"
-                shell="${shell/ *, version}"
-                shell="${shell/$'\n'*}"
+                shell+=" ${BASH_VERSION/-*}"
             ;;
 
             "zsh")
