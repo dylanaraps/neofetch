@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# vim:fdm=marker
 #
 # Neofetch config file
 # https://github.com/dylanaraps/neofetch
@@ -8,10 +7,7 @@
 export LC_ALL=C
 export LANG=C
 
-# Info Options {{{
 
-
-# Info
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 print_info() {
@@ -54,15 +50,18 @@ print_info() {
 
 # Kernel
 
-# Show more kernel info
+
+# Shorten the output of the kernel function
 # --kernel_shorthand on, off
 kernel_shorthand="on"
 
 
 # Distro
 
-# Shorten the output of distro (tiny, on, off)
+
+# Shorten the output of the distro function
 # NOTE: This is only possible on Linux, macOS, and Solaris
+# --distro_shorthand on, off, tiny
 distro_shorthand="off"
 
 # Show 'x86_64' and 'x86' in 'Distro:' output.
@@ -72,6 +71,7 @@ os_arch="on"
 
 # Uptime
 
+
 # Shorten the output of the uptime function
 # --uptime_shorthand tiny, on, off
 uptime_shorthand="off"
@@ -79,16 +79,18 @@ uptime_shorthand="off"
 
 # Shell
 
+
 # Show the path to $SHELL
 # --shell_path on, off
 shell_path="off"
 
-# Show $SHELL's version
+# Show $SHELL version
 # --shell_version on, off
 shell_version="on"
 
 
 # CPU
+
 
 # CPU speed type
 # Only works on Linux with cpufreq.
@@ -96,8 +98,7 @@ shell_version="on"
 # scaling_current, scaling_min, scaling_max
 speed_type="max"
 
-# CPU Shorthand
-# Set shorthand setting
+# Shorten the output of the CPU function
 # --cpu_shorthand name, speed, tiny, on, off
 cpu_shorthand="off"
 
@@ -115,18 +116,19 @@ cpu_speed="on"
 # Display CPU cores in output
 # Logical: All virtual cores
 # Physical: All physical cores
-# --cpu_cores logical, physical, off
 # Note: 'physical' doesn't work on BSD.
+# --cpu_cores logical, physical, off
 cpu_cores="logical"
 
 # CPU Temperature
 # Hide/Show CPU temperature.
-# --cpu_temp on, off
 # Note: Only works on Linux.
+# --cpu_temp on, off
 cpu_temp="off"
 
 
 # GPU
+
 
 # Enable/Disable GPU Brand
 # --gpu_brand on, off
@@ -135,6 +137,7 @@ gpu_brand="on"
 
 # Resolution
 
+
 # Display refresh rate next to each monitor
 # Unsupported on Windows
 # --refresh_rate on, off
@@ -142,6 +145,7 @@ refresh_rate="off"
 
 
 # Gtk Theme / Icons
+
 
 # Shorten output (Hide [GTK2] etc)
 # --gtk_shorthand on, off
@@ -159,6 +163,7 @@ gtk3="on"
 
 # IP Address
 
+
 # Website to ping for the public IP
 # --ip_host url
 public_ip_host="http://ident.me"
@@ -166,12 +171,14 @@ public_ip_host="http://ident.me"
 
 # Song
 
+
 # Print the Artist and Title on seperate lines
 # --song_shorthand on, off
 song_shorthand="off"
 
 
 # Birthday
+
 
 # Whether to show a long pretty output
 # or a shortened one
@@ -188,9 +195,7 @@ birthday_time="on"
 birthday_format="+%a %d %b %Y %l:%M %p"
 
 
-# }}}
-
-# Text Colors {{{
+# Text Colors
 
 
 # Text Colors
@@ -203,9 +208,7 @@ birthday_format="+%a %d %b %Y %l:%M %p"
 colors=(distro)
 
 
-# }}}
-
-# Text Options {{{
+# Text Options
 
 
 # Toggle bold text
@@ -221,9 +224,7 @@ underline_enabled="on"
 underline_char="-"
 
 
-# }}}
-
-# Color Blocks {{{
+# Color Blocks
 
 
 # Color block range
@@ -244,9 +245,7 @@ block_width=3
 block_height=1
 
 
-# }}}
-
-# Progress Bars {{{
+# Progress Bars
 
 
 # Progress bar character
@@ -284,9 +283,7 @@ battery_display="off"
 disk_display="off"
 
 
-# }}}
-
-# Image Options {{{
+# Image Options
 
 
 # Image Source
@@ -345,9 +342,7 @@ xoffset=0
 background_color=
 
 
-# }}}
-
-# Ascii Options {{{
+# Ascii Options
 
 
 # Default ascii image to use
@@ -383,9 +378,7 @@ ascii_logo_size="normal"
 ascii_bold="on"
 
 
-# }}}
-
-# Scrot Options {{{
+# Scrot Options
 
 
 # Whether or not to always take a screenshot
@@ -417,9 +410,7 @@ image_host="imgur"
 imgur_client_id="0e8b44d15e9fc95"
 
 
-# }}}
-
-# Config Options {{{
+# Config Options
 
 
 # Enable/Disable config file
@@ -429,6 +420,3 @@ config="on"
 # Path to custom config file location
 # --config path/to/config
 config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
-
-
-# }}}
