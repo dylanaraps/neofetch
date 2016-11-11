@@ -3089,8 +3089,6 @@ main() {
     check_old_flags
     get_args "$@"
     get_distro
-
-    # Get colors and bold
     bold
     colors
 
@@ -3146,8 +3144,7 @@ main() {
     # Show error messages
     [[ "$verbose" == "on" ]] && printf "%b" "$err"
 
-    # Reset exit status of the tests above
-    printf "%s"
+    return 0
 }
 
 main "$@"
