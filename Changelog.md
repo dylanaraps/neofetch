@@ -16,6 +16,7 @@
 - Convert math tests to correct syntax.
 - Removed all vim fold markers and stopped enforcing folding for vim users.
     - See [#431](https://github.com/dylanaraps/neofetch/pull/431)
+- Call `uname` once and cache the output instead of calling `uname` 4-5 times.
 
 
 ## Operating System
