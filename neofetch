@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # set -x
-# vim: fdm=marker:noai:ts=4:sw=4:expandtab
+# vim: noai:ts=4:sw=4:expandtab
 #
 # Neofetch: Simple system information script.
 # https://github.com/dylanaraps/neofetch
@@ -19,9 +19,7 @@ export LANG=C
 # Set no case match.
 shopt -s nocasematch
 
-# Gather Info {{{
-
-# Operating System {{{
+# DETECT INFORMATION
 
 get_os() {
     case "${OSTYPE:=$(uname)}" in
@@ -35,10 +33,6 @@ get_os() {
         *) printf "%s\n" "Unknown OS detected: $OSTYPE"; exit 1 ;;
     esac
 }
-
-# }}}
-
-# Model {{{
 
 get_model() {
     case "$os" in
@@ -118,17 +112,13 @@ get_model() {
     esac
 }
 
-# }}}
-
-# Distro {{{
-
 get_distro() {
     [[ "$distro" ]] && return
 
     case "$os" in
         "Linux" | "GNU")
-            if grep -q -F 'Microsoft' /proc/version >/dev/null || \
-               grep -q -F 'Microsoft' /proc/sys/kernel/osrelease >/dev/null; then
+            if grep -q -F 'Microsoft' /proc/version || \
+               grep -q -F 'Microsoft' /proc/sys/kernel/osrelease; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
@@ -264,17 +254,9 @@ get_distro() {
         ascii_distro="$(trim "$distro")"
 }
 
-# }}}
-
-# Title {{{
-
 get_title() {
     title="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}@${HOSTNAME:-$(hostname)}"
 }
-
-# }}}
-
-# Kernel {{{
 
 get_kernel() {
     case "$kernel_shorthand" in
@@ -292,10 +274,6 @@ get_kernel() {
         kernel="$(uname $kernel_flags)"
     fi
 }
-
-# }}}
-
-# Uptime {{{
 
 get_uptime() {
     # Since Haiku's uptime cannot be fetched in seconds, a case outside
@@ -375,10 +353,6 @@ get_uptime() {
         ;;
     esac
 }
-
-# }}}
-
-# Package Count {{{
 
 get_packages() {
     case "$os" in
@@ -476,10 +450,6 @@ get_packages() {
     (("$packages" == "0")) && unset packages
 }
 
-# }}}
-
-# Shell {{{
-
 get_shell() {
     case "$shell_path" in
         "on")  shell="$SHELL" ;;
@@ -517,9 +487,6 @@ get_shell() {
     fi
 }
 
-# }}}
-
-# Desktop Environment {{{
 get_de() {
     case "$os" in
         "Mac OS X") de="Aqua" ;;
@@ -550,10 +517,6 @@ get_de() {
     fi
 }
 
-# }}}
-
-# Window Manager {{{
-
 get_wm() {
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
@@ -578,10 +541,6 @@ get_wm() {
         esac
     fi
 }
-
-# }}}
-
-# Window Manager Theme {{{
 
 get_wm_theme() {
     [[ -z "$wm" ]] && get_wm
@@ -701,10 +660,6 @@ get_wm_theme() {
     wm_theme="${wm_theme//\'}"
     (("$version" >= 4)) && wm_theme="${wm_theme^}"
 }
-
-# }}}
-
-# CPU {{{
 
 get_cpu() {
     # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
@@ -895,10 +850,6 @@ get_cpu() {
     esac
 }
 
-# }}}
-
-# CPU Usage {{{
-
 get_cpu_usage() {
     case "$os" in
         "Windows")
@@ -931,10 +882,6 @@ get_cpu_usage() {
         *) cpu_usage="${cpu_usage}%" ;;
     esac
 }
-
-# }}}
-
-# GPU {{{
 
 get_gpu() {
     case "$os" in
@@ -1056,10 +1003,6 @@ get_gpu() {
     fi
 }
 
-# }}}
-
-# Memory {{{
-
 get_memory() {
     case "$os" in
         "Linux" | "Windows" | "GNU")
@@ -1125,10 +1068,6 @@ get_memory() {
         "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
     esac
 }
-
-# }}}
-
-# Song {{{
 
 get_song() {
     # This is absurdly long.
@@ -1244,10 +1183,6 @@ get_song() {
     fi
 }
 
-# }}}
-
-# Resolution {{{
-
 get_resolution() {
     case "$os" in
         "Linux" | "BSD" | "Solaris" | "GNU")
@@ -1306,10 +1241,6 @@ get_resolution() {
 
     resolution="${resolution%,*}"
 }
-
-# }}}
-
-# Theme/Icons/Font {{{
 
 get_style() {
     # Fix weird output when the function
@@ -1482,10 +1413,6 @@ get_font() {
     font="$theme"
 }
 
-# }}}
-
-# Terminal Emulator {{{
-
 get_term() {
     # Check $PPID for terminal emulator.
     case "$os" in
@@ -1529,10 +1456,6 @@ get_term() {
         *) term="${name##*/}" ;;
     esac
 }
-
-# }}}
-
-# Terminal Emulator Font {{{
 
 get_term_font() {
     [[ -z "$term" ]] && get_term
@@ -1584,10 +1507,6 @@ get_term_font() {
 
     (("$version" >= 4)) && term_font="${term_font^}"
 }
-
-# }}}
-
-# Disk Usage {{{
 
 get_disk() {
     # df flags
@@ -1649,10 +1568,6 @@ get_disk() {
         "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
     esac
 }
-
-# }}}
-
-# Battery Usage {{{
 
 get_battery() {
     case "$os" in
@@ -1735,10 +1650,6 @@ get_battery() {
     esac
 }
 
-# }}}
-
-# IP Address {{{
-
 get_local_ip() {
     case "$os" in
         "Linux")
@@ -1779,18 +1690,10 @@ get_public_ip() {
     fi
 }
 
-# }}}
-
-# Logged In Users {{{
-
 get_users() {
     users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
     users="${users%\,*}"
 }
-
-# }}}
-
-# Birthday {{{
 
 get_birthday() {
     case "$os" in
@@ -1861,10 +1764,6 @@ get_birthday() {
         birthday="${birthday/??:??*}"
 }
 
-# }}}
-
-# Terminal colors {{{
-
 get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
@@ -1894,13 +1793,7 @@ get_cols() {
     fi
 }
 
-# }}}
-
-# }}}
-
-# Images {{{
-
-# Wallpaper {{{
+# IMAGES
 
 get_wallpaper() {
     case "$os" in
@@ -1953,10 +1846,6 @@ get_wallpaper() {
     # Error msg
     [[ -z "$img" ]] && err "Image: Wallpaper detection failed, falling back to ascii mode."
 }
-
-# }}}
-
-# Ascii {{{
 
 get_ascii() {
     if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
@@ -2029,10 +1918,6 @@ get_ascii() {
     printf "%b" "$print"
     export LC_ALL=C
 }
-
-# }}}
-
-# Image {{{
 
 get_image() {
     # Fallback to ascii mode if imagemagick isn't installed.
@@ -2234,11 +2119,6 @@ get_image() {
     img="$thumbnail_dir/$imgname"
 }
 
-# }}}
-
-# Find w3m-img {{{
-
-# Find w3mimgdisplay automatically
 get_w3m_img_path() {
     if [[ -x "$w3m_img_path" ]]; then
         return
@@ -2261,9 +2141,17 @@ get_w3m_img_path() {
     fi
 }
 
-# }}}
+get_image_backend() {
+    if [[ -n "$ITERM_PROFILE" ]]; then
+        image_backend="iterm2"
 
-# Display image {{{
+    elif [[ "$(tycat 2>/dev/null)" ]]; then
+        image_backend="tycat"
+
+    else
+        image_backend="w3m"
+    fi
+}
 
 display_image() {
     if [[ "$image" != "ascii" ]]; then
@@ -2287,34 +2175,12 @@ display_image() {
     fi
 }
 
-# }}}
-
-# Get image backend {{{
-
-get_image_backend() {
-    if [[ -n "$ITERM_PROFILE" ]]; then
-        image_backend="iterm2"
-
-    elif [[ "$(tycat 2>/dev/null)" ]]; then
-        image_backend="tycat"
-
-    else
-        image_backend="w3m"
-    fi
-}
-
-# }}}
-
-# Screenshot {{{
+# SCREENSHOT
 
 take_scrot() {
     $scrot_cmd "${scrot_dir}${scrot_name}"
     [[ "$scrot_upload" == "on" ]] && scrot_upload
 }
-
-# }}}
-
-# Screenshot Upload {{{
 
 scrot_upload() {
     if ! type -p curl >/dev/null 2>&1; then
@@ -2341,13 +2207,18 @@ scrot_upload() {
     printf "%s\n" "${image_url:-'[!] Image failed to upload'}"
 }
 
-# }}}
+scrot_args() {
+    scrot="on"
+    case "$2" in
+        "-"* | "") ;;
+        *)
+            scrot_name="${2##*/}"
+            scrot_dir="${2/$scrot_name}"
+        ;;
+    esac
+}
 
-# }}}
-
-# Text Formatting {{{
-
-# Info {{{
+# TEXT FORMATTING
 
 info() {
     # $1 is the subtitle
@@ -2402,10 +2273,6 @@ info() {
     fi
 }
 
-# }}}
-
-# Prin {{{
-
 prin() {
     string="${1//$'\033[0m'}${2:+: $2}"
 
@@ -2437,20 +2304,12 @@ prin() {
     prin=1
 }
 
-# }}}
-
-# Underline {{{
-
 get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         underline="$(printf %"$length"s)"
         underline="${underline// /$underline_char}"
     fi
 }
-
-# }}}
-
-# Colors {{{
 
 colors() {
     # Reset colors/bold
@@ -2686,10 +2545,6 @@ color() {
     esac
 }
 
-# }}}
-
-# Bold {{{
-
 bold() {
     case "$ascii_bold" in
         "on") ascii_bold="\033[1m" ;;
@@ -2702,10 +2557,6 @@ bold() {
     esac
 }
 
-# }}}
-
-# Linebreak {{{
-
 get_line_break() {
     line_break="​ "
 
@@ -2713,41 +2564,28 @@ get_line_break() {
     info_height="$((info_height+=1))"
 }
 
-# }}}
-
-# Trim whitespace {{{
-
-# When a string is passed to 'echo' all trailing and leading
-# whitespace is removed and inside the string multiple spaces are
-# condensed into single spaces.
-#
-# The 'set -f/+f' is here so that 'echo' doesn't cause any expansion
-# of special characters.
-#
-# The whitespace trim doesn't work with multiline strings so we use
-# '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
 trim() {
+    # When a string is passed to 'echo' all trailing and leading
+    # whitespace is removed and inside the string multiple spaces are
+    # condensed into single spaces.
+    #
+    # The 'set -f/+f' is here so that 'echo' doesn't cause any expansion
+    # of special characters.
+    #
+    # The whitespace trim doesn't work with multiline strings so we use
+    # '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
+
     set -f
     builtin echo -E ${1//[[:space:]]/ }
     set +f
 }
 
-# }}}
-
-# }}}
-
-# Other {{{
-
-# Error {{{
+# OTHER
 
 err() {
     err+="$(color 1)[!]\033[0m $1
 "
 }
-
-# }}}
-
-# Check for old flags {{{
 
 check_old_flags() {
     [[ -n "$osx_buildversion" ]] && err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
@@ -2755,10 +2593,6 @@ check_old_flags() {
     [[ -n "$progress_char" ]] && err "Config: \$progress_char is deprecated, use \$progress_char_elapsed and \$progress_char_total instead."
     [[ "$cpu_cores" == "on" ]] && err "Config: \$cpu_cores='on' is deprecated, use \$cpu_cores='logical|physical|off' instead."
 }
-
-# }}}
-
-# Get script directory {{{
 
 get_script_dir() {
     [[ "$script_dir" ]] && return
@@ -2777,10 +2611,6 @@ get_script_dir() {
     # Final directory
     script_dir="$(pwd -P)"
 }
-
-# }}}
-
-# Source default config {{{
 
 get_default_config() {
     if [[ -f "/usr/share/neofetch/config" ]]; then
@@ -2804,10 +2634,6 @@ get_default_config() {
         err "Config: Default config not found, continuing..."
     fi
 }
-
-# }}}
-
-# Source config {{{
 
 get_user_config() {
     # Check $config_file
@@ -2847,10 +2673,6 @@ get_user_config() {
     err "Config: Sourced user config    ($config_file)"
 }
 
-# }}}
-
-# Progress bars {{{
-
 bar() {
     # Get the values
     elapsed="$(($1 * progress_length / $2))"
@@ -2872,18 +2694,10 @@ bar() {
     printf "%b\n" "${bar}${info_color}"
 }
 
-# }}}
-
-# Cache {{{
-
 cache() {
     mkdir -p "$3/neofetch"
     echo "${1/*-}=\"$2\"" > "$3/neofetch/${1/*-}"
 }
-
-# }}}
-
-# KDE config directory {{{
 
 kde_config_dir() {
     if [[ "$kde_config_dir" ]]; then
@@ -2903,20 +2717,17 @@ kde_config_dir() {
     fi
 }
 
-# }}}
-
-# Terminal info {{{
-#
-# Parse terminal config files to get
-# info about padding. Due to how w3m-img
-# works padding around the terminal throws
-# off the cursor placement calculation in
-# specific terminals.
-#
-# Note: This issue only seems to affect
-# URxvt.
-
 get_term_padding() {
+    # Terminal info
+    #
+    # Parse terminal config files to get
+    # info about padding. Due to how w3m-img
+    # works padding around the terminal throws
+    # off the cursor placement calculation in
+    # specific terminals.
+    #
+    # Note: This issue only seems to affect
+    # URxvt.
     [[ -z "$term" ]] && get_term
 
     case "$term" in
@@ -2926,10 +2737,6 @@ get_term_padding() {
         ;;
     esac
 }
-
-# }}}
-
-# Dynamic prompt location {{{
 
 dynamic_prompt() {
     # Calculate image height in terminal cells.
@@ -2958,29 +2765,11 @@ dynamic_prompt() {
     printf "\n\n\n\n"
 }
 
-# }}}
-
-# Scrot args {{{
-
-scrot_args() {
-    scrot="on"
-    case "$2" in
-        "-"* | "") ;;
-        *)
-            scrot_name="${2##*/}"
-            scrot_dir="${2/$scrot_name}"
-        ;;
-    esac
-}
-
-# }}}
-
-# Deprecated functions {{{
-# Neofetch 2.0 changed the names of a few variables.
-# This function adds backwards compatibility for the
-# old variable names.
-
 old_functions() {
+    # Deprecated functions
+    # Neofetch 2.0 changed the names of a few variables.
+    # This function adds backwards compatibility for the
+    # old variable names.
     if type printinfo >/dev/null 2>&1; then
         print_info() { printinfo ; }
         get_wmtheme() { get_wm_theme; wmtheme="$wm_theme"; }
@@ -2991,11 +2780,7 @@ old_functions() {
     fi
 }
 
-# }}}
-
-# }}}
-
-# Usage {{{
+# FINISH UP
 
 usage() { printf "%s" "
     NEOFETCH
@@ -3120,10 +2905,6 @@ usage() { printf "%s" "
 "
 exit 1
 }
-
-# }}}
-
-# Args {{{
 
 get_args() {
     # Check the commandline flags early for '--config none/off'
@@ -3293,10 +3074,6 @@ get_args() {
     done
 }
 
-# }}}
-
-# Call Functions and Finish Up {{{
-
 main() {
     get_os
     get_default_config 2>/dev/null
@@ -3365,5 +3142,3 @@ main() {
 }
 
 main "$@"
-
-# }}}

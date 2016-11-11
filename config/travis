@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# vim:fdm=marker
 #
 # Neofetch config file for travis.ci
 # https://github.com/dylanaraps/neofetch
