@@ -22,15 +22,15 @@ shopt -s nocasematch
 # DETECT INFORMATION
 
 get_os() {
-    case "$(uname)" in
-        "Linux")   os="Linux" ;;
-        "Darwin")  os="$(sw_vers -productName)" ;;
-        *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
+    case "${OSTYPE:=$(uname)}" in
+        "Linux"*)   os="Linux" ;;
+        "Darwin"*)  os="$(sw_vers -productName)" ;;
+        *"BSD"* | "DragonFly" | "Bitrig") os="BSD" ;;
         "CYGWIN"*) os="Windows" ;;
-        "SunOS") os="Solaris" ;;
-        "Haiku") os="Haiku" ;;
+        "Solaris"*) os="Solaris" ;;
+        "Haiku"*) os="Haiku" ;;
         "GNU"*) os="GNU" ;;
-        *) printf "%s\n" "Unknown OS detected: $(uname)"; exit 1 ;;
+        *) printf "%s\n" "Unknown OS detected: $OSTYPE"; exit 1 ;;
     esac
 }
 
@@ -248,7 +248,7 @@ get_distro() {
 
     # Get architecture
     [[ "$os_arch" == "on" ]] && \
-        distro+=" $(uname -m)"
+        distro+=" ${HOSTTYPE:-=$(uname -m)}"
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
