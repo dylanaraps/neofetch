@@ -22,6 +22,8 @@ shopt -s nocasematch
 # DETECT INFORMATION
 
 get_os() {
+    # $kernel_name is set in a function called cache_uname and is
+    # just the output of 'uname -s'.
     case "$kernel_name" in
         "Linux")   os="Linux" ;;
         "Darwin")  os="$(sw_vers -productName)" ;;
@@ -2430,7 +2432,7 @@ colors() {
         ;;
 
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
-            setcolors 4
+            setcolors 4 7
             ascii_distro="puppy"
         ;;
 
@@ -2460,7 +2462,7 @@ colors() {
         ;;
 
         "Windows 8"* | "Windows 10"*)
-            setcolors 6
+            setcolors 6 7
             ascii_distro="windows10"
         ;;
 
