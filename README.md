@@ -12,67 +12,6 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 ![1](https://ipfs.pics/ipfs/QmTtF9Sx8o617QE88GH3Z4yX7mRyi4yS1hsMHyRVmn14vJ)
 
 
-<!-- Table of Contents {{{ -->
-
-
-## Table of Contents
-
-- [Screenshots](#screenshots)
-- [Features](#features)
-- [Dependencies](#dependencies)
-    - [Required dependencies](https://github.com/dylanaraps/neofetch#required-dependencies)
-    - [Image mode dependencies](https://github.com/dylanaraps/neofetch#image-mode-dependencies)
-    - [Optional dependencies](https://github.com/dylanaraps/neofetch#optional-dependencies)
-        - [Song](https://github.com/dylanaraps/neofetch#song)
-        - [Desktop Environment and Window Manager](https://github.com/dylanaraps/neofetch#desktop-environment-and-window-manager)
-        - [Wallpaper](https://github.com/dylanaraps/neofetch#wallpaper)
-        - [Resolution](https://github.com/dylanaraps/neofetch#resolution)
-        - [Screenshot](https://github.com/dylanaraps/neofetch#screenshot)
-        - [GPU](https://github.com/dylanaraps/neofetch#gpu)
-    - [iOS dependencies](https://github.com/dylanaraps/neofetch#ios)
-    - [Android dependencies](#android)
-- [Installation](#installation)
-    - [Arch Linux](#arch)
-    - [Gentoo / Funtoo](#gentoo--funtoo)
-    - [CRUX](#crux)
-    - [Ubuntu](#ubuntu)
-    - [Debian](#debian)
-    - [Fedora / RHEL / CentOS](#fedora--rhel--centos)
-    - [Void Linux](#void-linux)
-    - [BunsenLabs](#bunsenlabs)
-    - [Solus](#solus)
-    - [Slackware](#slackware)
-    - [macOS](#macos)
-    - [iOS](#ios-1)
-    - [Android (Termux)](#android-termux)
-    - [Manual](#manual)
-- [Post Install](#post-install)
-- [Usage](#usage)
-- [Frequently Asked Questions](#frequently-asked-questions)
-- [Issues and Workarounds](#issues-and-workarounds)
-- [Thanks](#thanks)
-
-
-<!-- }}} -->
-
-
-<!-- Screenshots {{{ -->
-
-
-## Screenshots
-
-![Linux](https://u.teknik.io/mhaDi.png)
-![Windows](https://u.teknik.io/0WmmV.png)
-![macOS](https://u.teknik.io/SGDlj.png)
-![Linux](https://u.teknik.io/x6V8U.png)
-
-
-<!-- }}} -->
-
-
-<!-- Features {{{ -->
-
-
 ## Features
 
 - Supports **Linux**, **MacOS**, **iOS**, **BSD**, **Solaris**, **Android**, **Haiku OS**, **GNU Hurd** and **Windows (Cygwin/Windows 10 Linux subsystem)**
@@ -81,12 +20,6 @@ Have a look at the wiki, I've updated/added some new pages!<br \>
 - Take a screenshot of your desktop on script finish.
 - Customize **which** info is displayed, **where** it's displayed and **when** it's displayed.
     - See this **[wiki page](https://github.com/dylanaraps/neofetch/wiki/Customizing-Info)**
-
-
-<!-- }}} -->
-
-
-<!-- Dependencies {{{ -->
 
 
 ## Dependencies
@@ -207,12 +140,6 @@ Note: The cydia package installs these dependencies for you.
 Note: I recommend installing `termux` from the Play Store or F-Droid. Termux provides you with a fully working Linux environment, doesn't require root acess and includes all dependencies.
 
 Note2: Neofetch is in Termux's official repos.
-
-
-<!-- }}} -->
-
-
-<!-- Installation {{{ -->
 
 
 ## Installation
@@ -370,12 +297,6 @@ You can install it using `apt install neofetch`
 "sane" location. The makefile is optional.
 
 
-<!-- }}} -->
-
-
-<!-- Post Install {{{ -->
-
-
 ## Post Install
 
 
@@ -423,11 +344,6 @@ alias neofetch2="neofetch \
 --colors 4 1 8 8 8 7 \
 "
 ```
-
-<!-- }}} -->
-
-
-<!-- Usage {{{ -->
 
 
 ## Usage
@@ -554,12 +470,6 @@ alias neofetch2="neofetch \
     -vv                         Display a verbose log for error reporting.
 
 
-<!-- }}} -->
-
-
-<!-- Frequently Asked Questions {{{ -->
-
-
 ## Frequently Asked Questions
 
 
@@ -579,12 +489,6 @@ getting the current wallpaper from the cli.
 
 If your wallpaper setter **does** provide a way of getting the current wallpaper or you<br \>
 know where it's stored then adding support won't be a problem!<br \>
-
-
-<!-- }}} -->
-
-
-<!-- Issues and Workarounds {{{ -->
 
 
 ## Issues and Workarounds
@@ -626,12 +530,6 @@ You need to be using the CYGWIN/Msys connector for Neofetch to work seamlessly w
 https://conemu.github.io/en/CygwinMsysConnector.html
 
 
-<!-- }}} -->
-
-
-<!-- Thanks {{{ -->
-
-
 ## Thanks
 
 Thanks to:
@@ -643,6 +541,3 @@ Thanks to:
     - Tiny ascii logos
 - Everyone else helped out in one way or another. I'd list all of the names<br \>
 but there's just too many of you. :)
-
-
-<!-- }}} -->
