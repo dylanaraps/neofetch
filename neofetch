@@ -1898,7 +1898,7 @@ get_ascii() {
 
         # Calculate size of ascii file in line length / line count.
         line="${line//\$\{??\}}"
-        line="${line//'\\'/'\'}"
+        line="${line//\\\\/\\}"
         (("${#line}" > "${ascii_length:-0}")) && ascii_length="${#line}"
         lines="$((lines+=1))"
     done < "$ascii"
@@ -2756,9 +2756,9 @@ dynamic_prompt() {
 
     # Set the prompt location
     if (("$lines" < 0)); then
-        printf "\033[${lines/-}A"
+        printf "%b" "\033[${lines/-}A"
     else
-        printf "\033[${lines}B"
+        printf "%b" "\033[${lines}B"
     fi
 
     # Add some padding
@@ -2795,7 +2795,7 @@ cache_uname() {
 usage() { printf "%s" "
     NEOFETCH
 
-    USAGE: neofetch --option "value" --option "value"
+    USAGE: neofetch --option \"value\" --option \"value\"
 
     NOTE: There's also a config option for each flag below.
 
@@ -3119,7 +3119,7 @@ main() {
         display_image
 
         # Set cursor position next to ascii art
-        printf "\033[$((${lines:-0} - ${prompt_loc:-0}))A"
+        printf "%b" "\033[$((${lines:-0} - ${prompt_loc:-0}))A"
 
         # Reset horizontal cursor position
         printf "\033[9999999D"
