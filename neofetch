@@ -1797,56 +1797,46 @@ get_cols() {
 
 # IMAGES
 
-get_wallpaper() {
-    case "$os" in
-        "Linux" | "BSD")
-            if type -p feh >/dev/null && [[ -f "$HOME/.fehbg" ]]; then
-                img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
+get_image_backend() {
+    get_w3m_img_path
 
-            elif type -p nitrogen >/dev/null; then
-                img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
+    # Fallback to ascii mode if imagemagick isn't installed.
+    type -p convert >/dev/null 2>&1 || image_backend="ascii"
 
-            elif type -p gsettings >/dev/null; then
-                # Get DE if user has disabled the function.
-                [[ -z "$de" ]] && get_de
+    case "${image_backend:=image}" in
+        "image")
+            case "$image_source" in
+                "wall"*) get_wallpaper 2>/dev/null ;;
+                "off") image_backend="off"; return ;;
+                *)
+                    if [[ -d "$image_source" ]]; then
+                        files=("${image_source%/}"/*.{png,jpg,jpeg})
+                        img="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
+                    else
+                        img="$image_source"
+                    fi
 
-                case "$de" in
-                    "MATE"*) img="$(gsettings get org.mate.background picture-filename)" ;;
-                    *) img="$(gsettings get org.gnome.desktop.background picture-uri)" ;;
-                esac
-
-                # Strip quotes etc from the path.
-                img="${img/'file://'}"
-                img="${img//\'}"
-                img="${img//\%20/ }"
-            fi
-        ;;
-
-        "Mac OS X")
-            img="$(osascript -e 'tell application "System Events" to picture of current desktop')"
-        ;;
-
-        "Windows")
-            case "$distro" in
-                "Windows XP")
-                    img="/cygdrive/c/Documents and Settings/${USER}"
-                    img+="/Local Settings/Application Data/Microsoft"
-                    img+="/Wallpaper1.bmp"
-                ;;
-
-                "Windows"*)
-                    img="$APPDATA/Microsoft/Windows/Themes"
-                    img+="/TranscodedWallpaper.jpg"
+                    [ ! -f "$img" ] && { image_backend="ascii"; get_ascii 2>/dev/null; return; }
                 ;;
             esac
+
+            if [[ -n "$ITERM_PROFILE" ]]; then
+                image_program="iterm2"
+
+            elif [[ "$(tycat 2>/dev/null)" ]]; then
+                image_program="tycat"
+
+            else
+                image_program="w3m"
+            fi
+
+            make_thumbnail
+            display_image
         ;;
+
+        "ascii") get_ascii 2>/dev/null ;;
+        "off") ;;
     esac
-
-    # If img is an xml file don't use it.
-    [[ "${img/*\./}" == "xml" ]] && img=""
-
-    # Error msg
-    [[ -z "$img" ]] && err "Image: Wallpaper detection failed, falling back to ascii mode."
 }
 
 get_ascii() {
@@ -1921,28 +1911,86 @@ get_ascii() {
     export LC_ALL=C
 }
 
-get_image() {
-    # Fallback to ascii mode if imagemagick isn't installed.
-    type -p convert >/dev/null 2>&1 || image="ascii"
+get_w3m_img_path() {
+    if [[ -x "$w3m_img_path" ]]; then
+        return
 
-    case "$image" in
-        "wall") get_wallpaper 2>/dev/null ;;
-        "ascii") get_ascii; return ;;
-        *)
-            if [[ -d "$image" ]]; then
-                files=("${image%/}"/*.{png,jpg,jpeg})
-                img="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
-            else
-                img="$image"
+    elif [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
+        w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
+
+    elif [[ -x "/usr/libexec/w3m/w3mimgdisplay" ]]; then
+        w3m_img_path="/usr/libexec/w3m/w3mimgdisplay"
+
+    elif [[ -x "/usr/lib64/w3m/w3mimgdisplay" ]]; then
+        w3m_img_path="/usr/lib64/w3m/w3mimgdisplay"
+
+    elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
+        w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
+
+    else
+        image_backend="ascii"
+        err "Image: w3m-img wasn't found on your system, falling back to ascii mode."
+    fi
+}
+
+get_wallpaper() {
+    case "$os" in
+        "Linux" | "BSD")
+            if type -p feh >/dev/null && [[ -f "$HOME/.fehbg" ]]; then
+                img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
+
+            elif type -p nitrogen >/dev/null; then
+                img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
+
+            elif type -p gsettings >/dev/null; then
+                # Get DE if user has disabled the function.
+                [[ -z "$de" ]] && get_de
+
+                case "$de" in
+                    "MATE"*) img="$(gsettings get org.mate.background picture-filename)" ;;
+                    *) img="$(gsettings get org.gnome.desktop.background picture-uri)" ;;
+                esac
+
+                # Strip quotes etc from the path.
+                img="${img/'file://'}"
+                img="${img//\'}"
+                img="${img//\%20/ }"
             fi
+        ;;
+
+        "Mac OS X")
+            img="$(osascript -e 'tell application "System Events" to picture of current desktop')"
+        ;;
+
+        "Windows")
+            case "$distro" in
+                "Windows XP")
+                    img="/cygdrive/c/Documents and Settings/${USER}"
+                    img+="/Local Settings/Application Data/Microsoft"
+                    img+="/Wallpaper1.bmp"
+                ;;
+
+                "Windows"*)
+                    img="$APPDATA/Microsoft/Windows/Themes"
+                    img+="/TranscodedWallpaper.jpg"
+                ;;
+            esac
         ;;
     esac
 
+    # If img is an xml file don't use it.
+    [[ "${img/*\./}" == "xml" ]] && img=""
+
+    # Error msg
+    [[ -z "$img" ]] && err "Image: Wallpaper detection failed, falling back to ascii mode."
+}
+
+make_thumbnail() {
     if [[ -n "$TMUX" ]]; then
         printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
         read_flags="-d c"
 
-    elif [[ "$image_backend" == "tycat" ]]; then
+    elif [[ "$image_program" == "tycat" ]]; then
         printf "%b" "\033}qs\000"
 
     else
@@ -1954,7 +2002,7 @@ get_image() {
     builtin read -s -t 1 ${read_flags} -r term_size
 
     # Split the string
-    if [[ "$image_backend" == "tycat" ]]; then
+    if [[ "$image_program" == "tycat" ]]; then
         term_size=(${term_size//;/ })
         term_width="$((term_size[2] * term_size[0]))"
         term_height="$((term_size[3] * term_size[1]))"
@@ -1969,7 +2017,7 @@ get_image() {
     fi
 
     # Get terminal width and height if \033[14t is unsupported.
-    if (("${#term_size}" <= 5)) && [[ "$image_backend" != "tycat" ]]; then
+    if (("${#term_size}" <= 5)) && [[ "$image_program" != "tycat" ]]; then
         if type -p xdotool >/dev/null 2>&1 && \
             [[ "$image_backend" != "iterm2" ]]; then
 
@@ -1981,7 +2029,7 @@ get_image() {
         elif type -p xwininfo >/dev/null 2>&1 && \
             type -p xdpyinfo >/dev/null 2>&1 || \
             type -p xprop >/dev/null 2>&1 && \
-            [[ "$image_backend" != "iterm2" ]]; then
+            [[ "$image_program" != "iterm2" ]]; then
 
             if type -p xdpyinfo >/dev/null 2>&1; then
                 current_window="$(xdpyinfo | grep -F "focus" | grep -E -o "0x[0-9a-f]+")"
@@ -2121,60 +2169,24 @@ get_image() {
     img="$thumbnail_dir/$imgname"
 }
 
-get_w3m_img_path() {
-    if [[ -x "$w3m_img_path" ]]; then
-        return
-
-    elif [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
-
-    elif [[ -x "/usr/libexec/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/libexec/w3m/w3mimgdisplay"
-
-    elif [[ -x "/usr/lib64/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/lib64/w3m/w3mimgdisplay"
-
-    elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-
-    else
-        image="ascii"
-        err "Image: w3m-img wasn't found on your system, falling back to ascii mode."
-    fi
-}
-
-get_image_backend() {
-    if [[ -n "$ITERM_PROFILE" ]]; then
-        image_backend="iterm2"
-
-    elif [[ "$(tycat 2>/dev/null)" ]]; then
-        image_backend="tycat"
-
-    else
-        image_backend="w3m"
-    fi
-}
-
 display_image() {
-    if [[ "$image" != "ascii" ]]; then
-        case "$image_backend" in
-            "w3m")
-                # Add a tiny delay to fix issues with images not
-                # appearing in specific terminal emulators.
-                sleep 0.05
-                printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
-                "$w3m_img_path" -bg "$background_color" >/dev/null & 2>&1 || padding="\033[0C"
-            ;;
+    case "$image_program" in
+        "w3m")
+            # Add a tiny delay to fix issues with images not
+            # appearing in specific terminal emulators.
+            sleep 0.05
+            printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
+            "$w3m_img_path" -bg "$background_color" >/dev/null & 2>&1 || padding="\033[0C"
+        ;;
 
-            "iterm2")
-                printf "%b\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$img")"
-            ;;
+        "iterm2")
+            printf "%b\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$img")"
+        ;;
 
-            "tycat")
-                tycat "$img"
-            ;;
-        esac
-    fi
+        "tycat")
+            tycat "$img"
+        ;;
+    esac
 }
 
 # SCREENSHOT
@@ -2742,7 +2754,7 @@ get_term_padding() {
 
 dynamic_prompt() {
     # Calculate image height in terminal cells.
-    if [[ "$image" != "ascii" ]]; then
+    if [[ "$image_backend" != "ascii" ]]; then
         get_term_padding 2>/dev/null
         lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height))"
     fi
@@ -3007,8 +3019,8 @@ get_args() {
 
             # Image
             --image)
-                image="$2"
-                case "$2" in "-"* | "") image="ascii" ;; esac
+                image_source="$2"
+                case "$2" in "-"* | "") image_backend="ascii" ;; esac
             ;;
 
             --image_size | --size) image_size="$2" ;;
@@ -3027,7 +3039,7 @@ get_args() {
 
             # Ascii
             --ascii)
-                image="ascii"
+                image_backend="ascii"
                 ascii="$2"
                 case "$2" in "-"* | "") ascii="distro" ;; esac
             ;;
@@ -3105,21 +3117,9 @@ main() {
     # Hide the cursor and disable line wrap
     printf "\033[?25l\033[?7l"
 
-    # Display the image
-    if [[ "$image" != "off" ]]; then
-        get_image_backend
+    get_image_backend
 
-        # Find w3mimgdisplay
-        [[ "$image_backend" == "w3m" ]] && \
-        [[ "$image" != "ascii" ]] && \
-            get_w3m_img_path
-
-        # Get the image src
-        get_image
-
-        # Display the image if enabled
-        display_image
-
+    if [[ "$image_backend" != "off" ]]; then
         # Set cursor position next to ascii art
         printf "%b" "\033[$((${lines:-0} - ${prompt_loc:-0}))A"
 
@@ -3132,12 +3132,12 @@ main() {
     print_info 2>/dev/null
 
     # Prompt calculation
-    if [[ "$image" != "off" ]]; then
+    if [[ "$image_backend" != "off" ]]; then
         dynamic_prompt
 
         # w3m-img: Draw the image a second time to fix
         # rendering issues in specific terminal emulators.
-        [[ "$image_backend" == "w3m" ]] && display_image
+        [[ "$image_program" == "w3m" ]] && display_image
     fi
 
     # Re-enable line wrap
