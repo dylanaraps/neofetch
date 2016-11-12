@@ -694,7 +694,7 @@ get_cpu() {
                 speed="$(< "${speed_dir}/cpuinfo_max_freq")"
 
                 speed="$((speed / 100000))"
-                echo "$speed"
+
             else
                 speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
                 speed="$((speed / 100))"
