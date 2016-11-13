@@ -19,9 +19,6 @@ export LANG=C
 # Set no case match.
 shopt -s nocasematch
 
-# Reset colors/bold
-reset="\033[0m"
-
 # DETECT INFORMATION
 
 get_os() {
@@ -1066,7 +1063,7 @@ get_memory() {
     esac
     memory="${memused}MB / ${memtotal}MB"
 
-    # Bars
+    # Progress bars
     case "$memory_display" in
         "bar") memory="$(bar "${memused}" "${memtotal}")" ;;
         "infobar") memory="${memory} $(bar "${memused}" "${memtotal}")" ;;
@@ -2580,7 +2577,7 @@ set_colors() {
         info_color="$(color "${colors[5]}")"
     fi
 
-    # Bar colors
+    # Progress Bar colors
     if [[ "$bar_color_elapsed" == "distro" ]]; then
         bar_color_elapsed="$(color fg)"
     else
@@ -2696,7 +2693,7 @@ bar() {
     prog="$(printf %"$elapsed"s)"
     total="$(printf %"$((bar_length - elapsed))"s)"
 
-    # Set the colors and swap the spaces for $bar_char_
+    # Set the colors and swap the spaces for $progress_char
     bar+="${bar_color_elapsed}${prog// /$bar_char_elapsed}"
     bar+="${bar_color_total}${total// /$bar_char_total}"
 
@@ -2879,20 +2876,20 @@ usage() { printf "%s" "
     --block_height num          Height of color blocks in lines
     --block_range start end     Range of colors to print as blocks
 
-    Bars:
-    --bar_char 'elapsed char' 'total char'
-                                Characters to use when drawing bars.
+    Progress Bars:
+    --progress_char 'elapsed char' 'total char'
+                                Characters to use when drawing progress bars.
     --bar_border on/off         Whether or not to surround the bar with '[]'
-    --bar_length num            Length in spaces to make the bars.
-    --bar_colors num num   Colors to make the bar.
+    --bar_length num            Length in spaces to make the progress bars.
+    --progress_colors num num   Colors to make the progress bar.
                                 Set in this order: elapsed, total
-    --cpu_display mode          Bar mode.
+    --cpu_display mode          Progress bar mode.
                                 Takes: bar, infobar, barinfo, off
-    --memory_display mode       Bar mode.
+    --memory_display mode       Progress bar mode.
                                 Takes: bar, infobar, barinfo, off
-    --battery_display mode      Bar mode.
+    --battery_display mode      Progress bar mode.
                                 Takes: bar, infobar, barinfo, off
-    --disk_display mode         Bar mode.
+    --disk_display mode         Progress bar mode.
                                 Takes: bar, infobar, barinfo, off
 
     Image:
@@ -3017,14 +3014,14 @@ get_args() {
             --block_width) block_width="$2" ;;
             --block_height) block_height="$2" ;;
 
-            # Bars
-            --bar_char)
+            # Progress Bars
+            --progress_char)
                 bar_char_elapsed="$2"
                 bar_char_total="$3"
             ;;
             --bar_border) bar_border="$2" ;;
             --bar_length) bar_length="$2" ;;
-            --bar_colors)
+            --progress_colors)
                 bar_color_elapsed="$2"
                 bar_color_total="$3"
             ;;
