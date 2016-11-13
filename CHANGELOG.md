@@ -35,7 +35,8 @@
 - Ascii art is no longer read as a script and is now read as plain text.
   - See this wiki page about the new ascii art format.
   - https://github.com/dylanaraps/neofetch/wiki/Custom-Ascii-art-file-format
-- Added generic Linux ascii art to display if neofetch doesn't have the right logo for your distro.
+- Neofetch now displays your OS's ascii logo if your distro's logo isn't found. **[@konimex](https://github.com/konimex)**
+    - Example: [Linux] Tux is displayed if there's no distro ascii.
 - `neofetch --ascii_distro x` now sets the mode to ascii for you. You no longer have to use a combination of `--ascii` and `--ascii_distro`.
 - [Arch Linux] Changed default ascii colors.
 - Rename `colors()` to `get_distro_colors()`.
