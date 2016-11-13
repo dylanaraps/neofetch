@@ -2702,7 +2702,7 @@ bar() {
 
 cache() {
     mkdir -p "$3/neofetch"
-    echo "${1/*-}=\"$2\"" > "$3/neofetch/${1/*-}"
+    printf "%s" "${1/*-}=\"$2\"" > "$3/neofetch/${1/*-}"
 }
 
 kde_config_dir() {
