@@ -19,6 +19,9 @@ export LANG=C
 # Set no case match.
 shopt -s nocasematch
 
+# Reset colors/bold
+reset="\033[0m"
+
 # DETECT INFORMATION
 
 get_os() {
@@ -2367,196 +2370,198 @@ get_underline() {
     fi
 }
 
-colors() {
-    # Reset colors/bold
-    reset="\033[0m"
-
-    # Change color of logo based on distro
+get_distro_colors() {
+    # This function sets the text colors according
+    # to your OS/Distro's logo colors.
+    #
+    # $ascii_distro is the same as $distro
     case "$ascii_distro" in
-        "Arch"* | "Antergos"*)
-            setcolors 6 4
+        "Arch"*)
+            set_colors 4 7
+        ;;
+
+        "Antergos"*)
+            set_colors 6 4
         ;;
 
         "BlankOn"* | "DracOS"*)
-            setcolors 1 7
+            set_colors 1 7
         ;;
 
         "CentOS"*)
-            setcolors 3 2 4 5 7
+            set_colors 3 2 4 5 7
         ;;
 
         "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"* | "Qubes"*)
-            setcolors 4 5 7 6
+            set_colors 4 5 7 6
         ;;
 
         "Chrom"*)
-            setcolors 2 1 3 4 7
+            set_colors 2 1 3 4 7
             ascii_distro="chrome"
         ;;
 
         "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"*)
-            setcolors 1 7 3
-        ;;
-
-        "Red Star"* | "Redstar")
-            setcolors 1 7 3
-            ascii_distro="redstar"
+            set_colors 1 7 3
         ;;
 
         "FreeBSD"* | "PCBSD"*)
-            setcolors 1 7 3
+            set_colors 1 7 3
             ascii_distro="freebsd"
         ;;
 
+        "Red Star"* | "Redstar")
+            set_colors 1 7 3
+            ascii_distro="redstar"
+        ;;
+
         "Red"*)
-            setcolors 1 7 3
+            set_colors 1 7 3
             ascii_distro="redhat"
         ;;
 
         "Pardus"*)
-            setcolors 3 7
+            set_colors 3 7
         ;;
 
         "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"*)
-            setcolors 4 7
+            set_colors 4 7
         ;;
 
         "Fedora"* | "Korora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
-            setcolors 4 7 1
+            set_colors 4 7 1
         ;;
 
         "Gentoo"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
-            setcolors 5 7
+            set_colors 5 7
         ;;
 
         "KDE"*)
-            setcolors 2 7
+            set_colors 2 7
             ascii_distro="kde"
         ;;
 
         "Kali"*)
-            setcolors 4 8
+            set_colors 4 8
         ;;
 
         "BunsenLabs"*)
-            setcolors 8 7
+            set_colors 8 7
         ;;
 
         *"OS X"* | *"iOS"* | "Mac" | *"macOS"*)
-            setcolors 2 3 1 1 5 4
+            set_colors 2 3 1 1 5 4
             ascii_distro="mac"
         ;;
 
         "OpenMandriva"*)
-            setcolors 4 3
+            set_colors 4 3
         ;;
 
         "Mageia"* | "Porteus"*)
-            setcolors 6 7
+            set_colors 6 7
         ;;
 
         "Peppermint"*)
-            setcolors 1 7
+            set_colors 1 7
         ;;
 
         *"Mint"*)
-            setcolors 2 7
+            set_colors 2 7
             ascii_distro="mint"
         ;;
 
         "LMDE"* | "Chapeau"* | "Bitrig"*)
-            setcolors 2 7
+            set_colors 2 7
         ;;
 
         "Android"*)
-            setcolors 2 7
+            set_colors 2 7
             ascii_length_force="19"
         ;;
 
         "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
-            setcolors 5 7
+            set_colors 5 7
         ;;
 
         "OpenBSD"* | "GuixSD"*)
-            setcolors 3 7 6 1 8
+            set_colors 3 7 6 1 8
         ;;
 
         *"SUSE"* | "Manjaro"* | "Deepin"*)
-            setcolors 2 7
+            set_colors 2 7
         ;;
 
         "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"* | "OpenIndiana"*)
-            setcolors 4 7 1
+            set_colors 4 7 1
         ;;
 
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
-            setcolors 4 7
+            set_colors 4 7
             ascii_distro="puppy"
         ;;
 
         "Sparky"*)
-            setcolors 1 7
+            set_colors 1 7
             ascii_distro="sparky"
         ;;
 
         "Scientific"*)
-            setcolors 4 1 7
+            set_colors 4 1 7
         ;;
 
         "Solus"*)
-            setcolors 4 7
+            set_colors 4 7
         ;;
 
         "Trisquel"* | "NixOS"* | "Zorin"*)
-            setcolors 4 6
+            set_colors 4 6
         ;;
 
         "Travis")
-            setcolors 1 2 3 4 5 6
+            set_colors 1 2 3 4 5 6
         ;;
 
         "void"*)
-            setcolors 2 8
+            set_colors 2 8
         ;;
 
         "Windows 8"* | "Windows 10"*)
-            setcolors 6 7
+            set_colors 6 7
             ascii_distro="windows10"
         ;;
 
         "Windows"*)
-            setcolors 1 2 4 3
+            set_colors 1 2 4 3
         ;;
 
         "Haiku"*)
-            setcolors 2 0
+            set_colors 2 0
         ;;
 
         "Raspbian"*)
-            setcolors 2 1
+            set_colors 2 1
         ;;
 
         "Linux")
-            setcolors fg 8 3
+            set_colors fg 8 3
         ;;
 
         *)
-            case "$os" in
-                "Linux")
-                    ascii_distro="linux"
-                    setcolors fg 8 3
-                ;;
-            esac
+            if [[ "$os" == "Linux" ]]; then
+                ascii_distro="linux"
+                set_colors fg 8 3
+            fi
         ;;
     esac
 
     # Overwrite distro colors if '$ascii_colors' doesn't
     # equal 'distro'.
     [[ "${ascii_colors[0]}" != "distro" ]] && \
-        setcolors ${ascii_colors[@]}
+        set_colors ${ascii_colors[@]}
 }
 
-setcolors() {
+set_colors() {
     c1="$(color "$1")${ascii_bold}"
     c2="$(color "$2")${ascii_bold}"
     c3="$(color "$3")${ascii_bold}"
@@ -3153,7 +3158,7 @@ main() {
     get_args "$@"
     get_distro
     bold
-    colors
+    get_distro_colors
 
     # Restore cursor and clear screen on ctrl+c
     trap 'printf "\033[?25h"; clear; exit' 2
