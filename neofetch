@@ -1815,18 +1815,18 @@ get_image_backend() {
                 *)
                     if [[ -d "$image_source" ]]; then
                         files=("${image_source%/}"/*.{png,jpg,jpeg})
-                        img="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
+                        image="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
                     else
-                        img="$image_source"
+                        image="$image_source"
                     fi
                 ;;
             esac
 
             # Fallback to ascii mode if image isn't a file.
-            if [[ ! -f "$img" ]]; then
+            if [[ ! -f "$image" ]]; then
                 image_backend="ascii"
                 get_ascii 2>/dev/null
-                err "Image: '$img', doesn't exist, falling back to ascii mode."
+                err "Image: '$image', doesn't exist, falling back to ascii mode."
                 return
             fi
 
@@ -1885,14 +1885,15 @@ get_ascii() {
             get_script_dir 2>/dev/null
 
             # If the ascii file doesn't exist fallback to text mode.
-            if [[ ! -f "$script_dir/ascii/distro/${ascii/ *}" ]]; then
+            if [[ -f "$script_dir/ascii/distro/${ascii/ *}" ]]; then
+                ascii="$script_dir/ascii/distro/${ascii/ *}"
+
+            else
                 text_padding="0"
-                image="off"
+                image_backend="off"
                 err "Ascii: Ascii file not found, falling back to text mode."
                 return
             fi
-
-            ascii="$script_dir/ascii/distro/${ascii/ *}"
         fi
     fi
 
@@ -1952,52 +1953,52 @@ get_wallpaper() {
     case "$os" in
         "Linux" | "BSD")
             if type -p feh >/dev/null && [[ -f "$HOME/.fehbg" ]]; then
-                img="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
+                image="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
 
             elif type -p nitrogen >/dev/null; then
-                img="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
+                image="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
 
             elif type -p gsettings >/dev/null; then
                 # Get DE if user has disabled the function.
                 [[ -z "$de" ]] && get_de
 
                 case "$de" in
-                    "MATE"*) img="$(gsettings get org.mate.background picture-filename)" ;;
-                    *) img="$(gsettings get org.gnome.desktop.background picture-uri)" ;;
+                    "MATE"*) image="$(gsettings get org.mate.background picture-filename)" ;;
+                    *) image="$(gsettings get org.gnome.desktop.background picture-uri)" ;;
                 esac
 
                 # Strip quotes etc from the path.
-                img="${img/'file://'}"
-                img="${img//\'}"
-                img="${img//\%20/ }"
+                image="${image/'file://'}"
+                image="${image//\'}"
+                image="${image//\%20/ }"
             fi
         ;;
 
         "Mac OS X")
-            img="$(osascript -e 'tell application "System Events" to picture of current desktop')"
+            image="$(osascript -e 'tell application "System Events" to picture of current desktop')"
         ;;
 
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    img="/cygdrive/c/Documents and Settings/${USER}"
-                    img+="/Local Settings/Application Data/Microsoft"
-                    img+="/Wallpaper1.bmp"
+                    image="/cygdrive/c/Documents and Settings/${USER}"
+                    image+="/Local Settings/Application Data/Microsoft"
+                    image+="/Wallpaper1.bmp"
                 ;;
 
                 "Windows"*)
-                    img="$APPDATA/Microsoft/Windows/Themes"
-                    img+="/TranscodedWallpaper.jpg"
+                    image="$APPDATA/Microsoft/Windows/Themes"
+                    image+="/TranscodedWallpaper.jpg"
                 ;;
             esac
         ;;
     esac
 
-    # If img is an xml file don't use it.
-    [[ "${img/*\./}" == "xml" ]] && img=""
+    # If image is an xml file don't use it.
+    [[ "${image/*\./}" == "xml" ]] && image=""
 
     # Error msg
-    [[ -z "$img" ]] && err "Image: Wallpaper detection failed, falling back to ascii mode."
+    [[ ! -f "$image" ]] && err "Image: Wallpaper detection failed, falling back to ascii mode."
 }
 
 get_term_size() {
@@ -2073,7 +2074,7 @@ get_term_size() {
         fi
     fi
 
-    # If $img isn't a file fallback to ascii mode.
+    # If $image isn't a file fallback to ascii mode.
     if [[ "$term_width" ]] && ((term_width > 0)); then
         clear
         zws="​ "
@@ -2117,7 +2118,7 @@ get_image_size() {
 
         "none")
             # Get image size so that we can do a better crop
-            size="$(identify -format "%w %h" "$img")"
+            size="$(identify -format "%w %h" "$image")"
             width="${size%% *}"
             height="${size##* }"
             crop_mode="none"
@@ -2135,23 +2136,23 @@ get_image_size() {
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    imgname="$crop_mode-$crop_offset-$width-$height"
+    image_name="$crop_mode-$crop_offset-$width-$height"
 
     # Check to see if the image has a file extension,
     # if it doesn't then add one.
-    case "${img##*/}" in
-        *"."*) imgname="${imgname}-${img##*/}" ;;
-        *) imgname="${imgname}-${img##*/}.jpg" ;;
+    case "${image##*/}" in
+        *"."*) image_name="${image_name}-${image##*/}" ;;
+        *) image_name="${image_name}-${image##*/}.jpg" ;;
     esac
 
     # Check to see if the thumbnail exists before we do any cropping.
-    if [[ ! -f "$thumbnail_dir/$imgname" ]]; then
+    if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
         # Create the thumbnail dir if it doesn't exist.
         mkdir -p "$thumbnail_dir"
 
         # Get image size so that we can do a better crop
         if [[ -z "$size" ]]; then
-            size="$(identify -format "%w %h" "$img")"
+            size="$(identify -format "%w %h" "$image")"
             og_width="${size%% *}"
             og_height="${size##* }"
 
@@ -2163,44 +2164,44 @@ make_thumbnail() {
 
         case "$crop_mode" in
             "fit")
-                c="$(convert "$img" \
+                c="$(convert "$image" \
                     -colorspace srgb \
                     -format "%[pixel:p{0,0}]" info:)"
 
                 convert \
-                    "$img" \
+                    "$image" \
                     -trim +repage \
                     -gravity south \
                     -background "$c" \
                     -extent "$size"x"$size" \
                     -scale "$width"x"$height" \
-                    "$thumbnail_dir/$imgname"
+                    "$thumbnail_dir/$image_name"
             ;;
 
             "fill")
                 convert \
-                    "$img" \
+                    "$image" \
                     -trim +repage \
                     -scale "$width"x"$height"^ \
                     -extent "$width"x"$height" \
-                    "$thumbnail_dir/$imgname"
+                    "$thumbnail_dir/$image_name"
             ;;
 
-            "none") cp "$img" "$thumbnail_dir/$imgname" ;;
+            "none") cp "$image" "$thumbnail_dir/$image_name" ;;
             *)
                 convert \
-                    "$img" \
+                    "$image" \
                     -gravity "$crop_offset" \
                     -crop "$size"x"$size"+0+0 \
                     -quality 95 \
                     -scale "$width"x"$height" \
-                    "$thumbnail_dir/$imgname"
+                    "$thumbnail_dir/$image_name"
             ;;
         esac
     fi
 
     # The final image
-    img="$thumbnail_dir/$imgname"
+    image="$thumbnail_dir/$image_name"
 }
 
 display_image() {
@@ -2209,16 +2210,16 @@ display_image() {
             # Add a tiny delay to fix issues with images not
             # appearing in specific terminal emulators.
             sleep 0.05
-            printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$img\n4;\n3;" |\
+            printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$image\n4;\n3;" |\
             "$w3m_img_path" -bg "$background_color" >/dev/null & 2>&1 || text_padding="0"
         ;;
 
         "iterm2")
-            printf "%b\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$img")"
+            printf "%b\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$image")"
         ;;
 
         "tycat")
-            tycat "$img"
+            tycat "$image"
         ;;
     esac
 }
@@ -3086,7 +3087,7 @@ get_args() {
             ;;
 
             --ascii_distro)
-                image="ascii"
+                image_backend="ascii"
                 ascii_distro="$2"
                 case "$2" in "-"* | "") ascii_distro="$distro" ;; esac
             ;;
@@ -3094,7 +3095,7 @@ get_args() {
             --ascii_logo_size) ascii_logo_size="$2" ;;
             --ascii_bold) ascii_bold="$2" ;;
             --logo | -L)
-                image="ascii"
+                image_backend="ascii"
                 print_info() { info line_break; }
             ;;
 
