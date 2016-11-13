@@ -2537,10 +2537,24 @@ get_distro_colors() {
         ;;
 
         *)
-            if [[ "$os" == "Linux" ]]; then
-                ascii_distro="linux"
-                set_colors fg 8 3
-            fi
+            case "$os" in
+                "Linux")
+                    ascii_distro="linux"
+                    set_colors fg 8 3
+                ;;
+                "BSD")
+                    ascii_distro="bsd"
+                    set_colors 1 7 4 3 6
+                ;;
+                "GNU")
+                    ascii_distro="gnu"
+                    set_colors fg
+                ;;
+                "Solaris")
+                    ascii_distro="solaris"
+                    set_colors 3
+                ;;
+            esac
         ;;
     esac
 
