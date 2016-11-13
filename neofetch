@@ -2359,6 +2359,10 @@ colors() {
             ascii_distro="redhat"
         ;;
 
+        "Pardus"*)
+            setcolors 3 7
+        ;;
+
         "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"*)
             setcolors 4 7
         ;;
