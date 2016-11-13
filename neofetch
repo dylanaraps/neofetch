@@ -1824,24 +1824,19 @@ get_image_backend() {
 
             # Fallback to ascii mode if image isn't a file.
             if [[ ! -f "$image" ]]; then
-                image_backend="ascii"
-                get_ascii 2>/dev/null
-                err "Image: '$image', doesn't exist, falling back to ascii mode."
+                to_ascii "Image: '$image' doesn't exist, falling back to ascii mode."
                 return
             fi
 
-            # Set image program.
-            if [[ -n "$ITERM_PROFILE" ]]; then
-                image_program="iterm2"
+            get_image_program
+            get_term_size
 
-            elif [[ "$(tycat 2>/dev/null)" ]]; then
-                image_program="tycat"
-
-            else
-                image_program="w3m"
+            # Fallback to ascii mode if terminal size wasn't found.
+            if [[ -z "$term_width" ]] && ((term_width == 0)); then
+                to_ascii "Image: Failed to find terminal window size"
+                return
             fi
 
-            get_term_size
             get_image_size
             make_thumbnail
 
@@ -1854,11 +1849,23 @@ get_image_backend() {
     esac
 }
 
+get_image_program() {
+    if [[ -n "$ITERM_PROFILE" ]]; then
+        image_program="iterm2"
+
+    elif [[ "$(tycat 2>/dev/null)" ]]; then
+        image_program="tycat"
+
+    else
+        image_program="w3m"
+    fi
+}
+
 get_ascii() {
     if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
         # Error message
         [[ "$ascii" != "distro" ]] && \
-        [[ ! -f "$ascii" ]] && err "Ascii: Ascii file not found, using distro ascii"
+        [[ ! -f "$ascii" ]] && err "Ascii: Ascii file not found, using distro ascii."
 
         # Lowercase the distro name
         if (("$version" <= 3)); then
@@ -1889,9 +1896,7 @@ get_ascii() {
                 ascii="$script_dir/ascii/distro/${ascii/ *}"
 
             else
-                text_padding="0"
-                image_backend="off"
-                err "Ascii: Ascii file not found, falling back to text mode."
+                to_off "Ascii: Ascii file not found, falling back to text mode."
                 return
             fi
         fi
@@ -2074,15 +2079,10 @@ get_term_size() {
         fi
     fi
 
-    # If $image isn't a file fallback to ascii mode.
+    # If the terminal size was found correctly
     if [[ "$term_width" ]] && ((term_width > 0)); then
         clear
         zws="​ "
-    else
-        image_backend="ascii"
-        get_ascii
-        err "Image: Failed to get window size, falling back to ascii mode."
-        return
     fi
 }
 
@@ -2211,7 +2211,7 @@ display_image() {
             # appearing in specific terminal emulators.
             sleep 0.05
             printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$image\n4;\n3;" |\
-            "$w3m_img_path" -bg "$background_color" >/dev/null & 2>&1 || text_padding="0"
+            "$w3m_img_path" -bg "$background_color" >/dev/null & 2>&1 || to_off "Images: w3m-img failed to display the image."
         ;;
 
         "iterm2")
@@ -2222,6 +2222,20 @@ display_image() {
             tycat "$image"
         ;;
     esac
+}
+
+to_ascii() {
+    # This function makes neofetch fallback to ascii mode.
+    image_backend="ascii"
+    get_ascii 2>/dev/null
+    err "$1"
+}
+
+to_off() {
+    # This function makes neofetch fallback to off mode.
+    text_padding="0"
+    image_backend="off"
+    err "$1"
 }
 
 # SCREENSHOT
@@ -2286,7 +2300,7 @@ info() {
 
     # If the output is empty, don't print anything.
     [[ -z "${output// }" ]] && \
-        err "Info: Couldn't detect $subtitle" && return
+        err "Info: Couldn't detect $subtitle." && return
 
     case "$1" in
         title)
@@ -2674,7 +2688,7 @@ get_default_config() {
     fi
 
     if source "$default_config"; then
-        err "Config: Sourced default config ($default_config)"
+        err "Config: Sourced default config. ($default_config)"
     else
         err "Config: Default config not found, continuing..."
     fi
@@ -2684,12 +2698,12 @@ get_user_config() {
     # Check $config_file
     if [[ -f "$config_file" ]]; then
         source "$config_file"
-        err "Config: Sourced user config    ($config_file)"
+        err "Config: Sourced user config.    ($config_file)"
         return
 
     elif [[ "$config_file" == "travis" ]]; then
         source "$travis_config"
-        err "Config: Sourced user config    ($travis_config)"
+        err "Config: Sourced user config.    ($travis_config)"
         return
     fi
     mkdir -p "$XDG_CONFIG_HOME/neofetch/"
@@ -2715,7 +2729,7 @@ get_user_config() {
     fi
 
     source "$config_file"
-    err "Config: Sourced user config    ($config_file)"
+    err "Config: Sourced user config.    ($config_file)"
 }
 
 bar() {
