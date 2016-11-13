@@ -287,8 +287,8 @@ disk_display="off"
 
 
 # Image Source
-# --image wall, ascii, /path/to/img, /path/to/dir/, off
-image="wall"
+# --image wallpaper, /path/to/img, /path/to/dir/, off
+image_source="wallpaper"
 
 # Thumbnail directory
 thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
