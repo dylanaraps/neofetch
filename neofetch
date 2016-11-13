@@ -2303,13 +2303,13 @@ info() {
         err "Info: Couldn't detect $subtitle." && return
 
     case "$1" in
-        title)
+        "title")
             string="${title_color}${bold}${output}"
             string="${string/@/${at_color}@${title_color}${bold}}"
             length="${#output}"
         ;;
 
-        underline) string="${underline_color}${output}" ;;
+        "underline") string="${underline_color}${output}" ;;
 
         *)
             string="${subtitle_color}${bold}${subtitle}${reset}"
@@ -2370,7 +2370,14 @@ get_underline() {
     fi
 }
 
-bold() {
+get_line_break() {
+    line_break="​ "
+
+    # Calculate info height
+    info_height="$((info_height+=1))"
+}
+
+get_bold() {
     case "$ascii_bold" in
         "on") ascii_bold="\033[1m" ;;
         "off") ascii_bold="" ;;
@@ -2380,13 +2387,6 @@ bold() {
         "on") bold="\033[1m" ;;
         "off") bold="" ;;
     esac
-}
-
-get_line_break() {
-    line_break="​ "
-
-    # Calculate info height
-    info_height="$((info_height+=1))"
 }
 
 trim() {
@@ -3121,7 +3121,7 @@ main() {
     get_args "$@"
     old_flags
     get_distro
-    bold
+    get_bold
     get_distro_colors
 
     # Restore cursor and clear screen on ctrl+c
