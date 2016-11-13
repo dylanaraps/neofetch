@@ -37,6 +37,10 @@
   - https://github.com/dylanaraps/neofetch/wiki/Custom-Ascii-art-file-format
 - Added generic Linux ascii art to display if neofetch doesn't have the right logo for your distro.
 - `neofetch --ascii_distro x` now sets the mode to ascii for you. You no longer have to use a combination of `--ascii` and `--ascii_distro`.
+- [Arch Linux] Changed default ascii colors.
+- Rename `colors()` to `get_distro_colors()`.
+- Rename `setcolors()` to `set_colors()`.
+- Remove all duplicates from `get_distro_colors()`.
 
 
 ## Images
@@ -51,6 +55,12 @@
 - Renamed `$img` to `$image`.
 - Renamed `check_old_flags()` to `old_flags()` to match `old_functions()`.
 - Split `get_image()` into `get_term_size()`, `get_image_size()`, `get_image_program()` and `make_thumbnail()`.
+
+
+## Bars
+
+- Rename all `progress_` variables to `bar_` to match the function name.
+
 
 ## Info
 
