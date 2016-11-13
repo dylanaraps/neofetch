@@ -2001,9 +2001,6 @@ get_wallpaper() {
 
     # If image is an xml file, don't use it.
     [[ "${image/*\./}" == "xml" ]] && image=""
-
-    # Error msg
-    [[ ! -f "$image" ]] && err "Image: Wallpaper detection failed, falling back to ascii mode."
 }
 
 get_term_size() {
@@ -2646,13 +2643,6 @@ err() {
 "
 }
 
-check_old_flags() {
-    [[ -n "$osx_buildversion" ]] && err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
-    [[ -n "$osx_codename" ]] && err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
-    [[ -n "$progress_char" ]] && err "Config: \$progress_char is deprecated, use \$progress_char_elapsed and \$progress_char_total instead."
-    [[ "$cpu_cores" == "on" ]] && err "Config: \$cpu_cores='on' is deprecated, use \$cpu_cores='logical|physical|off' instead."
-}
-
 get_script_dir() {
     [[ "$script_dir" ]] && return
 
@@ -2837,6 +2827,14 @@ old_functions() {
         get_publicip() { get_public_ip; publicip="$public_ip"; }
         get_linebreak() { get_line_break; linebreak="$line_break"; }
     fi
+}
+
+old_flags() {
+    [[ -n "$osx_buildversion" ]] && err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
+    [[ -n "$osx_codename" ]] && err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
+    [[ -n "$progress_char" ]] && err "Config: \$progress_char is deprecated, use \$progress_char_elapsed and \$progress_char_total instead."
+    [[ "$cpu_cores" == "on" ]] && err "Config: \$cpu_cores='on' is deprecated, use \$cpu_cores='logical|physical|off' instead."
+    [[ -n "$image" ]] && { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
 }
 
 cache_uname() {
@@ -3147,7 +3145,7 @@ main() {
     cache_uname
     get_os
     get_default_config 2>/dev/null
-    check_old_flags
+    old_flags
     get_args "$@"
     get_distro
     bold
