@@ -2376,16 +2376,8 @@ get_distro_colors() {
     #
     # $ascii_distro is the same as $distro
     case "$ascii_distro" in
-        "Arch"*)
-            set_colors 4 7
-        ;;
-
-        "Antergos"*)
-            set_colors 6 4
-        ;;
-
-        "BlankOn"* | "DracOS"*)
-            set_colors 1 7
+        "Arch"* | "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"* | "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"* | "OpenIndiana"* | "Fedora"* | "Korora"* | "Sabayon"* | "Frugalware"* | "Exherbo"* | "Scientific"* | "Solus"*)
+            set_colors 4 7 1
         ;;
 
         "CentOS"*)
@@ -2401,7 +2393,11 @@ get_distro_colors() {
             ascii_distro="chrome"
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"*)
+        "Raspbian"*)
+            set_colors 2 1
+        ;;
+
+        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle" | "BlankOn"* | "DracOS"* | "Peppermint"*)
             set_colors 1 7 3
         ;;
 
@@ -2418,27 +2414,6 @@ get_distro_colors() {
         "Red"*)
             set_colors 1 7 3
             ascii_distro="redhat"
-        ;;
-
-        "Pardus"*)
-            set_colors 3 7
-        ;;
-
-        "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"*)
-            set_colors 4 7
-        ;;
-
-        "Fedora"* | "Korora"* | "Sabayon"* | "Frugalware"* | "Exherbo"*)
-            set_colors 4 7 1
-        ;;
-
-        "Gentoo"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
-            set_colors 5 7
-        ;;
-
-        "KDE"*)
-            set_colors 2 7
-            ascii_distro="kde"
         ;;
 
         "Kali"*)
@@ -2458,21 +2433,21 @@ get_distro_colors() {
             set_colors 4 3
         ;;
 
-        "Mageia"* | "Porteus"*)
-            set_colors 6 7
+        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Gentoo"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
+            set_colors 5 7
         ;;
 
-        "Peppermint"*)
-            set_colors 1 7
+        "OpenBSD"* | "GuixSD"* | "Pardus"*)
+            set_colors 3 7 6 1 8
         ;;
 
-        *"Mint"*)
+        *"SUSE"* | "Manjaro"* | "Deepin"* |"LMDE"* | "Chapeau"* | "Bitrig"*)
             set_colors 2 7
-            ascii_distro="mint"
         ;;
 
-        "LMDE"* | "Chapeau"* | "Bitrig"*)
+        "KDE"*)
             set_colors 2 7
+            ascii_distro="kde"
         ;;
 
         "Android"*)
@@ -2480,20 +2455,9 @@ get_distro_colors() {
             ascii_length_force="19"
         ;;
 
-        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"*)
-            set_colors 5 7
-        ;;
-
-        "OpenBSD"* | "GuixSD"*)
-            set_colors 3 7 6 1 8
-        ;;
-
-        *"SUSE"* | "Manjaro"* | "Deepin"*)
+        *"Mint"*)
             set_colors 2 7
-        ;;
-
-        "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"* | "OpenIndiana"*)
-            set_colors 4 7 1
+            ascii_distro="mint"
         ;;
 
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
@@ -2506,15 +2470,7 @@ get_distro_colors() {
             ascii_distro="sparky"
         ;;
 
-        "Scientific"*)
-            set_colors 4 1 7
-        ;;
-
-        "Solus"*)
-            set_colors 4 7
-        ;;
-
-        "Trisquel"* | "NixOS"* | "Zorin"*)
+        "Trisquel"* | "NixOS"* | "Zorin"* | "Antergos"*)
             set_colors 4 6
         ;;
 
@@ -2522,8 +2478,12 @@ get_distro_colors() {
             set_colors 1 2 3 4 5 6
         ;;
 
-        "void"*)
+        "Void"* | "Haiku"*)
             set_colors 2 8
+        ;;
+
+        "Mageia"* | "Porteus"*)
+            set_colors 6 7
         ;;
 
         "Windows 8"* | "Windows 10"*)
@@ -2533,14 +2493,6 @@ get_distro_colors() {
 
         "Windows"*)
             set_colors 1 2 4 3
-        ;;
-
-        "Haiku"*)
-            set_colors 2 0
-        ;;
-
-        "Raspbian"*)
-            set_colors 2 1
         ;;
 
         "Linux")
