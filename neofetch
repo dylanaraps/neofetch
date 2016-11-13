@@ -863,7 +863,7 @@ get_cpu_usage() {
             cpu_usage="${cpu_usage//[[:space:]]}"
         ;;
 
-        "Linux" | "Mac OS X" | "iPhone OS" | "BSD" | "Solaris" | "GNU")
+        *)
             # Get cores if unset
             if [[ -z "$cores" ]]; then
                 case "$os" in
