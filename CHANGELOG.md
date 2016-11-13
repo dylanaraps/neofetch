@@ -24,6 +24,7 @@
 - Added support for Haiku OS. **[@konimex](https://github.com/konimex)**
 - Added support for GNU Hurd. **[@konimex](https://github.com/konimex)**
 - Added support for DracOS.
+- Added support for Pardus.
 - Added support for Netrunner. **[@konimex](https://github.com/konimex)**
 - Added support for Korora. **[@konimex](https://github.com/konimex)**
 - Added support for iPhone 7 and 7 Plus.
