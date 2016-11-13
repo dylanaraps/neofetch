@@ -685,13 +685,13 @@ get_cpu() {
             # Get cpu speed
             if [[ -d "$speed_dir" ]]; then
                 case "$speed_type" in
-                    current) speed_type="scaling_cur_freq" ;;
-                    min) speed_type="scaling_min_freq" ;;
-                    max) speed_type="scaling_max_freq" ;;
-                    bios) speed_type="bios_limit" ;;
-                    scaling_current) speed_type="scaling_cur_freq" ;;
-                    scaling_min) speed_type="scaling_min_freq" ;;
-                    scaling_max) speed_type="scaling_max_freq" ;;
+                    "current") speed_type="scaling_cur_freq" ;;
+                    "min") speed_type="scaling_min_freq" ;;
+                    "max") speed_type="scaling_max_freq" ;;
+                    "bios") speed_type="bios_limit" ;;
+                    "scaling_current") speed_type="scaling_cur_freq" ;;
+                    "scaling_min") speed_type="scaling_min_freq" ;;
+                    "scaling_max") speed_type="scaling_max_freq" ;;
                 esac
 
                 # Fallback to cpuinfo_max_freq if $speed_type fails
