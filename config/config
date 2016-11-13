@@ -250,24 +250,24 @@ block_height=1
 
 # Progress bar character
 # --progress_char elapsed_char total_char
-progress_char_elapsed="-"
-progress_char_total="="
+bar_char_elapsed="-"
+bar_char_total="="
 
 # Progress border
 # --progress_border on, off
-progress_border="on"
+bar_border="on"
 
 # Progress bar length in spaces
 # Number of chars long to make the progress bars.
 # --progress_length num
-progress_length="15"
+bar_length="15"
 
 # Progress bar colors
 # When set to distro, uses your distro's logo colors
 # Takes: num, "distro"
 # --progress_colors col col
-progress_color_elapsed="distro"
-progress_color_total="distro"
+bar_color_elapsed="distro"
+bar_color_total="distro"
 
 # Customize how the info is displayed.
 # bar: Only the progress bar is displayed.
