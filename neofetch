@@ -1464,7 +1464,7 @@ get_term_font() {
 
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
-            term_font="$(grep -i -F "${term/d}*font" <<< "$(xrdb -query)")"
+            term_font="$(grep -i -F "${term/d}*font" < <(xrdb -query))"
             term_font="${term_font/*font:}"
             term_font="$(trim "$term_font")"
 
@@ -1864,8 +1864,8 @@ get_image_program() {
 get_ascii() {
     if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
         # Error message
-        [[ "$ascii" != "distro" ]] && \
-        [[ ! -f "$ascii" ]] && err "Ascii: Ascii file not found, using distro ascii."
+        [[ "$ascii" != "distro" ]] && [[ ! -f "$ascii" ]] && \
+            err "Ascii: Ascii file not found, using distro ascii."
 
         # Lowercase the distro name
         if (("$version" <= 3)); then
@@ -1999,7 +1999,7 @@ get_wallpaper() {
         ;;
     esac
 
-    # If image is an xml file don't use it.
+    # If image is an xml file, don't use it.
     [[ "${image/*\./}" == "xml" ]] && image=""
 
     # Error msg
