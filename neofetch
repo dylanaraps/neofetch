@@ -1852,18 +1852,6 @@ get_image_backend() {
     esac
 }
 
-get_image_program() {
-    if [[ -n "$ITERM_PROFILE" ]]; then
-        image_program="iterm2"
-
-    elif [[ "$(tycat 2>/dev/null)" ]]; then
-        image_program="tycat"
-
-    else
-        image_program="w3m"
-    fi
-}
-
 get_ascii() {
     if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
         # Error message
@@ -1933,6 +1921,18 @@ get_ascii() {
     text_padding="$((ascii_length + gap))"
     printf "%b" "$print"
     export LC_ALL=C
+}
+
+get_image_program() {
+    if [[ -n "$ITERM_PROFILE" ]]; then
+        image_program="iterm2"
+
+    elif [[ "$(tycat 2>/dev/null)" ]]; then
+        image_program="tycat"
+
+    else
+        image_program="w3m"
+    fi
 }
 
 get_w3m_img_path() {
@@ -2370,6 +2370,43 @@ get_underline() {
     fi
 }
 
+bold() {
+    case "$ascii_bold" in
+        "on") ascii_bold="\033[1m" ;;
+        "off") ascii_bold="" ;;
+    esac
+
+    case "$bold" in
+        "on") bold="\033[1m" ;;
+        "off") bold="" ;;
+    esac
+}
+
+get_line_break() {
+    line_break="​ "
+
+    # Calculate info height
+    info_height="$((info_height+=1))"
+}
+
+trim() {
+    # When a string is passed to 'echo' all trailing and leading
+    # whitespace is removed and inside the string multiple spaces are
+    # condensed into single spaces.
+    #
+    # The 'set -f/+f' is here so that 'echo' doesn't cause any expansion
+    # of special characters.
+    #
+    # The whitespace trim doesn't work with multiline strings so we use
+    # '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
+
+    set -f
+    builtin echo -E ${1//[[:space:]]/ }
+    set +f
+}
+
+# COLORS
+
 get_distro_colors() {
     # This function sets the text colors according
     # to your OS/Distro's logo colors.
@@ -2514,6 +2551,7 @@ get_distro_colors() {
 }
 
 set_colors() {
+    # Ascii colors
     c1="$(color "$1")${ascii_bold}"
     c2="$(color "$2")${ascii_bold}"
     c3="$(color "$3")${ascii_bold}"
@@ -2521,6 +2559,7 @@ set_colors() {
     c5="$(color "$5")${ascii_bold}"
     c6="$(color "$6")${ascii_bold}"
 
+    # Text colors
     if [[ "${colors[0]}" == "distro" ]]; then
         title_color="$(color "$1")"
         at_color="$reset"
@@ -2541,6 +2580,7 @@ set_colors() {
         info_color="$(color "${colors[5]}")"
     fi
 
+    # Progress Bar colors
     if [[ "$progress_color_elapsed" == "distro" ]]; then
         progress_color_elapsed="$(color fg)"
     else
@@ -2548,8 +2588,8 @@ set_colors() {
     fi
 
     case "$progress_color_total $1" in
-        distro\ [736]) progress_color_total="$c2" ;;
-        distro\ [0-9]) progress_color_total="$c1" ;;
+        "distro "[736]) progress_color_total="$c2" ;;
+        "distro "[0-9]) progress_color_total="$c1" ;;
         *) progress_color_total="$(color "$progress_color_total")" ;;
     esac
 }
@@ -2560,41 +2600,6 @@ color() {
         7 | "fg") printf "%b" "$reset" ;;
         *) printf "%b" "\033[38;5;${1}m" ;;
     esac
-}
-
-bold() {
-    case "$ascii_bold" in
-        "on") ascii_bold="\033[1m" ;;
-        "off") ascii_bold="" ;;
-    esac
-
-    case "$bold" in
-        "on") bold="\033[1m" ;;
-        "off") bold="" ;;
-    esac
-}
-
-get_line_break() {
-    line_break="​ "
-
-    # Calculate info height
-    info_height="$((info_height+=1))"
-}
-
-trim() {
-    # When a string is passed to 'echo' all trailing and leading
-    # whitespace is removed and inside the string multiple spaces are
-    # condensed into single spaces.
-    #
-    # The 'set -f/+f' is here so that 'echo' doesn't cause any expansion
-    # of special characters.
-    #
-    # The whitespace trim doesn't work with multiline strings so we use
-    # '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
-
-    set -f
-    builtin echo -E ${1//[[:space:]]/ }
-    set +f
 }
 
 # OTHER
