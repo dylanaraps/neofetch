@@ -45,8 +45,8 @@ get_model() {
             if [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
-            elif [[ -f /sys/devices/virtual/dmi/id/product_name ]] ||\
-               [[ -f /sys/devices/virtual/dmi/id/product_version ]]; then
+            elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
+                    -f /sys/devices/virtual/dmi/id/product_version ]]; then
                 model="$(< /sys/devices/virtual/dmi/id/product_name)"
                 model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
                 model="${model/To Be Filled*}"
