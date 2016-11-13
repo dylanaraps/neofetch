@@ -14,8 +14,8 @@ print_info() {
     info title
     info underline
 
-    info "Model" model
     info "OS" distro
+    info "Model" model
     info "Kernel" kernel
     info "Uptime" uptime
     info "Packages" packages
