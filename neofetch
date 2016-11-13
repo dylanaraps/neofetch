@@ -2884,7 +2884,7 @@ usage() { printf "%s" "
                                 Characters to use when drawing bars.
     --bar_border on/off         Whether or not to surround the bar with '[]'
     --bar_length num            Length in spaces to make the bars.
-    --bar_colors num num   Colors to make the bar.
+    --bar_colors num num        Colors to make the bar.
                                 Set in this order: elapsed, total
     --cpu_display mode          Bar mode.
                                 Takes: bar, infobar, barinfo, off
