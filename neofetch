@@ -2930,7 +2930,7 @@ usage() { printf "%s" "
     --gap num                   Gap between image and text.
                                 NOTE: --gap can take a negative value which will
                                 move the text closer to the left side.
-    --clean                     Remove all cropped images
+    --clean                     Delete cached files and thumbnails.
 
     Ascii:
     --ascii value               Where to get the ascii from, Possible values:
