@@ -410,16 +410,16 @@ get_packages() {
 
         "Mac OS X")
             [[ -d "/usr/local/bin" ]] && \
-                packages="$(("$(ls -l /usr/local/bin/ | grep -cv "\(../Cellar/\|brew\)")" - 1))"
+                packages="$(($(ls -l /usr/local/bin/ | grep -cv "\(../Cellar/\|brew\)") - 1))"
 
             type -p port >/dev/null && \
-                packages="$((packages + "$(port installed | wc -l)" - 1))"
+                packages="$((packages + $(port installed | wc -l) - 1))"
 
             type -p brew >/dev/null && \
-                packages="$((packages + "$(find /usr/local/Cellar -maxdepth 1 | wc -l)" - 1))"
+                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))"
 
             type -p pkgin >/dev/null && \
-                packages="$((packages + "$(pkgin list | wc -l)"))"
+                packages="$((packages + $(pkgin list | wc -l)))"
         ;;
 
         "BSD")
@@ -1026,7 +1026,7 @@ get_memory() {
         ;;
 
         "Mac OS X" | "iPhone OS")
-            memtotal="$(("$(sysctl -n hw.memsize)" / 1024^2))"
+            memtotal="$(($(sysctl -n hw.memsize) / 1024^2))"
             memwired="$(vm_stat | awk '/wired/ { print $4 }')"
             memactive="$(vm_stat | awk '/active / { printf $3 }')"
             memcompressed="$(vm_stat | awk '/occupied/ { printf $5 }')"
@@ -1036,18 +1036,18 @@ get_memory() {
         "BSD")
             case "$distro" in
                 "NetBSD"*)
-                    memfree="$(("$(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo)" / 1024))"
-                    memtotal="$(("$(sysctl -n hw.physmem64)" / 1024^2))"
+                    memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))"
+                    memtotal="$(($(sysctl -n hw.physmem64) / 1024^2))"
                 ;;
 
                 *)
-                    memfree="$(("$(vmstat | awk 'END{printf $5}')" / 1024))"
-                    memtotal="$(("$(sysctl -n hw.physmem)" / 1024^2))"
+                    memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))"
+                    memtotal="$(($(sysctl -n hw.physmem) / 1024^2))"
                 ;;
             esac
 
             case "$distro" in
-                "OpenBSD"*) memused="$(("$(vmstat | awk 'END {printf $4}')" / 1024))" ;;
+                "OpenBSD"*) memused="$(($(vmstat | awk 'END {printf $4}') / 1024))" ;;
                 *) memused="$((memtotal - memfree))" ;;
             esac
         ;;
