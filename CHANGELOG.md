@@ -90,3 +90,8 @@
 **Shell**<br \>
 
 - [bash] Simplify bash version.
+
+**Song**<br \>
+
+- Added support for GNOME Music. **[@konimex](https://github.com/konimex)**
+- Added support for Lollypop. **[@konimex](https://github.com/konimex)**
