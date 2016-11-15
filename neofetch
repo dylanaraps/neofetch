@@ -8,7 +8,7 @@
 # Created by Dylan Araps
 # https://github.com/dylanaraps/
 
-version="${BASH_VERSION/.*}"
+bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
@@ -661,7 +661,7 @@ get_wm_theme() {
     esac
 
     wm_theme="${wm_theme//\'}"
-    (("$version" >= 4)) && wm_theme="${wm_theme^}"
+    (("$bash_version" >= 4)) && wm_theme="${wm_theme^}"
 }
 
 get_cpu() {
@@ -1291,7 +1291,7 @@ get_style() {
 
                     theme="$(grep "^[^#]*$kde" "$kde_config_file")"
                     theme="${theme/${kde}*=}"
-                    (("$version" >= 4)) && theme="${theme^}"
+                    (("$bash_version" >= 4)) && theme="${theme^}"
 
                     gtk_shorthand="on"
                     return
@@ -1366,7 +1366,7 @@ get_style() {
         gtk3theme=${gtk3theme//\'}
 
         # Uppercase the first letter of each gtk theme
-        if (("$version" >= 4)); then
+        if (("$bash_version" >= 4)); then
             gtk2theme="${gtk2theme^}"
             gtk3theme="${gtk3theme^}"
         fi
@@ -1510,7 +1510,7 @@ get_term_font() {
         ;;
     esac
 
-    (("$version" >= 4)) && term_font="${term_font^}"
+    (("$bash_version" >= 4)) && term_font="${term_font^}"
 }
 
 get_disk() {
@@ -1859,7 +1859,7 @@ get_ascii() {
             err "Ascii: Ascii file not found, using distro ascii."
 
         # Lowercase the distro name
-        if (("$version" <= 3)); then
+        if (("$bash_version" <= 3)); then
             ascii="$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")"
         else
             ascii="${ascii_distro,,}"
