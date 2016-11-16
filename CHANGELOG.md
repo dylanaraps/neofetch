@@ -66,6 +66,7 @@
 **Distro**<br \>
 
 - [Linux] Source `/etc/*-release` files instead of having a dozen separate `awk` commands.
+    - We source `/etc/os-release` before falling back to `/etc/*-release`.
 
 **Packages**<br \>
 
