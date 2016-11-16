@@ -71,7 +71,7 @@ Launching the script with `--ascii` or setting `image="ascii"` inside the config
 
 It's hard to add support for other wallpaper setters as they don't provide a way of getting the current wallpaper from the cli.
 
-If your wallpaper setter **does** provide a way of getting the current wallpaper or you know where it's stored then adding support won't be a problem!
+If your wallpaper setter **does** provide a way of getting the current wallpaper or you know where the wallpaper is stored then adding support won't be a problem!
 
 
 ## Issues and Workarounds
