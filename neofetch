@@ -131,6 +131,7 @@ get_distro() {
                 esac
                 ascii_distro="Windows 10"
 
+            # TODO: Install Red Star OS and check if this is really needed.
             elif [[ -f "/etc/redstar-release" ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Red Star OS" ;;
@@ -160,8 +161,8 @@ get_distro() {
 
             else
                 # Source the os-release file
-                for file in /etc/*ease /usr/lib/*ease; do
-                    source "$file"
+                for file in /etc/os-release /etc/*ease /usr/lib/*ease; do
+                    source "$file" && break
                 done
 
                 # The 3rd line down matches the fold marker syntax. {{{
