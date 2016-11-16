@@ -1020,62 +1020,62 @@ get_memory() {
             # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
             while IFS=":" read -r a b; do
                 case "$a" in
-                    "MemTotal") memused="$((memused+=${b/kB}))"; memtotal="${b/kB}" ;;
-                    "Shmem") memused="$((memused+=${b/kB}))"  ;;
-                    "MemFree" | "Buffers" | "Cached" | "SReclaimable") memused="$((memused-=${b/kB}))" ;;
+                    "MemTotal") mem_used="$((mem_used+=${b/kB}))"; mem_total="${b/kB}" ;;
+                    "Shmem") mem_used="$((mem_used+=${b/kB}))"  ;;
+                    "MemFree" | "Buffers" | "Cached" | "SReclaimable") mem_used="$((mem_used-=${b/kB}))" ;;
                 esac
             done < /proc/meminfo
 
-            memused="$((memused / 1024))"
-            memtotal="$((memtotal / 1024))"
+            mem_used="$((mem_used / 1024))"
+            mem_total="$((mem_total / 1024))"
         ;;
 
         "Mac OS X" | "iPhone OS")
-            memtotal="$(($(sysctl -n hw.memsize) / 1024^2))"
-            memwired="$(vm_stat | awk '/wired/ { print $4 }')"
-            memactive="$(vm_stat | awk '/active / { printf $3 }')"
-            memcompressed="$(vm_stat | awk '/occupied/ { printf $5 }')"
-            memused="$(((${memwired//.} + ${memactive//.} + ${memcompressed//.}) * 4 / 1024))"
+            mem_total="$(($(sysctl -n hw.memsize) / 1024^2))"
+            mem_wired="$(vm_stat | awk '/wired/ { print $4 }')"
+            mem_active="$(vm_stat | awk '/active / { printf $3 }')"
+            mem_compressed="$(vm_stat | awk '/occupied/ { printf $5 }')"
+            mem_used="$(((${mem_wired//.} + ${mem_active//.} + ${mem_compressed//.}) * 4 / 1024))"
         ;;
 
         "BSD")
             case "$distro" in
                 "NetBSD"*)
                     memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))"
-                    memtotal="$(($(sysctl -n hw.physmem64) / 1024^2))"
+                    mem_total="$(($(sysctl -n hw.physmem64) / 1024^2))"
                 ;;
 
                 *)
                     memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))"
-                    memtotal="$(($(sysctl -n hw.physmem) / 1024^2))"
+                    mem_total="$(($(sysctl -n hw.physmem) / 1024^2))"
                 ;;
             esac
 
             case "$distro" in
-                "OpenBSD"*) memused="$(($(vmstat | awk 'END {printf $4}') / 1024))" ;;
-                *) memused="$((memtotal - memfree))" ;;
+                "OpenBSD"*) mem_used="$(($(vmstat | awk 'END {printf $4}') / 1024))" ;;
+                *) mem_used="$((mem_total - memfree))" ;;
             esac
         ;;
 
         "Solaris")
-            memtotal="$(prtconf | awk '/Memory/ {print $3}')"
+            mem_total="$(prtconf | awk '/Memory/ {print $3}')"
             memfree="$(($(sar -r 1 1 | awk 'NR==5 {print $2}') / 1024))"
-            memused="$((memtotal - memfree))"
+            mem_used="$((mem_total - memfree))"
         ;;
 
         "Haiku")
-            memtotal="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024^2))"
-            memused="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
-            memused="$((${memused/max} / 1024^2))"
+            mem_total="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024^2))"
+            mem_used="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
+            mem_used="$((${mem_used/max} / 1024^2))"
         ;;
     esac
-    memory="${memused}MB / ${memtotal}MB"
+    memory="${mem_used}MB / ${mem_total}MB"
 
     # Bars
     case "$memory_display" in
-        "bar") memory="$(bar "${memused}" "${memtotal}")" ;;
-        "infobar") memory="${memory} $(bar "${memused}" "${memtotal}")" ;;
-        "barinfo") memory="$(bar "${memused}" "${memtotal}") ${memory}" ;;
+        "bar") memory="$(bar "${mem_used}" "${mem_total}")" ;;
+        "infobar") memory="${memory} $(bar "${mem_used}" "${mem_total}")" ;;
+        "barinfo") memory="$(bar "${mem_used}" "${mem_total}") ${memory}" ;;
     esac
 }
 
