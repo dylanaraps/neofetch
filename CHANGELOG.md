@@ -44,6 +44,7 @@
 - Rename `colors()` to `get_distro_colors()`.
 - Rename `setcolors()` to `set_colors()`.
 - Remove all duplicates from `get_distro_colors()`.
+- Update Netrunner ascii art.
 
 
 ## Images
