@@ -51,11 +51,6 @@
 - Fixed images not appearing in st.
 - Added `to_ascii()` and `to_off()`.
     - These functions are used when falling back to different image modes.
-- Renamed `$image_backend` to `$image_program`.
-- Renamed `$image` to `$image_backend`.
-- Renamed `$padding` to `$text_padding`.
-- Renamed `$imgname` to `$img_name`.
-- Renamed `$img` to `$image`.
 - Renamed `check_old_flags()` to `old_flags()` to match `old_functions()`.
 - Split `get_image()` into `get_term_size()`, `get_image_size()`, `get_image_program()` and `make_thumbnail()`.
 
@@ -94,3 +89,8 @@
 **Shell**<br \>
 
 - [bash] Simplify bash version.
+
+**Song**<br \>
+
+- Added support for GNOME Music. **[@konimex](https://github.com/konimex)**
+- Added support for Lollypop. **[@konimex](https://github.com/konimex)**
