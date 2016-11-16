@@ -53,6 +53,7 @@
     - These functions are used when falling back to different image modes.
 - Renamed `check_old_flags()` to `old_flags()` to match `old_functions()`.
 - Split `get_image()` into `get_term_size()`, `get_image_size()`, `get_image_program()` and `make_thumbnail()`.
+- Use `$XDG_CACHE_HOME` as the thumbnail dir if available.
 
 
 ## Bars
