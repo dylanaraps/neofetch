@@ -28,19 +28,19 @@ https://github.com/dylanaraps/neofetch/wiki/Installation
 ## Post Install
 
 
-#### Using the config file
+### Using the config file
 
 Neofetch will by default create a config file at `$HOME/.config/neofetch/config` and this file contains all of the script's options/settings. The config file allows you to keep your customizations between script versions and allows you to easily share your customizations with other people.
 
 You can launch the script without a config file by using the flag `--config none` and you can specify a custom config location using `--config path/to/config`.
 
 
-#### Customizing what info gets displayed
+### Customizing what info gets displayed
 
 https://github.com/dylanaraps/fetch/wiki/Customizing-Info
 
 
-#### Customizing the script using a custom alias
+### Customizing the script using a custom alias
 
 If you don't want to use the config file you can customize almost everything using launch flags!
 
@@ -61,13 +61,13 @@ alias neofetch2="neofetch \
 ## Frequently Asked Questions
 
 
-#### How do I enable screenfetch mode?
+### How do I enable screenfetch mode?
 
 Launching the script with `--ascii` or setting `image="ascii"` inside the config file will launch the script in "screenfetch mode". The script will display your distro's ascii next to the info, exactly like screenfetch.
 
 **NOTE:** If you **don't** have an image-mode dependency installed screenfetch mode will be used automatically.
 
-#### Why doesn't Neofetch support my wallpaper setter?
+### Why doesn't Neofetch support my wallpaper setter?
 
 It's hard to add support for other wallpaper setters as they don't provide a way of getting the current wallpaper from the cli.
 
@@ -76,7 +76,7 @@ If your wallpaper setter **does** provide a way of getting the current wallpaper
 
 ## Issues and Workarounds
 
-#### getgpu doesn't show my exact video card name
+### getgpu doesn't show my exact video card name
 
 If your `lspci | grep "VGA"` output looks like this:
 
@@ -98,7 +98,7 @@ This is caused by your `/usr/share/misc/pci.ids*` files being outdated and you c
 sudo update-pciids
 ```
 
-#### Neofetch doesn't work correctly with ConEmu.
+### Neofetch doesn't work correctly with ConEmu.
 
 You need to be using the CYGWIN/Msys connector for Neofetch to work seamlessly with ConEmu.
 
