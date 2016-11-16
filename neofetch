@@ -175,8 +175,7 @@ get_distro() {
                 [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
                 [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}' /etc/*ease /usr/lib/*ease)"
             fi
-            distro="${distro//\"}"
-            distro="${distro//\'}"
+            distro="$(trim_quotes "$distro")"
         ;;
 
         "Mac OS X")
@@ -529,9 +528,8 @@ get_wm() {
         wm="${wm/\"*}"
 
         # Fallback for Wayland wms
-        case "$wm" in
-            "xwlc") wm="$(ps -e | grep -m 1 -o -F -e "sway" -e "orbment" -e "velox" -e "orbital")" ;;
-        esac
+        [[ "$wm" == "xwlc" ]] && \
+            wm="$(ps -e | grep -m 1 -o -F -e "sway" -e "orbment" -e "velox" -e "orbital")"
 
     else
         case "$os" in
@@ -660,7 +658,7 @@ get_wm_theme() {
         ;;
     esac
 
-    wm_theme="${wm_theme//\'}"
+    wm_theme="$(trim_quotes "$wm_theme")"
     wm_theme="$(uppercase "$wm_theme")"
 }
 
@@ -981,7 +979,7 @@ get_gpu() {
                 "FreeBSD"* | "DragonFlyBSD"* | "PacBSD"*)
                     gpu="$(pciconf -lv | grep -B 4 -F "VGA" | grep -F "device")"
                     gpu="${gpu/*device*= }"
-                    gpu="${gpu//\'}"
+                    gpu="$(trim_quotes "$gpu")"
                 ;;
 
                 *)
@@ -1136,7 +1134,7 @@ get_song() {
             state="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.rhythmbox /org/mpris/MediaPlayer2 \
                      org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string: 'PlayBackStatus' |\
                      awk -F 'string "' '{printf $2}')"
-            state="${state//\"}"
+            state="$(trim_quotes "$state")"
         ;;
 
         "banshee"*)
@@ -1283,7 +1281,7 @@ get_style() {
             "Gnome"* | "Unity"* | "Budgie"*)
                 if type -p gsettings >/dev/null; then
                     gtk3_theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
-                    gtk2_theme="${gtk3_theme}"
+                    gtk2_theme="$gtk3_theme"
 
                 elif type -p gconftool-2 >/dev/null; then
                     gtk2_theme="$(gconftool-2 -g /desktop/gnome/interface/"$gconf")"
@@ -1292,7 +1290,7 @@ get_style() {
 
             "Mate"*)
                 gtk3_theme="$(gsettings get org.mate.interface "$gsettings")"
-                gtk2_theme="${gtk3_theme}"
+                gtk2_theme="$gtk3_theme"
             ;;
 
             "Xfce"*)
@@ -1966,7 +1964,7 @@ get_wallpaper() {
 
                 # Strip quotes etc from the path.
                 image="${image/'file://'}"
-                image="${image//\'}"
+                image="$(trim_quotes "$image")"
                 image="${image//\%20/ }"
             fi
         ;;
