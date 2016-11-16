@@ -2161,11 +2161,11 @@ make_thumbnail() {
         *) image_name="${image_name}-${image##*/}.jpg" ;;
     esac
 
+    # Create the thumbnail dir if it doesn't exist.
+    mkdir -p "$thumbnail_dir"
+
     # Check to see if the thumbnail exists before we do any cropping.
     if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
-        # Create the thumbnail dir if it doesn't exist.
-        mkdir -p "$thumbnail_dir"
-
         # Get image size so that we can do a better crop
         if [[ -z "$size" ]]; then
             size="$(identify -format "%w %h" "$image")"
@@ -3089,7 +3089,7 @@ get_args() {
             "--background_color" | "--bg_color") background_color="$2" ;;
             "--gap") gap="$2" ;;
             "--clean")
-                rm -rf "${thumbnail_dir:="$HOME/.cache/thumbnails/neofetch"}"
+                [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
                 rm -rf "/tmp/neofetch/"
                 exit

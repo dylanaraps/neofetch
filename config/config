@@ -291,7 +291,7 @@ disk_display="off"
 image_source="wallpaper"
 
 # Thumbnail directory
-thumbnail_dir="$HOME/.cache/thumbnails/neofetch"
+thumbnail_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch"
 
 # W3m-img path
 # Only works with the w3m backend.
