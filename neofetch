@@ -2394,7 +2394,7 @@ trim() {
 
 trim_quotes() {
     trim_output="${1//\'}"
-    trim_output="${1//\"}"
+    trim_output="${trim_output//\"}"
     printf "%s" "$trim_output"
 }
 
