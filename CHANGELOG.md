@@ -71,6 +71,10 @@
 
 - [Linux] Source `/etc/*-release` files instead of having a dozen separate `awk` commands.
 
+**Packages**<br \>
+
+- [Solus] If `pisi` is unavailable, use `eopkg`.
+
 **GPU**<br \>
 
 - [Linux] Properly detect gpu in multi gpu setups. **[@TonCherAmi](https://github.com/TonCherAmi)**
