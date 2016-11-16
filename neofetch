@@ -661,7 +661,7 @@ get_wm_theme() {
     esac
 
     wm_theme="${wm_theme//\'}"
-    (("$bash_version" >= 4)) && wm_theme="${wm_theme^}"
+    wm_theme="$(uppercase "$wm_theme")"
 }
 
 get_cpu() {
@@ -1250,38 +1250,13 @@ get_resolution() {
 get_style() {
     # Fix weird output when the function
     # is run multiple times.
-    unset gtk2theme gtk3theme theme path
-
-    case "$1" in
-        "theme")
-            name="gtk-theme-name"
-            gsettings="gtk-theme"
-            gconf="gtk_theme"
-            xfconf="/Net/ThemeName"
-            kde="widgetStyle"
-        ;;
-
-        "icons")
-            name="gtk-icon-theme-name"
-            gsettings="icon-theme"
-            gconf="icon_theme"
-            xfconf="/Net/IconThemeName"
-            kde="Theme"
-        ;;
-
-        "font")
-            name="gtk-font-name"
-            gsettings="font-name"
-            gconf="font_theme"
-            xfconf="/Gtk/FontName"
-            kde="font"
-        ;;
-    esac
+    unset gtk2_theme gtk3_theme theme path
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
         [[ -z "$de" ]] && get_de
 
+        # Check for DE Theme.
         case "$de" in
             "KDE"*)
                 kde_config_dir
@@ -1291,7 +1266,7 @@ get_style() {
 
                     theme="$(grep "^[^#]*$kde" "$kde_config_file")"
                     theme="${theme/${kde}*=}"
-                    (("$bash_version" >= 4)) && theme="${theme^}"
+                    theme="$(uppercase "$theme")"
 
                     gtk_shorthand="on"
                     return
@@ -1300,121 +1275,135 @@ get_style() {
 
             *"Cinnamon")
                 if type -p gsettings >/dev/null; then
-                    gtk3theme="$(gsettings get org.cinnamon.desktop.interface "$gsettings")"
-                    gtk2theme="${gtk3theme}"
+                    gtk3_theme="$(gsettings get org.cinnamon.desktop.interface "$gsettings")"
+                    gtk2_theme="$gtk3_theme"
                 fi
             ;;
 
             "Gnome"* | "Unity"* | "Budgie"*)
                 if type -p gsettings >/dev/null; then
-                    gtk3theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
-                    gtk2theme="${gtk3theme}"
+                    gtk3_theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
+                    gtk2_theme="${gtk3_theme}"
 
                 elif type -p gconftool-2 >/dev/null; then
-                    gtk2theme="$(gconftool-2 -g /desktop/gnome/interface/"$gconf")"
+                    gtk2_theme="$(gconftool-2 -g /desktop/gnome/interface/"$gconf")"
                 fi
             ;;
 
             "Mate"*)
-                gtk3theme="$(gsettings get org.mate.interface "$gsettings")"
-                gtk2theme="${gtk3theme}"
+                gtk3_theme="$(gsettings get org.mate.interface "$gsettings")"
+                gtk2_theme="${gtk3_theme}"
             ;;
 
             "Xfce"*)
                 type -p xfconf-query >/dev/null && \
-                    gtk2theme="$(xfconf-query -c xsettings -p "$xfconf")"
+                    gtk2_theme="$(xfconf-query -c xsettings -p "$xfconf")"
             ;;
         esac
 
-        # Check for gtk2 theme
-        if [[ -z "$gtk2theme" ]]; then
+        # Check for general GTK2 Theme
+        if [[ -z "$gtk2_theme" ]]; then
             if [[ -f "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}" ]]; then
-                gtk2theme="$(grep "^[^#]*$name" "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}")"
+                gtk2_theme="$(grep "^[^#]*${name}" "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}")"
 
             elif [[ -f "/usr/share/gtk-2.0/gtkrc" ]]; then
-                gtk2theme="$(grep "^[^#]*$name" /usr/share/gtk-2.0/gtkrc)"
+                gtk2_theme="$(grep "^[^#]*${name}" /usr/share/gtk-2.0/gtkrc)"
 
             elif [[ -f "/etc/gtk-2.0/gtkrc" ]]; then
-                gtk2theme="$(grep "^[^#]*$name" /etc/gtk-2.0/gtkrc)"
+                gtk2_theme="$(grep "^[^#]*${name}" /etc/gtk-2.0/gtkrc)"
             fi
 
-            gtk2theme="${gtk2theme/${name}*=}"
+            gtk2_theme="${gtk2_theme/${name}*=}"
         fi
 
-        # Check for gtk3 theme
-        if [[ -z "$gtk3theme" ]]; then
+        # Check for general GTK3 Theme
+        if [[ -z "$gtk3_theme" ]]; then
             if [[ -f "$XDG_CONFIG_HOME/gtk-3.0/settings.ini" ]]; then
-                gtk3theme="$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")"
+                gtk3_theme="$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")"
 
             elif type -p gsettings >/dev/null; then
-                gtk3theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
+                gtk3_theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
 
             elif [[ -f "/usr/share/gtk-3.0/settings.ini" ]]; then
-                gtk3theme="$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)"
+                gtk3_theme="$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)"
 
             elif [[ -f "/etc/gtk-3.0/settings.ini" ]]; then
-                gtk3theme="$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)"
+                gtk3_theme="$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)"
             fi
 
-            gtk3theme="${gtk3theme/${name}*=}"
+            gtk3_theme="${gtk3_theme/${name}*=}"
         fi
-
-        # Remove quotes
-        gtk2theme=${gtk2theme//\"}
-        gtk2theme=${gtk2theme//\'}
-        gtk3theme=${gtk3theme//\"}
-        gtk3theme=${gtk3theme//\'}
-
-        # Uppercase the first letter of each gtk theme
-        if (("$bash_version" >= 4)); then
-            gtk2theme="${gtk2theme^}"
-            gtk3theme="${gtk3theme^}"
-        fi
-
-        # Toggle visibility of gtk themes.
-        [[ "$gtk2" == "off" ]] && unset gtk2theme
-        [[ "$gtk3" == "off" ]] && unset gtk3theme
 
         # Trim whitespace
-        gtk2theme="$(trim "$gtk2theme")"
-        gtk3theme="$(trim "$gtk3theme")"
+        gtk2_theme="$(trim "$gtk2_theme")"
+        gtk3_theme="$(trim "$gtk3_theme")"
+
+        # Remove quotes
+        gtk2_theme="$(trim_quotes "$gtk2_theme")"
+        gtk3_theme="$(trim_quotes "$gtk3_theme")"
+
+        # Uppercase the first letter of each gtk theme
+        gtk2_theme="$(uppercase "$gtk2_theme")"
+        gtk3_theme="$(uppercase "$gtk3_theme")"
+
+        # Toggle visibility of gtk themes.
+        [[ "$gtk2" == "off" ]] && unset gtk2_theme
+        [[ "$gtk3" == "off" ]] && unset gtk3_theme
 
         # Format the string based on which themes exist
-        if  [[ "$gtk2theme" && "$gtk2theme" == "$gtk3theme" ]]; then
-            gtk3theme+=" [GTK2/3]"
-            unset gtk2theme
+        if  [[ "$gtk2_theme" && "$gtk2_theme" == "$gtk3_theme" ]]; then
+            gtk3_theme+=" [GTK2/3]"
+            unset gtk2_theme
 
-        elif [[ "$gtk2theme" && "$gtk3theme" ]]; then
-            gtk2theme+=" [GTK2], "
-            gtk3theme+=" [GTK3] "
+        elif [[ "$gtk2_theme" && "$gtk3_theme" ]]; then
+            gtk2_theme+=" [GTK2], "
+            gtk3_theme+=" [GTK3] "
+
         else
-            [[ "$gtk2theme" ]] && gtk2theme+=" [GTK2] "
-            [[ "$gtk3theme" ]] && gtk3theme+=" [GTK3] "
+            [[ "$gtk2_theme" ]] && gtk2_theme+=" [GTK2] "
+            [[ "$gtk3_theme" ]] && gtk3_theme+=" [GTK3] "
         fi
 
         # Final string
-        theme="${gtk2theme}${gtk3theme}"
+        theme="${gtk2_theme}${gtk3_theme}"
 
         # Make the output shorter by removing "[GTKX]" from the string
         if [[ "$gtk_shorthand" == "on" ]]; then
-            theme="${theme/ '[GTK2]'}"
-            theme="${theme/ '[GTK3]'}"
+            theme="${theme// '[GTK'[0-9]']'}"
             theme="${theme/ '[GTK2/3]'}"
         fi
     fi
 }
 
 get_theme() {
-    get_style theme
+    name="gtk-theme-name"
+    gsettings="gtk-theme"
+    gconf="gtk_theme"
+    xfconf="/Net/ThemeName"
+    kde="widgetStyle"
+
+    get_style
 }
 
 get_icons() {
-    get_style icons
+    name="gtk-icon-theme-name"
+    gsettings="icon-theme"
+    gconf="icon_theme"
+    xfconf="/Net/IconThemeName"
+    kde="Theme"
+
+    get_style
     icons="$theme"
 }
 
 get_font() {
-    get_style font
+    name="gtk-font-name"
+    gsettings="font-name"
+    gconf="font_theme"
+    xfconf="/Gtk/FontName"
+    kde="font"
+
+    get_style
     font="$theme"
 }
 
@@ -1510,7 +1499,7 @@ get_term_font() {
         ;;
     esac
 
-    (("$bash_version" >= 4)) && term_font="${term_font^}"
+    term_font="$(uppercase "$term_font")"
 }
 
 get_disk() {
@@ -2403,6 +2392,16 @@ trim() {
     set -f
     builtin echo -E ${1//[[:space:]]/ }
     set +f
+}
+
+trim_quotes() {
+    trim_output="${1//\'}"
+    trim_output="${1//\"}"
+    printf "%s" "$trim_output"
+}
+
+uppercase() {
+    (("$bash_version" >= 4)) && printf "%s" "${1^}"
 }
 
 # COLORS
