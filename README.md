@@ -6,7 +6,7 @@ Neofetch is a CLI system information tool written in BASH. Neofetch displays inf
 
 Neofetch is highly customizable through the use of commandline flags or the user config file. There are over 50 config options to mess around with and there's the `print_info()` function and friends which let you add your own custom info.
 
-Neofetch can be used on any OS that has BASH, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku OS`, `GNU Hurd` and `*Windows (Cygwin/Windows 10 Linux subsystem)`. 
+Neofetch can be used on any OS that has BASH, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku OS`, `GNU Hurd` and `Windows (Cygwin/Windows 10 Linux subsystem)`. 
 
 For more information:
 
@@ -30,13 +30,9 @@ https://github.com/dylanaraps/neofetch/wiki/Installation
 
 #### Using the config file
 
-Neofetch will by default create a config file at `$HOME/.config/neofetch/config` and this file<br \>
-contains all of the script's options/settings. The config file allows you to keep your<br \>
-customizations between script versions and allows you to easily share your customizations<br \>
-with other people.
+Neofetch will by default create a config file at `$HOME/.config/neofetch/config` and this file contains all of the script's options/settings. The config file allows you to keep your customizations between script versions and allows you to easily share your customizations with other people.
 
-You can launch the script without a config file by using the flag `--config none` and you can<br \>
-specify a custom config location using `--config path/to/config`.
+You can launch the script without a config file by using the flag `--config none` and you can specify a custom config location using `--config path/to/config`.
 
 
 #### Customizing what info gets displayed
@@ -67,30 +63,18 @@ alias neofetch2="neofetch \
 
 #### How do I enable screenfetch mode?
 
-Launching the script with `--ascii` or setting `image="ascii"` <br \>
-inside the config file will launch the script in "screenfetch mode". The script will<br \>
-display your distro's ascii next to the info, exactly like screenfetch.
+Launching the script with `--ascii` or setting `image="ascii"` inside the config file will launch the script in "screenfetch mode". The script will display your distro's ascii next to the info, exactly like screenfetch.
 
-**NOTE:** If you **don't** have `w3m-img` or `imagemagick` installed screenfetch mode will be<br \>
-used automatically
+**NOTE:** If you **don't** have an image-mode dependency installed screenfetch mode will be used automatically.
 
 #### Why doesn't Neofetch support my wallpaper setter?
 
-It's hard to add support for other wallpaper setters as they don't provide a way of <br \>
-getting the current wallpaper from the cli.
+It's hard to add support for other wallpaper setters as they don't provide a way of getting the current wallpaper from the cli.
 
-If your wallpaper setter **does** provide a way of getting the current wallpaper or you<br \>
-know where it's stored then adding support won't be a problem!<br \>
+If your wallpaper setter **does** provide a way of getting the current wallpaper or you know where it's stored then adding support won't be a problem!
 
 
 ## Issues and Workarounds
-
-
-#### The text is pushed over too far to the right
-
-The easiest way to fix this is to change the value of `--gap` or `$gap`<br \>
-to a negative value. For example `--gap -10` will move the text 10 spaces to the left.
-
 
 #### getgpu doesn't show my exact video card name
 
@@ -108,8 +92,7 @@ Instead of this:
 
 Then you're affected by the issue.
 
-This is caused by your `/usr/share/misc/pci.ids\*` files being outdated and you can fix it<br \>
-by running this command as root.
+This is caused by your `/usr/share/misc/pci.ids*` files being outdated and you can fix it by running this command as root.
 
 ```
 sudo update-pciids
@@ -131,5 +114,4 @@ Thanks to:
     - Some of the ascii logos.
 - [ufetch](https://github.com/jschx/ufetch):
     - Tiny ascii logos
-- Everyone else helped out in one way or another. I'd list all of the names<br \>
-but there's just too many of you. :)
+- Everyone else helped out in one way or another. I'd list all of the names but there's just too many of you. :)
