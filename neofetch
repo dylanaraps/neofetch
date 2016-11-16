@@ -378,14 +378,6 @@ get_packages() {
             type -p pkginfo >/dev/null && \
                 packages="$((packages+=$(pkginfo -i | wc -l)))"
 
-            type -p pisi >/dev/null && \
-                packages="$((packages+=$(pisi list-installed | wc -l)))"
-
-            if type -p pkg >/dev/null; then
-                packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
-                (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
-            fi
-
             type -p emerge >/dev/null && \
                 packages="$((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))"
 
@@ -406,6 +398,20 @@ get_packages() {
 
             type -p cave >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)))"
+
+            # pisi is sometimes unavailable in Solus(?). This uses eopkg
+            # instead if pisi isn't found.
+            if type -p pisi >/dev/null; then
+                packages="$((packages+=$(pisi list-installed | wc -l)))"
+
+            elif type -p eopkg >/dev/null; then
+                packages="$((packages+=$(eopkg list-installed | wc -l)))"
+            fi
+
+            if type -p pkg >/dev/null; then
+                packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
+                (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
+            fi
         ;;
 
         "Mac OS X")
