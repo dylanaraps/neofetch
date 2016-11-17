@@ -1700,6 +1700,7 @@ get_local_ip() {
 get_public_ip() {
     if type -p dig >/dev/null; then
         public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
+        [[ "$public_ip" =~ ^\; ]] && unset public_ip
     fi
 
     if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
