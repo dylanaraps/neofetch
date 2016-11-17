@@ -3,6 +3,7 @@
 - **[@konimex](https://github.com/konimex)**
 - **[@TonCherAmi](https://github.com/TonCherAmi)**
 - **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
+- **[@iandrewt](https://github.com/iandrewt)**
 
 
 ## General
@@ -97,3 +98,7 @@
 
 - Added support for GNOME Music. **[@konimex](https://github.com/konimex)**
 - Added support for Lollypop. **[@konimex](https://github.com/konimex)**
+
+**Public IP**<br \>
+
+- [dig] Fixed connection timed out with public_ip. **[@iandrewt](https://github.com/iandrewt)**
