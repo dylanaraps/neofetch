@@ -2484,7 +2484,7 @@ get_distro_colors() {
         ;;
 
         "BunsenLabs"*)
-            set_colors 8 7
+            set_colors fg 7
         ;;
 
         *"OS X"* | *"iOS"* | "Mac" | *"macOS"*)
@@ -2568,14 +2568,17 @@ get_distro_colors() {
                     ascii_distro="linux"
                     set_colors fg 8 3
                 ;;
+
                 "BSD")
                     ascii_distro="bsd"
                     set_colors 1 7 4 3 6
                 ;;
+
                 "GNU")
                     ascii_distro="gnu"
                     set_colors fg
                 ;;
+
                 "Solaris")
                     ascii_distro="solaris"
                     set_colors 3
@@ -2608,7 +2611,11 @@ set_colors() {
         colon_color="$reset"
         info_color="$reset"
 
-        # If the second color is white use the first for the subtitle
+        # If the ascii art uses 8 as a color, make the text the fg.
+        (("$1" == 8)) && title_color="$reset"
+        (("$2" == 8)) && subtitle_color="$reset"
+
+        # If the second color is white use the first for the subtitle.
         (("$2" == 7)) && subtitle_color="$(color "$1")"
         (("$1" == 7)) && title_color="$reset"
     else
