@@ -4,6 +4,7 @@
 - **[@TonCherAmi](https://github.com/TonCherAmi)**
 - **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
 - **[@iandrewt](https://github.com/iandrewt)**
+- **[@iwamatsu](https://github.com/iwamatsu)**
 
 
 ## General
@@ -45,6 +46,7 @@
 - Rename `colors()` to `get_distro_colors()`.
 - Rename `setcolors()` to `set_colors()`.
 - Remove all duplicates from `get_distro_colors()`.
+- Remove execution permission flag from ascii art files. **[@iwamatsu](https://github.com/iwamatsu)**
 - Update Netrunner ascii art.
 
 
@@ -73,6 +75,8 @@
 **Packages**<br \>
 
 - [Solus] If `pisi` is unavailable, use `eopkg`.
+- Added package detection for Lunar Linux. **[@konimex](https://github.com/konimex)**
+- Added package detection for TinyCore. **[@konimex](https://github.com/konimex)**
 
 **GPU**<br \>
 
