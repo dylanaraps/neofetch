@@ -412,6 +412,12 @@ get_packages() {
                 packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
                 (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
             fi
+
+            type -p lvu >/dev/null && \
+                packages="$((packages+=$(lvu installed | wc -l)))"
+
+            type -p tce-status >/dev/null && \
+                packages="$((packages+=$(tce-status -i | wc -l)))"
         ;;
 
         "Mac OS X")
