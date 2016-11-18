@@ -412,6 +412,12 @@ get_packages() {
                 packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
                 (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
             fi
+
+            type -p lvu >/dev/null && \
+                packages="$((packages+=$(lvu installed | wc -l)))"
+
+            type -p tce-status >/dev/null && \
+                packages="$((packages+=$(tce-status -i | wc -l)))"
         ;;
 
         "Mac OS X")
@@ -1700,6 +1706,7 @@ get_local_ip() {
 get_public_ip() {
     if type -p dig >/dev/null; then
         public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
+        [[ "$public_ip" =~ ^\; ]] && unset public_ip
     fi
 
     if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then

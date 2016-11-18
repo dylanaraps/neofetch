@@ -3,6 +3,8 @@
 - **[@konimex](https://github.com/konimex)**
 - **[@TonCherAmi](https://github.com/TonCherAmi)**
 - **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
+- **[@iandrewt](https://github.com/iandrewt)**
+- **[@iwamatsu](https://github.com/iwamatsu)**
 
 
 ## General
@@ -44,6 +46,7 @@
 - Rename `colors()` to `get_distro_colors()`.
 - Rename `setcolors()` to `set_colors()`.
 - Remove all duplicates from `get_distro_colors()`.
+- Remove execution permission flag from ascii art files. **[@iwamatsu](https://github.com/iwamatsu)**
 - Update Netrunner ascii art.
 
 
@@ -72,6 +75,8 @@
 **Packages**<br \>
 
 - [Solus] If `pisi` is unavailable, use `eopkg`.
+- Added package detection for Lunar Linux. **[@konimex](https://github.com/konimex)**
+- Added package detection for TinyCore. **[@konimex](https://github.com/konimex)**
 
 **GPU**<br \>
 
@@ -97,3 +102,7 @@
 
 - Added support for GNOME Music. **[@konimex](https://github.com/konimex)**
 - Added support for Lollypop. **[@konimex](https://github.com/konimex)**
+
+**Public IP**<br \>
+
+- [dig] Fixed connection timed out with public_ip. **[@iandrewt](https://github.com/iandrewt)**
