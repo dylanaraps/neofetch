@@ -43,6 +43,8 @@
     - Example: [Linux] Tux is displayed if there's no distro ascii.
 - `neofetch --ascii_distro x` now sets the mode to ascii for you. You no longer have to use a combination of `--ascii` and `--ascii_distro`.
 - [Arch Linux] Changed default ascii colors.
+- [Bunsenlabs] Changed default ascii colors.
+- Fixed issue with Solarized and certain ascii art.
 - Rename `colors()` to `get_distro_colors()`.
 - Rename `setcolors()` to `set_colors()`.
 - Remove all duplicates from `get_distro_colors()`.
