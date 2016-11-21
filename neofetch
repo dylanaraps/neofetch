@@ -243,6 +243,8 @@ get_distro() {
         ;;
     esac
 
+    [[ -z "$distro" ]] && distro="$os (Unknown)"
+
     # Get architecture
     [[ "$os_arch" == "on" ]] && \
         distro+=" ${machine_arch}"
