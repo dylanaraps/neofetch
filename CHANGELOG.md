@@ -73,6 +73,8 @@
 
 - [Linux] Source `/etc/*-release` files instead of having a dozen separate `awk` commands.
     - We source `/etc/os-release` before falling back to `/etc/*-release`.
+- Remove lsb_release detection.
+    - This change was made since lsb_release prints innacurate results on some distros.
 
 **Packages**<br \>
 
