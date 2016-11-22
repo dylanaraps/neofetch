@@ -76,7 +76,7 @@
 - Remove lsb_release detection.
     - This change was made since lsb_release prints innacurate results on some distros.
 - Added fallback when distro isn't found. **[@konimex](https://github.com/konimex)**
-    - Example: `Linux (unknown) | Windows (unknown)`
+    - Example: `Linux (Unknown)`
 
 **Packages**<br \>
 
