@@ -1081,7 +1081,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|gnome-music|lollypop/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|gnome-music|lollypop|clementine/ {printf $5 " " $6; exit}')"
 
     case "${player/*\/}" in
         "mpd"*)
@@ -1180,6 +1180,17 @@ get_song() {
             # Hello dbus my old friend.
             song="$(\
                 dbus-send --print-reply --dest=org.mpris.MediaPlayer2.Lollypop /org/mpris/MediaPlayer2 \
+                org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
+                awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
+                awk -F '"' '/artist|title/ {printf $2 " - "}'
+            )"
+            song="${song% - }"
+        ;;
+
+        "clementine"*)
+            # dbus
+            song="$(
+                dbus-send --print-reply --dest=org.mpris.clementine /org/mpris/MediaPlayer2 \
                 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
                 awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
                 awk -F '"' '/artist|title/ {printf $2 " - "}'
