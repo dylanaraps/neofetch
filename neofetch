@@ -2258,7 +2258,12 @@ to_off() {
 # SCREENSHOT
 
 take_scrot() {
-    $scrot_cmd "${scrot_dir}${scrot_name}"
+    if [[ -d "$scrot_dir" ]]; then
+        $scrot_cmd "${scrot_dir}${scrot_name}"
+    else
+        printf "%s\n" "Screenshot: $scrot_dir doesn't exist. Edit the config file or create the directory to take screenshots."
+    fi
+
     [[ "$scrot_upload" == "on" ]] && scrot_upload
 }
 
