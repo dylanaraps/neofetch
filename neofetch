@@ -832,7 +832,7 @@ get_cpu() {
     cpu="${cpu//Six-Core}"
     cpu="${cpu//Eight-Core}"
     cpu="${cpu//Core}"
-    cpu="${cpu//with Radeon HD Graphics}"
+    cpu="${cpu//with Radeon * Graphics}"
 
     # Add cpu cores to output
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
