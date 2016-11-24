@@ -49,7 +49,6 @@ get_model() {
                     -f /sys/devices/virtual/dmi/id/product_version ]]; then
                 model="$(< /sys/devices/virtual/dmi/id/product_name)"
                 model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
-                model="${model/To Be Filled*}"
 
             elif [[ -f /sys/firmware/devicetree/base/model ]]; then
                 model="$(< /sys/firmware/devicetree/base/model)"
@@ -57,6 +56,10 @@ get_model() {
             elif [[ -f /tmp/sysinfo/model ]]; then
                 model="$(< /tmp/sysinfo/model)"
             fi
+
+            model="${model//To Be Filled*}"
+            model="${model//OEM*}"
+            model="${model//Not Applicable}"
         ;;
 
         "Mac OS X") model="$(sysctl -n hw.model)" ;;
