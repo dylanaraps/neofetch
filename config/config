@@ -304,18 +304,34 @@ song_shorthand="off"
 # Birthday
 
 
-# Whether to show a long pretty output
-# or a shortened one
-# NOTE: Long pretty output doesn't work on OpenBSD or NetBSD.
-# --birthday_shorthand on, off
+# Shorten the output of the Birthday functon.
+#
+# Default:  'off'
+# Values:   'on', 'off'
+# Flag:     --birthday_shorthand
+# Supports: 'off' doesn't work on OpenBSD and NetBSD.
+#
+# Example:
+# on:  'Thu 14 Apr 2016 11:50 PM'
+# off: '2016-04-14 23:50:55'
 birthday_shorthand="off"
 
 # Whether to show the time in the output
-# --birthday_time on, off
+#
+# Default:  'on'
+# Values:   'on', 'off'
+# Flag:     --birthday_time
+#
+# Example:
+# on:  'Thu 14 Apr 2016 11:50 PM'
+# off: 'Thu 14 Apr 2016'
 birthday_time="on"
 
 # Date format to use when printing birthday
-# --birthday_format "format"
+#
+# Default:  '+%a %d %b %Y %l:%M %p'
+# Values:   'date format'
+# Flag:     --birthday_format
 birthday_format="+%a %d %b %Y %l:%M %p"
 
 
