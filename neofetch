@@ -1034,7 +1034,7 @@ get_memory() {
         ;;
 
         "Mac OS X" | "iPhone OS")
-            mem_total="$(($(sysctl -n hw.memsize) / 1024^2))"
+            mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
             mem_wired="$(vm_stat | awk '/wired/ { print $4 }')"
             mem_active="$(vm_stat | awk '/active / { printf $3 }')"
             mem_compressed="$(vm_stat | awk '/occupied/ { printf $5 }')"
@@ -1045,12 +1045,12 @@ get_memory() {
             case "$distro" in
                 "NetBSD"*)
                     memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))"
-                    mem_total="$(($(sysctl -n hw.physmem64) / 1024^2))"
+                    mem_total="$(($(sysctl -n hw.physmem64) / 1024 / 1024))"
                 ;;
 
                 *)
                     memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))"
-                    mem_total="$(($(sysctl -n hw.physmem) / 1024^2))"
+                    mem_total="$(($(sysctl -n hw.physmem) / 1024 / 1024))"
                 ;;
             esac
 
@@ -1067,9 +1067,9 @@ get_memory() {
         ;;
 
         "Haiku")
-            mem_total="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024^2))"
+            mem_total="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))"
             mem_used="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
-            mem_used="$((${mem_used/max} / 1024^2))"
+            mem_used="$((${mem_used/max} / 1024 / 1024))"
         ;;
     esac
     memory="${mem_used}MB / ${mem_total}MB"
