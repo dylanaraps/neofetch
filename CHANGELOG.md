@@ -114,3 +114,7 @@
 **Public IP**<br \>
 
 - [dig] Fixed connection timed out with public_ip. **[@iandrewt](https://github.com/iandrewt)**
+
+**Resolution**<br \>
+
+- [MacOS] If refresh rate is empty don't append Hz.
