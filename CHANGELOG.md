@@ -84,6 +84,7 @@
 - [Solus] If `pisi` is unavailable, use `eopkg`.
 - Added package detection for Lunar Linux. **[@konimex](https://github.com/konimex)**
 - Added package detection for TinyCore. **[@konimex](https://github.com/konimex)**
+- Remove `/usr/games` from `$PATH` to fix issues with pacman game.
 
 **GPU**<br \>
 
