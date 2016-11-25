@@ -357,6 +357,14 @@ get_uptime() {
 }
 
 get_packages() {
+    # Remove /usr/games from $PATH.
+    # This solves issues with neofetch opening the
+    # 'pacman' game.
+    local PATH=":${PATH}:"
+    local PATH="${PATH/':/usr/games:'/:}"
+    local PATH="${PATH%:}"
+    local PATH="${PATH#:}"
+
     case "$os" in
         "Linux" | "iPhone OS" | "Solaris" | "GNU")
             type -p pacman >/dev/null && \
