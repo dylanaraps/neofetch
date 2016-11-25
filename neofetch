@@ -2913,6 +2913,7 @@ usage() { printf "%s" "
                                 in the output.
                                 NOTE: You can supply multiple args. eg.
                                 'neofetch --disable cpu gpu disk shell'
+                                NOTE: The arguments must all be lowercase.
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -2948,7 +2949,7 @@ usage() { printf "%s" "
     Text Formatting:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
-    --underline on/off          enable/disable the underline.
+    --underline on/off          Enable/Disable the underline.
     --underline_char char       Character to use when underlining title
     --bold on/off               Enable/Disable bold text
 
@@ -3068,7 +3069,10 @@ get_args() {
                     case "$func" in
                         "--disable") continue ;;
                         "-"*) break ;;
-                        *) unset -f "get_$func" ;;
+                        *)
+                            (("$bash_version" >= 4)) && func="${func,,}"
+                            unset -f "get_$func"
+                        ;;
                     esac
                 done
             ;;
