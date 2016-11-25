@@ -60,6 +60,8 @@ get_model() {
             model="${model//To Be Filled*}"
             model="${model//OEM*}"
             model="${model//Not Applicable}"
+            model="${model//System Product Name}"
+            model="${model//System Version}"
         ;;
 
         "Mac OS X") model="$(sysctl -n hw.model)" ;;
