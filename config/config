@@ -7,7 +7,6 @@
 export LC_ALL=C
 export LANG=C
 
-
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 print_info() {
@@ -51,8 +50,14 @@ print_info() {
 # Kernel
 
 
-# Shorten the output of the kernel function
-# --kernel_shorthand on, off
+# Shorten the output of the kernel function.
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --kernel_shorthand
+#
+# on:  '4.8.9-1-ARCH'
+# off: 'Linux; 4.8.9-1-ARCH'
 kernel_shorthand="on"
 
 
@@ -60,12 +65,22 @@ kernel_shorthand="on"
 
 
 # Shorten the output of the distro function
-# NOTE: This is only possible on Linux, macOS, and Solaris
-# --distro_shorthand on, off, tiny
+#
+# Default:  'off'
+# Values:   'on', 'off', 'tiny'
+# Flag:     --distro_shorthand
+# Supports: Linux, macOS, and Solaris.
 distro_shorthand="off"
 
-# Show 'x86_64' and 'x86' in 'Distro:' output.
-# --os_arch on, off
+# Show/Hide OS Architecture.
+# Show 'x86_64', 'x86' and etc in 'Distro:' output.
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --os_arch
+#
+# on:  'Arch Linux x86_64'
+# off: 'Arch Linux'
 os_arch="on"
 
 
@@ -73,7 +88,14 @@ os_arch="on"
 
 
 # Shorten the output of the uptime function
-# --uptime_shorthand tiny, on, off
+#
+# Default: 'off'
+# Values:  'on', 'off', 'tiny'
+# Flag:    --uptime_shorthand
+#
+# on:   '2 days, 10 hours, 3 mins'
+# off:  '2 days, 10 hours, 3 minutes'
+# tiny: '2d 10h 3m'
 uptime_shorthand="off"
 
 
@@ -81,11 +103,23 @@ uptime_shorthand="off"
 
 
 # Show the path to $SHELL
-# --shell_path on, off
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --shell_path
+#
+# on:  '/bin/bash'
+# off: 'bash'
 shell_path="off"
 
 # Show $SHELL version
-# --shell_version on, off
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --shell_version
+#
+# on:  'bash 4.4.5'
+# off: 'bash'
 shell_version="on"
 
 
@@ -93,37 +127,72 @@ shell_version="on"
 
 
 # CPU speed type
-# Only works on Linux with cpufreq.
-# --speed_type current, min, max, bios,
-# scaling_current, scaling_min, scaling_max
+#
+# Default: 'max'
+# Values:  'current', 'min', 'max', 'bios',
+#          'scaling_current', 'scaling_min',
+#          'scaling_max'
+# Flag:    --speed_type
+# Supports: Linux with 'cpufreq'
 speed_type="max"
 
 # Shorten the output of the CPU function
-# --cpu_shorthand name, speed, tiny, on, off
+#
+# Default: 'off'
+# Values:  'on', 'off', 'tiny', 'name', 'speed'
+# Flag:    --cpu_shorthand
+#
+# on:    'i7-6500U (4) @ 3.1GHz'
+# off:   'Intel i7-6500U (4) @ 3.1GHz'
+# tiny:  'i7-6500U (4)'
+# name:  'Intel i7-6500U (4)'
+# speed: '3.1GHz'
 cpu_shorthand="off"
 
 # CPU Usage display
 # Set CPU usage display setting
-# --cpu_display bar, infobar, barinfo, off
+#
+# Default: 'off'
+# Values:  'bar', 'infobar', 'barinfo', 'off'
+# Flag:    --cpu_display
+#
+# bar:     '[---=======]'
+# infobar: '20% [---=======]'
+# barinfo: '[---=======] 20%'
+# off:     '20%'
 cpu_display="off"
 
 # CPU Speed
 # Hide/Show CPU speed.
-# --cpu_speed on, off
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --cpu_speed
+#
+# on:  'Intel i7-6500U (4) @ 3.1GHz'
+# off: 'Intel i7-6500U (4)'
 cpu_speed="on"
 
 # CPU Cores
 # Display CPU cores in output
-# Logical: All virtual cores
-# Physical: All physical cores
-# Note: 'physical' doesn't work on BSD.
-# --cpu_cores logical, physical, off
+#
+# Default: 'logical'
+# Values:  'logical', 'physical', 'off'
+# Flag:    --cpu_cores
+# Support: 'physical' doesn't work on BSD.
+#
+# logical:  'Intel i7-6500U (4) @ 3.1GHz' (All virtual cores)
+# physical: 'Intel i7-6500U (2) @ 3.1GHz' (All physical cores)
+# off:      'Intel i7-6500U @ 3.1GHz'
 cpu_cores="logical"
 
 # CPU Temperature
 # Hide/Show CPU temperature.
-# Note: Only works on Linux.
-# --cpu_temp on, off
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --cpu_temp
+# Supports: Linux
 cpu_temp="off"
 
 
