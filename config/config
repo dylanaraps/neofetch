@@ -56,8 +56,9 @@ print_info() {
 # Values:  'on', 'off'
 # Flag:    --kernel_shorthand
 #
+# Example:
 # on:  '4.8.9-1-ARCH'
-# off: 'Linux; 4.8.9-1-ARCH'
+# off: 'Linux 4.8.9-1-ARCH'
 kernel_shorthand="on"
 
 
@@ -79,6 +80,7 @@ distro_shorthand="off"
 # Values:  'on', 'off'
 # Flag:    --os_arch
 #
+# Example:
 # on:  'Arch Linux x86_64'
 # off: 'Arch Linux'
 os_arch="on"
@@ -93,6 +95,7 @@ os_arch="on"
 # Values:  'on', 'off', 'tiny'
 # Flag:    --uptime_shorthand
 #
+# Example:
 # on:   '2 days, 10 hours, 3 mins'
 # off:  '2 days, 10 hours, 3 minutes'
 # tiny: '2d 10h 3m'
@@ -108,6 +111,7 @@ uptime_shorthand="off"
 # Values:  'on', 'off'
 # Flag:    --shell_path
 #
+# Example:
 # on:  '/bin/bash'
 # off: 'bash'
 shell_path="off"
@@ -118,6 +122,7 @@ shell_path="off"
 # Values:  'on', 'off'
 # Flag:    --shell_version
 #
+# Example:
 # on:  'bash 4.4.5'
 # off: 'bash'
 shell_version="on"
@@ -142,6 +147,7 @@ speed_type="max"
 # Values:  'on', 'off', 'tiny', 'name', 'speed'
 # Flag:    --cpu_shorthand
 #
+# Example:
 # on:    'i7-6500U (4) @ 3.1GHz'
 # off:   'Intel i7-6500U (4) @ 3.1GHz'
 # tiny:  'i7-6500U (4)'
@@ -156,6 +162,7 @@ cpu_shorthand="off"
 # Values:  'bar', 'infobar', 'barinfo', 'off'
 # Flag:    --cpu_display
 #
+# Example:
 # bar:     '[---=======]'
 # infobar: '20% [---=======]'
 # barinfo: '[---=======] 20%'
@@ -169,6 +176,7 @@ cpu_display="off"
 # Values:  'on', 'off'
 # Flag:    --cpu_speed
 #
+# Example:
 # on:  'Intel i7-6500U (4) @ 3.1GHz'
 # off: 'Intel i7-6500U (4)'
 cpu_speed="on"
@@ -181,6 +189,7 @@ cpu_speed="on"
 # Flag:    --cpu_cores
 # Support: 'physical' doesn't work on BSD.
 #
+# Example:
 # logical:  'Intel i7-6500U (4) @ 3.1GHz' (All virtual cores)
 # physical: 'Intel i7-6500U (2) @ 3.1GHz' (All physical cores)
 # off:      'Intel i7-6500U @ 3.1GHz'
@@ -200,7 +209,14 @@ cpu_temp="off"
 
 
 # Enable/Disable GPU Brand
-# --gpu_brand on, off
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --gpu_brand
+#
+# Example:
+# on:  'AMD HD 7950'
+# off: 'HD 7950'
 gpu_brand="on"
 
 
@@ -208,25 +224,52 @@ gpu_brand="on"
 
 
 # Display refresh rate next to each monitor
-# Unsupported on Windows
-# --refresh_rate on, off
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --refresh_rate
+# Supports: Doesn't work on Windows.
+#
+# Example:
+# on:  '1920x1080 @ 60Hz'
+# off: '1920x1080'
 refresh_rate="off"
 
 
-# Gtk Theme / Icons
+# Gtk Theme / Icons / Font
 
 
-# Shorten output (Hide [GTK2] etc)
-# --gtk_shorthand on, off
+# Shorten output of GTK Theme / Icons / Font
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --gtk_shorthand
+#
+# Example:
+# on:  'Numix, Adwaita'
+# off: 'Numix [GTK2], Adwaita [GTK3]'
 gtk_shorthand="off"
 
 
-# Enable/Disable gtk2 theme/icons output
-# --gtk2 on, off
+# Enable/Disable gtk2 Theme / Icons / Font
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --gtk2
+#
+# Example:
+# on:  'Numix [GTK2], Adwaita [GTK3]'
+# off: 'Adwaita [GTK3]'
 gtk2="on"
 
-# Enable/Disable gtk3 theme/icons output
-# --gtk3 on, off
+# Enable/Disable gtk3 Theme / Icons / Font
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --gtk3
+#
+# Example:
+# on:  'Numix [GTK2], Adwaita [GTK3]'
+# off: 'Numix [GTK2]'
 gtk3="on"
 
 
@@ -234,7 +277,10 @@ gtk3="on"
 
 
 # Website to ping for the public IP
-# --ip_host url
+#
+# Default: 'http://ident.me'
+# Values:  'url'
+# Flag:    --ip_host
 public_ip_host="http://ident.me"
 
 
@@ -242,7 +288,16 @@ public_ip_host="http://ident.me"
 
 
 # Print the Artist and Title on seperate lines
-# --song_shorthand on, off
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --song_shorthand
+#
+# Example:
+# on:  'Artist: The Fratellis'
+#      'Song: Chelsea Dagger'
+#
+# off: 'Song: The Fratellis - Chelsea Dagger'
 song_shorthand="off"
 
 
