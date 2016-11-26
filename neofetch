@@ -3051,6 +3051,7 @@ get_args() {
     while [[ "$1" ]]; do
         case "$1" in
             # Info
+            "--ip_host") public_ip_host="$2" ;;
             "--disable")
                 for func in "$@"; do
                     case "$func" in
