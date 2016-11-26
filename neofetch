@@ -3089,8 +3089,6 @@ get_args() {
                 bar_char_total="$3"
             ;;
 
-            "--bar_border") bar_border="$2" ;;
-            "--bar_length") bar_length="$2" ;;
             "--bar_colors")
                 bar_color_elapsed="$2"
                 bar_color_total="$3"
