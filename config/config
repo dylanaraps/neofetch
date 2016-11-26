@@ -476,16 +476,22 @@ disk_display="off"
 
 
 # Image Source
-# --image wallpaper, /path/to/img, /path/to/dir/, off
+#
+# Default:  'wallpaper'
+# Values:   'wallpaper', '/path/to/img', '/path/to/dir/', 'off'
+# Flag:     --image
 image_source="wallpaper"
 
 # Thumbnail directory
+#
+# Default: '~/.cache/thumbnails/neofetch'
+# Values:  'dir'
 thumbnail_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch"
 
-# W3m-img path
+# w3m-img path
 # Only works with the w3m backend.
 #
-# NOTE: Only change this if "neofetch -v" says that it couldn't find w3m-img.
+# NOTE: Only change this if "neofetch -v" says that it "couldn't find w3m-img".
 # Neofetch has a function that automatically finds w3m-img for you. It looks
 # in the following directories:
 #    /usr/lib/w3m/w3mimgdisplay
@@ -499,35 +505,56 @@ thumbnail_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch"
 w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
 # Crop mode
-# --crop_mode normal, fit, fill
+#
+# Default:  'normal'
+# Values:   'normal', 'fit', 'fill'
+# Flag:     --crop_mode
+#
+# See this wiki page to learn about the fit and fill options.
+# https://github.com/dylanaraps/neofetch/wiki/What-is-Waifu-Crop%3F
 crop_mode="normal"
 
 # Crop offset
-# Only affects normal mode.
-# --crop_offset northwest, north, northeast, west, center
-#               east, southwest, south, southeast
+# Note: Only affects 'normal' crop mode.
+#
+# Default:  'center'
+# Values:   'northwest', 'north', 'northeast', 'west', 'center'
+#           'east', 'southwest', 'south', 'southeast'
+# Flag:     --crop_offset
 crop_offset="center"
 
 # Image size
 # The image is half the terminal width by default.
-# --size auto, 00px, 00%, none
+#
+# Default: 'auto'
+# Values:  'auto', '00px', '00%', 'none'
+# Flags:   --image_size
+#          --size
 image_size="auto"
 
-# Right gap between image and text
-# --gap num
+# Ggap between image and text
+#
+# Default: '3'
+# Values:  'num', '-num'
+# Flag:    --gap
 gap=3
 
 # Image offsets
 # Only works with the w3m backend.
-# --xoffset px
-# --yoffset px
+#
+# Default: '0'
+# Values:  'px'
+# Flags:   --xoffset
+#          --yoffset
 yoffset=0
 xoffset=0
 
 # Image background color
 # Only works with the w3m backend.
-# Unset by default.
-# --bg_color 'color', blue
+#
+# Default: ''
+# Values:  'color', 'blue'
+# Flag:    --bg_color
 background_color=
 
 
