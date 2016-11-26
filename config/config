@@ -155,20 +155,6 @@ speed_type="max"
 # speed: '3.1GHz'
 cpu_shorthand="off"
 
-# CPU Usage display
-# Set CPU usage display setting
-#
-# Default: 'off'
-# Values:  'bar', 'infobar', 'barinfo', 'off'
-# Flag:    --cpu_display
-#
-# Example:
-# bar:     '[---=======]'
-# infobar: '20% [---=======]'
-# barinfo: '[---=======] 20%'
-# off:     '20%'
-cpu_display="off"
-
 # CPU Speed
 # Hide/Show CPU speed.
 #
@@ -339,12 +325,17 @@ birthday_format="+%a %d %b %Y %l:%M %p"
 
 
 # Text Colors
-# Each number represents a different part of
-# the text in this order:
-# title, @, underline, subtitle, colon, info
-# colors=(4 6 1 8 8 6)
-# You can also specify:
-# fg (foreground color)
+#
+# Default:  'distro'
+# Values:   'distro', 'num' 'num' 'num' 'num' 'num' 'num'
+# Flag:     --colors
+#
+# Each number represents a different part of the text in
+# this order: 'title', '@', 'underline', 'subtitle', 'colon', 'info'
+#
+# Example:
+# colors=(distro)      - Text is colored based on Distro colors.
+# colors=(4 6 1 8 8 6) - Text is colored in the order above.
 colors=(distro)
 
 
@@ -352,15 +343,24 @@ colors=(distro)
 
 
 # Toggle bold text
-# --bold on, off
+#
+# Default:  'on'
+# Values:   'on', 'off'
+# Flag:     --bold
 bold="on"
 
 # Enable/Disable Underline
-# --underline on, off
+#
+# Default:  'on'
+# Values:   'on', 'off'
+# Flag:     --underline
 underline_enabled="on"
 
 # Underline character
-# --underline_char char
+#
+# Default:  '-'
+# Values:   'string'
+# Flag:     --underline_char
 underline_char="-"
 
 
@@ -368,56 +368,105 @@ underline_char="-"
 
 
 # Color block range
-# --block_range start end
+# Start/End refer to the range of colors
+# to print in the blocks.
+#
+# Default:  '0', '7'
+# Values:   'num'
+# Flag:     --block_range
+#
+# Example:
+#
+# Display colors 0-7 in the blocks.
+# neofetch --block_range 0 7
+#
+# Display colors 0-15 in the blocks.
+# neofetch --block_range 0 15
 start=0
 end=7
 
 # Toggle color blocks
-# --color_blocks on, off
+#
+# Default:  'on'
+# Values:   'on', 'off'
+# Flag:     --color_blocks
 color_blocks="on"
 
 # Color block width in spaces
-# --block_width num
+#
+# Default:  '3'
+# Values:   'num'
+# Flag:     --block_width
 block_width=3
 
 # Color block height in lines
-# --block_height num
+#
+# Default:  '1'
+# Values:   'num'
+# Flag:     --block_height
 block_height=1
 
 
 # Progress Bars
 
 
-# Progress bar character
-# --progress_char elapsed_char total_char
+# Bar characters
+#
+# Default:  '-', '='
+# Values:   'string', 'string'
+# Flag:     --bar_char
+#
+# Example:
+# neofetch --bar_char 'elapsed' 'total'
+# neofetch --bar_char '-' '='
 bar_char_elapsed="-"
 bar_char_total="="
 
-# Progress border
-# --progress_border on, off
+# Toggle Bar border
+#
+# Default:  'on'
+# Values:   'on', 'off'
+# Flag:     --bar_border
 bar_border="on"
 
 # Progress bar length in spaces
 # Number of chars long to make the progress bars.
-# --progress_length num
-bar_length="15"
+#
+# Default:  '15'
+# Values:   'num'
+# Flag:     --bar_length
+bar_length=15
 
 # Progress bar colors
-# When set to distro, uses your distro's logo colors
-# Takes: num, "distro"
-# --progress_colors col col
+# When set to distro, uses your distro's logo colors.
+#
+# Default:  'distro', 'distro'
+# Values:   'distro', 'num'
+# Flag:     --bar_colors
+#
+# Example:
+# neofetch --bar_colors 3 4
+# neofetch --bar_colors distro 5
 bar_color_elapsed="distro"
 bar_color_total="distro"
 
-# Customize how the info is displayed.
-# bar: Only the progress bar is displayed.
-# infobar: The bar is displayed after the info.
-# barinfo: The bar is displayed before the info.
-# off: Only the info is displayed.
+
+# Info display
+# Display a bar with the info.
 #
-# --memory_display bar, infobar, barinfo, off
-# --battery_display bar, infobar, barinfo, off
-# --disk_display bar, infobar, barinfo, off
+# Default: 'off'
+# Values:  'bar', 'infobar', 'barinfo', 'off'
+# Flags:   --cpu_display
+#          --memory_display
+#          --battery_display
+#          --disk_display
+#
+# Example:
+# bar:     '[---=======]'
+# infobar: 'info [---=======]'
+# barinfo: '[---=======] info'
+# off:     'info'
+cpu_display="off"
 memory_display="off"
 battery_display="off"
 disk_display="off"
