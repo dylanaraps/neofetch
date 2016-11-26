@@ -932,7 +932,6 @@ get_gpu() {
                         gpu="${gpu/'[AMD]' }"
                         gpu="${gpu/*\[}"
                         gpu="${gpu/\]*}"
-                        gpu="${gpu/\/*}"
                         gpu="AMD $gpu"
                     ;;
 
