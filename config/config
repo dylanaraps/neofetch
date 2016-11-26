@@ -52,9 +52,10 @@ print_info() {
 
 # Shorten the output of the kernel function.
 #
-# Default: 'on'
-# Values:  'on', 'off'
-# Flag:    --kernel_shorthand
+# Default:  'on'
+# Values:   'on', 'off'
+# Flag:     --kernel_shorthand
+# Supports: Everything except *BSDs (except PacBSD and PC-BSD)
 #
 # Example:
 # on:  '4.8.9-1-ARCH'
@@ -70,7 +71,7 @@ kernel_shorthand="on"
 # Default:  'off'
 # Values:   'on', 'off', 'tiny'
 # Flag:     --distro_shorthand
-# Supports: Linux, macOS, and Solaris.
+# Supports: Everything except Windows and Haiku
 distro_shorthand="off"
 
 # Show/Hide OS Architecture.
