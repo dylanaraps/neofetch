@@ -1847,6 +1847,8 @@ get_cols() {
         cols="${cols%%'nl'}"
         cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
     fi
+
+    unset blocks blocks2
 }
 
 # IMAGES
