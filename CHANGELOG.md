@@ -7,31 +7,38 @@
 - **[@iwamatsu](https://github.com/iwamatsu)**
 
 
+## Packages
+
+- Neofetch is now in Debian's official repos.
+- Neofetch is now in Ubuntu's official repos.
+
+
 ## General
 
-- Fixed issue where info wasn't detected properly but the subtitle was still displayed.
-- Fixed issue where `bold=off` wouldn't work.
-- Fixed issue where using `--disable func func` broke other args.
-- Fixed `--disable` and capitalized arguments.
-- Swap all tests from `[` to `[[`.
-- Cleaned up and rewrote various functions.
-- Removed all traces of `eval` from neofetch.
 - All functions/variables now follow the same naming scheme. `example_func_name`
+- Call `uname` once and cache the output instead of calling `uname` 4-5 times.
+- Cleaned up and rewrote large chunks of the script.
 - Convert math tests to correct syntax.
+- Fixed `--disable` and capitalized arguments.
+- Fixed issue where `bold=off` wouldn't work.
+- Fixed issue where info wasn't detected properly but the subtitle was still displayed.
+- Fixed issue where using `--disable func func` broke other args.
+- Removed all traces of `eval` from neofetch.
 - Removed all vim fold markers and stopped enforcing folding for vim users.
     - See [#431](https://github.com/dylanaraps/neofetch/pull/431)
-- Call `uname` once and cache the output instead of calling `uname` 4-5 times.
+- Rewrote all of config file documentation.
+- Swap all tests from `[` to `[[`.
 
 
 ## Operating System
 
-- Added support for Haiku OS. **[@konimex](https://github.com/konimex)**
-- Added support for GNU Hurd. **[@konimex](https://github.com/konimex)**
 - Added support for ChaletOS.
 - Added support for DracOS.
-- Added support for Pardus.
-- Added support for Netrunner. **[@konimex](https://github.com/konimex)**
+- Added support for GNU Hurd. **[@konimex](https://github.com/konimex)**
+- Added support for Haiku OS. **[@konimex](https://github.com/konimex)**
 - Added support for Korora. **[@konimex](https://github.com/konimex)**
+- Added support for Netrunner. **[@konimex](https://github.com/konimex)**
+- Added support for Pardus.
 - Added support for iPhone 7 and 7 Plus.
 
 
@@ -46,10 +53,10 @@
 - [Arch Linux] Changed default ascii colors.
 - [Bunsenlabs] Changed default ascii colors.
 - Fixed issue with Solarized and certain ascii art.
-- Rename `colors()` to `get_distro_colors()`.
-- Rename `setcolors()` to `set_colors()`.
 - Remove all duplicates from `get_distro_colors()`.
 - Remove execution permission flag from ascii art files. **[@iwamatsu](https://github.com/iwamatsu)**
+- Rename `colors()` to `get_distro_colors()`.
+- Rename `setcolors()` to `set_colors()`.
 - Update Netrunner ascii art.
 
 
