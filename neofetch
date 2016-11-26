@@ -3051,27 +3051,6 @@ get_args() {
     while [[ "$1" ]]; do
         case "$1" in
             # Info
-            "--os_arch") os_arch="$2" ;;
-            "--cpu_cores") cpu_cores="$2" ;;
-            "--cpu_speed") cpu_speed="$2" ;;
-            "--cpu_temp") cpu_temp="$2" ;;
-            "--speed_type") speed_type="$2" ;;
-            "--distro_shorthand") distro_shorthand="$2" ;;
-            "--kernel_shorthand") kernel_shorthand="$2" ;;
-            "--uptime_shorthand") uptime_shorthand="$2" ;;
-            "--cpu_shorthand") cpu_shorthand="$2" ;;
-            "--gpu_brand") gpu_brand="$2" ;;
-            "--refresh_rate") refresh_rate="$2" ;;
-            "--gtk_shorthand") gtk_shorthand="$2" ;;
-            "--gtk2") gtk2="$2" ;;
-            "--gtk3") gtk3="$2" ;;
-            "--shell_path") shell_path="$2" ;;
-            "--shell_version") shell_version="$2" ;;
-            "--ip_host") public_ip_host="$2" ;;
-            "--song_shorthand") song_shorthand="$2" ;;
-            "--birthday_shorthand") birthday_shorthand="$2" ;;
-            "--birthday_time") birthday_time="$2" ;;
-            "--birthday_format") birthday_format="$2" ;;
             "--disable")
                 for func in "$@"; do
                     case "$func" in
@@ -3099,14 +3078,9 @@ get_args() {
 
             # Text Formatting
             "--underline") underline_enabled="$2" ;;
-            "--underline_char") underline_char="$2" ;;
-            "--bold") bold="$2" ;;
 
             # Color Blocks
-            "--color_blocks") color_blocks="$2" ;;
             "--block_range") start="$2"; end="$3" ;;
-            "--block_width") block_width="$2" ;;
-            "--block_height") block_height="$2" ;;
 
             # Bars
             "--bar_char")
@@ -3121,11 +3095,6 @@ get_args() {
                 bar_color_total="$3"
             ;;
 
-            "--cpu_display") cpu_display="$2" ;;
-            "--memory_display") memory_display="$2" ;;
-            "--battery_display") battery_display="$2" ;;
-            "--disk_display") disk_display="$2" ;;
-
             # Image
             "--image")
                 image_source="$2"
@@ -3133,12 +3102,7 @@ get_args() {
             ;;
 
             "--image_size" | "--size") image_size="$2" ;;
-            "--crop_mode") crop_mode="$2" ;;
-            "--crop_offset") crop_offset="$2" ;;
-            "--xoffset") xoffset="$2" ;;
-            "--yoffset") yoffset="$2" ;;
             "--background_color" | "--bg_color") background_color="$2" ;;
-            "--gap") gap="$2" ;;
             "--clean")
                 [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
@@ -3187,9 +3151,6 @@ get_args() {
                 scrot_args "$@"
             ;;
 
-            "--image_host") image_host="$2" ;;
-            "--scrot_cmd") scrot_cmd="$2" ;;
-
             # Other
             "--config")
                 case "$2" in
@@ -3201,6 +3162,9 @@ get_args() {
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
             "--version") printf "%s\n" "Neofetch 2.0"; exit ;;
+
+            # Dynamically declare variables.
+            "--"*) declare -g "${1/--}"="$2";;
         esac
 
         shift
