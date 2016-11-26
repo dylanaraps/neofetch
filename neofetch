@@ -787,6 +787,20 @@ get_cpu() {
 
             # Get cpu cores
             cores="$(sysctl -n hw.ncpu)"
+
+            # Get cpu temp
+            if [[ "$cpu_temp" == "on" ]]; then
+                case "$distro" in
+                    "FreeBSD"* | "PacBSD"* | "DragonFly"* | "PCBSD"*)
+                        temp="$(sysctl -n dev.cpu.0.temperature)"
+                        temp="[${temp/C/°C}]"
+                    ;;
+                    "OpenBSD"* | "Bitrig"*)
+                        temp="$(sysctl -n hw.sensors.lm0.temp0)"
+                        temp="[${temp/ degC/°C}]"
+                    ;;
+                esac
+            fi
         ;;
 
         "Solaris")
@@ -2936,7 +2950,9 @@ usage() { printf "%s" "
                                 NOTE: 'physical' doesn't work on BSD.
     --cpu_speed on/off          Hide/Show cpu speed.
     --cpu_temp on/off           Hide/Show cpu temperature.
-                                NOTE This only works on linux.
+                                NOTE: This only works on Linux and BSD.
+                                NOTE: For FreeBSD-based systems, you need to enable coretemp
+                                      kernel module.
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
                                 NOTE: This option won't work in Windows (Cygwin)
     --kernel_shorthand on/off   Shorten the output of kernel
