@@ -105,6 +105,10 @@
 
 - Added support for HyperTerm. **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
 
+**CPU**<br \>
+
+- [BSD] Added cpu_temp support. **[@konimex](https://github.com/konimex)**
+
 **CPU Usage**<br \>
 
 - [iOS] Fixed CPU usage.
