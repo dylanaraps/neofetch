@@ -39,89 +39,6 @@ get_os() {
     esac
 }
 
-get_model() {
-    case "$os" in
-        "Linux")
-            if [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
-                model="$(getprop ro.product.brand) $(getprop ro.product.model)"
-
-            elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
-                    -f /sys/devices/virtual/dmi/id/product_version ]]; then
-                model="$(< /sys/devices/virtual/dmi/id/product_name)"
-                model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
-
-            elif [[ -f /sys/firmware/devicetree/base/model ]]; then
-                model="$(< /sys/firmware/devicetree/base/model)"
-
-            elif [[ -f /tmp/sysinfo/model ]]; then
-                model="$(< /tmp/sysinfo/model)"
-            fi
-
-            model="${model//To Be Filled*}"
-            model="${model//OEM*}"
-            model="${model//Not Applicable}"
-            model="${model//System Product Name}"
-            model="${model//System Version}"
-        ;;
-
-        "Mac OS X") model="$(sysctl -n hw.model)" ;;
-        "iPhone OS")
-            case "$machine_arch" in
-                "iPad1,1") model="iPad" ;;
-                "iPad2,"[1-4]) model="iPad2" ;;
-                "iPad3,"[1-3]) model="iPad3" ;;
-                "iPad3,"[4-6]) model="iPad4" ;;
-                "iPad4,"[1-3]) model="iPad Air" ;;
-                "iPad5,"[3-4]) model="iPad Air 2" ;;
-                "iPad6,"[7-8]) model="iPad Pro (12.9 Inch)" ;;
-                "iPad6,"[3-4]) model="iPad Pro (9.7 Inch)" ;;
-                "iPad2,"[5-7]) model="iPad mini" ;;
-                "iPad4,"[4-6]) model="iPad mini 2" ;;
-                "iPad4,"[7-9]) model="iPad mini 3" ;;
-                "iPad5,"[1-2]) model="iPad mini 4" ;;
-
-                "iPhone1,1") model="iPhone" ;;
-                "iPhone1,2") model="iPhone 3G" ;;
-                "iPhone2,1") model="iPhone 3GS" ;;
-                "iPhone3,"[1-3]) model="iPhone 4" ;;
-                "iPhone4,1") model="iPhone 4S" ;;
-                "iPhone5,"[1-2]) model="iPhone 4" ;;
-                "iPhone5,"[3-4]) model="iPhone 5c" ;;
-                "iPhone6,"[1-2]) model="iPhone 5s" ;;
-                "iPhone7,2") model="iPhone 6" ;;
-                "iPhone7,1") model="iPhone 6 Plus" ;;
-                "iPhone8,1") model="iPhone 6s" ;;
-                "iPhone8,2") model="iPhone 6s Plus" ;;
-                "iPhone8,4") model="iPhone SE" ;;
-                "iPhone9,1" | "iPhone9,3") model="iPhone 7" ;;
-                "iPhone9,2" | "iPhone9,4") model="iPhone 7 Plus" ;;
-
-                "iPod1,1") model="iPod touch" ;;
-                "ipod2,1") model="iPod touch 2G" ;;
-                "ipod3,1") model="iPod touch 3G" ;;
-                "ipod4,1") model="iPod touch 4G" ;;
-                "ipod5,1") model="iPod touch 5G" ;;
-                "ipod7,1") model="iPod touch 6G" ;;
-            esac
-        ;;
-
-        "BSD")
-            model="$(sysctl -n hw.vendor hw.product)"
-        ;;
-
-        "Windows")
-            model="$(wmic computersystem get manufacturer,model /value)"
-            model="${model/Manufacturer'='}"
-            model="${model/Model'='}"
-            model="${model//*To Be Filled*}"
-        ;;
-
-        "Solaris")
-            model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
-        ;;
-    esac
-}
-
 get_distro() {
     [[ "$distro" ]] && return
 
@@ -256,6 +173,89 @@ get_distro() {
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
+}
+
+get_model() {
+    case "$os" in
+        "Linux")
+            if [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
+                model="$(getprop ro.product.brand) $(getprop ro.product.model)"
+
+            elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
+                    -f /sys/devices/virtual/dmi/id/product_version ]]; then
+                model="$(< /sys/devices/virtual/dmi/id/product_name)"
+                model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
+
+            elif [[ -f /sys/firmware/devicetree/base/model ]]; then
+                model="$(< /sys/firmware/devicetree/base/model)"
+
+            elif [[ -f /tmp/sysinfo/model ]]; then
+                model="$(< /tmp/sysinfo/model)"
+            fi
+
+            model="${model//To Be Filled*}"
+            model="${model//OEM*}"
+            model="${model//Not Applicable}"
+            model="${model//System Product Name}"
+            model="${model//System Version}"
+        ;;
+
+        "Mac OS X") model="$(sysctl -n hw.model)" ;;
+        "iPhone OS")
+            case "$machine_arch" in
+                "iPad1,1") model="iPad" ;;
+                "iPad2,"[1-4]) model="iPad2" ;;
+                "iPad3,"[1-3]) model="iPad3" ;;
+                "iPad3,"[4-6]) model="iPad4" ;;
+                "iPad4,"[1-3]) model="iPad Air" ;;
+                "iPad5,"[3-4]) model="iPad Air 2" ;;
+                "iPad6,"[7-8]) model="iPad Pro (12.9 Inch)" ;;
+                "iPad6,"[3-4]) model="iPad Pro (9.7 Inch)" ;;
+                "iPad2,"[5-7]) model="iPad mini" ;;
+                "iPad4,"[4-6]) model="iPad mini 2" ;;
+                "iPad4,"[7-9]) model="iPad mini 3" ;;
+                "iPad5,"[1-2]) model="iPad mini 4" ;;
+
+                "iPhone1,1") model="iPhone" ;;
+                "iPhone1,2") model="iPhone 3G" ;;
+                "iPhone2,1") model="iPhone 3GS" ;;
+                "iPhone3,"[1-3]) model="iPhone 4" ;;
+                "iPhone4,1") model="iPhone 4S" ;;
+                "iPhone5,"[1-2]) model="iPhone 4" ;;
+                "iPhone5,"[3-4]) model="iPhone 5c" ;;
+                "iPhone6,"[1-2]) model="iPhone 5s" ;;
+                "iPhone7,2") model="iPhone 6" ;;
+                "iPhone7,1") model="iPhone 6 Plus" ;;
+                "iPhone8,1") model="iPhone 6s" ;;
+                "iPhone8,2") model="iPhone 6s Plus" ;;
+                "iPhone8,4") model="iPhone SE" ;;
+                "iPhone9,1" | "iPhone9,3") model="iPhone 7" ;;
+                "iPhone9,2" | "iPhone9,4") model="iPhone 7 Plus" ;;
+
+                "iPod1,1") model="iPod touch" ;;
+                "ipod2,1") model="iPod touch 2G" ;;
+                "ipod3,1") model="iPod touch 3G" ;;
+                "ipod4,1") model="iPod touch 4G" ;;
+                "ipod5,1") model="iPod touch 5G" ;;
+                "ipod7,1") model="iPod touch 6G" ;;
+            esac
+        ;;
+
+        "BSD")
+            model="$(sysctl -n hw.vendor hw.product)"
+        ;;
+
+        "Windows")
+            model="$(wmic computersystem get manufacturer,model /value)"
+            model="${model/Manufacturer'='}"
+            model="${model/Model'='}"
+            model="${model//*To Be Filled*}"
+        ;;
+
+        "Solaris")
+            model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
+        ;;
+    esac
 }
 
 get_title() {
