@@ -564,33 +564,47 @@ background_color=
 # Default ascii image to use
 # When this is set to distro it will use your
 # distro's logo as the ascii.
-# --ascii 'distro', path/to/ascii
+#
+# Default: 'distro'
+# Values:  'distro', '/path/to/ascii_file'
+# Flag:    --ascii
 ascii="distro"
 
 # Ascii distro
 # Which distro's ascii art to display.
-# --ascii_distro 'auto', 'distro_name'
+#
+# Default: 'auto'
+# Values:  'auto', 'distro_name'
+# Flag:    --ascii_distro
 ascii_distro="auto"
 
-# Ascii colors
-# When this is set to distro it will use your
-# ditro's colors to color the ascii.
-# NOTE: You can also set this to a range of colors
-# which will allow you to custom color distro logos
-# --ascii_colors distro
-# --ascii_colors 2 4 5 6
+# Ascii Colors
+#
+# Default:  'distro'
+# Values:   'distro', 'num' 'num' 'num' 'num' 'num' 'num'
+# Flag:     --ascii_colors
+#
+# Example:
+# ascii_colors=(distro)      - Ascii is colored based on Distro colors.
+# ascii_colors=(4 6 1 8 8 6) - Ascii is colored using these colors.
 ascii_colors=(distro)
 
 # Logo size
 # Arch, Crux and Gentoo have a smaller logo
 # variant. Changing the value below to small
 # will make neofetch use the small logo.
-# --ascii_logo_size small, normal
+#
+# Default: 'normal'
+# Values:  'normal', 'small'
+# Flag:    --ascii_logo_size
 ascii_logo_size="normal"
 
 # Bold ascii logo
 # Whether or not to bold the ascii logo.
-# --ascii_bold on, off
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --ascii_bold
 ascii_bold="on"
 
 
@@ -599,25 +613,46 @@ ascii_bold="on"
 
 # Whether or not to always take a screenshot
 # You can manually take a screenshot with "--scrot" or "-s"
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flags:   --scrot
+#          -s
 scrot="off"
 
 # Screenshot program to launch
-# --scrot_cmd
+# If you're not using 'scrot' change this to your screenshot
+# program.
+#
+# Default: 'scrot -c -d 3'
+# Values:  'cmd -flags'
+# Flag:    --scrot_cmd
 scrot_cmd="scrot -c -d 3"
 
 # Scrot dir
 # Where to save the screenshots
-# --scrot_dir /path/to/screenshot/folder
+#
+# Default: '~/Pictures/'
+# Values:  'dir'
+# Flag:    --scrot_dir
+#
+# Note: Neofetch won't create the directory if it doesn't exist.
 scrot_dir="$HOME/Pictures/"
 
 # Scrot filename
 # What to name the screenshots
-# --scrot_name str
+#
+# Default: 'neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png'
+# Values:  'string'
+# Flag:    --scrot_name
 scrot_name="neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png"
 
 # Image upload host
 # Where to upload the image.
-# Possible values: imgur, teknik
+#
+# Default: 'imgur'
+# Values:  'imgur', 'teknik'
+# Flag:    --image_host
 image_host="imgur"
 
 
@@ -625,9 +660,24 @@ image_host="imgur"
 
 
 # Enable/Disable config file
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --config
 # --config off, none
+#
+# Note: This option is only used when neofetch sources this config
+# as a default config and NOT as a user config. Changing this in
+# your user config won't actually do anything.
 config="on"
 
 # Path to custom config file location
-# --config path/to/config
+#
+# Default: '${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config'
+# Values:  '/path/to/config'
+# Flag:    --config_file
+#
+# Note: This option is only used when neofetch sources this config
+# as a default config and NOT as a user config. Changing this in
+# your user config won't actually do anything.
 config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
