@@ -2270,7 +2270,7 @@ display_image() {
         ;;
 
         "tycat")
-            tycat "$image"
+            tycat "$image" || to_off "Images: tycat failed to display the image."
         ;;
     esac
 }
