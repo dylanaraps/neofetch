@@ -6,7 +6,7 @@ Neofetch is a CLI system information tool written in BASH. Neofetch displays inf
 
 Neofetch is highly customizable through the use of commandline flags or the user config file. There are over 50 config options to mess around with and there's the `print_info()` function and friends which let you add your own custom info.
 
-Neofetch can be used on any OS that has BASH, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku OS`, `GNU Hurd` and `Windows (Cygwin/Windows 10 Linux subsystem)`. 
+Neofetch can be used on any OS that has BASH, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku`, `GNU Hurd` and `Windows (Cygwin/Windows 10 Linux subsystem)`. 
 
 For more information:
 
