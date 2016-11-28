@@ -1025,7 +1025,7 @@ get_gpu() {
 
         "Windows")
             gpu="$(wmic path Win32_VideoController get caption /value)"
-            gpu="${gpu/Caption'='}"
+            gpu="${gpu//Caption'='}"
         ;;
 
         "Haiku")
@@ -1304,10 +1304,10 @@ get_resolution() {
 
         "Windows")
             width="$(wmic path Win32_VideoController get CurrentHorizontalResolution /value)"
-            width="${width/CurrentHorizontalResolution'='/}"
+            width="${width//CurrentHorizontalResolution'='/}"
 
             height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value)"
-            height="${height/CurrentVerticalResolution'='/}"
+            height="${height//CurrentVerticalResolution'='/}"
 
             [[ "$width" ]] && resolution="${width}x${height}"
         ;;
