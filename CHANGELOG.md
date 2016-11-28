@@ -35,7 +35,7 @@
 - Added support for ChaletOS.
 - Added support for DracOS.
 - Added support for GNU Hurd. **[@konimex](https://github.com/konimex)**
-- Added support for Haiku OS. **[@konimex](https://github.com/konimex)**
+- Added support for Haiku. **[@konimex](https://github.com/konimex)**
 - Added support for Korora. **[@konimex](https://github.com/konimex)**
 - Added support for Netrunner. **[@konimex](https://github.com/konimex)**
 - Added support for Pardus.
