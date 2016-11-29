@@ -927,7 +927,7 @@ get_gpu() {
             if [[ -f "/tmp/neofetch/gpu" ]]; then
                 source "/tmp/neofetch/gpu"
             else
-                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
+                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/Display|3D|VGA/ {print $3 " " $4}')"
 
                 case "$gpu" in
                     *"advanced"*)
