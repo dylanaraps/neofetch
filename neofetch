@@ -927,21 +927,12 @@ get_gpu() {
             if [[ -f "/tmp/neofetch/gpu" ]]; then
                 source "/tmp/neofetch/gpu"
             else
-                bdf_number="$(PATH="/sbin:$PATH" lspci -k | grep -A2 -F 'VGA' | grep -B2 -F 'Kernel driver in use' | awk '/^\w/ {print $1}')"
-
-                if [[ -z "$bdf_number" ]]; then
-                    # Fallback if no kernel driver is in use
-                    gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
-
-                else
-                    # Find the currently used GPU by its BDF
-                    gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -v bdf_number="$bdf_number" -F '\\"|\\" \\"' '$0 ~ bdf_number {print $3 " " $4}')"
-                fi
+                # Fallback if no kernel driver is in use
+                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/3D|VGA/ {print $3 " " $4}')"
 
                 case "$gpu" in
-                    "intel"*) gpu="Intel Integrated Graphics" ;;
-
-                    "advanced"*)
+                    *"advanced"*)
+                        gpu="${gpu//Intel*$'\n'}"
                         gpu="${gpu/'[AMD/ATI]' }"
                         gpu="${gpu/'[AMD]' }"
                         gpu="${gpu/*\[}"
@@ -949,7 +940,8 @@ get_gpu() {
                         gpu="AMD $gpu"
                     ;;
 
-                    "nvidia"*)
+                    *"nvidia"*)
+                        gpu="${gpu//Intel*$'\n'}"
                         gpu="${gpu/*\[}"
                         gpu="${gpu/\]*}"
                         gpu="NVIDIA $gpu"
@@ -959,6 +951,10 @@ get_gpu() {
                         gpu="VirtualBox Graphics Adapter"
                     ;;
                 esac
+
+                [[ "$gpu" =~ "intel" ]] && \
+                    gpu="Intel Integrated Graphics"
+
                 cache "gpu" "$gpu" "/tmp"
             fi
         ;;
