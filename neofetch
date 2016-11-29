@@ -289,7 +289,7 @@ get_uptime() {
         *)
             # Get uptime in seconds
             case "$os" in
-                "Linux" | "Windows")
+                "Linux" | "Windows" | "GNU")
                     seconds="$(< /proc/uptime)"
                     seconds="${seconds/.*}"
                 ;;
