@@ -140,7 +140,7 @@ shell_version="on"
 #          'scaling_max'
 # Flag:    --speed_type
 # Supports: Linux with 'cpufreq'
-speed_type="max"
+speed_type="current"
 
 # Shorten the output of the CPU function
 #
