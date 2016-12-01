@@ -2037,8 +2037,9 @@ get_wallpaper() {
                 [[ -z "$de" ]] && get_de
 
                 case "$de" in
-                    "MATE"*) image="$(gsettings get org.mate.background picture-filename)" ;;
-                    *) image="$(gsettings get org.gnome.desktop.background picture-uri)" ;;
+                    "Cinnamon"*) image="$(gsettings get org.cinnamon.desktop.background picture-uri)" ;;
+                    "MATE"*)     image="$(gsettings get org.mate.background picture-filename)" ;;
+                    *)           image="$(gsettings get org.gnome.desktop.background picture-uri)" ;;
                 esac
 
                 # Strip quotes etc from the path.
