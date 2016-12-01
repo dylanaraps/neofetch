@@ -44,8 +44,7 @@ get_distro() {
 
     case "$os" in
         "Linux" | "GNU")
-            if grep -q -F 'Microsoft' /proc/version || \
-               grep -q -F 'Microsoft' /proc/sys/kernel/osrelease; then
+            if [[ "$(< /proc/version)" =~ "Microsoft" || "$(< /proc/sys/kernel/osrelease)" =~ "Microsoft" ]]; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
