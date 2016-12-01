@@ -70,6 +70,11 @@
 - Use `$XDG_CACHE_HOME` as the thumbnail dir if available.
 
 
+## Wallpaper
+
+- Added support for Cinnamon.
+
+
 ## Bars
 
 - Rename all `progress_` variables to `bar_` to match the function name.
