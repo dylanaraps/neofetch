@@ -52,7 +52,6 @@ get_distro() {
                 esac
                 ascii_distro="Windows 10"
 
-            # TODO: Install Red Star OS and check if this is really needed.
             elif [[ -f "/etc/redstar-release" ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Red Star OS" ;;
