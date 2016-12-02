@@ -100,7 +100,7 @@
 
 **GPU**<br \>
 
-- [Linux] Properly detect gpu in multi gpu setups. **[@TonCherAmi](https://github.com/TonCherAmi)**
+- [Linux] Prefer dedicated GPU over integrated GPU.
 
 **Terminal**<br \>
 
