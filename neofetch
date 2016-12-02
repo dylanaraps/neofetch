@@ -1738,18 +1738,30 @@ get_local_ip() {
 }
 
 get_public_ip() {
-    if type -p dig >/dev/null; then
-        public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
-        [[ "$public_ip" =~ ^\; ]] && unset public_ip
+    # Use cache if available
+    if [[ -f "/tmp/neofetch/public_ip" ]]; then
+        source "/tmp/neofetch/public_ip"
+    elif [[ -f "/Library/Caches/neofetch/public_ip" ]]; then
+        source "/Library/Caches/neofetch/public_ip"
+    else
+        if type -p dig >/dev/null; then
+            public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
+           [[ "$public_ip" =~ ^\; ]] && unset public_ip
+        fi
+
+        if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
+            public_ip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
+        fi
+
+        if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
+            public_ip="$(wget -T 10 -qO- "$public_ip_host")"
+        fi
     fi
 
-    if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
-        public_ip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
-    fi
-
-    if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
-        public_ip="$(wget -T 10 -qO- "$public_ip_host")"
-    fi
+    case "$os" in
+        "Mac OS X"*) cache "public_ip" "$public_ip" "/Library/Caches" ;;
+        *) cache "public_ip" "$public_ip" "/tmp" ;;
+    esac
 }
 
 get_users() {
