@@ -921,51 +921,38 @@ get_cpu_usage() {
 get_gpu() {
     case "$os" in
         "Linux" | "GNU")
-            # Use cache if it exists
-            if [[ -f "/tmp/neofetch/gpu" ]]; then
-                source "/tmp/neofetch/gpu"
-            else
-                gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/Display|3D|VGA/ {print $3 " " $4}')"
+            gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/Display|3D|VGA/ {print $3 " " $4}')"
 
-                case "$gpu" in
-                    *"advanced"*)
-                        gpu="${gpu//Intel*$'\n'}"
-                        gpu="${gpu/'[AMD/ATI]' }"
-                        gpu="${gpu/'[AMD]' }"
-                        gpu="${gpu/*\[}"
-                        gpu="${gpu/\]*}"
-                        gpu="AMD $gpu"
-                    ;;
+            case "$gpu" in
+                *"advanced"*)
+                    gpu="${gpu//Intel*$'\n'}"
+                    gpu="${gpu/'[AMD/ATI]' }"
+                    gpu="${gpu/'[AMD]' }"
+                    gpu="${gpu/*\[}"
+                    gpu="${gpu/\]*}"
+                    gpu="AMD $gpu"
+                ;;
 
-                    *"nvidia"*)
-                        gpu="${gpu//Intel*$'\n'}"
-                        gpu="${gpu/*\[}"
-                        gpu="${gpu/\]*}"
-                        gpu="NVIDIA $gpu"
-                    ;;
+                *"nvidia"*)
+                    gpu="${gpu//Intel*$'\n'}"
+                    gpu="${gpu/*\[}"
+                    gpu="${gpu/\]*}"
+                    gpu="NVIDIA $gpu"
+                ;;
 
-                    *"virtualbox"*)
-                        gpu="VirtualBox Graphics Adapter"
-                    ;;
-                esac
+                *"virtualbox"*)
+                    gpu="VirtualBox Graphics Adapter"
+                ;;
+            esac
 
-                [[ "$gpu" =~ "intel" ]] && \
-                    gpu="Intel Integrated Graphics"
-
-                cache "gpu" "$gpu" "/tmp"
-            fi
+            [[ "$gpu" =~ "intel" ]] && \
+                gpu="Intel Integrated Graphics"
         ;;
 
         "Mac OS X")
-            # Use cache if it exists
-            if [[ -f "/Library/Caches/neofetch/gpu" ]]; then
-                source "/Library/Caches/neofetch/gpu"
-            else
-                gpu="$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
-                gpu="${gpu//'/ $'}"
-                gpu="${gpu%,*}"
-                cache "gpu" "$gpu" "/Library/Caches/"
-            fi
+            gpu="$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
+            gpu="${gpu//'/ $'}"
+            gpu="${gpu%,*}"
         ;;
 
         "iPhone OS")
@@ -1030,6 +1017,8 @@ get_gpu() {
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
     fi
+
+    cache "gpu" "$gpu"
 }
 
 get_memory() {
@@ -1738,30 +1727,20 @@ get_local_ip() {
 }
 
 get_public_ip() {
-    # Use cache if available
-    if [[ -f "/tmp/neofetch/public_ip" ]]; then
-        source "/tmp/neofetch/public_ip"
-    elif [[ -f "/Library/Caches/neofetch/public_ip" ]]; then
-        source "/Library/Caches/neofetch/public_ip"
-    else
-        if type -p dig >/dev/null; then
-            public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
-           [[ "$public_ip" =~ ^\; ]] && unset public_ip
-        fi
-
-        if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
-            public_ip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
-        fi
-
-        if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
-            public_ip="$(wget -T 10 -qO- "$public_ip_host")"
-        fi
+    if type -p dig >/dev/null; then
+        public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
+       [[ "$public_ip" =~ ^\; ]] && unset public_ip
     fi
 
-    case "$os" in
-        "Mac OS X"*) cache "public_ip" "$public_ip" "/Library/Caches" ;;
-        *) cache "public_ip" "$public_ip" "/tmp" ;;
-    esac
+    if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
+        public_ip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
+    fi
+
+    if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
+        public_ip="$(wget -T 10 -qO- "$public_ip_host")"
+    fi
+
+    cache "public_ip" "$public_ip"
 }
 
 get_users() {
@@ -2364,11 +2343,16 @@ info() {
     # $1 is the subtitle
     subtitle="$1"
 
-    # Call the function and update variable
-    "get_${2:-$1}" 2>/dev/null
-    output="${2:-$1}"
+    # Use cache if it exists
+    if [[ -f "${cache_dir}/neofetch/${2}" ]]; then
+        source "${cache_dir}/neofetch/${2}"
+    else
+        # Call the function.
+        "get_${2:-$1}" 2>/dev/null
+    fi
 
-    # Trim whitespace
+    # Update the variable
+    output="${2:-$1}"
     output="$(trim "${!output}")"
 
     # If prin was used in the function, stop here.
@@ -2816,8 +2800,17 @@ bar() {
 }
 
 cache() {
-    mkdir -p "$3/neofetch"
-    printf "%s" "${1/*-}=\"$2\"" > "$3/neofetch/${1/*-}"
+    if [[ "$2" ]]; then
+        mkdir -p "${cache_dir}/neofetch"
+        printf "%s" "${1/*-}=\"$2\"" > "${cache_dir}/neofetch/${1/*-}"
+    fi
+}
+
+get_cache_dir() {
+    case "$os" in
+        "Mac OS X") cache_dir="/Library/Caches" ;;
+        *) cache_dir="/tmp" ;;
+    esac
 }
 
 kde_config_dir() {
@@ -3261,6 +3254,7 @@ main() {
 
     # Print the info
     old_functions
+    get_cache_dir
     print_info 2>/dev/null
 
     # Prompt calculation
