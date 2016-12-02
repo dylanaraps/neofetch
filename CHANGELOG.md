@@ -15,3 +15,10 @@
 
 - Changed default image mode to `ascii`.
     - See: [Images in the terminal](https://github.com/dylanaraps/neofetch/wiki/Images-in-the-terminal#enabling-image-mode)
+
+
+## Ascii
+
+![ubuntu]()
+
+- Updated Ubuntu logo to the latest version.
