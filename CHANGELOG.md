@@ -10,6 +10,8 @@ All of the config file documentation was rewritten and multiple wiki pages were 
 
 Some of the config options/arguments were renamed/changed and neofetch will warn you on run if you're using deprecated options (`neofetch -v`). For this release neofetch **will** include backwards compatibility with the old config file but I'd like to remove this stuff in 2.1. I recommend using this release with a fresh config file so that you can make use of the new documentation.
 
+I say this every release; This changelog is incomplete, for a full list of changes take a look through the commit history. Neofetch now has an unspoken commit style so reading the commit history won't hurt as much as it used to.
+
 Thanks to all of the contributors this time around, you guys are a big help and I really appreciate your work towards making Neofetch better and better each release. :)
 
 ## Contributors
