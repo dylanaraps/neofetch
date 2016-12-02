@@ -2800,8 +2800,10 @@ bar() {
 }
 
 cache() {
-    mkdir -p "${cache_dir}/neofetch"
-    printf "%s" "${1/*-}=\"$2\"" > "${cache_dir}/neofetch/${1/*-}"
+    if [[ "$2" ]]; then
+        mkdir -p "${cache_dir}/neofetch"
+        printf "%s" "${1/*-}=\"$2\"" > "${cache_dir}/neofetch/${1/*-}"
+    fi
 }
 
 get_cache_dir() {
