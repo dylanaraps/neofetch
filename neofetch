@@ -2353,8 +2353,6 @@ info() {
 
     # Update the variable
     output="${2:-$1}"
-
-    # Trim whitespace
     output="$(trim "${!output}")"
 
     # If prin was used in the function, stop here.
