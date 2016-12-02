@@ -952,19 +952,19 @@ get_gpu() {
                 [[ "$gpu" =~ "intel" ]] && \
                     gpu="Intel Integrated Graphics"
 
-                cache "gpu" "$gpu" "/tmp"
+                cache "gpu" "$gpu"
             fi
         ;;
 
         "Mac OS X")
             # Use cache if it exists
-            if [[ -f "/Library/Caches/neofetch/gpu" ]]; then
-                source "/Library/Caches/neofetch/gpu"
+            if [[ -f "${cache_dir}/neofetch/gpu" ]]; then
+                source "${cache_dir}/neofetch/gpu"
             else
                 gpu="$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
                 gpu="${gpu//'/ $'}"
                 gpu="${gpu%,*}"
-                cache "gpu" "$gpu" "/Library/Caches/"
+                cache "gpu" "$gpu"
             fi
         ;;
 
@@ -1739,10 +1739,9 @@ get_local_ip() {
 
 get_public_ip() {
     # Use cache if available
-    if [[ -f "/tmp/neofetch/public_ip" ]]; then
-        source "/tmp/neofetch/public_ip"
-    elif [[ -f "/Library/Caches/neofetch/public_ip" ]]; then
-        source "/Library/Caches/neofetch/public_ip"
+    if [[ -f "${cache_dir}/neofetch/public_ip" ]]; then
+        source "${cache_dir}/neofetch/public_ip"
+
     else
         if type -p dig >/dev/null; then
             public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
@@ -1758,10 +1757,7 @@ get_public_ip() {
         fi
     fi
 
-    case "$os" in
-        "Mac OS X"*) cache "public_ip" "$public_ip" "/Library/Caches" ;;
-        *) cache "public_ip" "$public_ip" "/tmp" ;;
-    esac
+    cache "public_ip" "$public_ip"
 }
 
 get_users() {
@@ -2816,8 +2812,15 @@ bar() {
 }
 
 cache() {
-    mkdir -p "$3/neofetch"
-    printf "%s" "${1/*-}=\"$2\"" > "$3/neofetch/${1/*-}"
+    mkdir -p "${cache_dir}/neofetch"
+    printf "%s" "${1/*-}=\"$2\"" > "${cache_dir}/neofetch/${1/*-}"
+}
+
+get_cache_dir() {
+    case "$os" in
+        "Mac OS X") cache_dir="/Library/Caches" ;;
+        *) cache_dir="/tmp" ;;
+    esac
 }
 
 kde_config_dir() {
@@ -3261,6 +3264,7 @@ main() {
 
     # Print the info
     old_functions
+    get_cache_dir
     print_info 2>/dev/null
 
     # Prompt calculation
