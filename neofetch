@@ -919,12 +919,6 @@ get_cpu_usage() {
 }
 
 get_gpu() {
-    # Use cache if it exists
-    if [[ -f "${cache_dir}/neofetch/gpu" ]]; then
-        source "${cache_dir}/neofetch/gpu"
-        return
-    fi
-
     case "$os" in
         "Linux" | "GNU")
             gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/Display|3D|VGA/ {print $3 " " $4}')"
@@ -1733,23 +1727,17 @@ get_local_ip() {
 }
 
 get_public_ip() {
-    # Use cache if available
-    if [[ -f "${cache_dir}/neofetch/public_ip" ]]; then
-        source "${cache_dir}/neofetch/public_ip"
+    if type -p dig >/dev/null; then
+        public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
+       [[ "$public_ip" =~ ^\; ]] && unset public_ip
+    fi
 
-    else
-        if type -p dig >/dev/null; then
-            public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
-           [[ "$public_ip" =~ ^\; ]] && unset public_ip
-        fi
+    if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
+        public_ip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
+    fi
 
-        if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
-            public_ip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
-        fi
-
-        if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
-            public_ip="$(wget -T 10 -qO- "$public_ip_host")"
-        fi
+    if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
+        public_ip="$(wget -T 10 -qO- "$public_ip_host")"
     fi
 
     cache "public_ip" "$public_ip"
@@ -2355,8 +2343,15 @@ info() {
     # $1 is the subtitle
     subtitle="$1"
 
-    # Call the function and update variable
-    "get_${2:-$1}" 2>/dev/null
+    # Use cache if it exists
+    if [[ -f "${cache_dir}/neofetch/${2}" ]]; then
+        source "${cache_dir}/neofetch/${2}"
+    else
+        # Call the function.
+        "get_${2:-$1}" 2>/dev/null
+    fi
+
+    # Update the variable
     output="${2:-$1}"
 
     # Trim whitespace
