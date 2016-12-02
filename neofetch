@@ -2501,6 +2501,10 @@ get_distro_colors() {
             set_colors 3 2 4 5 7
         ;;
 
+        "GoboLinux"*)
+            set_colors 5 4 6 2
+        ;;
+
         "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"* | "Qubes"*)
             set_colors 4 5 7 6
         ;;
