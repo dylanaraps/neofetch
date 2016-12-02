@@ -52,6 +52,12 @@ get_distro() {
                 esac
                 ascii_distro="Windows 10"
 
+            elif [[ -f "/etc/GoboLinuxVersion" ]]; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="GoboLinux" ;;
+                    *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
+                esac
+
             elif [[ -f "/etc/redstar-release" ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Red Star OS" ;;
@@ -409,6 +415,9 @@ get_packages() {
 
             type -p tce-status >/dev/null && \
                 packages="$((packages+=$(tce-status -i | wc -l)))"
+
+            type -p Compile >/dev/null && \
+                packages="$((packages+=$(ls -d -1 /Programs/*/ | wc -l)))"
 
             # pisi is sometimes unavailable in Solus(?). This uses eopkg
             # instead if pisi isn't found.
