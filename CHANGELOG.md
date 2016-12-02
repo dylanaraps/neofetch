@@ -1,8 +1,8 @@
 ## Neofetch 2.0
 
-This is the biggest release of Neofetch in a long time. 97 files were changed with 2700~ additions to 2900~ deletions. Although the changelog isn't as interesting this time majority of the script has been rewritten, restructered and cleaned up. Every function and variable name follows a proper naming scheme and a large number of bugs were fixed. 
+This is the biggest release of Neofetch in a long time. 97 files were changed with 2700~ additions to 2900~ deletions. Although the changelog isn't as interesting this time majority of the script has been rewritten, restructered and cleaned up. Every function and variable name follows a proper naming scheme and a large number of bugs were fixed.
 
-The ascii file handling was rewritten, ascii art is now stored/read as plain text! All `eval` usage was removed from Neofetch, vim fold markers/comments are no longer enforced and we now run on GNU Hurd, Haiku and more. 
+The ascii file handling was rewritten, ascii art is now stored/read as plain text! All `eval` usage was removed from Neofetch, vim fold markers/comments are no longer enforced and we now run on GNU Hurd, Haiku and more.
 
 When I was rewriting parts of the script I thought to myself; Neofetch is using the bash shebang and does depend on bash so why not take full advantage of the features bash has to offer? All tests were changed from `[` to `[[`, arithmetic tests now use `(())` and C style for loops are used where possible.
 
@@ -21,6 +21,7 @@ Thanks to all of the contributors this time around, you guys are a big help and 
 - **[@JorgeGonzalez](https://github.com/JorgeGonzalez)**
 - **[@iandrewt](https://github.com/iandrewt)**
 - **[@iwamatsu](https://github.com/iwamatsu)**
+- **[@Brottweiler](https://github.com/Brottweiler)**
 
 
 ## Packages
@@ -74,6 +75,8 @@ Thanks to all of the contributors this time around, you guys are a big help and 
 - Rename `colors()` to `get_distro_colors()`.
 - Rename `setcolors()` to `set_colors()`.
 - Update Netrunner ascii art.
+- Added old arch ascii logo. **[@Brottweiler](https://github.com/Brottweiler)**
+    - Useable by using `--ascii_distro arch_old` or by editing the config.
 
 
 ## Images
