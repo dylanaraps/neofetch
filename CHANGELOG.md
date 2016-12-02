@@ -121,6 +121,7 @@ Thanks to all of the contributors this time around, you guys are a big help and 
 
 **GPU**<br \>
 
+- GPU is now cached till reboot.
 - [Linux] Prefer dedicated GPU over integrated GPU.
 
 **Terminal**<br \>
