@@ -131,6 +131,7 @@
 
 **Public IP**<br \>
 
+- Cache the output of the command. **[@konimex](https://github.com/konimex)**
 - [dig] Fixed connection timed out with public_ip. **[@iandrewt](https://github.com/iandrewt)**
 
 **Resolution**<br \>
