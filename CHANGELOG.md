@@ -2,13 +2,15 @@
 
 This is the biggest release of Neofetch in a long time. 97 files were changed with 2700~ additions to 2900~ deletions. Although the changelog isn't as interesting this time majority of the script has been rewritten, restructered and cleaned up. Every function and variable name follows a proper naming scheme and a large number of bugs were fixed.
 
+Since this version of Neofetch differs so much from the previous versions expect a 2.0.1 release a few days later to fix any bugs that are found after release.
+
 The ascii file handling was rewritten, ascii art is now stored/read as plain text! All `eval` usage was removed from Neofetch, vim fold markers/comments are no longer enforced and we now run on GNU Hurd, Haiku and more.
 
 When I was rewriting parts of the script I thought to myself; Neofetch is using the bash shebang and does depend on bash so why not take full advantage of the features bash has to offer? All tests were changed from `[` to `[[`, arithmetic tests now use `(())` and C style for loops are used where possible.
 
-All of the config file documentation was rewritten and multiple wiki pages were created to hopefully make using/configuring neofetch easier than ever before. You can see the wiki here: [Neofetch Wiki](https://github.com/dylanaraps/neofetch/wiki)
+All of the config file documentation was rewritten and multiple wiki pages were created to hopefully make using/configuring Neofetch easier than ever before. You can see the wiki here: [Neofetch Wiki](https://github.com/dylanaraps/neofetch/wiki)
 
-Some of the config options/arguments were renamed/changed and neofetch will warn you on run if you're using deprecated options (`neofetch -v`). For this release neofetch **will** include backwards compatibility with the old config file but I'd like to remove this stuff in 2.1. I recommend using this release with a fresh config file so that you can make use of the new documentation.
+Some of the config options/arguments were renamed/changed and Neofetch will warn you on run if you're using deprecated options (`neofetch -v`). For this release Neofetch **will** include backwards compatibility with the old config file but I'd like to remove this stuff in 2.1. I recommend using this release with a fresh config file so that you can make use of the new documentation.
 
 I say this every release; This changelog is incomplete, for a full list of changes take a look through the commit history. Neofetch now has an unspoken commit style so reading the commit history won't hurt as much as it used to.
 
@@ -40,7 +42,7 @@ Thanks to all of the contributors this time around, you guys are a big help and 
 - Fixed issue where `bold=off` wouldn't work.
 - Fixed issue where info wasn't detected properly but the subtitle was still displayed.
 - Fixed issue where using `--disable func func` broke other args.
-- Removed all traces of `eval` from neofetch.
+- Removed all traces of `eval` from Neofetch.
 - Removed all vim fold markers and stopped enforcing folding for vim users.
     - See [#431](https://github.com/dylanaraps/neofetch/pull/431)
 - Rewrote all of config file documentation.
