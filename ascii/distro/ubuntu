@@ -1,18 +1,20 @@
-${c1}                         ./+o+-
-${c2}                 yyyyy- ${c1}-yyyyyy+
-${c2}              ${c2}://+//////${c1}-yyyyyyo
-${c3}          .++ ${c2}.:/++++++/-${c1}.+sss/`
-${c3}        .:++o:  ${c2}/++++++++/:--:/-
-${c3}       o:+o+:++.${c2}`..```.-/oo+++++/
-${c3}      .:+o:+o/.${c2}          `+sssoo+/
-${c2} .++/+:${c3}+oo+o:`${c2}             /sssooo.
-${c2}/+++//+:${c3}`oo+o${c2}               /::--:.
-${c2}+/+o+++${c3}`o++o${c1}               ++////.
-${c2} .++.o+${c3}++oo+:`${c1}             /dddhhh.
-${c3}      .+.o+oo:.${c1}          `oddhhhh+
-${c3}       +.++o+o`${c1}`-````.:ohdhhhhh+
-${c3}        `:o+++ ${c1}`ohhhhhhhhyo++os:
-${c3}          .o:${c1}`.syhhhhhhh/${c3}.oo++o`
-${c1}              /osyyyyyyo${c3}++ooo+++/
-${c1}                  ````` ${c3}+oo+++o:
-${c3}                         `oo++.
+${c1}            .-:/+ooosoo+/:-.
+        `-+ssssssssssssssssss+-`
+      .+sssssssssssssssss${c2}yyy${c1}ssss+.
+    .+ssssssssssssssssss${c2}mMMMMh${c1}ssss+.
+   :sssssssssss${c2}hdmNNNNmhNMMMMd${c1}ssssss:
+  /ssssssss${c2}ydN${c1}hd${c2}MMMMMMMMddmmh${c1}ssssssss+
+ /ssssssss${c2}hMMMMh${c1}hd${c2}hyyhdmMMMMMh${c1}ssssssss/
+.ssssssss${c2}dMMMMh${c1}ssssssssss${c2}hMMMMd${c1}ssssssss.
+/ssss${c2}hhhyMMMMy${c1}ssssssssssss${c2}yNMMMh${c1}sssssss/
+oss${c2}yNMMMNhMMd${c1}ssssssssssssss${c2}hNmmh${c1}ssssssso
+oss${c2}yMMMMMhMMd${c1}sssssssssssssshmmmh${c1}ssssssso
+/ssss${c2}hhhyMMMNy${c1}ssssssssssss${c2}yNMMMh${c1}sssssss/
+.ssssssss${c2}dMMMMh${c1}ssssssssss${c2}hMMMMd${c1}ssssssss.
+ /ssssssss${c2}hMMMM${c1}hh${c2}dhyyhdmMMMMMh${c1}ssssssss/
+  +ssssssss${c2}ydN${c1}hd${c2}MMMMMMMMdmmmh${c1}ssssssss+
+   :sssssssssss${c2}hdmNNNNmhNMMMMh${c1}ssssss:
+    .+ssssssssssssssssss${c2}mMMMMh${c1}ssss+.
+      .+sssssssssssssssss${c2}yhy${c1}ssss+.
+        `:+ssssssssssssssssss+:`
+            .-//+oossoo++/-.
