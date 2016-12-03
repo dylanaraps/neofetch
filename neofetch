@@ -372,66 +372,70 @@ get_packages() {
     case "$os" in
         "Linux" | "iPhone OS" | "Solaris" | "GNU")
             type -p pacman >/dev/null && \
-                packages="$(pacman -Qq --color never | wc -l)"
+                packages="$(pacman -Qq --color never)\n"
 
             type -p dpkg >/dev/null && \
-                packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
+                packages+="$(dpkg --get-selections | grep -v deinstall$)\n"
 
             type -p /sbin/pkgtool >/dev/null && \
-                packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
+                packages+="$(ls -1 /var/log/packages)\n"
 
             type -p rpm >/dev/null && \
-                packages="$((packages+=$(rpm -qa | wc -l)))"
+                packages+="$(rpm -qa)\n"
 
             type -p xbps-query >/dev/null && \
-                packages="$((packages+=$(xbps-query -l | wc -l)))"
+                packages+="$(xbps-query -l)\n"
 
             type -p pkginfo >/dev/null && \
-                packages="$((packages+=$(pkginfo -i | wc -l)))"
+                packages+="$(pkginfo -i)\n"
 
             type -p emerge >/dev/null && \
-                packages="$((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))"
+                packages+="$(ls -d /var/db/pkg/*/*)\n"
 
             type -p nix-env >/dev/null && \
-                packages="$((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))"
+                packages+="$(ls -d -1 /nix/store/*/)\n"
 
             type -p guix >/dev/null && \
-                packages="$((packages+=$(ls -d -1 /gnu/store/*/ | wc -l)))"
+                packages+="$(ls -d -1 /gnu/store/*/)\n"
 
             type -p apk >/dev/null && \
-                packages="$((packages+=$(apk info | wc -l)))"
+                packages+="$(apk info)\n"
 
             type -p opkg >/dev/null && \
-                packages="$((packages+=$(opkg list-installed | wc -l)))"
+                packages+="$(opkg list-installed)\n"
 
             type -p pacman-g2 >/dev/null && \
-                packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
+                packages+="$(pacman-g2 -Q)\n"
 
             type -p cave >/dev/null && \
-                packages="$((packages+=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)))"
+                packages+="$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/*)\n"
 
             type -p lvu >/dev/null && \
-                packages="$((packages+=$(lvu installed | wc -l)))"
+                packages+="$(lvu installed)\n"
 
             type -p tce-status >/dev/null && \
-                packages="$((packages+=$(tce-status -i | wc -l)))"
+                packages+="$(tce-status -i)\n"
 
             type -p Compile >/dev/null && \
-                packages="$((packages+=$(ls -d -1 /Programs/*/ | wc -l)))"
+                packages+="$(ls -d -1 /Programs/*/)\n"
 
             # pisi is sometimes unavailable in Solus(?). This uses eopkg
             # instead if pisi isn't found.
             if type -p pisi >/dev/null; then
-                packages="$((packages+=$(pisi list-installed | wc -l)))"
+                packages+="$(pisi list-installed)\n"
 
             elif type -p eopkg >/dev/null; then
-                packages="$((packages+=$(eopkg list-installed | wc -l)))"
+                packages+="$(eopkg list-installed)\n"
             fi
 
             if type -p pkg >/dev/null; then
-                packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
-                (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
+                packages+="$(ls -1 /var/db/pkg)\n"
+                (("$packages" == "0")) && packages+="$(pkg list)\n"
             fi
+
+            # Count the packages.
+            packages="${packages//\\n/$'\n'}"
+            packages="$(wc -l <<< "${packages//$'\n\n'}")"
         ;;
 
         "Mac OS X")
