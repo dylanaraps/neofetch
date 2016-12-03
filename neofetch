@@ -83,7 +83,16 @@ get_distro() {
                     source "$file" && break
                 done
 
-                # The 3rd line down matches the fold marker syntax. {{{
+                # If the os-release file identifies the system as "Ubuntu"
+                # we then use /etc/lsb-release to get the distro information.
+                # This is required since Linux Mint and other distros
+                # aren't using the os-release file correctly.
+                if [[ "$NAME" =~ "Ubuntu" ]]; then
+                    source /etc/lsb-release
+                    unset NAME VERSION_ID PRETTY_NAME UBUNTU_CODENAME
+                fi
+
+                # Format the distro name.
                 case "$distro_shorthand" in
                     "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
                     "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
