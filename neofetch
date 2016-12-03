@@ -90,6 +90,19 @@ get_distro() {
                     "off") distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
 
+                # If the os-release file identifies the system as "Ubuntu"
+                # we then use lsb_release to get the distro information.
+                # This is required since Linux Mint and other distros
+                # aren't using the os-release file correctly.
+                if [[ "$distro" =~ "Ubuntu" ]]; then
+                    case "$distro_shorthand" in
+                        "on")   lsb_flags="-sir" ;;
+                        "tiny") lsb_flags="-si" ;;
+                        "on")   lsb_flags="-sd" ;;
+                    esac
+                    distro="$(lsb_release $lsb_flags)"
+                fi
+
                 # Workarounds for distros that go against the os-release standard.
                 [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
                 [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}' /etc/*ease /usr/lib/*ease)"
