@@ -3169,7 +3169,7 @@ get_args() {
             # Image
             "--image")
                 image_source="$2"
-                case "$2" in "-"* | "") image_backend="ascii" ;; esac
+                case "$2" in "-"* | "" | "ascii") image_backend="ascii" ;; esac
             ;;
 
             "--image_size" | "--size") image_size="$2" ;;
