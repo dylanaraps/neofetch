@@ -134,13 +134,11 @@ shell_version="on"
 
 # CPU speed type
 #
-# Default: 'current'
+# Default: 'bios'
 # Values:  'current', 'min', 'max', 'bios',
-#          'scaling_current', 'scaling_min',
-#          'scaling_max'
 # Flag:    --speed_type
 # Supports: Linux with 'cpufreq'
-speed_type="current"
+speed_type="bios"
 
 # Shorten the output of the CPU function
 #
