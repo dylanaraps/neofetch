@@ -273,7 +273,7 @@ get_kernel() {
     esac
 
     # Hardcode kernel settings in BSDs
-    if [[ "$os" == "BSD" && ! "$distro" =~ (PacBSD|PCBSD) ]]; then
+    if [[ "$os" == "BSD" && "$distro" =~ "$kernel_name" ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
             *) unset kernel ;;
