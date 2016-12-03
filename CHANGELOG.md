@@ -11,6 +11,7 @@
 
 - Added support for Apricity OS.
 - Added support for GoboLinux. **[@konimex](https://github.com/konimex)**
+- Added support for SwagArch.
 
 **Packages**<br \>
 
