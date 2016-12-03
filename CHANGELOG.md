@@ -12,6 +12,7 @@
 - Added support for Apricity OS.
 - Added support for GoboLinux. **[@konimex](https://github.com/konimex)**
 - Added support for SwagArch.
+- Fixed bug that caused Linux Mint systems to be identified as Ubuntu.
 
 **Packages**<br \>
 
