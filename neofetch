@@ -2645,12 +2645,13 @@ get_distro_colors() {
 
     # Overwrite distro colors if '$ascii_colors' doesn't
     # equal 'distro'.
-    [[ "${ascii_colors[0]}" != "distro" ]] && \
+    if [[ "${ascii_colors[0]}" != "distro" ]]; then
+        color_text="off"
         set_colors ${ascii_colors[@]}
+    fi
 }
 
 set_colors() {
-    # Ascii colors
     c1="$(color "$1")${ascii_bold}"
     c2="$(color "$2")${ascii_bold}"
     c3="$(color "$3")${ascii_bold}"
@@ -2658,7 +2659,10 @@ set_colors() {
     c5="$(color "$5")${ascii_bold}"
     c6="$(color "$6")${ascii_bold}"
 
-    # Text colors
+    [[ "$color_text" != "off" ]] && set_text_colors $@
+}
+
+set_text_colors() {
     if [[ "${colors[0]}" == "distro" ]]; then
         title_color="$(color "$1")"
         at_color="$reset"
