@@ -83,25 +83,21 @@ get_distro() {
                     source "$file" && break
                 done
 
-                # The 3rd line down matches the fold marker syntax. {{{
+                # If the os-release file identifies the system as "Ubuntu"
+                # we then use /etc/lsb-release to get the distro information.
+                # This is required since Linux Mint and other distros
+                # aren't using the os-release file correctly.
+                if [[ "$NAME" =~ "Ubuntu" ]]; then
+                    source /etc/lsb-release
+                    unset NAME VERSION_ID PRETTY_NAME UBUNTU_CODENAME
+                fi
+
+                # Format the distro name.
                 case "$distro_shorthand" in
                     "on") distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
                     "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
                     "off") distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
-
-                # If the os-release file identifies the system as "Ubuntu"
-                # we then use lsb_release to get the distro information.
-                # This is required since Linux Mint and other distros
-                # aren't using the os-release file correctly.
-                if [[ "$distro" =~ "Ubuntu" ]]; then
-                    case "$distro_shorthand" in
-                        "on")   lsb_flags="-sir" ;;
-                        "tiny") lsb_flags="-si" ;;
-                        "on")   lsb_flags="-sd" ;;
-                    esac
-                    distro="$(lsb_release $lsb_flags)"
-                fi
 
                 # Workarounds for distros that go against the os-release standard.
                 [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
