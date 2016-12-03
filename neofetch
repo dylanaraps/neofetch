@@ -196,12 +196,6 @@ get_model() {
             elif [[ -f /tmp/sysinfo/model ]]; then
                 model="$(< /tmp/sysinfo/model)"
             fi
-
-            model="${model//To Be Filled*}"
-            model="${model//OEM*}"
-            model="${model//Not Applicable}"
-            model="${model//System Product Name}"
-            model="${model//System Version}"
         ;;
 
         "Mac OS X") model="$(sysctl -n hw.model)" ;;
@@ -260,6 +254,14 @@ get_model() {
             model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
         ;;
     esac
+
+    # Remove dummy OEM info
+    model="${model//To Be Filled*}"
+    model="${model//OEM*}"
+    model="${model//Not Applicable}"
+    model="${model//System Product Name}"
+    model="${model//System Version}"
+    model="${model//Undefined}"
 }
 
 get_title() {
