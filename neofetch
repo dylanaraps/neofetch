@@ -2512,6 +2512,11 @@ get_distro_colors() {
             set_colors 4 7 1
         ;;
 
+        "RFRemix"*)
+            set_colors 4 7 1
+            ascii_distro="Fedora"
+        ;;
+
         "CentOS"*)
             set_colors 3 2 4 5 7
         ;;
