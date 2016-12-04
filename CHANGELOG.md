@@ -13,11 +13,15 @@
 - Added support for GoboLinux. **[@konimex](https://github.com/konimex)**
 - Added support for SwagArch.
 - Fixed bug that caused Linux Mint systems to be identified as Ubuntu.
+- Fixed bug that caused CentOS systems to not be detected.
 
 **Packages**<br \>
 
 - Optimized `get_packages()` function to only call `wc -l` once at the end of the function instead of once per package manager.
 
+**Desktop Environment**<br \>
+
+- Show Cinnamon version.
 
 ## Image
 
@@ -32,3 +36,4 @@
 
 - Updated Ubuntu logo to the latest version.
 - `--ascii_colors` no longer changes text colors.
+- Fixed bug causing RFRemix to use the incorrect ascii art. 
