@@ -64,6 +64,14 @@ get_distro() {
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
 
+            elif type -p lsb_release >/dev/null; then
+                case "$distro_shorthand" in
+                    "on")   lsb_flags="-sir" ;;
+                    "tiny") lsb_flags="-si" ;;
+                    *)      lsb_flags="-sd" ;;
+                esac
+                distro="$(lsb_release $lsb_flags)"
+
             elif type -p guix >/dev/null; then
                 distro="GuixSD"
 
@@ -82,15 +90,6 @@ get_distro() {
                 for file in /etc/os-release /usr/lib/os-release /etc/*release /usr/lib/*release; do
                     source "$file" && break
                 done
-
-                # If the os-release file identifies the system as "Ubuntu"
-                # we then use /etc/lsb-release to get the distro information.
-                # This is required since Linux Mint and other distros
-                # aren't using the os-release file correctly.
-                if [[ "$NAME" =~ "Ubuntu" ]]; then
-                    source /etc/lsb-release
-                    unset NAME VERSION_ID PRETTY_NAME UBUNTU_CODENAME
-                fi
 
                 # Format the distro name.
                 case "$distro_shorthand" in
