@@ -552,17 +552,18 @@ get_de() {
         ;;
     esac
 
-    if [[ -n "$DISPLAY" && -z "$de" ]]; then
+    # Fallback to using xprop.
+    [[ -n "$DISPLAY" && -z "$de" ]] && \
         de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
-        case "$de" in
-            "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
-            *"TDE_FULL_SESSION"*) de="Trinity" ;;
-            *"MUFFIN"*) de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
-            *"xfce4"*) de="XFCE4" ;;
-            *"xfce5"*) de="XFCE5" ;;
-        esac
-    fi
+    # Format strings
+    case "$de" in
+        "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
+        *"TDE_FULL_SESSION"*) de="Trinity" ;;
+        *"MUFFIN"* | "Cinnamon") de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
+        *"xfce4"*) de="XFCE4" ;;
+        *"xfce5"*) de="XFCE5" ;;
+    esac
 }
 
 get_wm() {
