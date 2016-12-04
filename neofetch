@@ -1491,6 +1491,11 @@ get_font() {
 }
 
 get_term() {
+    # Since NetBSD emulates Linux's /proc, we can take advantage of it
+    # by temporarily set OS to Linux during this function instead of
+    # parsing ps.
+    [[ "$distro" =~ "NetBSD" ]] && local os="Linux"
+
     # Check $PPID for terminal emulator.
     case "$os" in
         "Mac OS X")
