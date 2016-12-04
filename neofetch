@@ -1083,13 +1083,7 @@ get_memory() {
             # Mem free
             case "$distro" in
                 "NetBSD"*) mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
-                "FreeBSD"* | "DragonFly"*)
-                    mem_info=($(sysctl -n hw.pagesize bm.stats.vm.v_inactive_count vm.stats.vm.v_cache_count vm.stats.vm.v_free_count))
-                    mem_inactive="$((mem_info[1] * meminfo[0]))"
-                    mem_cache="$((mem_info[2] * meminfo[0]))"
-                    mem_free="$((mem_info[3] * meminfo[0]))"
-                    mem_free="$((mem_inactive + mem_cache + mem_free))"
-                ;;
+                "FreeBSD"* | "DragonFly"*) mem_free="$(top -d 1 | awk -F ',' '/^Mem:/ {print $5}')";;
                 "OpenBSD"*) ;;
                 *) mem_free="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
             esac
