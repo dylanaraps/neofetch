@@ -1074,21 +1074,28 @@ get_memory() {
         ;;
 
         "BSD")
+            # Mem total
             case "$distro" in
-                "NetBSD"*)
-                    memfree="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))"
-                    mem_total="$(($(sysctl -n hw.physmem64) / 1024 / 1024))"
-                ;;
-
-                *)
-                    memfree="$(($(vmstat | awk 'END{printf $5}') / 1024))"
-                    mem_total="$(($(sysctl -n hw.physmem) / 1024 / 1024))"
-                ;;
+                "NetBSD"*) mem_total="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
+                *) mem_total="$(($(sysctl -n hw.physmem) / 1024 / 1024))" ;;
             esac
 
+            # Mem free
             case "$distro" in
-                "OpenBSD"*) mem_used="$(($(vmstat | awk 'END {printf $4}') / 1024))" ;;
-                *) mem_used="$((mem_total - memfree))" ;;
+                "NetBSD"*) mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
+                "FreeBSD"* | "DragonFly"*)
+                    mem_free="$(top -d 1 | awk -F ',' '/^Mem:/ {print $5}')"
+                    mem_free="${mem_free/M Free}"
+                ;;
+
+                "OpenBSD"*) ;;
+                *) mem_free="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
+            esac
+
+            # Mem used
+            case "$distro" in
+                "OpenBSD"*) mem_used="$(($(vmstat | awk 'END{printf $4}') / 1024))" ;;
+                *) mem_used="$((mem_total - mem_free))" ;;
             esac
         ;;
 
