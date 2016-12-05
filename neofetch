@@ -815,8 +815,8 @@ get_cpu() {
 
             # Get cpu temp
             if [[ "$cpu_temp" == "on" ]]; then
-                case "$distro" in
-                    "FreeBSD"* | "PacBSD"* | "DragonFly"* | "PCBSD"*)
+                case "$kernel_name" in
+                    "FreeBSD"* | "DragonFly"*)
                         temp="$(sysctl -n dev.cpu.0.temperature)"
                         temp="[${temp/C/°C}]"
                     ;;
@@ -1015,8 +1015,8 @@ get_gpu() {
         ;;
 
         "BSD" | "Solaris")
-            case "$distro" in
-                "FreeBSD"* | "DragonFlyBSD"* | "PacBSD"*)
+            case "$kernel_name" in
+                "FreeBSD"* | "DragonFly"*)
                     gpu="$(pciconf -lv | grep -B 4 -F "VGA" | grep -F "device")"
                     gpu="${gpu/*device*= }"
                     gpu="$(trim_quotes "$gpu")"
@@ -1075,13 +1075,13 @@ get_memory() {
 
         "BSD")
             # Mem total
-            case "$distro" in
+            case "$kernel_name" in
                 "NetBSD"*) mem_total="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
                 *) mem_total="$(($(sysctl -n hw.physmem) / 1024 / 1024))" ;;
             esac
 
             # Mem free
-            case "$distro" in
+            case "$kernel_name" in
                 "NetBSD"*) mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
                 "FreeBSD"* | "DragonFly"*)
                     mem_free="$(top -d 1 | awk -F ',' '/^Mem:/ {print $5}')"
@@ -1093,7 +1093,7 @@ get_memory() {
             esac
 
             # Mem used
-            case "$distro" in
+            case "$kernel_name" in
                 "OpenBSD"*) mem_used="$(($(vmstat | awk 'END{printf $4}') / 1024))" ;;
                 *) mem_used="$((mem_total - mem_free))" ;;
             esac
@@ -1607,7 +1607,7 @@ get_disk() {
 
         "Mac OS X" | "BSD" | "Haiku")
             case "$distro" in
-                "FreeBSD"* | *"OS X"* | "Mac"* )
+                "FreeBSD"* | *"OS X"* | "Mac"*)
                     df_flags="-l -H /"
                     df_dir="/"
                 ;;
@@ -1683,7 +1683,7 @@ get_battery() {
         ;;
 
         "BSD")
-            case "$distro" in
+            case "$kernel_name" in
                 "FreeBSD"* | "DragonFly"*)
                     battery="$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')"
                     battery_state="$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')"
@@ -1803,7 +1803,7 @@ get_birthday() {
         ;;
 
         "BSD")
-            case "$distro" in
+            case "$kernel_name" in
                 "OpenBSD"* | "Bitrig"*)
                     birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
                     birthday_shorthand="on"
