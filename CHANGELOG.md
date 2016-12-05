@@ -42,6 +42,7 @@
 - Rewrote wallpaper function.
 - Prioritize DE wallpaper setters before falling back to `feh`/`nitrogen`.
 - Added support for XFCE's wallpaper setter.
+- Added support for Solaris and GNU Hurd. **[@konimex](https://github.com/konimex)**
 
 
 ## Ascii
