@@ -51,5 +51,6 @@
 <br \><sub>Old Ubuntu Logo vs New Ubuntu Logo</sub>
 
 - Updated Ubuntu logo to the latest version.
+    - You can use the old logo by launching neofetch with `--ascii_distro ubuntu_old` or by changing `$ascii_distro` to `ubuntu_old` in your config file.
 - `--ascii_colors` no longer changes text colors.
 - Fixed bug causing RFRemix to use the incorrect ascii art.
