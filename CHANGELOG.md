@@ -3,6 +3,11 @@
 - **[@konimex](https://github.com/konimex)**
 
 
+## General
+
+- Use `$kernel_name` instead of `$distro` in some functions. **[@konimex](https://github.com/konimex)**
+
+
 ## Info
 
 **Distro**<br \>
@@ -60,9 +65,9 @@
 
 Neofetch will now automatically find and use whatever screenshot tool is available on your system. The screenshot tool is no longer hardcoded and you don't have to edit your config file to specify what program to use.
 
-On Haiku and macOS, Neofetch will use the built-in tools to take screenshots. On systems with an X server Neofetch will look for and use the following programs: `scrot`, `maim`, `import (imagemagick)`, `imlib2_grab` and `gnome-screenshot`. 
+On Haiku and macOS, Neofetch will use the built-in tools to take screenshots. On systems with an X server Neofetch will look for and use the following programs: `scrot`, `maim`, `import (imagemagick)`, `imlib2_grab` and `gnome-screenshot`.
 
-The config option `scrot_cmd` and the commandline flag `--scrot_cmd` are still there for those who want to use custom flags, programs or scripts to take screenshots. 
+The config option `scrot_cmd` and the commandline flag `--scrot_cmd` are still there for those who want to use custom flags, programs or scripts to take screenshots.
 
 - Automatically use whatever screenshot tool is available.
 - Added screenshot support to macOS
