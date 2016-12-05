@@ -31,10 +31,18 @@
 
 - Show Cinnamon version.
 
+
 ## Image
 
 - Changed default image mode to `ascii`.
     - See: [Images in the terminal](https://github.com/dylanaraps/neofetch/wiki/Images-in-the-terminal#enabling-image-mode)
+
+
+## Wallpaper
+
+- Rewrote wallpaper function.
+- Prioritize DE wallpaper setters before falling back to `feh`/`nitrogen`.
+- Added support for XFCE's wallpaper setter.
 
 
 ## Ascii
