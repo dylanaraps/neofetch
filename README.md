@@ -64,9 +64,14 @@ alias neofetch2="neofetch \
 
 Thanks to:
 
+- [Contributors](https://github.com/dylanaraps/neofetch/contributors)
+    - Thanks for making Neofetch better, I really appreciate it. :)
+- [Packagers](https://github.com/dylanaraps/neofetch/issues/115)
+    - Thanks for maintaining Neofetch packages. :)
+- Users
+    - Thanks for using my script! :)
 - [Screenfetch](https://github.com/KittyKatt/screenFetch):
     - I've used some snippets as a base for a few functions in this script.
     - Some of the ascii logos.
 - [ufetch](https://github.com/jschx/ufetch):
     - Tiny ascii logos
-- Everyone else helped out in one way or another. I'd list all of the names but there's just too many of you. :)
