@@ -53,3 +53,8 @@
     - You can use the old logo by launching neofetch with `--ascii_distro ubuntu_old` or by changing `$ascii_distro` to `ubuntu_old` in your config file.
 - `--ascii_colors` no longer changes text colors.
 - Fixed bug causing RFRemix to use the incorrect ascii art.
+
+
+## Screenshot Upload
+
+- [teknik.io] Fixed images not uploading with the right filetype.
