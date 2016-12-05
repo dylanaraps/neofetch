@@ -585,6 +585,8 @@ ascii="distro"
 #
 # NOTE: Arch and Ubuntu have 'old' logo varients.
 #       Change this to 'arch_old' or 'ubuntu_old' to use the old logos.
+# NOTE: Ubuntu has flavor varients.
+#       Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME' or 'Ubuntu-Budgie' to use the flavors.
 ascii_distro="auto"
 
 # Ascii Colors
