@@ -16,6 +16,7 @@
 - Added support for GoboLinux. **[@konimex](https://github.com/konimex)**
 - Added support for SwagArch.
 - Added support for AOSC OS.
+- Added support for Parrot Security.
 - Fixed bug that caused Linux Mint systems to be identified as Ubuntu.
 - Fixed bug that caused CentOS systems to not be detected.
 
