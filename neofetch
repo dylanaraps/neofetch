@@ -2347,7 +2347,7 @@ scrot_upload() {
 
     case "$image_host" in
         "teknik")
-            image_url="$(curl -sf -F file="@${image_file}" "https://api.teknik.io/v1/Upload")"
+            image_url="$(curl -sf -F file="@${image_file};type=image/png" "https://api.teknik.io/v1/Upload")"
             image_url="$(awk -F 'url:|,' '{printf $2}' <<< "${image_url//\"}")"
         ;;
 
