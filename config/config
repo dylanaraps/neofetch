@@ -582,6 +582,9 @@ ascii="distro"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
+#
+# NOTE: Arch and Ubuntu have 'old' logo varients.
+#       Change this to 'arch_old' or 'ubuntu_old' to use the old logos.
 ascii_distro="auto"
 
 # Ascii Colors

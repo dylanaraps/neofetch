@@ -3075,6 +3075,8 @@ usage() { printf "%s" "
                                 distro, /path/to/ascii
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
+                                NOTE: Arch and Ubuntu have 'old' logo varients.
+                                NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
     --ascii_logo_size           Size of ascii logo.
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
     --ascii_bold on/off         Whether or not to bold the ascii logo.
