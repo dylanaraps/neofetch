@@ -58,3 +58,6 @@
 ## Screenshot Upload
 
 - [teknik.io] Fixed images not uploading with the right filetype.
+- Changed default image upload host to `teknik.io`.
+    - teknik doesn't compress images whereas imgur does.
+    - You can change this back to imgur by using `--image_host imgur` or by editing your config file.
