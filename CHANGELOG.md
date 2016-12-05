@@ -1,3 +1,18 @@
+This release of Neofetch fixes some important bugs that were found after 2.0 was release. This includes: Detection issues on CentOS and Linux Mint systems, Incorrect Memory usage on BSD, Linux GPU detection issues and more.
+
+This release also includes a rewrite of the screenshot functions. You no longer have to set the program to use in your config. Neofetch now automatically finds and uses whatever screenshot tool is available on your machine.
+
+[See the screenshot section below for more info.](#screenshots)
+
+The `get_packages()` function was optimized. Neofetch's packages function works by detecting which package managers are installed on your system and then using a sum of those as the packages output.
+
+Previously the function would call `wc -l` for every package manager, instead we now call `wc -l` only once at the end of the function.
+
+Thanks for reporting these bugs and also suggesting these features. Don't be shy, report any bugs, annoyances or etc with Neofetch and I'll happily help you out.
+
+Thanks to **[@konimex](https://github.com/konimex)** for all of his contributions this release. :)
+
+
 ## Contributors
 
 - **[@konimex](https://github.com/konimex)**
