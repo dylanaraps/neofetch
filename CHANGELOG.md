@@ -1,5 +1,3 @@
-## Neofetch 2.0.1
-
 ## Contributors
 
 - **[@konimex](https://github.com/konimex)**
