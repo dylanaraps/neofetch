@@ -629,16 +629,20 @@ ascii_bold="on"
 #          -s
 scrot="off"
 
-# Screenshot program to launch
-# If you're not using 'scrot' change this to your screenshot
-# program.
+# Screenshot Program
+# Neofetch will automatically use whatever screenshot tool
+# is installed on your system.
 #
-# Default: 'scrot -c -d 3'
-# Values:  'cmd -flags'
+# If 'neofetch -v' says that it couldn't find a screenshot
+# tool or you're using a custom tool then you can change
+# the option below to a custom command.
+#
+# Default: 'auto'
+# Values:  'auto' 'cmd -flags'
 # Flag:    --scrot_cmd
-scrot_cmd="scrot -c -d 3"
+scrot_cmd="auto"
 
-# Scrot dir
+# Screenshot Directory
 # Where to save the screenshots
 #
 # Default: '~/Pictures/'
@@ -648,7 +652,7 @@ scrot_cmd="scrot -c -d 3"
 # Note: Neofetch won't create the directory if it doesn't exist.
 scrot_dir="$HOME/Pictures/"
 
-# Scrot filename
+# Screenshot Filename
 # What to name the screenshots
 #
 # Default: 'neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png'
