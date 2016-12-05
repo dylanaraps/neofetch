@@ -948,7 +948,7 @@ get_cpu_usage() {
 get_gpu() {
     case "$os" in
         "Linux" | "GNU")
-            gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/Display|3D|VGA/ {print $3 " " $4}')"
+            gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')"
 
             case "$gpu" in
                 *"advanced"*)
