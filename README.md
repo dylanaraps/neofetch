@@ -58,53 +58,6 @@ alias neofetch2="neofetch \
 ```
 
 
-## Frequently Asked Questions
-
-
-### How do I enable screenfetch mode?
-
-Launching the script with `--ascii` or setting `image="ascii"` inside the config file will launch the script in "screenfetch mode". The script will display your distro's ascii next to the info, exactly like screenfetch.
-
-**NOTE:** If you **don't** have an image-mode dependency installed screenfetch mode will be used automatically.
-
-### Why doesn't Neofetch support my wallpaper setter?
-
-It's hard to add support for other wallpaper setters as they don't provide a way of getting the current wallpaper from the cli.
-
-If your wallpaper setter **does** provide a way of getting the current wallpaper or you know where the wallpaper is stored then adding support won't be a problem!
-
-
-## Issues and Workarounds
-
-### getgpu doesn't show my exact video card name
-
-If your `lspci | grep "VGA"` output looks like this:
-
-```
-01:00.0 VGA compatible controller: NVIDIA Corporation Device 1401 (rev a1)
-```
-
-Instead of this:
-
-```
-01:00.0 VGA compatible controller: NVIDIA Corporation GM206 [GeForce GTX 960] (rev a1)
-```
-
-Then you're affected by the issue.
-
-This is caused by your `/usr/share/misc/pci.ids*` files being outdated and you can fix it by running this command as root.
-
-```
-sudo update-pciids
-```
-
-### Neofetch doesn't work correctly with ConEmu.
-
-You need to be using the CYGWIN/Msys connector for Neofetch to work seamlessly with ConEmu.
-
-https://conemu.github.io/en/CygwinMsysConnector.html
-
-
 ## Thanks
 
 Thanks to:
