@@ -659,10 +659,13 @@ scrot_name="neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png"
 # Image upload host
 # Where to upload the image.
 #
-# Default: 'imgur'
+# Default: 'teknik'
 # Values:  'imgur', 'teknik'
 # Flag:    --image_host
-image_host="imgur"
+#
+# NOTE: If you'd like another image host to be added to Neofetch.
+#       Open an issue on github.
+image_host="teknik"
 
 
 # Config Options
