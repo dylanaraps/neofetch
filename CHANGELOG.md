@@ -25,7 +25,7 @@
 
 **Packages**<br \>
 
-- Optimized `get_packages()` function to only call `wc -l` once at the end of the function instead of once per package manager.
+- Only call `wc -l` once at the end of the function instead of calling it once per package manager.
 
 **Desktop Environment**<br \>
 
