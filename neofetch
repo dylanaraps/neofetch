@@ -2675,7 +2675,7 @@ get_distro_colors() {
             set_colors 2 8
         ;;
 
-        "Mageia"* | "Porteus"*)
+        "Mageia"* | "Porteus"* | "Parrot"*)
             set_colors 6 7
         ;;
 
