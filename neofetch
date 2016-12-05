@@ -2042,27 +2042,30 @@ get_w3m_img_path() {
 get_wallpaper() {
     case "$os" in
         "Linux" | "BSD")
-            if type -p feh >/dev/null && [[ -f "$HOME/.fehbg" ]]; then
-                image="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
+            # Get DE if user has disabled the function.
+            [[ -z "$de" ]] && get_de
 
-            elif type -p nitrogen >/dev/null; then
-                image="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
+            case "$de" in
+                "Cinnamon"*) image="$(gsettings get org.cinnamon.desktop.background picture-uri)" ;;
+                "MATE"*)     image="$(gsettings get org.mate.background picture-filename)" ;;
+                "XFCE"*)     image="$(xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image)" ;;
+                *)
+                    if type -p feh >/dev/null && [[ -f "$HOME/.fehbg" ]]; then
+                        image="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
 
-            elif type -p gsettings >/dev/null; then
-                # Get DE if user has disabled the function.
-                [[ -z "$de" ]] && get_de
+                    elif type -p nitrogen >/dev/null; then
+                        image="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
 
-                case "$de" in
-                    "Cinnamon"*) image="$(gsettings get org.cinnamon.desktop.background picture-uri)" ;;
-                    "MATE"*)     image="$(gsettings get org.mate.background picture-filename)" ;;
-                    *)           image="$(gsettings get org.gnome.desktop.background picture-uri)" ;;
-                esac
+                    else
+                        image="$(gsettings get org.gnome.desktop.background picture-uri)"
+                    fi
+                ;;
+            esac
 
-                # Strip quotes etc from the path.
-                image="${image/'file://'}"
-                image="$(trim_quotes "$image")"
-                image="${image//\%20/ }"
-            fi
+            # Strip quotes etc from the path.
+            image="${image/'file://'}"
+            image="$(trim_quotes "$image")"
+            image="${image//\%20/ }"
         ;;
 
         "Mac OS X")
