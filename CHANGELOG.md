@@ -19,6 +19,10 @@
 
 - [BSD] Fixed high memory output.
 
+**GPU**<br \>
+
+- [Linux] Fixed bug where sound card was detected as GPU.
+
 **Packages**<br \>
 
 - Optimized `get_packages()` function to only call `wc -l` once at the end of the function instead of once per package manager.
