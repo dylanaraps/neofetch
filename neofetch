@@ -2041,7 +2041,7 @@ get_w3m_img_path() {
 
 get_wallpaper() {
     case "$os" in
-        "Linux" | "BSD")
+        "Linux" | "BSD" | "Solaris" | "GNU")
             # Get DE if user has disabled the function.
             [[ -z "$de" ]] && get_de
 
