@@ -6,7 +6,7 @@ Neofetch is a CLI system information tool written in BASH. Neofetch displays inf
 
 Neofetch is highly customizable through the use of commandline flags or the user config file. There are over 50 config options to mess around with and there's the `print_info()` function and friends which let you add your own custom info.
 
-Neofetch can be used on any OS that has BASH, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku`, `GNU Hurd` and `Windows (Cygwin/Windows 10 Linux subsystem)`. 
+Neofetch can be used on any OS that has BASH, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku`, `GNU Hurd` and `Windows (Cygwin/Windows 10 Linux subsystem)`.
 
 For more information:
 
@@ -34,10 +34,12 @@ Neofetch will by default create a config file at `$HOME/.config/neofetch/config`
 
 You can launch the script without a config file by using the flag `--config none` and you can specify a custom config location using `--config path/to/config`.
 
+See this wiki page for the default config: https://github.com/dylanaraps/neofetch/wiki/Config-File
+
 
 ### Customizing what info gets displayed
 
-https://github.com/dylanaraps/fetch/wiki/Customizing-Info
+https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 
 
 ### Customizing the script using a custom alias
