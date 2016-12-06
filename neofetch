@@ -382,75 +382,66 @@ get_packages() {
     case "$os" in
         "Linux" | "iPhone OS" | "Solaris" | "GNU")
             type -p pacman >/dev/null && \
-                packages=("$(pacman -Qq --color never)")
+                packages="$(pacman -Qq --color never | wc -l)"
 
             type -p dpkg >/dev/null && \
-                packages+=("$(dpkg --get-selections | grep -v deinstall$)")
+                packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
 
             type -p /sbin/pkgtool >/dev/null && \
-                packages+=("$(ls -1 /var/log/packages)")
+                packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
 
             type -p rpm >/dev/null && \
-                packages+=("$(rpm -qa)")
+                packages="$((packages+=$(rpm -qa | wc -l)))"
 
             type -p xbps-query >/dev/null && \
-                packages+=("$(xbps-query -l)")
+                packages="$((packages+=$(xbps-query -l | wc -l)))"
 
             type -p pkginfo >/dev/null && \
-                packages+=("$(pkginfo -i)")
+                packages="$((packages+=$(pkginfo -i | wc -l)))"
 
             type -p emerge >/dev/null && \
-                packages+=("$(ls -d /var/db/pkg/*/*)")
+                packages="$((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))"
 
             type -p nix-env >/dev/null && \
-                packages+=("$(ls -d -1 /nix/store/*/)")
+                packages="$((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))"
 
             type -p guix >/dev/null && \
-                packages+=("$(ls -d -1 /gnu/store/*/)")
+                packages="$((packages+=$(ls -d -1 /gnu/store/*/ | wc -l)))"
 
             type -p apk >/dev/null && \
-                packages+=("$(apk info)")
+                packages="$((packages+=$(apk info | wc -l)))"
 
             type -p opkg >/dev/null && \
-                packages+=("$(opkg list-installed)")
+                packages="$((packages+=$(opkg list-installed | wc -l)))"
 
             type -p pacman-g2 >/dev/null && \
-                packages+=("$(pacman-g2 -Q)")
+                packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
 
             type -p cave >/dev/null && \
-                packages+=("$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/*)")
+                packages="$((packages+=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)))"
 
             type -p lvu >/dev/null && \
-                packages+=("$(lvu installed)")
+                packages="$((packages+=$(lvu installed | wc -l)))"
 
             type -p tce-status >/dev/null && \
-                packages+=("$(tce-status -i)")
+                packages="$((packages+=$(tce-status -i | wc -l)))"
 
             type -p Compile >/dev/null && \
-                packages+=("$(ls -d -1 /Programs/*/)")
+                packages="$((packages+=$(ls -d -1 /Programs/*/ | wc -l)))"
 
             # pisi is sometimes unavailable in Solus(?). This uses eopkg
             # instead if pisi isn't found.
             if type -p pisi >/dev/null; then
-                packages+=("$(pisi list-installed)")
+                packages="$((packages+=$(pisi list-installed | wc -l)))"
 
             elif type -p eopkg >/dev/null; then
-                packages+=("$(eopkg list-installed)")
+                packages="$((packages+=$(eopkg list-installed | wc -l)))"
             fi
 
             if type -p pkg >/dev/null; then
-                packages+=("$(ls -1 /var/db/pkg)")
-                (("$packages" == "0")) && packages+=("$(pkg list)")
+                packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
+                (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
             fi
-
-            # Count the packages.
-            packages="$(wc -l <<< "${packages[@]}")"
-
-            # Due to the sum of wc -l being off by 1 per package manager
-            # we add the number of package managers to make up for it.
-            # We then remove 2 since the first and last package manager
-            # arent't affected by the off by 1 counting error.
-            packages="$((packages + ${#packages[@]} - 2))"
         ;;
 
         "Mac OS X")
