@@ -14,3 +14,7 @@ I also want to apologize to those packaging Neofetch for this unexpected release
 **GPU**<br \>
 
 - Fixed bug with `--gpu_brand` not working.
+
+**Theme**<br \>
+
+- [Cinnamon] Fixed incorrect information.
