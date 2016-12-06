@@ -757,7 +757,7 @@ get_cpu() {
 
             # Show/hide hyperthreaded cores
             case "$cpu_cores" in
-                "logical" | "on") cores="$(grep -c ^processor /proc/cpuinfo)" ;;
+                "logical" | "on") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
                 "physical") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
             esac
         ;;
