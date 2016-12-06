@@ -1353,7 +1353,7 @@ get_style() {
                 fi
             ;;
 
-            *"Cinnamon")
+            *"Cinnamon"*)
                 if type -p gsettings >/dev/null; then
                     gtk3_theme="$(gsettings get org.cinnamon.desktop.interface "$gsettings")"
                     gtk2_theme="$gtk3_theme"
