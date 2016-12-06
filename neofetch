@@ -971,6 +971,7 @@ get_gpu() {
             gpu="$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
             gpu="${gpu//'/ $'}"
             gpu="${gpu%,*}"
+            cache "gpu" "$gpu"
         ;;
 
         "iPhone OS")
@@ -1035,8 +1036,6 @@ get_gpu() {
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
     fi
-
-    cache "gpu" "$gpu"
 }
 
 get_memory() {
