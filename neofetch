@@ -2147,7 +2147,8 @@ get_term_size() {
         elif type -p xwininfo >/dev/null 2>&1; then
             # Get the focused window's ID.
             if type -p xdpyinfo >/dev/null 2>&1; then
-                current_window="$(xdpyinfo | grep -F "focus" | grep -E -o "0x[0-9a-f]+")"
+                current_window="$(xdpyinfo | grep -E -o "focus:.*0x[0-9a-f]+")"
+                current_window="${current_window/*window }"
             elif type -p xprop >/dev/null 2>&1; then
                 current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
             fi
