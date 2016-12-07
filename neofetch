@@ -946,6 +946,8 @@ get_gpu() {
                     gpu="${gpu//Intel*$'\n'}"
                     gpu="${gpu/'[AMD/ATI]' }"
                     gpu="${gpu/'[AMD]' }"
+                    gpu="${gpu/OEM }"
+                    gpu="${gpu/ \/ *}"
                     gpu="${gpu/*\[}"
                     gpu="${gpu/\]*}"
                     gpu="AMD $gpu"
