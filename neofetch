@@ -1588,11 +1588,11 @@ get_disk() {
     # df flags
     case "$os" in
         "Linux" | "iPhone OS" | "Windows" | "Solaris" | "GNU")
-            df_flags="-h -l --total"
+            df_flags=(-h -l --total)
             df_dir="total"
 
             case "$distro" in
-                "OpenWRT"*) df_flags="-h"; df_dir="rootfs" ;;
+                "OpenWRT"*) df_flags=(-h); df_dir="rootfs" ;;
                 "Android"*) return ;;
             esac
         ;;
@@ -1600,7 +1600,7 @@ get_disk() {
         "Mac OS X" | "BSD" | "Haiku")
             case "$distro" in
                 "FreeBSD"* | *"OS X"* | "Mac"*)
-                    df_flags="-l -H /"
+                    df_flags=(-l -H /)
                     df_dir="/"
                 ;;
 
@@ -1610,7 +1610,7 @@ get_disk() {
     esac
 
     # Get the disk info
-    disk="$(df $df_flags | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
+    disk="$(df "${df_flags[@]}" | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
 
     # Format the output
     disk_used="${disk#*:}"
@@ -2098,20 +2098,20 @@ get_term_size() {
     # get the terminal size.
     if [[ -n "$TMUX" ]]; then
         printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
-        read_flags="-d c"
+        read_flags=(-d c)
 
     elif [[ "$image_program" == "tycat" ]]; then
         printf "%b" "\033}qs\000"
 
     else
         printf "%b" "\033[14t\033[c"
-        read_flags="-d c"
+        read_flags=(-d c)
     fi
 
     # The escape codes above print the desired output as
     # user input so we have to use read to store the out
     # -put as a variable.
-    builtin read -s -t 1 ${read_flags} -r term_size
+    builtin read -s -t 1 "${read_flags[@]}" -r term_size
 
     # Split the string into height/width.
     if [[ "$image_program" == "tycat" ]]; then
@@ -2531,6 +2531,7 @@ trim() {
     # '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
 
     set -f
+    # shellcheck disable=2086
     builtin echo -E ${1//[[:space:]]/ }
     set +f
 }
@@ -2714,7 +2715,7 @@ get_distro_colors() {
     # equal 'distro'.
     if [[ "${ascii_colors[0]}" != "distro" ]]; then
         color_text="off"
-        set_colors ${ascii_colors[@]}
+        set_colors "${ascii_colors[@]}"
     fi
 }
 
@@ -2726,7 +2727,7 @@ set_colors() {
     c5="$(color "$5")${ascii_bold}"
     c6="$(color "$6")${ascii_bold}"
 
-    [[ "$color_text" != "off" ]] && set_text_colors $@
+    [[ "$color_text" != "off" ]] && set_text_colors "$@"
 }
 
 set_text_colors() {
