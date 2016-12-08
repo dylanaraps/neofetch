@@ -44,7 +44,7 @@ get_distro() {
 
     case "$os" in
         "Linux" | "GNU")
-            if [[ "$(< /proc/version)" =~ "Microsoft" || "$(< /proc/sys/kernel/osrelease)" =~ "Microsoft" ]]; then
+            if [[ "$(< /proc/version)" == *"Microsoft"* || "$(< /proc/sys/kernel/osrelease)" == *"Microsoft"* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
@@ -283,7 +283,7 @@ get_kernel() {
     esac
 
     # Hardcode kernel settings in BSDs
-    if [[ "$os" == "BSD" && "$distro" =~ "$kernel_name" ]]; then
+    if [[ "$os" == "BSD" && "$distro" == *"$kernel_name"* ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
             *) unset kernel ;;
@@ -965,7 +965,7 @@ get_gpu() {
                 ;;
             esac
 
-            [[ "$gpu" =~ "intel" ]] && \
+            [[ "$gpu" == *"intel"* ]] && \
                 gpu="Intel Integrated Graphics"
         ;;
 
@@ -1294,7 +1294,7 @@ get_resolution() {
             scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
 
             # If no refresh rate is empty.
-            [[ "$resolution" =~ "@ Hz" ]] && \
+            [[ "$resolution" == *"@ Hz"* ]] && \
                 resolution="${resolution//@ Hz}"
 
             (("${scale_factor%.*}" == 2)) && \
@@ -1305,7 +1305,7 @@ get_resolution() {
                 resolution="${resolution// @ [0-9][0-9][0-9]Hz}"
             fi
 
-            [[ "$resolution" =~ "0Hz" ]] && \
+            [[ "$resolution" == *"0Hz"* ]] && \
                 resolution="${resolution// @ 0Hz}"
         ;;
 
