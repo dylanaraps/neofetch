@@ -20,5 +20,5 @@ script:
     - time ./neofetch --ascii --config travis --ascii_distro travis -v
     # See this wiki page for why we're disabling these errors.
     # TODO
-    - shellcheck neofetch -e SC1090,SC2034,SC2009,SC2178,SC2153,SC2154
+    - shellcheck neofetch -e SC1090,SC2034,SC2009,SC2178,SC2153,SC2154,SC2012,SC2010,SC2016,SC2128
 
