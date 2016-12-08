@@ -2857,6 +2857,7 @@ get_user_config() {
         cp "$script_dir/config/config" "$XDG_CONFIG_HOME/neofetch"
         config_file="$XDG_CONFIG_HOME/neofetch/config"
     fi
+
     source "$config_file"
     err "Config: Sourced user config.    ($config_file)"
 }
