@@ -18,5 +18,5 @@ before_install:
 
 script:
     - time ./neofetch --ascii --config travis --ascii_distro travis -v
-    - bash -c 'shellcheck neofetch'
+    - shellcheck neofetch -e SC1090,SC2034
 

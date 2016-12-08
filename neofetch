@@ -88,7 +88,6 @@ get_distro() {
             else
                 # Source the os-release file
                 for file in /etc/os-release /usr/lib/os-release /etc/*release /usr/lib/*release; do
-                    # shellcheck source=/etc/os-release
                     source "$file" && break
                 done
 
@@ -2415,7 +2414,6 @@ info() {
 
     # Use cache if it exists
     if [[ -f "${cache_dir}/neofetch/${2}" ]]; then
-        # shellcheck source=/dev/null
         source "${cache_dir}/neofetch/${2}"
     else
         # Call the function.
@@ -2819,7 +2817,6 @@ get_default_config() {
         travis_config="${script_dir}/config/travis"
     fi
 
-    # shellcheck source=config/config
     if source "$default_config"; then
         err "Config: Sourced default config. ($default_config)"
     else
@@ -2830,13 +2827,11 @@ get_default_config() {
 get_user_config() {
     # Check $config_file
     if [[ -f "$config_file" ]]; then
-        # shellcheck source=config/config
         source "$config_file"
         err "Config: Sourced user config.    ($config_file)"
         return
 
     elif [[ "$config_file" == "travis" ]]; then
-        # shellcheck source=config/travis
         source "$travis_config"
         err "Config: Sourced user config.    ($travis_config)"
         return
@@ -2862,7 +2857,6 @@ get_user_config() {
         cp "$script_dir/config/config" "$XDG_CONFIG_HOME/neofetch"
         config_file="$XDG_CONFIG_HOME/neofetch/config"
     fi
-    # shellcheck source=config/config
     source "$config_file"
     err "Config: Sourced user config.    ($config_file)"
 }
