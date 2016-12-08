@@ -1,6 +1,13 @@
 language: bash
 sudo: required
 
+addons:
+    apt:
+        sources:
+            - debian-sid
+        packages:
+            - shellcheck
+
 os:
     - linux
     - osx
@@ -11,3 +18,4 @@ before_install:
 
 script:
     - time ./neofetch --ascii --config travis --ascii_distro travis -v
+    - bash -c 'shellcheck neofetch'
