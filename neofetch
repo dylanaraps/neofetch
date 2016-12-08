@@ -1877,9 +1877,7 @@ get_cols() {
 get_image_backend() {
     # This function determines which image backend to use
     # by checking for programs and etc.
-
-    # Automatically find w3m-img
-    get_w3m_img_path
+    get_image_program
 
     # Fallback to ascii mode if imagemagick isn't installed.
     type -p convert >/dev/null 2>&1 || image_backend="ascii"
@@ -1905,7 +1903,6 @@ get_image_backend() {
                 return
             fi
 
-            get_image_program
             get_term_size
 
             # Fallback to ascii mode if terminal size wasn't found.
@@ -2006,6 +2003,7 @@ get_image_program() {
 
     else
         image_program="w3m"
+        get_w3m_img_path
     fi
 }
 
