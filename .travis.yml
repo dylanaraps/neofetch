@@ -19,3 +19,4 @@ before_install:
 script:
     - time ./neofetch --ascii --config travis --ascii_distro travis -v
     - bash -c 'shellcheck neofetch'
+
