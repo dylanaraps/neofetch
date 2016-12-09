@@ -44,7 +44,7 @@ get_distro() {
 
     case "$os" in
         "Linux" | "GNU")
-            if [[ "$(< /proc/version)" =~ "Microsoft" || "$(< /proc/sys/kernel/osrelease)" =~ "Microsoft" ]]; then
+            if [[ "$(< /proc/version)" == *"Microsoft"* || "$(< /proc/sys/kernel/osrelease)" == *"Microsoft"* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
@@ -283,7 +283,7 @@ get_kernel() {
     esac
 
     # Hardcode kernel settings in BSDs
-    if [[ "$os" == "BSD" && "$distro" =~ "$kernel_name" ]]; then
+    if [[ "$os" == "BSD" && "$distro" == *"$kernel_name"* ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
             *) unset kernel ;;
@@ -555,6 +555,9 @@ get_de() {
         *"xfce4"*) de="XFCE4" ;;
         *"xfce5"*) de="XFCE5" ;;
     esac
+
+    # Log that the function was run.
+    de_run=1
 }
 
 get_wm() {
@@ -579,11 +582,14 @@ get_wm() {
             ;;
         esac
     fi
+
+    # Log that the function was run.
+    wm_run=1
 }
 
 get_wm_theme() {
-    [[ -z "$wm" ]] && get_wm
-    [[ -z "$de" ]] && get_de
+    (( "$wm_run" != 1 )) && get_wm
+    (( "$de_run" != 1 )) && get_de
 
     case "$wm"  in
         "E16") wm_theme="$(awk -F "= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
@@ -965,7 +971,7 @@ get_gpu() {
                 ;;
             esac
 
-            [[ "$gpu" =~ "intel" ]] && \
+            [[ "$gpu" == *"intel"* ]] && \
                 gpu="Intel Integrated Graphics"
         ;;
 
@@ -1294,7 +1300,7 @@ get_resolution() {
             scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
 
             # If no refresh rate is empty.
-            [[ "$resolution" =~ "@ Hz" ]] && \
+            [[ "$resolution" == *"@ Hz"* ]] && \
                 resolution="${resolution//@ Hz}"
 
             (("${scale_factor%.*}" == 2)) && \
@@ -1305,7 +1311,7 @@ get_resolution() {
                 resolution="${resolution// @ [0-9][0-9][0-9]Hz}"
             fi
 
-            [[ "$resolution" =~ "0Hz" ]] && \
+            [[ "$resolution" == *"0Hz"* ]] && \
                 resolution="${resolution// @ 0Hz}"
         ;;
 
@@ -1336,7 +1342,7 @@ get_style() {
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
-        [[ -z "$de" ]] && get_de
+        (( "$de_run" != 1 )) && get_de
 
         # Check for DE Theme.
         case "$de" in
@@ -1531,10 +1537,13 @@ get_term() {
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="${name##*/}" ;;
     esac
+
+    # Log that the function was run.
+    term_run=1
 }
 
 get_term_font() {
-    [[ -z "$term" ]] && get_term
+    (( "$term_run" != 1 )) && get_term
 
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
@@ -1588,11 +1597,11 @@ get_disk() {
     # df flags
     case "$os" in
         "Linux" | "iPhone OS" | "Windows" | "Solaris" | "GNU")
-            df_flags="-h -l --total"
+            df_flags=(-h -l --total)
             df_dir="total"
 
             case "$distro" in
-                "OpenWRT"*) df_flags="-h"; df_dir="rootfs" ;;
+                "OpenWRT"*) df_flags=(-h); df_dir="rootfs" ;;
                 "Android"*) return ;;
             esac
         ;;
@@ -1600,7 +1609,7 @@ get_disk() {
         "Mac OS X" | "BSD" | "Haiku")
             case "$distro" in
                 "FreeBSD"* | *"OS X"* | "Mac"*)
-                    df_flags="-l -H /"
+                    df_flags=(-l -H /)
                     df_dir="/"
                 ;;
 
@@ -1610,7 +1619,7 @@ get_disk() {
     esac
 
     # Get the disk info
-    disk="$(df $df_flags | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
+    disk="$(df "${df_flags[@]}" | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
 
     # Format the output
     disk_used="${disk#*:}"
@@ -2033,7 +2042,7 @@ get_wallpaper() {
     case "$os" in
         "Linux" | "BSD" | "Solaris" | "GNU")
             # Get DE if user has disabled the function.
-            [[ -z "$de" ]] && get_de
+            (( "$de_run" != 1 )) && get_de
 
             case "$de" in
                 "Cinnamon"*) image="$(gsettings get org.cinnamon.desktop.background picture-uri)" ;;
@@ -2096,20 +2105,20 @@ get_term_size() {
     # get the terminal size.
     if [[ -n "$TMUX" ]]; then
         printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
-        read_flags="-d c"
+        read_flags=(-d c)
 
     elif [[ "$image_program" == "tycat" ]]; then
         printf "%b" "\033}qs\000"
 
     else
         printf "%b" "\033[14t\033[c"
-        read_flags="-d c"
+        read_flags=(-d c)
     fi
 
     # The escape codes above print the desired output as
     # user input so we have to use read to store the out
     # -put as a variable.
-    builtin read -s -t 1 ${read_flags} -r term_size
+    builtin read -s -t 1 "${read_flags[@]}" -r term_size
 
     # Split the string into height/width.
     if [[ "$image_program" == "tycat" ]]; then
@@ -2529,6 +2538,7 @@ trim() {
     # '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
 
     set -f
+    # shellcheck disable=2086
     builtin echo -E ${1//[[:space:]]/ }
     set +f
 }
@@ -2712,7 +2722,7 @@ get_distro_colors() {
     # equal 'distro'.
     if [[ "${ascii_colors[0]}" != "distro" ]]; then
         color_text="off"
-        set_colors ${ascii_colors[@]}
+        set_colors "${ascii_colors[@]}"
     fi
 }
 
@@ -2724,7 +2734,7 @@ set_colors() {
     c5="$(color "$5")${ascii_bold}"
     c6="$(color "$6")${ascii_bold}"
 
-    [[ "$color_text" != "off" ]] && set_text_colors $@
+    [[ "$color_text" != "off" ]] && set_text_colors "$@"
 }
 
 set_text_colors() {
@@ -2924,7 +2934,7 @@ get_term_padding() {
     #
     # Note: This issue only seems to affect
     # URxvt.
-    [[ -z "$term" ]] && get_term
+    (( "$term_run" != 1 )) && get_term
 
     case "$term" in
         "URxvt"*)
