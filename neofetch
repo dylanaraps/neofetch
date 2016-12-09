@@ -2608,11 +2608,6 @@ get_distro_colors() {
             set_colors fg 7
         ;;
 
-        *"OS X"* | *"iOS"* | "Mac" | *"macOS"*)
-            set_colors 2 3 1 1 5 4
-            ascii_distro="mac"
-        ;;
-
         "OpenMandriva"*)
             set_colors 4 3
         ;;
@@ -2681,6 +2676,11 @@ get_distro_colors() {
 
         "Linux")
             set_colors fg 8 3
+        ;;
+
+        *"OS X"* | *"iOS"* | "Mac" | *"macOS"*)
+            set_colors 2 3 1 1 5 4
+            ascii_distro="mac"
         ;;
 
         *)
