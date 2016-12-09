@@ -12,3 +12,7 @@
 ## Images
 
 - [iTerm2] Fixed blank images.
+
+## Ascii
+
+- Fixed bug causing macOS ascii art to be used on other Operating Systems.
