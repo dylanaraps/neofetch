@@ -1594,6 +1594,8 @@ get_term_font() {
 }
 
 get_disk() {
+    type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
+
     # df flags
     case "$os" in
         "Linux" | "iPhone OS" | "Windows" | "Solaris" | "GNU")
