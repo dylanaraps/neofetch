@@ -1,6 +1,13 @@
 ## Contributors
 
 
+## IRC
+
+Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any questions, issues or ideas feel free to join the irc channel and I'll be happy to assist you. I know that we've already got the gitter chat but hopefully this makes things easier for those without a github account. :)
+
+[![Freenode](https://img.shields.io/badge/%23neofetch-%20on%20Freenode-brightgreen.svg)](http://irc.lc/freenode/neofetch)
+
+
 ## General
 
 - Travis now runs [shellcheck](https://github.com/koalaman/shellcheck) on every commit and pull request.
@@ -8,6 +15,7 @@
     - https://github.com/dylanaraps/neofetch/wiki/Shellcheck-Exclusions
 - Optimize usage of get_de(), get_wm() and get_term().
     - We were calling these multiple times, we now check to see if they were run previously.
+
 
 ## Images
 
