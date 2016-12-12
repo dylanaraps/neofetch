@@ -44,3 +44,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Fixed bug causing macOS ascii art to be used on other Operating Systems.
 - Display warning about 'ascii' being the new default mode.
+
+## Screenshot
+
+- Use arrays for `$scrot_program`
