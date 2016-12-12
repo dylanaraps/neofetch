@@ -1137,11 +1137,9 @@ get_song() {
 
         "cmus"*)
             IFS=$'\n'
-            song=($(cmus-remote -Q | grep -F -e "tag artist" -e "tag title" -e "status" | sort))
-            state="${song[0]/status }"
-            artist="${song[1]/tag artist }"
-            title="${song[2]/tag title }"
-            song="${artist/tag title } - ${title/tag artist }"
+            cmus=($(cmus-remote -Q | grep -F -e "tag artist " -e "tag title" -e "status" | sort))
+            song="${cmus[1]/tag artist } - ${cmus[2]/tag title }"
+            state="${cmus[0]/status }"
         ;;
 
         "mocp"*)
