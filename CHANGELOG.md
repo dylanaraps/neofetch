@@ -29,6 +29,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 **Song**<br \>
 
 - Simplify state detection.
+- [cmus] Simplify block and fix `artistsort` bug
 
 **Color Blocks**<br \>
 
