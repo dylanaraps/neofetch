@@ -2,6 +2,7 @@
 
 - **[@konimex](https://github.com/konimex)**
 
+
 ## IRC
 
 Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any questions, issues or ideas feel free to join the irc channel and I'll be happy to assist you. I know that we've already got the gitter chat but hopefully this makes things easier for those without a github account. :)
@@ -35,6 +36,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Use start++ instead of adding it manually after case. **[@konimex](https://github.com/konimex)**
 
+
 ## Images
 
 - [iTerm2] Fixed blank images.
@@ -44,6 +46,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Fixed bug causing macOS ascii art to be used on other Operating Systems.
 - Display warning about 'ascii' being the new default mode.
+
 
 ## Screenshot
 
