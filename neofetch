@@ -976,10 +976,16 @@ get_gpu() {
         ;;
 
         "Mac OS X")
-            gpu="$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
-            gpu="${gpu//'/ $'}"
-            gpu="${gpu%,*}"
-            cache "gpu" "$gpu"
+            if [[ -f "${cache_dir}/neofetch" ]]; then
+                source "${cache_dir}/neofetch/gpu"
+
+            else
+                gpu="$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
+                gpu="${gpu//'/ $'}"
+                gpu="${gpu%,*}"
+
+                cache "gpu" "$gpu"
+            fi
         ;;
 
         "iPhone OS")
@@ -2426,13 +2432,8 @@ info() {
     # $1 is the subtitle
     subtitle="$1"
 
-    # Use cache if it exists
-    if [[ -f "${cache_dir}/neofetch/${2}" ]]; then
-        source "${cache_dir}/neofetch/${2}"
-    else
-        # Call the function.
-        "get_${2:-$1}" 2>/dev/null
-    fi
+    # Call the function.
+    "get_${2:-$1}" 2>/dev/null
 
     # Update the variable
     output="${2:-$1}"
