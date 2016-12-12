@@ -1254,13 +1254,8 @@ get_song() {
     esac
 
     case "$state" in
-        "paused" | "PAUSE" | "Paused")
-            song="Paused"
-        ;;
-
-        "stopped" | "STOP" | "Stopped")
-            song="Stopped"
-        ;;
+        "pau"*) song="Paused" ;;
+        "sto"*) song="Stopped" ;;
     esac
 
     # Display Artist and Title on seperate lines.
