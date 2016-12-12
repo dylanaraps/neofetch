@@ -1859,13 +1859,12 @@ get_cols() {
         block_width="${block_width// /█}"
 
         # Generate the string.
-        for ((start; start<=end; i++)); do
+        for ((start; start<=end; start++)); do
             case "$start" in
                 [0-6]) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
                 7) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
                 *) blocks2+="\033[38;5;${start}m\033[48;5;${start}m${block_width}" ;;
             esac
-            start="$((start+=1))"
         done
 
         # Convert height into spaces.

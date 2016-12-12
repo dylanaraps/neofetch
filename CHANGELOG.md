@@ -1,5 +1,6 @@
 ## Contributors
 
+- **[@konimex](https://github.com/konimex)**
 
 ## IRC
 
@@ -24,6 +25,9 @@ Neofetch now has an irc channel at `##neofetch` on Freenode. If you have any que
 - Warn the user if `df` isn't installed.
 - Fixed broken output if `df` wasn't installed but the function was enabled.
 
+**Color Blocks**<br \>
+
+- Use start++ instead of adding it manually after case. **[@konimex](https://github.com/konimex)**
 
 ## Images
 
