@@ -1,6 +1,8 @@
 ## Contributors
 
 - **[@konimex](https://github.com/konimex)**
+- **[@iandrewt](https://github.com/iandrewt)**
+- **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 
 ## IRC
@@ -32,6 +34,10 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Simplify state detection.
 - [cmus] Simplify block and fix `artistsort` bug
+
+**Battery**<br \>
+
+- [MacOS] Fix issue where battery always appears as charging. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 **Color Blocks**<br \>
 
