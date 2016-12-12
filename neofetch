@@ -2383,22 +2383,22 @@ scrot_program() {
     # falling back to OS specific screenshot tools.
     if [[ -n "$DISPLAY" ]]; then
         if [[ "$scrot_cmd" != "auto" ]] && type -p "$scrot_cmd" >/dev/null; then
-            scrot_program="$scrot_cmd"
+            scrot_program=("$scrot_cmd")
 
         elif type -p scrot >/dev/null; then
-            scrot_program="scrot"
+            scrot_program=(scrot)
 
         elif type -p maim >/dev/null; then
-            scrot_program="maim"
+            scrot_program=(maim)
 
         elif type -p import >/dev/null; then
-            scrot_program="import -window root"
+            scrot_program=(import -window root)
 
         elif type -p imlib2_grab >/dev/null; then
-            scrot_program="imlib2_grab"
+            scrot_program=(imlib2_grab)
 
         elif type -p gnome-screenshot >/dev/null; then
-            scrot_program="gnome-screenshot -f"
+            scrot_program=(gnome-screenshot -f)
 
         else
             err "Scrot: No screen capture tool found."
@@ -2406,15 +2406,15 @@ scrot_program() {
         fi
     else
         case "$os" in
-            "Mac OS X") scrot_program="screencapture -S" ;;
-            "Haiku") scrot_program="screenshot -s" ;;
+            "Mac OS X") scrot_program=(screencapture -S) ;;
+            "Haiku") scrot_program=(screenshot -s) ;;
         esac
     fi
 
     # Take the scrot.
-    $scrot_program "$1"
+    "${scrot_program[@]}" "$1"
 
-    err "Scrot: Screen captured using $scrot_program"
+    err "Scrot: Screen captured using ${scrot_program[0]}"
 }
 
 # TEXT FORMATTING
