@@ -16,6 +16,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
     - https://github.com/dylanaraps/neofetch/wiki/Shellcheck-Exclusions
 - Optimize usage of get_de(), get_wm() and get_term().
     - We were calling these multiple times, we now check to see if they were run previously.
+- Optimize info caching, only check for cache files in scripts that use caching.
 
 
 ## Info
@@ -24,6 +25,10 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Warn the user if `df` isn't installed.
 - Fixed broken output if `df` wasn't installed but the function was enabled.
+
+**Song**<br \>
+
+- Simplify state detection.
 
 **Color Blocks**<br \>
 
