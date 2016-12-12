@@ -976,7 +976,7 @@ get_gpu() {
         ;;
 
         "Mac OS X")
-            if [[ -f "${cache_dir}/neofetch" ]]; then
+            if [[ -f "${cache_dir}/neofetch/gpu" ]]; then
                 source "${cache_dir}/neofetch/gpu"
 
             else
