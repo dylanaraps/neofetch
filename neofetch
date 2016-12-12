@@ -1709,7 +1709,11 @@ get_battery() {
 
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
-            battery_state="$(pmset -g batt | awk 'NR==2 {print $3}')"
+            state="$(pmset -g batt | awk '/;/ {print $4}')"
+            if [ "$state" == "charging;" ];
+            then
+              battery_state="charging"
+            fi
         ;;
 
         "Windows")
