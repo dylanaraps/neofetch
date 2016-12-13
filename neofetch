@@ -537,9 +537,14 @@ get_de() {
         ;;
 
         *)
-            de="${XDG_CURRENT_DESKTOP/i3}"
-            de="${de/'X-'}"
-            de="${de/Budgie:GNOME/Budgie}"
+            if [[ "$XDG_CURRENT_DESKTOP" ]]; then
+                de="${XDG_CURRENT_DESKTOP/i3}"
+                de="${de/'X-'}"
+                de="${de/Budgie:GNOME/Budgie}"
+
+            elif [[ "$DESKTOP_SESSION" ]]; then
+                de="${DESKTOP_SESSION/ *}"
+            fi
         ;;
     esac
 
@@ -554,6 +559,8 @@ get_de() {
         *"MUFFIN"* | "Cinnamon") de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
         *"xfce4"*) de="XFCE4" ;;
         *"xfce5"*) de="XFCE5" ;;
+        *"xfce"*)  de="XFCE" ;;
+        *"mate"*)  de="MATE"
     esac
 
     # Log that the function was run.
