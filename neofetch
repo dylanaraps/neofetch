@@ -2488,12 +2488,6 @@ info() {
 
     # Calculate info height
     info_height="$((info_height+=1))"
-
-    # Fix rendering issues with w3m and lines that
-    # wrap to the next line by adding a max line
-    # length.
-    [[ "$image_backend" == "image" ]] && \
-        string="$(printf "%.$((columns - text_padding - gap))s" "$string")"
 }
 
 prin() {
@@ -2523,12 +2517,6 @@ prin() {
 
     # Calculate info height
     info_height="$((info_height+=1))"
-
-    # Fix rendering issues with w3m and lines that
-    # wrap to the next line by adding a max line
-    # length.
-    [[ "$image_backend" == "image" ]] && \
-        string="$(printf "%.$((columns - text_padding - gap))s" "$string")"
 
     # Tell info() that prin() was used.
     prin=1
