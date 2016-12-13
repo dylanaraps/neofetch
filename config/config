@@ -61,6 +61,7 @@ print_info() {
 # -------------
 # OS            : Arch Linux
 # Kernel        : Linux 4.9-ARCH
+# Terminal Font : Lemon
 # Uptime        : 1 hour, 41 minutes
 #
 # RIGHT
@@ -69,6 +70,7 @@ print_info() {
 # -------------
 #            OS : Arch Linux
 #        Kernel : Linux 4.9-ARCH
+# Terminal Font : Lemon
 #        Uptime : 1 hour, 41 minutes
 #
 # OFF
@@ -77,6 +79,7 @@ print_info() {
 # -------------
 # OS: Arch Linux
 # Kernel: Linux 4.9-ARCH
+# Terminal Font: Lemon
 # Uptime: 1 hour, 41 minutes
 align_info="off"
 
