@@ -2449,20 +2449,16 @@ info() {
     # Call the function.
     "get_${2:-$1}" 2>/dev/null
 
+    # If prin was used in the function, stop here.
+    [[ "$prin" ]] && { unset prin; return; }
+
     # Update the variable
     output="${2:-$1}"
     output="$(trim "${!output}")"
 
-    # If prin was used in the function, stop here.
-    [[ "$prin" ]] && \
-        unset prin && return
-
     # If the output is empty, don't print anything.
     [[ -z "${output// }" ]] && \
-        err "Info: Couldn't detect $subtitle." && return
-
-    # Align the info
-    subtitle="$(align_info "$subtitle")"
+        { err "Info: Couldn't detect $subtitle."; return; }
 
     case "$1" in
         "title")
@@ -2474,6 +2470,9 @@ info() {
         "underline") string="${underline_color}${output}" ;;
 
         *)
+            # Align the info
+            subtitle="$(align_info "$subtitle")"
+
             string="${subtitle_color}${bold}${subtitle}${reset}"
             string+="${colon_color}: ${info_color}${output}"
             length="$((${#subtitle} +  ${#output} + 2))"
