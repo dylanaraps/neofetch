@@ -2439,6 +2439,9 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
+    # If get_func doesn't exist, stop here.
+    ! type -p "get_${2:-$1}" >/dev/null 2>&1 && return
+
     # $1 is the subtitle
     subtitle="$1"
 
@@ -2450,7 +2453,7 @@ info() {
     "get_${2:-$1}" 2>/dev/null
 
     # If prin was used in the function, stop here.
-    [[ "$prin" ]] && { unset prin; return; }
+    [[ "$prin" ]] && { unset -v prin; return; }
 
     # Update the variable
     output="${2:-$1}"
