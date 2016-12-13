@@ -27,6 +27,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 **Desktop Environment**<br \>
 
+- Added Ubuntu Studio 
 - Fixed issues where MATE wouldn't be detected properly.
 - Added fallback to `$DESKTOP_SESSION`, `$MATE_DESKTOP_SESSION_ID` and `$GNOME_DESKTOP_SESSION_ID`.
 
@@ -56,6 +57,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 ## Ascii
 
+- Added Ubuntu-Studio. **[@konimex](https://github.com/konimex)**
 - Fixed bug causing macOS ascii art to be used on other Operating Systems.
 - Display warning about 'ascii' being the new default mode.
 
