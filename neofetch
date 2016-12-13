@@ -2457,11 +2457,8 @@ info() {
     [[ -z "${output// }" ]] && \
         err "Info: Couldn't detect $subtitle." && return
 
-    # Align the info.
-    case "$align_info" in
-        "left")  subtitle="$(printf "%s%$((align_amount - ${#subtitle}))s" "$subtitle")" ;;
-        "right") subtitle="$(printf "%$((align_amount - ${#subtitle}))s%s" " " "$subtitle ")" ;;
-    esac
+    # Align the info
+    subtitle="$(align_info "$subtitle")"
 
     case "$1" in
         "title")
@@ -2496,17 +2493,22 @@ info() {
 }
 
 prin() {
-    string="${1//$'\033[0m'}${2:+: $2}"
+    subtitle="${1//$'\033[0m'}"
+    string="${2:+: $2}"
 
     # If $2 doesn't exist we format $1 as info
     [[ -z "$2" ]] && local subtitle_color="$info_color"
 
-    # Format the output
-    string="${string/:/${reset}${colon_color}:${info_color}}"
-    string="${subtitle_color}${bold}${string}"
-
     # Trim whitespace
     string="$(trim "$string")"
+
+    # Align the info
+    subtitle="$(align_info "$subtitle")"
+
+    # Format the output
+    string="${subtitle}${string}"
+    string="${string/:/${reset}${colon_color}:${info_color}}"
+    string="${subtitle_color}${bold}${string}"
 
     # Print the info
     printf "%b\n" "\033[${text_padding}C${zws}${string}${reset} "
@@ -2575,6 +2577,14 @@ trim_quotes() {
 
 uppercase() {
     (("$bash_version" >= 4)) && printf "%s" "${1^}"
+}
+
+align_info() {
+    case "$align_info" in
+        "left")  printf "%s%$((align_amount - ${#1}))s" "$1 " ;;
+        "right") printf "%$((align_amount - ${#1}))s%s" " " "$1 " ;;
+        *) printf "%s" "$1" ;;
+    esac
 }
 
 # COLORS

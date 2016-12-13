@@ -85,7 +85,7 @@ align_info="off"
 # Values:   'num'
 # Flag:     --align_amount
 # NOTE: Raise this value if the alignment bugs out. Otherwise, leave it.
-align_amount=15
+align_amount=14
 
 
 # Kernel
