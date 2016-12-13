@@ -2586,9 +2586,11 @@ align_info() {
 }
 
 get_subtitle_length() {
-    subtitle_length="on"
-    print_info
-    unset subtitle_length
+    if [[ "${align_info:-off}" != "$off" ]]; then
+        subtitle_length="on"
+        print_info
+        unset -v subtitle_length
+    fi
 }
 
 count_subtitle() {
