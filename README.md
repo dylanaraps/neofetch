@@ -16,7 +16,7 @@ For more information:
 
 **https://github.com/dylanaraps/neofetch/wiki**
 
-![neofetch screenshot](https://u.teknik.io/N7d3c.png)
+![neofetch screenshot](https://u.teknik.io/KlBsD.png)
 
 
 ## Dependencies
