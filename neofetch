@@ -2442,6 +2442,10 @@ info() {
     # $1 is the subtitle
     subtitle="$1"
 
+    # Log the subtitle size
+    [[ "$subtitle_length" == "on" ]] && \
+        { count_subtitle "${#subtitle}"; return; }
+
     # Call the function.
     "get_${2:-$1}" 2>/dev/null
 
@@ -2495,6 +2499,10 @@ info() {
 prin() {
     subtitle="${1//$'\033[0m'}"
     string="${2:+: $2}"
+
+    # Log the subtitle size
+    [[ "$subtitle_length" == "on" ]] && \
+        { count_subtitle "${#subtitle}"; return; }
 
     # If $2 doesn't exist we format $1 as info
     [[ -z "$2" ]] && local subtitle_color="$info_color"
@@ -2581,10 +2589,21 @@ uppercase() {
 
 align_info() {
     case "$align_info" in
-        "left")  printf "%s%$((align_amount - ${#1}))s" "$1 " ;;
-        "right") printf "%$((align_amount - ${#1}))s%s" " " "$1 " ;;
+        "left")  printf "%s%$((subtitle_max_length - ${#1}))s" "$1 " ;;
+        "right") printf "%$((subtitle_max_length - ${#1} + 1))s%s" " " "$1 " ;;
         *) printf "%s" "$1" ;;
     esac
+}
+
+get_subtitle_length() {
+    subtitle_length="on"
+    print_info
+    unset subtitle_length
+}
+
+count_subtitle() {
+    (( "$1" > "${subtitle_max_length:-0}" )) && \
+        subtitle_max_length="$1"
 }
 
 # COLORS
@@ -3099,7 +3118,6 @@ usage() { printf "%s" "
 
     Alignment:
     --align_info left/right/off Align the info into columns.
-    --align_amount num          Alignment padding. Raise this if you have issues with the default.
 
     Text Formatting:
     --colors x x x x x x        Changes the text colors in this order:
@@ -3239,7 +3257,6 @@ get_args() {
 
             # Alignment
             "--align_info") align_info="$2" ;;
-            "--align_amount") align_amount="$2" ;;
 
             # Text Colors
             "--colors")
@@ -3382,6 +3399,7 @@ main() {
     get_image_backend
     old_functions
     get_cache_dir
+    get_subtitle_length
     print_info 2>/dev/null
     dynamic_prompt
 

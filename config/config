@@ -80,13 +80,6 @@ print_info() {
 # Uptime: 1 hour, 41 minutes
 align_info="off"
 
-# Align amount
-# Default:  '15'
-# Values:   'num'
-# Flag:     --align_amount
-# NOTE: Raise this value if the alignment bugs out. Otherwise, leave it.
-align_amount=14
-
 
 # Kernel
 
