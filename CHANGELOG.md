@@ -5,9 +5,6 @@
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 
-## Collaborators
-
-
 ## IRC
 
 Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any questions, issues or ideas feel free to join the irc channel and I'll be happy to assist you. I know that we've already got the gitter chat but hopefully this makes things easier for those without a github account. :)
