@@ -544,6 +544,12 @@ get_de() {
 
             elif [[ "$DESKTOP_SESSION" ]]; then
                 de="${DESKTOP_SESSION/ *}"
+
+            elif [[ "$GOME_DESKTOP_SESSION_ID" ]]; then
+                de="GNOME"
+
+            elif [[ "$MATE_DESKTOP_SESSION_ID" ]]; then
+                de="MATE"
             fi
         ;;
     esac
@@ -560,7 +566,7 @@ get_de() {
         *"xfce4"*) de="XFCE4" ;;
         *"xfce5"*) de="XFCE5" ;;
         *"xfce"*)  de="XFCE" ;;
-        *"mate"*)  de="MATE"
+        *"mate"*)  de="MATE" ;;
     esac
 
     # Log that the function was run.
