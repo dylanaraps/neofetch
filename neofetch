@@ -1903,17 +1903,18 @@ get_image_backend() {
     # Fallback to ascii mode if imagemagick isn't installed.
     type -p convert >/dev/null 2>&1 || image_backend="ascii"
 
+    # If image source is ascii fallback to ascii
+    if [[ "$image_source" == "ascii" ]]; then
+        image_backend="ascii"
+        err "Image: \$image_source set to 'ascii', falling back to ascii mode. "
+        err "Image: Change \$image_source to another value to use image mode."
+    fi
+
     case "${image_backend:=image}" in
         "image")
             case "$image_source" in
                 "wall"*) get_wallpaper 2>/dev/null ;;
                 "off") image_backend="off"; return ;;
-                "ascii")
-                    to_ascii "Image: \$image_source set to 'ascii', falling back to ascii mode. "
-                    err "Image: Change \$image_source to another value to use image mode."
-                    return
-                ;;
-
                 *)
                     if [[ -d "$image_source" ]]; then
                         files=("${image_source%/}"/*.{png,jpg,jpeg})
