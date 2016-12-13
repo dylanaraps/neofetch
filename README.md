@@ -16,7 +16,7 @@ For more information:
 
 **https://github.com/dylanaraps/neofetch/wiki**
 
-![1](https://ipfs.pics/ipfs/QmTtF9Sx8o617QE88GH3Z4yX7mRyi4yS1hsMHyRVmn14vJ)
+![neofetch screenshot](https://u.teknik.io/N7d3c.png)
 
 
 ## Dependencies
