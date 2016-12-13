@@ -1137,11 +1137,9 @@ get_song() {
 
         "cmus"*)
             IFS=$'\n'
-            song=($(cmus-remote -Q | grep -F -e "tag artist" -e "tag title" -e "status" | sort))
-            state="${song[0]/status }"
-            artist="${song[1]/tag artist }"
-            title="${song[2]/tag title }"
-            song="${artist/tag title } - ${title/tag artist }"
+            cmus=($(cmus-remote -Q | grep -F -e "tag artist " -e "tag title" -e "status" | sort))
+            song="${cmus[1]/tag artist } - ${cmus[2]/tag title }"
+            state="${cmus[0]/status }"
         ;;
 
         "mocp"*)
@@ -1711,7 +1709,8 @@ get_battery() {
 
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
-            battery_state="$(pmset -g batt | awk 'NR==2 {print $3}')"
+            state="$(pmset -g batt | awk '/;/ {print $4}')"
+            [[ "$state" == "charging;" ]] && battery_state="charging"
         ;;
 
         "Windows")
@@ -1936,6 +1935,10 @@ get_image_backend() {
 
         "ascii") get_ascii 2>/dev/null ;;
     esac
+
+    # Set cursor position next to ascii art.
+    [[ "$image_backend" != "off" ]] && \
+        printf "%b" "\033[$((${lines:-0} - ${prompt_loc:-0}))A\033[9999999D"
 }
 
 get_ascii() {
@@ -2385,22 +2388,22 @@ scrot_program() {
     # falling back to OS specific screenshot tools.
     if [[ -n "$DISPLAY" ]]; then
         if [[ "$scrot_cmd" != "auto" ]] && type -p "$scrot_cmd" >/dev/null; then
-            scrot_program="$scrot_cmd"
+            scrot_program=("$scrot_cmd")
 
         elif type -p scrot >/dev/null; then
-            scrot_program="scrot"
+            scrot_program=(scrot)
 
         elif type -p maim >/dev/null; then
-            scrot_program="maim"
+            scrot_program=(maim)
 
         elif type -p import >/dev/null; then
-            scrot_program="import -window root"
+            scrot_program=(import -window root)
 
         elif type -p imlib2_grab >/dev/null; then
-            scrot_program="imlib2_grab"
+            scrot_program=(imlib2_grab)
 
         elif type -p gnome-screenshot >/dev/null; then
-            scrot_program="gnome-screenshot -f"
+            scrot_program=(gnome-screenshot -f)
 
         else
             err "Scrot: No screen capture tool found."
@@ -2408,15 +2411,15 @@ scrot_program() {
         fi
     else
         case "$os" in
-            "Mac OS X") scrot_program="screencapture -S" ;;
-            "Haiku") scrot_program="screenshot -s" ;;
+            "Mac OS X") scrot_program=(screencapture -S) ;;
+            "Haiku") scrot_program=(screenshot -s) ;;
         esac
     fi
 
     # Take the scrot.
-    $scrot_program "$1"
+    "${scrot_program[@]}" "$1"
 
-    err "Scrot: Screen captured using $scrot_program"
+    err "Scrot: Screen captured using ${scrot_program[0]}"
 }
 
 # TEXT FORMATTING
@@ -2946,12 +2949,15 @@ get_term_padding() {
 }
 
 dynamic_prompt() {
-    if [[ "$image_backend" == "image" ]]; then
-        get_term_padding 2>/dev/null
+    case "$image_backend" in
+        "image")
+            get_term_padding 2>/dev/null
 
-        # Calculate image height in terminal cells.
-        lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height))"
-    fi
+            # Calculate image height in terminal cells.
+            lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height))"
+        ;;
+        "off") return ;;
+    esac
 
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
@@ -3329,42 +3335,23 @@ main() {
     get_bold
     get_distro_colors
 
-    # Restore cursor and clear screen on ctrl+c
-    trap 'printf "\033[?25h"; clear; exit' 2
-
     # If the script exits for any reason, unhide the cursor.
-    trap 'printf "\033[?25h"' EXIT
+    trap 'printf "\033[?25h\033[?7h"' EXIT
 
     # Hide the cursor and disable line wrap
     printf "\033[?25l\033[?7l"
 
     get_image_backend
-
-    if [[ "$image_backend" != "off" ]]; then
-        # Set cursor position next to ascii art
-        printf "%b" "\033[$((${lines:-0} - ${prompt_loc:-0}))A"
-
-        # Reset horizontal cursor position
-        printf "\033[9999999D"
-    fi
-
-    # Print the info
     old_functions
     get_cache_dir
     print_info 2>/dev/null
+    dynamic_prompt
 
-    # Prompt calculation
-    if [[ "$image_backend" != "off" ]]; then
-        dynamic_prompt
+    # w3m-img: Draw the image a second time to fix
+    # rendering issues in specific terminal emulators.
+    [[ "$image_backend" == "image" && "$image_program" == "w3m" ]] && display_image
 
-        # w3m-img: Draw the image a second time to fix
-        # rendering issues in specific terminal emulators.
-        [[ "$image_backend" == "image" && "$image_program" == "w3m" ]] && display_image
-    fi
-
-    # Re-enable line wrap
-    printf "%b" "\033[?7h"
-
+    # Take a screenshot
     [[ "$scrot" == "on" ]] && take_scrot
 
     # Show error messages
