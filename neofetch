@@ -2456,6 +2456,12 @@ info() {
     [[ -z "${output// }" ]] && \
         err "Info: Couldn't detect $subtitle." && return
 
+    # Align the info.
+    case "$align_info" in
+        "left")  subtitle="$(printf "%s%$((align_amount - ${#subtitle}))s" "$subtitle")" ;;
+        "right") subtitle="$(printf "%$((align_amount - ${#subtitle}))s%s" " " "$subtitle ")" ;;
+    esac
+
     case "$1" in
         "title")
             string="${title_color}${bold}${output}"
@@ -3080,6 +3086,10 @@ usage() { printf "%s" "
     --birthday_time on/off      Enable/Disable showing the time in birthday output
     --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
+    Alignment:
+    --align_info left/right/off Align the info into columns.
+    --align_amount num          Alignment padding. Raise this if you have issues with the default.
+
     Text Formatting:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
@@ -3215,6 +3225,10 @@ get_args() {
                     esac
                 done
             ;;
+
+            # Alignment
+            "--align_info") align_info="$2" ;;
+            "--align_amount") align_amount="$2" ;;
 
             # Text Colors
             "--colors")
