@@ -2425,9 +2425,6 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
-    # $1 is the subtitle
-    subtitle="$1"
-
     # Call the function.
     "get_${2:-$1}" 2>/dev/null
 
@@ -2435,61 +2432,54 @@ info() {
     output="${2:-$1}"
     output="$(trim "${!output}")"
 
-    # If prin was used in the function, stop here.
-    [[ "$prin" ]] && \
-        unset prin && return
-
     # If the output is empty, don't print anything.
     [[ -z "${output// }" ]] && \
-        err "Info: Couldn't detect $subtitle." && return
+        { err "Info: Couldn't detect ${1}."; return; }
 
     case "$1" in
         "title")
             string="${title_color}${bold}${output}"
             string="${string/@/${at_color}@${title_color}${bold}}"
             length="${#output}"
+            prin "$string"
         ;;
 
-        "underline") string="${underline_color}${output}" ;;
+        "underline")
+            string="${underline_color}${output}"
+            prin "$string"
+        ;;
 
         *)
-            string="${subtitle_color}${bold}${subtitle}${reset}"
-            string+="${colon_color}: ${info_color}${output}"
-            length="$((${#subtitle} +  ${#output} + 2))"
+            if [[ "$2" && "${output// }" ]]; then
+                length="$((${#1} + ${#output} + 2))"
+                prin "$1" "$output"
+
+            elif [[ "${output// }" ]]; then
+                length="${#output}"
+                prin "$output"
+            fi
         ;;
     esac
-
-    # If there's no subtitle don't print one
-    [[ -z "$2" ]] && string="${string/*: }"
-
-    # Print the string
-    printf "%b\n" "\033[${text_padding}C${zws}${string}${reset} "
-
-    # Calculate info height
-    info_height="$((info_height+=1))"
 }
 
 prin() {
-    string="${1//$'\033[0m'}${2:+: $2}"
+    subtitle="${1//$'\033[0m'}"
+    string="${2:+: $2}"
 
     # If $2 doesn't exist we format $1 as info
     [[ -z "$2" ]] && local subtitle_color="$info_color"
 
     # Format the output
+    string="$(trim "$string")"
+    string="${subtitle}${string}"
     string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
-
-    # Trim whitespace
-    string="$(trim "$string")"
 
     # Print the info
     printf "%b\n" "\033[${text_padding}C${zws}${string}${reset} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
-
-    # Tell info() that prin() was used.
-    prin=1
 }
 
 get_underline() {
