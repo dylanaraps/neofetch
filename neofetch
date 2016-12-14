@@ -3072,8 +3072,8 @@ INFO
                                 Unsupported on Windows
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
-    --gtk2 on/off               Enable/Disable gtk2 theme/icons output
-    --gtk3 on/off               Enable/Disable gtk3 theme/icons output
+    --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
+    --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --ip_host url               URL to query for public IP
