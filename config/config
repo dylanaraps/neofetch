@@ -47,6 +47,43 @@ print_info() {
 }
 
 
+# Info alignment
+
+# Align the info into columns.
+# Default:  'off'
+# Values:   'left', 'right', 'off'
+# Flag:     --align_info
+# Example:
+#
+# LEFT
+#
+# user@hostname
+# -------------
+# OS            : Arch Linux
+# Kernel        : Linux 4.9-ARCH
+# Terminal Font : Lemon
+# Uptime        : 1 hour, 41 minutes
+#
+# RIGHT
+#
+# user@hostname
+# -------------
+#            OS : Arch Linux
+#        Kernel : Linux 4.9-ARCH
+# Terminal Font : Lemon
+#        Uptime : 1 hour, 41 minutes
+#
+# OFF
+#
+# user@hostname
+# -------------
+# OS: Arch Linux
+# Kernel: Linux 4.9-ARCH
+# Terminal Font: Lemon
+# Uptime: 1 hour, 41 minutes
+align_info="off"
+
+
 # Kernel
 
 

@@ -2425,23 +2425,31 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
+    # If get_func doesn't exist, stop here.
+    type -p "get_${2:-$1}" >/dev/null 2>&1 || return
+
     # $1 is the subtitle
     subtitle="$1"
 
+    # Log the subtitle size
+    if [[ "$subtitle_length" == "on" ]]; then
+        [[ "$2" ]] && count_subtitle "${#subtitle}"
+        return
+    fi
+
     # Call the function.
     "get_${2:-$1}" 2>/dev/null
+
+    # If prin was used in the function, stop here.
+    [[ "$prin" ]] && { unset -v prin; return; }
 
     # Update the variable
     output="${2:-$1}"
     output="$(trim "${!output}")"
 
-    # If prin was used in the function, stop here.
-    [[ "$prin" ]] && \
-        unset prin && return
-
     # If the output is empty, don't print anything.
     [[ -z "${output// }" ]] && \
-        err "Info: Couldn't detect $subtitle." && return
+        { err "Info: Couldn't detect $subtitle."; return; }
 
     case "$1" in
         "title")
@@ -2453,6 +2461,9 @@ info() {
         "underline") string="${underline_color}${output}" ;;
 
         *)
+            # Align the info
+            subtitle="$(align_info "$subtitle")"
+
             string="${subtitle_color}${bold}${subtitle}${reset}"
             string+="${colon_color}: ${info_color}${output}"
             length="$((${#subtitle} +  ${#output} + 2))"
@@ -2470,17 +2481,29 @@ info() {
 }
 
 prin() {
-    string="${1//$'\033[0m'}${2:+: $2}"
+    subtitle="${1//$'\033[0m'}"
+    string="${2:+: $2}"
+
+    # Log the subtitle size
+    # Log the subtitle size
+    if [[ "$subtitle_length" == "on" ]]; then
+        [[ "$2" ]] && count_subtitle "${#subtitle}"
+        return
+    fi
 
     # If $2 doesn't exist we format $1 as info
     [[ -z "$2" ]] && local subtitle_color="$info_color"
 
-    # Format the output
-    string="${string/:/${reset}${colon_color}:${info_color}}"
-    string="${subtitle_color}${bold}${string}"
-
     # Trim whitespace
     string="$(trim "$string")"
+
+    # Align the info
+    subtitle="$(align_info "$subtitle")"
+
+    # Format the output
+    string="${subtitle}${string}"
+    string="${string/:/${reset}${colon_color}:${info_color}}"
+    string="${subtitle_color}${bold}${string}"
 
     # Print the info
     printf "%b\n" "\033[${text_padding}C${zws}${string}${reset} "
@@ -2543,6 +2566,27 @@ trim_quotes() {
 
 uppercase() {
     (("$bash_version" >= 4)) && printf "%s" "${1^}"
+}
+
+align_info() {
+    case "$align_info" in
+        "left")  printf "%s%$((subtitle_max_length - ${#1}))s" "$1 " ;;
+        "right") printf "%$((subtitle_max_length - ${#1} + 1))s%s" "" "$1 " ;;
+        *) printf "%s" "$1" ;;
+    esac
+}
+
+get_subtitle_length() {
+    if [[ "${align_info:-off}" != "$off" ]]; then
+        subtitle_length="on"
+        print_info
+        unset -v subtitle_length
+    fi
+}
+
+count_subtitle() {
+    (( "$1" > "${subtitle_max_length:-0}" )) && \
+        subtitle_max_length="$1"
 }
 
 # COLORS
@@ -3062,6 +3106,9 @@ usage() { printf "%s" "
     --birthday_time on/off      Enable/Disable showing the time in birthday output
     --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
+    Alignment:
+    --align_info left/right/off Align the info into columns.
+
     Text Formatting:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
@@ -3197,6 +3244,9 @@ get_args() {
                     esac
                 done
             ;;
+
+            # Alignment
+            "--align_info") align_info="$2" ;;
 
             # Text Colors
             "--colors")
@@ -3339,6 +3389,7 @@ main() {
     get_image_backend
     old_functions
     get_cache_dir
+    get_subtitle_length
     print_info 2>/dev/null
     dynamic_prompt
 
