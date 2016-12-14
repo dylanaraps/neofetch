@@ -3331,4 +3331,3 @@ main() {
 }
 
 main "$@"
-# Print it immediatly since it's a special function.
