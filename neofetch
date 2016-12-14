@@ -723,34 +723,25 @@ get_cpu() {
     # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
     # information so we have to use this block below which temporarily sets the
     # OS to 'Linux' for the duration of this function.
-    case "$distro" in
-        "NetBSD"*) local os="Linux" ;;
-    esac
+    [[ "$distro" == "NetBSD"* ]] && local os="Linux"
 
     case "$os" in
         "Linux" | "Windows")
-            # Get cpu name
+            # Get CPU name
             case "$distro" in
                 "Android"*) cpu="$(getprop ro.product.board)" ;;
                 *) cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)" ;;
             esac
+
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
             temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
 
-            # Get cpu speed
+            # Get CPU speed
             if [[ -d "$speed_dir" ]]; then
-                case "$speed_type" in
-                    "current") speed_type="scaling_cur_freq" ;;
-                    "min") speed_type="scaling_min_freq" ;;
-                    "max") speed_type="scaling_max_freq" ;;
-                    "bios") speed_type="bios_limit" ;;
-                esac
-
-                # Fallback to cpuinfo_max_freq if $speed_type fails
+                # Fallback to bios_limit if $speed_type fails.
                 speed="$(< "${speed_dir}/${speed_type}")" || \
                 speed="$(< "${speed_dir}/bios_limit")" || \
                 speed="$(< "${speed_dir}/scaling_max_freq")"
-
                 speed="$((speed / 100000))"
 
             else
@@ -758,14 +749,14 @@ get_cpu() {
                 speed="$((speed / 100))"
             fi
 
-            # Get cpu temp
+            # Get CPU temp
             if [[ "$cpu_temp" == "on" && -f "$temp_dir" ]]; then
                 temp="$(< "$temp_dir")"
                 temp="$((temp * 100 / 10000))"
                 temp="[${temp/${temp: -1}}.${temp: -1}°C]"
             fi
 
-            # Show/hide hyperthreaded cores
+            # Get CPU cores
             case "$cpu_cores" in
                 "logical" | "on") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
                 "physical") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
@@ -775,7 +766,7 @@ get_cpu() {
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
 
-            # Show/hide hyperthreaded cores
+            # Get CPU cores
             case "$cpu_cores" in
                 "logical" | "on") cores="$(sysctl -n hw.logicalcpu_max)" ;;
                 "physical") cores="$(sysctl -n hw.physicalcpu_max)" ;;
@@ -810,20 +801,20 @@ get_cpu() {
         ;;
 
         "BSD")
-            # Get cpu name
+            # Get CPU name
             cpu="$(sysctl -n hw.model)"
             cpu="${cpu/[0-9]\.*}"
             cpu="${cpu/ @*}"
 
-            # Get cpu speed
+            # Get CPU speed
             speed="$(sysctl -n hw.cpuspeed)"
             [[ -z "$speed" ]] && speed="$(sysctl -n  hw.clockrate)"
             speed="$((speed / 100))"
 
-            # Get cpu cores
+            # Get CPU cores
             cores="$(sysctl -n hw.ncpu)"
 
-            # Get cpu temp
+            # Get CPU temp
             if [[ "$cpu_temp" == "on" ]]; then
                 case "$kernel_name" in
                     "FreeBSD"* | "DragonFly"*)
@@ -839,17 +830,17 @@ get_cpu() {
         ;;
 
         "Solaris")
-            # Get cpuname
+            # Get CPU name
             cpu="$(psrinfo -pv)"
             cpu="${cpu//*$'\n'}"
             cpu="${cpu/[0-9]\.*}"
             cpu="${cpu/ @*}"
 
-            # Get cpu speed
+            # Get CPU speed
             speed="$(psrinfo -v | awk '/operates at/ {print $6; exit}')"
             speed="$((speed / 100))"
 
-            # Show/hide hyperthreaded cores
+            # Get CPU cores
             case "$cpu_cores" in
                 "logical" | "on") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
                 "physical") cores="$(psrinfo -p)" ;;
@@ -857,35 +848,33 @@ get_cpu() {
         ;;
 
         "Haiku")
+            # Get CPU name
             cpu="$(sysinfo -cpu | awk -F '\\"' '/CPU #0/ {print $2}')"
             cpu="${cpu/@*}"
+
+            # Get CPU speed
             speed="$(sysinfo -cpu | awk '/running at/ {print $NF; exit}')"
             speed="${speed/MHz}"
             speed="$((speed / 100))"
+
+            # Get CPU cores
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
         ;;
     esac
 
-    # Format the output
-    case "$os" in
-        "Mac OS X" | "iPhone OS") ;;
-        *)
-            # Fix for speeds under 1ghz
-            if [[ -z "${speed:1}" ]]; then
-                speed="0.${speed}"
-            else
-                speed="${speed:0:1}.${speed:1}"
-            fi
+    # Fix for speeds under 1ghz
+    if [[ "$speed" ]]; then
+        if [[ -z "${speed:1}" ]]; then
+            speed="0.${speed}"
+        else
+            speed="${speed:0:1}.${speed:1}"
+        fi
 
-            cpu="$cpu @ ${speed}GHz $temp"
-        ;;
-    esac
+        cpu="$cpu @ ${speed}GHz $temp"
+    fi
 
     # Remove uneeded patterns from cpu output
-    # This is faster than sed/gsub
-    cpu="${cpu//(tm)}"
     cpu="${cpu//(TM)}"
-    cpu="${cpu//(r)}"
     cpu="${cpu//(R)}"
     cpu="${cpu//CPU}"
     cpu="${cpu//Processor}"
@@ -910,14 +899,11 @@ get_cpu() {
         "speed") cpu="${cpu#*@ }" ;;
 
         "on" | "tiny")
-            cpu="${cpu/Intel }"
-            cpu="${cpu/Core }"
-            cpu="${cpu/Core? Duo }"
             cpu="${cpu/AMD }"
+            cpu="${cpu/Intel }"
+            cpu="${cpu/Core? Duo }"
 
-            case "$cpu_shorthand" in
-                "tiny") cpu="${cpu/@*}" ;;
-            esac
+            [[ "$cpu_shorthand" == "tiny" ]] && cpu="${cpu/@*}"
         ;;
     esac
 }
@@ -2996,18 +2982,25 @@ old_functions() {
     fi
 }
 
-old_flags() {
+old_options() {
     [[ -n "$osx_buildversion" ]] && err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
-    [[ -n "$osx_codename" ]] && err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
-    [[ "$cpu_cores" == "on" ]] && err "Config: \$cpu_cores='on' is deprecated, use \$cpu_cores='logical|physical|off' instead."
-    [[ -n "$image" ]] && { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
+    [[ -n "$osx_codename" ]]     && err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
+    [[ "$cpu_cores" == "on" ]]   && err "Config: cpu_cores='on' is deprecated, use cpu_cores='logical|physical|off' instead."
+    [[ -n "$image" ]]            && { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
 
     # All progress_ variables were changed to bar_
-    [[ -n "$progress_char" ]] && err "Config: \$progress_char is deprecated, use \$bar_char_elapsed and \$bar_char_total instead."
-    [[ -n "$progress_border" ]] && err "Config: \$progress_border is deprecated, use \$bar_border instead."
-    [[ -n "$progress_length" ]] && err "Config: \$progress_length is deprecated, use \$bar_length instead."
+    [[ -n "$progress_char" ]]          && err "Config: \$progress_char is deprecated, use \$bar_char_elapsed and \$bar_char_total instead."
+    [[ -n "$progress_border" ]]        && err "Config: \$progress_border is deprecated, use \$bar_border instead."
+    [[ -n "$progress_length" ]]        && err "Config: \$progress_length is deprecated, use \$bar_length instead."
     [[ -n "$progress_color_elapsed" ]] && err "Config: \$progress_color_elapsed is deprecated, use \$bar_color_elapsed instead."
-    [[ -n "$progress_color_total" ]] && err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."
+    [[ -n "$progress_color_total" ]]   && err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."
+
+    # All cpufreq values were changed in 2.1.0.
+    # 'current', 'min', 'max', 'bios'
+    [[ "$speed_type" == "current" ]] && err "Config: speed_type='current' is deprecated, use speed_type='scaling_cur_freq' instead."
+    [[ "$speed_type" == "min" ]]     && err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
+    [[ "$speed_type" == "max" ]]     && err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
+    [[ "$speed_type" == "bios" ]]    && err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
 }
 
 cache_uname() {
@@ -3332,7 +3325,7 @@ main() {
     get_os
     get_default_config 2>/dev/null
     get_args "$@"
-    old_flags
+    old_options
     get_distro
     get_bold
     get_distro_colors
