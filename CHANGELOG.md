@@ -21,6 +21,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
     - We were calling these multiple times, we now check to see if they were run previously.
 - Optimize info caching, only check for cache files in scripts that use caching.
 - Cleanup `main()`.
+- Renamed `old_flags()` --> `old_options()`.
 
 
 ## Info
@@ -29,6 +30,14 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Fixed issues where MATE wouldn't be detected properly.
 - Added fallback to `$DESKTOP_SESSION`, `$MATE_DESKTOP_SESSION_ID` and `$GNOME_DESKTOP_SESSION_ID`.
+
+**CPU**<br \>
+
+- [Linux] Don't simplify `cpufreq` speed option names for no reason.
+- [NetBSD] Remove case statement in favor of 1 line test.
+- Remove case sensitive substitutions.
+    - We match everything case insensitively so they were pointless.
+- Simplify check for low CPU speeds.
 
 **Disk**<br \>
 
