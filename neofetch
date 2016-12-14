@@ -1270,7 +1270,6 @@ get_song() {
         else
             prin "$subtitle" "$song"
         fi
-        unset song
     fi
 }
 
@@ -1680,8 +1679,6 @@ get_battery() {
 
                 prin "${subtitle}${bat: -1}" "$battery"
             done
-
-            unset battery
             return
         ;;
 
@@ -2429,12 +2426,17 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
+    # Make sure that $prin is unset.
+    unset -v prin
+
     # Call the function.
     "get_${2:-$1}" 2>/dev/null
 
+    # If the get_func function called 'prin' directly, stop here.
+    (( "$prin" == 1 )) && return
+
     # Update the variable
-    output="${2:-$1}"
-    output="$(trim "${!output}")"
+    output="$(trim "${!2:-${!1}}")"
 
     if [[ "$2" && "${output// }" ]]; then
         length="$((${#1} + ${#output} + 2))"
@@ -2464,6 +2466,9 @@ prin() {
 
     # Calculate info height
     info_height="$((info_height+=1))"
+
+    # Log that prin was used.
+    prin=1
 }
 
 get_underline() {
