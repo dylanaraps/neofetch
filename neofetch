@@ -273,7 +273,6 @@ get_model() {
 }
 
 get_title() {
-    # Get the info.
     user="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}"
     hostname="${HOSTNAME:-$(hostname)}"
     title="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
