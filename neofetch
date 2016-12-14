@@ -273,7 +273,11 @@ get_model() {
 }
 
 get_title() {
-    title="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}@${HOSTNAME:-$(hostname)}"
+    # Get the info.
+    user="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}"
+    hostname="${HOSTNAME:-$(hostname)}"
+    title="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
+    length="$((${#user} + ${#hostname} + 1))"
 }
 
 get_kernel() {
@@ -2437,23 +2441,10 @@ info() {
         prin "$1" "$output"
 
     elif [[ "${output// }" ]]; then
-        case "$1" in
-            "title")
-                string="${title_color}${bold}${output}"
-                string="${string/@/${at_color}@${title_color}${bold}}"
-            ;;
+        [[ -z "$length" ]] && length="${#output}"
+        prin "$output"
 
-            "underline")
-                string="${underline_color}${output}"
-            ;;
-
-            *) string="$output" ;;
-        esac
-
-        length="${#output}"
-        prin "$string"
     else
-
         err "Info: Couldn't detect ${1}."
     fi
 }
@@ -2478,7 +2469,8 @@ prin() {
 get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         underline="$(printf %"$length"s)"
-        underline="${underline// /$underline_char}"
+        underline="${underline_color}${underline// /$underline_char}"
+        unset -v length
     fi
 }
 
@@ -3339,3 +3331,4 @@ main() {
 }
 
 main "$@"
+# Print it immediatly since it's a special function.
