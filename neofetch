@@ -1118,8 +1118,8 @@ get_memory() {
 
         "Solaris")
             mem_total="$(prtconf | awk '/Memory/ {print $3}')"
-            memfree="$(($(sar -r 1 1 | awk 'NR==5 {print $2}') / 1024))"
-            mem_used="$((mem_total - memfree))"
+            mem_free="$(($(sar -r 1 1 | awk 'NR==5 {print $2}') / 1024))"
+            mem_used="$((mem_total - mem_free))"
         ;;
 
         "Haiku")
