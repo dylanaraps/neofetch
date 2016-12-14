@@ -2432,7 +2432,7 @@ info() {
     "get_${2:-$1}" 2>/dev/null
 
     # If the get_func function called 'prin' directly, stop here.
-    (( "$prin" == 1 )) && return
+    [[ "$prin" ]] && return
 
     # Update the variable
     output="$(trim "${!2:-${!1}}")"
