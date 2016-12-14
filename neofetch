@@ -862,26 +862,19 @@ get_cpu() {
         ;;
     esac
 
-    # Format the output
-    case "$os" in
-        "Mac OS X" | "iPhone OS") ;;
-        *)
-            # Fix for speeds under 1ghz
-            if [[ -z "${speed:1}" ]]; then
-                speed="0.${speed}"
-            else
-                speed="${speed:0:1}.${speed:1}"
-            fi
+    # Fix for speeds under 1ghz
+    if [[ "$speed" ]]; then
+        if [[ -z "${speed:1}" ]]; then
+            speed="0.${speed}"
+        else
+            speed="${speed:0:1}.${speed:1}"
+        fi
 
-            cpu="$cpu @ ${speed}GHz $temp"
-        ;;
-    esac
+        cpu="$cpu @ ${speed}GHz $temp"
+    fi
 
     # Remove uneeded patterns from cpu output
-    # This is faster than sed/gsub
-    cpu="${cpu//(tm)}"
     cpu="${cpu//(TM)}"
-    cpu="${cpu//(r)}"
     cpu="${cpu//(R)}"
     cpu="${cpu//CPU}"
     cpu="${cpu//Processor}"
