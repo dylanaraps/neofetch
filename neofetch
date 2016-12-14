@@ -2459,14 +2459,11 @@ info() {
 }
 
 prin() {
-    subtitle="${1//$'\033[0m'}"
-    string="${2:+: $2}"
-
     # If $2 doesn't exist we format $1 as info
     [[ -z "$2" ]] && local subtitle_color="$info_color"
 
     # Format the output
-    string="${subtitle}${string}"
+    string="${1//$'\033[0m'}${2:+: $2}"
     string="$(trim "$string")"
     string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
