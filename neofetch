@@ -3151,7 +3151,7 @@ ASCII
 
                                 NOTE: Ubuntu has flavor varients.
 
-                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME' or 'Ubuntu-Budgie' to use the flavors.
+                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME', 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
 
     --ascii_logo_size           Size of ascii logo.
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
