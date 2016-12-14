@@ -723,9 +723,7 @@ get_cpu() {
     # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
     # information so we have to use this block below which temporarily sets the
     # OS to 'Linux' for the duration of this function.
-    case "$distro" in
-        "NetBSD"*) local os="Linux" ;;
-    esac
+    [[ "$distro" == "NetBSD"* ]] && local os="Linux"
 
     case "$os" in
         "Linux" | "Windows")
