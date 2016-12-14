@@ -899,10 +899,9 @@ get_cpu() {
         "speed") cpu="${cpu#*@ }" ;;
 
         "on" | "tiny")
-            cpu="${cpu/Intel }"
-            cpu="${cpu/Core }"
-            cpu="${cpu/Core? Duo }"
             cpu="${cpu/AMD }"
+            cpu="${cpu/Intel }"
+            cpu="${cpu/Core? Duo }"
 
             [[ "$cpu_shorthand" == "tiny" ]] && cpu="${cpu/@*}"
         ;;
