@@ -3015,67 +3015,83 @@ cache_uname() {
 
 # FINISH UP
 
-usage() { printf "%s" "
-    NEOFETCH
+usage() { printf "%s" "\
+Usage: neofetch --option \"value\" --option \"value\"
 
-    USAGE: neofetch --option \"value\" --option \"value\"
+Neofetch is a CLI system information tool written in BASH.
 
-    NOTE: There's also a config option for each flag below.
+NOTE: Every launch flag has a config option.
 
-    Info:
+Options:
+
+INFO
+
     --disable infoname          Allows you to disable an info line from appearing
                                 in the output.
-                                NOTE: You can supply multiple args. eg.
-                                'neofetch --disable cpu gpu disk shell'
-                                NOTE: The arguments must all be lowercase.
+
+                                NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu disk shell'
+
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
+
                                 NOTE: This only support Linux with cpufreq.
+
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores type            Whether or not to display the number of CPU cores
                                 Takes: logical, physical, off
+
                                 NOTE: 'physical' doesn't work on BSD.
+
     --cpu_speed on/off          Hide/Show cpu speed.
     --cpu_temp on/off           Hide/Show cpu temperature.
+
                                 NOTE: This only works on Linux and BSD.
-                                NOTE: For FreeBSD-based systems, you need to enable coretemp
-                                      kernel module.
+
+                                NOTE: For FreeBSD-based systems, you need to enable coretemp kernel module.
+
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
+
                                 NOTE: This option won't work in Windows (Cygwin)
+
     --kernel_shorthand on/off   Shorten the output of kernel
+
                                 NOTE: This option won't work in BSDs (except PacBSD and PC-BSD)
+
     --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
-    --gtk2 on/off               Enable/Disable gtk2 theme/icons output
-    --gtk3 on/off               Enable/Disable gtk3 theme/icons output
+    --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
+    --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
-    --ip_host url               Url to query for public IP
+    --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on seperate lines
     --birthday_shorthand on/off Shorten the output of birthday
     --birthday_time on/off      Enable/Disable showing the time in birthday output
     --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
-    Text Formatting:
+TEXT FORMATTING
+
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
     --underline on/off          Enable/Disable the underline.
     --underline_char char       Character to use when underlining title
     --bold on/off               Enable/Disable bold text
 
-    Color Blocks:
+COLOR BLOCKS
+
     --color_blocks on/off       Enable/Disable the color blocks
     --block_width num           Width of color blocks in spaces
     --block_height num          Height of color blocks in lines
     --block_range start end     Range of colors to print as blocks
 
-    Bars:
+BARS
+
     --bar_char 'elapsed char' 'total char'
                                 Characters to use when drawing bars.
     --bar_border on/off         Whether or not to surround the bar with '[]'
@@ -3090,8 +3106,8 @@ usage() { printf "%s" "
                                 Takes: bar, infobar, barinfo, off
     --disk_display mode         Bar mode.
                                 Takes: bar, infobar, barinfo, off
+IMAGE
 
-    Image:
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, ascii,
                                 /path/to/img, /path/to/dir/, off
@@ -3110,39 +3126,83 @@ usage() { printf "%s" "
     --bg_color color            Background color to display behind transparent image.
                                 This only works with w3m.
     --gap num                   Gap between image and text.
-                                NOTE: --gap can take a negative value which will
-                                move the text closer to the left side.
+
+                                NOTE: --gap can take a negative value which will move the text closer to the left side.
+
     --clean                     Delete cached files and thumbnails.
 
-    Ascii:
+ASCII
+
     --ascii value               Where to get the ascii from, Possible values:
                                 distro, /path/to/ascii
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
+
                                 NOTE: Arch and Ubuntu have 'old' logo varients.
+
                                 NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
+
                                 NOTE: Ubuntu has flavor varients.
-                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME'
-                                or 'Ubuntu-Budgie' to use the flavors.
+
+                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME', 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
+
     --ascii_logo_size           Size of ascii logo.
                                 Supported distros: Arch, Gentoo, Crux, OpenBSD.
     --ascii_bold on/off         Whether or not to bold the ascii logo.
-    --logo | -L                 Hide the info text and only show the ascii logo.
+    -L, --logo                  Hide the info text and only show the ascii logo.
 
-    Screenshot:
-    --scrot | -s /path/to/img   Take a screenshot, if path is left empty the screen-
+SCREENSHOT
+
+    -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
-    --upload | -su /pth/t/img   Same as --scrot but uploads the scrot to a website.
+    -su, --upload /path/to/img  Same as --scrot but uploads the scrot to a website.
     --image_host                Website to upload scrots to. Takes: imgur, teknik
     --scrot_cmd cmd             Screenshot program to launch
 
-    Other:
+OTHER
+
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
     --help                      Print this text and exit
     --version                   Show neofetch version
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
+
+DEVELOPER
+
+    --gen-man                   Generate a manpage for Neofetch in your PWD.
+
+
+Report bugs to https://github.com/dylanaraps/neofetch/issues
+
+"
+exit 1
+}
+
+version() { printf "%s" "\
+Neofetch 2.1.0
+
+Copyright (c) 2016 Dylan Araps
+
+License MIT: Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the 'Software'), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Written by Dylan Araps with help from the following people:
+
+https://github.com/dylanaraps/neofetch/contributors
+
 "
 exit 1
 }
@@ -3313,7 +3373,8 @@ get_args() {
             "-v") verbose="on" ;;
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
-            "--version") printf "%s\n" "Neofetch 2.1.0"; exit ;;
+            "--version") version ;;
+            "--gen-man") help2man -N neofetch -o neofetch.1; exit 1 ;;
         esac
 
         shift
