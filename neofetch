@@ -2989,18 +2989,25 @@ old_functions() {
     fi
 }
 
-old_flags() {
+old_options() {
     [[ -n "$osx_buildversion" ]] && err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
-    [[ -n "$osx_codename" ]] && err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
-    [[ "$cpu_cores" == "on" ]] && err "Config: \$cpu_cores='on' is deprecated, use \$cpu_cores='logical|physical|off' instead."
-    [[ -n "$image" ]] && { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
+    [[ -n "$osx_codename" ]]     && err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
+    [[ "$cpu_cores" == "on" ]]   && err "Config: cpu_cores='on' is deprecated, use cpu_cores='logical|physical|off' instead."
+    [[ -n "$image" ]]            && { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
 
     # All progress_ variables were changed to bar_
-    [[ -n "$progress_char" ]] && err "Config: \$progress_char is deprecated, use \$bar_char_elapsed and \$bar_char_total instead."
-    [[ -n "$progress_border" ]] && err "Config: \$progress_border is deprecated, use \$bar_border instead."
-    [[ -n "$progress_length" ]] && err "Config: \$progress_length is deprecated, use \$bar_length instead."
+    [[ -n "$progress_char" ]]          && err "Config: \$progress_char is deprecated, use \$bar_char_elapsed and \$bar_char_total instead."
+    [[ -n "$progress_border" ]]        && err "Config: \$progress_border is deprecated, use \$bar_border instead."
+    [[ -n "$progress_length" ]]        && err "Config: \$progress_length is deprecated, use \$bar_length instead."
     [[ -n "$progress_color_elapsed" ]] && err "Config: \$progress_color_elapsed is deprecated, use \$bar_color_elapsed instead."
-    [[ -n "$progress_color_total" ]] && err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."
+    [[ -n "$progress_color_total" ]]   && err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."
+
+    # All cpufreq values were changed in 2.1.0.
+    # 'current', 'min', 'max', 'bios'
+    [[ "$speed_type" == "current" ]] && err "Config: speed_type='current' is deprecated, use speed_type='scaling_cur_freq' instead."
+    [[ "$speed_type" == "min" ]]     && err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
+    [[ "$speed_type" == "max" ]]     && err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
+    [[ "$speed_type" == "bios" ]]    && err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
 }
 
 cache_uname() {
@@ -3325,7 +3332,7 @@ main() {
     get_os
     get_default_config 2>/dev/null
     get_args "$@"
-    old_flags
+    old_options
     get_distro
     get_bold
     get_distro_colors
