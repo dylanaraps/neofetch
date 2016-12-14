@@ -3175,6 +3175,10 @@ OTHER
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
 
+DEVELOPER
+
+    --gen-man                   Generate a manpage for Neofetch in your PWD.
+
 
 Report bugs to https://github.com/dylanaraps/neofetch/issues
 
@@ -3377,6 +3381,7 @@ get_args() {
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
             "--version") version ;;
+            "--gen-man") help2man -N neofetch -o neofetch.1; exit 1 ;;
         esac
 
         shift
