@@ -734,23 +734,16 @@ get_cpu() {
                 "Android"*) cpu="$(getprop ro.product.board)" ;;
                 *) cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)" ;;
             esac
+
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
             temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
 
             # Get cpu speed
             if [[ -d "$speed_dir" ]]; then
-                case "$speed_type" in
-                    "current") speed_type="scaling_cur_freq" ;;
-                    "min") speed_type="scaling_min_freq" ;;
-                    "max") speed_type="scaling_max_freq" ;;
-                    "bios") speed_type="bios_limit" ;;
-                esac
-
-                # Fallback to cpuinfo_max_freq if $speed_type fails
+                # Fallback to bios_limit if $speed_type fails.
                 speed="$(< "${speed_dir}/${speed_type}")" || \
                 speed="$(< "${speed_dir}/bios_limit")" || \
                 speed="$(< "${speed_dir}/scaling_max_freq")"
-
                 speed="$((speed / 100000))"
 
             else
