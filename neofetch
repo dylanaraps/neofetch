@@ -2432,34 +2432,30 @@ info() {
     output="${2:-$1}"
     output="$(trim "${!output}")"
 
-    # If the output is empty, don't print anything.
-    [[ -z "${output// }" ]] && \
-        { err "Info: Couldn't detect ${1}."; return; }
+    if [[ "$2" && "${output// }" ]]; then
+        length="$((${#1} + ${#output} + 2))"
+        prin "$1" "$output"
 
-    case "$1" in
-        "title")
-            string="${title_color}${bold}${output}"
-            string="${string/@/${at_color}@${title_color}${bold}}"
-            length="${#output}"
-            prin "$string"
-        ;;
+    elif [[ "${output// }" ]]; then
+        case "$1" in
+            "title")
+                string="${title_color}${bold}${output}"
+                string="${string/@/${at_color}@${title_color}${bold}}"
+            ;;
 
-        "underline")
-            string="${underline_color}${output}"
-            prin "$string"
-        ;;
+            "underline")
+                string="${underline_color}${output}"
+            ;;
 
-        *)
-            if [[ "$2" && "${output// }" ]]; then
-                length="$((${#1} + ${#output} + 2))"
-                prin "$1" "$output"
+            *) string="$output" ;;
+        esac
 
-            elif [[ "${output// }" ]]; then
-                length="${#output}"
-                prin "$output"
-            fi
-        ;;
-    esac
+        length="${#output}"
+        prin "$string"
+    else
+
+        err "Info: Couldn't detect ${1}."
+    fi
 }
 
 prin() {
@@ -2470,8 +2466,8 @@ prin() {
     [[ -z "$2" ]] && local subtitle_color="$info_color"
 
     # Format the output
-    string="$(trim "$string")"
     string="${subtitle}${string}"
+    string="$(trim "$string")"
     string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
 
