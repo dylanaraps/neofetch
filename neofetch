@@ -2440,14 +2440,16 @@ scrot_program() {
 
 info() {
     # If get_func doesn't exist, stop here.
-    ! type -p "get_${2:-$1}" >/dev/null 2>&1 && return
+    type -p "get_${2:-$1}" >/dev/null 2>&1 || return
 
     # $1 is the subtitle
     subtitle="$1"
 
     # Log the subtitle size
-    [[ "$subtitle_length" == "on" ]] && \
-        { count_subtitle "${#subtitle}"; return; }
+    if [[ "$subtitle_length" == "on" ]]; then
+        [[ "$2" ]] && count_subtitle "${#subtitle}"
+        return
+    fi
 
     # Call the function.
     "get_${2:-$1}" 2>/dev/null
@@ -2497,8 +2499,11 @@ prin() {
     string="${2:+: $2}"
 
     # Log the subtitle size
-    [[ "$subtitle_length" == "on" ]] && \
-        { count_subtitle "${#subtitle}"; return; }
+    # Log the subtitle size
+    if [[ "$subtitle_length" == "on" ]]; then
+        [[ "$2" ]] && count_subtitle "${#subtitle}"
+        return
+    fi
 
     # If $2 doesn't exist we format $1 as info
     [[ -z "$2" ]] && local subtitle_color="$info_color"
@@ -2580,7 +2585,7 @@ uppercase() {
 align_info() {
     case "$align_info" in
         "left")  printf "%s%$((subtitle_max_length - ${#1}))s" "$1 " ;;
-        "right") printf "%$((subtitle_max_length - ${#1} + 1))s%s" " " "$1 " ;;
+        "right") printf "%$((subtitle_max_length - ${#1} + 1))s%s" "" "$1 " ;;
         *) printf "%s" "$1" ;;
     esac
 }
