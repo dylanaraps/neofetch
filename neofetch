@@ -494,38 +494,28 @@ get_packages() {
 
 get_shell() {
     case "$shell_path" in
-        "on")  shell="$SHELL" ;;
-        "off") shell="${SHELL##*/}" ;;
+        "on")  shell="$SHELL " ;;
+        "off") shell="${SHELL##*/} " ;;
     esac
 
     if [[ "$shell_version" == "on" ]]; then
-        shell+=" "
         case "${SHELL##*/}" in
-            "bash")
-                shell+=" ${BASH_VERSION/-*}"
-            ;;
+            "bash") shell+="${BASH_VERSION/-*}" ;;
 
-            "zsh")
-                shell+="$(zsh --version)"
-                shell="${shell/ zsh}"
+            "fish" | "zsh" | "tcsh" | "csh")
+                shell+="$("$SHELL" --version)"
+                shell="${shell/${SHELL##*/}}"
             ;;
 
             "mksh" | "ksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
                 shell="${shell/ * KSH}"
             ;;
-
-            "tcsh" | "csh")
-                shell+="$("$SHELL" --version)"
-                shell="${shell/tcsh}"
-                shell="${shell/\(*}"
-            ;;
-
-            "fish")
-                shell+="$(fish --version)"
-                shell="${shell/fish, version}"
-            ;;
         esac
+
+        # Remove unwanted info
+        shell="${shell/, version}"
+        shell="${shell/options*}"
         shell="${shell/\(*\)}"
     fi
 }
