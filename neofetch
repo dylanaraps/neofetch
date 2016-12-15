@@ -273,7 +273,10 @@ get_model() {
 }
 
 get_title() {
-    title="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}@${HOSTNAME:-$(hostname)}"
+    user="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}"
+    hostname="${HOSTNAME:-$(hostname)}"
+    title="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
+    length="$((${#user} + ${#hostname} + 1))"
 }
 
 get_kernel() {
@@ -1266,7 +1269,6 @@ get_song() {
         else
             prin "$subtitle" "$song"
         fi
-        unset song
     fi
 }
 
@@ -1676,8 +1678,6 @@ get_battery() {
 
                 prin "${subtitle}${bat: -1}" "$battery"
             done
-
-            unset battery
             return
         ;;
 
@@ -2425,62 +2425,40 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
-    # $1 is the subtitle
-    subtitle="$1"
+    # Make sure that $prin is unset.
+    unset -v prin
 
     # Call the function.
     "get_${2:-$1}" 2>/dev/null
 
+    # If the get_func function called 'prin' directly, stop here.
+    [[ "$prin" ]] && return
+
     # Update the variable
-    output="${2:-$1}"
-    output="$(trim "${!output}")"
+    output="$(trim "${!2:-${!1}}")"
 
-    # If prin was used in the function, stop here.
-    [[ "$prin" ]] && \
-        unset prin && return
+    if [[ "$2" && "${output// }" ]]; then
+        length="$((${#1} + ${#output} + 2))"
+        prin "$1" "$output"
 
-    # If the output is empty, don't print anything.
-    [[ -z "${output// }" ]] && \
-        err "Info: Couldn't detect $subtitle." && return
+    elif [[ "${output// }" ]]; then
+        [[ -z "$length" ]] && length="${#output}"
+        prin "$output"
 
-    case "$1" in
-        "title")
-            string="${title_color}${bold}${output}"
-            string="${string/@/${at_color}@${title_color}${bold}}"
-            length="${#output}"
-        ;;
-
-        "underline") string="${underline_color}${output}" ;;
-
-        *)
-            string="${subtitle_color}${bold}${subtitle}${reset}"
-            string+="${colon_color}: ${info_color}${output}"
-            length="$((${#subtitle} +  ${#output} + 2))"
-        ;;
-    esac
-
-    # If there's no subtitle don't print one
-    [[ -z "$2" ]] && string="${string/*: }"
-
-    # Print the string
-    printf "%b\n" "\033[${text_padding}C${zws}${string}${reset} "
-
-    # Calculate info height
-    info_height="$((info_height+=1))"
+    else
+        err "Info: Couldn't detect ${1}."
+    fi
 }
 
 prin() {
-    string="${1//$'\033[0m'}${2:+: $2}"
-
     # If $2 doesn't exist we format $1 as info
     [[ -z "$2" ]] && local subtitle_color="$info_color"
 
     # Format the output
+    string="${1//$'\033[0m'}${2:+: $2}"
+    string="$(trim "$string")"
     string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
-
-    # Trim whitespace
-    string="$(trim "$string")"
 
     # Print the info
     printf "%b\n" "\033[${text_padding}C${zws}${string}${reset} "
@@ -2488,14 +2466,15 @@ prin() {
     # Calculate info height
     info_height="$((info_height+=1))"
 
-    # Tell info() that prin() was used.
+    # Log that prin was used.
     prin=1
 }
 
 get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         underline="$(printf %"$length"s)"
-        underline="${underline// /$underline_char}"
+        underline="${underline_color}${underline// /$underline_char}"
+        unset -v length
     fi
 }
 
