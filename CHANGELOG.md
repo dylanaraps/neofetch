@@ -37,6 +37,11 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Fixed version output on `ksh`.
 - Rewrote the function to remove duplicate code. All shells now use `$SHELL --version` to get the version info, with the exception of `mksh` which doesn't have a `--version` flag.
 
+**Uptime**<br \>
+
+- Moved duplicate code to a function.
+- Changed `$uptime_shorthand` to `on` by default.
+
 **Desktop Environment**<br \>
 
 - Fixed issues where MATE wouldn't be detected properly.
