@@ -37,10 +37,6 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Fixed version output on `ksh`.
 - Rewrote the function to remove duplicate code. All shells now use `$SHELL --version` to get the version info, with the exception of `mksh` which doesn't have a `--version` flag.
 
-**CPU**<br \>
-
-- [Linux] Fixed issues with CPU name detection for architectures other than x86/amd64/ARM.
-
 **Desktop Environment**<br \>
 
 - Fixed issues where MATE wouldn't be detected properly.
@@ -49,6 +45,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 **CPU**<br \>
 
 - [Linux] Don't simplify `cpufreq` speed option names for no reason.
+- [Linux] Fixed issues with CPU name detection for architectures other than x86/amd64/ARM.
 - [NetBSD] Remove case statement in favor of 1 line test.
 - Remove case sensitive substitutions.
     - We match everything case insensitively so they were pointless.
