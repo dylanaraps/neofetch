@@ -24,6 +24,8 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Renamed `old_flags()` --> `old_options()`.
 - The manpage is now generated using `help2man`. `help2man` parses the output of `--help` and `--version` to create a manpage. This ensures that our manpage stays 1:1 with the script documentation. We actually found a lot of outdated info in the old manpage thanks to this.
     - A new flag was added called `--gen-man` which generates a neofetch manpage in your current directory.
+- Delete most of `info()` and instead call `prin()`.
+    - This removes a lot of duplicate code between `info()` and `prin()`.
 
 
 ## Info
