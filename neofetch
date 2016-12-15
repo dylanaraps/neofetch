@@ -2704,8 +2704,7 @@ color() {
 # OTHER
 
 err() {
-    err+="$(color 1)[!]\033[0m $1
-"
+    err+="$(color 1)[!]\033[0m $1\n"
 }
 
 get_script_dir() {
@@ -3134,17 +3133,7 @@ exit 1
 
 get_args() {
     # Check the commandline flags early for '--config none/off'
-    case "$@" in
-        *"--config off"* | *'--config "off"'* | *"--config 'off'"* | \
-        *"--config none"* | *'--config "none"'* | *"--config 'none'"*)
-            config="off"
-        ;;
-
-        *"--config -"*) ;;
-        *"--config"*) config="off" ;;
-    esac
-
-    [[ "${config:-on}" == "on" ]] && get_user_config 2>/dev/null
+    [[ "$@" =~ \-\-config\ ?(off|none) ]] || get_user_config 2>/dev/null
 
     while [[ "$1" ]]; do
         case "$1" in
@@ -3291,7 +3280,7 @@ get_args() {
             # Other
             "--config")
                 case "$2" in
-                    "none" | "off") config="off" ;;
+                    "none" | "off" | "") config="off" ;;
                     *) config_file="$2"; config="on"; get_user_config 2>/dev/null ;;
                 esac
             ;;
