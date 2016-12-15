@@ -329,24 +329,22 @@ get_uptime() {
 
             days="$((seconds / 60 / 60 / 24)) days"
             hours="$((seconds / 60 / 60 % 24)) hours"
-            minutes="$((seconds / 60 % 60)) minutes"
+            mins="$((seconds / 60 % 60)) minutes"
 
-            case "$days" in
-                "0 days") unset days ;;
-                "1 days") days="${days/s}" ;;
-            esac
+            # Format the days, hours and minutes.
+            strip_date() {
+                case "$1" in
+                    "0 "*) unset "${1/* }" ;;
+                    "1 "*) printf "%s" "${1/s}" ;;
+                    *)     printf "%s" "$1" ;;
+                esac
+            }
 
-            case "$hours" in
-                "0 hours") unset hours ;;
-                "1 hours") hours="${hours/s}" ;;
-            esac
+            days="$(strip_date "$days")"
+            hours="$(strip_date "$hours")"
+            mins="$(strip_date "$mins")"
 
-            case "$minutes" in
-                "0 minutes") unset minutes ;;
-                "1 minutes") minutes="${minutes/s}" ;;
-            esac
-
-            uptime="${days:+$days, }${hours:+$hours, }${minutes}"
+            uptime="${days:+$days, }${hours:+$hours, }${mins}"
             uptime="${uptime%', '}"
             uptime="${uptime:-${seconds} seconds}"
         ;;
