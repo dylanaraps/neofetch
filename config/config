@@ -92,7 +92,7 @@ os_arch="on"
 
 # Shorten the output of the uptime function
 #
-# Default: 'off'
+# Default: 'on'
 # Values:  'on', 'off', 'tiny'
 # Flag:    --uptime_shorthand
 #
@@ -100,7 +100,7 @@ os_arch="on"
 # on:   '2 days, 10 hours, 3 mins'
 # off:  '2 days, 10 hours, 3 minutes'
 # tiny: '2d 10h 3m'
-uptime_shorthand="off"
+uptime_shorthand="on"
 
 
 # Shell
