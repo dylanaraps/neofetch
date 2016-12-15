@@ -56,6 +56,11 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
     - We match everything case insensitively so they were pointless.
 - Simplify check for low CPU speeds.
 
+**CPU Usage**<br \>
+
+- Added Haiku cores command.
+- Updated Linux and macOS commands to the match the commands in the `get_cpu()` function.
+
 **Disk**<br \>
 
 - Warn the user if `df` isn't installed.
