@@ -929,11 +929,13 @@ get_cpu_usage() {
 
         *)
             # Get cores if unset
-            if [[ -z "$cores" ]]; then
+            if [[ "$cpu_cores" == "off" ]]; then
                 case "$os" in
-                    "Linux") cores="$(awk -F ': ' '/siblings/ {printf $2; exit}' /proc/cpuinfo)" ;;
-                    "Mac OS X" | "BSD") cores="$(sysctl -n hw.ncpu)" ;;
+                    "Linux") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
+                    "Mac OS X") cores="$(sysctl -n hw.logicalcpu_max)" ;;
+                    "BSD") cores="$(sysctl -n hw.ncpu)" ;;
                     "Solaris") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
+                    "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                 esac
             fi
