@@ -1152,21 +1152,20 @@ get_song() {
     }
 
     case "${player/*\/}" in
-        "mpd"*)
-            song="$(mpc current)"
-            state="$(mpc | awk -F '\\[|\\]' '/\[/ {printf $2}')"
-        ;;
+        "mpd"*)         song="$(mpc current)" ;;
+        "mocp"*)        song="$(mocp -Q "%artist - %song")" ;;
+        "google play"*) song="$(gpmdp-remote current)" ;;
+        "rhythmbox"*)   song="$(rhythmbox-client --print-playing)" ;;
+        "deadbeef"*)    song="$(deadbeef --nowplaying '%a - %t')" ;;
+        "audacious"*)   song="$(audtool current-song)" ;;
+        "gnome-music"*) get_song_dbus "GnomeMusic" ;;
+        "lollypop"*)    get_song_dbus "Lollypop" ;;
+        "clementine"*)  get_song_dbus "clementine" ;;
 
         "cmus"*)
-            IFS=$'\n'
-            cmus=($(cmus-remote -Q | grep -F -e "tag artist " -e "tag title" -e "status" | sort))
-            song="${cmus[1]/tag artist } - ${cmus[2]/tag title }"
-            state="${cmus[0]/status }"
-        ;;
-
-        "mocp"*)
-            song="$(mocp -Q "%artist - %song")"
-            state="$(mocp -Q "%state")"
+            artist="$(cmus-remote -Q | grep -F "tag artist ")"
+            title="$(cmus-remote -Q | grep -F "tag title")"
+            song="${artist/tag artist} - ${title/tag title}"
         ;;
 
         "spotify"*)
@@ -1175,35 +1174,18 @@ get_song() {
 
                 "Mac OS X")
                     song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
-                    state="$(osascript -e 'tell application "Spotify" to player state as string')"
                 ;;
             esac
         ;;
 
-        "google play"*)
-            song="$(gpmdp-remote current)"
-            state="$(gpmdp-remote status)"
-        ;;
-
         "itunes"*)
             song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
-            state="$(osascript -e 'tell application "iTunes" to player state as string')"
-        ;;
-
-        "rhythmbox"*)
-            song="$(rhythmbox-client --print-playing)"
-            # Thanks dbus
-            state="$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.rhythmbox /org/mpris/MediaPlayer2 \
-                     org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string: 'PlayBackStatus' |\
-                     awk -F 'string "' '{printf $2}')"
-            state="$(trim_quotes "$state")"
         ;;
 
         "banshee"*)
             artist="$(banshee --query-artist | awk -F':' '{print $2}')"
             title="$(banshee --query-title | awk -F':' '{print $2}')"
             song="$artist - $title"
-            state="$(banshee --query-current-state | awk -F':' '{print $2}')"
         ;;
 
         "amarok"*)
@@ -1212,30 +1194,11 @@ get_song() {
             song="$artist - $title"
         ;;
 
-        "deadbeef"*)
-            song="$(deadbeef --nowplaying '%a - %t')"
-        ;;
-
-        "audacious"*)
-            song="$(audtool current-song)"
-        ;;
-
-        "gnome-music"*) get_song_dbus "GnomeMusic" ;;
-        "lollypop"*) get_song_dbus "Lollypop" ;;
-        "clementine"*) get_song_dbus "clementine" ;;
-
         "pragha"*)
             artist="$(pragha -c | awk -F':' '/artist/ {print $2}')"
             title="$(pragha -c | awk -F':' '/title/ {print $2}')"
             song="$artist - $title"
         ;;
-
-        *) song="Not Playing" ;;
-    esac
-
-    case "$state" in
-        "pau"*) song="Paused" ;;
-        "sto"*) song="Stopped" ;;
     esac
 
     # Display Artist and Title on seperate lines.
