@@ -502,7 +502,7 @@ get_shell() {
         case "${SHELL##*/}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
 
-            "fish" | "zsh" | "tcsh" | "csh" | "ksh")
+            "fish" | "zsh" | "tcsh" | "csh" | "ksh" | "xonsh")
                 shell+="$("$SHELL" --version 2>&1)"
                 shell="${shell/${SHELL##*/}}"
             ;;
@@ -516,6 +516,7 @@ get_shell() {
         # Remove unwanted info
         shell="${shell/, version}"
         shell="${shell/version * sh/ksh}"
+        shell="${shell/xonsh\//xonsh }"
         shell="${shell/options*}"
         shell="${shell/\(*\)}"
     fi
