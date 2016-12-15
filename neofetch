@@ -1695,7 +1695,8 @@ get_local_ip() {
         ;;
 
         "Windows")
-            local_ip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2}')"
+            local_ip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2 ", "}')"
+            local_ip="${local_ip%\,*}"
         ;;
 
         "Haiku")
