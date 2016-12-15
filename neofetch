@@ -522,7 +522,8 @@ get_shell() {
             ;;
 
             "fish")
-                shell+="$(fish -c 'printf "%s" "$FISH_VERSION"')"
+                shell+="$(fish --version)"
+                shell="${shell/fish, version}"
             ;;
         esac
         shell="${shell/\(*\)}"
