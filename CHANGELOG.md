@@ -30,6 +30,10 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 ## Info
 
+**Shell**<br \>
+
+- [Fish] Fixed memory leak caused by Fish.
+
 **Desktop Environment**<br \>
 
 - Fixed issues where MATE wouldn't be detected properly.
