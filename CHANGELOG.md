@@ -34,6 +34,10 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - [Fish] Fixed memory leak caused by Fish.
 
+**CPU**<br \>
+
+- [Linux] Fixed issues with CPU name detection for architectures other than x86/amd64/ARM.
+
 **Desktop Environment**<br \>
 
 - Fixed issues where MATE wouldn't be detected properly.
