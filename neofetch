@@ -734,7 +734,23 @@ get_cpu() {
             # Get CPU name
             case "$distro" in
                 "Android"*) cpu="$(getprop ro.product.board)" ;;
-                *) cpu="$(awk -F ': | @' '/model name|Processor/ {printf $2; exit}' /proc/cpuinfo)" ;;
+                *)
+                    case "$machine_arch" in
+                        "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
+                            cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' /proc/cpuinfo)"
+                        ;;
+                        "s390"*)
+                            cpu="$(awk -F'=' '/machine/ {print $4; exit}' /proc/cpuinfo)"
+                        ;;
+                        "ia64" | "m32r")
+                            cpu="$(awk -F':' '/model/ {print $2; exit}' /proc/cpuinfo)"
+                            [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' /proc/cpuinfo)"
+                        ;;
+                        *)
+                            cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {printf $2; exit}' /proc/cpuinfo)"
+                        ;;
+                    esac
+                ;;
             esac
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
@@ -888,6 +904,7 @@ get_cpu() {
     cpu="${cpu//Eight-Core}"
     cpu="${cpu//Core}"
     cpu="${cpu//with Radeon * Graphics}"
+    cpu="${cpu//, altivec supported}"
 
     # Add cpu cores to output
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
