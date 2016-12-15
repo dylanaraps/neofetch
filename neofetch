@@ -502,20 +502,20 @@ get_shell() {
         case "${SHELL##*/}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
 
-            "fish" | "zsh" | "tcsh" | "csh")
-                shell+="$("$SHELL" --version)"
+            "fish" | "zsh" | "tcsh" | "csh" | "ksh")
+                shell+="$("$SHELL" --version 2>&1)"
                 shell="${shell/${SHELL##*/}}"
             ;;
 
-            "mksh" | "ksh")
+            "mksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
                 shell="${shell/ * KSH}"
-                shell="${shell/Version}"
             ;;
         esac
 
         # Remove unwanted info
         shell="${shell/, version}"
+        shell="${shell/version * sh/ksh}"
         shell="${shell/options*}"
         shell="${shell/\(*\)}"
     fi
