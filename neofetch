@@ -904,6 +904,7 @@ get_cpu() {
     cpu="${cpu//Eight-Core}"
     cpu="${cpu//Core}"
     cpu="${cpu//with Radeon * Graphics}"
+    cpu="${cpu//, altivec supported}"
 
     # Add cpu cores to output
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
