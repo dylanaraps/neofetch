@@ -510,6 +510,7 @@ get_shell() {
             "mksh" | "ksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
                 shell="${shell/ * KSH}"
+                shell="${shell/Version}"
             ;;
         esac
 
