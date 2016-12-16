@@ -1540,31 +1540,34 @@ get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
     # Get the info for /
-    disks=($(df /))
+    disks=($(df -h /))
 
     # Split the info
-    disk_used="$((disks[9]  / 1024 / 1024))GB"
-    disk_total="$((disks[8] / 1024 / 1024))GB"
-
-    # Handle TB values
-    (( "${#disk_used}"  == 6 )) && disk_used="${disk_used:0:1}.${disk_used:1:1}TB"
-    (( "${#disk_total}" == 6 )) && disk_total="${disk_total:0:1}.${disk_total:1:1}TB"
-
-    # Get the filesystem type
-    disk_type="[$(awk '$2 == "/" {printf $3; exit}' /etc/fstab)]"
-
-    # Get the usage percentage
+    disk_used="${disks[9]}"
+    disk_total="${disks[8]}"
     disk_total_per="(${disks[11]})"
 
     # Put it all together
-    disk="${disk_used} / ${disk_total} ${disk_total_per} ${disk_type}"
+    disk="${disk_used} / ${disk_total} ${disk_total_per}"
+
+    # Convert Terabytes to Gigabytes.
+    if [[ "$disk_display" != "off" ]]; then
+        disk_used="${disk_used/\.}"
+        disk_total="${disk_total/\.}"
+
+        [[ "${disk_used: -1}" == "T" ]] && \
+            disk_used="$((${disk_used/T} * 100))"
+
+        [[ "${disk_total: -1}" == "T" ]] && \
+            disk_total="$((${disk_total/T} * 100))"
+    fi
 
     # Bar
     case "$disk_display" in
-        "bar") disk="$(bar "${disk_used//[a-z]}" "${disk_total//[a-z]}")" ;;
-        "infobar") disk+=" $(bar "${disk_used//[a-z]}" "${disk_total//[a-z]}")" ;;
-        "barinfo") disk="$(bar "${disk_used//[a-z]}" "${disk_total//[a-z]}") $disk" ;;
-        "perc") disk="$disk_total_per $(bar "${disk_used//[a-z]}" "${disk_total//[a-z]}")" ;;
+        "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "infobar") disk+=" $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
+        "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
     esac
 }
 
