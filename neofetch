@@ -1543,19 +1543,16 @@ get_disk() {
     # Get the info for /
     disks=($(df -P -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
-    disk_used="${disks[9]/i}"
-    disk_total="${disks[8]/i}"
-    disk_total_per="(${disks[11]})"
-
     # Put it all together
-    disk="${disk_used} / ${disk_total} ${disk_total_per}"
+    disk_perc="${disks[11]/'%'}"
+    disk="${disks[9]/i} / ${disks[8]/i} (${disk_perc}%)"
 
     # Bar
     case "$disk_display" in
-        "bar") disk="$(bar "${disk_total_per/'%'}" "100")" ;;
-        "infobar") disk+=" $(bar "${disk_total_per/'%'}" "100")" ;;
-        "barinfo") disk="$(bar "${disk_total_per/'%'}" "100") $disk" ;;
-        "perc") disk="$disk_total_per $(bar "$disk_total_per" "100")" ;;
+        "bar") disk="$(bar "$disk_perc" "100")" ;;
+        "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
+        "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
+        "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
     esac
 }
 
