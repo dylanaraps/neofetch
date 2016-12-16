@@ -1543,9 +1543,20 @@ get_disk() {
     disks=($(df -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
     # Split the info
-    disk_used="${disks[9]}"
-    disk_total="${disks[8]}"
-    disk_total_per="(${disks[11]})"
+    case "$os" in
+        "Haiku") return ;;
+        "Mac OS X")
+            disk_used="${disks[10]}"
+            disk_total="${disks[9]}"
+            disk_total_per="(${disks[12]})"
+        ;;
+
+        *)
+            disk_used="${disks[9]}"
+            disk_total="${disks[8]}"
+            disk_total_per="(${disks[11]})"
+        ;;
+    esac
 
     # Put it all together
     disk="${disk_used} / ${disk_total} ${disk_total_per}"
