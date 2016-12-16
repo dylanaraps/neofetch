@@ -1539,15 +1539,8 @@ get_term_font() {
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
-    # Split the info
-    case "$os" in
-        "Haiku") return ;;
-        "Mac OS X") df_flags=(-P -h /) ;;
-        *) df_flags=(-h /) ;;
-    esac
-
     # Get the info for /
-    disks=($(df "${df_flags[@]}")) || { err "Disk: 'df' exited with error code 1"; return; }
+    disks=($(df -P -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
     disk_used="${disks[9]}"
     disk_total="${disks[8]}"
