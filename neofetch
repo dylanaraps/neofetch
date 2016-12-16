@@ -1541,7 +1541,7 @@ get_disk() {
 
     # df flags
     case "$os" in
-        "Linux" | "iPhone OS" | "Windows" | "Solaris" | "GNU")
+        "Linux" | "iPhone OS" | "Windows" | "GNU")
             df_flags=(-h -l --total)
             df_dir="total"
 
