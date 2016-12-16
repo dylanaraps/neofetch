@@ -1552,6 +1552,8 @@ get_disk() {
     # Convert Terabytes to Gigabytes.
     if [[ "$disk_display" != "off" ]]; then
         disk_used="${disk_used/\.}"
+        disk_used="${disk_used/G}"
+        disk_total="${disk_total/G}"
         disk_total="${disk_total/\.}"
 
         [[ "${disk_used: -1}" == "T" ]] && \
