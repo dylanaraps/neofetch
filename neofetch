@@ -1542,8 +1542,8 @@ get_disk() {
     # Get the info for /
     disks=($(df -P -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
-    disk_used="${disks[9]}"
-    disk_total="${disks[8]}"
+    disk_used="${disks[9]/i}"
+    disk_total="${disks[8]/i}"
     disk_total_per="(${disks[11]})"
 
     # Put it all together
