@@ -22,11 +22,6 @@ shopt -s nocasematch
 # Reset colors/bold
 reset="\033[0m"
 
-echo; echo
-df -h
-echo; echo
-exit
-
 # DETECT INFORMATION
 
 get_os() {
@@ -1551,7 +1546,6 @@ get_disk() {
     case "$os" in
         "Haiku") return ;;
         "Mac OS X") ;;
-
         *)
             disk_used="${disks[9]}"
             disk_total="${disks[8]}"
