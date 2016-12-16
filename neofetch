@@ -1538,64 +1538,21 @@ get_term_font() {
 
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
+    [[ "$os" == "Haiku" ]] && { err "Disk doesn't work on Haiku due to the non-standard 'df'"; return; }
 
-    # df flags
-    case "$os" in
-        "Linux" | "iPhone OS" | "Windows" | "GNU")
-            df_flags=(-h -l --total)
-            df_dir="total"
-
-            case "$distro" in
-                "OpenWRT"*) df_flags=(-h); df_dir="rootfs" ;;
-                "Android"*) return ;;
-            esac
-        ;;
-
-        "Mac OS X" | "BSD" | "Haiku")
-            case "$distro" in
-                "FreeBSD"* | *"OS X"* | "Mac"*)
-                    df_flags=(-l -H /)
-                    df_dir="/"
-                ;;
-
-                *) return ;;
-            esac
-        ;;
-    esac
-
-    # Get the disk info
-    disk="$(df "${df_flags[@]}" | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
-
-    # Format the output
-    disk_used="${disk#*:}"
-    disk_used="${disk_used%%:*}"
-    disk_total="${disk%%:*}"
-    disk_total_per="${disk#*:*:}"
+    # Get the info for /
+    disks=($(df -P -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
     # Put it all together
-    disk="${disk_used} / ${disk_total} (${disk_total_per})"
+    disk_perc="${disks[11]/'%'}"
+    disk="${disks[9]/i} / ${disks[8]/i} (${disk_perc}%)"
 
-    # Add info bar
-    disk_used="${disk_used/G}"
-    disk_total="${disk_total/G}"
-
-    # Convert Terabytes to Gigabytes.
-    if [[ "$disk_display" != "off" ]]; then
-        disk_used="${disk_used/\.}"
-        disk_total="${disk_total/\.}"
-
-        [[ "${disk_used: -1}" == "T" ]] && \
-            disk_used="$((${disk_used/T} * 100))"
-
-        [[ "${disk_total: -1}" == "T" ]] && \
-            disk_total="$((${disk_total/T} * 100))"
-    fi
-
+    # Bar
     case "$disk_display" in
-        "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
-        "infobar") disk+=" $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
-        "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
-        "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "bar") disk="$(bar "$disk_perc" "100")" ;;
+        "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
+        "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
+        "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
     esac
 }
 
