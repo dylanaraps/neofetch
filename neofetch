@@ -1538,6 +1538,7 @@ get_term_font() {
 
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
+    [[ "$os" == "Haiku" ]] && { err "Disk doesn't work on Haiku due to the non-standard 'df'"; return; }
 
     # Get the info for /
     disks=($(df -P -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
@@ -1549,26 +1550,12 @@ get_disk() {
     # Put it all together
     disk="${disk_used} / ${disk_total} ${disk_total_per}"
 
-    # Convert Terabytes to Gigabytes.
-    if [[ "$disk_display" != "off" ]]; then
-        disk_used="${disk_used/\.}"
-        disk_used="${disk_used/G}"
-        disk_total="${disk_total/G}"
-        disk_total="${disk_total/\.}"
-
-        [[ "${disk_used: -1}" == "T" ]] && \
-            disk_used="$((${disk_used/T} * 100))"
-
-        [[ "${disk_total: -1}" == "T" ]] && \
-            disk_total="$((${disk_total/T} * 100))"
-    fi
-
     # Bar
     case "$disk_display" in
-        "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
-        "infobar") disk+=" $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
-        "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
-        "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "bar") disk="$(bar "${disk_total_per/'%'}" "100")" ;;
+        "infobar") disk+=" $(bar "${disk_total_per/'%'}" "100")" ;;
+        "barinfo") disk="$(bar "${disk_total_per/'%'}" "100") $disk" ;;
+        "perc") disk="$disk_total_per $(bar "$disk_total_per" "100")" ;;
     esac
 }
 
