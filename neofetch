@@ -1553,7 +1553,7 @@ get_disk() {
     disk_total_per="${disks[11]}"
 
     # Put it all together
-    disk="${disk_used:+${disk_used} / }${disk_total} ${disk_total_per:+(${disk_total_per})}"
+    disk="${disk_used} / ${disk_total} (${disk_total_per})"
 
     # Bar
     case "$disk_display" in
