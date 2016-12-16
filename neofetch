@@ -2927,18 +2927,18 @@ convert_time() {
 
     # Get month. (Month code is used for day of week)
     case "$2" in
-        1  | "Jan") month="Jan"; month_code="0" ;;
-        2  | "Feb") month="Feb"; month_code="3" ;;
-        3  | "Mar") month="Mar"; month_code="3" ;;
-        4  | "Apr") month="Apr"; month_code="6" ;;
-        5  | "May") month="May"; month_code="1" ;;
-        6  | "Jun") month="Jun"; month_code="4" ;;
-        7  | "Jul") month="Jul"; month_code="6" ;;
-        8  | "Aug") month="Aug"; month_code="2" ;;
-        9  | "Sep") month="Sep"; month_code="5" ;;
-        10 | "Oct") month="Oct"; month_code="0" ;;
-        11 | "Nov") month="Nov"; month_code="3" ;;
-        12 | "Dec") month="Dec"; month_code="5" ;;
+        1 | 01 | "Jan") month="Jan"; month_code="0" ;;
+        2 | 02 | "Feb") month="Feb"; month_code="3" ;;
+        3 | 03 | "Mar") month="Mar"; month_code="3" ;;
+        4 | 04 | "Apr") month="Apr"; month_code="6" ;;
+        5 | 05 | "May") month="May"; month_code="1" ;;
+        6 | 06 | "Jun") month="Jun"; month_code="4" ;;
+        7 | 07 | "Jul") month="Jul"; month_code="6" ;;
+        8 | 08 | "Aug") month="Aug"; month_code="2" ;;
+        9 | 09 | "Sep") month="Sep"; month_code="5" ;;
+        10     | "Oct") month="Oct"; month_code="0" ;;
+        11     | "Nov") month="Nov"; month_code="3" ;;
+        12     | "Dec") month="Dec"; month_code="5" ;;
     esac
 
     # Get leap year.
