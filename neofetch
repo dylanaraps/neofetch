@@ -317,7 +317,7 @@ get_uptime() {
                     boot="${boot/,*}"
 
                     # Get current date in seconds
-                    now="$(date +%s)"
+                    now="$(printf "%(%s)T")"
                     seconds="$((now - boot))"
                 ;;
 
@@ -1730,7 +1730,6 @@ get_birthday() {
     case "$os" in
         "Linux" | "GNU" | "iPhone OS")
             birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
-            date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
 
         "Mac OS X")
@@ -1757,7 +1756,6 @@ get_birthday() {
 
                 "FreeBSD"*)
                     birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
-                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" "$birthday_format")"
                 ;;
 
                 "NetBSD"* | "DragonFly"*)
@@ -1769,30 +1767,21 @@ get_birthday() {
 
         "Windows")
             birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
-            date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
 
         "Solaris")
             birthday="$(ls -alct --full-time /var/sadm/system/logs/install_log | awk '{printf $6 " " $7}')"
-            date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
 
         "Haiku")
             birthday="$(ls -alctd --full-time /boot | awk '{printf $6 " " $7}')"
-            date_cmd="$(date -d"$birthday" "$birthday_format")"
         ;;
     esac
 
-    # Strip seconds from time output
-    birthday="${birthday/:?? / }"
-
-    # Pretty output
-    [[ "$birthday_shorthand" == "off" ]] && \
-        birthday="${date_cmd//+( )/ }"
-
-    # Toggle showing the time
-    [[ "$birthday_time" == "off" ]] && \
-        birthday="${birthday/??:??*}"
+    birthday="${birthday%\.*}"
+    birthday="${birthday//-/ }"
+    birthday=($birthday)
+    birthday="$(convert_time "${birthday[@]}")"
 }
 
 get_cols() {
@@ -2938,6 +2927,60 @@ cache_uname() {
     machine_arch="${uname[2]}"
 }
 
+convert_time() {
+    # Convert ls timestamp to 'Tue 06 Dec 2016 4:58 PM' format.
+    year="$1"
+    day="$3"
+
+    # Split time into hours/minutesr
+    time="${4%\:*}"
+    hour="${time/:*}"
+    min="${time/${hour}}"
+
+    # Get month. (Month code is used for day of week)
+    case "$2" in
+        1)  month="Jan"; month_code="0" ;;
+        2)  month="Feb"; month_code="3" ;;
+        3)  month="Mar"; month_code="3" ;;
+        4)  month="Apr"; month_code="6" ;;
+        5)  month="May"; month_code="1" ;;
+        6)  month="Jun"; month_code="4" ;;
+        7)  month="Jul"; month_code="6" ;;
+        8)  month="Aug"; month_code="2" ;;
+        9)  month="Sep"; month_code="5" ;;
+        10) month="Oct"; month_code="0" ;;
+        11) month="Nov"; month_code="3" ;;
+        12) month="Dec"; month_code="5" ;;
+    esac
+
+    # Get leap year.
+    [[ "$((year % 4))" == 0 && "$((year % 100))" != 0 || "$((year % 400))" == 0 ]] && \
+    [[ "$month" =~ (Jan|Feb) ]] && \
+        leap_code="1"
+
+    # Calculate day of week.
+    year_code="$((${year/??} + $((${year/??} / 4)) % 7))"
+    week_day="$(($((year_code + month_code + 6 + day - ${leap_code:-0})) % 7))"
+
+    case "$week_day" in
+        0) week_day="Sun" ;;
+        1) week_day="Mon" ;;
+        2) week_day="Tue" ;;
+        3) week_day="Wed" ;;
+        4) week_day="Thu" ;;
+        5) week_day="Fri" ;;
+        6) week_day="Sat" ;;
+    esac
+
+    # Convert 24 hour time to 12 hour time + AM/PM
+    case "$hour" in
+        0[0-9] | 1[0-2]) time="${hour}${min} AM" ;;
+        *) time="$((hour - 12))${min} PM" ;;
+    esac
+
+    printf "%s" "$week_day $day $month $year $time"
+}
+
 # FINISH UP
 
 usage() { printf "%s" "\
@@ -2996,9 +3039,6 @@ INFO
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on seperate lines
-    --birthday_shorthand on/off Shorten the output of birthday
-    --birthday_time on/off      Enable/Disable showing the time in birthday output
-    --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
 
 TEXT FORMATTING
 
@@ -3167,9 +3207,6 @@ get_args() {
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
-            "--birthday_shorthand") birthday_shorthand="$2" ;;
-            "--birthday_time") birthday_time="$2" ;;
-            "--birthday_format") birthday_format="$2" ;;
             "--disable")
                 for func in "$@"; do
                     case "$func" in
