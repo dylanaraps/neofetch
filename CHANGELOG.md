@@ -26,7 +26,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
     - A new flag was added called `--gen-man` which generates a neofetch manpage in your current directory.
 - Delete most of `info()` and instead call `prin()`.
     - This removes a lot of duplicate code between `info()` and `prin()`.
-
+- Remove `printf` subshells and instead use `printf -v` to declare the variables.
 
 ## Info
 
@@ -100,3 +100,9 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 ## Screenshot
 
 - Use arrays for `$scrot_program`
+
+
+## Args
+
+- Fixed bug where `neofetch --config` sourced the user config twice.
+- Cleaned up config arg handling.
