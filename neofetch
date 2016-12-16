@@ -2965,8 +2965,7 @@ convert_time() {
 
     # Convert 24 hour time to 12 hour time + AM/PM
     case "$hour" in
-        0[0-9] | 1[0-2]) time="${hour}${min} AM" ;;
-        00) time="12${min} PM" ;;
+        0[0-9] | 1[0-2]) time="${hour/00/12}${min} AM" ;;
         *) time="$((hour - 12))${min} PM" ;;
     esac
 
