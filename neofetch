@@ -2486,7 +2486,7 @@ get_distro_colors() {
             set_colors 2 1
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle" | "BlankOn"* | "DracOS"* | "Peppermint"*)
+        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"*)
             set_colors 1 7 3
         ;;
 
