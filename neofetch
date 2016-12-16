@@ -1539,63 +1539,28 @@ get_term_font() {
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
-    # df flags
-    case "$os" in
-        "Linux" | "iPhone OS" | "Windows" | "GNU")
-            df_flags=(-h -l --total)
-            df_dir="total"
+    # Get the info for /
+    disks=($(df /))
 
-            case "$distro" in
-                "OpenWRT"*) df_flags=(-h); df_dir="rootfs" ;;
-                "Android"*) return ;;
-            esac
-        ;;
+    # Split the info
+    disk_used="$((disks[9]  / 1024 / 1024))GB"
+    disk_total="$((disks[8] / 1024 / 1024))GB"
 
-        "Mac OS X" | "BSD" | "Haiku")
-            case "$distro" in
-                "FreeBSD"* | *"OS X"* | "Mac"*)
-                    df_flags=(-l -H /)
-                    df_dir="/"
-                ;;
+    # Handle TB values
+    (( "${#disk_used}"  == 6 )) && disk_used="${disk_used:0:1}.${disk_used:1:1}TB"
+    (( "${#disk_total}" == 6 )) && disk_total="${disk_total:0:1}.${disk_total:1:1}TB"
 
-                *) return ;;
-            esac
-        ;;
-    esac
-
-    # Get the disk info
-    disk="$(df "${df_flags[@]}" | awk -v dir="$df_dir" '$0 ~ dir {print $2 ":" $3 ":" $5}')"
-
-    # Format the output
-    disk_used="${disk#*:}"
-    disk_used="${disk_used%%:*}"
-    disk_total="${disk%%:*}"
-    disk_total_per="${disk#*:*:}"
+    disk_total_per="${disks[11]}"
 
     # Put it all together
-    disk="${disk_used} / ${disk_total} (${disk_total_per})"
+    disk="${disk_used:+${disk_used} / }${disk_total} ${disk_total_per:+(${disk_total_per})}"
 
-    # Add info bar
-    disk_used="${disk_used/G}"
-    disk_total="${disk_total/G}"
-
-    # Convert Terabytes to Gigabytes.
-    if [[ "$disk_display" != "off" ]]; then
-        disk_used="${disk_used/\.}"
-        disk_total="${disk_total/\.}"
-
-        [[ "${disk_used: -1}" == "T" ]] && \
-            disk_used="$((${disk_used/T} * 100))"
-
-        [[ "${disk_total: -1}" == "T" ]] && \
-            disk_total="$((${disk_total/T} * 100))"
-    fi
-
+    # Bar
     case "$disk_display" in
-        "bar") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
-        "infobar") disk+=" $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
-        "barinfo") disk="$(bar "${disk_used/'.'*}" "${disk_total/'.'*}") $disk" ;;
-        "perc") disk="$disk_total_per $(bar "${disk_used/'.'*}" "${disk_total/'.'*}")" ;;
+        "bar") disk="$(bar "${disk_used//[a-z]}" "${disk_total//[a-z]}")" ;;
+        "infobar") disk+=" $(bar "${disk_used//[a-z]}" "${disk_total//[a-z]}")" ;;
+        "barinfo") disk="$(bar "${disk_used//[a-z]}" "${disk_total//[a-z]}") $disk" ;;
+        "perc") disk="$disk_total_per $(bar "${disk_used//[a-z]}" "${disk_total//[a-z]}")" ;;
     esac
 }
 
