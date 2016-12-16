@@ -1732,10 +1732,6 @@ get_birthday() {
             birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
         ;;
 
-        "Mac OS X")
-            birthday="$(ls -lUT /var/log/install.log | awk '{printf $6 " " $7 " " $9 " " $8}')"
-        ;;
-
         "BSD" | "Mac OS X")
             case "$kernel_name" in
                 "Darwin")
