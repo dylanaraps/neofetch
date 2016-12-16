@@ -2926,6 +2926,7 @@ convert_time() {
     min="${4/${hour}}"
 
     # Get month. (Month code is used for day of week)
+    # Due to different versions of 'ls', the month can be 1, 01 or Jan.
     case "$2" in
         1 | 01 | "Jan") month="Jan"; month_code="0" ;;
         2 | 02 | "Feb") month="Feb"; month_code="3" ;;
@@ -2942,11 +2943,13 @@ convert_time() {
     esac
 
     # Get leap year.
+    # Source: http://stackoverflow.com/questions/725098/leap-year-calculation
     [[ "$((year % 4))" == 0 && "$((year % 100))" != 0 || "$((year % 400))" == 0 ]] && \
     [[ "$month" =~ (Jan|Feb) ]] && \
         leap_code="1"
 
     # Calculate day of week.
+    # Source: http://blog.artofmemory.com/how-to-calculate-the-day-of-the-week-4203.html
     year_code="$((${year/??} + $((${year/??} / 4)) % 7))"
     week_day="$(($((year_code + month_code + 6 + day - ${leap_code:-0})) % 7))"
 
@@ -2966,6 +2969,7 @@ convert_time() {
         *) time="$((hour - 12))${min} PM" ;;
     esac
 
+    # Print the birthday.
     printf "%s" "$week_day $day $month $year $time"
 }
 
