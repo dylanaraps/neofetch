@@ -1726,73 +1726,51 @@ get_users() {
     users="${users%\,*}"
 }
 
-get_birthday() {
+get_install_date() {
     case "$os" in
         "Linux" | "GNU" | "iPhone OS")
-            birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
-            date_cmd="$(date -d"$birthday" "$birthday_format")"
+            install_date="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
         ;;
 
         "Mac OS X")
-            birthday="$(ls -lUT /var/log/install.log | awk '{printf $6 " " $7 " " $9 " " $8}')"
-
-            # Split the string into Date + time
-            time="${birthday/*???? }"
-            birthday="${birthday/$time}"
-
-            case "${time/:*}" in
-                0? | 10 | 11) time+=" AM" ;;
-                *) time+=" PM" ;;
-            esac
-            birthday+="$time"
-            birthday_shorthand="on"
+            install_date="$(ls -lUT /var/log/install.log | awk '{printf $9 " " $6 " " $7 " " $8}')"
         ;;
 
         "BSD")
             case "$kernel_name" in
                 "OpenBSD"* | "Bitrig"*)
-                    birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
-                    birthday_shorthand="on"
+                    install_file="/"
                 ;;
 
                 "FreeBSD"*)
-                    birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
-                    date_cmd="$(date -j -f "%b %d %Y" "$birthday" "$birthday_format")"
+                    install_file="/etc/hostid"
                 ;;
 
                 "NetBSD"* | "DragonFly"*)
-                    birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
-                    birthday_shorthand="on"
+                    install_file="/etc/defaults/rc.conf"
                 ;;
             esac
+
+            install_date="$(ls -alctT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8 " "}')"
         ;;
 
         "Windows")
-            birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
-            date_cmd="$(date -d"$birthday" "$birthday_format")"
+            install_date="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
         ;;
 
         "Solaris")
-            birthday="$(ls -alct --full-time /var/sadm/system/logs/install_log | awk '{printf $6 " " $7}')"
-            date_cmd="$(date -d"$birthday" "$birthday_format")"
+            install_date="$(ls -alct --full-time /var/sadm/system/logs/install_log | awk '{printf $6 " " $7}')"
         ;;
 
         "Haiku")
-            birthday="$(ls -alctd --full-time /boot | awk '{printf $6 " " $7}')"
-            date_cmd="$(date -d"$birthday" "$birthday_format")"
+            install_date="$(ls -alctd --full-time /boot | awk '{printf $6 " " $7}')"
         ;;
     esac
 
-    # Strip seconds from time output
-    birthday="${birthday/:?? / }"
-
-    # Pretty output
-    [[ "$birthday_shorthand" == "off" ]] && \
-        birthday="${date_cmd//+( )/ }"
-
-    # Toggle showing the time
-    [[ "$birthday_time" == "off" ]] && \
-        birthday="${birthday/??:??*}"
+    install_date="${install_date//-/ }"
+    install_date="${install_date%:*}"
+    install_date=($install_date)
+    install_date="$(convert_time "${install_date[@]}")"
 }
 
 get_cols() {
@@ -2904,6 +2882,8 @@ old_functions() {
         get_publicip() { get_public_ip; publicip="$public_ip"; }
         get_linebreak() { get_line_break; linebreak="$line_break"; }
     fi
+
+    get_birthday() { get_install_date; birthday="$install_date"; }
 }
 
 old_options() {
@@ -2935,6 +2915,66 @@ cache_uname() {
     kernel_name="${uname[0]}"
     kernel_version="${uname[1]}"
     machine_arch="${uname[2]}"
+}
+
+convert_time() {
+    # Convert ls timestamp to 'Tue 06 Dec 2016 4:58 PM' format.
+    year="$1"
+    day="$3"
+
+    # Split time into hours/minutes
+    hour="${4/:*}"
+    min="${4/${hour}}"
+
+    # Get month. (Month code is used for day of week)
+    # Due to different versions of 'ls', the month can be 1, 01 or Jan.
+    case "$2" in
+        1 | 01 | "Jan") month="Jan"; month_code="0" ;;
+        2 | 02 | "Feb") month="Feb"; month_code="3" ;;
+        3 | 03 | "Mar") month="Mar"; month_code="3" ;;
+        4 | 04 | "Apr") month="Apr"; month_code="6" ;;
+        5 | 05 | "May") month="May"; month_code="1" ;;
+        6 | 06 | "Jun") month="Jun"; month_code="4" ;;
+        7 | 07 | "Jul") month="Jul"; month_code="6" ;;
+        8 | 08 | "Aug") month="Aug"; month_code="2" ;;
+        9 | 09 | "Sep") month="Sep"; month_code="5" ;;
+        10     | "Oct") month="Oct"; month_code="0" ;;
+        11     | "Nov") month="Nov"; month_code="3" ;;
+        12     | "Dec") month="Dec"; month_code="5" ;;
+    esac
+
+    # Get leap year.
+    # Source: http://stackoverflow.com/questions/725098/leap-year-calculation
+    [[ "$((year % 4))" == 0 && "$((year % 100))" != 0 || "$((year % 400))" == 0 ]] && \
+    [[ "$month" =~ (Jan|Feb) ]] && \
+        leap_code="1"
+
+    # Calculate day of week.
+    # Source: http://blog.artofmemory.com/how-to-calculate-the-day-of-the-week-4203.html
+    year_code="$((${year/??} + $((${year/??} / 4)) % 7))"
+    week_day="$(($((year_code + month_code + 6 + day - ${leap_code:-0})) % 7))"
+
+    case "$week_day" in
+        0) week_day="Sun" ;;
+        1) week_day="Mon" ;;
+        2) week_day="Tue" ;;
+        3) week_day="Wed" ;;
+        4) week_day="Thu" ;;
+        5) week_day="Fri" ;;
+        6) week_day="Sat" ;;
+    esac
+
+    # Convert 24 hour time to 12 hour time + AM/PM
+    case "$hour" in
+        [0-9] | 0[0-9] | 1[0-1]) time="${hour/00/12}${min} AM" ;;
+        *) time="$((hour - 12))${min} PM" ;;
+    esac
+
+    # Toggle showing the time
+    [[ "$install_time" == "off" ]] && unset time
+
+    # Print the install date.
+    printf "%s" "$week_day $day $month $year $time"
 }
 
 # FINISH UP
@@ -2995,9 +3035,7 @@ INFO
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on seperate lines
-    --birthday_shorthand on/off Shorten the output of birthday
-    --birthday_time on/off      Enable/Disable showing the time in birthday output
-    --birthday_format format    Format the birthday output. (Uses 'date' cmd format)
+    --install_time on/off      Enable/Disable showing the time in Install Date output.
 
 TEXT FORMATTING
 
@@ -3156,9 +3194,7 @@ get_args() {
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
-            "--birthday_shorthand") birthday_shorthand="$2" ;;
-            "--birthday_time") birthday_time="$2" ;;
-            "--birthday_format") birthday_format="$2" ;;
+            "--install_time") install_time="$2" ;;
             "--disable")
                 for func in "$@"; do
                     case "$func" in

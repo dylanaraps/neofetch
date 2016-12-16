@@ -33,7 +33,7 @@ print_info() {
     info "Local IP" local_ip
     info "Public IP" public_ip
     info "Users" users
-    info "Birthday" birthday
+    info "Install Date" install_date
 
     info line_break
     info cols
