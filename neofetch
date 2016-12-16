@@ -1798,7 +1798,7 @@ get_birthday() {
 get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
-        block_width="$(printf "%${block_width}s")"
+        printf -v block_width "%${block_width}s"
         block_width="${block_width// /█}"
 
         # Generate the string.
@@ -1811,7 +1811,7 @@ get_cols() {
         done
 
         # Convert height into spaces.
-        spaces="$(printf "%${block_height}s")"
+        printf -v spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
         [[ "$blocks" ]] &&  cols+="${spaces// /${blocks}${reset}nl}"
@@ -1850,7 +1850,7 @@ get_image_backend() {
                 *)
                     if [[ -d "$image_source" ]]; then
                         files=("${image_source%/}"/*.{png,jpg,jpeg})
-                        image="$(printf "%s" "${files[RANDOM % (${#files[@]} - 1)]}")"
+                        printf -v image "%s" "${files[RANDOM % (${#files[@]} - 1)]}"
                     else
                         image="$image_source"
                     fi
@@ -2418,7 +2418,7 @@ prin() {
 
 get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
-        underline="$(printf %"$length"s)"
+        printf -v underline "%${length}s"
         underline="${underline_color}${underline// /$underline_char}"
         unset -v length
     fi
@@ -2792,8 +2792,8 @@ bar() {
     elapsed="$(($1 * bar_length / $2))"
 
     # Create the bar with spaces
-    prog="$(printf %"$elapsed"s)"
-    total="$(printf %"$((bar_length - elapsed))"s)"
+    printf -v prog  "%${elapsed}s"
+    printf -v total "%$((bar_length - elapsed))s"
 
     # Set the colors and swap the spaces for $bar_char_
     bar+="${bar_color_elapsed}${prog// /$bar_char_elapsed}"
