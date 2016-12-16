@@ -1726,51 +1726,51 @@ get_users() {
     users="${users%\,*}"
 }
 
-get_birthday() {
+get_install_date() {
     case "$os" in
         "Linux" | "GNU" | "iPhone OS")
-            birthday="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
+            install_date="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
         ;;
 
         "Mac OS X")
-            birthday="$(ls -lUT /var/log/install.log | awk '{printf $9 " " $6 " " $7 " " $8}')"
+            install_date="$(ls -lUT /var/log/install.log | awk '{printf $9 " " $6 " " $7 " " $8}')"
         ;;
 
         "BSD")
             case "$kernel_name" in
                 "OpenBSD"* | "Bitrig"*)
-                    birthday_file="/"
+                    install_file="/"
                 ;;
 
                 "FreeBSD"*)
-                    birthday_file="/etc/hostid"
+                    install_file="/etc/hostid"
                 ;;
 
                 "NetBSD"* | "DragonFly"*)
-                    birthday_file="/etc/defaults/rc.conf"
+                    install_file="/etc/defaults/rc.conf"
                 ;;
             esac
 
-            birthday="$(ls -alctT "$birthday_file" | awk '{printf $9 " " $6 " " $7 " " $8 " "}')"
+            install_date="$(ls -alctT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8 " "}')"
         ;;
 
         "Windows")
-            birthday="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
+            install_date="$(ls -alct --full-time /cygdrive/c/Windows/explorer.exe | awk '{printf $8 " " $9}')"
         ;;
 
         "Solaris")
-            birthday="$(ls -alct --full-time /var/sadm/system/logs/install_log | awk '{printf $6 " " $7}')"
+            install_date="$(ls -alct --full-time /var/sadm/system/logs/install_log | awk '{printf $6 " " $7}')"
         ;;
 
         "Haiku")
-            birthday="$(ls -alctd --full-time /boot | awk '{printf $6 " " $7}')"
+            install_date="$(ls -alctd --full-time /boot | awk '{printf $6 " " $7}')"
         ;;
     esac
 
-    birthday="${birthday//-/ }"
-    birthday="${birthday%:*}"
-    birthday=($birthday)
-    birthday="$(convert_time "${birthday[@]}")"
+    install_date="${install_date//-/ }"
+    install_date="${install_date%:*}"
+    install_date=($install_date)
+    install_date="$(convert_time "${install_date[@]}")"
 }
 
 get_cols() {
@@ -2883,6 +2883,8 @@ old_functions() {
         get_publicip() { get_public_ip; publicip="$public_ip"; }
         get_linebreak() { get_line_break; linebreak="$line_break"; }
     fi
+
+    get_birthday() { get_install_date; birthday="$install_date"; }
 }
 
 old_options() {
@@ -2970,9 +2972,9 @@ convert_time() {
     esac
 
     # Toggle showing the time
-    [[ "$birthday_time" == "off" ]] && unset time
+    [[ "$install_time" == "off" ]] && unset time
 
-    # Print the birthday.
+    # Print the install date.
     printf "%s" "$week_day $day $month $year $time"
 }
 
@@ -3034,7 +3036,7 @@ INFO
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on seperate lines
-    --birthday_time on/off      Enable/Disable showing the time in birthday output.
+    --install_time on/off      Enable/Disable showing the time in Install Date output.
 
 TEXT FORMATTING
 
@@ -3203,7 +3205,7 @@ get_args() {
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
-            "--birthday_time") birthday_time="$2" ;;
+            "--install_time") install_time="$2" ;;
             "--disable")
                 for func in "$@"; do
                     case "$func" in

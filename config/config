@@ -39,7 +39,7 @@ print_info() {
     # info "Local IP" local_ip
     # info "Public IP" public_ip
     # info "Users" users
-    # info "Birthday" birthday
+    # info "Install Date" install_date
 
     info line_break
     info cols
@@ -292,19 +292,19 @@ public_ip_host="http://ident.me"
 song_shorthand="off"
 
 
-# Birthday
+# Install Date
 
 
 # Whether to show the time in the output
 #
 # Default:  'on'
 # Values:   'on', 'off'
-# Flag:     --birthday_time
+# Flag:     --install_time
 #
 # Example:
 # on:  'Thu 14 Apr 2016 11:50 PM'
 # off: 'Thu 14 Apr 2016'
-birthday_time="on"
+install_time="on"
 
 
 # Text Colors
