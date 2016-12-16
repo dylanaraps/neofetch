@@ -317,7 +317,7 @@ get_uptime() {
                     boot="${boot/,*}"
 
                     # Get current date in seconds
-                    now="$(printf "%(%s)T")"
+                    now="$(date +%s)"
                     seconds="$((now - boot))"
                 ;;
 
