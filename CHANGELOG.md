@@ -101,6 +101,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Use arrays for `$scrot_program`
 
+
 ## Args
 
 - Fixed bug where `neofetch --config` sourced the user config twice.
