@@ -1734,24 +1734,12 @@ get_birthday() {
 
         "Mac OS X")
             birthday="$(ls -lUT /var/log/install.log | awk '{printf $6 " " $7 " " $9 " " $8}')"
-
-            # Split the string into Date + time
-            time="${birthday/*???? }"
-            birthday="${birthday/$time}"
-
-            case "${time/:*}" in
-                0? | 10 | 11) time+=" AM" ;;
-                *) time+=" PM" ;;
-            esac
-            birthday+="$time"
-            birthday_shorthand="on"
         ;;
 
         "BSD")
             case "$kernel_name" in
                 "OpenBSD"* | "Bitrig"*)
                     birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
-                    birthday_shorthand="on"
                 ;;
 
                 "FreeBSD"*)
@@ -1760,7 +1748,6 @@ get_birthday() {
 
                 "NetBSD"* | "DragonFly"*)
                     birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
-                    birthday_shorthand="on"
                 ;;
             esac
         ;;
