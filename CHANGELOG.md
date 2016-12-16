@@ -61,7 +61,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added Haiku cores command.
 - Updated Linux and macOS commands to the match the commands in the `get_cpu()` function.
 
-**~~Birthday~~Install Date**<br \>
+**~~Birthday~~ Install Date**<br \>
 
 - Renamed `get_birthday()` -- > `get_install_date()`
 - Removed all `date` usage from `get_install_date()`. 
