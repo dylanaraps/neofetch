@@ -1550,10 +1550,14 @@ get_disk() {
     (( "${#disk_used}"  == 6 )) && disk_used="${disk_used:0:1}.${disk_used:1:1}TB"
     (( "${#disk_total}" == 6 )) && disk_total="${disk_total:0:1}.${disk_total:1:1}TB"
 
-    disk_total_per="${disks[11]}"
+    # Get the filesystem type
+    disk_type="[$(awk '$2 == "/" {printf $3; exit}' /etc/fstab)]"
+
+    # Get the usage percentage
+    disk_total_per="(${disks[11]})"
 
     # Put it all together
-    disk="${disk_used} / ${disk_total} (${disk_total_per})"
+    disk="${disk_used} / ${disk_total} ${disk_total_per} ${disk_type}"
 
     # Bar
     case "$disk_display" in
