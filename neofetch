@@ -2969,6 +2969,9 @@ convert_time() {
         *) time="$((hour - 12))${min} PM" ;;
     esac
 
+    # Toggle showing the time
+    [[ "$birthday_time" == "off" ]] && unset time
+
     # Print the birthday.
     printf "%s" "$week_day $day $month $year $time"
 }
@@ -3031,6 +3034,7 @@ INFO
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on seperate lines
+    --birthday_time on/off      Enable/Disable showing the time in birthday output.
 
 TEXT FORMATTING
 
@@ -3199,6 +3203,7 @@ get_args() {
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
+            "--birthday_time") birthday_time="$2" ;;
             "--disable")
                 for func in "$@"; do
                     case "$func" in

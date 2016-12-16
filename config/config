@@ -292,6 +292,21 @@ public_ip_host="http://ident.me"
 song_shorthand="off"
 
 
+# Birthday
+
+
+# Whether to show the time in the output
+#
+# Default:  'on'
+# Values:   'on', 'off'
+# Flag:     --birthday_time
+#
+# Example:
+# on:  'Thu 14 Apr 2016 11:50 PM'
+# off: 'Thu 14 Apr 2016'
+birthday_time="on"
+
+
 # Text Colors
 
 
