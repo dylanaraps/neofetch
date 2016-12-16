@@ -1736,20 +1736,26 @@ get_birthday() {
             birthday="$(ls -lUT /var/log/install.log | awk '{printf $6 " " $7 " " $9 " " $8}')"
         ;;
 
-        "BSD")
+        "BSD" | "Mac OS X")
             case "$kernel_name" in
+                "Darwin")
+                    birthday_file="/var/log/install.log"
+                ;;
+
                 "OpenBSD"* | "Bitrig"*)
-                    birthday="$(ls -alctT / | awk '/lost\+found/ {printf $6 " " $7 " " $9 " " $8}')"
+                    birthday_file="/"
                 ;;
 
                 "FreeBSD"*)
-                    birthday="$(ls -alctT /etc/hostid | awk '{printf $6 " " $7 " " $9 " " $8}')"
+                    birthday_file="/etc/hostid"
                 ;;
 
                 "NetBSD"* | "DragonFly"*)
-                    birthday="$(ls -alctT /etc/defaults/rc.conf | awk '{printf $6 " " $7 " " $9 " " $8}')"
+                    birthday_file="/etc/defaults/rc.conf"
                 ;;
             esac
+
+            birthday="$(ls -alctT "$birthday_file" | awk '{printf $6 " " $7 " " $9 " " $8}')"
         ;;
 
         "Windows")
@@ -1765,8 +1771,8 @@ get_birthday() {
         ;;
     esac
 
-    birthday="${birthday%\.*}"
     birthday="${birthday//-/ }"
+    birthday="${birthday%:*}"
     birthday=($birthday)
     birthday="$(convert_time "${birthday[@]}")"
 }
@@ -2919,25 +2925,24 @@ convert_time() {
     year="$1"
     day="$3"
 
-    # Split time into hours/minutesr
-    time="${4%\:*}"
-    hour="${time/:*}"
-    min="${time/${hour}}"
+    # Split time into hours/minutes
+    hour="${4/:*}"
+    min="${4/${hour}}"
 
     # Get month. (Month code is used for day of week)
     case "$2" in
-        1)  month="Jan"; month_code="0" ;;
-        2)  month="Feb"; month_code="3" ;;
-        3)  month="Mar"; month_code="3" ;;
-        4)  month="Apr"; month_code="6" ;;
-        5)  month="May"; month_code="1" ;;
-        6)  month="Jun"; month_code="4" ;;
-        7)  month="Jul"; month_code="6" ;;
-        8)  month="Aug"; month_code="2" ;;
-        9)  month="Sep"; month_code="5" ;;
-        10) month="Oct"; month_code="0" ;;
-        11) month="Nov"; month_code="3" ;;
-        12) month="Dec"; month_code="5" ;;
+        1  | "Jan") month="Jan"; month_code="0" ;;
+        2  | "Feb") month="Feb"; month_code="3" ;;
+        3  | "Mar") month="Mar"; month_code="3" ;;
+        4  | "Apr") month="Apr"; month_code="6" ;;
+        5  | "May") month="May"; month_code="1" ;;
+        6  | "Jun") month="Jun"; month_code="4" ;;
+        7  | "Jul") month="Jul"; month_code="6" ;;
+        8  | "Aug") month="Aug"; month_code="2" ;;
+        9  | "Sep") month="Sep"; month_code="5" ;;
+        10 | "Oct") month="Oct"; month_code="0" ;;
+        11 | "Nov") month="Nov"; month_code="3" ;;
+        12 | "Dec") month="Dec"; month_code="5" ;;
     esac
 
     # Get leap year.
