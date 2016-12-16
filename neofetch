@@ -500,9 +500,10 @@ get_shell() {
         case "${SHELL##*/}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
 
-            "mksh")
+            "mksh" | "ksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
                 shell="${shell/ * KSH}"
+                shell="${shell/version}"
             ;;
 
             *)
@@ -513,7 +514,6 @@ get_shell() {
 
         # Remove unwanted info
         shell="${shell/, version}"
-        shell="${shell/version * sh/ksh}"
         shell="${shell/xonsh\//xonsh }"
         shell="${shell/options*}"
         shell="${shell/\(*\)}"
