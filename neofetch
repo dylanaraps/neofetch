@@ -1751,7 +1751,7 @@ get_birthday() {
                 ;;
             esac
 
-            birthday="$(ls -alctT "$birthday_file" | awk '{printf $9 " " $6 " " $7 " " $8}')"
+            birthday="$(ls -alctT "$birthday_file" | awk '{printf $9 " " $6 " " $7 " " $8 " "}')"
         ;;
 
         "Windows")
