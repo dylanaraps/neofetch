@@ -264,6 +264,7 @@ get_model() {
     esac
 
     # Remove dummy OEM info
+    model="${model//To be filled by O.E.M.}"
     model="${model//To Be Filled*}"
     model="${model//OEM*}"
     model="${model//Not Applicable}"
