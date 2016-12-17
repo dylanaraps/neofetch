@@ -16,6 +16,10 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export LC_ALL=C
 export LANG=C
 
+# Set PATH to binary directories only
+# This solves issues with neofetch opening the pacman game.
+export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+
 # Set no case match.
 shopt -s nocasematch
 
@@ -372,14 +376,6 @@ get_uptime() {
 }
 
 get_packages() {
-    # Remove /usr/games from $PATH.
-    # This solves issues with neofetch opening the
-    # 'pacman' game.
-    local PATH=":${PATH}:"
-    local PATH="${PATH/':/usr/games:'/:}"
-    local PATH="${PATH%:}"
-    local PATH="${PATH#:}"
-
     case "$os" in
         "Linux" | "iPhone OS" | "Solaris")
             type -p pacman >/dev/null && \
@@ -388,7 +384,7 @@ get_packages() {
             type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
 
-            type -p /sbin/pkgtool >/dev/null && \
+            type -p pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
 
             type -p rpm >/dev/null && \
@@ -957,7 +953,7 @@ get_cpu_usage() {
 get_gpu() {
     case "$os" in
         "Linux")
-            gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')"
+            gpu="$(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')"
 
             case "$gpu" in
                 *"advanced"*)
