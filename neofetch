@@ -88,7 +88,7 @@ get_distro() {
             else
                 # Source the os-release file
                 for file in /etc/os-release /usr/lib/os-release /etc/*release /usr/lib/*release; do
-                    source "$file" && break
+                    source "$file" 2>/dev/null && break
                 done
 
                 # Format the distro name.
