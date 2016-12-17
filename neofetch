@@ -1638,17 +1638,14 @@ get_battery() {
 
 get_local_ip() {
     case "$os" in
-        "Linux")
+        "Linux" | "BSD" | "Solaris")
             local_ip="$(ip route get 1 | awk '{print $NF;exit}')"
+            [[ -z "$local_ip" ]] && local_ip="$(ifconfig | awk '/broadcast/ {print $2}')"
         ;;
 
         "Mac OS X" | "iPhone OS")
             local_ip="$(ipconfig getifaddr en0)"
             [[ -z "$local_ip" ]] && local_ip="$(ipconfig getifaddr en1)"
-        ;;
-
-        "BSD" | "Solaris")
-            local_ip="$(ifconfig | awk '/broadcast/ {print $2}')"
         ;;
 
         "Windows")
