@@ -16,9 +16,8 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export LC_ALL=C
 export LANG=C
 
-# Set PATH to binary directories only
-# This solves issues with neofetch opening the pacman game.
-export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+# Add /usr/sbin and /sbin to PATH.
+export PATH="/usr/sbin:/sbin:${PATH}"
 
 # Set no case match.
 shopt -s nocasematch
@@ -376,6 +375,14 @@ get_uptime() {
 }
 
 get_packages() {
+    # Remove /usr/games from $PATH.
+    # This solves issues with neofetch opening the
+    # 'pacman' game.
+    local PATH=":${PATH}:"
+    local PATH="${PATH/':/usr/games:'/:}"
+    local PATH="${PATH%:}"
+    local PATH="${PATH#:}"
+
     case "$os" in
         "Linux" | "iPhone OS" | "Solaris")
             type -p pacman >/dev/null && \
