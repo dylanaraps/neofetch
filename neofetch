@@ -881,7 +881,9 @@ get_cpu() {
 
     # Remove uneeded patterns from cpu output
     cpu="${cpu//(TM)}"
+    cpu="${cpu//(tm)}"
     cpu="${cpu//(R)}"
+    cpu="${cpu//(r)}"
     cpu="${cpu//CPU}"
     cpu="${cpu//Processor}"
     cpu="${cpu//Dual-Core}"
