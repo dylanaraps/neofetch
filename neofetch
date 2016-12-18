@@ -450,9 +450,12 @@ get_packages() {
                 packages="$((packages+=$(pkg_info | wc -l)))"
 
             if type -p pkg >/dev/null; then
-                packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
-                (("$packages" == "0")) && packages="$((packages+=$(pkg info | wc -l)))"
-                (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
+                case "$kernel_name" in
+                    "FreeBSD") packages="$((packages+=$(pkg info | wc -l)))" ;;
+                    *)
+                        packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
+                        (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
+                esac
             fi
         ;;
 
