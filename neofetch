@@ -16,6 +16,10 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export LC_ALL=C
 export LANG=C
 
+# Set PATH to binary directories only
+# This solves issues with neofetch opening the pacman game.
+export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+
 # Set no case match.
 shopt -s nocasematch
 
@@ -28,13 +32,12 @@ get_os() {
     # $kernel_name is set in a function called cache_uname and is
     # just the output of 'uname -s'.
     case "$kernel_name" in
-        "Linux")   os="Linux" ;;
+        "Linux" | "GNU"*)   os="Linux" ;;
         "Darwin")  os="$(sw_vers -productName)" ;;
         *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
         "CYGWIN"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
         "Haiku") os="Haiku" ;;
-        "GNU"*) os="GNU" ;;
         *) printf "%s\n" "Unknown OS detected: $kernel_name"; exit 1 ;;
     esac
 }
@@ -43,7 +46,7 @@ get_distro() {
     [[ "$distro" ]] && return
 
     case "$os" in
-        "Linux" | "GNU")
+        "Linux")
             if [[ "$(< /proc/version)" == *"Microsoft"* || "$(< /proc/sys/kernel/osrelease)" == *"Microsoft"* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
@@ -307,7 +310,7 @@ get_uptime() {
         *)
             # Get uptime in seconds
             case "$os" in
-                "Linux" | "Windows" | "GNU")
+                "Linux" | "Windows")
                     seconds="$(< /proc/uptime)"
                     seconds="${seconds/.*}"
                 ;;
@@ -373,23 +376,15 @@ get_uptime() {
 }
 
 get_packages() {
-    # Remove /usr/games from $PATH.
-    # This solves issues with neofetch opening the
-    # 'pacman' game.
-    local PATH=":${PATH}:"
-    local PATH="${PATH/':/usr/games:'/:}"
-    local PATH="${PATH%:}"
-    local PATH="${PATH#:}"
-
     case "$os" in
-        "Linux" | "iPhone OS" | "Solaris" | "GNU")
+        "Linux" | "iPhone OS" | "Solaris")
             type -p pacman >/dev/null && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
             type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
 
-            type -p /sbin/pkgtool >/dev/null && \
+            type -p pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
 
             type -p rpm >/dev/null && \
@@ -957,8 +952,8 @@ get_cpu_usage() {
 
 get_gpu() {
     case "$os" in
-        "Linux" | "GNU")
-            gpu="$(PATH="/sbin:$PATH" lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')"
+        "Linux")
+            gpu="$(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')"
 
             case "$gpu" in
                 *"advanced"*)
@@ -1068,7 +1063,7 @@ get_gpu() {
 
 get_memory() {
     case "$os" in
-        "Linux" | "Windows" | "GNU")
+        "Linux" | "Windows")
             # MemUsed = Memtotal + Shmem - MemFree - Buffers - Cached - SReclaimable
             # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
             while IFS=":" read -r a b; do
@@ -1221,7 +1216,7 @@ get_song() {
 
 get_resolution() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris" | "GNU")
+        "Linux" | "BSD" | "Solaris")
             if type -p xrandr >/dev/null; then
                 case "$refresh_rate" in
                     "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
@@ -1640,17 +1635,14 @@ get_battery() {
 
 get_local_ip() {
     case "$os" in
-        "Linux")
+        "Linux" | "BSD" | "Solaris")
             local_ip="$(ip route get 1 | awk '{print $NF;exit}')"
+            [[ -z "$local_ip" ]] && local_ip="$(ifconfig | awk '/broadcast/ {print $2}')"
         ;;
 
         "Mac OS X" | "iPhone OS")
             local_ip="$(ipconfig getifaddr en0)"
             [[ -z "$local_ip" ]] && local_ip="$(ipconfig getifaddr en1)"
-        ;;
-
-        "BSD" | "Solaris")
-            local_ip="$(ifconfig | awk '/broadcast/ {print $2}')"
         ;;
 
         "Windows")
@@ -1687,7 +1679,7 @@ get_users() {
 
 get_install_date() {
     case "$os" in
-        "Linux" | "GNU" | "iPhone OS")
+        "Linux" | "iPhone OS")
             install_date="$(ls -alct --full-time / | awk '/lost\+found|private/ {printf  $6 " " $7}')"
         ;;
 
@@ -1932,7 +1924,7 @@ get_w3m_img_path() {
 
 get_wallpaper() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris" | "GNU")
+        "Linux" | "BSD" | "Solaris")
             # Get DE if user has disabled the function.
             (( "$de_run" != 1 )) && get_de
 
@@ -2548,23 +2540,23 @@ get_distro_colors() {
         ;;
 
         *)
-            case "$os" in
+            case "$kernel_name" in
                 "Linux")
                     ascii_distro="linux"
                     set_colors fg 8 3
                 ;;
 
-                "BSD")
+                *"BSD")
                     ascii_distro="bsd"
                     set_colors 1 7 4 3 6
                 ;;
 
-                "GNU")
+                "GNU"*)
                     ascii_distro="gnu"
                     set_colors fg
                 ;;
 
-                "Solaris")
+                "SunOS")
                     ascii_distro="solaris"
                     set_colors 3
                 ;;
