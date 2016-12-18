@@ -27,8 +27,13 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Delete most of `info()` and instead call `prin()`.
     - This removes a lot of duplicate code between `info()` and `prin()`.
 - Remove `printf` subshells and instead use `printf -v` to declare the variables.
+- Set fixed `$PATH` in the beginning of the script.
 
 ## Info
+
+**OS** <br \>
+- Added support for GNU/kFreeBSD.
+- Merged all GNU Hurd instances to Linux since they work exactly the same way.
 
 **Shell**<br \>
 
@@ -73,12 +78,12 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
     - The function is `40` lines smaller than before and works on all \[1\] versions of `df` we tested on \[2\].
 - We only show the `root (/)` partition now.
     - Showing a total of all disks only worked on GNU `df` and we had to hardcode different commands for Distros and Operating Systens that used a different `df`.
-- We're using the same `df` flags across all Operating Systems now. 
+- We're using the same `df` flags across all Operating Systems now.
     - No more ugly case statements or per distro hardcoding of `df` flags.
 - Removed all percentage calculation since `df` already provides us with the percentage.
 - Warn the user if `df` isn't installed.
 - Fixed broken output if `df` wasn't installed but the function was enabled.
-    
+
 \[1\] The function doesn't work on Haiku since their `df` is wildly non-standard. (The output format and flags are 100% different from all of the other `df` versions floating around.) 
 
 \[2\] Tested on `GNU`, `Busybox`, `BSD`, `Solaris` and `macOS` `df` versions.
@@ -95,6 +100,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 **Local IP**<br \>
 
+- [BSD and Solaris] Merged the detection to Linux.
 - [Windows] Support multiple interfaces.
 
 **Color Blocks**<br \>
