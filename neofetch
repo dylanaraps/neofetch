@@ -18,7 +18,7 @@ export LANG=C
 
 # Set PATH to binary directories only
 # This solves issues with neofetch opening the pacman game.
-export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/opt:/usr/local/bin:/cygdrive/c/Windows/system32:/cygdrive/c/Windows:/cygdrive/c/Windows/System32/Wbem:/cygdrive/c/Windows/System32/WindowsPowerShell/v1.0"
 
 # Set no case match.
 shopt -s nocasematch
