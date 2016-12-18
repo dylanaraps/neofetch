@@ -2785,8 +2785,7 @@ get_term_padding() {
 
     case "$term" in
         "URxvt"*)
-            border="$(xrdb -query | grep -i "\(URxvt\|\*\)\.InternalBorder")"
-            border="${border/*:}"
+            border="$(xrdb -query | awk -F ':' '/^(URxvt|\*).internalBorder/ {printf $2; exit}')"
         ;;
     esac
 }
