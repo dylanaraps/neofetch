@@ -53,8 +53,8 @@ get_distro() {
     [[ "$distro" ]] && return
 
     case "$os" in
-        "Linux")
-            if [[ "$(< /proc/version)" == *"Microsoft"* || "$(< /proc/sys/kernel/osrelease)" == *"Microsoft"* ]]; then
+        "Linux" | "BSD" | "MINIX")
+            if [[ "$(< /proc/version)" == *"Microsoft"* || "$(< /proc/sys/kernel/osrelease)" == *"Microsoft"* ]]; then ## ERRORS NEED TO BE SUPPRESSED!
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
@@ -95,9 +95,9 @@ get_distro() {
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
-            else
-                # Source the os-release file.
-                for file in /etc/os-release /usr/lib/os-release /etc/*release /usr/lib/*release; do
+            elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" ]]; then
+                # Source the os-release file
+                for file in /etc/os-release /usr/lib/os-release; do
                     source "$file" 2>/dev/null && break
                 done
 
@@ -111,6 +111,21 @@ get_distro() {
                 # Workarounds for distros that go against the os-release standard.
                 [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
                 [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}' /etc/*ease /usr/lib/*ease)"
+
+            else
+                distro="$(cat /etc/*-release)" # UUOC, but using usual bash $(< *-file) returns "ambiguous redirect"
+                if [[ -z "$distro" ]]; then
+                    case "$distro_shorthand" in
+                        "on" | "tiny") distro="$kernel_name" ;;
+                        *) distro="$kernel_name $kernel_version" ;;
+                    esac
+                    distro="${distro/DragonFly/DragonFlyBSD}"
+
+                    # Workarounds for FreeBSD based distros.
+                    [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
+                    [[ -f "/etc/rc.conf.trueos" ]] && distro="TrueOS"
+                    [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD" # /etc/pacbsd-release is an empty file
+                fi
             fi
             distro="$(trim_quotes "$distro")"
         ;;
@@ -151,20 +166,6 @@ get_distro() {
 
             # "uname -m" doesn't print architecture on iOS so we force it off.
             os_arch="off"
-        ;;
-
-        "BSD" | "MINIX")
-            case "$distro_shorthand" in
-                "tiny" | "on") distro="$kernel_name" ;;
-                *) distro="$kernel_name $kernel_version" ;;
-            esac
-
-            distro="${distro/DragonFly/DragonFlyBSD}"
-
-            # Workarounds for FreeBSD based distros.
-            [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
-            [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
-            [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
         ;;
 
         "Windows")
