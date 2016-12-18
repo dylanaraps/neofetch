@@ -1145,7 +1145,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|gnome-music|lollypop|clementine|pragha/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1166,6 +1166,7 @@ get_song() {
         "rhythmbox"*)   song="$(rhythmbox-client --print-playing)" ;;
         "deadbeef"*)    song="$(deadbeef --nowplaying '%a - %t')" ;;
         "audacious"*)   song="$(audtool current-song)" ;;
+        "xmms2d"*)      song="$(xmms2 current -f '${artist} - ${title}')" ;;
         "gnome-music"*) get_song_dbus "GnomeMusic" ;;
         "lollypop"*)    get_song_dbus "Lollypop" ;;
         "clementine"*)  get_song_dbus "clementine" ;;
