@@ -3,7 +3,7 @@
 - **[@konimex](https://github.com/konimex)**
 - **[@iandrewt](https://github.com/iandrewt)**
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
-
+- **[@z33ky](https://github.com/z33ky)**
 
 ## IRC
 
@@ -69,7 +69,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 **~~Birthday~~ Install Date**<br \>
 
 - Renamed `get_birthday()` -- > `get_install_date()`
-- Removed all `date` usage from `get_install_date()`. 
+- Removed all `date` usage from `get_install_date()`.
 - Added a new function called `convert_time()` which takes the time stamped `ls` output and converts it to a pretty format. The function only uses bash so its much faster than calling `date`. This makes things simple and keeps the output consistent across all Operating Systems. Example: `2016-12-06 16:58:58.000000000` --> `Tue 06 Dec 2016 4:58 PM`
 
 **Disk**<br \>
@@ -93,6 +93,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - [cmus] Simplify block and fix `artistsort` bug.
 - Removed `state` detection.
 - Removed duplicate `dbus-send` commands.
+- Added support for xmms2. **[@z33ky](https://github.com/z33ky)**
 
 **Battery**<br \>
 
