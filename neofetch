@@ -17,7 +17,7 @@ export LC_ALL=C
 export LANG=C
 
 # Add /usr/sbin and /sbin to PATH.
-export PATH="${PATH}:/usr/sbin:/sbin"
+export PATH="/usr/sbin:/sbin:${PATH}"
 
 # Set no case match.
 shopt -s nocasematch
