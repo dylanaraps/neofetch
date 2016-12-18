@@ -394,7 +394,7 @@ get_packages() {
     local PATH="${PATH#:}"
 
     case "$os" in
-        "Linux" | "iPhone OS" | "Solaris")
+        "Linux" | "BSD" | "iPhone OS" | "Solaris")
             type -p pacman >/dev/null && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
@@ -446,8 +446,12 @@ get_packages() {
             type -p eopkg >/dev/null && \
                 packages="$((packages+=$(eopkg list-installed | wc -l)))"
 
+            type -p pkg_info >/dev/null && \
+                packages="$((packages+=$(pkg_info | wc -l)))"
+
             if type -p pkg >/dev/null; then
                 packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
+                (("$packages" == "0")) && packages="$((packages+=$(pkg info | wc -l)))"
                 (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
             fi
         ;;
@@ -464,21 +468,6 @@ get_packages() {
 
             type -p pkgin >/dev/null && \
                 packages="$((packages + $(pkgin list | wc -l)))"
-        ;;
-
-        "BSD")
-            case "$distro" in
-                # PacBSD has both pacman and pkg, but only pacman is used.
-                "PacBSD"*) packages="$(pacman -Qq --color never | wc -l)" ;;
-
-                *)
-                    if type -p pkg_info >/dev/null; then
-                        packages="$(pkg_info | wc -l)"
-                    elif type -p pkg >/dev/null; then
-                        packages="$(pkg info | wc -l)"
-                    fi
-                ;;
-            esac
         ;;
 
         "Windows")
