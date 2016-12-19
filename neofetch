@@ -1552,10 +1552,16 @@ get_term_font() {
 
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
-    [[ "$os" == "Haiku" ]] && { err "Disk doesn't work on Haiku due to the non-standard 'df'"; return; }
+
+    # Get 'df' flags.
+    case "$os" in
+        "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
+        "Minix") df_flags=(-P -h) ;;
+        *) df_flags=(-h) ;;
+    esac
 
     # Get the info for /
-    disks=($(df -P -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
+    disks=($(df "${df_flags[@]}" /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
     # Put it all together
     disk_perc="${disks[11]/'%'}"
