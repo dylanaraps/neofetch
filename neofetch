@@ -1770,10 +1770,18 @@ get_cols() {
 get_image_backend() {
     # This function determines which image backend to use
     # by checking for programs and etc.
-    get_image_program
 
-    # Fallback to ascii mode if imagemagick isn't installed.
-    type -p convert >/dev/null 2>&1 || image_backend="ascii"
+    # If the image source isn't 'ascii' or 'off'
+    if [[ ! "${image_source}" =~ ^(off|ascii)$ ]]; then
+        # If X isn't running force ascii mode here.
+        [[ -z "$DISPLAY" ]] && image_source="ascii"
+
+        # Fallback to ascii mode if imagemagick isn't installed.
+        type -p convert >/dev/null 2>&1 || image_source="ascii"
+    fi
+
+    # Get the image program.
+    get_image_program
 
     # If image source is ascii fallback to ascii
     if [[ "$image_source" == "ascii" ]]; then
