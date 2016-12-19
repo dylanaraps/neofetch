@@ -1738,7 +1738,7 @@ get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
-        block_width="${block_width// /█}"
+        block_width="${block_width// /.}"
 
         # Generate the string.
         for ((start; start<=end; start++)); do
@@ -2364,7 +2364,7 @@ get_underline() {
 }
 
 get_line_break() {
-    line_break="​ "
+    line_break="${zws} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
