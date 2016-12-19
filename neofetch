@@ -2860,6 +2860,9 @@ old_options() {
     [[ "$speed_type" == "min" ]]     && err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
     [[ "$speed_type" == "max" ]]     && err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
     [[ "$speed_type" == "bios" ]]    && err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
+
+    # Ascii_logo_size was removed in 2.1.0.
+    [[ "$ascii_logo_size" ]] && err "Config: ascii_logo_size is deprecatedm use ascii_distro='{arch,crux,gentoo}_small' instead."
 }
 
 cache_uname() {
