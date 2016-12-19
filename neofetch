@@ -886,7 +886,7 @@ get_cpu() {
         cpu="$cpu @ ${speed}GHz $temp"
     fi
 
-    # Remove uneeded patterns from cpu output
+    # Remove unneeded patterns from cpu output
     cpu="${cpu//(TM)}"
     cpu="${cpu//(tm)}"
     cpu="${cpu//(R)}"
@@ -1149,7 +1149,7 @@ get_song() {
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
-        # This function saves us including the same command throughtout the function.
+        # This function saves us including the same command throughout the function.
         song="$(\
             dbus-send --print-reply --dest=org.mpris.MediaPlayer2."${1}" /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
@@ -1210,7 +1210,7 @@ get_song() {
         ;;
     esac
 
-    # Display Artist and Title on seperate lines.
+    # Display Artist and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
         artist="${song/ -*}"
         song="${song/$artist - }"
@@ -1849,11 +1849,6 @@ get_ascii() {
             ascii="${ascii_distro,,}"
         fi
 
-        if [[ "$ascii_logo_size" == "small" ]]; then
-            ascii="${ascii/ *}_small"
-            prompt_loc="3"
-        fi
-
         if [[ -f "/usr/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
             ascii="/usr/share/neofetch/ascii/distro/${ascii/ *}"
 
@@ -2146,7 +2141,7 @@ make_thumbnail() {
             og_width="${size%% *}"
             og_height="${size##* }"
 
-            # This checks to see if height is geater than width
+            # This checks to see if height is greater than width
             # so we can do a better crop of portrait images.
             size="$og_height"
             (("$og_height" > "$og_width")) && size="$og_width"
@@ -2402,7 +2397,7 @@ trim() {
     # of special characters.
     #
     # The whitespace trim doesn't work with multiline strings so we use
-    # '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
+    # '${1//[[:space:]]/ }' to remove newlines before we trim the whitespace.
 
     set -f
     # shellcheck disable=2086
@@ -2876,6 +2871,9 @@ old_options() {
     [[ "$speed_type" == "min" ]]     && err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
     [[ "$speed_type" == "max" ]]     && err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
     [[ "$speed_type" == "bios" ]]    && err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
+
+    # Ascii_logo_size was removed in 2.1.0.
+    [[ "$ascii_logo_size" ]] && err "Config: ascii_logo_size is deprecatedm use ascii_distro='{arch,crux,gentoo}_small' instead."
 }
 
 cache_uname() {
@@ -3005,7 +3003,7 @@ INFO
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --ip_host url               URL to query for public IP
-    --song_shorthand on/off     Print the Artist/Title on seperate lines
+    --song_shorthand on/off     Print the Artist/Title on separate lines
     --install_time on/off      Enable/Disable showing the time in Install Date output.
 
 TEXT FORMATTING
@@ -3071,16 +3069,18 @@ ASCII
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: Arch and Ubuntu have 'old' logo varients.
+                                NOTE: Arch and Ubuntu have 'old' logo variants.
 
                                 NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
 
-                                NOTE: Ubuntu has flavor varients.
+                                NOTE: Ubuntu has flavor variants.
 
                                 NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME', 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
 
-    --ascii_logo_size           Size of ascii logo.
-                                Supported distros: Arch, Gentoo, Crux, OpenBSD.
+                                NOTE: Arch, Crux and Gentoo have a smaller logo variant.
+
+                                NOTE: Change this to 'arch_small', 'crux_small' or 'gentoo_small' to use the small logos.
+
     --ascii_bold on/off         Whether or not to bold the ascii logo.
     -L, --logo                  Hide the info text and only show the ascii logo.
 
@@ -3264,7 +3264,6 @@ get_args() {
                 case "$2" in "-"* | "") ascii_distro="$distro" ;; esac
             ;;
 
-            "--ascii_logo_size") ascii_logo_size="$2" ;;
             "--ascii_bold") ascii_bold="$2" ;;
             "--logo" | "-L")
                 image_backend="ascii"
