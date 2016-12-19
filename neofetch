@@ -3311,11 +3311,14 @@ main() {
     get_bold
     get_distro_colors
 
-    # If the script exits for any reason, unhide the cursor.
-    trap 'printf "\033[?25h\033[?7h"' EXIT
+    # Minix doesn't support these sequences.
+    if [[ "$TERM" != "minix" ]]; then
+        # If the script exits for any reason, unhide the cursor.
+        trap 'printf "\033[?25h\033[?7h"' EXIT
 
-    # Hide the cursor and disable line wrap
-    printf "\033[?25l\033[?7l"
+        # Hide the cursor and disable line wrap
+        printf "\033[?25l\033[?7l"
+    fi
 
     get_image_backend
     old_functions
