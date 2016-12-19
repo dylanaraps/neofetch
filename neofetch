@@ -1658,7 +1658,7 @@ get_battery() {
 
 get_local_ip() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris" | "MINIX")
+        "Linux" | "BSD" | "Solaris")
             local_ip="$(ip route get 1 | awk '{print $NF;exit}')"
             [[ -z "$local_ip" ]] && local_ip="$(ifconfig | awk '/broadcast/ {print $2}')"
         ;;
