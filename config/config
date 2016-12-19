@@ -569,6 +569,8 @@ ascii="distro"
 #       Change this to 'arch_old' or 'ubuntu_old' to use the old logos.
 # NOTE: Ubuntu has flavor varients.
 #       Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME' or 'Ubuntu-Budgie' to use the flavors.
+# NOTE: Arch, Crux and Gentoo have a smaller logo varient.
+#       Change this to 'arch_small', 'crux_small' or 'gentoo_small' to use the small logos.
 ascii_distro="auto"
 
 # Ascii Colors
@@ -581,16 +583,6 @@ ascii_distro="auto"
 # ascii_colors=(distro)      - Ascii is colored based on Distro colors.
 # ascii_colors=(4 6 1 8 8 6) - Ascii is colored using these colors.
 ascii_colors=(distro)
-
-# Logo size
-# Arch, Crux and Gentoo have a smaller logo
-# variant. Changing the value below to small
-# will make neofetch use the small logo.
-#
-# Default: 'normal'
-# Values:  'normal', 'small'
-# Flag:    --ascii_logo_size
-ascii_logo_size="normal"
 
 # Bold ascii logo
 # Whether or not to bold the ascii logo.
