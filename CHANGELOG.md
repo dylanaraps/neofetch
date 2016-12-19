@@ -28,6 +28,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
     - This removes a lot of duplicate code between `info()` and `prin()`.
 - Remove `printf` subshells and instead use `printf -v` to declare the variables.
 - Set fixed `$PATH` in the beginning of the script.
+- Fixed artifacts when using line-breaks in TTYs.
 
 ## Info
 
@@ -77,14 +78,14 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Rewrote function from scratch.
     - The function is `40` lines smaller than before and works on all \[1\] versions of `df` we tested on \[2\].
 - We only show the `root (/)` partition now.
-    - Showing a total of all disks only worked on GNU `df` and we had to hardcode different commands for Distros and Operating Systens that used a different `df`.
+    - Showing a total of all disks only worked on GNU `df` and we had to hardcode different commands for Distros and Operating Systems that used a different `df`.
 - We're using the same `df` flags across all Operating Systems now.
     - No more ugly case statements or per distro hardcoding of `df` flags.
 - Removed all percentage calculation since `df` already provides us with the percentage.
 - Warn the user if `df` isn't installed.
 - Fixed broken output if `df` wasn't installed but the function was enabled.
 
-\[1\] The function doesn't work on Haiku since their `df` is wildly non-standard. (The output format and flags are 100% different from all of the other `df` versions floating around.) 
+\[1\] The function doesn't work on Haiku since their `df` is wildly non-standard. (The output format and flags are 100% different from all of the other `df` versions floating around.)
 
 \[2\] Tested on `GNU`, `Busybox`, `BSD`, `Solaris` and `macOS` `df` versions.
 
@@ -107,11 +108,14 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 **Color Blocks**<br \>
 
 - Use start++ instead of adding it manually after case. **[@konimex](https://github.com/konimex)**
+- Fixed bug where color blocks wouldn't respect width in TTYs.
+- Cursor positioning now takes `$block_height` into account.
 
 
 ## Images
 
 - [iTerm2] Fixed blank images.
+- Fixed bug where image mode would attempt to run in a TTY.
 
 
 ## Ascii

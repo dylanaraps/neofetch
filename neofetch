@@ -1738,7 +1738,6 @@ get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
-        block_width="${block_width// /█}"
 
         # Generate the string.
         for ((start; start<=end; start++)); do
@@ -1759,9 +1758,12 @@ get_cols() {
         # Add newlines to the string.
         cols="${cols%%'nl'}"
         cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
+
+        printf "%b\n" "\033[${text_padding}C${zws}${cols}"
+        info_height="$((info_height+=block_height+2))"
     fi
 
-    unset blocks blocks2
+    unset -v blocks blocks2 cols
 }
 
 # IMAGES
@@ -1769,10 +1771,18 @@ get_cols() {
 get_image_backend() {
     # This function determines which image backend to use
     # by checking for programs and etc.
-    get_image_program
 
-    # Fallback to ascii mode if imagemagick isn't installed.
-    type -p convert >/dev/null 2>&1 || image_backend="ascii"
+    # If the image source isn't 'ascii' or 'off'
+    if [[ ! "${image_source}" =~ ^(off|ascii)$ ]]; then
+        # If X isn't running force ascii mode here.
+        [[ -z "$DISPLAY" ]] && image_source="ascii"
+
+        # Fallback to ascii mode if imagemagick isn't installed.
+        type -p convert >/dev/null 2>&1 || image_source="ascii"
+    fi
+
+    # Get the image program.
+    get_image_program
 
     # If image source is ascii fallback to ascii
     if [[ "$image_source" == "ascii" ]]; then
@@ -2359,7 +2369,8 @@ get_underline() {
 }
 
 get_line_break() {
-    line_break="​ "
+    # Print it directly.
+    printf "%s\n" "${zws} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
@@ -3130,8 +3141,8 @@ exit 1
 }
 
 get_args() {
-    # Check the command-line flags early for '--config none/off'
-    [[ "$@" =~ --config\ ?(off|none) ]] || get_user_config 2>/dev/null
+    # Check the commandline flags early for '--config'
+    [[ "$@" =~ --config ]] || get_user_config 2>/dev/null
 
     while [[ "$1" ]]; do
         case "$1" in
