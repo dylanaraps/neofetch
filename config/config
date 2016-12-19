@@ -278,7 +278,7 @@ public_ip_host="http://ident.me"
 # Song
 
 
-# Print the Artist and Title on seperate lines
+# Print the Artist and Title on separate lines
 #
 # Default: 'off'
 # Values:  'on', 'off'
@@ -565,11 +565,11 @@ ascii="distro"
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
 #
-# NOTE: Arch and Ubuntu have 'old' logo varients.
+# NOTE: Arch and Ubuntu have 'old' logo variants.
 #       Change this to 'arch_old' or 'ubuntu_old' to use the old logos.
-# NOTE: Ubuntu has flavor varients.
+# NOTE: Ubuntu has flavor variants.
 #       Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME' or 'Ubuntu-Budgie' to use the flavors.
-# NOTE: Arch, Crux and Gentoo have a smaller logo varient.
+# NOTE: Arch, Crux and Gentoo have a smaller logo variant.
 #       Change this to 'arch_small', 'crux_small' or 'gentoo_small' to use the small logos.
 ascii_distro="auto"
 
