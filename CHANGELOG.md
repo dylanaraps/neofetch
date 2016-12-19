@@ -28,6 +28,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
     - This removes a lot of duplicate code between `info()` and `prin()`.
 - Remove `printf` subshells and instead use `printf -v` to declare the variables.
 - Set fixed `$PATH` in the beginning of the script.
+- Fixed artifacts when using line-breaks in TTYs.
 
 ## Info
 
@@ -107,6 +108,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 **Color Blocks**<br \>
 
 - Use start++ instead of adding it manually after case. **[@konimex](https://github.com/konimex)**
+- Fixed bug where color blocks wouldn't respect width in TTYs.
 
 
 ## Images
