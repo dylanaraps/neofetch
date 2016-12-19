@@ -2364,7 +2364,8 @@ get_underline() {
 }
 
 get_line_break() {
-    line_break="${zws} "
+    # Print it directly.
+    printf "%s\n" "${zws} "
 
     # Calculate info height
     info_height="$((info_height+=1))"
