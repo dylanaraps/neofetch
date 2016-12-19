@@ -886,7 +886,7 @@ get_cpu() {
         cpu="$cpu @ ${speed}GHz $temp"
     fi
 
-    # Remove uneeded patterns from cpu output
+    # Remove unneeded patterns from cpu output
     cpu="${cpu//(TM)}"
     cpu="${cpu//(tm)}"
     cpu="${cpu//(R)}"
@@ -1149,7 +1149,7 @@ get_song() {
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
-        # This function saves us including the same command throughtout the function.
+        # This function saves us including the same command throughout the function.
         song="$(\
             dbus-send --print-reply --dest=org.mpris.MediaPlayer2."${1}" /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
@@ -1210,7 +1210,7 @@ get_song() {
         ;;
     esac
 
-    # Display Artist and Title on seperate lines.
+    # Display Artist and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
         artist="${song/ -*}"
         song="${song/$artist - }"
@@ -2131,7 +2131,7 @@ make_thumbnail() {
             og_width="${size%% *}"
             og_height="${size##* }"
 
-            # This checks to see if height is geater than width
+            # This checks to see if height is greater than width
             # so we can do a better crop of portrait images.
             size="$og_height"
             (("$og_height" > "$og_width")) && size="$og_width"
@@ -2386,7 +2386,7 @@ trim() {
     # of special characters.
     #
     # The whitespace trim doesn't work with multiline strings so we use
-    # '${1//[[:space:]]/ }' to remove newlines beofre we trim the whitespace.
+    # '${1//[[:space:]]/ }' to remove newlines before we trim the whitespace.
 
     set -f
     # shellcheck disable=2086
@@ -2989,7 +2989,7 @@ INFO
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --ip_host url               URL to query for public IP
-    --song_shorthand on/off     Print the Artist/Title on seperate lines
+    --song_shorthand on/off     Print the Artist/Title on separate lines
     --install_time on/off      Enable/Disable showing the time in Install Date output.
 
 TEXT FORMATTING
@@ -3055,15 +3055,15 @@ ASCII
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: Arch and Ubuntu have 'old' logo varients.
+                                NOTE: Arch and Ubuntu have 'old' logo variants.
 
                                 NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
 
-                                NOTE: Ubuntu has flavor varients.
+                                NOTE: Ubuntu has flavor variants.
 
                                 NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME', 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
 
-                                NOTE: Arch, Crux and Gentoo have a smaller logo varient.
+                                NOTE: Arch, Crux and Gentoo have a smaller logo variant.
 
                                 NOTE: Change this to 'arch_small', 'crux_small' or 'gentoo_small' to use the small logos.
 
@@ -3127,7 +3127,7 @@ exit 1
 }
 
 get_args() {
-    # Check the commandline flags early for '--config none/off'
+    # Check the command-line flags early for '--config none/off'
     [[ "$@" =~ --config\ ?(off|none) ]] || get_user_config 2>/dev/null
 
     while [[ "$1" ]]; do
