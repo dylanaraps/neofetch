@@ -3130,8 +3130,8 @@ exit 1
 }
 
 get_args() {
-    # Check the commandline flags early for '--config none/off'
-    [[ "$@" =~ --config\ ?(off|none) ]] || get_user_config 2>/dev/null
+    # Check the commandline flags early for '--config'
+    [[ "$@" =~ --config ]] || get_user_config 2>/dev/null
 
     while [[ "$1" ]]; do
         case "$1" in
