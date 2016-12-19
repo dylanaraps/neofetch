@@ -109,11 +109,13 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Use start++ instead of adding it manually after case. **[@konimex](https://github.com/konimex)**
 - Fixed bug where color blocks wouldn't respect width in TTYs.
+- Cursor positioning now takes `$block_height` into account.
 
 
 ## Images
 
 - [iTerm2] Fixed blank images.
+- Fixed bug where image mode would attempt to run in a TTY.
 
 
 ## Ascii
