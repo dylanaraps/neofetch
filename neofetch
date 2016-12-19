@@ -16,9 +16,8 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export LC_ALL=C
 export LANG=C
 
-# Set PATH to binary directories only
-# This solves issues with neofetch opening the pacman game.
-export PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+# Add /usr/sbin and /sbin to PATH.
+export PATH="/usr/sbin:/sbin:${PATH}"
 
 # Set no case match.
 shopt -s nocasematch
@@ -379,6 +378,14 @@ get_uptime() {
 }
 
 get_packages() {
+    # Remove /usr/games from $PATH.
+    # This solves issues with neofetch opening the
+    # 'pacman' game.
+    local PATH=":${PATH}:"
+    local PATH="${PATH/':/usr/games:'/:}"
+    local PATH="${PATH%:}"
+    local PATH="${PATH#:}"
+
     case "$os" in
         "Linux" | "iPhone OS" | "Solaris")
             type -p pacman >/dev/null && \
@@ -498,6 +505,7 @@ get_shell() {
     if [[ "$shell_version" == "on" ]]; then
         case "${SHELL##*/}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
+            "sh") ;;
 
             "mksh" | "ksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
@@ -1144,7 +1152,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|gnome-music|lollypop|clementine|pragha/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1165,6 +1173,7 @@ get_song() {
         "rhythmbox"*)   song="$(rhythmbox-client --print-playing)" ;;
         "deadbeef"*)    song="$(deadbeef --nowplaying '%a - %t')" ;;
         "audacious"*)   song="$(audtool current-song)" ;;
+        "xmms2d"*)      song="$(xmms2 current -f '${artist} - ${title}')" ;;
         "gnome-music"*) get_song_dbus "GnomeMusic" ;;
         "lollypop"*)    get_song_dbus "Lollypop" ;;
         "clementine"*)  get_song_dbus "clementine" ;;
@@ -1272,7 +1281,7 @@ get_resolution() {
             height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value)"
             height="${height//CurrentVerticalResolution'='/}"
 
-            [[ "$width" ]] && resolution="${width}x${height}"
+            [[ "$(trim "$width")" ]] && resolution="${width}x${height}"
         ;;
 
         "Haiku")
@@ -1482,7 +1491,7 @@ get_term() {
 
     case "${name// }" in
         "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su") get_term "$parent" ;;
-        "login"* | *"Login"* | "init") term="$(tty)" ;;
+        "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
         "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term ;;
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="${name##*/}" ;;
@@ -1543,10 +1552,16 @@ get_term_font() {
 
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
-    [[ "$os" == "Haiku" ]] && { err "Disk doesn't work on Haiku due to the non-standard 'df'"; return; }
+
+    # Get 'df' flags.
+    case "$os" in
+        "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
+        "Minix") df_flags=(-h) ;;
+        *) df_flags=(-P -h) ;;
+    esac
 
     # Get the info for /
-    disks=($(df -P -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
+    disks=($(df "${df_flags[@]}" /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
     # Put it all together
     disk_perc="${disks[11]/'%'}"
@@ -1622,7 +1637,7 @@ get_battery() {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
             battery="${battery/EstimatedChargeRemaining'='}"
-            [[ "$battery" ]] && battery+="%"
+            [[ "$(trim "$battery")" ]] && battery="%"
         ;;
 
         "Haiku")
@@ -1646,6 +1661,10 @@ get_local_ip() {
         "Linux" | "BSD" | "Solaris" | "MINIX")
             local_ip="$(ip route get 1 | awk '{print $NF;exit}')"
             [[ -z "$local_ip" ]] && local_ip="$(ifconfig | awk '/broadcast/ {print $2}')"
+        ;;
+
+        "MINIX")
+            local_ip="$(ifconfig | awk '{printf $3; exit}')"
         ;;
 
         "Mac OS X" | "iPhone OS")
@@ -2791,8 +2810,7 @@ get_term_padding() {
 
     case "$term" in
         "URxvt"*)
-            border="$(xrdb -query | grep -i "\(URxvt\|\*\)\.InternalBorder")"
-            border="${border/*:}"
+            border="$(xrdb -query | awk -F ':' '/^(URxvt|\*).internalBorder/ {printf $2; exit}')"
         ;;
     esac
 }
