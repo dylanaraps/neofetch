@@ -1738,7 +1738,6 @@ get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
-        block_width="${block_width// /.}"
 
         # Generate the string.
         for ((start; start<=end; start++)); do
@@ -1759,9 +1758,11 @@ get_cols() {
         # Add newlines to the string.
         cols="${cols%%'nl'}"
         cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
+
+        printf "%b\n" "\033[${text_padding}C${cols}"
     fi
 
-    unset blocks blocks2
+    unset -v blocks blocks2 cols
 }
 
 # IMAGES
