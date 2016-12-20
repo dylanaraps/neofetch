@@ -3357,7 +3357,7 @@ main() {
     [[ "$scrot" == "on" ]] && take_scrot
 
     # Show error messages.
-    [[ "$verbose" == "on" ]] && printf "%b" "$err"
+    [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
 
     return 0
 }
