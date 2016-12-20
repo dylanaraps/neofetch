@@ -37,6 +37,7 @@ get_os() {
         "CYGWIN"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
         "Haiku") os="Haiku" ;;
+        "MINIX") os="MINIX" ;;
         *) printf "%s\n" "Unknown OS detected: $kernel_name"; exit 1 ;;
     esac
 }
@@ -145,7 +146,7 @@ get_distro() {
             os_arch="off"
         ;;
 
-        "BSD")
+        "BSD" | "MINIX")
             case "$distro_shorthand" in
                 "tiny" | "on") distro="$kernel_name" ;;
                 *) distro="$kernel_name $kernel_version" ;;
@@ -249,7 +250,7 @@ get_model() {
             esac
         ;;
 
-        "BSD")
+        "BSD" | "MINIX")
             model="$(sysctl -n hw.vendor hw.product)"
         ;;
 
@@ -283,6 +284,8 @@ get_title() {
 }
 
 get_kernel() {
+    [[ "$os" == "MINIX" ]] && local os="BSD"
+
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
         "off") kernel="$kernel_name $kernel_version" ;;
@@ -309,7 +312,7 @@ get_uptime() {
         *)
             # Get uptime in seconds
             case "$os" in
-                "Linux" | "Windows")
+                "Linux" | "Windows" | "MINIX")
                     seconds="$(< /proc/uptime)"
                     seconds="${seconds/.*}"
                 ;;
@@ -448,7 +451,7 @@ get_packages() {
             fi
         ;;
 
-        "Mac OS X")
+        "Mac OS X" | "MINIX")
             [[ -d "/usr/local/bin" ]] && \
                 packages="$(($(ls -l /usr/local/bin/ | grep -cv "\(../Cellar/\|brew\)") - 1))"
 
@@ -502,6 +505,7 @@ get_shell() {
     if [[ "$shell_version" == "on" ]]; then
         case "${SHELL##*/}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
+            "sh") ;;
 
             "mksh" | "ksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
@@ -720,7 +724,7 @@ get_cpu() {
     # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
     # information so we have to use this block below which temporarily sets the
     # OS to 'Linux' for the duration of this function.
-    [[ "$distro" == "NetBSD"* ]] && local os="Linux"
+    [[ "$distro" == "NetBSD"* || "$os" == "MINIX" ]] && local os="Linux"
 
     case "$os" in
         "Linux" | "Windows")
@@ -936,7 +940,7 @@ get_cpu_usage() {
             # Get cores if unset
             if [[ "$cpu_cores" == "off" ]]; then
                 case "$os" in
-                    "Linux") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
+                    "Linux" | "MINIX") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
                     "Mac OS X") cores="$(sysctl -n hw.logicalcpu_max)" ;;
                     "BSD") cores="$(sysctl -n hw.ncpu)" ;;
                     "Solaris") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
@@ -1038,7 +1042,7 @@ get_gpu() {
             esac
         ;;
 
-        "BSD" | "Solaris")
+        "BSD" | "Solaris" | "MINIX")
             case "$kernel_name" in
                 "FreeBSD"* | "DragonFly"*)
                     gpu="$(pciconf -lv | grep -B 4 -F "VGA" | grep -F "device")"
@@ -1095,7 +1099,7 @@ get_memory() {
             mem_used="$(((${mem_wired//.} + ${mem_active//.} + ${mem_compressed//.}) * 4 / 1024))"
         ;;
 
-        "BSD")
+        "BSD" | "MINIX")
             # Mem total
             case "$kernel_name" in
                 "NetBSD"*) mem_total="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
@@ -1109,7 +1113,10 @@ get_memory() {
                     mem_free="$(top -d 1 | awk -F ',' '/^Mem:/ {print $5}')"
                     mem_free="${mem_free/M Free}"
                 ;;
-
+                "MINIX")
+                    mem_free="$(top -d 1 | awk -F ',' '/^Memory:/ {print $2}')"
+                    mem_free="${mem_free/M Free}"
+                ;;
                 "OpenBSD"*) ;;
                 *) mem_free="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
             esac
@@ -1226,7 +1233,7 @@ get_song() {
 
 get_resolution() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris")
+        "Linux" | "BSD" | "Solaris" | "MINIX")
             if type -p xrandr >/dev/null; then
                 case "$refresh_rate" in
                     "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
@@ -1484,7 +1491,7 @@ get_term() {
 
     case "${name// }" in
         "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su") get_term "$parent" ;;
-        "login"* | *"Login"* | "init") term="$(tty)" ;;
+        "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
         "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term ;;
         "gnome-terminal-") term="gnome-terminal" ;;
         *) term="${name##*/}" ;;
@@ -1545,10 +1552,16 @@ get_term_font() {
 
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
-    [[ "$os" == "Haiku" ]] && { err "Disk doesn't work on Haiku due to the non-standard 'df'"; return; }
+
+    # Get 'df' flags.
+    case "$os" in
+        "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
+        "Minix") df_flags=(-h) ;;
+        *) df_flags=(-P -h) ;;
+    esac
 
     # Get the info for /
-    disks=($(df -P -h /)) || { err "Disk: 'df' exited with error code 1"; return; }
+    disks=($(df "${df_flags[@]}" /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
     # Put it all together
     disk_perc="${disks[11]/'%'}"
@@ -1650,6 +1663,10 @@ get_local_ip() {
             [[ -z "$local_ip" ]] && local_ip="$(ifconfig | awk '/broadcast/ {print $2}')"
         ;;
 
+        "MINIX")
+            local_ip="$(ifconfig | awk '{printf $3; exit}')"
+        ;;
+
         "Mac OS X" | "iPhone OS")
             local_ip="$(ipconfig getifaddr en0)"
             [[ -z "$local_ip" ]] && local_ip="$(ipconfig getifaddr en1)"
@@ -1697,9 +1714,9 @@ get_install_date() {
             install_date="$(ls -lUT /var/log/install.log | awk '{printf $9 " " $6 " " $7 " " $8}')"
         ;;
 
-        "BSD")
+        "BSD" | "MINIX")
             case "$kernel_name" in
-                "OpenBSD"* | "Bitrig"*)
+                "OpenBSD"* | "Bitrig"* | "MINIX")
                     install_file="/"
                 ;;
 
@@ -1939,7 +1956,7 @@ get_w3m_img_path() {
 
 get_wallpaper() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris")
+        "Linux" | "BSD" | "Solaris" | "MINIX")
             # Get DE if user has disabled the function.
             (( "$de_run" != 1 )) && get_de
 
@@ -2453,7 +2470,7 @@ get_distro_colors() {
             set_colors 2 1
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "antiX"*)
+        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "Minix"* | "antiX"*)
             set_colors 1 7 3
         ;;
 
