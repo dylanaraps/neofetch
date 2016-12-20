@@ -2538,8 +2538,13 @@ get_distro_colors() {
             ascii_distro="sparky"
         ;;
 
-        "Trisquel"* | "NixOS"* | "Zorin"* | "Antergos"* | "MX"*)
+        "Trisquel"* | "NixOS"* | "Zorin"* | "Antergos"*)
             set_colors 4 6
+        ;;
+
+        "MX"*)
+            set_colors 4 6
+            ascii_distro="mx"
         ;;
 
         "Travis")
