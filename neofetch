@@ -2453,7 +2453,7 @@ get_distro_colors() {
             set_colors 2 1
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"*)
+        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "antiX"*)
             set_colors 1 7 3
         ;;
 
@@ -2521,7 +2521,7 @@ get_distro_colors() {
             ascii_distro="sparky"
         ;;
 
-        "Trisquel"* | "NixOS"* | "Zorin"* | "Antergos"*)
+        "Trisquel"* | "NixOS"* | "Zorin"* | "Antergos"* | "MX"*)
             set_colors 4 6
         ;;
 
