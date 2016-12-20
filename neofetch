@@ -2470,8 +2470,13 @@ get_distro_colors() {
             set_colors 2 1
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "Minix"* | "antiX"*)
+        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "Minix"*)
             set_colors 1 7 3
+        ;;
+
+        "antiX"*)
+            set_colors 1 7 3
+            ascii_Distro="antix"
         ;;
 
         "FreeBSD"* | "PCBSD"*)
