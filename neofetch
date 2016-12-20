@@ -3294,7 +3294,6 @@ get_args() {
                 print_info() { info line_break; }
             ;;
 
-
             # Screenshot
             "--scrot" | "-s")
                 scrot_args "$@"
