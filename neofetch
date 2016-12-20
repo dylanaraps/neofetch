@@ -12,7 +12,7 @@ bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 
-# Speed up script by not using unicode
+# Speed up script by not using unicode.
 export LC_ALL=C
 export LANG=C
 
@@ -22,14 +22,14 @@ export PATH="/usr/sbin:/sbin:${PATH}"
 # Set no case match.
 shopt -s nocasematch
 
-# Reset colors/bold
+# Reset colors and bold.
 reset="\033[0m"
 
 # DETECT INFORMATION
 
 get_os() {
     # $kernel_name is set in a function called cache_uname and is
-    # just the output of 'uname -s'.
+    # just the output of "uname -s".
     case "$kernel_name" in
         "Linux" | "GNU"*)   os="Linux" ;;
         "Darwin")  os="$(sw_vers -productName)" ;;
@@ -89,7 +89,7 @@ get_distro() {
                 distro="Android $(getprop ro.build.version.release)"
 
             else
-                # Source the os-release file
+                # Source the os-release file.
                 for file in /etc/os-release /usr/lib/os-release /etc/*release /usr/lib/*release; do
                     source "$file" 2>/dev/null && break
                 done
@@ -162,7 +162,7 @@ get_distro() {
         "Windows")
             distro="$(wmic os get Caption /value)"
 
-            # Strip crap from the output of wmic
+            # Strip crap from the output of wmic.
             distro="${distro/Caption'='}"
             distro="${distro/Microsoft }"
         ;;
@@ -182,7 +182,7 @@ get_distro() {
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
 
-    # Get architecture
+    # Get OS architecture.
     [[ "$os_arch" == "on" ]] && \
         distro+=" ${machine_arch}"
 
@@ -266,7 +266,7 @@ get_model() {
         ;;
     esac
 
-    # Remove dummy OEM info
+    # Remove dummy OEM info.
     model="${model//To be filled by O.E.M.}"
     model="${model//To Be Filled*}"
     model="${model//OEM*}"
@@ -291,7 +291,7 @@ get_kernel() {
         "off") kernel="$kernel_name $kernel_version" ;;
     esac
 
-    # Hardcode kernel settings in BSDs
+    # Hide kernel info if it's identical to the distro info.
     if [[ "$os" == "BSD" && "$distro" == *"$kernel_name"* ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
@@ -302,7 +302,7 @@ get_kernel() {
 
 get_uptime() {
     # Since Haiku's uptime cannot be fetched in seconds, a case outside
-    # the usual case is needed
+    # the usual case is needed.
     case "$os" in
         "Haiku")
             uptime="$(uptime -u)"
@@ -310,7 +310,7 @@ get_uptime() {
         ;;
 
         *)
-            # Get uptime in seconds
+            # Get uptime in seconds.
             case "$os" in
                 "Linux" | "Windows" | "MINIX")
                     seconds="$(< /proc/uptime)"
@@ -322,7 +322,7 @@ get_uptime() {
                     boot="${boot/'{ sec = '}"
                     boot="${boot/,*}"
 
-                    # Get current date in seconds
+                    # Get current date in seconds.
                     now="$(date +%s)"
                     seconds="$((now - boot))"
                 ;;
@@ -379,8 +379,7 @@ get_uptime() {
 
 get_packages() {
     # Remove /usr/games from $PATH.
-    # This solves issues with neofetch opening the
-    # 'pacman' game.
+    # This solves issues with neofetch opening the "pacman" game.
     local PATH=":${PATH}:"
     local PATH="${PATH/':/usr/games:'/:}"
     local PATH="${PATH%:}"
@@ -467,7 +466,7 @@ get_packages() {
 
         "BSD")
             case "$distro" in
-                # PacBSD has both pacman and pkg, but only pacman is used
+                # PacBSD has both pacman and pkg, but only pacman is used.
                 "PacBSD"*) packages="$(pacman -Qq --color never | wc -l)" ;;
 
                 *)
@@ -483,7 +482,7 @@ get_packages() {
         "Windows")
             packages="$(cygcheck -cd | wc -l)"
 
-            # Count chocolatey packages
+            # Count chocolatey packages.
             [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
                 packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
         ;;
@@ -519,7 +518,7 @@ get_shell() {
             ;;
         esac
 
-        # Remove unwanted info
+        # Remove unwanted info.
         shell="${shell/, version}"
         shell="${shell/xonsh\//xonsh }"
         shell="${shell/options*}"
@@ -559,7 +558,7 @@ get_de() {
     [[ -n "$DISPLAY" && -z "$de" ]] && \
         de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
-    # Format strings
+    # Format strings.
     case "$de" in
         "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
         *"TDE_FULL_SESSION"*) de="Trinity" ;;
@@ -582,7 +581,7 @@ get_wm() {
         wm="${wm/\"}"
         wm="${wm/\"*}"
 
-        # Fallback for Wayland wms
+        # Fallback for Wayland wms.
         [[ "$wm" == "xwlc" ]] && \
             wm="$(ps -e | grep -m 1 -o -F -e "sway" -e "orbment" -e "velox" -e "orbital")"
 
@@ -721,14 +720,14 @@ get_wm_theme() {
 }
 
 get_cpu() {
-    # NetBSD emulates the linux /proc filesystem instead of using sysctl for hw
+    # NetBSD emulates the Linux /proc filesystem instead of using sysctl for hw
     # information so we have to use this block below which temporarily sets the
-    # OS to 'Linux' for the duration of this function.
+    # OS to "Linux" for the duration of this function.
     [[ "$distro" == "NetBSD"* || "$os" == "MINIX" ]] && local os="Linux"
 
     case "$os" in
         "Linux" | "Windows")
-            # Get CPU name
+            # Get CPU name.
             case "$distro" in
                 "Android"*) cpu="$(getprop ro.product.board)" ;;
                 *)
@@ -753,7 +752,7 @@ get_cpu() {
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
             temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
 
-            # Get CPU speed
+            # Get CPU speed.
             if [[ -d "$speed_dir" ]]; then
                 # Fallback to bios_limit if $speed_type fails.
                 speed="$(< "${speed_dir}/${speed_type}")" || \
@@ -766,14 +765,14 @@ get_cpu() {
                 speed="$((speed / 100))"
             fi
 
-            # Get CPU temp
+            # Get CPU temp.
             if [[ "$cpu_temp" == "on" && -f "$temp_dir" ]]; then
                 temp="$(< "$temp_dir")"
                 temp="$((temp * 100 / 10000))"
                 temp="[${temp/${temp: -1}}.${temp: -1}°C]"
             fi
 
-            # Get CPU cores
+            # Get CPU cores.
             case "$cpu_cores" in
                 "logical" | "on") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
                 "physical") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
@@ -783,7 +782,7 @@ get_cpu() {
         "Mac OS X")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
 
-            # Get CPU cores
+            # Get CPU cores.
             case "$cpu_cores" in
                 "logical" | "on") cores="$(sysctl -n hw.logicalcpu_max)" ;;
                 "physical") cores="$(sysctl -n hw.physicalcpu_max)" ;;
@@ -818,20 +817,20 @@ get_cpu() {
         ;;
 
         "BSD")
-            # Get CPU name
+            # Get CPU name.
             cpu="$(sysctl -n hw.model)"
             cpu="${cpu/[0-9]\.*}"
             cpu="${cpu/ @*}"
 
-            # Get CPU speed
+            # Get CPU speed.
             speed="$(sysctl -n hw.cpuspeed)"
             [[ -z "$speed" ]] && speed="$(sysctl -n  hw.clockrate)"
             speed="$((speed / 100))"
 
-            # Get CPU cores
+            # Get CPU cores.
             cores="$(sysctl -n hw.ncpu)"
 
-            # Get CPU temp
+            # Get CPU temp.
             if [[ "$cpu_temp" == "on" ]]; then
                 case "$kernel_name" in
                     "FreeBSD"* | "DragonFly"*)
@@ -847,17 +846,17 @@ get_cpu() {
         ;;
 
         "Solaris")
-            # Get CPU name
+            # Get CPU name.
             cpu="$(psrinfo -pv)"
             cpu="${cpu//*$'\n'}"
             cpu="${cpu/[0-9]\.*}"
             cpu="${cpu/ @*}"
 
-            # Get CPU speed
+            # Get CPU speed.
             speed="$(psrinfo -v | awk '/operates at/ {print $6; exit}')"
             speed="$((speed / 100))"
 
-            # Get CPU cores
+            # Get CPU cores.
             case "$cpu_cores" in
                 "logical" | "on") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
                 "physical") cores="$(psrinfo -p)" ;;
@@ -865,21 +864,21 @@ get_cpu() {
         ;;
 
         "Haiku")
-            # Get CPU name
+            # Get CPU name.
             cpu="$(sysinfo -cpu | awk -F '\\"' '/CPU #0/ {print $2}')"
             cpu="${cpu/@*}"
 
-            # Get CPU speed
+            # Get CPU speed.
             speed="$(sysinfo -cpu | awk '/running at/ {print $NF; exit}')"
             speed="${speed/MHz}"
             speed="$((speed / 100))"
 
-            # Get CPU cores
+            # Get CPU cores.
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
         ;;
     esac
 
-    # Fix for speeds under 1ghz
+    # Fix for speeds under 1ghz.
     if [[ "$speed" ]]; then
         if [[ -z "${speed:1}" ]]; then
             speed="0.${speed}"
@@ -890,7 +889,7 @@ get_cpu() {
         cpu="$cpu @ ${speed}GHz $temp"
     fi
 
-    # Remove unneeded patterns from cpu output
+    # Remove un-needed patterns from cpu output.
     cpu="${cpu//(TM)}"
     cpu="${cpu//(tm)}"
     cpu="${cpu//(R)}"
@@ -905,15 +904,15 @@ get_cpu() {
     cpu="${cpu//with Radeon * Graphics}"
     cpu="${cpu//, altivec supported}"
 
-    # Add cpu cores to output
+    # Add CPU cores to the output.
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
         cpu="${cpu/@/(${cores}) @}"
 
-    # Remove speed from output
+    # Remove CPU speed from the output.
     [[ "$cpu_speed" == "off" ]] && \
         cpu="${cpu/@ *GHz}"
 
-    # Make the output of cpu shorter
+    # Make the output of CPU shorter.
     case "$cpu_shorthand" in
         "name")  cpu="${cpu/@*}" ;;
         "speed") cpu="${cpu#*@ }" ;;
@@ -937,7 +936,7 @@ get_cpu_usage() {
         ;;
 
         *)
-            # Get cores if unset
+            # Get CPU cores if unset.
             if [[ "$cpu_cores" == "off" ]]; then
                 case "$os" in
                     "Linux" | "MINIX") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
@@ -954,7 +953,7 @@ get_cpu_usage() {
         ;;
     esac
 
-    # Print the bar
+    # Print the bar.
     case "$cpu_display" in
         "bar") cpu_usage="$(bar "$cpu_usage" 100)" ;;
         "infobar") cpu_usage="${cpu_usage}% $(bar "$cpu_usage" 100)" ;;
@@ -1100,13 +1099,13 @@ get_memory() {
         ;;
 
         "BSD" | "MINIX")
-            # Mem total
+            # Mem total.
             case "$kernel_name" in
                 "NetBSD"*) mem_total="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
                 *) mem_total="$(($(sysctl -n hw.physmem) / 1024 / 1024))" ;;
             esac
 
-            # Mem free
+            # Mem free.
             case "$kernel_name" in
                 "NetBSD"*) mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
                 "FreeBSD"* | "DragonFly"*)
@@ -1121,7 +1120,7 @@ get_memory() {
                 *) mem_free="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
             esac
 
-            # Mem used
+            # Mem used.
             case "$kernel_name" in
                 "OpenBSD"*) mem_used="$(($(vmstat | awk 'END{printf $4}') / 1024))" ;;
                 *) mem_used="$((mem_total - mem_free))" ;;
@@ -1142,7 +1141,7 @@ get_memory() {
     esac
     memory="${mem_used}MB / ${mem_total}MB"
 
-    # Bars
+    # Bars.
     case "$memory_display" in
         "bar") memory="$(bar "${mem_used}" "${mem_total}")" ;;
         "infobar") memory="${memory} $(bar "${mem_used}" "${mem_total}")" ;;
@@ -1156,7 +1155,7 @@ get_song() {
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
-        # This function saves us including the same command throughout the function.
+        # This function saves us using the same command throughout the function.
         song="$(\
             dbus-send --print-reply --dest=org.mpris.MediaPlayer2."${1}" /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
@@ -1295,8 +1294,7 @@ get_resolution() {
 }
 
 get_style() {
-    # Fix weird output when the function
-    # is run multiple times.
+    # Fix weird output when the function is run multiple times.
     unset gtk2_theme gtk3_theme theme path
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
@@ -1348,7 +1346,7 @@ get_style() {
             ;;
         esac
 
-        # Check for general GTK2 Theme
+        # Check for general GTK2 Theme.
         if [[ -z "$gtk2_theme" ]]; then
             if [[ -f "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}" ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}")"
@@ -1363,7 +1361,7 @@ get_style() {
             gtk2_theme="${gtk2_theme/${name}*=}"
         fi
 
-        # Check for general GTK3 Theme
+        # Check for general GTK3 Theme.
         if [[ -z "$gtk3_theme" ]]; then
             if [[ -f "$XDG_CONFIG_HOME/gtk-3.0/settings.ini" ]]; then
                 gtk3_theme="$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")"
@@ -1381,23 +1379,23 @@ get_style() {
             gtk3_theme="${gtk3_theme/${name}*=}"
         fi
 
-        # Trim whitespace
+        # Trim whitespace.
         gtk2_theme="$(trim "$gtk2_theme")"
         gtk3_theme="$(trim "$gtk3_theme")"
 
-        # Remove quotes
+        # Remove quotes.
         gtk2_theme="$(trim_quotes "$gtk2_theme")"
         gtk3_theme="$(trim_quotes "$gtk3_theme")"
 
-        # Uppercase the first letter of each gtk theme
+        # Uppercase the first letter of each GTK theme.
         gtk2_theme="$(uppercase "$gtk2_theme")"
         gtk3_theme="$(uppercase "$gtk3_theme")"
 
-        # Toggle visibility of gtk themes.
+        # Toggle visibility of GTK themes.
         [[ "$gtk2" == "off" ]] && unset gtk2_theme
         [[ "$gtk3" == "off" ]] && unset gtk3_theme
 
-        # Format the string based on which themes exist
+        # Format the string based on which themes exist.
         if  [[ "$gtk2_theme" && "$gtk2_theme" == "$gtk3_theme" ]]; then
             gtk3_theme+=" [GTK2/3]"
             unset gtk2_theme
@@ -1411,10 +1409,10 @@ get_style() {
             [[ "$gtk3_theme" ]] && gtk3_theme+=" [GTK3] "
         fi
 
-        # Final string
+        # Final string.
         theme="${gtk2_theme}${gtk3_theme}"
 
-        # Make the output shorter by removing "[GTKX]" from the string
+        # Make the output shorter by removing "[GTKX]" from the string.
         if [[ "$gtk_shorthand" == "on" ]]; then
             theme="${theme// '[GTK'[0-9]']'}"
             theme="${theme/ '[GTK2/3]'}"
@@ -1510,7 +1508,7 @@ get_term_font() {
             term_font="${term_font/*font:}"
             term_font="$(trim "$term_font")"
 
-            # Xresources has two different font syntax, this checks which
+            # Xresources has two different font formats, this checks which
             # one is in use and formats it accordingly.
             case "$term_font" in
                 *"xft:"*)
@@ -1553,21 +1551,21 @@ get_term_font() {
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
-    # Get 'df' flags.
+    # Get "df" flags.
     case "$os" in
         "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
         "Minix") df_flags=(-h) ;;
         *) df_flags=(-P -h) ;;
     esac
 
-    # Get the info for /
+    # Get the info for "/".
     disks=($(df "${df_flags[@]}" /)) || { err "Disk: 'df' exited with error code 1"; return; }
 
-    # Put it all together
+    # Put it all together.
     disk_perc="${disks[11]/'%'}"
     disk="${disks[9]/i} / ${disks[8]/i} (${disk_perc}%)"
 
-    # Bar
+    # Bar.
     case "$disk_display" in
         "bar") disk="$(bar "$disk_perc" "100")" ;;
         "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
@@ -1789,7 +1787,7 @@ get_image_backend() {
     # This function determines which image backend to use
     # by checking for programs and etc.
 
-    # If the image source isn't 'ascii' or 'off'
+    # If the image source isn't "ascii" or "off".
     if [[ ! "${image_source}" =~ ^(off|ascii)$ ]]; then
         # If X isn't running force ascii mode here.
         [[ -z "$DISPLAY" ]] && image_source="ascii"
@@ -1801,7 +1799,7 @@ get_image_backend() {
     # Get the image program.
     get_image_program
 
-    # If image source is ascii fallback to ascii
+    # If image source is ascii fallback to ascii.
     if [[ "$image_source" == "ascii" ]]; then
         image_backend="ascii"
         err "Image: \$image_source set to 'ascii', falling back to ascii mode. "
@@ -1840,7 +1838,7 @@ get_image_backend() {
             get_image_size
             make_thumbnail
 
-            # If the backend is still set to 'image' after
+            # If the backend is still set to "image" after
             # make_thumbnail(), then display the image.
             [[ "$image_backend" == "image" ]] && display_image
         ;;
@@ -1855,11 +1853,11 @@ get_image_backend() {
 
 get_ascii() {
     if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
-        # Error message
+        # Error message.
         [[ "$ascii" != "distro" && ! -f "$ascii" ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
-        # Lowercase the distro name
+        # Lowercase the distro name so we can match it to a file.
         if (("$bash_version" <= 3)); then
             ascii="$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")"
         else
@@ -1889,10 +1887,10 @@ get_ascii() {
         fi
     fi
 
-    # Set locale to get correct padding
+    # Set locale to get correct padding.
     export LC_ALL="$sys_locale"
 
-    # Turn file into variable
+    # Turn file into variable.
     while IFS=$'\n' read -r line 2>/dev/null; do
         print+="$line \n"
 
@@ -1903,7 +1901,7 @@ get_ascii() {
         lines="$((lines+=1))"
     done < "$ascii"
 
-    # Colors
+    # Colors.
     print="${print//'${c1}'/$c1}"
     print="${print//'${c2}'/$c2}"
     print="${print//'${c3}'/$c3}"
@@ -1977,7 +1975,7 @@ get_wallpaper() {
                 ;;
             esac
 
-            # Strip quotes etc from the path.
+            # Strip un-needed info from the path.
             image="${image/'file://'}"
             image="$(trim_quotes "$image")"
             image="${image//\%20/ }"
@@ -2011,9 +2009,9 @@ get_term_size() {
     # This functions gets the current window size in
     # pixels.
     #
-    # We first try to use the escape sequence '\044[14t'
+    # We first try to use the escape sequence "\044[14t"
     # to get the terminal window size in pixels. If this
-    # fails we then fallback to using 'xdotool' or other
+    # fails we then fallback to using "xdotool" or other
     # programs.
 
     # Tmux has a special way of reading escape sequences
@@ -2051,7 +2049,7 @@ get_term_size() {
         term_width="${term_size/*';'}"
     fi
 
-    # Get terminal width and height if \033[14t is unsupported.
+    # Get terminal width/height if \033[14t is unsupported.
     if (("${#term_size}" <= 5)) && [[ "$image_program" == "w3m" ]]; then
         if type -p xdotool >/dev/null 2>&1; then
             current_window="$(xdotool getactivewindow)"
@@ -2081,7 +2079,7 @@ get_term_size() {
         fi
     fi
 
-    # If the terminal size was found correctly
+    # If the terminal size was found correctly.
     if [[ "$term_width" ]] && ((term_width > 0)); then
         clear
         zws="​ "
@@ -2092,12 +2090,12 @@ get_image_size() {
     # This functions determines the size to make
     # the thumbnail image.
 
-    # Get terminal lines and columns
+    # Get terminal lines and columns.
     term_blocks="$(stty size)"
     columns="${term_blocks/* }"
     lines="${term_blocks/ *}"
 
-    # Calculate font size
+    # Calculate font size.
     font_width="$((term_width / columns))"
     font_height="$((term_height / lines))"
 
@@ -2119,7 +2117,7 @@ get_image_size() {
         ;;
 
         "none")
-            # Get image size so that we can do a better crop
+            # Get image size so that we can do a better crop.
             size="$(identify -format "%w %h" "$image")"
             width="${size%% *}"
             height="${size##* }"
@@ -2152,7 +2150,7 @@ make_thumbnail() {
 
     # Check to see if the thumbnail exists before we do any cropping.
     if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
-        # Get image size so that we can do a better crop
+        # Get image size so that we can do a better crop.
         if [[ -z "$size" ]]; then
             size="$(identify -format "%w %h" "$image")"
             og_width="${size%% *}"
@@ -2202,7 +2200,7 @@ make_thumbnail() {
         esac
     fi
 
-    # The final image
+    # The final image.
     image="$thumbnail_dir/$image_name"
 }
 
@@ -2341,7 +2339,7 @@ info() {
     # If the get_func function called 'prin' directly, stop here.
     [[ "$prin" ]] && return
 
-    # Update the variable
+    # Update the variable.
     output="$(trim "${!2:-${!1}}")"
 
     if [[ "$2" && "${output// }" ]]; then
@@ -2358,19 +2356,19 @@ info() {
 }
 
 prin() {
-    # If $2 doesn't exist we format $1 as info
+    # If $2 doesn't exist we format $1 as info.
     [[ -z "$2" ]] && local subtitle_color="$info_color"
 
-    # Format the output
+    # Format the output.
     string="${1//$'\033[0m'}${2:+: $2}"
     string="$(trim "$string")"
     string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
 
-    # Print the info
+    # Print the info.
     printf "%b\n" "\033[${text_padding}C${zws}${string}${reset} "
 
-    # Calculate info height
+    # Calculate info height.
     info_height="$((info_height+=1))"
 
     # Log that prin was used.
@@ -2389,7 +2387,7 @@ get_line_break() {
     # Print it directly.
     printf "%s\n" "${zws} "
 
-    # Calculate info height
+    # Calculate info height.
     info_height="$((info_height+=1))"
 }
 
@@ -2406,15 +2404,15 @@ get_bold() {
 }
 
 trim() {
-    # When a string is passed to 'echo' all trailing and leading
+    # When a string is passed to "echo" all trailing and leading
     # whitespace is removed and inside the string multiple spaces are
     # condensed into single spaces.
     #
-    # The 'set -f/+f' is here so that 'echo' doesn't cause any expansion
+    # The "set -f/+f" is here so that "echo" doesn't cause any expansion
     # of special characters.
     #
     # The whitespace trim doesn't work with multiline strings so we use
-    # '${1//[[:space:]]/ }' to remove newlines before we trim the whitespace.
+    # "${1//[[:space:]]/ }" to remove newlines before we trim the whitespace.
 
     set -f
     # shellcheck disable=2086
@@ -2438,7 +2436,7 @@ get_distro_colors() {
     # This function sets the text colors according
     # to your OS/Distro's logo colors.
     #
-    # $ascii_distro is the same as $distro
+    # $ascii_distro is the same as $distro.
     case "$ascii_distro" in
         "Arch"* | "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"* | "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"* | "OpenIndiana"* | "Fedora"* | "Korora"* | "Sabayon"* | "Frugalware"* | "Exherbo"* | "Scientific"* | "Solus"* | "ChaletOS"* | "Apricity"* | "SwagArch"* | "AOSC"* | "Ubuntu-Budgie"*)
             set_colors 4 7 1
@@ -2651,7 +2649,7 @@ set_text_colors() {
         info_color="$(color "${colors[5]}")"
     fi
 
-    # Bar colors
+    # Bar colors.
     if [[ "$bar_color_elapsed" == "distro" ]]; then
         bar_color_elapsed="$(color fg)"
     else
@@ -2693,7 +2691,7 @@ get_script_dir() {
         script_dir="${script_dir##*/}"
     done
 
-    # Final directory
+    # Final directory.
     script_dir="$(pwd -P)"
 }
 
@@ -2721,7 +2719,7 @@ get_default_config() {
 }
 
 get_user_config() {
-    # Check $config_file
+    # Check $config_file.
     if [[ -f "$config_file" ]]; then
         source "$config_file"
         err "Config: Sourced user config.    ($config_file)"
@@ -2759,18 +2757,18 @@ get_user_config() {
 }
 
 bar() {
-    # Get the values
+    # Get the values.
     elapsed="$(($1 * bar_length / $2))"
 
-    # Create the bar with spaces
+    # Create the bar with spaces.
     printf -v prog  "%${elapsed}s"
     printf -v total "%$((bar_length - elapsed))s"
 
-    # Set the colors and swap the spaces for $bar_char_
+    # Set the colors and swap the spaces for $bar_char_.
     bar+="${bar_color_elapsed}${prog// /$bar_char_elapsed}"
     bar+="${bar_color_total}${total// /$bar_char_total}"
 
-    # Borders
+    # Borders.
     [[ "$bar_border" == "on" ]] && \
         bar="$(color fg)[${bar}$(color fg)]"
 
@@ -2812,7 +2810,7 @@ kde_config_dir() {
 }
 
 get_term_padding() {
-    # Terminal info
+    # Terminal info.
     #
     # Parse terminal config files to get
     # info about padding. Due to how w3m-img
@@ -2851,19 +2849,19 @@ dynamic_prompt() {
         lines="$((lines - info_height))"
     fi
 
-    # Set the prompt location
+    # Set the prompt location.
     if (("$lines" < 0)); then
         printf "%b" "\033[${lines/-}A"
     else
         printf "%b" "\033[${lines}B"
     fi
 
-    # Add some padding
+    # Add some padding.
     printf "\n\n\n\n"
 }
 
 old_functions() {
-    # Deprecated functions
+    # Deprecated functions.
     # Neofetch 2.0 changed the names of a few variables.
     # This function adds backwards compatibility for the
     # old variable names.
@@ -2885,7 +2883,7 @@ old_options() {
     [[ "$cpu_cores" == "on" ]]   && err "Config: cpu_cores='on' is deprecated, use cpu_cores='logical|physical|off' instead."
     [[ -n "$image" ]]            && { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
 
-    # All progress_ variables were changed to bar_
+    # All progress_ variables were changed to bar_.
     [[ -n "$progress_char" ]]          && err "Config: \$progress_char is deprecated, use \$bar_char_elapsed and \$bar_char_total instead."
     [[ -n "$progress_border" ]]        && err "Config: \$progress_border is deprecated, use \$bar_border instead."
     [[ -n "$progress_length" ]]        && err "Config: \$progress_length is deprecated, use \$bar_length instead."
@@ -2893,7 +2891,6 @@ old_options() {
     [[ -n "$progress_color_total" ]]   && err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."
 
     # All cpufreq values were changed in 2.1.0.
-    # 'current', 'min', 'max', 'bios'
     [[ "$speed_type" == "current" ]] && err "Config: speed_type='current' is deprecated, use speed_type='scaling_cur_freq' instead."
     [[ "$speed_type" == "min" ]]     && err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
     [[ "$speed_type" == "max" ]]     && err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
@@ -2918,7 +2915,7 @@ convert_time() {
     year="$1"
     day="$3"
 
-    # Split time into hours/minutes
+    # Split time into hours/minutes.
     hour="${4/:*}"
     min="${4/${hour}}"
 
@@ -2960,13 +2957,13 @@ convert_time() {
         6) week_day="Sat" ;;
     esac
 
-    # Convert 24 hour time to 12 hour time + AM/PM
+    # Convert 24 hour time to 12 hour time + AM/PM.
     case "$hour" in
         [0-9] | 0[0-9] | 1[0-1]) time="${hour/00/12}${min} AM" ;;
         *) time="$((hour - 12))${min} PM" ;;
     esac
 
-    # Toggle showing the time
+    # Toggle showing the time.
     [[ "$install_time" == "off" ]] && unset time
 
     # Print the install date.
@@ -3168,7 +3165,7 @@ exit 1
 }
 
 get_args() {
-    # Check the commandline flags early for '--config'
+    # Check the commandline flags early for '--config'.
     [[ "$@" =~ --config ]] || get_user_config 2>/dev/null
 
     while [[ "$1" ]]; do
@@ -3343,7 +3340,7 @@ main() {
         # If the script exits for any reason, unhide the cursor.
         trap 'printf "\033[?25h\033[?7h"' EXIT
 
-        # Hide the cursor and disable line wrap
+        # Hide the cursor and disable line wrap.
         printf "\033[?25l\033[?7l"
     fi
 
@@ -3357,10 +3354,10 @@ main() {
     # rendering issues in specific terminal emulators.
     [[ "$image_backend" == "image" && "$image_program" == "w3m" ]] && display_image
 
-    # Take a screenshot
+    # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
 
-    # Show error messages
+    # Show error messages.
     [[ "$verbose" == "on" ]] && printf "%b" "$err"
 
     return 0
