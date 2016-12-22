@@ -518,7 +518,7 @@ get_shell() {
 
             *)
                 shell+="$("$SHELL" --version 2>&1)"
-                shell="${shell/${SHELL##*/}}"
+                shell="${shell/ ${SHELL##*/}}"
             ;;
         esac
 
