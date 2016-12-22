@@ -973,8 +973,8 @@ get_gpu() {
 
             for gpu in "${gpus[@]}"; do
                 # GPU shorthand tests.
-                [[ "$gpu_show" == "dedicated" && "$gpu" =~ (i|I)ntel ]] || \
-                [[ "$gpu_show" == "integrated" && ! "$gpu" =~ (i|I)ntel ]] && \
+                [[ "$gpu_type" == "dedicated" && "$gpu" =~ (i|I)ntel ]] || \
+                [[ "$gpu_type" == "integrated" && ! "$gpu" =~ (i|I)ntel ]] && \
                     { unset -v gpu; continue; }
 
                 case "$gpu" in
@@ -3045,6 +3045,7 @@ INFO
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
+    --gpu_type type             Which GPU to display. (all, dedicated, integrated)
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
@@ -3205,6 +3206,7 @@ get_args() {
             "--uptime_shorthand") uptime_shorthand="$2" ;;
             "--cpu_shorthand") cpu_shorthand="$2" ;;
             "--gpu_brand") gpu_brand="$2" ;;
+            "--gpu_type") gpu_type="$2" ;;
             "--refresh_rate") refresh_rate="$2" ;;
             "--gtk_shorthand") gtk_shorthand="$2" ;;
             "--gtk2") gtk2="$2" ;;
