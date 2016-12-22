@@ -2494,6 +2494,10 @@ get_distro_colors() {
             set_colors 5 4 6 2
         ;;
 
+        "SalentOS"*)
+            set_colors 2 1 3 7
+        ;;
+
         "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"* | "Qubes"*)
             set_colors 4 5 7 6
         ;;
