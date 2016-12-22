@@ -997,9 +997,9 @@ get_gpu() {
                 esac
 
                 if [[ "$gpu_brand" == "off" ]]; then
-                    gpu="${gpu//AMD }"
-                    gpu="${gpu//NVIDIA }"
-                    gpu="${gpu//Intel }"
+                    gpu="${gpu/AMD }"
+                    gpu="${gpu/NVIDIA }"
+                    gpu="${gpu/Intel }"
                 fi
 
                 prin "GPU${index:-0}" "$gpu"
@@ -1080,9 +1080,9 @@ get_gpu() {
     esac
 
     if [[ "$gpu_brand" == "off" ]]; then
-        gpu="${gpu//AMD}"
-        gpu="${gpu//NVIDIA}"
-        gpu="${gpu//Intel}"
+        gpu="${gpu/AMD}"
+        gpu="${gpu/NVIDIA}"
+        gpu="${gpu/Intel}"
     fi
 }
 
