@@ -1005,7 +1005,7 @@ get_gpu() {
                     gpu="${gpu/Intel }"
                 fi
 
-                prin "GPU${gpu_num}" "$gpu"
+                prin "${subtitle}${gpu_num}" "$gpu"
                 gpu_num="$((gpu_num+=1))"
             done
 
