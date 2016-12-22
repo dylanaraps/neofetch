@@ -25,6 +25,9 @@ shopt -s nocasematch
 # Reset colors and bold.
 reset="\033[0m"
 
+# Save default IFS value.
+old_ifs="$IFS"
+
 # DETECT INFORMATION
 
 get_os() {
@@ -968,6 +971,7 @@ get_gpu() {
         "Linux")
             IFS=$'\n'
             gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
+            IFS="$old_ifs"
 
             # Number the GPUs if more than one exists.
             (( "${#gpus[@]}" > 1 )) && gpu_num=1
