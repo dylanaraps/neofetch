@@ -73,6 +73,11 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added Haiku cores command.
 - Updated Linux and macOS commands to the match the commands in the `get_cpu()` function.
 
+**GPU**<br \>
+
+- [Linux] Each GPU is now printed on a separate line.
+- [Linux] Added `--cpu_type` / `$cpu_type` which let you display `all`, `dedicated` or `integrated` GPUs.
+
 **~~Birthday~~ Install Date**<br \>
 
 - Renamed `get_birthday()` -- > `get_install_date()`
