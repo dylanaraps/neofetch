@@ -19,6 +19,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added support for MX.
 - Added support for AntiX.
 - Added support for TrueOS.
+- Added support for SalentOS.
 - Merged all GNU Hurd instances to Linux since they work exactly the same way.
 
 
