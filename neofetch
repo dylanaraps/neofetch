@@ -969,9 +969,14 @@ get_gpu() {
             gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
 
             # Number the GPUs if more than one exists.
-            (( "${#gpus[@]}" > 1 )) && gpu_num=0
+            (( "${#gpus[@]}" > 1 )) && gpu_num=1
 
             for gpu in "${gpus[@]}"; do
+                # GPU shorthand tests.
+                [[ "$gpu_show" == "dedicated" && "$gpu" =~ (i|I)ntel ]] || \
+                [[ "$gpu_show" == "integrated" && ! "$gpu" =~ (i|I)ntel ]] && \
+                    { unset -v gpu; continue; }
+
                 case "$gpu" in
                     *"advanced"*)
                         gpu="${gpu/'[AMD/ATI]' }"
