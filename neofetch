@@ -531,6 +531,9 @@ get_shell() {
 }
 
 get_de() {
+    # If function was run, stop here.
+    (( "$de_run" == 1 )) && return
+
     case "$os" in
         "Mac OS X") de="Aqua" ;;
         "Windows")
@@ -582,6 +585,7 @@ get_de() {
 }
 
 get_wm() {
+    # If function was run, stop here.
     (( "$wm_run" == 1 )) && return
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
@@ -1487,6 +1491,9 @@ get_font() {
 }
 
 get_term() {
+    # If function was run, stop here.
+    (( "$term_run" == 1 )) && return
+
     # Check $PPID for terminal emulator.
     case "$os" in
         "Mac OS X")
