@@ -1335,13 +1335,15 @@ get_style() {
                 if [[ -f "${kde_config_dir}/share/config/kdeglobals" ]]; then
                     kde_config_file="${kde_config_dir}/share/config/kdeglobals"
 
-                    theme="$(grep "^[^#]*$kde" "$kde_config_file")"
+                    theme="$(grep "^[^#]*${kde}" "$kde_config_file")"
                     theme="${theme/${kde}*=}"
                     theme="$(uppercase "$theme")"
 
                     gtk_shorthand="on"
-                    return
+                else
+                    err "Theme: KDE config files not found, skipping."
                 fi
+                return
             ;;
 
             *"Cinnamon"*)
@@ -2846,6 +2848,9 @@ kde_config_dir() {
 
     elif type -p kde-config >/dev/null 2>&1; then
         kde_config_dir="$(kde-config --localprefix)"
+
+    elif [[ -d "${HOME}/.kde4" ]]; then
+        kde_config_dir="${HOME}/.kde4"
     fi
 }
 
