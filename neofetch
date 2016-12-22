@@ -558,7 +558,7 @@ get_de() {
             fi
 
             # If DE == WM unset DE.
-            [[ "$de" == "$wm" ]] && unset -v de
+            [[ "$de" =~ $wm ]] && unset -v de
         ;;
     esac
 
@@ -582,6 +582,8 @@ get_de() {
 }
 
 get_wm() {
+    (( "$wm_run" == 1 )) && return
+
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
         wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
