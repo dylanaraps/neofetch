@@ -2843,11 +2843,14 @@ kde_config_dir() {
     elif type -p kde4-config >/dev/null 2>&1; then
         kde_config_dir="$(kde4-config --localprefix)"
 
+    elif type -p kde-config >/dev/null 2>&1; then
+        kde_config_dir="$(kde-config --localprefix)"
+
     elif [[ -d "${HOME}/.kde4" ]]; then
         kde_config_dir="${HOME}/.kde4"
 
-    elif type -p kde-config >/dev/null 2>&1; then
-        kde_config_dir="$(kde-config --localprefix)"
+    elif [[ -d "${HOME}/.kde3" ]]; then
+        kde_config_dir="${HOME}/.kde3"
     fi
 }
 
