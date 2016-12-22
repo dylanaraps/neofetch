@@ -969,7 +969,7 @@ get_gpu() {
             gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
 
             # Number the GPUs if more than one exists.
-            [[ "${#gpus[@]}" > 1 ]] && gpu_num=0
+            (( "${#gpus[@]}" > 1 )) && gpu_num=0
 
             for gpu in "${gpus[@]}"; do
                 case "$gpu" in
