@@ -965,35 +965,48 @@ get_cpu_usage() {
 get_gpu() {
     case "$os" in
         "Linux")
-            gpu="$(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')"
+            IFS=$'\n'
+            gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
 
-            case "$gpu" in
-                *"advanced"*)
-                    gpu="${gpu//Intel*$'\n'}"
-                    gpu="${gpu/'[AMD/ATI]' }"
-                    gpu="${gpu/'[AMD]' }"
-                    gpu="${gpu/OEM }"
-                    gpu="${gpu/Advanced Micro Devices, Inc.}"
-                    gpu="${gpu/ \/ *}"
-                    gpu="${gpu/*\[}"
-                    gpu="${gpu/\]*}"
-                    gpu="AMD $gpu"
-                ;;
+            for gpu in "${gpus[@]}"; do
+                case "$gpu" in
+                    *"advanced"*)
+                        gpu="${gpu/'[AMD/ATI]' }"
+                        gpu="${gpu/'[AMD]' }"
+                        gpu="${gpu/OEM }"
+                        gpu="${gpu/Advanced Micro Devices, Inc.}"
+                        gpu="${gpu/ \/ *}"
+                        gpu="${gpu/*\[}"
+                        gpu="${gpu/\]*}"
+                        gpu="AMD $gpu"
+                    ;;
 
-                *"nvidia"*)
-                    gpu="${gpu//Intel*$'\n'}"
-                    gpu="${gpu/*\[}"
-                    gpu="${gpu/\]*}"
-                    gpu="NVIDIA $gpu"
-                ;;
+                    *"nvidia"*)
+                        gpu="${gpu/*\[}"
+                        gpu="${gpu/\]*}"
+                        gpu="NVIDIA $gpu"
+                    ;;
 
-                *"virtualbox"*)
-                    gpu="VirtualBox Graphics Adapter"
-                ;;
-            esac
+                    *"intel"*)
+                        gpu="Intel Integrated Graphics"
+                    ;;
 
-            [[ "$gpu" == *"intel"* ]] && \
-                gpu="Intel Integrated Graphics"
+                    *"virtualbox"*)
+                        gpu="VirtualBox Graphics Adapter"
+                    ;;
+                esac
+
+                if [[ "$gpu_brand" == "off" ]]; then
+                    gpu="${gpu//AMD }"
+                    gpu="${gpu//NVIDIA }"
+                    gpu="${gpu//Intel }"
+                fi
+
+                prin "GPU${index:-0}" "$gpu"
+                index="$((index+=1))"
+            done
+
+            return
         ;;
 
         "Mac OS X")
@@ -1067,9 +1080,9 @@ get_gpu() {
     esac
 
     if [[ "$gpu_brand" == "off" ]]; then
-        gpu="${gpu/AMD}"
-        gpu="${gpu/NVIDIA}"
-        gpu="${gpu/Intel}"
+        gpu="${gpu//AMD}"
+        gpu="${gpu//NVIDIA}"
+        gpu="${gpu//Intel}"
     fi
 }
 
