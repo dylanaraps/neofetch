@@ -210,6 +210,23 @@ cpu_temp="off"
 # off: 'HD 7950'
 gpu_brand="on"
 
+# Which GPU to display
+#
+# Default: 'all'
+# Values:  'all', 'dedicated', 'integrated'
+# Flag:    --gpu_type
+#
+# Example:
+# all:
+#   GPU1: AMD HD 7950
+#   GPU2: Intel Integrated Graphics
+#
+# dedicated:
+#   GPU1: AMD HD 7950
+#
+# integrated:
+#   GPU1: Intel Integrated Graphics
+gpu_type="all"
 
 # Resolution
 
