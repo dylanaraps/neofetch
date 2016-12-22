@@ -1805,6 +1805,9 @@ get_cols() {
     fi
 
     unset -v blocks blocks2 cols
+
+    # Tell info() that we printed manually.
+    prin=1
 }
 
 # IMAGES
@@ -2418,6 +2421,9 @@ get_line_break() {
 
     # Calculate info height.
     info_height="$((info_height+=1))"
+
+    # Tell info() that we printed manually.
+    prin=1
 }
 
 get_bold() {
