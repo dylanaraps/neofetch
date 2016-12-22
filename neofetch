@@ -2502,7 +2502,7 @@ get_distro_colors() {
             ascii_Distro="antix"
         ;;
 
-        "FreeBSD"* | "PCBSD"*)
+        "FreeBSD"* | "PCBSD"* | "TrueOS"*)
             set_colors 1 7 3
             ascii_distro="freebsd"
         ;;
