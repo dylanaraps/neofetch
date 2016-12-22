@@ -101,6 +101,11 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 \[2\] Tested on `GNU`, `Busybox`, `BSD`, `Solaris` and `macOS` `df` versions.
 
+**Theme**<br \>
+
+- [KDE] Don't display GTK Themes if KDE is detected.
+- [KDE] If `kde[0-9]-config` isn't found, try and look for `$HOME/.kde`.
+
 **Song**<br \>
 
 - [cmus] Simplify block and fix `artistsort` bug.
