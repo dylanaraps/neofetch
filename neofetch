@@ -558,7 +558,7 @@ get_de() {
             fi
 
             # If DE == WM unset DE.
-            de="${de/${wm}}"
+            [[ "$de" == "$wm" ]] && unset -v de
         ;;
     esac
 
