@@ -215,6 +215,7 @@ gpu_brand="on"
 # Default: 'all'
 # Values:  'all', 'dedicated', 'integrated'
 # Flag:    --gpu_type
+# Supports: Linux
 #
 # Example:
 # all:

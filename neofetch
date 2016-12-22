@@ -3017,7 +3017,7 @@ INFO
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
 
-                                NOTE: This only support Linux with cpufreq.
+                                NOTE: This only supports Linux with cpufreq.
 
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
@@ -3046,6 +3046,9 @@ INFO
                                 Unsupported on Windows
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gpu_type type             Which GPU to display. (all, dedicated, integrated)
+
+                                NOTE: This only supports Linux.
+
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
