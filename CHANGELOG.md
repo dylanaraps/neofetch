@@ -4,6 +4,7 @@
 - **[@iandrewt](https://github.com/iandrewt)**
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - **[@z33ky](https://github.com/z33ky)**
+- **[@mstraube](https://github.com/mstraube)**
 
 ## IRC
 
@@ -45,7 +46,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 ## Info
 
 **Shell**<br \>
-
+ mstraube 
 - [Fish] Fixed memory leak caused by Fish.
 - Added support for `xonsh`.
 - Fixed version output on `ksh`.
@@ -114,6 +115,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Removed `state` detection.
 - Removed duplicate `dbus-send` commands.
 - Added support for xmms2. **[@z33ky](https://github.com/z33ky)**
+- Add support for Exaile music player. **[@mstraube](https://github.com/mstraube)**
 
 **Battery**<br \>
 
