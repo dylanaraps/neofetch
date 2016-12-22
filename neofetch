@@ -156,6 +156,7 @@ get_distro() {
 
             # Workarounds for FreeBSD based distros.
             [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
+            [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
             [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
         ;;
 
