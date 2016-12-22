@@ -2067,7 +2067,6 @@ get_term_size() {
 
     # Split the string into height/width.
     if [[ "$image_program" == "tycat" ]]; then
-        term_size=(${term_size//;/ })
         term_width="$((term_size[2] * term_size[0]))"
         term_height="$((term_size[3] * term_size[1]))"
 
