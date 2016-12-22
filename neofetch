@@ -541,8 +541,9 @@ get_de() {
         ;;
 
         *)
+            (( "$wm_run" != 1 )) && get_wm
+
             if [[ "$XDG_CURRENT_DESKTOP" ]]; then
-                de="${XDG_CURRENT_DESKTOP/i3}"
                 de="${de/'X-'}"
                 de="${de/Budgie:GNOME/Budgie}"
 
@@ -555,6 +556,9 @@ get_de() {
             elif [[ "$MATE_DESKTOP_SESSION_ID" ]]; then
                 de="MATE"
             fi
+
+            # If DE == WM unset DE.
+            de="${de/${wm}}"
         ;;
     esac
 
