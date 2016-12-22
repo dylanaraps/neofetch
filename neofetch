@@ -2346,6 +2346,9 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
+    # Save subtitle value.
+    subtitle="$1"
+
     # Make sure that $prin is unset.
     unset -v prin
 
