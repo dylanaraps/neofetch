@@ -18,6 +18,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added support for MINIX.
 - Added support for MX.
 - Added support for AntiX.
+- Added support for TrueOS.
 - Merged all GNU Hurd instances to Linux since they work exactly the same way.
 
 
@@ -135,6 +136,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Fixed bug causing macOS ascii art to be used on other Operating Systems.
 - Display warning about 'ascii' being the new default mode.
 - Removed `ascii_logo_size` in favor of `ascii_distro='{arch,crux,gentoo}_small`.
+- [PCBSD] Use TrueOS ascii art.
 
 
 ## Screenshot
