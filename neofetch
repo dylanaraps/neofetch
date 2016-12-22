@@ -968,6 +968,9 @@ get_gpu() {
             IFS=$'\n'
             gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
 
+            # Number the GPUs if more than one exists.
+            [[ "${#gpus[@]}" > 1 ]] && index=0
+
             for gpu in "${gpus[@]}"; do
                 case "$gpu" in
                     *"advanced"*)
@@ -1002,7 +1005,7 @@ get_gpu() {
                     gpu="${gpu/Intel }"
                 fi
 
-                prin "GPU${index:-0}" "$gpu"
+                prin "GPU${index}" "$gpu"
                 index="$((index+=1))"
             done
 
