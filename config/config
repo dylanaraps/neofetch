@@ -32,7 +32,7 @@ print_info() {
     info "Memory" memory
 
     # info "CPU Usage" cpu_usage
-    # info "Disk" disk
+    # info "Disk (root)" disk
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
