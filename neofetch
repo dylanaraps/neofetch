@@ -1805,6 +1805,10 @@ get_cols() {
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
 
+        # Set variables.
+        start="${block_range[0]}"
+        end="${block_range[1]}"
+
         # Generate the string.
         for ((start; start<=end; start++)); do
             case "$start" in
@@ -2825,6 +2829,9 @@ get_user_config() {
 
     source "$config_file"
     err "Config: Sourced user config.    (${config_file})"
+
+    # Check for deprecated options.
+    old_options
 }
 
 bar() {
@@ -2972,6 +2979,9 @@ old_options() {
 
     # Ascii_logo_size was removed in 2.1.0.
     [[ "$ascii_logo_size" ]] && err "Config: ascii_logo_size is deprecated, use ascii_distro='{arch,crux,gentoo}_small' instead."
+
+    # $start and $end were replaced with ${block_range[@]} in 2.1.0.
+    [[ "$start" && "$end" ]] && { err "Config: \$start and \$end are deprecated, use block_range=(0 7) instead."; block_range=("$start" "$end"); }
 }
 
 cache_uname() {
@@ -3121,7 +3131,7 @@ COLOR BLOCKS
     --color_blocks on/off       Enable/Disable the color blocks
     --block_width num           Width of color blocks in spaces
     --block_height num          Height of color blocks in lines
-    --block_range start end     Range of colors to print as blocks
+    --block_range num num       Range of colors to print as blocks
 
 BARS
 
@@ -3301,7 +3311,7 @@ get_args() {
 
             # Color Blocks
             "--color_blocks") color_blocks="$2" ;;
-            "--block_range") start="$2"; end="$3" ;;
+            "--block_range") block_range=("$2" "$3") ;;
             "--block_width") block_width="$2" ;;
             "--block_height") block_height="$2" ;;
 
@@ -3408,7 +3418,6 @@ main() {
     get_os
     get_default_config 2>/dev/null
     get_args "$@"
-    old_options
     get_distro
     get_bold
     get_distro_colors

@@ -372,8 +372,7 @@ underline_char="-"
 
 
 # Color block range
-# Start/End refer to the range of colors
-# to print in the blocks.
+# The range of colors to print.
 #
 # Default:  '0', '7'
 # Values:   'num'
@@ -381,13 +380,12 @@ underline_char="-"
 #
 # Example:
 #
-# Display colors 0-7 in the blocks.
+# Display colors 0-7 in the blocks.  (8 colors)
 # neofetch --block_range 0 7
 #
-# Display colors 0-15 in the blocks.
+# Display colors 0-15 in the blocks. (16 colors)
 # neofetch --block_range 0 15
-start=0
-end=7
+block_range=(0 7)
 
 # Toggle color blocks
 #
