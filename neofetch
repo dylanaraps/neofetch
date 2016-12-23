@@ -623,8 +623,8 @@ get_wm_theme() {
     (( "$de_run" != 1 )) && get_de
 
     case "$wm"  in
-        "E16") wm_theme="$(awk -F "= " '/theme.name/ {print $2}' "$HOME/.e16/e_config--0.0.cfg")";;
-        "Sawfish") wm_theme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "$HOME/.sawfish/custom")" ;;
+        "E16") wm_theme="$(awk -F "= " '/theme.name/ {print $2}' "${HOME}/.e16/e_config--0.0.cfg")";;
+        "Sawfish") wm_theme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "${HOME}/.sawfish/custom")" ;;
 
         "Cinnamon" | "Muffin" | "Mutter (Muffin)")
             detheme="$(gsettings get org.cinnamon.theme name)"
@@ -655,20 +655,20 @@ get_wm_theme() {
 
         "E17" | "Enlightenment")
             if type -p eet >/dev/null; then
-                wm_theme="$(eet -d "$HOME/.e/e/config/standard/e.cfg" config | awk '/value \"file\" string.*.edj/ {print $4}')"
+                wm_theme="$(eet -d "${HOME}/.e/e/config/standard/e.cfg" config | awk '/value \"file\" string.*.edj/ {print $4}')"
                 wm_theme="${wm_theme##*/}"
                 wm_theme="${wm_theme%.*}"
             fi
         ;;
 
         "Fluxbox")
-            [[ -f "$HOME/.fluxbox/init" ]] && \
-                wm_theme="$(awk -F "/" '/styleFile/ {print $NF}' "$HOME/.fluxbox/init")"
+            [[ -f "${HOME}/.fluxbox/init" ]] && \
+                wm_theme="$(awk -F "/" '/styleFile/ {print $NF}' "${HOME}/.fluxbox/init")"
         ;;
 
         "IceWM"*)
-            [[ -f "$HOME/.icewm/theme" ]] && \
-                wm_theme="$(awk -F "[\",/]" '!/#/ {print $2}' "$HOME/.icewm/theme")"
+            [[ -f "${HOME}/.icewm/theme" ]] && \
+                wm_theme="$(awk -F "[\",/]" '!/#/ {print $2}' "${HOME}/.icewm/theme")"
         ;;
 
         "Openbox")
@@ -683,8 +683,8 @@ get_wm_theme() {
         ;;
 
         "PekWM")
-            [[ -f "$HOME/.pekwm/config" ]] && \
-                wm_theme="$(awk -F "/" '/Theme/ {gsub(/\"/,""); print $NF}' "$HOME/.pekwm/config")"
+            [[ -f "${HOME}/.pekwm/config" ]] && \
+                wm_theme="$(awk -F "/" '/Theme/ {gsub(/\"/,""); print $NF}' "${HOME}/.pekwm/config")"
         ;;
 
         "Xfwm4")
@@ -1396,8 +1396,8 @@ get_style() {
 
         # Check for general GTK2 Theme.
         if [[ -z "$gtk2_theme" ]]; then
-            if [[ -f "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}" ]]; then
-                gtk2_theme="$(grep "^[^#]*${name}" "${GTK2_RC_FILES:-$HOME/.gtkrc-2.0}")"
+            if [[ -f "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}" ]]; then
+                gtk2_theme="$(grep "^[^#]*${name}" "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}")"
 
             elif [[ -f "/usr/share/gtk-2.0/gtkrc" ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" /usr/share/gtk-2.0/gtkrc)"
@@ -2017,8 +2017,8 @@ get_wallpaper() {
                 "MATE"*)     image="$(gsettings get org.mate.background picture-filename)" ;;
                 "XFCE"*)     image="$(xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image)" ;;
                 *)
-                    if type -p feh >/dev/null && [[ -f "$HOME/.fehbg" ]]; then
-                        image="$(awk -F\' '/feh/ {printf $2}' "$HOME/.fehbg")"
+                    if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
+                        image="$(awk -F\' '/feh/ {printf $2}' "${HOME}/.fehbg")"
 
                     elif type -p nitrogen >/dev/null; then
                         image="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
