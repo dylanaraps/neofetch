@@ -133,6 +133,8 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Fixed bug where color blocks wouldn't respect width in TTYs.
 - Cursor positioning now takes `$block_height` into account.
 - Fixed all artifacts in virtual consoles.
+- Merged `$start` and `$end` into an array called `block_range`.
+    - This makes the config option match the command-line flag `--block_range`.
 
 
 ## Images
