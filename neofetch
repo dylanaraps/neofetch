@@ -1506,42 +1506,22 @@ get_term() {
     # If function was run, stop here.
     (( "$term_run" == 1 )) && return
 
-    # Check $PPID for terminal emulator.
-    case "$os" in
-        "Mac OS X")
-            # Workaround for macOS systems that
-            # don't support the block below.
-            case "$TERM_PROGRAM" in
-                "iTerm.app") term="iTerm2" ;;
-                "Terminal.app") term="Apple Terminal" ;;
-                "Hyper") term="HyperTerm" ;;
-                *) term="${TERM_PROGRAM/\.app}" ;;
-            esac
-            return
-        ;;
-
-        "Windows")
-            parent="$(ps -p "${1:-$PPID}" | awk '{printf $2}')"
-            parent="${parent/'PPID'}"
-
-            name="$(ps -p "$parent" | awk '{printf $8}')"
-            name="${name/'COMMAND'}"
-            name="${name/*\/}"
-        ;;
-
-        "Linux")
-            parent="$(grep -i -F "PPid:" "/proc/${1:-$PPID}/status")"
-            name="$(< "/proc/$(trim "${parent/PPid:}")/comm")"
-        ;;
-
-        *)
-            parent="$(ps -p "${1:-$PPID}" -o ppid=)"
-            name="$(ps -p "$parent" -o comm=)"
-        ;;
+    # Workaround for macOS systems that don't
+    # support using PPID to get terminal name.
+    case "$TERM_PROGRAM" in
+        "iTerm.app") term="iTerm2" ;;
+        "Terminal.app") term="Apple Terminal" ;;
+        "Hyper") term="HyperTerm" ;;
+        *) term="${TERM_PROGRAM/\.app}" ;;
     esac
+    [[ "$TERM_PROGRAM" ]] && return
 
+    # Get Terminal Emulator name from $PPID
+    get_pid "$PPID"
+
+    # Check to see if the name doesn't match common parent processes. (tmux, etc)
     case "${name// }" in
-        "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su") get_term "$parent" ;;
+        "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su") get_pid "$parent" ;;
         "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
         "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term ;;
         "gnome-terminal-") term="gnome-terminal" ;;
@@ -3055,6 +3035,31 @@ convert_time() {
     # Print the install date.
     printf "%s" "$week_day $day $month $year $time"
 }
+
+get_pid() {
+    # Get the PPID and NAME of a PID.
+    case "$os" in
+        "Windows")
+            parent="$(ps -p "${1:-$PPID}" | awk '{printf $2}')"
+            parent="${parent/'PPID'}"
+
+            name="$(ps -p "$parent" | awk '{printf $8}')"
+            name="${name/'COMMAND'}"
+            name="${name/*\/}"
+        ;;
+
+        "Linux")
+            parent="$(grep -i -F "PPid:" "/proc/${1:-$PPID}/status")"
+            name="$(< "/proc/$(trim "${parent/PPid:}")/comm")"
+        ;;
+
+        *)
+            parent="$(ps -p "${1:-$PPID}" -o ppid=)"
+            name="$(ps -p "$parent" -o comm=)"
+        ;;
+    esac
+}
+
 
 # FINISH UP
 
