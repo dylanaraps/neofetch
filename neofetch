@@ -293,7 +293,7 @@ get_kernel() {
     esac
 
     # Hide kernel info if it's identical to the distro info.
-    if [[ "$distro" == *"$kernel_name"* ]]; then
+    if [[ "$os" =~ (BSD|MINIX) && "$distro" == *"$kernel_name"* ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
             *) unset kernel ;;
