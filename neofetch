@@ -679,7 +679,7 @@ get_wm_theme() {
                 ob_file="rc"
             fi
 
-            wm_theme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "$XDG_CONFIG_HOME/openbox/${ob_file}.xml")";
+            wm_theme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "${XDG_CONFIG_HOME}/openbox/${ob_file}.xml")";
         ;;
 
         "PekWM")
@@ -1411,8 +1411,8 @@ get_style() {
 
         # Check for general GTK3 Theme.
         if [[ -z "$gtk3_theme" ]]; then
-            if [[ -f "$XDG_CONFIG_HOME/gtk-3.0/settings.ini" ]]; then
-                gtk3_theme="$(grep "^[^#]*$name" "$XDG_CONFIG_HOME/gtk-3.0/settings.ini")"
+            if [[ -f "${XDG_CONFIG_HOME}/gtk-3.0/settings.ini" ]]; then
+                gtk3_theme="$(grep "^[^#]*$name" "${XDG_CONFIG_HOME}/gtk-3.0/settings.ini")"
 
             elif type -p gsettings >/dev/null; then
                 gtk3_theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
@@ -2021,7 +2021,7 @@ get_wallpaper() {
                         image="$(awk -F\' '/feh/ {printf $2}' "${HOME}/.fehbg")"
 
                     elif type -p nitrogen >/dev/null; then
-                        image="$(awk -F'=' '/file/ {printf $2;exit;}' "$XDG_CONFIG_HOME/nitrogen/bg-saved.cfg")"
+                        image="$(awk -F'=' '/file/ {printf $2;exit;}' "${XDG_CONFIG_HOME}/nitrogen/bg-saved.cfg")"
 
                     else
                         image="$(gsettings get org.gnome.desktop.background picture-uri)"
@@ -2783,7 +2783,7 @@ get_default_config() {
     fi
 
     if source "$default_config"; then
-        err "Config: Sourced default config. ($default_config)"
+        err "Config: Sourced default config. (${default_config})"
     else
         err "Config: Default config not found, continuing..."
     fi
@@ -2793,38 +2793,38 @@ get_user_config() {
     # Check $config_file.
     if [[ -f "$config_file" ]]; then
         source "$config_file"
-        err "Config: Sourced user config.    ($config_file)"
+        err "Config: Sourced user config.    (${config_file})"
         return
 
     elif [[ "$config_file" == "travis" ]]; then
         source "$travis_config"
-        err "Config: Sourced user config.    ($travis_config)"
+        err "Config: Sourced user config.    (${travis_config})"
         return
     fi
-    mkdir -p "$XDG_CONFIG_HOME/neofetch/"
+    mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
 
-    # Check $XDG_CONFIG_HOME/neofetch and create the
+    # Check ${XDG_CONFIG_HOME}/neofetch and create the
     # dir/files if they don't exist.
-    if [[ -f "$XDG_CONFIG_HOME/neofetch/config" ]]; then
-        config_file="$XDG_CONFIG_HOME/neofetch/config"
+    if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
+        config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     elif [[ -f "/usr/share/neofetch/config" ]]; then
-        cp "/usr/share/neofetch/config" "$XDG_CONFIG_HOME/neofetch"
-        config_file="$XDG_CONFIG_HOME/neofetch/config"
+        cp "/usr/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     elif [[ -f "/usr/local/share/neofetch/config" ]]; then
-        cp "/usr/local/share/neofetch/config" "$XDG_CONFIG_HOME/neofetch"
-        config_file="$XDG_CONFIG_HOME/neofetch/config"
+        cp "/usr/local/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     else
         get_script_dir
 
-        cp "$script_dir/config/config" "$XDG_CONFIG_HOME/neofetch"
-        config_file="$XDG_CONFIG_HOME/neofetch/config"
+        cp "${script_dir}/config/config" "${XDG_CONFIG_HOME}/neofetch"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config"
     fi
 
     source "$config_file"
-    err "Config: Sourced user config.    ($config_file)"
+    err "Config: Sourced user config.    (${config_file})"
 }
 
 bar() {
