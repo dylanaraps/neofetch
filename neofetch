@@ -262,7 +262,6 @@ get_model() {
             model="$(wmic computersystem get manufacturer,model /value)"
             model="${model/Manufacturer'='}"
             model="${model/Model'='}"
-            model="${model//*To Be Filled*}"
         ;;
 
         "Solaris")
@@ -288,15 +287,13 @@ get_title() {
 }
 
 get_kernel() {
-    [[ "$os" == "MINIX" ]] && local os="BSD"
-
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
         "off") kernel="$kernel_name $kernel_version" ;;
     esac
 
     # Hide kernel info if it's identical to the distro info.
-    if [[ "$os" == "BSD" && "$distro" == *"$kernel_name"* ]]; then
+    if [[ "$os" =~ (BSD|MINIX) && "$distro" == *"$kernel_name"* ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
             *) unset kernel ;;
