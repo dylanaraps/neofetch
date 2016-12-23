@@ -41,7 +41,11 @@ get_os() {
         "SunOS") os="Solaris" ;;
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
-        *) printf "%s\n" "Unknown OS detected: $kernel_name"; exit 1 ;;
+        *)
+            printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
+            printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
+            exit 1
+        ;;
     esac
 }
 
