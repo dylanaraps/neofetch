@@ -2621,7 +2621,7 @@ get_distro_colors() {
         ;;
 
         "MX"*)
-            set_colors 4 6
+            set_colors 4 6 7
             ascii_distro="mx"
         ;;
 
