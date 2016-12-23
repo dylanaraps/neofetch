@@ -2909,7 +2909,7 @@ dynamic_prompt() {
             get_term_padding 2>/dev/null
 
             # Calculate image height in terminal cells.
-            lines="$(((height + (${border:-0} * 2) + ${yoffset:-0}) / font_height))"
+            lines="$(((border * 2 + height + yoffset) / font_height))"
         ;;
         "off") return ;;
     esac
