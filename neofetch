@@ -1598,6 +1598,10 @@ get_term_font() {
         "Hyper"*)
             term_font="$(awk -F "," '/fontFamily/ {a=$1} END{print a}' "${HOME}/.hyper.js" | awk -F "'" '{a=$2} END{print a}')"
         ;;
+
+        "sakura"*)
+            term_font="$(awk -F '=' '/^font=/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
+        ;;
     esac
 }
 
