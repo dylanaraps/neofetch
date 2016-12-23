@@ -3018,8 +3018,8 @@ convert_time() {
 
     # Calculate day of week.
     # Source: http://blog.artofmemory.com/how-to-calculate-the-day-of-the-week-4203.html
-    year_code="$((${year/??} + $((${year/??} / 4)) % 7))"
-    week_day="$(($((year_code + month_code + 6 + day - ${leap_code:-0})) % 7))"
+    year_code="$((${year/??} + (${year/??} / 4) % 7))"
+    week_day="$(((year_code + month_code + 6 + day - leap_code) % 7))"
 
     case "$week_day" in
         0) week_day="Sun" ;;
