@@ -553,7 +553,7 @@ get_de() {
             elif [[ "$DESKTOP_SESSION" ]]; then
                 de="${DESKTOP_SESSION/ *}"
 
-            elif [[ "$GOME_DESKTOP_SESSION_ID" ]]; then
+            elif [[ "$GNOME_DESKTOP_SESSION_ID" ]]; then
                 de="GNOME"
 
             elif [[ "$MATE_DESKTOP_SESSION_ID" ]]; then
