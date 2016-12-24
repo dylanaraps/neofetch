@@ -1602,6 +1602,28 @@ get_term_font() {
         "sakura"*)
             term_font="$(awk -F '=' '/^font=/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
         ;;
+
+        "konsole"*)
+            # Use Process ID from get_term().
+            # The variable can include 'PPid:' and also whitespace
+            # so we get rid of it here.
+            parent="$(trim "${parent/PPid:}")"
+
+            # Get PID of current child window / tab
+            child="$(get_ppid "$$")"
+
+            # Get all konsole sessions of the parent (all child windows and tabs)
+            konsole_sessions=($(qdbus org.kde.konsole-"${parent}" | awk '/Sessions\//'))
+
+            # Get profile of current session (window / tab)
+            for session in "${konsole_sessions[@]}"; do
+                if ((child == "$(qdbus org.kde.konsole-"${parent}" "${session}" processId)")); then
+                    profile="$(qdbus org.kde.konsole-"${parent}" "${session}" environment | awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
+                    break
+                fi
+            done
+            term_font="$(awk -F '=|,' '/Font=/ {print $2}' "${HOME}/.local/share/konsole/${profile}".profile)"
+        ;;
     esac
 }
 
