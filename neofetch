@@ -2631,6 +2631,11 @@ get_distro_colors() {
             set_colors 1 2 3 4 5 6
         ;;
 
+        "Grombyang"*)
+            set_colors 4 2 1
+            ascii_distro="grombyang"
+        ;;
+
         "Void"* | "Haiku"*)
             set_colors 2 8
         ;;
