@@ -116,10 +116,12 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - [cmus] Simplify block and fix `artistsort` bug.
 - Removed `state` detection.
 - Removed duplicate `dbus-send` commands.
+- Enforce order `artist - title` in `get_song_dbus()`. **[@mstraube](https://github.com/mstraube)**
 - Added support for xmms2. **[@z33ky](https://github.com/z33ky)**
 - Added support for Exaile music player. **[@mstraube](https://github.com/mstraube)**
 - Added support for JuK .**[@mstraube](https://github.com/mstraube)**
 - Added support for Bluemindo. **[@mstraube](https://github.com/mstraube)**
+- Added support for Guayadeque Player. **[@mstraube](https://github.com/mstraube)**
 
 **Terminal Font**<br \>
 
