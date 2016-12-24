@@ -120,6 +120,10 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added support for JuK .**[@mstraube](https://github.com/mstraube)**
 - Added support for Bluemindo. **[@mstraube](https://github.com/mstraube)**
 
+**Terminal Font**<br \>
+
+- Added support for Sakura Terminal. **[@mstraube](https://github.com/mstraube)**
+
 **Battery**<br \>
 
 - [MacOS] Fixed issue where battery always appears as charging. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
