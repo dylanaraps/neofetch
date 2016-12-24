@@ -18,6 +18,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added support for GNU/kFreeBSD.
 - Added support for MINIX.
 - Added support for MX.
+- Added support for GrombyangOS.
 - Added support for AntiX.
 - Added support for TrueOS.
 - Added support for SalentOS.
