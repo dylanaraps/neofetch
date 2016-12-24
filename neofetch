@@ -1521,7 +1521,7 @@ get_term() {
         name="$(get_process_name "$parent")"
 
         case "${name// }" in
-            "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su") ;;
+            "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
             "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
             "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) break ;;
             "gnome-terminal-") term="gnome-terminal" ;;
