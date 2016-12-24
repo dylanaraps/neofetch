@@ -1506,47 +1506,29 @@ get_term() {
     # If function was run, stop here.
     (( "$term_run" == 1 )) && return
 
+    # Workaround for macOS systems that
+    # don't support the block below.
+    case "$TERM_PROGRAM" in
+        "iTerm.app") term="iTerm2" ;;
+        "Terminal.app") term="Apple Terminal" ;;
+        "Hyper") term="HyperTerm" ;;
+        *) term="${TERM_PROGRAM/\.app}" ;;
+    esac
+    [[ "$TERM_PROGRAM" ]] && return
+
     # Check $PPID for terminal emulator.
-    case "$os" in
-        "Mac OS X")
-            # Workaround for macOS systems that
-            # don't support the block below.
-            case "$TERM_PROGRAM" in
-                "iTerm.app") term="iTerm2" ;;
-                "Terminal.app") term="Apple Terminal" ;;
-                "Hyper") term="HyperTerm" ;;
-                *) term="${TERM_PROGRAM/\.app}" ;;
-            esac
-            return
-        ;;
+    while [[ -z "$term" ]]; do
+        parent="$(get_ppid "$parent")"
+        name="$(get_process_name "$parent")"
 
-        "Windows")
-            parent="$(ps -p "${1:-$PPID}" | awk '{printf $2}')"
-            parent="${parent/'PPID'}"
-
-            name="$(ps -p "$parent" | awk '{printf $8}')"
-            name="${name/'COMMAND'}"
-            name="${name/*\/}"
-        ;;
-
-        "Linux")
-            parent="$(grep -i -F "PPid:" "/proc/${1:-$PPID}/status")"
-            name="$(< "/proc/$(trim "${parent/PPid:}")/comm")"
-        ;;
-
-        *)
-            parent="$(ps -p "${1:-$PPID}" -o ppid=)"
-            name="$(ps -p "$parent" -o comm=)"
-        ;;
-    esac
-
-    case "${name// }" in
-        "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su") get_term "$parent" ;;
-        "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-        "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term ;;
-        "gnome-terminal-") term="gnome-terminal" ;;
-        *) term="${name##*/}" ;;
-    esac
+        case "${name// }" in
+            "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su") ;;
+            "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
+            "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term; break ;;
+            "gnome-terminal-") term="gnome-terminal" ;;
+            *) term="${name##*/}" ;;
+        esac
+    done
 
     # Log that the function was run.
     term_run=1
@@ -3064,6 +3046,49 @@ convert_time() {
     # Print the install date.
     printf "%s" "$week_day $day $month $year $time"
 }
+
+get_ppid() {
+    # Get parent process ID of PID.
+    case "$os" in
+        "Windows")
+            ppid="$(ps -p "${1:-$PPID}" | awk '{printf $2}')"
+            ppid="${ppid/'PPID'}"
+        ;;
+
+        "Linux")
+            ppid="$(grep -i -F "PPid:" "/proc/${1:-$PPID}/status")"
+            ppid="$(trim "${ppid/PPid:}")"
+        ;;
+
+        *)
+            ppid="$(ps -p "${1:-$PPID}" -o ppid=)"
+        ;;
+    esac
+
+    printf "%s" "$ppid"
+}
+
+get_process_name() {
+    # Get PID name.
+    case "$os" in
+        "Windows")
+            name="$(ps -p "${1:-$PPID}" | awk '{printf $8}')"
+            name="${name/'COMMAND'}"
+            name="${name/*\/}"
+        ;;
+
+        "Linux")
+            name="$(< "/proc/${1:-$PPID}/comm")"
+        ;;
+
+        *)
+            name="$(ps -p "${1:-$PPID}" -o comm=)"
+        ;;
+    esac
+
+    printf "%s" "$name"
+}
+
 
 # FINISH UP
 
