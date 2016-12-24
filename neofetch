@@ -1514,7 +1514,6 @@ get_term() {
         "Hyper") term="HyperTerm" ;;
         *) term="${TERM_PROGRAM/\.app}" ;;
     esac
-    [[ "$TERM_PROGRAM" ]] && return
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -1524,7 +1523,7 @@ get_term() {
         case "${name// }" in
             "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su") ;;
             "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-            "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) unset term; break ;;
+            "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) break ;;
             "gnome-terminal-") term="gnome-terminal" ;;
             *) term="${name##*/}" ;;
         esac
