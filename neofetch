@@ -1191,7 +1191,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1217,6 +1217,7 @@ get_song() {
         "clementine"*)  get_song_dbus "clementine" ;;
         "juk"*)         get_song_dbus "juk" ;;
         "bluemindo"*)   get_song_dbus "Bluemindo" ;;
+        "guayadeque"*)  get_song_dbus "guayadeque" ;;
 
         "cmus"*)
             artist="$(cmus-remote -Q | grep -F "tag artist ")"
