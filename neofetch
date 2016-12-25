@@ -3065,7 +3065,7 @@ convert_time() {
                 *) time="$((hour - 12))${min} PM" ;;
             esac
         ;;
-        *) time="${hour}${min}" ;;
+        *) time="$4" ;;
     esac
 
     # Toggle showing the time.
