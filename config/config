@@ -324,6 +324,17 @@ song_shorthand="off"
 # off: 'Thu 14 Apr 2016'
 install_time="on"
 
+# Set time format in the output
+#
+# Default: '24h'
+# Values:  '12h', '24h'
+# Flag:    --install_time_format
+#
+# Example:
+# 12h: 'Thu 14 Apr 2016 11:50 PM'
+# 24h: 'Thu 14 Apr 2016 23:50'
+install_time_format="24h"
+
 
 # Text Colors
 

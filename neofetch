@@ -3058,9 +3058,14 @@ convert_time() {
     esac
 
     # Convert 24 hour time to 12 hour time + AM/PM.
-    case "$hour" in
-        [0-9] | 0[0-9] | 1[0-1]) time="${hour/00/12}${min} AM" ;;
-        *) time="$((hour - 12))${min} PM" ;;
+    case "$install_time_format" in
+        "12h")
+            case "$hour" in
+                [0-9] | 0[0-9] | 1[0-1]) time="${hour/00/12}${min} AM" ;;
+                *) time="$((hour - 12))${min} PM" ;;
+            esac
+        ;;
+        *) time="${hour}${min}" ;;
     esac
 
     # Toggle showing the time.
@@ -3174,7 +3179,9 @@ INFO
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on separate lines
-    --install_time on/off      Enable/Disable showing the time in Install Date output.
+    --install_time on/off       Enable/Disable showing the time in Install Date output.
+    --install_time_format 12h/24h
+                                Set time format in Install Date to be 12 hour or 24 hour.
 
 TEXT FORMATTING
 
@@ -3337,6 +3344,7 @@ get_args() {
             "--ip_host") public_ip_host="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
             "--install_time") install_time="$2" ;;
+            "--install_time_format") install_time_format="$2" ;;
             "--disable")
                 for func in "$@"; do
                     case "$func" in
