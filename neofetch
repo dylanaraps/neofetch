@@ -3122,7 +3122,9 @@ get_process_name() {
 usage() { printf "%s" "\
 Usage: neofetch --option \"value\" --option \"value\"
 
-Neofetch is a CLI system information tool written in BASH.
+Neofetch is a CLI system information tool written in BASH. Neofetch
+displays information about your system next to an image, your OS logo,
+or any ASCII file of your choice.
 
 NOTE: Every launch flag has a config option.
 
@@ -3280,7 +3282,7 @@ OTHER
 
 DEVELOPER
 
-    --gen-man                   Generate a manpage for Neofetch in your PWD.
+    --gen-man                   Generate a manpage for Neofetch in your PWD. (Requires GNU help2man)
 
 
 Report bugs to https://github.com/dylanaraps/neofetch/issues
@@ -3294,7 +3296,7 @@ Neofetch 2.1.0
 
 Copyright (c) 2016 Dylan Araps
 
-License MIT: Permission is hereby granted, free of charge, to any person obtaining a copy
+Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the 'Software'), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
@@ -3472,7 +3474,7 @@ get_args() {
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
             "--version") version ;;
-            "--gen-man") help2man -N neofetch -o neofetch.1; exit 1 ;;
+            "--gen-man") help2man -n"A fast, highly customizable system info script" -N ./neofetch -o neofetch.1; exit 1 ;;
         esac
 
         shift
