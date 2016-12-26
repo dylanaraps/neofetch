@@ -282,6 +282,7 @@ get_model() {
     model="${model//System Version}"
     model="${model//Undefined}"
     model="${model//Default string}"
+    model="${model//Not Specified}"
 }
 
 get_title() {
