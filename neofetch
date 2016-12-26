@@ -1262,8 +1262,7 @@ get_song() {
 
         "exaile"*)
             song="$(dbus-send --print-reply --dest=org.exaile.Exaile  /org/exaile/Exaile \
-                    org.exaile.Exaile.Query | awk -F':|,' '{printf $6 " -" $4}')"
-            song="${song:3}"
+                    org.exaile.Exaile.Query | awk -F':|,' '{if ($6 && $4) printf $6 " -" $4}')"
         ;;
     esac
 
