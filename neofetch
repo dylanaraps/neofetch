@@ -1255,9 +1255,7 @@ get_song() {
         ;;
 
         "pragha"*)
-            artist="$(pragha -c | awk -F':' '/artist/ {print $2}')"
-            title="$(pragha -c | awk -F':' '/title/ {print $2}')"
-            song="$artist - $title"
+            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
         ;;
 
         "exaile"*)
