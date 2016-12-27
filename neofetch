@@ -1223,9 +1223,7 @@ get_song() {
         "guayadeque"*)  get_song_dbus "guayadeque" ;;
 
         "cmus"*)
-            artist="$(cmus-remote -Q | grep -F "tag artist ")"
-            title="$(cmus-remote -Q | grep -F "tag title")"
-            song="${artist/tag artist} - ${title/tag title}"
+            song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; print; print " - "} /tag title/ {$1=$2=""; print}')"
         ;;
 
         "spotify"*)
@@ -1243,21 +1241,15 @@ get_song() {
         ;;
 
         "banshee"*)
-            artist="$(banshee --query-artist | awk -F':' '{print $2}')"
-            title="$(banshee --query-title | awk -F':' '{print $2}')"
-            song="$artist - $title"
+            song="$(banshee --query-artist --query-title | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
         ;;
 
         "amarok"*)
-            artist="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {print $2}')"
-            title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
-            song="$artist - $title"
+            song="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
         ;;
 
         "pragha"*)
-            artist="$(pragha -c | awk -F':' '/artist/ {print $2}')"
-            title="$(pragha -c | awk -F':' '/title/ {print $2}')"
-            song="$artist - $title"
+            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
         ;;
 
         "exaile"*)
