@@ -1249,9 +1249,7 @@ get_song() {
         ;;
 
         "amarok"*)
-            artist="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {print $2}')"
-            title="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/title/ {print $2}')"
-            song="$artist - $title"
+            song="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
         ;;
 
         "pragha"*)
