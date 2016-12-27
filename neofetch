@@ -1223,9 +1223,7 @@ get_song() {
         "guayadeque"*)  get_song_dbus "guayadeque" ;;
 
         "cmus"*)
-            artist="$(cmus-remote -Q | grep -F "tag artist ")"
-            title="$(cmus-remote -Q | grep -F "tag title")"
-            song="${artist/tag artist} - ${title/tag title}"
+            song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; print; print " - "} /tag title/ {$1=$2=""; print}')"
         ;;
 
         "spotify"*)
