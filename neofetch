@@ -1243,9 +1243,7 @@ get_song() {
         ;;
 
         "banshee"*)
-            artist="$(banshee --query-artist | awk -F':' '{print $2}')"
-            title="$(banshee --query-title | awk -F':' '{print $2}')"
-            song="$artist - $title"
+            song="$(banshee --query-artist --query-title | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
         ;;
 
         "amarok"*)
