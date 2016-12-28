@@ -442,14 +442,8 @@ get_packages() {
             type -p Compile >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /Programs/*/ | wc -l)))"
 
-            # pisi is sometimes unavailable in Solus(?). This uses eopkg
-            # instead if pisi isn't found.
-            if type -p pisi >/dev/null; then
-                packages="$((packages+=$(pisi list-installed | wc -l)))"
-
-            elif type -p eopkg >/dev/null; then
+            type -p eopkg >/dev/null && \
                 packages="$((packages+=$(eopkg list-installed | wc -l)))"
-            fi
 
             if type -p pkg >/dev/null; then
                 packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
