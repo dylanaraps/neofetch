@@ -186,12 +186,13 @@ cpu_cores="logical"
 # Note the temperature is added to the regular CPU function.
 #
 # Default: 'off'
-# Values:  'on', 'off'
+# Values:  'C', 'F', 'off'
 # Flag:    --cpu_temp
 # Supports: Linux
 #
 # Example:
-# on:  'Intel i7-6500U (4) @ 3.1GHz [27.2°C]'
+# C:   'Intel i7-6500U (4) @ 3.1GHz [27.2°C]'
+# F:   'Intel i7-6500U (4) @ 3.1GHz [82.0°C]'
 # off: 'Intel i7-6500U (4) @ 3.1GHz'
 cpu_temp="off"
 
