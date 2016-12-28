@@ -2576,8 +2576,13 @@ get_distro_colors() {
             set_colors 4 3
         ;;
 
-        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Gentoo"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
+        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
             set_colors 5 7
+        ;;
+
+        "Gentoo"*)
+            set_colors 5 7
+            ascii_distro="gentoo"
         ;;
 
         "OpenBSD"* | "GuixSD"* | "Pardus"*)
