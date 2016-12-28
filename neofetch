@@ -3472,7 +3472,7 @@ main() {
     get_os
     get_default_config 2>/dev/null
     get_args "$@"
-    get_distro
+    get_distro 2>/dev/null
     get_bold
     get_distro_colors
 
