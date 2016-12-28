@@ -192,7 +192,7 @@ cpu_cores="logical"
 #
 # Example:
 # C:   'Intel i7-6500U (4) @ 3.1GHz [27.2°C]'
-# F:   'Intel i7-6500U (4) @ 3.1GHz [82.0°C]'
+# F:   'Intel i7-6500U (4) @ 3.1GHz [82.0°F]'
 # off: 'Intel i7-6500U (4) @ 3.1GHz'
 cpu_temp="off"
 
