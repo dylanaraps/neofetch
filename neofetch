@@ -53,7 +53,7 @@ get_distro() {
     [[ "$distro" ]] && return
 
     case "$os" in
-        "Linux")
+        "Linux" | "BSD" | "MINIX")
             if [[ "$(< /proc/version)" == *"Microsoft"* || "$(< /proc/sys/kernel/osrelease)" == *"Microsoft"* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
@@ -95,9 +95,9 @@ get_distro() {
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
-            else
-                # Source the os-release file.
-                for file in /etc/os-release /usr/lib/os-release /etc/*release /usr/lib/*release; do
+            elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" ]]; then
+                # Source the os-release file
+                for file in /etc/os-release /usr/lib/os-release; do
                     source "$file" 2>/dev/null && break
                 done
 
@@ -109,8 +109,25 @@ get_distro() {
                 esac
 
                 # Workarounds for distros that go against the os-release standard.
-                [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
-                [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}' /etc/*ease /usr/lib/*ease)"
+                [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/os-release /usr/lib/os-release)"
+                [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}' /etc/os-release /usr/lib/os-release)"
+
+            else
+                for release_file in /etc/*-release; do
+                    distro+="$(< "$release_file")"
+                done
+                if [[ -z "$distro" ]]; then
+                    case "$distro_shorthand" in
+                        "on" | "tiny") distro="$kernel_name" ;;
+                        *) distro="$kernel_name $kernel_version" ;;
+                    esac
+                    distro="${distro/DragonFly/DragonFlyBSD}"
+
+                    # Workarounds for FreeBSD based distros.
+                    [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
+                    [[ -f "/etc/rc.conf.trueos" ]] && distro="TrueOS"
+                    [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD" # /etc/pacbsd-release is an empty file
+                fi
             fi
             distro="$(trim_quotes "$distro")"
         ;;
@@ -151,20 +168,6 @@ get_distro() {
 
             # "uname -m" doesn't print architecture on iOS so we force it off.
             os_arch="off"
-        ;;
-
-        "BSD" | "MINIX")
-            case "$distro_shorthand" in
-                "tiny" | "on") distro="$kernel_name" ;;
-                *) distro="$kernel_name $kernel_version" ;;
-            esac
-
-            distro="${distro/DragonFly/DragonFlyBSD}"
-
-            # Workarounds for FreeBSD based distros.
-            [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
-            [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
-            [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
         ;;
 
         "Windows")
@@ -393,7 +396,7 @@ get_packages() {
     local PATH="${PATH#:}"
 
     case "$os" in
-        "Linux" | "iPhone OS" | "Solaris")
+        "Linux" | "BSD" | "iPhone OS" | "Solaris")
             type -p pacman >/dev/null && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
@@ -445,9 +448,16 @@ get_packages() {
             type -p eopkg >/dev/null && \
                 packages="$((packages+=$(eopkg list-installed | wc -l)))"
 
+            type -p pkg_info >/dev/null && \
+                packages="$((packages+=$(pkg_info | wc -l)))"
+
             if type -p pkg >/dev/null; then
-                packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
-                (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
+                case "$kernel_name" in
+                    "FreeBSD") packages="$((packages+=$(pkg info | wc -l)))" ;;
+                    *)
+                        packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
+                        (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
+                esac
             fi
         ;;
 
@@ -463,21 +473,6 @@ get_packages() {
 
             type -p pkgin >/dev/null && \
                 packages="$((packages + $(pkgin list | wc -l)))"
-        ;;
-
-        "BSD")
-            case "$distro" in
-                # PacBSD has both pacman and pkg, but only pacman is used.
-                "PacBSD"*) packages="$(pacman -Qq --color never | wc -l)" ;;
-
-                *)
-                    if type -p pkg_info >/dev/null; then
-                        packages="$(pkg_info | wc -l)"
-                    elif type -p pkg >/dev/null; then
-                        packages="$(pkg info | wc -l)"
-                    fi
-                ;;
-            esac
         ;;
 
         "Windows")
@@ -3477,7 +3472,7 @@ main() {
     get_os
     get_default_config 2>/dev/null
     get_args "$@"
-    get_distro
+    get_distro 2>/dev/null
     get_bold
     get_distro_colors
 
