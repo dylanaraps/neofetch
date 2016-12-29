@@ -12,7 +12,7 @@ or any ASCII file of your choice.
 .PP
 NOTE: Every launch flag has a config option.
 .SH OPTIONS
-INFO
+.SS "INFO:"
 .TP
 \fB\-\-disable\fR infoname
 Allows you to disable an info line from appearing
@@ -101,8 +101,7 @@ Enable/Disable showing the time in Install Date output.
 .TP
 \fB\-\-install_time_format\fR 12h/24h
 Set time format in Install Date to be 12 hour or 24 hour.
-.PP
-TEXT FORMATTING
+.SS "TEXT FORMATTING:"
 .TP
 \fB\-\-colors\fR x x x x x x
 Changes the text colors in this order:
@@ -116,8 +115,7 @@ Character to use when underlining title
 .TP
 \fB\-\-bold\fR on/off
 Enable/Disable bold text
-.PP
-COLOR BLOCKS
+.SS "COLOR BLOCKS:"
 .TP
 \fB\-\-color_blocks\fR on/off
 Enable/Disable the color blocks
@@ -130,8 +128,7 @@ Height of color blocks in lines
 .TP
 \fB\-\-block_range\fR num num
 Range of colors to print as blocks
-.PP
-BARS
+.SS "BARS:"
 .TP
 \fB\-\-bar_char\fR 'elapsed char' 'total char'
 Characters to use when drawing bars.
@@ -161,8 +158,7 @@ Takes: bar, infobar, barinfo, off
 \fB\-\-disk_display\fR mode
 Bar mode.
 Takes: bar, infobar, barinfo, off
-.PP
-IMAGE
+.SS "IMAGE:"
 .TP
 \fB\-\-image\fR type
 Image source. Where and what image we display.
@@ -201,8 +197,7 @@ NOTE: \fB\-\-gap\fR can take a negative value which will move the text closer to
 .TP
 \fB\-\-clean\fR
 Delete cached files and thumbnails.
-.PP
-ASCII
+.SS "ASCII:"
 .TP
 \fB\-\-ascii\fR value
 Where to get the ascii from, Possible values:
@@ -231,8 +226,7 @@ Whether or not to bold the ascii logo.
 .TP
 \fB\-L\fR, \fB\-\-logo\fR
 Hide the info text and only show the ascii logo.
-.PP
-SCREENSHOT
+.SS "SCREENSHOT:"
 .TP
 \fB\-s\fR, \fB\-\-scrot\fR \fI\,/path/to/img\/\fP
 Take a screenshot, if path is left empty the screenshot function will use $scrot_dir and $scrot_name.
@@ -245,8 +239,7 @@ Website to upload scrots to. Takes: imgur, teknik
 .TP
 \fB\-\-scrot_cmd\fR cmd
 Screenshot program to launch
-.PP
-OTHER
+.SS "OTHER:"
 .TP
 \fB\-\-config\fR \fI\,/path/to/config\/\fP
 Specify a path to a custom config file
@@ -265,8 +258,7 @@ Display error messages.
 .TP
 \fB\-vv\fR
 Display a verbose log for error reporting.
-.PP
-DEVELOPER
+.SS "DEVELOPER:"
 .TP
 \fB\-\-gen\-man\fR
 Generate a manpage for Neofetch in your PWD. (Requires GNU help2man)

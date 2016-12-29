@@ -3116,8 +3116,7 @@ NOTE: Every launch flag has a config option.
 
 Options:
 
-INFO
-
+INFO:
     --disable infoname          Allows you to disable an info line from appearing
                                 in the output.
 
@@ -3171,23 +3170,20 @@ INFO
     --install_time_format 12h/24h
                                 Set time format in Install Date to be 12 hour or 24 hour.
 
-TEXT FORMATTING
-
+TEXT FORMATTING:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
     --underline on/off          Enable/Disable the underline.
     --underline_char char       Character to use when underlining title
     --bold on/off               Enable/Disable bold text
 
-COLOR BLOCKS
-
+COLOR BLOCKS:
     --color_blocks on/off       Enable/Disable the color blocks
     --block_width num           Width of color blocks in spaces
     --block_height num          Height of color blocks in lines
     --block_range num num       Range of colors to print as blocks
 
-BARS
-
+BARS:
     --bar_char 'elapsed char' 'total char'
                                 Characters to use when drawing bars.
     --bar_border on/off         Whether or not to surround the bar with '[]'
@@ -3202,8 +3198,7 @@ BARS
                                 Takes: bar, infobar, barinfo, off
     --disk_display mode         Bar mode.
                                 Takes: bar, infobar, barinfo, off
-IMAGE
-
+IMAGE:
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, ascii,
                                 /path/to/img, /path/to/dir/, off
@@ -3227,8 +3222,7 @@ IMAGE
 
     --clean                     Delete cached files and thumbnails.
 
-ASCII
-
+ASCII:
     --ascii value               Where to get the ascii from, Possible values:
                                 distro, /path/to/ascii
     --ascii_colors x x x x x x  Colors to print the ascii art
@@ -3249,16 +3243,14 @@ ASCII
     --ascii_bold on/off         Whether or not to bold the ascii logo.
     -L, --logo                  Hide the info text and only show the ascii logo.
 
-SCREENSHOT
-
+SCREENSHOT:
     -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     -su, --upload /path/to/img  Same as --scrot but uploads the scrot to a website.
     --image_host                Website to upload scrots to. Takes: imgur, teknik
     --scrot_cmd cmd             Screenshot program to launch
 
-OTHER
-
+OTHER:
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
     --help                      Print this text and exit
@@ -3266,8 +3258,7 @@ OTHER
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
 
-DEVELOPER
-
+DEVELOPER:
     --gen-man                   Generate a manpage for Neofetch in your PWD. (Requires GNU help2man)
 
 
