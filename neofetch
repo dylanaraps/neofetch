@@ -2536,7 +2536,7 @@ get_distro_colors() {
 
         "antiX"*)
             set_colors 1 7 3
-            ascii_Distro="antix"
+            ascii_distro="antix"
         ;;
 
         "FreeBSD"*)
@@ -2584,8 +2584,13 @@ get_distro_colors() {
             set_colors 3 7 6 1 8
         ;;
 
-        *"SUSE"* | "Manjaro"* | "Deepin"* |"LMDE"* | "Chapeau"* | "Bitrig"*)
+        "Manjaro"* | "Deepin"* | "LMDE"* | "Chapeau"* | "Bitrig"*)
             set_colors 2 7
+        ;;
+
+        *"SUSE"*)
+            set_colors 2 7
+            ascii_distro="suse"
         ;;
 
         "KDE"*)
