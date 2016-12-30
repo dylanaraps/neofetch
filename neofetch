@@ -1568,25 +1568,47 @@ get_term_font() {
         ;;
 
         "konsole"*)
+            get_konsole_profile() {
+                konsole_windows=($(qdbus "${1}" | awk '/Windows\//'))
+                for window in "${konsole_windows[@]}"; do
+                    konsole_session="$(qdbus "${1}" "${window}" currentSession)"
+                    if ((child == "$(qdbus "${1}" /Sessions/"${konsole_session}" processId)")); then
+                        konsole_profile="$(qdbus "${1}" /Sessions/"${konsole_session}" environment |\
+                        awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
+                        break
+                    fi
+                done
+            }
+
+            get_konsole_font() {
+                profile_path="$("${1}" --path data | awk -F':' '{print $1}')/konsole"
+
+                # Profile filename can differ from profile name, so find the filename first, take first match
+                # It's possible that we have more than one file containing the same profile name
+                profile_filename="$(grep -l "Name=${konsole_profile}" "${profile_path}"/*.profile | head -n 1)"
+                [[ "${profile_filename}" ]] && term_font="$(awk -F '=|,' '/Font=/ {print $2 " " $3}' "${profile_filename}")"
+
+                # If there are no profiles or no font is defined in the profile, Konsole falls back to system's monospace font
+                # This fails if no fixed font is defined in kdeglobals, Konsole internally uses
+                # QFontDatabase::systemFont(QFontDatabase::FixedFont) or KGlobalSettings::fixedFont() in qt4 versions
+                [[ ! "${term_font}" ]] && term_font="$(awk -F '=|,' '/fixed=/ {print $2 " " $3}' "$("${1}" --path config --locate kdeglobals)")"
+            }
+
             # Use Process ID from get_term().
             # The variable can include 'PPid:' and also whitespace
             # so we get rid of it here.
             parent="$(trim "${parent/PPid:}")"
 
-            # Get PID of current child window / tab
+            # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
-            # Get all konsole sessions of the parent (all child windows and tabs)
-            konsole_sessions=($(qdbus org.kde.konsole-"${parent}" | awk '/Sessions\//'))
+            # We could have both: org.kde.konsole-PPID and org.kde.konsole
+            get_konsole_profile "org.kde.konsole-${parent}"
+            [[ ! "${konsole_profile}" ]] && get_konsole_profile "org.kde.konsole"
 
-            # Get profile of current session (window / tab)
-            for session in "${konsole_sessions[@]}"; do
-                if ((child == "$(qdbus org.kde.konsole-"${parent}" "${session}" processId)")); then
-                    profile="$(qdbus org.kde.konsole-"${parent}" "${session}" environment | awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
-                    break
-                fi
-            done
-            term_font="$(awk -F '=|,' '/Font=/ {print $2}' "${HOME}/.local/share/konsole/${profile}".profile)"
+            # Try both: kde5 and kde4
+            [[ "$(which kf5-config)" ]] && get_konsole_font "kf5-config"
+            [[ ! "${term_font}" && "$(which kde4-config)" ]] && get_konsole_font "kde4-config"
         ;;
     esac
 }
