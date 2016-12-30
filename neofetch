@@ -2536,7 +2536,7 @@ get_distro_colors() {
 
         "antiX"*)
             set_colors 1 7 3
-            ascii_Distro="antix"
+            ascii_distro="antix"
         ;;
 
         "FreeBSD"*)
