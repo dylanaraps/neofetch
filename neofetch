@@ -1763,9 +1763,10 @@ get_install_date() {
 
     ls_prog="$(ls --version 2>&1)"
     case "$ls_prog" in
-        *"BusyBox"*) install_date="$(ls -dalcte "$install_file" | awk '{printf $10 " " $7 " " $8 " " $9}')" ;;
-        *"GNU coreutils"*) install_date="$(ls -dalct --full-time "$install_file" | awk '{printf $6 " " $7}')" ;;
-        *) install_date="$(ls -alctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
+        *"BusyBox"*) install_date="$(ls -tdce "$install_file" | awk '{printf $10 " " $7 " " $8 " " $9}')" ;;
+        *"crtime"*) install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')" ;;
+        *"GNU coreutils"*) install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')" ;;
+        *) install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
     esac
 
     install_date="${install_date//-/ }"
