@@ -500,7 +500,7 @@ get_shell() {
     if [[ "$shell_version" == "on" ]]; then
         case "${SHELL##*/}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
-            "sh") ;;
+            "sh" | "ash" | "dash") ;;
 
             "mksh" | "ksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
