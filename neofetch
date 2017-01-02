@@ -524,7 +524,7 @@ get_shell() {
 
 get_de() {
     # If function was run, stop here.
-    (( de_run == 1 )) && return
+    ((de_run == 1)) && return
 
     case "$os" in
         "Mac OS X") de="Aqua" ;;
@@ -536,7 +536,7 @@ get_de() {
         ;;
 
         *)
-            (( wm_run != 1 )) && get_wm
+            ((wm_run != 1)) && get_wm
 
             if [[ "$XDG_CURRENT_DESKTOP" ]]; then
                 de="${XDG_CURRENT_DESKTOP/'X-'}"
@@ -581,7 +581,7 @@ get_de() {
 
 get_wm() {
     # If function was run, stop here.
-    (( wm_run == 1 )) && return
+    ((wm_run == 1)) && return
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
@@ -610,8 +610,8 @@ get_wm() {
 }
 
 get_wm_theme() {
-    (( wm_run != 1 )) && get_wm
-    (( de_run != 1 )) && get_de
+    ((wm_run != 1)) && get_wm
+    ((de_run != 1)) && get_de
 
     case "$wm"  in
         "E16") wm_theme="$(awk -F "= " '/theme.name/ {print $2}' "${HOME}/.e16/e_config--0.0.cfg")";;
@@ -1345,7 +1345,7 @@ get_style() {
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
-        (( de_run != 1 )) && get_de
+        ((de_run != 1)) && get_de
 
         # Check for DE Theme.
         case "$de" in
@@ -1502,7 +1502,7 @@ get_font() {
 
 get_term() {
     # If function was run, stop here.
-    (( term_run == 1 )) && return
+    ((term_run == 1)) && return
 
     # Workaround for macOS systems that
     # don't support the block below.
@@ -1532,7 +1532,7 @@ get_term() {
 }
 
 get_term_font() {
-    (( term_run != 1 )) && get_term
+    ((term_run != 1)) && get_term
 
     case "$term" in
         "urxvt" | "urxvtd" | "xterm")
@@ -2021,7 +2021,7 @@ get_wallpaper() {
     case "$os" in
         "Linux" | "BSD" | "Solaris" | "MINIX")
             # Get DE if user has disabled the function.
-            (( de_run != 1 )) && get_de
+            ((de_run != 1)) && get_de
 
             case "$de" in
                 "MATE"*) image="$(gsettings get org.mate.background picture-filename)" ;;
@@ -2928,7 +2928,7 @@ get_term_padding() {
     #
     # Note: This issue only seems to affect
     # URxvt.
-    (( term_run != 1 )) && get_term
+    ((term_run != 1)) && get_term
 
     case "$term" in
         "URxvt"*)
