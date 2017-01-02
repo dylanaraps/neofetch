@@ -20,7 +20,7 @@ export LANG=C
 export PATH="/usr/sbin:/sbin:${PATH}"
 
 # Set no case match.
-shopt -s nocasematch
+shopt -s nocasematch nocaseglob
 
 # Reset colors and bold.
 reset="\033[0m"
@@ -1922,34 +1922,28 @@ get_ascii() {
         [[ "$ascii" != "distro" && ! -f "$ascii" ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
-        # Lowercase the distro name so we can match it to a file.
-        if (("$bash_version" <= 3)); then
-            ascii="$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")"
-        else
-            ascii="${ascii_distro,,}"
-        fi
+        # Find ascii art dir.
+        if [[ -d "/usr/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/usr/share/neofetch/ascii/distro"
 
-        if [[ -f "/usr/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/usr/share/neofetch/ascii/distro/${ascii/ *}"
+        elif [[ -d "/usr/local/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/usr/local/share/neofetch/ascii/distro"
 
-        elif [[ -f "/usr/local/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/usr/local/share/neofetch/ascii/distro/${ascii/ *}"
-
-        elif [[ -f "/data/data/com.termux/files/usr/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/data/data/com.termux/files/usr/share/neofetch/ascii/distro/${ascii/ *}"
+        elif [[ -d "/data/data/com.termux/files/usr/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/data/data/com.termux/files/usr/share/neofetch/ascii/distro"
 
         else
             get_script_dir 2>/dev/null
-
-            # If the ascii file doesn't exist fallback to text mode.
-            if [[ -f "$script_dir/ascii/distro/${ascii/ *}" ]]; then
-                ascii="$script_dir/ascii/distro/${ascii/ *}"
-
-            else
-                to_off "Ascii: Ascii file not found, falling back to text mode."
-                return
-            fi
+            ascii_dir="${script_dir}/ascii/distro"
         fi
+
+        # Remove 'linux' from 'linux mint'.
+        [[ "$ascii_distro" =~ ^linux ]] && ascii_distro="${ascii_distro/linux }"
+
+        # ascii_dir/first_letter (example: 'ascii_dir/m'*)
+        for art in "${ascii_dir}/${ascii_distro:0:1}"*; do
+            [[ "$ascii_distro" =~ ${art/*\/} ]] && { ascii="$art"; break; }
+        done
     fi
 
     # Set locale to get correct padding.
