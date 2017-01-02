@@ -92,6 +92,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Removed all `date` usage from `get_install_date()`.
 - Added a new function called `convert_time()` which takes the time stamped `ls` output and converts it to a pretty format. The function only uses bash so its much faster than calling `date`. This makes things simple and keeps the output consistent across all Operating Systems. Example: `2016-12-06 16:58:58.000000000` --> `Tue 06 Dec 2016 4:58 PM`
 - Added an option so users can choose between using 24-hour and 12-hour time format
+- `get_install_date()` will detect which `ls` program is being used instead of hardcoding them per OS.
 
 **Disk**<br \>
 
