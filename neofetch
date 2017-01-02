@@ -775,10 +775,15 @@ get_cpu() {
             fi
 
             # Get CPU temp.
-            if [[ "$cpu_temp" == "on" && -f "$temp_dir" ]]; then
+            if [[ "$cpu_temp" != "off" && -f "$temp_dir" ]]; then
                 temp="$(< "$temp_dir")"
                 temp="$((temp * 100 / 10000))"
-                temp="[${temp/${temp: -1}}.${temp: -1}°C]"
+
+                # Convert to fahrenheit if enabled.
+                [[ "$cpu_temp" == "F" ]] && temp="$((temp * 90 / 50 + 320))"
+
+                # Format the output.
+                temp="[${temp/${temp: -1}}.${temp: -1}°${cpu_temp:-C}]"
             fi
 
             # Get CPU cores.
@@ -840,17 +845,27 @@ get_cpu() {
             cores="$(sysctl -n hw.ncpu)"
 
             # Get CPU temp.
-            if [[ "$cpu_temp" == "on" ]]; then
+            if [[ "$cpu_temp" != "off" ]]; then
                 case "$kernel_name" in
                     "FreeBSD"* | "DragonFly"*)
                         temp="$(sysctl -n dev.cpu.0.temperature)"
-                        temp="[${temp/C/°C}]"
+                        temp="${temp/C}"
                     ;;
                     "OpenBSD"* | "Bitrig"*)
                         temp="$(sysctl -n hw.sensors.lm0.temp0)"
-                        temp="[${temp/ degC/°C}]"
+                        temp="${temp/ degC}"
                     ;;
                 esac
+
+                # Convert to fahrenheit if enabled.
+                if [[ "$cpu_temp" == "F" ]]; then
+                    temp="${temp//.}"
+                    temp="$((temp * 90 / 50 + 320))"
+                    temp="[${temp/${temp: -1}}.${temp: -1}°F]"
+                else
+                    temp="[${temp}°C]"
+                fi
+
             fi
         ;;
 
@@ -2810,11 +2825,13 @@ get_user_config() {
     if [[ -f "$config_file" ]]; then
         source "$config_file"
         err "Config: Sourced user config.    (${config_file})"
+        old_options
         return
 
     elif [[ "$config_file" == "travis" ]]; then
         source "$travis_config"
         err "Config: Sourced user config.    (${travis_config})"
+        old_options
         return
     fi
     mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
@@ -2841,8 +2858,6 @@ get_user_config() {
 
     source "$config_file"
     err "Config: Sourced user config.    (${config_file})"
-
-    # Check for deprecated options.
     old_options
 }
 
@@ -2994,6 +3009,9 @@ old_options() {
 
     # $start and $end were replaced with ${block_range[@]} in 2.1.0.
     [[ "$start" && "$end" ]] && { err "Config: \$start and \$end are deprecated, use block_range=(0 7) instead."; block_range=("$start" "$end"); }
+
+    # Fahrenheit support was added to CPU so the options were changed.
+    [[ "$cpu_temp" == "on" ]] && { err "Config: cpu_temp='on' is deprecated, use cpu_temp='C' or 'F' instead."; cpu_temp="C"; }
 }
 
 cache_uname() {
@@ -3152,7 +3170,7 @@ INFO:
                                 NOTE: 'physical' doesn't work on BSD.
 
     --cpu_speed on/off          Hide/Show cpu speed.
-    --cpu_temp on/off           Hide/Show cpu temperature.
+    --cpu_temp C/F/off          Hide/Show cpu temperature.
 
                                 NOTE: This only works on Linux and BSD.
 
@@ -3321,7 +3339,6 @@ get_args() {
             "--os_arch") os_arch="$2" ;;
             "--cpu_cores") cpu_cores="$2" ;;
             "--cpu_speed") cpu_speed="$2" ;;
-            "--cpu_temp") cpu_temp="$2" ;;
             "--speed_type") speed_type="$2" ;;
             "--distro_shorthand") distro_shorthand="$2" ;;
             "--kernel_shorthand") kernel_shorthand="$2" ;;
@@ -3339,6 +3356,11 @@ get_args() {
             "--song_shorthand") song_shorthand="$2" ;;
             "--install_time") install_time="$2" ;;
             "--install_time_format") install_time_format="$2" ;;
+            "--cpu_temp")
+                cpu_temp="$2"
+                [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
+            ;;
+
             "--disable")
                 for func in "$@"; do
                     case "$func" in
