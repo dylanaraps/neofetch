@@ -1922,8 +1922,9 @@ get_ascii() {
             [[ -d "$ascii_dir" ]] || \
                 { to_off "Ascii: Ascii file not found, falling back to text mode."; return; }
         fi
+
+        ascii="${ascii_dir}/${ascii_file}"
     fi
-    ascii="${ascii_dir}/${ascii_file}"
 
     # Set locale to get correct padding.
     export LC_ALL="$sys_locale"
