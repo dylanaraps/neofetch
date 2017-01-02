@@ -53,7 +53,7 @@ get_distro() {
     [[ "$distro" ]] && return
 
     case "$os" in
-        "Linux")
+        "Linux" | "BSD" | "MINIX")
             if [[ "$(< /proc/version)" == *"Microsoft"* || "$(< /proc/sys/kernel/osrelease)" == *"Microsoft"* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
@@ -95,9 +95,9 @@ get_distro() {
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
-            else
-                # Source the os-release file.
-                for file in /etc/os-release /usr/lib/os-release /etc/*release /usr/lib/*release; do
+            elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" ]]; then
+                # Source the os-release file
+                for file in /etc/os-release /usr/lib/os-release; do
                     source "$file" 2>/dev/null && break
                 done
 
@@ -109,8 +109,25 @@ get_distro() {
                 esac
 
                 # Workarounds for distros that go against the os-release standard.
-                [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/*ease /usr/lib/*ease)"
-                [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}' /etc/*ease /usr/lib/*ease)"
+                [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/os-release /usr/lib/os-release)"
+                [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}' /etc/os-release /usr/lib/os-release)"
+
+            else
+                for release_file in /etc/*-release; do
+                    distro+="$(< "$release_file")"
+                done
+                if [[ -z "$distro" ]]; then
+                    case "$distro_shorthand" in
+                        "on" | "tiny") distro="$kernel_name" ;;
+                        *) distro="$kernel_name $kernel_version" ;;
+                    esac
+                    distro="${distro/DragonFly/DragonFlyBSD}"
+
+                    # Workarounds for FreeBSD based distros.
+                    [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
+                    [[ -f "/etc/rc.conf.trueos" ]] && distro="TrueOS"
+                    [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD" # /etc/pacbsd-release is an empty file
+                fi
             fi
             distro="$(trim_quotes "$distro")"
         ;;
@@ -151,20 +168,6 @@ get_distro() {
 
             # "uname -m" doesn't print architecture on iOS so we force it off.
             os_arch="off"
-        ;;
-
-        "BSD" | "MINIX")
-            case "$distro_shorthand" in
-                "tiny" | "on") distro="$kernel_name" ;;
-                *) distro="$kernel_name $kernel_version" ;;
-            esac
-
-            distro="${distro/DragonFly/DragonFlyBSD}"
-
-            # Workarounds for FreeBSD based distros.
-            [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
-            [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
-            [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
         ;;
 
         "Windows")
@@ -393,7 +396,7 @@ get_packages() {
     local PATH="${PATH#:}"
 
     case "$os" in
-        "Linux" | "iPhone OS" | "Solaris")
+        "Linux" | "BSD" | "iPhone OS" | "Solaris")
             type -p pacman >/dev/null && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
@@ -442,18 +445,19 @@ get_packages() {
             type -p Compile >/dev/null && \
                 packages="$((packages+=$(ls -d -1 /Programs/*/ | wc -l)))"
 
-            # pisi is sometimes unavailable in Solus(?). This uses eopkg
-            # instead if pisi isn't found.
-            if type -p pisi >/dev/null; then
-                packages="$((packages+=$(pisi list-installed | wc -l)))"
-
-            elif type -p eopkg >/dev/null; then
+            type -p eopkg >/dev/null && \
                 packages="$((packages+=$(eopkg list-installed | wc -l)))"
-            fi
+
+            type -p pkg_info >/dev/null && \
+                packages="$((packages+=$(pkg_info | wc -l)))"
 
             if type -p pkg >/dev/null; then
-                packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
-                (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
+                case "$kernel_name" in
+                    "FreeBSD") packages="$((packages+=$(pkg info | wc -l)))" ;;
+                    *)
+                        packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
+                        (("$packages" == "0")) && packages="$((packages+=$(pkg list | wc -l)))"
+                esac
             fi
         ;;
 
@@ -469,21 +473,6 @@ get_packages() {
 
             type -p pkgin >/dev/null && \
                 packages="$((packages + $(pkgin list | wc -l)))"
-        ;;
-
-        "BSD")
-            case "$distro" in
-                # PacBSD has both pacman and pkg, but only pacman is used.
-                "PacBSD"*) packages="$(pacman -Qq --color never | wc -l)" ;;
-
-                *)
-                    if type -p pkg_info >/dev/null; then
-                        packages="$(pkg_info | wc -l)"
-                    elif type -p pkg >/dev/null; then
-                        packages="$(pkg info | wc -l)"
-                    fi
-                ;;
-            esac
         ;;
 
         "Windows")
@@ -511,7 +500,7 @@ get_shell() {
     if [[ "$shell_version" == "on" ]]; then
         case "${SHELL##*/}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
-            "sh") ;;
+            "sh" | "ash" | "dash") ;;
 
             "mksh" | "ksh")
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
@@ -2567,7 +2556,7 @@ get_distro_colors() {
 
         "antiX"*)
             set_colors 1 7 3
-            ascii_Distro="antix"
+            ascii_distro="antix"
         ;;
 
         "FreeBSD"*)
@@ -2602,16 +2591,26 @@ get_distro_colors() {
             set_colors 4 3
         ;;
 
-        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Gentoo"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
+        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
             set_colors 5 7
+        ;;
+
+        "Gentoo"*)
+            set_colors 5 7
+            ascii_distro="gentoo"
         ;;
 
         "OpenBSD"* | "GuixSD"* | "Pardus"*)
             set_colors 3 7 6 1 8
         ;;
 
-        *"SUSE"* | "Manjaro"* | "Deepin"* |"LMDE"* | "Chapeau"* | "Bitrig"*)
+        "Manjaro"* | "Deepin"* | "LMDE"* | "Chapeau"* | "Bitrig"*)
             set_colors 2 7
+        ;;
+
+        *"SUSE"*)
+            set_colors 2 7
+            ascii_distro="suse"
         ;;
 
         "KDE"*)
@@ -2661,7 +2660,7 @@ get_distro_colors() {
             set_colors 2 8
         ;;
 
-        "Mageia"* | "Porteus"* | "Parrot"*)
+        "Mageia"* | "Porteus"* | "Parrot"* | "SmartOS"*)
             set_colors 6 7
         ;;
 
@@ -3147,8 +3146,7 @@ NOTE: Every launch flag has a config option.
 
 Options:
 
-INFO
-
+INFO:
     --disable infoname          Allows you to disable an info line from appearing
                                 in the output.
 
@@ -3202,23 +3200,20 @@ INFO
     --install_time_format 12h/24h
                                 Set time format in Install Date to be 12 hour or 24 hour.
 
-TEXT FORMATTING
-
+TEXT FORMATTING:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
     --underline on/off          Enable/Disable the underline.
     --underline_char char       Character to use when underlining title
     --bold on/off               Enable/Disable bold text
 
-COLOR BLOCKS
-
+COLOR BLOCKS:
     --color_blocks on/off       Enable/Disable the color blocks
     --block_width num           Width of color blocks in spaces
     --block_height num          Height of color blocks in lines
     --block_range num num       Range of colors to print as blocks
 
-BARS
-
+BARS:
     --bar_char 'elapsed char' 'total char'
                                 Characters to use when drawing bars.
     --bar_border on/off         Whether or not to surround the bar with '[]'
@@ -3233,8 +3228,7 @@ BARS
                                 Takes: bar, infobar, barinfo, off
     --disk_display mode         Bar mode.
                                 Takes: bar, infobar, barinfo, off
-IMAGE
-
+IMAGE:
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, ascii,
                                 /path/to/img, /path/to/dir/, off
@@ -3258,8 +3252,7 @@ IMAGE
 
     --clean                     Delete cached files and thumbnails.
 
-ASCII
-
+ASCII:
     --ascii value               Where to get the ascii from, Possible values:
                                 distro, /path/to/ascii
     --ascii_colors x x x x x x  Colors to print the ascii art
@@ -3280,16 +3273,14 @@ ASCII
     --ascii_bold on/off         Whether or not to bold the ascii logo.
     -L, --logo                  Hide the info text and only show the ascii logo.
 
-SCREENSHOT
-
+SCREENSHOT:
     -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     -su, --upload /path/to/img  Same as --scrot but uploads the scrot to a website.
     --image_host                Website to upload scrots to. Takes: imgur, teknik
     --scrot_cmd cmd             Screenshot program to launch
 
-OTHER
-
+OTHER:
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
     --help                      Print this text and exit
@@ -3297,8 +3288,7 @@ OTHER
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
 
-DEVELOPER
-
+DEVELOPER:
     --gen-man                   Generate a manpage for Neofetch in your PWD. (Requires GNU help2man)
 
 
@@ -3503,7 +3493,7 @@ main() {
     get_os
     get_default_config 2>/dev/null
     get_args "$@"
-    get_distro
+    get_distro 2>/dev/null
     get_bold
     get_distro_colors
 
