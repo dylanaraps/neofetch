@@ -2546,18 +2546,8 @@ get_distro_colors() {
             set_colors 2 1
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "Minix"*)
+        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "Minix"* | "antiX"* | "FreeBSD"*)
             set_colors 1 7 3
-        ;;
-
-        "antiX"*)
-            set_colors 1 7 3
-            ascii_distro="antix"
-        ;;
-
-        "FreeBSD"*)
-            set_colors 1 7 3
-            ascii_distro="freebsd"
         ;;
 
         "PCBSD"* | "TrueOS"*)
@@ -2587,20 +2577,15 @@ get_distro_colors() {
             set_colors 4 3
         ;;
 
-        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
+        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Funtoo"* | "SteamOS"* | "Devuan"* | "Gentoo"*)
             set_colors 5 7
-        ;;
-
-        "Gentoo"*)
-            set_colors 5 7
-            ascii_distro="gentoo"
         ;;
 
         "OpenBSD"* | "GuixSD"* | "Pardus"*)
             set_colors 3 7 6 1 8
         ;;
 
-        "Manjaro"* | "Deepin"* | "LMDE"* | "Chapeau"* | "Bitrig"*)
+        "Manjaro"* | "Deepin"* | "LMDE"* | "Chapeau"* | "Bitrig"* | "KDE"* | *"Mint"*)
             set_colors 2 7
         ;;
 
@@ -2609,19 +2594,9 @@ get_distro_colors() {
             ascii_distro="suse"
         ;;
 
-        "KDE"*)
-            set_colors 2 7
-            ascii_distro="kde"
-        ;;
-
         "Android"*)
             set_colors 2 7
             ascii_length_force="19"
-        ;;
-
-        *"Mint"*)
-            set_colors 2 7
-            ascii_distro="mint"
         ;;
 
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
@@ -2631,7 +2606,6 @@ get_distro_colors() {
 
         "Sparky"*)
             set_colors 1 7
-            ascii_distro="sparky"
         ;;
 
         "Trisquel"* | "NixOS"* | "Zorin"* | "Antergos"*)
@@ -2640,7 +2614,6 @@ get_distro_colors() {
 
         "MX"*)
             set_colors 4 6 7
-            ascii_distro="mx"
         ;;
 
         "Travis")
@@ -2649,7 +2622,6 @@ get_distro_colors() {
 
         "Grombyang"*)
             set_colors 4 2 1
-            ascii_distro="grombyang"
         ;;
 
         "Void"* | "Haiku"*)
