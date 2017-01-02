@@ -2756,7 +2756,7 @@ get_distro_colors() {
         ;;
 
         "BunsenLabs"*)
-            set_colors 0 7
+            set_colors fg 7
             ascii_file="bunsenlabs"
         ;;
 
@@ -2960,29 +2960,29 @@ get_distro_colors() {
 
         "Linux")
             set_colors fg 8 3
-            ascii_file="linix"
+            ascii_file="linux"
         ;;
 
         *)
             case "$kernel_name" in
                 "Linux")
-                    ascii_file="linux"
                     set_colors fg 8 3
+                    ascii_file="linux"
                 ;;
 
                 *"BSD")
-                    ascii_file="bsd"
                     set_colors 1 7 4 3 6
+                    ascii_file="bsd"
                 ;;
 
                 "GNU"*)
-                    ascii_file="gnu"
                     set_colors fg
+                    ascii_file="gnu"
                 ;;
 
                 "SunOS")
-                    ascii_file="solaris"
                     set_colors 3
+                    ascii_file="solaris"
                 ;;
             esac
         ;;
