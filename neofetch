@@ -2761,8 +2761,7 @@ get_distro_colors() {
             ascii_file="minix"
         ;;
 
-        # TODO (Before PR is merged): Make this glob less greedy.
-        *"Mint"*)
+        "Linux Mint"* | "LinuxMint"*)
             set_colors 2 7
             ascii_file="mint"
         ;;
@@ -2877,8 +2876,7 @@ get_distro_colors() {
             ascii_file="redstar"
         ;;
 
-        # TODO (Before PR is merged): Make this glob less greedy.
-        "Red"*)
+        "Redhat"* | "Red Hat"*)
             set_colors 1 7 3
             ascii_file="redhat"
         ;;
@@ -2938,8 +2936,7 @@ get_distro_colors() {
             ascii_file="solaris"
         ;;
 
-        # TODO (Before PR is merged): Make this glob less greedy.
-        *"SUSE"*)
+        "openSUSE"* | "open SUSE")
             set_colors 2 7
             ascii_distro="suse"
         ;;
