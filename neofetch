@@ -556,7 +556,7 @@ get_de() {
             # the desktop variables are sometimes also set to the
             # window manager name. This checks to see if WM == DE
             # and dicards the DE value.
-            [[ "$de" =~ $wm ]] && { unset -v de; return; }
+            [[ "$wm" && "$de" =~ $wm ]] && { unset -v de; return; }
         ;;
     esac
 
