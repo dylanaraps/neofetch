@@ -1944,6 +1944,8 @@ get_ascii() {
         for art in "${ascii_dir}/${ascii_distro:0:1}"*; do
             [[ "$ascii_distro" =~ ${art/*\/} ]] && { ascii="$art"; break; }
         done
+
+        [[ ! -f "$ascii" ]] && { to_off "Ascii: Ascii file not found, falling back to off mode."; return; }
     fi
 
     # Set locale to get correct padding.
