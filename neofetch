@@ -1906,35 +1906,24 @@ get_ascii() {
         [[ "$ascii" != "distro" && ! -f "$ascii" ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
-        # Lowercase the distro name so we can match it to a file.
-        if (("$bash_version" <= 3)); then
-            ascii="$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")"
-        else
-            ascii="${ascii_distro,,}"
-        fi
+        if [[ -d "/usr/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/usr/share/neofetch/ascii/distro"
 
-        if [[ -f "/usr/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/usr/share/neofetch/ascii/distro/${ascii/ *}"
+        elif [[ -d "/usr/local/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/usr/local/share/neofetch/ascii/distro"
 
-        elif [[ -f "/usr/local/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/usr/local/share/neofetch/ascii/distro/${ascii/ *}"
-
-        elif [[ -f "/data/data/com.termux/files/usr/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/data/data/com.termux/files/usr/share/neofetch/ascii/distro/${ascii/ *}"
+        elif [[ -d "/data/data/com.termux/files/usr/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/data/data/com.termux/files/usr/share/neofetch/ascii/distro"
 
         else
             get_script_dir 2>/dev/null
+            ascii_dir="${script_dir}/ascii/distro"
 
-            # If the ascii file doesn't exist fallback to text mode.
-            if [[ -f "$script_dir/ascii/distro/${ascii/ *}" ]]; then
-                ascii="$script_dir/ascii/distro/${ascii/ *}"
-
-            else
-                to_off "Ascii: Ascii file not found, falling back to text mode."
-                return
-            fi
+            [[ -d "$ascii_dir" ]] || \
+                { to_off "Ascii: Ascii file not found, falling back to text mode."; return; }
         fi
     fi
+    ascii="${ascii_dir}/${ascii_file}"
 
     # Set locale to get correct padding.
     export LC_ALL="$sys_locale"
@@ -2500,81 +2489,299 @@ get_distro_colors() {
     #
     # $ascii_distro is the same as $distro.
     case "$ascii_distro" in
-        "Arch"* | "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"* | "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"* | "OpenIndiana"* | "Fedora"* | "Korora"* | "Sabayon"* | "Frugalware"* | "Exherbo"* | "Scientific"* | "Solus"* | "ChaletOS"* | "Apricity"* | "SwagArch"* | "AOSC"* | "Ubuntu-Budgie"*)
+        "Arch"*)
             set_colors 4 7 1
+            ascii_file="arch"
         ;;
 
-        "RFRemix"*)
+        "Kogaion"*)
             set_colors 4 7 1
-            ascii_distro="Fedora"
+            ascii_file="kogaion"
+        ;;
+
+        "Elementary"*)
+            set_colors 4 7 1
+            ascii_file="elementary"
+        ;;
+
+        "GalliumOS"*)
+            set_colors 4 7 1
+            ascii_file="galliumos"
+        ;;
+
+        "Rosa"*)
+            set_colors 4 7 1
+            ascii_file="rosa"
+        ;;
+
+        "OpenWrt"*)
+            set_colors 4 7 1
+            ascii_file="openwrt"
+        ;;
+
+        "Netrunner"*)
+            set_colors 4 7 1
+            ascii_file="netrunner"
+        ;;
+
+        "PCLinuxOS"*)
+            set_colors 4 7 1
+            ascii_file="pclinuxos"
+        ;;
+
+        "Slackware"*)
+            set_colors 4 7 1
+            ascii_file="slackware"
+        ;;
+
+        "KaOS"*)
+            set_colors 4 7 1
+            ascii_file="kaos"
+        ;;
+
+        "Kubuntu"*)
+            set_colors 4 7 1
+            ascii_file="kubuntu"
+        ;;
+
+        "Lubuntu"*)
+            set_colors 4 7 1
+            ascii_file="lubuntu"
+        ;;
+
+        "Xubuntu"*)
+            set_colors 4 7 1
+            ascii_file="xubuntu"
+        ;;
+
+        "OpenIndiana"*)
+            set_colors 4 7 1
+            ascii_file="openindiana"
+        ;;
+
+        "Fedora"* | "RFRemix"*)
+            set_colors 4 7 1
+            ascii_file="fedora"
+        ;;
+
+        "Korora"*)
+            set_colors 4 7 1
+            ascii_file="korora"
+        ;;
+
+        "Sabayon"*)
+            set_colors 4 7 1
+            ascii_file="sabayon"
+        ;;
+
+        "Frugalware"*)
+            set_colors 4 7 1
+            ascii_file="frugalware"
+        ;;
+
+        "Exherbo"*)
+            set_colors 4 7 1
+            ascii_file="exherbo"
+        ;;
+
+        "Scientific"*)
+            set_colors 4 7 1
+            ascii_file="scientific"
+        ;;
+
+        "Solus"*)
+            set_colors 4 7 1
+            ascii_file="solus"
+        ;;
+
+        "ChaletOS"*)
+            set_colors 4 7 1
+            ascii_file="chaletos"
+        ;;
+
+        "Apricity"*)
+            set_colors 4 7 1
+            ascii_file="apricity"
+        ;;
+
+        "SwagArch"*)
+            set_colors 4 7 1
+            ascii_file="swagarch"
+        ;;
+
+        "AOSC"*)
+            set_colors 4 7 1
+            ascii_file="aosc"
+        ;;
+
+        "Ubuntu-Budgie"*)
+            set_colors 4 7 1
+            ascii_file="ubuntu-budgie"
         ;;
 
         "CentOS"*)
             set_colors 3 2 4 5 7
+            ascii_file="centos"
         ;;
 
         "GoboLinux"*)
             set_colors 5 4 6 2
+            ascii_file="gobolinux"
         ;;
 
         "SalentOS"*)
             set_colors 2 1 3 7
+            ascii_file="salentos"
         ;;
 
-        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"* | "Qubes"*)
+        "CRUX"*)
             set_colors 4 5 7 6
+            ascii_file="crux"
+        ;;
+
+        "Chakra"*)
+            set_colors 4 5 7 6
+            ascii_file="chakra"
+        ;;
+
+        "gNewSense"*)
+            set_colors 4 5 7 6
+            ascii_file="gnewsense"
+        ;;
+
+        "SailfishOS"*)
+            set_colors 4 5 7 6
+            ascii_file="sailfishos"
+        ;;
+
+        "Alpine"*)
+            set_colors 4 5 7 6
+            ascii_file="alpine"
+        ;;
+
+        "Ubuntu-GNOME"*)
+            set_colors 4 5 7 6
+            ascii_file="ubuntu-gnome"
+        ;;
+
+        "Qubes"*)
+            set_colors 4 5 7 6
+            ascii_file="qubes"
         ;;
 
         "Chrom"*)
             set_colors 2 1 3 4 7
-            ascii_distro="chrome"
+            ascii_file="chrome"
         ;;
 
         "Raspbian"*)
             set_colors 2 1
+            ascii_file="raspbian"
         ;;
 
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "Minix"*)
+        "Debian"*)
             set_colors 1 7 3
+            ascii_file="debian"
+        ;;
+
+        "Ubuntu"*)
+            set_colors 1 7 3
+            ascii_file="ubuntu"
+        ;;
+
+        "DragonFly"*)
+            set_colors 1 7 3
+            ascii_file="dragonflybsd"
+        ;;
+
+        "PacBSD"*)
+            set_colors 1 7 3
+            ascii_file="pacbsd"
+        ;;
+
+        "Oracle"*)
+            set_colors 1 7 3
+            ascii_file="oracle"
+        ;;
+
+        "BlankOn"*)
+            set_colors 1 7 3
+            ascii_file="blankon"
+        ;;
+
+        "DracOS"*)
+            set_colors 1 7 3
+            ascii_file="dracos"
+        ;;
+
+        "Peppermint"*)
+            set_colors 1 7 3
+            ascii_file="peppermint"
+        ;;
+
+        "Minix"*)
+            set_colors 1 7 3
+            ascii_file="minix"
         ;;
 
         "antiX"*)
             set_colors 1 7 3
-            ascii_distro="antix"
+            ascii_file="antix"
         ;;
 
         "FreeBSD"*)
             set_colors 1 7 3
-            ascii_distro="freebsd"
+            ascii_file="freebsd"
         ;;
 
         "PCBSD"* | "TrueOS"*)
             set_colors 1 7 3
-            ascii_distro="trueos"
+            ascii_file="trueos"
         ;;
 
-        "Red Star"* | "Redstar")
+        "Red Star"* | "Redstar"*)
             set_colors 1 7 3
-            ascii_distro="redstar"
+            ascii_file="redstar"
         ;;
 
+        # TODO (Before PR is merged): Make this glob less greedy.
         "Red"*)
             set_colors 1 7 3
-            ascii_distro="redhat"
+            ascii_file="redhat"
         ;;
 
         "Kali"*)
             set_colors 4 8
+            ascii_file="kali"
         ;;
 
         "BunsenLabs"*)
-            set_colors fg 7
+            set_colors 0 7
+            ascii_file="bunsenlabs"
         ;;
 
         "OpenMandriva"*)
             set_colors 4 3
+            ascii_file="openmadriva"
         ;;
 
+        "NetBSD"*)
+            set_colors 5 7
+            ascii_file="netbsd"
+        ;;
+    esac
+
+    # Overwrite distro colors if '$ascii_colors' doesn't
+    # equal 'distro'.
+    if [[ "${ascii_colors[0]}" != "distro" ]]; then
+        color_text="off"
+        set_colors "${ascii_colors[@]}"
+    fi
+}
+
+# Here temporarily.
+get_distro_colors_old() {
+    case "$ascii_distro" in
         "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
             set_colors 5 7
         ;;
@@ -2690,13 +2897,6 @@ get_distro_colors() {
             esac
         ;;
     esac
-
-    # Overwrite distro colors if '$ascii_colors' doesn't
-    # equal 'distro'.
-    if [[ "${ascii_colors[0]}" != "distro" ]]; then
-        color_text="off"
-        set_colors "${ascii_colors[@]}"
-    fi
 }
 
 set_colors() {
