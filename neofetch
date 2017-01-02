@@ -1940,10 +1940,15 @@ get_ascii() {
         # Remove 'linux' from 'linux mint'.
         [[ "$ascii_distro" =~ ^linux ]] && ascii_distro="${ascii_distro/linux }"
 
+        # If _value or -value was used, dom't loop.
+        [[ "$ascii_distro" =~ (-|_) ]] && { ascii="${ascii_dir}/${ascii_distro}"; ascii_loop="off"; }
+
         # ascii_dir/first_letter (example: 'ascii_dir/m'*)
-        for art in "${ascii_dir}/${ascii_distro:0:1}"*; do
-            [[ "$ascii_distro" =~ ${art/*\/} ]] && { ascii="$art"; break; }
-        done
+        if [[ "${ascii_loop:-on}" == "on" ]]; then
+            for art in "${ascii_dir}/${ascii_distro:0:1}"*; do
+                [[ "$ascii_distro" =~ ${art/*\/} ]] && { ascii="$art"; break; }
+            done
+        fi
 
         [[ ! -f "$ascii" ]] && { to_off "Ascii: Ascii file not found, falling back to off mode."; return; }
     fi
