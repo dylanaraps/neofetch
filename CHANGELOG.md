@@ -155,6 +155,11 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Fixed bug where image mode would attempt to run in a TTY.
 
 
+## Wallpaper
+
+- Decode URI filenames.
+
+
 ## Ascii
 
 - Added Ubuntu-Studio. **[@konimex](https://github.com/konimex)**
