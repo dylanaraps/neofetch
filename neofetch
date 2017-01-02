@@ -2009,9 +2009,14 @@ get_wallpaper() {
             (( "$de_run" != 1 )) && get_de
 
             case "$de" in
-                "Cinnamon"*) image="$(gsettings get org.cinnamon.desktop.background picture-uri)" ;;
-                "MATE"*)     image="$(gsettings get org.mate.background picture-filename)" ;;
-                "XFCE"*)     image="$(xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image)" ;;
+                "MATE"*) image="$(gsettings get org.mate.background picture-filename)" ;;
+                "XFCE"*) image="$(xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image)" ;;
+
+                "Cinnamon"*)
+                    image="$(gsettings get org.cinnamon.desktop.background picture-uri)"
+                    image="$(decode_url "$image")"
+                ;;
+
                 *)
                     if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
                         image="$(awk -F\' '/feh/ {printf $2}' "${HOME}/.fehbg")"
@@ -2020,7 +2025,8 @@ get_wallpaper() {
                         image="$(awk -F'=' '/file/ {printf $2;exit;}' "${XDG_CONFIG_HOME}/nitrogen/bg-saved.cfg")"
 
                     else
-                        image="$(gsettings get org.gnome.desktop.background picture-uri)"
+                        image="$(gsettings get org.gnome.dimage=esktop.background picture-uri)"
+                        image="$(decode_url "$image")"
                     fi
                 ;;
             esac
@@ -2028,7 +2034,6 @@ get_wallpaper() {
             # Strip un-needed info from the path.
             image="${image/'file://'}"
             image="$(trim_quotes "$image")"
-            image="${image//\%20/ }"
         ;;
 
         "Mac OS X")
@@ -3106,6 +3111,11 @@ get_process_name() {
     esac
 
     printf "%s" "$name"
+}
+
+decode_url() {
+    decode="${1//+/ }"
+    printf "%b" "${decode//%/\\x}"
 }
 
 # FINISH UP
