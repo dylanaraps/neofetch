@@ -2489,6 +2489,16 @@ get_distro_colors() {
     #
     # $ascii_distro is the same as $distro.
     case "$ascii_distro" in
+        "arch_small")
+            set_colors 4 7 1
+            ascii_file="arch_small"
+        ;;
+
+        "arch_old")
+            set_colors 4 7 1
+            ascii_file="arch_old"
+        ;;
+
         "Arch"*)
             set_colors 4 7 1
             ascii_file="arch"
@@ -2634,6 +2644,11 @@ get_distro_colors() {
             ascii_file="salentos"
         ;;
 
+        "crux_small")
+            set_colors 4 5 7 6
+            ascii_file="crux_small"
+        ;;
+
         "CRUX"*)
             set_colors 4 5 7 6
             ascii_file="crux"
@@ -2682,6 +2697,11 @@ get_distro_colors() {
         "Debian"*)
             set_colors 1 7 3
             ascii_file="debian"
+        ;;
+
+        "ubuntu_old")
+            set_colors 1 7 3
+            ascii_file="ubuntu_old"
         ;;
 
         "Ubuntu"*)
@@ -2800,9 +2820,19 @@ get_distro_colors() {
             ascii_file="devuan"
         ;;
 
+        "gentoo_small")
+            set_colors 5 7
+            ascii_file="gentoo_small"
+        ;;
+
         "Gentoo"*)
             set_colors 5 7
             ascii_file="gentoo"
+        ;;
+
+        "openbsd_small")
+            set_colors 3 7 6 1 8
+            ascii_file="openbsd_small"
         ;;
 
         "OpenBSD"*)
