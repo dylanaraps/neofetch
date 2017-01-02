@@ -2551,6 +2551,11 @@ get_distro_colors() {
             ascii_file="blankon"
         ;;
 
+       "BSD")
+            set_colors 1 7 4 3 6
+            ascii_file="bsd"
+        ;;
+
         "BunsenLabs"*)
             set_colors fg 7
             ascii_file="bunsenlabs"
@@ -2666,6 +2671,11 @@ get_distro_colors() {
             ascii_file="gnewsense"
         ;;
 
+        "GNU")
+            set_colors fg 7
+            ascii_file="gnu"
+        ;;
+
         "GoboLinux"*)
             set_colors 5 4 6 2
             ascii_file="gobolinux"
@@ -2731,6 +2741,11 @@ get_distro_colors() {
             ascii_file="lubuntu"
         ;;
 
+        "mac" | "Darwin")
+            set_colors 2 3 1 1 5 4
+            ascii_file="mac"
+        ;;
+
         "Mageia"*)
             set_colors 6 7
             ascii_file="mageia"
@@ -2769,7 +2784,7 @@ get_distro_colors() {
 
         "NixOS"*)
             set_colors 4 6
-            ascii_file="nixOS"
+            ascii_file="nixos"
         ;;
 
         "openbsd_small")
@@ -2789,7 +2804,7 @@ get_distro_colors() {
 
         "OpenMandriva"*)
             set_colors 4 3
-            ascii_file="openmadriva"
+            ascii_file="openmandriva"
         ;;
 
         "OpenWrt"*)
@@ -2918,6 +2933,11 @@ get_distro_colors() {
             ascii_file="steamos"
         ;;
 
+        "SunOS" | "Solaris")
+            set_colors 3 7
+            ascii_file="solaris"
+        ;;
+
         # TODO (Before PR is merged): Make this glob less greedy.
         *"SUSE"*)
             set_colors 2 7
@@ -2997,7 +3017,7 @@ get_distro_colors() {
                 ;;
 
                 "GNU"*)
-                    set_colors fg
+                    set_colors fg 7
                     ascii_file="gnu"
                 ;;
 
@@ -3007,7 +3027,7 @@ get_distro_colors() {
                 ;;
 
                 "SunOS")
-                    set_colors 3
+                    set_colors 3 7
                     ascii_file="solaris"
                 ;;
             esac
