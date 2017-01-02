@@ -3170,7 +3170,7 @@ INFO:
                                 NOTE: 'physical' doesn't work on BSD.
 
     --cpu_speed on/off          Hide/Show cpu speed.
-    --cpu_temp on/off           Hide/Show cpu temperature.
+    --cpu_temp C/F/off          Hide/Show cpu temperature.
 
                                 NOTE: This only works on Linux and BSD.
 
