@@ -539,7 +539,7 @@ get_de() {
             (( wm_run != 1 )) && get_wm
 
             if [[ "$XDG_CURRENT_DESKTOP" ]]; then
-                de="${de/'X-'}"
+                de="${XDG_CURRENT_DESKTOP/'X-'}"
                 de="${de/Budgie:GNOME/Budgie}"
 
             elif [[ "$DESKTOP_SESSION" ]]; then
