@@ -2936,7 +2936,7 @@ get_distro_colors() {
             ascii_file="solaris"
         ;;
 
-        "openSUSE"* | "open SUSE")
+        "openSUSE"* | "open SUSE"* | "SUSE"*)
             set_colors 2 7
             ascii_distro="suse"
         ;;
