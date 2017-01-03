@@ -189,6 +189,10 @@ get_distro() {
         "Haiku")
             distro="$(uname -sv | awk '{print $1 " " $2}')"
         ;;
+
+        "AIX")
+            distro="AIX $(oslevel)"
+        ;;
     esac
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
