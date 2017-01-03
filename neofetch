@@ -688,13 +688,14 @@ get_wm_theme() {
 
         "KWin"*)
             kde_config_dir
-            kde_config_dir="${kde_config_dir%/}"
 
-            if [[ -f "$kde_config_dir/share/config/kwinrc" ]]; then
-                wm_theme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "$kde_config_dir/share/config/kwinrc")"
+            if [[ -f "${kde_config_dir}/kwinrc" ]]; then
+                wm_theme="$(awk '/theme=kwin4/{gsub(/theme=kwin4_decoration_qml_/,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
+                [[ -z "$wm_theme" ]] && wm_theme="$(awk '/library=org.kde/{gsub(/library=org.kde./,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
+                [[ -z "$wm_theme" ]] && wm_theme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
 
-            elif [[ -f "$kde_config_dir/share/config/kdebugrc" ]]; then
-                wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kde_config_dir/share/config/kdebugrc")"
+            elif [[ -f "${kde_config_dir}/kdebugrc" ]]; then
+                wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "${kde_config_dir}/kdebugrc")"
             fi
         ;;
 
@@ -1355,8 +1356,8 @@ get_style() {
             "KDE"*)
                 kde_config_dir
 
-                if [[ -f "${kde_config_dir}/share/config/kdeglobals" ]]; then
-                    kde_config_file="${kde_config_dir}/share/config/kdeglobals"
+                if [[ -f "${kde_config_dir}/kdeglobals" ]]; then
+                    kde_config_file="${kde_config_dir}/kdeglobals"
 
                     theme="$(grep "^[^#]*${kde}" "$kde_config_file")"
                     theme="${theme/${kde}*=}"
@@ -3227,21 +3228,23 @@ kde_config_dir() {
     if [[ "$kde_config_dir" ]]; then
         return
 
-    elif [[ -n "$KDE_CONFIG_DIR" ]]; then
-        kde_config_dir="$KDE_CONFIG_DIR"
+    elif type -p kf5-config >/dev/null 2>&1; then
+        kde_config_dir="$(kf5-config --path config)"
 
     elif type -p kde4-config >/dev/null 2>&1; then
-        kde_config_dir="$(kde4-config --localprefix)"
+        kde_config_dir="$(kde4-config --path config)"
 
     elif type -p kde-config >/dev/null 2>&1; then
-        kde_config_dir="$(kde-config --localprefix)"
+        kde_config_dir="$(kde-config --path config)"
 
     elif [[ -d "${HOME}/.kde4" ]]; then
-        kde_config_dir="${HOME}/.kde4"
+        kde_config_dir="${HOME}/.kde4/share/config"
 
     elif [[ -d "${HOME}/.kde3" ]]; then
-        kde_config_dir="${HOME}/.kde3"
+        kde_config_dir="${HOME}/.kde3/share/config"
     fi
+
+    kde_config_dir="${kde_config_dir/$'/:'*}"
 }
 
 get_term_padding() {
