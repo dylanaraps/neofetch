@@ -115,6 +115,10 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - [KDE] Don't display GTK Themes if KDE is detected.
 - [KDE] If `kde[0-9]-config` isn't found, try and look for `$HOME/.kde`.
 
+**Window Manager Theme**<br \>
+
+- Fixed WM Theme not detected on MATE. **[@mstraube](https://github.com/mstraube)**
+
 **Song**<br \>
 
 - [cmus] Simplify block and fix `artistsort` bug.
