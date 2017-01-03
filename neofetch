@@ -639,6 +639,9 @@ get_wm_theme() {
             if [[ "$de" == "Deepin" ]]; then
                 wm_theme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme)"
 
+            elif [[ "$de" == "MATE" ]]; then
+                wm_theme="$(gsettings get org.mate.Marco.general theme)"
+
             else
                 wm_theme="$(gconftool-2 -g /apps/metacity/general/theme)"
             fi
