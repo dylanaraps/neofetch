@@ -164,6 +164,10 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 ## Ascii
 
+- Simplified ascii file handling.
+    - Removed a call to `tr` for those using `bash 3`.
+    - Fixed distro detection issues.
+    - Removed the assumption that `first word in distro --> ascii file name`
 - Added Ubuntu-Studio. **[@konimex](https://github.com/konimex)**
 - Fixed bug causing macOS ascii art to be used on other Operating Systems.
 - Display warning about 'ascii' being the new default mode.
