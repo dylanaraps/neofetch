@@ -3413,7 +3413,7 @@ get_args() {
             "--yoffset") yoffset="$2" ;;
             "--background_color" | "--bg_color") background_color="$2" ;;
             "--gap") gap="$2" ;;
-            "--loop") loop="on" ;;
+            "--loop") image_loop="on" ;;
             "--clean")
                 [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
@@ -3515,8 +3515,9 @@ main() {
     # Show error messages.
     [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
 
-    # w3m-img: If `--loop` was used, constantly redraw the image.
-    while [[ "$loop" == "on" ]]; do display_image; sleep 1s; done
+    # If `--loop` was used, constantly redraw the image.
+    [[ "$image_backend" == "image" ]] && \
+        while [[ "$image_loop" == "on" ]]; do display_image; sleep 1s; done
 
     return 0
 }
