@@ -697,7 +697,7 @@ get_wm_theme() {
 
         "Quartz Compositor")
             wm_theme="$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)"
-            if [[ -z "$wm_theme" ]] || (("$wm_theme" == 1)); then
+            if [[ -z "$wm_theme" ]] || ((wm_theme == 1)); then
                 wm_theme="Blue"
             else
                 wm_theme="Graphite"
