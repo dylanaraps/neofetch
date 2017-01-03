@@ -1906,34 +1906,24 @@ get_ascii() {
         [[ "$ascii" != "distro" && ! -f "$ascii" ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
-        # Lowercase the distro name so we can match it to a file.
-        if (("$bash_version" <= 3)); then
-            ascii="$(tr '[:upper:]' '[:lower:]' <<< "$ascii_distro")"
-        else
-            ascii="${ascii_distro,,}"
-        fi
+        if [[ -d "/usr/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/usr/share/neofetch/ascii/distro"
 
-        if [[ -f "/usr/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/usr/share/neofetch/ascii/distro/${ascii/ *}"
+        elif [[ -d "/usr/local/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/usr/local/share/neofetch/ascii/distro"
 
-        elif [[ -f "/usr/local/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/usr/local/share/neofetch/ascii/distro/${ascii/ *}"
-
-        elif [[ -f "/data/data/com.termux/files/usr/share/neofetch/ascii/distro/${ascii/ *}" ]]; then
-            ascii="/data/data/com.termux/files/usr/share/neofetch/ascii/distro/${ascii/ *}"
+        elif [[ -d "/data/data/com.termux/files/usr/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/data/data/com.termux/files/usr/share/neofetch/ascii/distro"
 
         else
             get_script_dir 2>/dev/null
+            ascii_dir="${script_dir}/ascii/distro"
 
-            # If the ascii file doesn't exist fallback to text mode.
-            if [[ -f "$script_dir/ascii/distro/${ascii/ *}" ]]; then
-                ascii="$script_dir/ascii/distro/${ascii/ *}"
-
-            else
-                to_off "Ascii: Ascii file not found, falling back to text mode."
-                return
-            fi
+            [[ -d "$ascii_dir" ]] || \
+                { to_off "Ascii: Ascii file not found, falling back to text mode."; return; }
         fi
+
+        ascii="${ascii_dir}/${ascii_file}"
     fi
 
     # Set locale to get correct padding.
@@ -2500,192 +2490,542 @@ get_distro_colors() {
     #
     # $ascii_distro is the same as $distro.
     case "$ascii_distro" in
-        "Arch"* | "Kogaion"* | "Elementary"* | "GalliumOS"* | "Rosa"* | "OpenWrt"* | "Netrunner"* | "PCLinuxOS"* | "Slackware"* | "KaOS"* | "Kubuntu"* | "Lubuntu"* | "Xubuntu"* | "OpenIndiana"* | "Fedora"* | "Korora"* | "Sabayon"* | "Frugalware"* | "Exherbo"* | "Scientific"* | "Solus"* | "ChaletOS"* | "Apricity"* | "SwagArch"* | "AOSC"* | "Ubuntu-Budgie"*)
-            set_colors 4 7 1
-        ;;
-
-        "RFRemix"*)
-            set_colors 4 7 1
-            ascii_distro="Fedora"
-        ;;
-
-        "CentOS"*)
-            set_colors 3 2 4 5 7
-        ;;
-
-        "GoboLinux"*)
-            set_colors 5 4 6 2
-        ;;
-
-        "SalentOS"*)
-            set_colors 2 1 3 7
-        ;;
-
-        "CRUX"* | "Chakra"* | "gNewSense"* | "SailfishOS"* | "Alpine"* | "Ubuntu-GNOME"* | "Qubes"*)
+        "Alpine"*)
             set_colors 4 5 7 6
-        ;;
-
-        "Chrom"*)
-            set_colors 2 1 3 4 7
-            ascii_distro="chrome"
-        ;;
-
-        "Raspbian"*)
-            set_colors 2 1
-        ;;
-
-        "Debian"* | "Ubuntu"* | "DragonFly"* | "PacBSD"* | "Oracle"* | "BlankOn"* | "DracOS"* | "Peppermint"* | "Minix"*)
-            set_colors 1 7 3
-        ;;
-
-        "antiX"*)
-            set_colors 1 7 3
-            ascii_distro="antix"
-        ;;
-
-        "FreeBSD"*)
-            set_colors 1 7 3
-            ascii_distro="freebsd"
-        ;;
-
-        "PCBSD"* | "TrueOS"*)
-            set_colors 1 7 3
-            ascii_distro="trueos"
-        ;;
-
-        "Red Star"* | "Redstar")
-            set_colors 1 7 3
-            ascii_distro="redstar"
-        ;;
-
-        "Red"*)
-            set_colors 1 7 3
-            ascii_distro="redhat"
-        ;;
-
-        "Kali"*)
-            set_colors 4 8
-        ;;
-
-        "BunsenLabs"*)
-            set_colors fg 7
-        ;;
-
-        "OpenMandriva"*)
-            set_colors 4 3
-        ;;
-
-        "NetBSD"* | "Parabola"* | "Tails"* | "BLAG"* | "Funtoo"* | "SteamOS"* | "Devuan"*)
-            set_colors 5 7
-        ;;
-
-        "Gentoo"*)
-            set_colors 5 7
-            ascii_distro="gentoo"
-        ;;
-
-        "OpenBSD"* | "GuixSD"* | "Pardus"*)
-            set_colors 3 7 6 1 8
-        ;;
-
-        "Manjaro"* | "Deepin"* | "LMDE"* | "Chapeau"* | "Bitrig"*)
-            set_colors 2 7
-        ;;
-
-        *"SUSE"*)
-            set_colors 2 7
-            ascii_distro="suse"
-        ;;
-
-        "KDE"*)
-            set_colors 2 7
-            ascii_distro="kde"
+            ascii_file="alpine"
         ;;
 
         "Android"*)
             set_colors 2 7
+            ascii_file="android"
             ascii_length_force="19"
         ;;
 
-        *"Mint"*)
-            set_colors 2 7
-            ascii_distro="mint"
-        ;;
-
-        "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
-            set_colors 4 7
-            ascii_distro="puppy"
-        ;;
-
-        "Sparky"*)
-            set_colors 1 7
-            ascii_distro="sparky"
-        ;;
-
-        "Trisquel"* | "NixOS"* | "Zorin"* | "Antergos"*)
+        "Antergos"*)
             set_colors 4 6
+            ascii_file="antergos"
         ;;
 
-        "MX"*)
-            set_colors 4 6 7
-            ascii_distro="mx"
+        "antiX"*)
+            set_colors 1 7 3
+            ascii_file="antix"
         ;;
 
-        "Travis")
-            set_colors 1 2 3 4 5 6
+        "AOSC"*)
+            set_colors 4 7 1
+            ascii_file="aosc"
+        ;;
+
+        "Apricity"*)
+            set_colors 4 7 1
+            ascii_file="apricity"
+        ;;
+
+        "arch_small")
+            set_colors 4 7 1
+            ascii_file="arch_small"
+        ;;
+
+        "arch_old")
+            set_colors 4 7 1
+            ascii_file="arch_old"
+        ;;
+
+        "Arch"*)
+            set_colors 4 7 1
+            ascii_file="arch"
+        ;;
+
+        "Bitrig"*)
+            set_colors 2 7
+            ascii_file="bitrig"
+        ;;
+
+        "BLAG"*)
+            set_colors 5 7
+            ascii_file="blag"
+        ;;
+
+        "BlankOn"*)
+            set_colors 1 7 3
+            ascii_file="blankon"
+        ;;
+
+       "BSD")
+            set_colors 1 7 4 3 6
+            ascii_file="bsd"
+        ;;
+
+        "BunsenLabs"*)
+            set_colors fg 7
+            ascii_file="bunsenlabs"
+        ;;
+
+        "CentOS"*)
+            set_colors 3 2 4 5 7
+            ascii_file="centos"
+        ;;
+
+        "Chakra"*)
+            set_colors 4 5 7 6
+            ascii_file="chakra"
+        ;;
+
+        "ChaletOS"*)
+            set_colors 4 7 1
+            ascii_file="chaletos"
+        ;;
+
+        "Chapeau"*)
+            set_colors 2 7
+            ascii_file="chapeau"
+        ;;
+
+        "Chrom"*)
+            set_colors 2 1 3 4 7
+            ascii_file="chrome"
+        ;;
+
+        "crux_small")
+            set_colors 4 5 7 6
+            ascii_file="crux_small"
+        ;;
+
+        "CRUX"*)
+            set_colors 4 5 7 6
+            ascii_file="crux"
+        ;;
+
+        "Debian"*)
+            set_colors 1 7 3
+            ascii_file="debian"
+        ;;
+
+        "Deepin"*)
+            set_colors 2 7
+            ascii_file="deepin"
+        ;;
+
+        "Devuan"*)
+            set_colors 5 7
+            ascii_file="devuan"
+        ;;
+
+        "DracOS"*)
+            set_colors 1 7 3
+            ascii_file="dracos"
+        ;;
+
+        "DragonFly"*)
+            set_colors 1 7 3
+            ascii_file="dragonflybsd"
+        ;;
+
+        "Elementary"*)
+            set_colors 4 7 1
+            ascii_file="elementary"
+        ;;
+
+        "Exherbo"*)
+            set_colors 4 7 1
+            ascii_file="exherbo"
+        ;;
+
+        "Fedora"* | "RFRemix"*)
+            set_colors 4 7 1
+            ascii_file="fedora"
+        ;;
+
+        "FreeBSD"*)
+            set_colors 1 7 3
+            ascii_file="freebsd"
+        ;;
+
+        "Frugalware"*)
+            set_colors 4 7 1
+            ascii_file="frugalware"
+        ;;
+
+        "Funtoo"*)
+            set_colors 5 7
+            ascii_file="funtoo"
+        ;;
+
+        "GalliumOS"*)
+            set_colors 4 7 1
+            ascii_file="galliumos"
+        ;;
+
+        "gentoo_small")
+            set_colors 5 7
+            ascii_file="gentoo_small"
+        ;;
+
+        "Gentoo"*)
+            set_colors 5 7
+            ascii_file="gentoo"
+        ;;
+
+        "gNewSense"*)
+            set_colors 4 5 7 6
+            ascii_file="gnewsense"
+        ;;
+
+        "GNU")
+            set_colors fg 7
+            ascii_file="gnu"
+        ;;
+
+        "GoboLinux"*)
+            set_colors 5 4 6 2
+            ascii_file="gobolinux"
         ;;
 
         "Grombyang"*)
             set_colors 4 2 1
-            ascii_distro="grombyang"
+            ascii_file="grombyang"
         ;;
 
-        "Void"* | "Haiku"*)
+        "GuixSD"*)
+            set_colors 3 7 6 1 8
+            ascii_file="guixsd"
+        ;;
+
+        "Haiku"*)
             set_colors 2 8
+            ascii_file="haiku"
         ;;
 
-        "Mageia"* | "Porteus"* | "Parrot"* | "SmartOS"*)
-            set_colors 6 7
+        "Kali"*)
+            set_colors 4 8
+            ascii_file="kali"
         ;;
 
-        "Windows 8"* | "Windows 10"*)
-            set_colors 6 7
-            ascii_distro="windows10"
+        "KaOS"*)
+            set_colors 4 7 1
+            ascii_file="kaos"
         ;;
 
-        "Windows"*)
-            set_colors 1 2 4 3
+        "KDE"*)
+            set_colors 2 7
+            ascii_file="kde"
+        ;;
+
+        "Kogaion"*)
+            set_colors 4 7 1
+            ascii_file="kogaion"
+        ;;
+
+        "Korora"*)
+            set_colors 4 7 1
+            ascii_file="korora"
+        ;;
+
+        "Kubuntu"*)
+            set_colors 4 7 1
+            ascii_file="kubuntu"
         ;;
 
         "Linux")
             set_colors fg 8 3
+            ascii_file="linux"
         ;;
 
-        *"OS X"* | *"iOS"* | "Mac" | *"macOS"*)
+        "LMDE"*)
+            set_colors 2 7
+            ascii_file="lmde"
+        ;;
+
+        "Lubuntu"*)
+            set_colors 4 7 1
+            ascii_file="lubuntu"
+        ;;
+
+        "mac" | "Darwin")
             set_colors 2 3 1 1 5 4
-            ascii_distro="mac"
+            ascii_file="mac"
+        ;;
+
+        "Mageia"*)
+            set_colors 6 7
+            ascii_file="mageia"
+        ;;
+
+        "Manjaro"*)
+            set_colors 2 7
+            ascii_file="manjaro"
+        ;;
+
+        "Minix"*)
+            set_colors 1 7 3
+            ascii_file="minix"
+        ;;
+
+        "Linux Mint"* | "LinuxMint"*)
+            set_colors 2 7
+            ascii_file="mint"
+        ;;
+
+        "MX"*)
+            set_colors 4 6 7
+            ascii_file="mx"
+        ;;
+
+        "NetBSD"*)
+            set_colors 5 7
+            ascii_file="netbsd"
+        ;;
+
+        "Netrunner"*)
+            set_colors 4 7 1
+            ascii_file="netrunner"
+        ;;
+
+        "NixOS"*)
+            set_colors 4 6
+            ascii_file="nixos"
+        ;;
+
+        "openbsd_small")
+            set_colors 3 7 6 1 8
+            ascii_file="openbsd_small"
+        ;;
+
+        "OpenBSD"*)
+            set_colors 3 7 6 1 8
+            ascii_file="openbsd"
+        ;;
+
+        "OpenIndiana"*)
+            set_colors 4 7 1
+            ascii_file="openindiana"
+        ;;
+
+        "OpenMandriva"*)
+            set_colors 4 3
+            ascii_file="openmandriva"
+        ;;
+
+        "OpenWrt"*)
+            set_colors 4 7 1
+            ascii_file="openwrt"
+        ;;
+
+        "Oracle"*)
+            set_colors 1 7 3
+            ascii_file="oracle"
+        ;;
+
+        "PacBSD"*)
+            set_colors 1 7 3
+            ascii_file="pacbsd"
+        ;;
+
+        "Parabola"*)
+            set_colors 5 7
+            ascii_file="parabola"
+        ;;
+
+        "Pardus"*)
+            set_colors 3 7 6 1 8
+            ascii_file="pardus"
+        ;;
+
+        "Parrot"*)
+            set_colors 6 7
+            ascii_file="parrot"
+        ;;
+
+        "PCBSD"* | "TrueOS"*)
+            set_colors 1 7 3
+            ascii_file="trueos"
+        ;;
+
+        "PCLinuxOS"*)
+            set_colors 4 7 1
+            ascii_file="pclinuxos"
+        ;;
+
+        "Peppermint"*)
+            set_colors 1 7 3
+            ascii_file="peppermint"
+        ;;
+
+        "Porteus"*)
+            set_colors 6 7
+            ascii_file="porteus"
+        ;;
+
+        "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
+            set_colors 4 7
+            ascii_file="puppy"
+        ;;
+
+        "Qubes"*)
+            set_colors 4 5 7 6
+            ascii_file="qubes"
+        ;;
+
+        "Raspbian"*)
+            set_colors 2 1
+            ascii_file="raspbian"
+        ;;
+
+        "Red Star"* | "Redstar"*)
+            set_colors 1 7 3
+            ascii_file="redstar"
+        ;;
+
+        "Redhat"* | "Red Hat"* | "rhel"*)
+            set_colors 1 7 3
+            ascii_file="redhat"
+        ;;
+
+        "Rosa"*)
+            set_colors 4 7 1
+            ascii_file="rosa"
+        ;;
+
+        "Sabayon"*)
+            set_colors 4 7 1
+            ascii_file="sabayon"
+        ;;
+
+        "SailfishOS"*)
+            set_colors 4 5 7 6
+            ascii_file="sailfishos"
+        ;;
+
+        "SalentOS"*)
+            set_colors 2 1 3 7
+            ascii_file="salentos"
+        ;;
+
+        "Scientific"*)
+            set_colors 4 7 1
+            ascii_file="scientific"
+        ;;
+
+        "Slackware"*)
+            set_colors 4 7 1
+            ascii_file="slackware"
+        ;;
+
+        "SmartOS"*)
+            set_colors 6 7
+            ascii_file="smartos"
+        ;;
+
+        "Solus"*)
+            set_colors 4 7 1
+            ascii_file="solus"
+        ;;
+
+        "Sparky"*)
+            set_colors 1 7
+            ascii_file="sparky"
+        ;;
+
+        "SteamOS"*)
+            set_colors 5 7
+            ascii_file="steamos"
+        ;;
+
+        "SunOS" | "Solaris")
+            set_colors 3 7
+            ascii_file="solaris"
+        ;;
+
+        "openSUSE"* | "open SUSE"* | "SUSE"*)
+            set_colors 2 7
+            ascii_distro="suse"
+        ;;
+
+        "SwagArch"*)
+            set_colors 4 7 1
+            ascii_file="swagarch"
+        ;;
+
+        "Tails"*)
+            set_colors 5 7
+            ascii_file="tails"
+        ;;
+
+        "Trisquel"*)
+            set_colors 4 6
+            ascii_file="trisquel"
+        ;;
+
+        "Ubuntu-Budgie"*)
+            set_colors 4 7 1
+            ascii_file="ubuntu-budgie"
+        ;;
+
+        "Ubuntu-GNOME"*)
+            set_colors 4 5 7 6
+            ascii_file="ubuntu-gnome"
+        ;;
+
+        "ubuntu_old")
+            set_colors 1 7 3
+            ascii_file="ubuntu_old"
+        ;;
+
+        "Ubuntu"*)
+            set_colors 1 7 3
+            ascii_file="ubuntu"
+        ;;
+
+        "Void"*)
+            set_colors 2 8
+            ascii_file="void"
+        ;;
+
+        "Windows 8"* | "Windows 10"*)
+            set_colors 6 7
+            ascii_file="windows10"
+        ;;
+
+        "Windows"*)
+            set_colors 1 2 4 3
+            ascii_file="windows"
+        ;;
+
+        "Xubuntu"*)
+            set_colors 4 7 1
+            ascii_file="xubuntu"
+        ;;
+
+        "Zorin"*)
+            set_colors 4 6
+            ascii_file="zorin"
         ;;
 
         *)
             case "$kernel_name" in
-                "Linux")
-                    ascii_distro="linux"
-                    set_colors fg 8 3
+                *"BSD")
+                    set_colors 1 7 4 3 6
+                    ascii_file="bsd"
                 ;;
 
-                *"BSD")
-                    ascii_distro="bsd"
-                    set_colors 1 7 4 3 6
+                "Darwin")
+                    set_colors 2 3 1 1 5 4
+                    ascii_file="mac"
                 ;;
 
                 "GNU"*)
-                    ascii_distro="gnu"
-                    set_colors fg
+                    set_colors fg 7
+                    ascii_file="gnu"
+                ;;
+
+                "Linux")
+                    set_colors fg 8 3
+                    ascii_file="linux"
                 ;;
 
                 "SunOS")
-                    ascii_distro="solaris"
-                    set_colors 3
+                    set_colors 3 7
+                    ascii_file="solaris"
                 ;;
             esac
         ;;
