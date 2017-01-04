@@ -16,8 +16,8 @@ XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 export LC_ALL=C
 export LANG=C
 
-# Add /usr/sbin and /sbin to PATH.
-export PATH="/usr/sbin:/sbin:${PATH}"
+# Add /usr/xpg4/bin, /usr/sbin, and /sbin to PATH.
+export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:${PATH}"
 
 # Set no case match.
 shopt -s nocasematch
