@@ -349,6 +349,14 @@ get_uptime() {
                     seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
                     seconds="${seconds/.*}"
                 ;;
+
+                "AIX")
+                    t="$(LC_ALL=POSIX ps -o etime= -p 1)"
+                    d="0" h="0"
+                    case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
+                    case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
+                    seconds="$((d*86400 + h*3600 + ${t%%:*}*60 + ${t#*:}))"
+                ;;
             esac
 
             days="$((seconds / 60 / 60 / 24)) days"
