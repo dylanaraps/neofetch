@@ -1001,6 +1001,7 @@ get_cpu_usage() {
                     "Solaris") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
                     "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
+                    "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
                 esac
             fi
 
