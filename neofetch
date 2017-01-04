@@ -1906,7 +1906,7 @@ get_image_backend() {
 
 get_ascii() {
     if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
-        # Error message.
+        # Fallback to distro ascii mode if custom ascii isn't found.
         [[ "$ascii" != "distro" && ! -f "$ascii" ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
@@ -1922,12 +1922,13 @@ get_ascii() {
         else
             get_script_dir 2>/dev/null
             ascii_dir="${script_dir}/ascii/distro"
-
-            [[ -d "$ascii_dir" ]] || \
-                { to_off "Ascii: Ascii file not found, falling back to text mode."; return; }
         fi
 
         ascii="${ascii_dir}/${ascii_file}"
+
+        # Fallback to no ascii mode if distro ascii isn't found.
+        [[ ! -f "$ascii" ]] && \
+            { to_off "Ascii: Failed to find distro ascii, falling back to no ascii mode."; return; }
     fi
 
     # Set locale to get correct padding.
@@ -2283,8 +2284,9 @@ to_ascii() {
 
 to_off() {
     # This function makes neofetch fallback to off mode.
-    text_padding="0"
     image_backend="off"
+    text_padding=
+    zws=
     err "$1"
 }
 
@@ -2419,7 +2421,7 @@ prin() {
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
-    printf "%b\n" "\033[${text_padding}C${zws}${string}${reset} "
+    printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset} "
 
     # Calculate info height.
     info_height="$((info_height+=1))"
