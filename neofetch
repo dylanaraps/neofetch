@@ -3064,12 +3064,12 @@ set_text_colors() {
         info_color="$reset"
 
         # If the ascii art uses 8 as a color, make the text the fg.
-        (($1 == 8)) && title_color="$reset"
-        (($2 == 8)) && subtitle_color="$reset"
+        ((${1:-1} == 8)) && title_color="$reset"
+        ((${2:-7} == 8)) && subtitle_color="$reset"
 
         # If the second color is white use the first for the subtitle.
-        (($2 == 7)) && subtitle_color="$(color "$1")"
-        (($1 == 7)) && title_color="$reset"
+        ((${2:-7} == 7)) && subtitle_color="$(color "$1")"
+        ((${1:-1} == 7)) && title_color="$reset"
     else
         title_color="$(color "${colors[0]}")"
         at_color="$(color "${colors[1]}")"
