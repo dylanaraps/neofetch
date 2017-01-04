@@ -1587,25 +1587,26 @@ get_term_font() {
         ;;
 
         "konsole"*)
-            # Use Process ID from get_term().
-            # The variable can include 'PPid:' and also whitespace
-            # so we get rid of it here.
-            parent="$(trim "${parent/PPid:}")"
-
-            # Get PID of current child window / tab
+            # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
-            # Get all konsole sessions of the parent (all child windows and tabs)
-            konsole_sessions=($(qdbus org.kde.konsole-"${parent}" | awk '/Sessions\//'))
+            konsole_instances=($(qdbus | grep 'org.kde.konsole'))
 
-            # Get profile of current session (window / tab)
-            for session in "${konsole_sessions[@]}"; do
-                if ((child == "$(qdbus org.kde.konsole-"${parent}" "${session}" processId)")); then
-                    profile="$(qdbus org.kde.konsole-"${parent}" "${session}" environment | awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
-                    break
-                fi
+            for i in "${konsole_instances[@]}"; do
+                konsole_sessions=($(qdbus "${i}" | grep '/Sessions/'))
+                for session in "${konsole_sessions[@]}"; do
+                    if ((child == "$(qdbus "${i}" "${session}" processId)")); then
+                        profile="$(qdbus "${i}" "${session}" environment | awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
+                        break
+                    fi
+                done
+                [[ "$profile" ]] && break
             done
-            term_font="$(awk -F '=|,' '/Font=/ {print $2}' "${HOME}/.local/share/konsole/${profile}".profile)"
+
+            # We could have two profile files for the same profile name, take first match
+            profile_filename="$(grep -l "Name=${profile}" "${HOME}"/.local/share/konsole/*.profile)"
+            profile_filename="${profile_filename/$'\n'*}"
+            [[ "$profile_filename" ]] && term_font="$(awk -F '=|,' '/Font=/ {print $2 " " $3}' "$profile_filename")"
         ;;
     esac
 }
