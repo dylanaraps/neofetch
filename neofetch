@@ -2942,7 +2942,7 @@ get_distro_colors() {
 
         "openSUSE"* | "open SUSE"* | "SUSE"*)
             set_colors 2 7
-            ascii_distro="suse"
+            ascii_file="suse"
         ;;
 
         "SwagArch"*)
