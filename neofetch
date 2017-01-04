@@ -1218,6 +1218,13 @@ get_memory() {
             mem_used="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
             mem_used="$((${mem_used/max} / 1024 / 1024))"
         ;;
+
+        "AIX")
+            mem_stat=($(svmon -G -O unit=MB))
+            mem_total="${mem_stat[11]/.*}"
+            mem_free="${mem_stat[16]/.*}"
+            mem_used="$((mem_total - mem_free))"
+        ;;
     esac
     memory="${mem_used}MB / ${mem_total}MB"
 
