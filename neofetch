@@ -116,6 +116,7 @@ get_distro() {
                 for release_file in /etc/*-release; do
                     distro+="$(< "$release_file")"
                 done
+
                 if [[ -z "$distro" ]]; then
                     case "$distro_shorthand" in
                         "on" | "tiny") distro="$kernel_name" ;;
@@ -137,16 +138,16 @@ get_distro() {
             osx_build="$(sw_vers -buildVersion)"
 
             case "$osx_version" in
-                "10.4"*) codename="Mac OS X Tiger" ;;
-                "10.5"*) codename="Mac OS X Leopard" ;;
-                "10.6"*) codename="Mac OS X Snow Leopard" ;;
-                "10.7"*) codename="Mac OS X Lion" ;;
-                "10.8"*) codename="OS X Mountain Lion" ;;
-                "10.9"*) codename="OS X Mavericks" ;;
+                "10.4"*)  codename="Mac OS X Tiger" ;;
+                "10.5"*)  codename="Mac OS X Leopard" ;;
+                "10.6"*)  codename="Mac OS X Snow Leopard" ;;
+                "10.7"*)  codename="Mac OS X Lion" ;;
+                "10.8"*)  codename="OS X Mountain Lion" ;;
+                "10.9"*)  codename="OS X Mavericks" ;;
                 "10.10"*) codename="OS X Yosemite" ;;
                 "10.11"*) codename="OS X El Capitan" ;;
                 "10.12"*) codename="macOS Sierra" ;;
-                *) codename="macOS" ;;
+                *)        codename="macOS" ;;
             esac
             distro="$codename $osx_version $osx_build"
 
