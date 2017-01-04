@@ -1121,7 +1121,7 @@ get_gpu() {
             esac
         ;;
 
-        "BSD" | "Solaris" | "MINIX")
+        "BSD" | "Solaris" | "MINIX" | "AIX")
             case "$kernel_name" in
                 "FreeBSD"* | "DragonFly"*)
                     gpu="$(pciconf -lv | grep -B 4 -F "VGA" | grep -F "device")"
