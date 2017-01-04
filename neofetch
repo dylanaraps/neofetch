@@ -34,8 +34,8 @@ get_os() {
     # $kernel_name is set in a function called cache_uname and is
     # just the output of "uname -s".
     case "$kernel_name" in
-        "Linux" | "GNU"*)   os="Linux" ;;
-        "Darwin")  os="$(sw_vers -productName)" ;;
+        "Linux" | "GNU"*) os="Linux" ;;
+        "Darwin") os="$(sw_vers -productName)" ;;
         *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
         "CYGWIN"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
