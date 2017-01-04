@@ -278,6 +278,10 @@ get_model() {
         "Solaris")
             model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
         ;;
+
+        "AIX")
+            model="$(prtconf | awk -F':' '/System Model/ {printf $2}')"
+        ;;
     esac
 
     # Remove dummy OEM info.
@@ -910,6 +914,22 @@ get_cpu() {
 
             # Get CPU cores.
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
+        ;;
+
+        "AIX")
+            # Get CPU name.
+            cpu="$(prtconf | awk -F':' '/Processor Type/ {printf $2}')"
+
+            # Get CPU speed.
+            speed="$(prtconf | awk -F':' '/Processor Clock Speed/ {printf $2}')"
+            speed="${speed/MHz}"
+            speed="$((speed / 100))"
+
+            # Get CPU cores.
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
+                "physical") cores="$(lparstat -i | awk -F':' '/Active Physical CPUs/ {printf $2}')"
+            esac
         ;;
     esac
 
