@@ -334,7 +334,7 @@ install_time="on"
 # Example:
 # 12h: 'Thu 14 Apr 2016 11:50 PM'
 # 24h: 'Thu 14 Apr 2016 23:50'
-install_time_format="24h"
+install_time_format="12h"
 
 
 # Text Colors
