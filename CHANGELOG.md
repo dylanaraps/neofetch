@@ -86,6 +86,10 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - [Linux] Each GPU is now printed on a separate line.
 - [Linux] Added `--cpu_type` / `$cpu_type` which let you display `all`, `dedicated` or `integrated` GPUs.
 
+**Memory**<br \>
+
+- [Solaris] Fixed inaccurate used memory size.
+
 **~~Birthday~~ Install Date**<br \>
 
 - Renamed `get_birthday()` -- > `get_install_date()`
