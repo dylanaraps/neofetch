@@ -1251,15 +1251,15 @@ get_song() {
         ;;
 
         "banshee"*)
-            song="$(banshee --query-artist --query-title | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
+            song="$(banshee --query-artist --query-title | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
         ;;
 
         "amarok"*)
-            song="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
+            song="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
         ;;
 
         "pragha"*)
-            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
+            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
         ;;
 
         "exaile"*)
@@ -1267,6 +1267,8 @@ get_song() {
                     org.exaile.Exaile.Query | awk -F':|,' '{if ($6 && $4) printf $6 " -" $4}')"
         ;;
     esac
+
+    [[ "$(trim "$song")" = "-" ]] && unset -v song
 
     # Display Artist and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
