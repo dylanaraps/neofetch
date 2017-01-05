@@ -2506,7 +2506,7 @@ get_distro_colors() {
         "Android"*)
             set_colors 2 7
             ascii_file="android"
-            ascii_length_force="19"
+            ascii_length_force=19
         ;;
 
         "Antergos"*)
@@ -3370,25 +3370,25 @@ convert_time() {
     # Get month. (Month code is used for day of week)
     # Due to different versions of 'ls', the month can be 1, 01 or Jan.
     case "$2" in
-        1 | 01 | "Jan") month="Jan"; month_code="0" ;;
-        2 | 02 | "Feb") month="Feb"; month_code="3" ;;
-        3 | 03 | "Mar") month="Mar"; month_code="3" ;;
-        4 | 04 | "Apr") month="Apr"; month_code="6" ;;
-        5 | 05 | "May") month="May"; month_code="1" ;;
-        6 | 06 | "Jun") month="Jun"; month_code="4" ;;
-        7 | 07 | "Jul") month="Jul"; month_code="6" ;;
-        8 | 08 | "Aug") month="Aug"; month_code="2" ;;
-        9 | 09 | "Sep") month="Sep"; month_code="5" ;;
-        10     | "Oct") month="Oct"; month_code="0" ;;
-        11     | "Nov") month="Nov"; month_code="3" ;;
-        12     | "Dec") month="Dec"; month_code="5" ;;
+        1  | 01 | "Jan") month="Jan"; month_code=0 ;;
+        2  | 02 | "Feb") month="Feb"; month_code=3 ;;
+        3  | 03 | "Mar") month="Mar"; month_code=3 ;;
+        4  | 04 | "Apr") month="Apr"; month_code=6 ;;
+        5  | 05 | "May") month="May"; month_code=1 ;;
+        6  | 06 | "Jun") month="Jun"; month_code=4 ;;
+        7  | 07 | "Jul") month="Jul"; month_code=6 ;;
+        8  | 08 | "Aug") month="Aug"; month_code=2 ;;
+        9  | 09 | "Sep") month="Sep"; month_code=5 ;;
+        10      | "Oct") month="Oct"; month_code=0 ;;
+        11      | "Nov") month="Nov"; month_code=3 ;;
+        12      | "Dec") month="Dec"; month_code=5 ;;
     esac
 
     # Get leap year.
     # Source: http://stackoverflow.com/questions/725098/leap-year-calculation
     [[ "$((year % 4))" == 0 && "$((year % 100))" != 0 || "$((year % 400))" == 0 ]] && \
     [[ "$month" =~ (Jan|Feb) ]] && \
-        leap_code="1"
+        leap_code=1
 
     # Calculate day of week.
     # Source: http://blog.artofmemory.com/how-to-calculate-the-day-of-the-week-4203.html
