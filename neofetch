@@ -1199,7 +1199,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1217,15 +1217,17 @@ get_song() {
         "mocp"*)        song="$(mocp -Q "%artist - %song")" ;;
         "google play"*) song="$(gpmdp-remote current)" ;;
         "rhythmbox"*)   song="$(rhythmbox-client --print-playing)" ;;
-        "deadbeef"*)    song="$(deadbeef --nowplaying '%a - %t')" ;;
+        "deadbeef"*)    song="$(deadbeef --nowplaying-tf  '%artist% - %title%')" ;;
         "audacious"*)   song="$(audtool current-song)" ;;
         "xmms2d"*)      song="$(xmms2 current -f '${artist} - ${title}')" ;;
+        "qmmp"*)        song="$(qmmp --nowplaying '%p - %t')" ;;
         "gnome-music"*) get_song_dbus "GnomeMusic" ;;
         "lollypop"*)    get_song_dbus "Lollypop" ;;
         "clementine"*)  get_song_dbus "clementine" ;;
         "juk"*)         get_song_dbus "juk" ;;
         "bluemindo"*)   get_song_dbus "Bluemindo" ;;
         "guayadeque"*)  get_song_dbus "guayadeque" ;;
+        "yarock"*)      get_song_dbus "yarock" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; print; print " - "} /tag title/ {$1=$2=""; print}')"
@@ -1246,15 +1248,15 @@ get_song() {
         ;;
 
         "banshee"*)
-            song="$(banshee --query-artist --query-title | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
+            song="$(banshee --query-artist --query-title | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
         ;;
 
         "amarok"*)
-            song="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
+            song="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
         ;;
 
         "pragha"*)
-            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{if (a && t) print a " - " t}')"
+            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
         ;;
 
         "exaile"*)
@@ -1262,6 +1264,8 @@ get_song() {
                     org.exaile.Exaile.Query | awk -F':|,' '{if ($6 && $4) printf $6 " -" $4}')"
         ;;
     esac
+
+    [[ "$(trim "$song")" = "-" ]] && unset -v song
 
     # Display Artist and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
