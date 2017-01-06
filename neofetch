@@ -3649,7 +3649,7 @@ exit 1
 version() { printf "%s" "\
 Neofetch 2.1.0
 
-Copyright (c) 2016 Dylan Araps
+Copyright (c) 2016-2017 Dylan Araps
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the 'Software'), to deal
