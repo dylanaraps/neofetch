@@ -1631,7 +1631,7 @@ get_disk() {
         { err "Disk: df failed to print the disks, make sure the disk_show array is set properly."; return; }
 
     for disk in "${disks[@]}"; do
-        # Create a second array and make each element split at whitespacw this time.
+        # Create a second array and make each element split at whitespace this time.
         disk_info=($disk)
         disk_perc="${disk_info[4]/'%'}"
 
