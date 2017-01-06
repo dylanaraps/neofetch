@@ -299,11 +299,11 @@ public_ip_host="http://ident.me"
 
 
 # Which disks to display.
-# The values can be any /dev/sdx, mount point or directory.
+# The values can be any /dev/sdXX, mount point or directory.
 # NOTE: By default we only show the disk info for '/'.
 #
 # Default: '/'
-# Values:  '/', '/dev/sdx', '/path/to/drive'.
+# Values:  '/', '/dev/sdXX', '/path/to/drive'.
 # Flag:    --disk_show
 #
 # Example:
