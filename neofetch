@@ -3350,7 +3350,7 @@ old_options() {
     [[ "$speed_type" == "bios" ]]    && err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
 
     # Ascii_logo_size was removed in 2.1.0.
-    [[ "$ascii_logo_size" ]] && err "Config: ascii_logo_size is deprecated, use ascii_distro='{arch,crux,gentoo}_small' instead."
+    [[ "$ascii_logo_size" ]] && err "Config: ascii_logo_size is deprecated, use ascii_distro='{alpine,arch,crux,gentoo,openbsd,void}_small' instead."
 
     # $start and $end were replaced with ${block_range[@]} in 2.1.0.
     [[ "$start" && "$end" ]] && { err "Config: \$start and \$end are deprecated, use block_range=(0 7) instead."; block_range=("$start" "$end"); }
@@ -3614,9 +3614,9 @@ ASCII:
 
                                 NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME', 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
 
-                                NOTE: Arch, Crux and Gentoo have a smaller logo variant.
+                                NOTE: Alpine, Arch, Crux, Gentoo, OpenBSD, and Void have a smaller logo variant.
 
-                                NOTE: Change this to 'arch_small', 'crux_small' or 'gentoo_small' to use the small logos.
+                                NOTE: Change this to 'alpine_small', 'arch_small', 'crux_small', 'gentoo_small', 'openbsd_small', and 'void_small' to use the small logos.
 
     --ascii_bold on/off         Whether or not to bold the ascii logo.
     -L, --logo                  Hide the info text and only show the ascii logo.
