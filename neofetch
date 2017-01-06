@@ -1622,20 +1622,32 @@ get_disk() {
         *) df_flags=(-P -h) ;;
     esac
 
-    # Get the info for "/".
-    disks=($(df "${df_flags[@]}" /)) || { err "Disk: 'df' exited with error code 1"; return; }
+    # Create an array called 'disks' where each element is a separate line from
+    # df's output. We then unset the first element which removes the column titles.
+    readarray disks < <(df "${df_flags[@]}" "${disk_show[@]:-/}") && unset 'disks[0]'
 
-    # Put it all together.
-    disk_perc="${disks[11]/'%'}"
-    disk="${disks[9]/i} / ${disks[8]/i} (${disk_perc}%)"
+    # Stop here if 'df' fails to print disk info.
+    [[ -z "${disks[@]}" ]] && \
+        { err "Disk: df failed to print the disks, make sure the disk_show array is set properly."; return; }
 
-    # Bar.
-    case "$disk_display" in
-        "bar") disk="$(bar "$disk_perc" "100")" ;;
-        "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
-        "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
-        "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
-    esac
+    for disk in "${disks[@]}"; do
+        # Create a second array and make each element split at whitespacw this time.
+        disk_info=($disk)
+        disk_perc="${disk_info[4]/'%'}"
+
+        disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+
+        # Bar.
+        case "$disk_display" in
+            "bar") disk="$(bar "$disk_perc" "100")" ;;
+            "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
+            "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
+            "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
+        esac
+
+        # Append '(disk mount point)' to the subtitle.
+        prin "${subtitle} (${disk_info[5]})" "$disk"
+    done
 }
 
 get_battery() {
@@ -3531,6 +3543,10 @@ INFO:
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
+    --disk_show value           Which disks to display.
+                                Takes: '/', '/dev/sdXX', '/path/to/mount point'
+
+                                NOTE: Multiple values can be given. (--disk_show '/' '/dev/sdc1')
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on separate lines
     --install_time on/off       Enable/Disable showing the time in Install Date output.
@@ -3693,6 +3709,17 @@ get_args() {
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
+            ;;
+
+            "--disk_show")
+                unset disk_show
+                for arg in "$@"; do
+                    case "$arg" in
+                        "--disk_show") ;;
+                        "-"*) break ;;
+                        *) disk_show+=($arg)
+                    esac
+                done
             ;;
 
             "--disable")
