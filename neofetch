@@ -1642,6 +1642,10 @@ get_disk() {
         # Append '(disk mount point)' to the subtitle.
         prin "${subtitle} (${disk_info[5]})" "$disk"
     done
+
+    # Temporary test for mac OS.
+    df -h "${disk_show[@]:-/}"
+    exit
 }
 
 get_battery() {
