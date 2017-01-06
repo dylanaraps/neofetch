@@ -2508,7 +2508,6 @@ get_distro_colors() {
             ascii_file="alpine"
         ;;
 
-
         "Android"*)
             set_colors 2 7
             ascii_file="android"
