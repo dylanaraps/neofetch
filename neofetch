@@ -1618,8 +1618,8 @@ get_disk() {
     # Get "df" flags.
     case "$os" in
         "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
-        "Minix") df_flags=(-h) ;;
-        *) df_flags=(-P -h) ;;
+        "Mac OS X") df_flags=(-P -h) ;;
+        *) df_flags=(-h) ;;
     esac
 
     # Create an array called 'disks' where each element is a separate line from
