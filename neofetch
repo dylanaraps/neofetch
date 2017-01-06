@@ -1645,6 +1645,7 @@ get_disk() {
 
     # Temporary test for mac OS.
     df -h "${disk_show[@]:-/}"
+    df -h /
     exit
 }
 
