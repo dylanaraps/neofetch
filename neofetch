@@ -8,9 +8,12 @@
 # Created by Dylan Araps
 # https://github.com/dylanaraps/
 
+shopt -s nocasematch
+
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+reset="\033[0m"
 
 # Speed up script by not using unicode.
 export LC_ALL=C
@@ -18,12 +21,6 @@ export LANG=C
 
 # Add /usr/xpg4/bin, /usr/sbin, and /sbin to PATH.
 export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:${PATH}"
-
-# Set no case match.
-shopt -s nocasematch
-
-# Reset colors and bold.
-reset="\033[0m"
 
 # DETECT INFORMATION
 
@@ -93,7 +90,6 @@ get_distro() {
                 distro="Android $(getprop ro.build.version.release)"
 
             elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" ]]; then
-                # Source the os-release file
                 for file in /etc/os-release /usr/lib/os-release; do
                     source "$file" 2>/dev/null && break
                 done
@@ -170,8 +166,6 @@ get_distro() {
 
         "Windows")
             distro="$(wmic os get Caption /value)"
-
-            # Strip crap from the output of wmic.
             distro="${distro/Caption'='}"
             distro="${distro/Microsoft }"
         ;;
@@ -191,7 +185,7 @@ get_distro() {
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
 
-    # Get OS architecture.
+    # $machine_arch is set in the function cache_uname().
     [[ "$os_arch" == "on" ]] && \
         distro+=" ${machine_arch}"
 
@@ -521,7 +515,7 @@ get_shell() {
 }
 
 get_de() {
-    # If function was run, stop here.
+    # If the function has already been used before, stop here.
     ((de_run == 1)) && return
 
     case "$os" in
@@ -578,7 +572,7 @@ get_de() {
 }
 
 get_wm() {
-    # If function was run, stop here.
+    # If the function has already been used before, stop here.
     ((wm_run == 1)) && return
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
@@ -992,7 +986,6 @@ get_cpu_usage() {
 get_gpu() {
     case "$os" in
         "Linux")
-            # Read GPUs into array.
             readarray gpus < <(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')
 
             # Number the GPUs if more than one exists.
@@ -1308,7 +1301,6 @@ get_resolution() {
 
             scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
 
-            # If no refresh rate is empty.
             [[ "$resolution" == *"@ Hz"* ]] && \
                 resolution="${resolution//@ Hz}"
 
@@ -1345,7 +1337,6 @@ get_resolution() {
 }
 
 get_style() {
-    # Fix weird output when the function is run multiple times.
     unset gtk2_theme gtk3_theme theme path
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
@@ -1432,15 +1423,10 @@ get_style() {
             gtk3_theme="${gtk3_theme/${name}*=}"
         fi
 
-        # Trim whitespace.
         gtk2_theme="$(trim "$gtk2_theme")"
         gtk3_theme="$(trim "$gtk3_theme")"
-
-        # Remove quotes.
         gtk2_theme="$(trim_quotes "$gtk2_theme")"
         gtk3_theme="$(trim_quotes "$gtk3_theme")"
-
-        # Uppercase the first letter of each GTK theme.
         gtk2_theme="$(uppercase "$gtk2_theme")"
         gtk3_theme="$(uppercase "$gtk3_theme")"
 
@@ -1462,7 +1448,6 @@ get_style() {
             [[ "$gtk3_theme" ]] && gtk3_theme+=" [GTK3] "
         fi
 
-        # Final string.
         theme="${gtk2_theme}${gtk3_theme}"
 
         # Make the output shorter by removing "[GTKX]" from the string.
@@ -1506,11 +1491,11 @@ get_font() {
 }
 
 get_term() {
-    # If function was run, stop here.
+    # If the function has already been used before, stop here.
     ((term_run == 1)) && return
 
-    # Workaround for macOS systems that
-    # don't support the block below.
+    # Workaround for macOS or other systems that don't support
+    # getting the terminal name from $PPID.
     case "$TERM_PROGRAM" in
         "iTerm.app") term="iTerm2" ;;
         "Terminal.app") term="Apple Terminal" ;;
@@ -1622,20 +1607,32 @@ get_disk() {
         *) df_flags=(-P -h) ;;
     esac
 
-    # Get the info for "/".
-    disks=($(df "${df_flags[@]}" /)) || { err "Disk: 'df' exited with error code 1"; return; }
+    # Create an array called 'disks' where each element is a separate line from
+    # df's output. We then unset the first element which removes the column titles.
+    readarray disks < <(df "${df_flags[@]}" "${disk_show[@]:-/}") && unset 'disks[0]'
 
-    # Put it all together.
-    disk_perc="${disks[11]/'%'}"
-    disk="${disks[9]/i} / ${disks[8]/i} (${disk_perc}%)"
+    # Stop here if 'df' fails to print disk info.
+    [[ -z "${disks[@]}" ]] && \
+        { err "Disk: df failed to print the disks, make sure the disk_show array is set properly."; return; }
 
-    # Bar.
-    case "$disk_display" in
-        "bar") disk="$(bar "$disk_perc" "100")" ;;
-        "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
-        "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
-        "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
-    esac
+    for disk in "${disks[@]}"; do
+        # Create a second array and make each element split at whitespacw this time.
+        disk_info=($disk)
+        disk_perc="${disk_info[4]/'%'}"
+
+        disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+
+        # Bar.
+        case "$disk_display" in
+            "bar") disk="$(bar "$disk_perc" "100")" ;;
+            "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
+            "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
+            "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
+        esac
+
+        # Append '(disk mount point)' to the subtitle.
+        prin "${subtitle} (${disk_info[5]})" "$disk"
+    done
 }
 
 get_battery() {
@@ -1802,7 +1799,6 @@ get_cols() {
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
 
-        # Set variables.
         start="${block_range[0]}"
         end="${block_range[1]}"
 
@@ -1842,19 +1838,15 @@ get_image_backend() {
     # This function determines which image backend to use
     # by checking for programs and etc.
 
-    # If the image source isn't "ascii" or "off".
     if [[ ! "${image_source}" =~ ^(off|ascii)$ ]]; then
-        # If X isn't running force ascii mode here.
         [[ -z "$DISPLAY" ]] && image_source="ascii"
 
         # Fallback to ascii mode if imagemagick isn't installed.
         type -p convert >/dev/null 2>&1 || image_source="ascii"
     fi
 
-    # Get the image program.
     get_image_program
 
-    # If image source is ascii fallback to ascii.
     if [[ "$image_source" == "ascii" ]]; then
         to_ascii "Image: \$image_source set to 'ascii', falling back to ascii mode."
         err "Image: Change \$image_source to another value to use image mode."
@@ -1876,7 +1868,6 @@ get_image_backend() {
                 ;;
             esac
 
-            # Fallback to ascii mode if image isn't a file.
             if [[ ! -f "$image" ]]; then
                 to_ascii "Image: '$image' doesn't exist, falling back to ascii mode."
                 return
@@ -1884,7 +1875,6 @@ get_image_backend() {
 
             get_term_size
 
-            # Fallback to ascii mode if terminal size wasn't found.
             if [[ -z "$term_width" ]] || ((term_width == 0)); then
                 to_ascii "Image: Failed to find terminal window size"
                 err "Image: Check the 'Images in the terminal' wiki page for more info"
@@ -1908,7 +1898,6 @@ get_image_backend() {
 
 get_ascii() {
     if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
-        # Fallback to distro ascii mode if custom ascii isn't found.
         [[ "$ascii" != "distro" && ! -f "$ascii" ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
@@ -1928,12 +1917,12 @@ get_ascii() {
 
         ascii="${ascii_dir}/${ascii_file}"
 
-        # Fallback to no ascii mode if distro ascii isn't found.
         [[ ! -f "$ascii" ]] && \
             { to_off "Ascii: Failed to find distro ascii, falling back to no ascii mode."; return; }
     fi
 
-    # Set locale to get correct padding.
+    # Set locale to system locale temporarily to fix spacing
+    # issues with unicode characters.
     export LC_ALL="$sys_locale"
 
     # Turn file into variable.
@@ -2182,7 +2171,7 @@ get_image_size() {
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    image_name="$crop_mode-$crop_offset-$width-$height"
+    image_name="${crop_mode}-${crop_offset}-${width}-${height}"
 
     # Check to see if the image has a file extension,
     # if it doesn't then add one.
@@ -2191,11 +2180,10 @@ make_thumbnail() {
         *) image_name="${image_name}-${image##*/}.jpg" ;;
     esac
 
-    # Create the thumbnail dir if it doesn't exist.
     mkdir -p "$thumbnail_dir"
 
     # Check to see if the thumbnail exists before we do any cropping.
-    if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
+    if [[ ! -f "${thumbnail_dir}/${image_name}" ]]; then
         # Get image size so that we can do a better crop.
         if [[ -z "$size" ]]; then
             size="$(identify -format "%w %h" "$image")"
@@ -2246,8 +2234,7 @@ make_thumbnail() {
         esac
     fi
 
-    # The final image.
-    image="$thumbnail_dir/$image_name"
+    image="${thumbnail_dir}/${image_name}"
 }
 
 display_image() {
@@ -2273,14 +2260,11 @@ display_image() {
 to_ascii() {
     # This function makes neofetch fallback to ascii mode.
     image_backend="ascii"
-
-    # Print the ascii art.
     get_ascii 2>/dev/null
 
     # Move cursor next to ascii art.
     printf "%b" "\033[${lines:-0}A\033[9999999D"
 
-    # Log the error.
     err "$1"
 }
 
@@ -3419,7 +3403,6 @@ convert_time() {
     # Toggle showing the time.
     [[ "$install_time" == "off" ]] && unset time
 
-    # Print the install date.
     printf "%s" "$week_day $day $month $year $time"
 }
 
@@ -3531,6 +3514,11 @@ INFO:
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
+    --disk_show value           Which disks to display.
+                                Takes: '/', '/dev/sdXX', '/path/to/mount point'
+
+                                NOTE: Multiple values can be given. (--disk_show '/' '/dev/sdc1')
+
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on separate lines
     --install_time on/off       Enable/Disable showing the time in Install Date output.
@@ -3695,10 +3683,21 @@ get_args() {
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
             ;;
 
+            "--disk_show")
+                unset disk_show
+                for arg in "$@"; do
+                    case "$arg" in
+                        "--disk_show") ;;
+                        "-"*) break ;;
+                        *) disk_show+=($arg)
+                    esac
+                done
+            ;;
+
             "--disable")
                 for func in "$@"; do
                     case "$func" in
-                        "--disable") continue ;;
+                        "--disable") ;;
                         "-"*) break ;;
                         *)
                             ((bash_version >= 4)) && func="${func,,}"
@@ -3822,7 +3821,7 @@ get_args() {
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
             "--version") version ;;
-            "--gen-man") help2man -n"A fast, highly customizable system info script" -N ./neofetch -o neofetch.1; exit 1 ;;
+            "--gen-man") help2man -n "A fast, highly customizable system info script" -N ./neofetch -o neofetch.1; exit 1 ;;
         esac
 
         shift
@@ -3857,7 +3856,6 @@ main() {
     # rendering issues in specific terminal emulators.
     [[ "$image_backend" == "image" && "$image_program" == "w3m" ]] && display_image
 
-    # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
 
     # Show error messages.
