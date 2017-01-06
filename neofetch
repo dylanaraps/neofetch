@@ -2990,6 +2990,11 @@ get_distro_colors() {
             ascii_file="ubuntu"
         ;;
 
+        "void_small")
+            set_colors 2 8
+            ascii_file="void_small"
+        ;;
+
         "Void"*)
             set_colors 2 8
             ascii_file="void"
