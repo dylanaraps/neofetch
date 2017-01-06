@@ -1614,17 +1614,11 @@ get_term_font() {
 
 get_disk() {
     type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
-
-    # Get "df" flags.
-    case "$os" in
-        "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
-        "Mac OS X") df_flags=(-P -h) ;;
-        *) df_flags=(-h) ;;
-    esac
+    [[ "$os" == "Haiku" ]] && { err "Disk doesn't work on Haiku due to the non-standard 'df'"; return; }
 
     # Create an array called 'disks' where each element is a separate line from
     # df's output. We then unset the first element which removes the column titles.
-    readarray disks < <(df "${df_flags[@]}" "${disk_show[@]:-/}") && unset 'disks[0]'
+    readarray disks < <(df -h "${disk_show[@]:-/}") && unset 'disks[0]'
 
     # Stop here if 'df' fails to print disk info.
     [[ -z "${disks[@]}" ]] && \
