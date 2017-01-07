@@ -1216,7 +1216,7 @@ get_song() {
     }
 
     case "${player/*\/}" in
-        "mpd"* | "mopidy"*)         song="$(mpc current)" ;;
+        "mpd"* | "mopidy"*) song="$(mpc current)" ;;
         "mocp"*)        song="$(mocp -Q "%artist - %song")" ;;
         "google play"*) song="$(gpmdp-remote current)" ;;
         "rhythmbox"*)   song="$(rhythmbox-client --print-playing)" ;;
