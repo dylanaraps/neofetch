@@ -1543,6 +1543,10 @@ get_term_font() {
     ((term_run != 1)) && get_term
 
     case "$term" in
+        "alacritty"*)
+            term_font="$(awk -F ':|#' '/family:/ {print $2}' "${XDG_CONFIG_HOME}/alacritty.yml")"
+        ;;
+
         "urxvt" | "urxvtd" | "xterm")
             term_font="$(grep -i -F "${term/d}*font" < <(xrdb -query))"
             term_font="${term_font/*font:}"
