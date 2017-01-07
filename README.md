@@ -73,9 +73,9 @@ Thanks to:
 - [Packagers](https://github.com/dylanaraps/neofetch/issues/115)
     - Thanks for maintaining Neofetch packages.
 - Users
-    - Thanks for using my script!
+    - Thanks for using Neofetch!
 - [Screenfetch](https://github.com/KittyKatt/screenFetch):
-    - I've used some snippets as a base for a few functions in this script.
+    - We've used some snippets as a base for a few functions in this script.
     - Some of the ascii logos.
 - [ufetch](https://github.com/jschx/ufetch):
     - Tiny ascii logos
