@@ -32,7 +32,7 @@ print_info() {
     info "Memory" memory
 
     # info "CPU Usage" cpu_usage
-    # info "Disk (root)" disk
+    # info "Disk" disk
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
@@ -230,6 +230,7 @@ gpu_brand="on"
 #   GPU1: Intel Integrated Graphics
 gpu_type="all"
 
+
 # Resolution
 
 
@@ -292,6 +293,28 @@ gtk3="on"
 # Values:  'url'
 # Flag:    --ip_host
 public_ip_host="http://ident.me"
+
+
+# Disk
+
+
+# Which disks to display.
+# The values can be any /dev/sdx, mount point or directory.
+# NOTE: By default we only show the disk info for '/'.
+#
+# Default: '/'
+# Values:  '/', '/dev/sdx', '/path/to/drive'.
+# Flag:    --disk_show
+#
+# Example:
+# disk_show=('/' '/dev/sdb1'):
+#      'Disk (/): 74G / 118G (66%)'
+#      'Disk (/mnt/Videos): 823G / 893G (93%)'
+#
+# disk_show=('/'):
+#      'Disk (/): 74G / 118G (66%)'
+#
+disk_show=('/')
 
 
 # Song
