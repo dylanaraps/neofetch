@@ -34,7 +34,7 @@ get_os() {
         "Linux" | "GNU"*) os="Linux" ;;
         "Darwin") os="$(sw_vers -productName)" ;;
         *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
-        "CYGWIN"*) os="Windows" ;;
+        "CYGWIN"* | "MSYS"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
@@ -169,10 +169,10 @@ get_distro() {
         ;;
 
         "Windows")
-            distro="$(wmic os get Caption /value)"
+            distro="$(wmic os get Caption)"
 
             # Strip crap from the output of wmic.
-            distro="${distro/Caption'='}"
+            distro="${distro/Caption}"
             distro="${distro/Microsoft }"
         ;;
 
@@ -264,9 +264,9 @@ get_model() {
         ;;
 
         "Windows")
-            model="$(wmic computersystem get manufacturer,model /value)"
-            model="${model/Manufacturer'='}"
-            model="${model/Model'='}"
+            model="$(wmic computersystem get manufacturer,model)"
+            model="${model/Manufacturer}"
+            model="${model/Model}"
         ;;
 
         "Solaris")
@@ -474,7 +474,10 @@ get_packages() {
         ;;
 
         "Windows")
-            packages="$(cygcheck -cd | wc -l)"
+            case "$kernel_name" in
+                "CYGWIN"*) packages="$(cygcheck -cd | wc -l)" ;;
+                "MSYS"*) packages="$(pacman -Qq --color never | wc -l)"
+            esac
 
             # Count chocolatey packages.
             [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
@@ -957,8 +960,8 @@ get_cpu() {
 get_cpu_usage() {
     case "$os" in
         "Windows")
-            cpu_usage="$(wmic cpu get loadpercentage /value)"
-            cpu_usage="${cpu_usage/LoadPercentage'='}"
+            cpu_usage="$(wmic cpu get loadpercentage)"
+            cpu_usage="${cpu_usage/LoadPercentage}"
             cpu_usage="${cpu_usage//[[:space:]]}"
         ;;
 
@@ -1105,8 +1108,8 @@ get_gpu() {
         ;;
 
         "Windows")
-            gpu="$(wmic path Win32_VideoController get caption /value)"
-            gpu="${gpu//Caption'='}"
+            gpu="$(wmic path Win32_VideoController get caption)"
+            gpu="${gpu//Caption}"
         ;;
 
         "Haiku")
@@ -1325,11 +1328,11 @@ get_resolution() {
         ;;
 
         "Windows")
-            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution /value)"
-            width="${width//CurrentHorizontalResolution'='/}"
+            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution)"
+            width="${width//CurrentHorizontalResolution/}"
 
-            height="$(wmic path Win32_VideoController get CurrentVerticalResolution /value)"
-            height="${height//CurrentVerticalResolution'='/}"
+            height="$(wmic path Win32_VideoController get CurrentVerticalResolution)"
+            height="${height//CurrentVerticalResolution/}"
 
             [[ "$(trim "$width")" ]] && resolution="${width}x${height}"
         ;;
@@ -1697,8 +1700,8 @@ get_battery() {
         ;;
 
         "Windows")
-            battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining /value)"
-            battery="${battery/EstimatedChargeRemaining'='}"
+            battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining)"
+            battery="${battery/EstimatedChargeRemaining}"
             [[ "$(trim "$battery")" ]] && battery="%"
         ;;
 
@@ -1771,7 +1774,12 @@ get_install_date() {
         "Linux" | "iPhone OS") install_file="/lost+found" ;;
         "Mac OS X") install_file="/var/log/install.log" ;;
         "Solaris") install_file="/var/sadm/system/logs/install_log" ;;
-        "Windows") install_file="/cygdrive/c/Windows/explorer.exe" ;;
+        "Windows")
+            case "$kernel_name" in
+                "CYGWIN"*) install_file="/cygdrive/c/Windows/explorer.exe" ;;
+                "MSYS"*) install_file="/c/Windows/explorer.exe" ;;
+            esac
+        ;;
         "Haiku") install_file="/boot" ;;
         "BSD" | "MINIX")
             case "$kernel_name" in
@@ -2039,7 +2047,10 @@ get_wallpaper() {
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    image="/cygdrive/c/Documents and Settings/${USER}"
+                    case "$kernel_name" in
+                        "CYGWIN"*) image="/cygdrive/c/Documents and Settings/${USER}" ;;
+                        "MSYS2"*)  image="/c/Documents and Settings/${USER}" ;;
+                    esac
                     image+="/Local Settings/Application Data/Microsoft"
                     image+="/Wallpaper1.bmp"
                 ;;
