@@ -1202,7 +1202,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1216,7 +1216,7 @@ get_song() {
     }
 
     case "${player/*\/}" in
-        "mpd"*)         song="$(mpc current)" ;;
+        "mpd"* | "mopidy"*) song="$(mpc current)" ;;
         "mocp"*)        song="$(mocp -Q "%artist - %song")" ;;
         "google play"*) song="$(gpmdp-remote current)" ;;
         "rhythmbox"*)   song="$(rhythmbox-client --print-playing)" ;;
