@@ -24,6 +24,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added support for SalentOS.
 - Added support for Gentoo FreeBSD.
 - Added support for Joyent SmartOS.
+- Added support for Windows (MSYS2).
 
 
 ## General
