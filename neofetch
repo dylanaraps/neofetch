@@ -1543,51 +1543,18 @@ get_term_font() {
     ((term_run != 1)) && get_term
 
     case "$term" in
-        "urxvt" | "urxvtd" | "xterm")
-            term_font="$(grep -i -F "${term/d}*font" < <(xrdb -query))"
-            term_font="${term_font/*font:}"
-            term_font="$(trim "$term_font")"
-
-            # Xresources has two different font formats, this checks which
-            # one is in use and formats it accordingly.
-            case "$term_font" in
-                *"xft:"*)
-                    term_font="${term_font/xft:}"
-                    term_font="${term_font/:*}"
-                ;;
-
-                "-"*) term_font="$(awk -F '\\-' '{printf $3}' <<< "$term_font")" ;;
-            esac
-        ;;
-
-        "xfce4-terminal")
-            term_font="$(awk -F '=' '/^FontName/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
-        ;;
-
-        "termite")
-            term_font="$(awk -F '= ' '/^font/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/termite/config")"
-        ;;
-
-        "mintty")
-            term_font="$(awk -F '=' '!/^($|#)/ && /Font/ {printf $2; exit}' "${HOME}/.minttyrc")"
+        "alacritty"*)
+            term_font="$(awk -F ':|#' '/normal:/ {getline; print}' "${XDG_CONFIG_HOME}/alacritty/alacritty.yml")"
+            term_font="${term_font/*family:}"
+            term_font="${term_font/$'\n'*}"
         ;;
 
         "Apple_Terminal")
             term_font="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
         ;;
 
-        "terminology")
-            term_font="$(strings "${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg" | awk '/^font\.name$/{print a}{a=$0}')"
-            term_font="${term_font/.pcf}"
-            term_font="${term_font/:*}"
-        ;;
-
         "Hyper"*)
             term_font="$(awk -F "," '/fontFamily/ {a=$1} END{print a}' "${HOME}/.hyper.js" | awk -F "'" '{a=$2} END{print a}')"
-        ;;
-
-        "sakura"*)
-            term_font="$(awk -F '=' '/^font=/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
         ;;
 
         "konsole"*)
@@ -1611,6 +1578,45 @@ get_term_font() {
             profile_filename="$(grep -l "Name=${profile}" "${HOME}"/.local/share/konsole/*.profile)"
             profile_filename="${profile_filename/$'\n'*}"
             [[ "$profile_filename" ]] && term_font="$(awk -F '=|,' '/Font=/ {print $2 " " $3}' "$profile_filename")"
+        ;;
+
+        "mintty")
+            term_font="$(awk -F '=' '!/^($|#)/ && /Font/ {printf $2; exit}' "${HOME}/.minttyrc")"
+        ;;
+
+        "sakura"*)
+            term_font="$(awk -F '=' '/^font=/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
+        ;;
+
+        "terminology")
+            term_font="$(strings "${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg" | awk '/^font\.name$/{print a}{a=$0}')"
+            term_font="${term_font/.pcf}"
+            term_font="${term_font/:*}"
+        ;;
+
+        "termite")
+            term_font="$(awk -F '= ' '/^font/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/termite/config")"
+        ;;
+
+        "urxvt" | "urxvtd" | "xterm")
+            term_font="$(grep -i -F "${term/d}*font" < <(xrdb -query))"
+            term_font="${term_font/*font:}"
+            term_font="$(trim "$term_font")"
+
+            # Xresources has two different font formats, this checks which
+            # one is in use and formats it accordingly.
+            case "$term_font" in
+                *"xft:"*)
+                    term_font="${term_font/xft:}"
+                    term_font="${term_font/:*}"
+                ;;
+
+                "-"*) term_font="$(awk -F '\\-' '{printf $3}' <<< "$term_font")" ;;
+            esac
+        ;;
+
+        "xfce4-terminal")
+            term_font="$(awk -F '=' '/^FontName/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
         ;;
     esac
 }
