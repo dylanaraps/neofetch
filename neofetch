@@ -11,6 +11,7 @@
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+old_ifs="$IFS"
 
 # Speed up script by not using unicode.
 export LC_ALL=C
@@ -996,7 +997,9 @@ get_gpu() {
     case "$os" in
         "Linux")
             # Read GPUs into array.
-            readarray gpus < <(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')
+            IFS=$'\n'
+            gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
+            IFS="$old_ifs"
 
             # Number the GPUs if more than one exists.
             ((${#gpus[@]} > 1)) && gpu_num=1
@@ -1627,24 +1630,44 @@ get_disk() {
     # Get "df" flags.
     case "$os" in
         "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
-        "Minix") df_flags=(-h) ;;
-        *) df_flags=(-P -h) ;;
+        "Mac OS X") df_flags=(-P -h) ;;
+        *) df_flags=(-h) ;;
     esac
 
-    # Get the info for "/".
-    disks=($(df "${df_flags[@]}" /)) || { err "Disk: 'df' exited with error code 1"; return; }
+    # Create an array called 'disks' where each element is a separate line from
+    # df's output. We then unset the first element which removes the column titles.
+    IFS=$'\n'
+    disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}")) && unset 'disks[0]'
+    IFS="$old_ifs"
 
-    # Put it all together.
-    disk_perc="${disks[11]/'%'}"
-    disk="${disks[9]/i} / ${disks[8]/i} (${disk_perc}%)"
+    # Stop here if 'df' fails to print disk info.
+    [[ -z "${disks[@]}" ]] && \
+        { err "Disk: df failed to print the disks, make sure the disk_show array is set properly."; return; }
 
-    # Bar.
-    case "$disk_display" in
-        "bar") disk="$(bar "$disk_perc" "100")" ;;
-        "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
-        "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
-        "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
-    esac
+    for disk in "${disks[@]}"; do
+        # Create a second array and make each element split at whitespace this time.
+        disk_info=($disk)
+        disk_perc="${disk_info[4]/'%'}"
+
+        disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+
+        # Subtitle
+        case "$disk_subtitle" in
+            "name") disk_sub="${disk_info[0]}" ;;
+            *) disk_sub="${disk_info[5]}" ;;
+        esac
+
+        # Bar.
+        case "$disk_display" in
+            "bar") disk="$(bar "$disk_perc" "100")" ;;
+            "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
+            "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
+            "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
+        esac
+
+        # Append '(disk mount point)' to the subtitle.
+        prin "${subtitle} (${disk_sub})" "$disk"
+    done
 }
 
 get_battery() {
@@ -3558,6 +3581,17 @@ INFO:
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
+    --disk_show value           Which disks to display.
+                                Takes: '/', '/dev/sdXX', '/path/to/mount point'
+
+                                NOTE: Multiple values can be given. (--disk_show '/' '/dev/sdc1')
+
+    --disk_subtitle name/mount  What information to append to the Disk subtitle.
+
+                                'name' shows the disk's name (sda1, sda2, etc)
+
+                                'mount' shows the disk's mount point (/, /mnt/Local Disk, etc)
+
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on separate lines
     --install_time on/off       Enable/Disable showing the time in Install Date output.
@@ -3720,6 +3754,18 @@ get_args() {
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
+            ;;
+
+            "--disk_subtitle") disk_subtitle="$2" ;;
+            "--disk_show")
+                unset disk_show
+                for arg in "$@"; do
+                    case "$arg" in
+                        "--disk_show") ;;
+                        "-"*) break ;;
+                        *) disk_show+=($arg)
+                    esac
+                done
             ;;
 
             "--disable")
