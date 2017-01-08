@@ -11,6 +11,7 @@
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+old_ifs="$IFS"
 
 # Speed up script by not using unicode.
 export LC_ALL=C
@@ -993,7 +994,9 @@ get_gpu() {
     case "$os" in
         "Linux")
             # Read GPUs into array.
-            readarray gpus < <(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}')
+            IFS=$'\n'
+            gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
+            IFS="$old_ifs"
 
             # Number the GPUs if more than one exists.
             ((${#gpus[@]} > 1)) && gpu_num=1
@@ -1624,7 +1627,9 @@ get_disk() {
 
     # Create an array called 'disks' where each element is a separate line from
     # df's output. We then unset the first element which removes the column titles.
-    readarray disks < <(df "${df_flags[@]}" "${disk_show[@]:-/}") && unset 'disks[0]'
+    IFS=$'\n'
+    disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}")) && unset 'disks[0]'
+    IFS="$old_ifs"
 
     # Stop here if 'df' fails to print disk info.
     [[ -z "${disks[@]}" ]] && \
