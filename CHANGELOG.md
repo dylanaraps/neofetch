@@ -103,10 +103,8 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - Rewrote function from scratch.
     - The function is `40` lines smaller than before and works on all \[1\] versions of `df` we tested on \[2\].
-- We only show the `root (/)` partition now.
-    - Showing a total of all disks only worked on GNU `df` and we had to hardcode different commands for Distros and Operating Systems that used a different `df`.
-- We're using the same `df` flags across all Operating Systems now.
-    - No more ugly case statements or per distro hardcoding of `df` flags.
+- Added the option/flag `disk_show` which allows you to specify which disks, mount points or directories to show the disk info of. (One per line)
+- Added the option/flag `disk_subtitle` which allows you to specify how we label each disk. (Mount point or Disk name)
 - Removed all percentage calculation since `df` already provides us with the percentage.
 - Warn the user if `df` isn't installed.
 - Fixed broken output if `df` wasn't installed but the function was enabled.
