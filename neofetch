@@ -1625,7 +1625,8 @@ get_term_font() {
 }
 
 get_disk() {
-    type -p df >/dev/null 2>&1 || { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
+    type -p df >/dev/null 2>&1 || \
+        { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
     # Get "df" flags.
     case "$os" in
@@ -1651,7 +1652,7 @@ get_disk() {
 
         disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
 
-        # Subtitle
+        # Subtitle.
         case "$disk_subtitle" in
             "name") disk_sub="${disk_info[0]}" ;;
             *) disk_sub="${disk_info[5]}" ;;
