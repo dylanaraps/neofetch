@@ -1642,6 +1642,12 @@ get_disk() {
 
         disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
 
+        # Subtitle
+        case "$disk_subtitle" in
+            "name") disk_sub="${disk_info[0]}" ;;
+            *) disk_sub="${disk_info[5]}" ;;
+        esac
+
         # Bar.
         case "$disk_display" in
             "bar") disk="$(bar "$disk_perc" "100")" ;;
@@ -1651,7 +1657,7 @@ get_disk() {
         esac
 
         # Append '(disk mount point)' to the subtitle.
-        prin "${subtitle} (${disk_info[5]})" "$disk"
+        prin "${subtitle} (${disk_sub})" "$disk"
     done
 }
 
@@ -3552,6 +3558,13 @@ INFO:
                                 Takes: '/', '/dev/sdXX', '/path/to/mount point'
 
                                 NOTE: Multiple values can be given. (--disk_show '/' '/dev/sdc1')
+
+    --disk_subtitle name/mount  What information to append to the Disk subtitle.
+
+                                'name' shows the disk's name (sda1, sda2, etc)
+
+                                'mount' shows the disk's mount point (/, /mnt/Local Disk, etc)
+
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on separate lines
     --install_time on/off       Enable/Disable showing the time in Install Date output.
@@ -3716,6 +3729,7 @@ get_args() {
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
             ;;
 
+            "--disk_subtitle") disk_subtitle="$2" ;;
             "--disk_show")
                 unset disk_show
                 for arg in "$@"; do

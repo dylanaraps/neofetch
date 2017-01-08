@@ -316,6 +316,21 @@ public_ip_host="http://ident.me"
 #
 disk_show=('/')
 
+# Disk subtitle.
+# What to append to the Disk subtitle.
+#
+# Default: 'mount'
+# Values:  'mount', 'name'
+# Flag:    --disk_subtitle
+#
+# Example:
+# name:   'Disk (/dev/sda1): 74G / 118G (66%)'
+#         'Disk (/dev/sdb2): 74G / 118G (66%)'
+#
+# mount:  'Disk (/): 74G / 118G (66%)'
+#         'Disk (/mnt/Local Disk): 74G / 118G (66%)'
+disk_subtitle="mount"
+
 
 # Song
 
