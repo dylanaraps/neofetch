@@ -137,6 +137,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added support for Guayadeque Player. **[@mstraube](https://github.com/mstraube)**
 - Added support for Yarock. **[@mstraube](https://github.com/mstraube)**
 - Added support for Qmmp. **[@mstraube](https://github.com/mstraube)**
+- Added support for QuodLibet. **[@mstraube](https://github.com/mstraube)**
 - Added support for Mopidy. **[@d3rrial](https://github.com/d3rrial)**
 
 **Terminal Font**<br \>
