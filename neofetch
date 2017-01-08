@@ -2216,6 +2216,7 @@ get_image_size() {
 
     width="${width:-$image_size}"
     height="${height:-$image_size}"
+    height="${height//[[:space:]]}"
 
     text_padding="$((width / font_width + gap + xoffset/font_width))"
 }
