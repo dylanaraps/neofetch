@@ -508,6 +508,11 @@ get_packages() {
         "Haiku")
             packages="$(ls -1 /boot/system/package-links | wc -l)"
         ;;
+
+        "AIX")
+            packages="$(lslpp -J -l -q | grep -cv '^#')"
+            packages="$((packages+=$(rpm -qa | wc -l)))"
+        ;;
     esac
 
     ((packages == 0)) && unset packages
