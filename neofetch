@@ -2580,6 +2580,11 @@ get_distro_colors() {
     #
     # $ascii_distro is the same as $distro.
     case "$ascii_distro" in
+        "AIX"*)
+            set_colors 2 7
+            ascii_file="aix"
+        ;;
+
         "alpine_small")
             set_colors 4 7
             ascii_file="alpine_small"
