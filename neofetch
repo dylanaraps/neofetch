@@ -971,6 +971,9 @@ get_cpu() {
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
 
+    # Trim spaces from core output
+    cores="${cores//[[:space:]]}"
+
     # Add CPU cores to the output.
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
         cpu="${cpu/@/(${cores}) @}"
