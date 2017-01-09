@@ -304,6 +304,9 @@ get_title() {
 }
 
 get_kernel() {
+    # Since AIX is an integrated system, it's better to skip this function altogether
+    [[ "$os" == "AIX" ]] && return
+
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
         "off") kernel="$kernel_name $kernel_version" ;;
