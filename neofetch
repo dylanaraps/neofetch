@@ -1865,6 +1865,7 @@ get_install_date() {
                 *) install_file="/" ;;
             esac
         ;;
+        "AIX") install_file="/var/adm/ras/bosinstlog" ;;
     esac
 
     ls_prog="$(ls --version 2>&1)"
@@ -1873,6 +1874,7 @@ get_install_date() {
         *"crtime"*) install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')" ;; # xpg4 (Solaris)
         *"ACFHLRSZ"*) install_date="$(ls -dl "$install_file" | awk '{printf $6 " " $7}')" ;; # Toybox
         *"GNU coreutils"*) install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')" ;;
+        *"ACFHLNRS"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls
         *) install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
     esac
 
