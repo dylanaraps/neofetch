@@ -1697,7 +1697,8 @@ get_disk() {
     # Create an array called 'disks' where each element is a separate line from
     # df's output. We then unset the first element which removes the column titles.
     IFS=$'\n'
-    disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}")) && unset 'disks[0]'
+    disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}" 2>/dev/null))
+    unset 'disks[0]'
     IFS="$old_ifs"
 
     # Stop here if 'df' fails to print disk info.
