@@ -145,6 +145,8 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added support for Alacritty.
 - Added support for Konsole. **[@mstraube](https://github.com/mstraube)**
 - Added support for Sakura Terminal. **[@mstraube](https://github.com/mstraube)**
+- [Termite] Fixed incorrect font chosen. **[@mstraube](https://github.com/mstraube)**
+- [Termite] Also look at default config. **[@mstraube](https://github.com/mstraube)**
 
 **Battery**<br \>
 
