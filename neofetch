@@ -39,6 +39,7 @@ get_os() {
         "SunOS") os="Solaris" ;;
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
+        "AIX") os="AIX" ;;
         *)
             printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
@@ -188,6 +189,10 @@ get_distro() {
         "Haiku")
             distro="$(uname -sv | awk '{print $1 " " $2}')"
         ;;
+
+        "AIX")
+            distro="AIX $(oslevel)"
+        ;;
     esac
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
@@ -273,6 +278,10 @@ get_model() {
         "Solaris")
             model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
         ;;
+
+        "AIX")
+            model="$(prtconf | awk -F':' '/System Model/ {printf $2}')"
+        ;;
     esac
 
     # Remove dummy OEM info.
@@ -295,6 +304,9 @@ get_title() {
 }
 
 get_kernel() {
+    # Since AIX is an integrated system, it's better to skip this function altogether
+    [[ "$os" == "AIX" ]] && return
+
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
         "off") kernel="$kernel_name $kernel_version" ;;
@@ -339,6 +351,14 @@ get_uptime() {
                 "Solaris")
                     seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
                     seconds="${seconds/.*}"
+                ;;
+
+                "AIX")
+                    t="$(LC_ALL=POSIX ps -o etime= -p 1)"
+                    d="0" h="0"
+                    case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
+                    case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
+                    seconds="$((d*86400 + h*3600 + ${t%%:*}*60 + ${t#*:}))"
                 ;;
             esac
 
@@ -487,6 +507,11 @@ get_packages() {
 
         "Haiku")
             packages="$(ls -1 /boot/system/package-links | wc -l)"
+        ;;
+
+        "AIX")
+            packages="$(lslpp -J -l -q | grep -cv '^#')"
+            packages="$((packages+=$(rpm -qa | wc -l)))"
         ;;
     esac
 
@@ -906,6 +931,22 @@ get_cpu() {
             # Get CPU cores.
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
         ;;
+
+        "AIX")
+            # Get CPU name.
+            cpu="$(prtconf | awk -F':' '/Processor Type/ {printf $2}')"
+
+            # Get CPU speed.
+            speed="$(prtconf | awk -F':' '/Processor Clock Speed/ {printf $2}')"
+            speed="${speed/MHz}"
+            speed="$((speed / 100))"
+
+            # Get CPU cores.
+            case "$cpu_cores" in
+                "logical" | "on") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
+                "physical") cores="$(lparstat -i | awk -F':' '/Active Physical CPUs/ {printf $2}')"
+            esac
+        ;;
     esac
 
     # Fix for speeds under 1ghz.
@@ -934,6 +975,9 @@ get_cpu() {
     cpu="${cpu//with Radeon * Graphics}"
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
+
+    # Trim spaces from core output
+    cores="${cores//[[:space:]]}"
 
     # Add CPU cores to the output.
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
@@ -976,6 +1020,7 @@ get_cpu_usage() {
                     "Solaris") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
                     "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
+                    "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
                 esac
             fi
 
@@ -1095,7 +1140,7 @@ get_gpu() {
             esac
         ;;
 
-        "BSD" | "Solaris" | "MINIX")
+        "BSD" | "Solaris" | "MINIX" | "AIX")
             case "$kernel_name" in
                 "FreeBSD"* | "DragonFly"*)
                     gpu="$(pciconf -lv | grep -B 4 -F "VGA" | grep -F "device")"
@@ -1191,6 +1236,13 @@ get_memory() {
             mem_total="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))"
             mem_used="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
             mem_used="$((${mem_used/max} / 1024 / 1024))"
+        ;;
+
+        "AIX")
+            mem_stat=($(svmon -G -O unit=MB))
+            mem_total="${mem_stat[11]/.*}"
+            mem_free="${mem_stat[16]/.*}"
+            mem_used="$((mem_total - mem_free))"
         ;;
     esac
     memory="${mem_used}MB / ${mem_total}MB"
@@ -1294,7 +1346,7 @@ get_song() {
 
 get_resolution() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris" | "MINIX")
+        "Linux" | "BSD" | "Solaris" | "MINIX" | "AIX")
             if type -p xrandr >/dev/null; then
                 case "$refresh_rate" in
                     "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
@@ -1638,6 +1690,7 @@ get_disk() {
     case "$os" in
         "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
         "Mac OS X") df_flags=(-P -h) ;;
+        "AIX") df_flags=(-P -g) ;;
         *) df_flags=(-h) ;;
     esac
 
@@ -1759,9 +1812,9 @@ get_battery() {
 
 get_local_ip() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris")
+        "Linux" | "BSD" | "Solaris" | "AIX")
             local_ip="$(ip route get 1 | awk '{print $NF;exit}')"
-            [[ -z "$local_ip" ]] && local_ip="$(ifconfig | awk '/broadcast/ {print $2}')"
+            [[ -z "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
         ;;
 
         "MINIX")
@@ -1824,6 +1877,7 @@ get_install_date() {
                 *) install_file="/" ;;
             esac
         ;;
+        "AIX") install_file="/var/adm/ras/bosinstlog" ;;
     esac
 
     ls_prog="$(ls --version 2>&1)"
@@ -1832,6 +1886,7 @@ get_install_date() {
         *"crtime"*) install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')" ;; # xpg4 (Solaris)
         *"ACFHLRSZ"*) install_date="$(ls -dl "$install_file" | awk '{printf $6 " " $7}')" ;; # Toybox
         *"GNU coreutils"*) install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')" ;;
+        *"ACFHLNRS"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls
         *) install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
     esac
 
@@ -2545,6 +2600,11 @@ get_distro_colors() {
     #
     # $ascii_distro is the same as $distro.
     case "$ascii_distro" in
+        "AIX"*)
+            set_colors 2 7
+            ascii_file="aix"
+        ;;
+
         "alpine_small")
             set_colors 4 7
             ascii_file="alpine_small"
