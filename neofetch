@@ -1603,7 +1603,8 @@ get_term_font() {
         ;;
 
         "termite")
-            term_font="$(awk -F '= ' '/^font/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/termite/config")"
+            [[ -f "${XDG_CONFIG_HOME}/termite/config" ]] && config_file="${XDG_CONFIG_HOME}/termite/config"
+            term_font="$(awk -F '= ' '/\[options\]/ {opt=1} /^font/ {if(opt==1) a=$2; opt=0} END{print a}' "/etc/xdg/termite/config" "$config_file")"
         ;;
 
         "urxvt" | "urxvtd" | "rxvt-unicode" | "xterm")
