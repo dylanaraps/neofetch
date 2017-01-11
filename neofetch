@@ -797,7 +797,8 @@ get_cpu() {
                 # Fallback to bios_limit if $speed_type fails.
                 speed="$(< "${speed_dir}/${speed_type}")" || \
                 speed="$(< "${speed_dir}/bios_limit")" || \
-                speed="$(< "${speed_dir}/scaling_max_freq")"
+                speed="$(< "${speed_dir}/scaling_max_freq")" || \
+                speed="$(< "${speed_dir}/cpuinfo_max_freq")"
                 speed="$((speed / 100000))"
 
             else
