@@ -25,16 +25,17 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 ## OS
 
 - Added support for AIX.
+- Added support for AntiX.
 - Added support for GNU/kFreeBSD.
+- Added support for Gentoo FreeBSD.
+- Added support for GrombyangOS.
+- Added support for Joyent SmartOS.
+- Added support for Mer.
 - Added support for MINIX.
 - Added support for MX.
-- Added support for GrombyangOS.
-- Added support for AntiX.
-- Added support for TrueOS.
-- Added support for SalentOS.
 - Added support for Open Source Media Center (OSMC).
-- Added support for Gentoo FreeBSD.
-- Added support for Joyent SmartOS.
+- Added support for SalentOS.
+- Added support for TrueOS.
 - Added support for Windows (MSYS2).
 
 
