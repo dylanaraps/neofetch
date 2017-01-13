@@ -1389,11 +1389,13 @@ get_resolution() {
         ;;
 
         "Windows")
-            local width="$(wmic path Win32_VideoController get CurrentHorizontalResolution)"
-            local width="${width//CurrentHorizontalResolution/}"
+            local width=""
+            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution)"
+            width="${width//CurrentHorizontalResolution/}"
 
-            local height="$(wmic path Win32_VideoController get CurrentVerticalResolution)"
-            local height="${height//CurrentVerticalResolution/}"
+            local height=""
+            height="$(wmic path Win32_VideoController get CurrentVerticalResolution)"
+            height="${height//CurrentVerticalResolution/}"
 
             [[ "$(trim "$width")" ]] && resolution="${width//[[:space:]]}x${height//[[:space:]]}"
         ;;
