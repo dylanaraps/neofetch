@@ -1,3 +1,12 @@
+From the 2.0 release but it applies here too:
+
+> Some of the config options/arguments were renamed/changed and Neofetch will warn you on run if you're using deprecated options (`neofetch -v`). For this release I recommend using this release with a fresh config file so that you can make use of the new documentation.
+
+> I say this every release; This changelog is incomplete, for a full list of changes take a look through the commit history. Neofetch now has an unspoken commit style so reading the commit history won't hurt as much as it used to.
+
+Thanks to everyone who contributed this release, there were a lot of new faces this time around. :)
+
+
 ## Contributors
 
 - **[@konimex](https://github.com/konimex)**
@@ -87,7 +96,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 **GPU**<br \>
 
 - [Linux] Each GPU is now printed on a separate line.
-- [Linux] Added `--cpu_type` / `$cpu_type` which let you display `all`, `dedicated` or `integrated` GPUs.
+- [Linux] Added `--gpu_type` / `$gpu_type` which lets you display `all`, `dedicated` or `integrated` GPUs.
 
 **Memory**<br \>
 
@@ -189,7 +198,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Added Ubuntu-Studio. **[@konimex](https://github.com/konimex)**
 - Fixed bug causing macOS ascii art to be used on other Operating Systems.
 - Display warning about 'ascii' being the new default mode.
-- Removed `ascii_logo_size` in favor of `ascii_distro='{arch,crux,gentoo}_small`.
+- Removed `ascii_logo_size` in favor of `ascii_distro='{arch,crux,gentoo}_small'`.
 - [PCBSD] Use TrueOS ascii art.
 - Added Void Linux (small) and Alpine Linux (small).
 
