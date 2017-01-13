@@ -2878,6 +2878,11 @@ get_distro_colors() {
             ascii_file="manjaro"
         ;;
 
+        "Mer"*)
+            set_colors 4 7 1
+            ascii_file="mer"
+        ;;
+
         "Minix"*)
             set_colors 1 7 3
             ascii_file="minix"
