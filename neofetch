@@ -1389,13 +1389,13 @@ get_resolution() {
         ;;
 
         "Windows")
-            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution)"
-            width="${width//CurrentHorizontalResolution/}"
+            local width="$(wmic path Win32_VideoController get CurrentHorizontalResolution)"
+            local width="${width//CurrentHorizontalResolution/}"
 
-            height="$(wmic path Win32_VideoController get CurrentVerticalResolution)"
-            height="${height//CurrentVerticalResolution/}"
+            local height="$(wmic path Win32_VideoController get CurrentVerticalResolution)"
+            local height="${height//CurrentVerticalResolution/}"
 
-            [[ "$(trim "$width")" ]] && resolution="${width// }x${height// }"
+            [[ "$(trim "$width")" ]] && resolution="${width//[[:space:]]}x${height//[[:space:]]}"
         ;;
 
         "Haiku")
