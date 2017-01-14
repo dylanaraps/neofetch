@@ -1976,7 +1976,7 @@ image_backend() {
 
             get_image_size
             make_thumbnail
-            display_image
+            display_image 2>/dev/null
         ;;
 
         *)
@@ -4019,7 +4019,7 @@ main() {
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_program" == *w3m* ]] && display_image
+    [[ "$image_program" == *w3m* ]] && display_image 2>/dev/null
 
     # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
