@@ -2380,6 +2380,12 @@ display_image() {
             text_padding="$((columns / 2 + gap))"
             zws=
         ;;
+
+        "caca")
+            img2txt -W "$((width / font_width))" -H "$((height / font_height))" --gamma=0.6 "$image" || to_off "Images: catimg failed to display the image."
+            text_padding="$((columns / 2 + gap))"
+            zws=
+        ;;
     esac
 }
 
