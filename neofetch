@@ -2001,9 +2001,9 @@ image_backend() {
 }
 
 get_ascii() {
-    if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
+    if [[ ! -f "$image_source" || "$image_source" == "distro" ]]; then
         # Fallback to distro ascii mode if custom ascii isn't found.
-        [[ "$ascii" != "distro" && ! -f "$ascii" ]] && \
+        [[ "$image_source" != "distro" && ! -f "$image_source" ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
         if [[ -d "/usr/share/neofetch/ascii/distro" ]]; then
@@ -2020,10 +2020,10 @@ get_ascii() {
             ascii_dir="${script_dir}/ascii/distro"
         fi
 
-        ascii="${ascii_dir}/${ascii_file}"
+        image_source="${ascii_dir}/${ascii_file}"
 
         # Fallback to no ascii mode if distro ascii isn't found.
-        [[ ! -f "$ascii" ]] && \
+        [[ ! -f "$image_source" ]] && \
             { to_off "Ascii: Failed to find distro ascii, falling back to no ascii mode."; return; }
     fi
 
@@ -2039,7 +2039,7 @@ get_ascii() {
         line="${line//\\\\/\\}"
         ((${#line} > ascii_length)) && ascii_length="${#line}"
         ((++lines))
-    done < "$ascii"
+    done < "$image_source"
 
     # Colors.
     print="${print//'${c1}'/$c1}"
@@ -2073,6 +2073,8 @@ get_image_source() {
             fi
         ;;
     esac
+
+    err "Image: Using image $image"
 }
 
 get_wallpaper() {
@@ -3896,11 +3898,8 @@ get_args() {
             "--disk_display") disk_display="$2" ;;
 
             # Image
-            "--image")
-                image_source="$2"
-                case "$2" in "-"* | "" | "ascii") image_backend="ascii" ;; esac
-            ;;
-
+            "--image_backend") image_backend="$2" ;;
+            "--image_source") image_source="$2" ;;
             "--image_size" | "--size") image_size="$2" ;;
             "--crop_mode") crop_mode="$2" ;;
             "--crop_offset") crop_offset="$2" ;;
@@ -4002,7 +4001,7 @@ main() {
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_backend" == "image" && "$image_program" == "w3m" ]] && display_image
+    [[ "$image_program" == "w3m-img" ]] && display_image
 
     # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
