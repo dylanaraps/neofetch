@@ -294,6 +294,7 @@ get_model() {
     model="${model//Undefined}"
     model="${model//Default string}"
     model="${model//Not Specified}"
+    model="${model//Type1ProductConfigId}"
 }
 
 get_title() {
