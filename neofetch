@@ -1941,78 +1941,70 @@ get_cols() {
 
 # IMAGES
 
-get_image_backend() {
-    # This function determines which image backend to use
-    # by checking for programs and etc.
-
-    # If the image source isn't "ascii" or "off".
-    if [[ ! "${image_source}" =~ ^(off|ascii)$ ]]; then
-        # If X isn't running force ascii mode here.
-        [[ -z "$DISPLAY" ]] && image_source="ascii"
-
+image_backend() {
+    if [[ ! "${image_backend}" =~ (off|ascii) ]]; then
         # Fallback to ascii mode if imagemagick isn't installed.
-        type -p convert >/dev/null 2>&1 || image_source="ascii"
+        type -p convert >/dev/null 2>&1 || image_backend="ascii"
+
+        # If X isn't running force ascii mode here.
+        [[ -z "$DISPLAY" ]] && image_backend="ascii"
     fi
 
-    # Get the image program.
-    get_image_program
+    case "${image_backend:-off}" in
+        "ascii") get_ascii ;;
+        "off") image_backend="off" ;;
 
-    # If image source is ascii fallback to ascii.
-    if [[ "$image_source" == "ascii" ]]; then
-        to_ascii "Image: \$image_source set to 'ascii', falling back to ascii mode."
-        err "Image: Change \$image_source to another value to use image mode."
-        return
-    fi
+        "iterm2" | "w3m" | "tycat")
+            get_image_source
 
-    case "${image_backend:=image}" in
-        "image")
-            case "$image_source" in
-                "wall"*) get_wallpaper 2>/dev/null ;;
-                "off") image_backend="off"; return ;;
-                *)
-                    if [[ -d "$image_source" ]]; then
-                        files=("${image_source%/}"/*.{png,jpg,jpeg})
-                        printf -v image "%s" "${files[RANDOM % (${#files[@]} - 1)]}"
-                    else
-                        image="$image_source"
-                    fi
-                ;;
-            esac
-
-            # Fallback to ascii mode if image isn't a file.
             if [[ ! -f "$image" ]]; then
-                to_ascii "Image: '$image' doesn't exist, falling back to ascii mode."
+                to_ascii "Image: '$image_source' doesn't exist, falling back to ascii mode."
+                return
+            fi
+
+            get_image_program
+
+            if type -p "$image_program" >/dev/null 2>&1; then
+                err "Image: Drawing images using '$image_program'."
+            else
+                to_ascii "Image: Failed to find image program '$image_program'."
+                err "Image: Falling back to ascii mode."
                 return
             fi
 
             get_term_size
 
-            # Fallback to ascii mode if terminal size wasn't found.
-            if [[ -z "$term_width" ]] || ((term_width == 0)); then
-                to_ascii "Image: Failed to find terminal window size"
-                err "Image: Check the 'Images in the terminal' wiki page for more info"
+            if [[ "$term_width" ]] && ((term_width >= 1)); then
+                clear
+                zws="​ "
+            else
+                unset image_program
+                to_ascii "Image: Failed to find terminal window size."
+                err "Image: Check the 'Images in the terminal' wiki page for more info,"
                 return
             fi
 
             get_image_size
             make_thumbnail
-
-            # If the backend is still set to "image" after
-            # make_thumbnail(), then display the image.
-            [[ "$image_backend" == "image" ]] && display_image
+            display_image
         ;;
 
-        "ascii") get_ascii 2>/dev/null ;;
+        *)
+            err "Image: Unknown image backend specified '$image_backend'."
+            err "Image: Valid backends are: 'iterm2', 'w3m'. 'tycat', 'ascii', 'off'"
+            err "Image: Falling back to ascii mode."
+            get_ascii
+        ;;
     esac
 
-    # Set cursor position next to ascii art.
+    # Set cursor position next image/ascii.
     [[ "$image_backend" != "off" ]] && printf "%b" "\033[${lines:-0}A\033[9999999D"
 }
 
 get_ascii() {
-    if [[ ! -f "$ascii" || "$ascii" == "distro" ]]; then
+    if [[ ! -f "$image_source" || "$image_source" =~ (auto|ascii) ]]; then
         # Fallback to distro ascii mode if custom ascii isn't found.
-        [[ "$ascii" != "distro" && ! -f "$ascii" ]] && \
+        [[ ! "$image_source" =~ (auto|ascii) ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
         if [[ -d "/usr/share/neofetch/ascii/distro" ]]; then
@@ -2029,10 +2021,10 @@ get_ascii() {
             ascii_dir="${script_dir}/ascii/distro"
         fi
 
-        ascii="${ascii_dir}/${ascii_file}"
+        image_source="${ascii_dir}/${ascii_file}"
 
         # Fallback to no ascii mode if distro ascii isn't found.
-        [[ ! -f "$ascii" ]] && \
+        [[ ! -f "$image_source" ]] && \
             { to_off "Ascii: Failed to find distro ascii, falling back to no ascii mode."; return; }
     fi
 
@@ -2048,7 +2040,7 @@ get_ascii() {
         line="${line//\\\\/\\}"
         ((${#line} > ascii_length)) && ascii_length="${#line}"
         ((++lines))
-    done < "$ascii"
+    done < "$image_source"
 
     # Colors.
     print="${print//'${c1}'/$c1}"
@@ -2066,39 +2058,24 @@ get_ascii() {
     export LC_ALL=C
 }
 
-get_image_program() {
-    if [[ -n "$ITERM_PROFILE" ]]; then
-        image_program="iterm2"
+get_image_source() {
+    case "$image_source" in
+        "auto" | "wall"*)
+            get_wallpaper 2>/dev/null
+        ;;
 
-    elif [[ "$(tycat 2>/dev/null)" ]]; then
-        image_program="tycat"
+        *)
+            if [[ -d "$image_source" ]]; then
+                files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif})
+                printf -v image "%s" "${files[RANDOM % (${#files[@]} - 1)]}"
 
-    else
-        image_program="w3m"
-        get_w3m_img_path
-    fi
-}
+            else
+                image="$image_source"
+            fi
+        ;;
+    esac
 
-get_w3m_img_path() {
-    if [[ -x "$w3m_img_path" ]]; then
-        return
-
-    elif [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
-
-    elif [[ -x "/usr/libexec/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/libexec/w3m/w3mimgdisplay"
-
-    elif [[ -x "/usr/lib64/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/lib64/w3m/w3mimgdisplay"
-
-    elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-
-    else
-        image_backend="ascii"
-        err "Image: w3m-img wasn't found on your system, falling back to ascii mode."
-    fi
+    err "Image: Using image $image"
 }
 
 get_wallpaper() {
@@ -2160,6 +2137,33 @@ get_wallpaper() {
 
     # If image is an xml file, don't use it.
     [[ "${image/*\./}" == "xml" ]] && image=""
+}
+
+get_image_program() {
+    if [[ -n "$ITERM_PROFILE" ]]; then
+        image_program="iterm2"
+
+    elif [[ "$(tycat 2>/dev/null)" ]]; then
+        image_program="tycat"
+
+    else
+        # Find w3m-img path.
+        if [[ -x "$w3m_img_path" ]]; then
+            image_program="$w3m_img_path"
+
+        elif [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
+            image_program="/usr/lib/w3m/w3mimgdisplay"
+
+        elif [[ -x "/usr/libexec/w3m/w3mimgdisplay" ]]; then
+            image_program="/usr/libexec/w3m/w3mimgdisplay"
+
+        elif [[ -x "/usr/lib64/w3m/w3mimgdisplay" ]]; then
+            image_program="/usr/lib64/w3m/w3mimgdisplay"
+
+        elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
+            image_program="/usr/libexec64/w3m/w3mimgdisplay"
+        fi
+    fi
 }
 
 get_term_size() {
@@ -2229,12 +2233,6 @@ get_term_size() {
         else
             term_width=0
         fi
-    fi
-
-    # If the terminal size was found correctly.
-    if [[ "$term_width" ]] && ((term_width >= 1)); then
-        clear
-        zws="​ "
     fi
 }
 
@@ -2359,7 +2357,7 @@ make_thumbnail() {
 display_image() {
     image_program="catimg"
     case "$image_program" in
-        "w3m")
+        *"w3m"*)
             # Add a tiny delay to fix issues with images not
             # appearing in specific terminal emulators.
             sleep 0.05
@@ -2390,25 +2388,25 @@ display_image() {
 }
 
 to_ascii() {
+    # Log the error.
+    err "$1"
+
     # This function makes neofetch fallback to ascii mode.
     image_backend="ascii"
 
     # Print the ascii art.
     get_ascii 2>/dev/null
 
-    # Move cursor next to ascii art.
+    # Set cursor position next image/ascii.
     printf "%b" "\033[${lines:-0}A\033[9999999D"
-
-    # Log the error.
-    err "$1"
 }
 
 to_off() {
     # This function makes neofetch fallback to off mode.
+    err "$1"
     image_backend="off"
     text_padding=
     zws=
-    err "$1"
 }
 
 # SCREENSHOT
@@ -3417,7 +3415,7 @@ get_term_padding() {
 
 dynamic_prompt() {
     case "$image_backend" in
-        "image")
+        "iterm2" | "w3m" | "tycat")
             get_term_padding 2>/dev/null
 
             # Calculate image height in terminal cells.
@@ -3720,10 +3718,40 @@ BARS:
                                 Takes: bar, infobar, barinfo, off
     --disk_display mode         Bar mode.
                                 Takes: bar, infobar, barinfo, off
+
+IMAGE BACKEND:
+    --image_backend backend     Which image backend to use.
+                                Possible values: 'ascii', 'w3m', 'iterm2', 'tycat', 'off'
+    --image_source source       Which image or ascii file to use.
+                                Possible values: 'auto', 'ascii', 'wallpaper', '/path/to/img', '/path/to/ascii', '/path/to/dir/'
+    --w3m                       Shortcut to use 'w3m' backend.
+    --iterm2                    Shortcut to use 'iterm2' backend.
+    --tycat                     Shortcut to use 'tycat' backend.
+    --ascii                     Shortcut to use 'ascii' backend.
+    --off                       Shortcut to use 'off' backend.
+
+ASCII:
+    --ascii_colors x x x x x x  Colors to print the ascii art
+    --ascii_distro distro       Which Distro's ascii art to print
+
+                                NOTE: Arch and Ubuntu have 'old' logo variants.
+
+                                NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
+
+                                NOTE: Ubuntu has flavor variants.
+
+                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME', 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
+
+                                NOTE: Alpine, Arch, Crux, Gentoo, OpenBSD, and Void have a smaller logo variant.
+
+                                NOTE: Change this to 'alpine_small', 'arch_small', 'crux_small', 'gentoo_small', 'openbsd_small', and 'void_small' to use the small logos.
+
+    --ascii_bold on/off         Whether or not to bold the ascii logo.
+    -L, --logo                  Hide the info text and only show the ascii logo.
+
+                                Possible values: bar, infobar, barinfo, off
+
 IMAGE:
-    --image type                Image source. Where and what image we display.
-                                Possible values: wall, ascii,
-                                /path/to/img, /path/to/dir/, off
     --size 00px | --size 00%    How to size the image.
                                 Possible values: auto, 00px, 00%, none
     --crop_mode mode            Which crop mode to use
@@ -3743,27 +3771,6 @@ IMAGE:
                                 NOTE: --gap can take a negative value which will move the text closer to the left side.
 
     --clean                     Delete cached files and thumbnails.
-
-ASCII:
-    --ascii value               Where to get the ascii from, Possible values:
-                                distro, /path/to/ascii
-    --ascii_colors x x x x x x  Colors to print the ascii art
-    --ascii_distro distro       Which Distro's ascii art to print
-
-                                NOTE: Arch and Ubuntu have 'old' logo variants.
-
-                                NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
-
-                                NOTE: Ubuntu has flavor variants.
-
-                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME', 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
-
-                                NOTE: Alpine, Arch, Crux, Gentoo, OpenBSD, and Void have a smaller logo variant.
-
-                                NOTE: Change this to 'alpine_small', 'arch_small', 'crux_small', 'gentoo_small', 'openbsd_small', and 'void_small' to use the small logos.
-
-    --ascii_bold on/off         Whether or not to bold the ascii logo.
-    -L, --logo                  Hide the info text and only show the ascii logo.
 
 SCREENSHOT:
     -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
@@ -3820,7 +3827,7 @@ exit 1
 
 get_args() {
     # Check the commandline flags early for '--config'.
-    [[ "$@" =~ --config ]] || get_user_config 2>/dev/null
+    [[ "$@" != *--config* ]] && get_user_config 2>/dev/null
 
     while [[ "$1" ]]; do
         case "$1" in
@@ -3916,12 +3923,16 @@ get_args() {
             "--battery_display") battery_display="$2" ;;
             "--disk_display") disk_display="$2" ;;
 
-            # Image
-            "--image")
-                image_source="$2"
-                case "$2" in "-"* | "" | "ascii") image_backend="ascii" ;; esac
-            ;;
+            # Image backend
+            "--image_backend") image_backend="$2" ;;
+            "--image_source") image_source="$2" ;;
+            "--w3m") image_backend="w3m" ;;
+            "--iterm2") image_backend="iterm2" ;;
+            "--tycat") image_backend="tycat" ;;
+            "--ascii") image_backend="ascii" ;;
+            "--off") image_backend="off" ;;
 
+            # Image options
             "--image_size" | "--size") image_size="$2" ;;
             "--crop_mode") crop_mode="$2" ;;
             "--crop_offset") crop_offset="$2" ;;
@@ -3934,13 +3945,6 @@ get_args() {
                 rm -rf "/Library/Caches/neofetch/"
                 rm -rf "/tmp/neofetch/"
                 exit
-            ;;
-
-            # Ascii
-            "--ascii")
-                image_backend="ascii"
-                ascii="$2"
-                case "$2" in "-"* | "") ascii="distro" ;; esac
             ;;
 
             "--ascii_colors")
@@ -4014,7 +4018,8 @@ main() {
         printf "\033[?25l\033[?7l"
     fi
 
-    get_image_backend
+    # get_image_backend
+    image_backend
     old_functions
     get_cache_dir
     print_info 2>/dev/null
@@ -4022,7 +4027,7 @@ main() {
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_backend" == "image" && "$image_program" == "w3m" ]] && display_image
+    [[ "$image_program" == *w3m* ]] && display_image
 
     # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
