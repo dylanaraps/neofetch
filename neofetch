@@ -2001,9 +2001,9 @@ image_backend() {
 }
 
 get_ascii() {
-    if [[ ! -f "$image_source" || "$image_source" =~ (auto|distro) ]]; then
+    if [[ ! -f "$image_source" || "$image_source" =~ (auto|ascii) ]]; then
         # Fallback to distro ascii mode if custom ascii isn't found.
-        [[ ! "$image_source" =~ (auto|distro) ]] && \
+        [[ ! "$image_source" =~ (auto|ascii) ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
         if [[ -d "/usr/share/neofetch/ascii/distro" ]]; then
