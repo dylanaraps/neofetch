@@ -2058,8 +2058,10 @@ get_image_source() {
 
         *)
             if [[ -d "$image_source" ]]; then
+                shopt -s nullglob
                 files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif})
-                printf -v image "%s" "${files[RANDOM % (${#files[@]} - 1)]}"
+                shopt -u nullglob
+                image="${files[RANDOM % ${#files[@]}]}"
 
             else
                 image="$image_source"
