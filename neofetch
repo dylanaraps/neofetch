@@ -1947,14 +1947,14 @@ image_backend() {
         type -p convert >/dev/null 2>&1 || image_backend="ascii"
 
         # If X isn't running force ascii mode here.
-        [[ -z "$DISPLAY" ]] && image_source="ascii"
+        [[ -z "$DISPLAY" ]] && image_backend="ascii"
     fi
 
     case "${image_backend:-off}" in
         "ascii") get_ascii ;;
         "off") image_backend="off" ;;
 
-        "iterm2" | "w3m-img" | "tycat")
+        "iterm2" | "w3m" | "tycat")
             get_image_source
 
             if [[ ! -f "$image" ]]; then
@@ -1991,7 +1991,7 @@ image_backend() {
         *)
             image_backend="off"
             err "Image: Unknown image backend specified. ($image_backend)"
-            err "Image: Valid backends are: 'iterm2', 'w3m-img'. 'tycat', 'ascii', 'off'"
+            err "Image: Valid backends are: 'iterm2', 'w3m'. 'tycat', 'ascii', 'off'"
             err "Image: Falling back to off mode."
         ;;
     esac
@@ -2001,9 +2001,9 @@ image_backend() {
 }
 
 get_ascii() {
-    if [[ ! -f "$image_source" || "$image_source" == "distro" ]]; then
+    if [[ ! -f "$image_source" || "$image_source" =~ (auto|distro) ]]; then
         # Fallback to distro ascii mode if custom ascii isn't found.
-        [[ "$image_source" != "distro" && ! -f "$image_source" ]] && \
+        [[ ! "$image_source" =~ (auto|distro) ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
         if [[ -d "/usr/share/neofetch/ascii/distro" ]]; then
@@ -2059,7 +2059,7 @@ get_ascii() {
 
 get_image_source() {
     case "$image_source" in
-        "wall"*)
+        "auto" | "wall"*)
             get_wallpaper 2>/dev/null
         ;;
 
@@ -3398,7 +3398,7 @@ get_term_padding() {
 
 dynamic_prompt() {
     case "$image_backend" in
-        "iterm2" | "w3m-img" | "tycat")
+        "iterm2" | "w3m" | "tycat")
             get_term_padding 2>/dev/null
 
             # Calculate image height in terminal cells.
@@ -4001,7 +4001,7 @@ main() {
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_program" == "w3m-img" ]] && display_image
+    [[ "$image_program" == *w3m* ]] && display_image
 
     # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
