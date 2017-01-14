@@ -2339,20 +2339,17 @@ make_thumbnail() {
 display_image() {
     case "$image_backend" in
         "caca")
-            img2txt -W "$((width / font_width))" -H "$((height / font_height))" --gamma=0.6 "$image" || to_off "Images: catimg failed to display the image."
-            text_padding="$((columns / 2 + gap))"
+            img2txt -W "$((width / font_width)))" -H "$((height / font_height))" --gamma=0.6 "$image" || to_off "Images: catimg failed to display the image."
             zws=
         ;;
 
         "catimg")
-            catimg -w "$columns" "$image" || to_off "Images: catimg failed to display the image."
-            text_padding="$((columns / 2 + gap))"
+            catimg -w "$((columns + gap))" "$image" || to_off "Images: catimg failed to display the image."
             zws=
         ;;
 
         "jp2a")
             jp2a --width="$((width / font_width))" --colors "$image" || to_off "Images: jp2a failed to display the image."
-            text_padding="$((columns / 2 + gap))"
             zws=
         ;;
 
