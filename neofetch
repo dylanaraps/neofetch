@@ -2357,6 +2357,7 @@ make_thumbnail() {
 }
 
 display_image() {
+    image_program="catimg"
     case "$image_program" in
         "w3m")
             # Add a tiny delay to fix issues with images not
@@ -2372,6 +2373,12 @@ display_image() {
 
         "tycat")
             tycat "$image" || to_off "Images: tycat failed to display the image."
+        ;;
+
+        "catimg")
+            catimg -w "$columns" "$image" || to_off "Images: catimg failed to display the image."
+            text_padding="$((columns / 2 + gap))"
+            zws=
         ;;
     esac
 }
@@ -2548,7 +2555,7 @@ get_underline() {
 
 get_line_break() {
     # Print it directly.
-    printf "%s\n" "${zws} "
+    printf "%s\n" "${zws}"
 
     # Calculate info height.
     ((++info_height))
