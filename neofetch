@@ -1978,6 +1978,7 @@ image_backend() {
                 clear
                 zws="​ "
             else
+                unset image_program
                 to_ascii "Image: Failed to find terminal window size"
                 err "Image: Check the 'Images in the terminal' wiki page for more info"
                 return
