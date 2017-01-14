@@ -3897,9 +3897,16 @@ get_args() {
             "--battery_display") battery_display="$2" ;;
             "--disk_display") disk_display="$2" ;;
 
-            # Image
+            # Image backend
             "--image_backend") image_backend="$2" ;;
             "--image_source") image_source="$2" ;;
+            "--w3m") image_backend="w3m" ;;
+            "--iterm2") image_backend="iterm2" ;;
+            "--tycat") image_backend="tycat" ;;
+            "--ascii") image_backend="ascii" ;;
+            "--off") image_backend="off" ;;
+
+            # Image options
             "--image_size" | "--size") image_size="$2" ;;
             "--crop_mode") crop_mode="$2" ;;
             "--crop_offset") crop_offset="$2" ;;
