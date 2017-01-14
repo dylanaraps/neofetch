@@ -1958,7 +1958,7 @@ image_backend() {
             get_image_source
 
             if [[ ! -f "$image" ]]; then
-                to_ascii "Image: \'$image_source\' doesn't exist, falling back to ascii mode."
+                to_ascii "Image: '$image_source' doesn't exist, falling back to ascii mode."
                 return
             fi
 
@@ -2379,6 +2379,9 @@ to_ascii() {
 
     # Print the ascii art.
     get_ascii 2>/dev/null
+
+    # Set cursor position next image/ascii.
+    printf "%b" "\033[${lines:-0}A\033[9999999D"
 
     # Log the error.
     err "$1"
@@ -3810,7 +3813,7 @@ exit 1
 
 get_args() {
     # Check the commandline flags early for '--config'.
-    [[ "$@" =~ --config ]] || get_user_config 2>/dev/null
+    [[ "$@" != *--config* ]] && get_user_config 2>/dev/null
 
     while [[ "$1" ]]; do
         case "$1" in
