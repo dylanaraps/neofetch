@@ -3930,13 +3930,6 @@ get_args() {
                 exit
             ;;
 
-            # Ascii
-            "--ascii")
-                image_backend="ascii"
-                ascii="$2"
-                case "$2" in "-"* | "") ascii="distro" ;; esac
-            ;;
-
             "--ascii_colors")
                 unset ascii_colors
                 for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
