@@ -2133,10 +2133,7 @@ get_wallpaper() {
 
 get_w3m_img_path() {
     # Find w3m-img path.
-    if [[ -x "$w3m_img_path" ]]; then
-        w3m_img_path="$w3m_img_path"
-
-    elif [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
+    if [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
 
     elif [[ -x "/usr/libexec/w3m/w3mimgdisplay" ]]; then
@@ -2147,6 +2144,9 @@ get_w3m_img_path() {
 
     elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
+
+    else
+        err "Image: w3m-img wasn't found on your system"
     fi
 }
 
