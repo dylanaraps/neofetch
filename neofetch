@@ -1941,54 +1941,45 @@ get_cols() {
 
 # IMAGES
 
-get_image_backend() {
-    # This function determines which image backend to use
-    # by checking for programs and etc.
+image_backend() {
+    if [[ ! "${image_backend}" =~ (off|ascii) ]]; then
+        # Fallback to ascii mode if imagemagick isn't installed.
+        type -p convert >/dev/null 2>&1 || image_backend="ascii"
 
-    # If the image source isn't "ascii" or "off".
-    if [[ ! "${image_source}" =~ ^(off|ascii)$ ]]; then
         # If X isn't running force ascii mode here.
         [[ -z "$DISPLAY" ]] && image_source="ascii"
-
-        # Fallback to ascii mode if imagemagick isn't installed.
-        type -p convert >/dev/null 2>&1 || image_source="ascii"
     fi
 
-    # Get the image program.
-    get_image_program
+    image_backend="off"
 
-    # If image source is ascii fallback to ascii.
-    if [[ "$image_source" == "ascii" ]]; then
-        to_ascii "Image: \$image_source set to 'ascii', falling back to ascii mode."
-        err "Image: Change \$image_source to another value to use image mode."
-        return
-    fi
+    case "${image_backend:-off}" in
+        "ascii") get_ascii ;;
+        "off") image_backend="off" ;;
 
-    case "${image_backend:=image}" in
-        "image")
-            case "$image_source" in
-                "wall"*) get_wallpaper 2>/dev/null ;;
-                "off") image_backend="off"; return ;;
-                *)
-                    if [[ -d "$image_source" ]]; then
-                        files=("${image_source%/}"/*.{png,jpg,jpeg})
-                        printf -v image "%s" "${files[RANDOM % (${#files[@]} - 1)]}"
-                    else
-                        image="$image_source"
-                    fi
-                ;;
-            esac
+        "iterm2" | "w3m-img" | "tycat")
+            get_image_source
 
-            # Fallback to ascii mode if image isn't a file.
             if [[ ! -f "$image" ]]; then
-                to_ascii "Image: '$image' doesn't exist, falling back to ascii mode."
+                to_ascii "Image: \'$image_source\' doesn't exist, falling back to ascii mode."
+                return
+            fi
+
+            get_image_program
+
+            if type -p "$image_program" >/dev/null 2>&1; then
+                err "Image: Drawing images using $image_program"
+            else
+                to_ascii "Image: Failed to find image program. ($image_program)"
+                err "Image: Falling back to ascii mode."
                 return
             fi
 
             get_term_size
 
-            # Fallback to ascii mode if terminal size wasn't found.
-            if [[ -z "$term_width" ]] || ((term_width == 0)); then
+            if [[ "$term_width" ]] && ((term_width >= 1)); then
+                clear
+                zws="​ "
+            else
                 to_ascii "Image: Failed to find terminal window size"
                 err "Image: Check the 'Images in the terminal' wiki page for more info"
                 return
@@ -1996,16 +1987,18 @@ get_image_backend() {
 
             get_image_size
             make_thumbnail
-
-            # If the backend is still set to "image" after
-            # make_thumbnail(), then display the image.
-            [[ "$image_backend" == "image" ]] && display_image
+            display_image
         ;;
 
-        "ascii") get_ascii 2>/dev/null ;;
+        *)
+            image_backend="off"
+            err "Image: Unknown image backend specified. ($image_backend)"
+            err "Image: Valid backends are: 'iterm2', 'w3m-img'. 'tycat', 'ascii', 'off'"
+            err "Image: Falling back to off mode."
+        ;;
     esac
 
-    # Set cursor position next to ascii art.
+    # Set cursor position next image/ascii.
     [[ "$image_backend" != "off" ]] && printf "%b" "\033[${lines:-0}A\033[9999999D"
 }
 
@@ -2066,39 +2059,22 @@ get_ascii() {
     export LC_ALL=C
 }
 
-get_image_program() {
-    if [[ -n "$ITERM_PROFILE" ]]; then
-        image_program="iterm2"
+get_image_source() {
+    case "$image_source" in
+        "wall"*)
+            get_wallpaper 2>/dev/null
+        ;;
 
-    elif [[ "$(tycat 2>/dev/null)" ]]; then
-        image_program="tycat"
+        *)
+            if [[ -d "$image_source" ]]; then
+                files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif})
+                printf -v image "%s" "${files[RANDOM % (${#files[@]} - 1)]}"
 
-    else
-        image_program="w3m"
-        get_w3m_img_path
-    fi
-}
-
-get_w3m_img_path() {
-    if [[ -x "$w3m_img_path" ]]; then
-        return
-
-    elif [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
-
-    elif [[ -x "/usr/libexec/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/libexec/w3m/w3mimgdisplay"
-
-    elif [[ -x "/usr/lib64/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/lib64/w3m/w3mimgdisplay"
-
-    elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-
-    else
-        image_backend="ascii"
-        err "Image: w3m-img wasn't found on your system, falling back to ascii mode."
-    fi
+            else
+                image="$image_source"
+            fi
+        ;;
+    esac
 }
 
 get_wallpaper() {
@@ -2160,6 +2136,33 @@ get_wallpaper() {
 
     # If image is an xml file, don't use it.
     [[ "${image/*\./}" == "xml" ]] && image=""
+}
+
+get_image_program() {
+    if [[ -n "$ITERM_PROFILE" ]]; then
+        image_program="iterm2"
+
+    elif [[ "$(tycat 2>/dev/null)" ]]; then
+        image_program="tycat"
+
+    else
+        # Find w3m-img path.
+        if [[ -x "$w3m_img_path" ]]; then
+            image_program="$w3m_img_path"
+
+        elif [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
+            image_program="/usr/lib/w3m/w3mimgdisplay"
+
+        elif [[ -x "/usr/libexec/w3m/w3mimgdisplay" ]]; then
+            image_program="/usr/libexec/w3m/w3mimgdisplay"
+
+        elif [[ -x "/usr/lib64/w3m/w3mimgdisplay" ]]; then
+            image_program="/usr/lib64/w3m/w3mimgdisplay"
+
+        elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
+            image_program="/usr/libexec64/w3m/w3mimgdisplay"
+        fi
+    fi
 }
 
 get_term_size() {
@@ -2229,12 +2232,6 @@ get_term_size() {
         else
             term_width=0
         fi
-    fi
-
-    # If the terminal size was found correctly.
-    if [[ "$term_width" ]] && ((term_width >= 1)); then
-        clear
-        zws="​ "
     fi
 }
 
@@ -2358,7 +2355,7 @@ make_thumbnail() {
 
 display_image() {
     case "$image_program" in
-        "w3m")
+        *"w3m"*)
             # Add a tiny delay to fix issues with images not
             # appearing in specific terminal emulators.
             sleep 0.05
@@ -2382,9 +2379,6 @@ to_ascii() {
 
     # Print the ascii art.
     get_ascii 2>/dev/null
-
-    # Move cursor next to ascii art.
-    printf "%b" "\033[${lines:-0}A\033[9999999D"
 
     # Log the error.
     err "$1"
@@ -3404,7 +3398,7 @@ get_term_padding() {
 
 dynamic_prompt() {
     case "$image_backend" in
-        "image")
+        "iterm2" | "w3m-img" | "tycat")
             get_term_padding 2>/dev/null
 
             # Calculate image height in terminal cells.
@@ -4001,7 +3995,8 @@ main() {
         printf "\033[?25l\033[?7l"
     fi
 
-    get_image_backend
+    # get_image_backend
+    image_backend
     old_functions
     get_cache_dir
     print_info 2>/dev/null
