@@ -1942,9 +1942,11 @@ get_cols() {
 # IMAGES
 
 image_backend() {
-    if [[ ! "${image_backend}" =~ (off|ascii) ]]; then
-        # Fallback to ascii mode if imagemagick isn't installed.
-        type -p convert >/dev/null 2>&1 || image_backend="ascii"
+    if [[ ! "$image_backend" =~ (off|ascii) ]]; then
+        if ! type -p convert >/dev/null 2>&1; then
+            image_backend="ascii"
+            err "Image: Imagemagick not found, falling back to ascii mode."
+        fi
 
         # If X isn't running force ascii mode here.
         [[ -z "$DISPLAY" ]] && image_backend="ascii"
@@ -1981,7 +1983,7 @@ image_backend() {
 
         *)
             err "Image: Unknown image backend specified '$image_backend'."
-            err "Image: Valid backends are: 'iterm2', 'w3m'. 'tycat', 'ascii', 'off'"
+            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2', 'off', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
             get_ascii
         ;;
@@ -2339,17 +2341,17 @@ make_thumbnail() {
 display_image() {
     case "$image_backend" in
         "caca")
-            img2txt -W "$((width / font_width)))" -H "$((height / font_height))" --gamma=0.6 "$image" || to_off "Images: catimg failed to display the image."
+            img2txt -W "$((width / font_width)))" -H "$((height / font_height))" --gamma=0.6 "$image" || to_off "Image: catimg failed to display the image."
             zws=
         ;;
 
         "catimg")
-            catimg -w "$((columns + gap))" "$image" || to_off "Images: catimg failed to display the image."
+            catimg -w "$((columns + gap))" "$image" || to_off "Image: catimg failed to display the image."
             zws=
         ;;
 
         "jp2a")
-            jp2a --width="$((width / font_width))" --colors "$image" || to_off "Images: jp2a failed to display the image."
+            jp2a --width="$((width / font_width))" --colors "$image" || to_off "Image: jp2a failed to display the image."
             zws=
         ;;
 
@@ -2358,7 +2360,7 @@ display_image() {
         ;;
 
         "tycat")
-            tycat "$image" || to_off "Images: tycat failed to display the image."
+            tycat "$image" || to_off "Image: tycat failed to display the image."
         ;;
 
         "w3m")
@@ -2368,7 +2370,7 @@ display_image() {
             # appearing in specific terminal emulators.
             sleep 0.05
             printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$image\n4;\n3;" |\
-            "${w3m_img_path:-false}" -bg "$background_color" >/dev/null & 2>&1 || to_off "Images: w3m-img failed to display the image."
+            "${w3m_img_path:-false}" -bg "$background_color" >/dev/null & 2>&1 || to_off "Image: w3m-img failed to display the image."
         ;;
     esac
 }
