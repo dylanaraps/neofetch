@@ -1965,9 +1965,9 @@ image_backend() {
             get_image_program
 
             if type -p "$image_program" >/dev/null 2>&1; then
-                err "Image: Drawing images using $image_program"
+                err "Image: Drawing images using '$image_program'."
             else
-                to_ascii "Image: Failed to find image program '$image_program'"
+                to_ascii "Image: Failed to find image program '$image_program'."
                 err "Image: Falling back to ascii mode."
                 return
             fi
@@ -1979,8 +1979,8 @@ image_backend() {
                 zws="​ "
             else
                 unset image_program
-                to_ascii "Image: Failed to find terminal window size"
-                err "Image: Check the 'Images in the terminal' wiki page for more info"
+                to_ascii "Image: Failed to find terminal window size."
+                err "Image: Check the 'Images in the terminal' wiki page for more info,"
                 return
             fi
 
@@ -1990,10 +1990,10 @@ image_backend() {
         ;;
 
         *)
-            image_backend="off"
-            err "Image: Unknown image backend specified. ($image_backend)"
+            err "Image: Unknown image backend specified '$image_backend'."
             err "Image: Valid backends are: 'iterm2', 'w3m'. 'tycat', 'ascii', 'off'"
-            err "Image: Falling back to off mode."
+            err "Image: Falling back to ascii mode."
+            get_ascii
         ;;
     esac
 
