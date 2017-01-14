@@ -2374,6 +2374,9 @@ display_image() {
 }
 
 to_ascii() {
+    # Log the error.
+    err "$1"
+
     # This function makes neofetch fallback to ascii mode.
     image_backend="ascii"
 
@@ -2382,17 +2385,14 @@ to_ascii() {
 
     # Set cursor position next image/ascii.
     printf "%b" "\033[${lines:-0}A\033[9999999D"
-
-    # Log the error.
-    err "$1"
 }
 
 to_off() {
     # This function makes neofetch fallback to off mode.
+    err "$1"
     image_backend="off"
     text_padding=
     zws=
-    err "$1"
 }
 
 # SCREENSHOT
