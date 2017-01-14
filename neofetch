@@ -1967,7 +1967,7 @@ image_backend() {
             if type -p "$image_program" >/dev/null 2>&1; then
                 err "Image: Drawing images using $image_program"
             else
-                to_ascii "Image: Failed to find image program. ($image_program)"
+                to_ascii "Image: Failed to find image program '$image_program'"
                 err "Image: Falling back to ascii mode."
                 return
             fi
