@@ -1950,8 +1950,6 @@ image_backend() {
         [[ -z "$DISPLAY" ]] && image_source="ascii"
     fi
 
-    image_backend="off"
-
     case "${image_backend:-off}" in
         "ascii") get_ascii ;;
         "off") image_backend="off" ;;
