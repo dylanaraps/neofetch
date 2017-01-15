@@ -701,3 +701,13 @@ scrot_name="neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png"
 # NOTE: If you'd like another image host to be added to Neofetch.
 #       Open an issue on github.
 image_host="teknik"
+
+
+# Misc Options
+
+
+# Config version.
+#
+# NOTE: Don't change this value, neofetch reads this to determine
+# how to handle backwards compatibility.
+config_version="2.1.0"
