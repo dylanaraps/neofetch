@@ -2559,6 +2559,7 @@ get_info() {
                 info="\"$(trim "${output/*:}")\""
                 printf "%s\n" "${output/:*}: $info"
             done
+            printf "%s\n" "Version: \"2.1.0\""
         ;;
 
         "json")
