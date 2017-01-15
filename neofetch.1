@@ -36,7 +36,7 @@ Possible values: name, speed, tiny, on, off
 .TP
 \fB\-\-cpu_cores\fR type
 Whether or not to display the number of CPU cores
-Takes: logical, physical, off
+Possible values: logical, physical, off
 .IP
 NOTE: 'physical' doesn't work on BSD.
 .TP
@@ -92,7 +92,7 @@ Enable/Disable showing $SHELL version
 .TP
 \fB\-\-disk_show\fR value
 Which disks to display.
-Takes: '/', '/dev/sdXX', '/path/to/mount point'
+Possible values: '/', '/dev/sdXX', '/path/to/mount point'
 .IP
 NOTE: Multiple values can be given. (\fB\-\-disk_show\fR '/' '/dev/sdc1')
 .TP
@@ -158,19 +158,19 @@ Set in this order: elapsed, total
 .TP
 \fB\-\-cpu_display\fR mode
 Bar mode.
-Takes: bar, infobar, barinfo, off
+Possible values: bar, infobar, barinfo, off
 .TP
 \fB\-\-memory_display\fR mode
 Bar mode.
-Takes: bar, infobar, barinfo, off
+Possible values: bar, infobar, barinfo, off
 .TP
 \fB\-\-battery_display\fR mode
 Bar mode.
-Takes: bar, infobar, barinfo, off
+Possible values: bar, infobar, barinfo, off
 .TP
 \fB\-\-disk_display\fR mode
 Bar mode.
-Takes: bar, infobar, barinfo, off
+Possible values: bar, infobar, barinfo, off
 .SS "IMAGE:"
 .TP
 \fB\-\-image\fR type
@@ -184,7 +184,7 @@ Possible values: auto, 00px, 00%, none
 .TP
 \fB\-\-crop_mode\fR mode
 Which crop mode to use
-Takes the values: normal, fit, fill
+Possible values: normal, fit, fill
 .TP
 \fB\-\-crop_offset\fR value
 Change the crop offset for normal mode.
@@ -247,8 +247,8 @@ Take a screenshot, if path is left empty the screenshot function will use $scrot
 \fB\-su\fR, \fB\-\-upload\fR \fI\,/path/to/img\/\fP
 Same as \fB\-\-scrot\fR but uploads the scrot to a website.
 .TP
-\fB\-\-image_host\fR
-Website to upload scrots to. Takes: imgur, teknik
+\fB\-\-image_host\fR imgur/teknik
+Website to upload scrots to.
 .TP
 \fB\-\-scrot_cmd\fR cmd
 Screenshot program to launch

@@ -3631,7 +3631,7 @@ INFO:
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores type            Whether or not to display the number of CPU cores
-                                Takes: logical, physical, off
+                                Possible values: logical, physical, off
 
                                 NOTE: 'physical' doesn't work on BSD.
 
@@ -3664,7 +3664,7 @@ INFO:
     --shell_path on/off         Enable/Disable showing \$SHELL path
     --shell_version on/off      Enable/Disable showing \$SHELL version
     --disk_show value           Which disks to display.
-                                Takes: '/', '/dev/sdXX', '/path/to/mount point'
+                                Possible values: '/', '/dev/sdXX', '/path/to/mount point'
 
                                 NOTE: Multiple values can be given. (--disk_show '/' '/dev/sdc1')
 
@@ -3701,13 +3701,13 @@ BARS:
     --bar_colors num num        Colors to make the bar.
                                 Set in this order: elapsed, total
     --cpu_display mode          Bar mode.
-                                Takes: bar, infobar, barinfo, off
+                                Possible values: bar, infobar, barinfo, off
     --memory_display mode       Bar mode.
-                                Takes: bar, infobar, barinfo, off
+                                Possible values: bar, infobar, barinfo, off
     --battery_display mode      Bar mode.
-                                Takes: bar, infobar, barinfo, off
+                                Possible values: bar, infobar, barinfo, off
     --disk_display mode         Bar mode.
-                                Takes: bar, infobar, barinfo, off
+                                Possible values: bar, infobar, barinfo, off
 IMAGE:
     --image type                Image source. Where and what image we display.
                                 Possible values: wall, ascii,
@@ -3715,7 +3715,7 @@ IMAGE:
     --size 00px | --size 00%    How to size the image.
                                 Possible values: auto, 00px, 00%, none
     --crop_mode mode            Which crop mode to use
-                                Takes the values: normal, fit, fill
+                                Possible values: normal, fit, fill
     --crop_offset value         Change the crop offset for normal mode.
                                 Possible values: northwest, north, northeast,
                                 west, center, east, southwest, south, southeast
@@ -3757,7 +3757,7 @@ SCREENSHOT:
     -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
                                 shot function will use \$scrot_dir and \$scrot_name.
     -su, --upload /path/to/img  Same as --scrot but uploads the scrot to a website.
-    --image_host                Website to upload scrots to. Takes: imgur, teknik
+    --image_host imgur/teknik   Website to upload scrots to.
     --scrot_cmd cmd             Screenshot program to launch
 
 OTHER:
