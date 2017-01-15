@@ -1089,6 +1089,7 @@ get_gpu() {
                 fi
 
                 subtitles+=("${1}${gpu_num}")
+                func_names+=("gpu")
                 info+=("$gpu")
             done
 
@@ -1338,9 +1339,11 @@ get_song() {
 
         if [[ "$song" != "$artist" ]]; then
             subtitles+=("Artist" "Song")
+            func_names+=("artist" "song")
             info+=("$artist" "$song")
         else
             subtitles+=("${1}")
+            func_names+=("song")
             info+=("$song")
         fi
 
@@ -1734,9 +1737,9 @@ get_disk() {
 
         # Append '(disk mount point)' to the subtitle.
         subtitles+=("${1} (${disk_sub})")
+        func_names+=("disk")
         info+=("$disk")
     done
-
     multi_line="on"
 }
 
@@ -1763,6 +1766,7 @@ get_battery() {
                 esac
 
                 subtitles+=("${1}${bat: -1}")
+                func_names+=("battery")
                 info+=("$battery")
             done
             multi_line="on"
@@ -2494,14 +2498,14 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
-    func_names+=("${2:-$1}")
 
     # Call the function.
-    "get_${func_names[-1]}" "$1" 2>/dev/null
+    get_"${2:-${1}}" "$1" 2>/dev/null
 
     # If the function printed multiple lines of info,
     # dont append it to the array.
     if [[ -z "$multi_line" ]]; then
+        func_names+=("${2:-${1}}")
         subtitles+=("$1")
         info+=("$(trim "${!func_names[-1]}")")
     fi
@@ -2512,7 +2516,6 @@ info() {
 get_info() {
     print_info
 
-    info_format="nf"
     case "$info_format" in
         "tab")
             for i in "${!info[@]}"; do
@@ -2532,9 +2535,8 @@ get_info() {
 
         "yaml")
             for i in "${!info[@]}"; do
-                echo "${subtitles[$i]}"
-                continue
-                [[ "${info[$i]}" ]] && printf "%s\n" "${func_names[$i]}: \"${info[$i]}\""
+                [[ "${info[$i]}" && "${func_names[$i]}" != "cols" ]] && \
+                    printf "%s\n" "${func_names[$i]}: \"${info[$i]}\""
             done
         ;;
 
@@ -3892,6 +3894,10 @@ get_args() {
             ;;
 
             # Text Formatting
+            "--info_format") info_format="$2"; image_source="off" ;;
+            "--json") info_format="json"; image_source="off" ;;
+            "--yaml") info_format="yaml"; image_source="off" ;;
+            "--tab")  info_format="tab"; image_source="off" ;;
             "--underline") underline_enabled="$2" ;;
             "--underline_char") underline_char="$2" ;;
             "--bold") bold="$2" ;;
