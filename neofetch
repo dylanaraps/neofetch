@@ -49,7 +49,7 @@ get_os() {
 }
 
 get_distro() {
-    [[ "$distro" ]] && return
+    [[ "$distro" ]] && { info+=("${subtitle}: $distro"); return; }
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
@@ -295,6 +295,8 @@ get_model() {
     model="${model//Default string}"
     model="${model//Not Specified}"
     model="${model//Type1ProductConfigId}"
+
+    [[ "$model" ]] && info+=("${subtitle}: $model")
 }
 
 get_title() {
@@ -302,6 +304,8 @@ get_title() {
     hostname="${HOSTNAME:-$(hostname)}"
     title="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
     length="$((${#user} + ${#hostname} + 1))"
+
+    [[ "$user" ]] && info+=("${title}")
 }
 
 get_kernel() {
@@ -320,6 +324,8 @@ get_kernel() {
             *) unset kernel ;;
         esac
     fi
+
+    [[ "$kernel" ]] && info+=("${subtitle}: $kernel")
 }
 
 get_uptime() {
@@ -405,6 +411,8 @@ get_uptime() {
             uptime="${uptime//,}"
         ;;
     esac
+
+    [[ "$uptime" ]] && info+=("${subtitle}: $uptime")
 }
 
 get_packages() {
@@ -517,6 +525,8 @@ get_packages() {
     esac
 
     ((packages == 0)) && unset packages
+
+    [[ "$packages" ]] && info+=("${subtitle}: $packages")
 }
 
 get_shell() {
@@ -548,6 +558,8 @@ get_shell() {
         shell="${shell/options*}"
         shell="${shell/\(*\)}"
     fi
+
+    [[ "$shell" ]] && info+=("${subtitle}: $shell")
 }
 
 get_de() {
@@ -605,6 +617,8 @@ get_de() {
 
     # Log that the function was run.
     de_run=1
+
+    [[ "$de" ]] && info+=("${subtitle}: $de")
 }
 
 get_wm() {
@@ -635,6 +649,8 @@ get_wm() {
 
     # Log that the function was run.
     wm_run=1
+
+    [[ "$wm" ]] && info+=("${subtitle}: $wm")
 }
 
 get_wm_theme() {
@@ -758,6 +774,8 @@ get_wm_theme() {
 
     wm_theme="$(trim_quotes "$wm_theme")"
     wm_theme="$(uppercase "$wm_theme")"
+
+    [[ "$wm_theme" ]] && info+=("${subtitle}: $wm_theme")
 }
 
 get_cpu() {
@@ -1002,6 +1020,8 @@ get_cpu() {
             [[ "$cpu_shorthand" == "tiny" ]] && cpu="${cpu/@*}"
         ;;
     esac
+
+    [[ "$cpu" ]] && info+=("${subtitle}: $cpu")
 }
 
 get_cpu_usage() {
@@ -1038,6 +1058,8 @@ get_cpu_usage() {
         "barinfo") cpu_usage="$(bar "$cpu_usage" 100) ${cpu_usage}%" ;;
         *) cpu_usage="${cpu_usage}%" ;;
     esac
+
+    [[ "$cpu_usage" ]] && info+=("${subtitle}: $cpu_usage")
 }
 
 get_gpu() {
@@ -1090,7 +1112,7 @@ get_gpu() {
                     gpu="${gpu/Intel }"
                 fi
 
-                prin "${subtitle}${gpu_num}" "$gpu"
+                info+=("${subtitle}${gpu_name}: $gpu")
                 ((++gpu_num))
             done
 
@@ -1172,6 +1194,8 @@ get_gpu() {
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
     fi
+
+    [[ "$gpu" ]] && info+=("${subtitle}: $gpu")
 }
 
 get_memory() {
@@ -1255,6 +1279,8 @@ get_memory() {
         "infobar") memory="${memory} $(bar "${mem_used}" "${mem_total}")" ;;
         "barinfo") memory="$(bar "${mem_used}" "${mem_total}") ${memory}" ;;
     esac
+
+    [[ "$memory" ]] && info+=("${subtitle}: $memory")
 }
 
 get_song() {
@@ -1338,11 +1364,13 @@ get_song() {
         song="${song/$artist - }"
 
         if [[ "$song" != "$artist" ]]; then
-            prin "Artist" "$artist"
-            prin "Song" "$song"
+            info+=("Artist: $artist")
+            info+=("Song: $song")
         else
-            prin "$subtitle" "$song"
+            info+=("${subtitle}: $song")
         fi
+    else
+        [[ "$song" ]] && info+=("${subtitle}: $song")
     fi
 }
 
@@ -1409,6 +1437,8 @@ get_resolution() {
     esac
 
     resolution="${resolution%,*}"
+
+    [[ "$resolution" ]] && info+=("${subtitle}: $resolution")
 }
 
 get_style() {
@@ -1538,6 +1568,8 @@ get_style() {
             theme="${theme/ '[GTK2/3]'}"
         fi
     fi
+
+    [[ "$theme" ]] && info+=("${subtitle}: $theme")
 }
 
 get_theme() {
@@ -1601,6 +1633,8 @@ get_term() {
 
     # Log that the function was run.
     term_run=1
+
+    [[ "$term" ]] && info+=("${subtitle}: $term")
 }
 
 get_term_font() {
@@ -1684,6 +1718,8 @@ get_term_font() {
             term_font="$(awk -F '=' '/^FontName/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
         ;;
     esac
+
+    [[ "$term_font" ]] && info+=("${subtitle}: $term_font")
 }
 
 get_disk() {
@@ -1731,7 +1767,7 @@ get_disk() {
         esac
 
         # Append '(disk mount point)' to the subtitle.
-        prin "${subtitle} (${disk_sub})" "$disk"
+        info+=("${subtitle} (${disk_sub}): $disk")
     done
 }
 
@@ -1757,7 +1793,7 @@ get_battery() {
                     "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
                 esac
 
-                prin "${subtitle}${bat: -1}" "$battery"
+                info+=("${subtitle}${bat: -1}: $battery")
             done
             return
         ;;
@@ -1813,6 +1849,8 @@ get_battery() {
         "infobar") battery="${battery} $(bar "${battery/'%'*}" 100)" ;;
         "barinfo") battery="$(bar "${battery/'%'*}" 100) ${battery}" ;;
     esac
+
+    [[ "$battery" ]] && info+=("${subtitle}: $battery")
 }
 
 get_local_ip() {
@@ -1841,6 +1879,8 @@ get_local_ip() {
             local_ip="${local_ip/', Bcast'}"
         ;;
     esac
+
+    [[ "$local_ip" ]] && info+=("${subtitle}: $local_ip")
 }
 
 get_public_ip() {
@@ -1856,11 +1896,15 @@ get_public_ip() {
     if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
         public_ip="$(wget -T 10 -qO- "$public_ip_host")"
     fi
+
+    [[ "$public_ip" ]] && info+=("${subtitle}: $public_ip")
 }
 
 get_users() {
     users="$(who | awk '!seen[$1]++ {printf $1 ", "}')"
     users="${users%\,*}"
+
+    [[ "$users" ]] && info+=("${subtitle}: $users")
 }
 
 get_install_date() {
@@ -1899,6 +1943,8 @@ get_install_date() {
     install_date="${install_date%:*}"
     install_date=($install_date)
     install_date="$(convert_time "${install_date[@]}")"
+
+    [[ "$install_date" ]] && info+=("${subtitle}: $install_date")
 }
 
 get_cols() {
@@ -1930,7 +1976,7 @@ get_cols() {
         cols="${cols%%'nl'}"
         cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
 
-        printf "%b\n" "\033[${text_padding}C${zws}${cols}"
+        info+=("$cols")
         info_height="$((info_height+=block_height+2))"
     fi
 
@@ -2491,32 +2537,33 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
-    # Save subtitle value.
     subtitle="$1"
+    "get_${2:-${1}}" 2>/dev/null
+}
 
-    # Make sure that $prin is unset.
-    unset -v prin
+get_info() {
+    # Run the functions.
+    print_info
 
-    # Call the function.
-    "get_${2:-$1}" 2>/dev/null
+    case "$info_format" in
+        "tab")
+            for output in "${info[@]}"; do
+                printf "%b\n" "$(trim "${output/':'/\\t}")"
+            done
+        ;;
 
-    # If the get_func function called 'prin' directly, stop here.
-    [[ "$prin" ]] && return
+        *)
+            for output in "${info[@]}"; do
+                if [[ "${output/*:*/:}" == ":" ]]; then
+                    prin "${output/:*}" "${output/*:}"
+                else
+                    prin "${output/:*}"
+                fi
+            done
+        ;;
+    esac
 
-    # Update the variable.
-    output="$(trim "${!2:-${!1}}")"
-
-    if [[ "$2" && "${output// }" ]]; then
-        length="$((${#1} + ${#output} + 2))"
-        prin "$1" "$output"
-
-    elif [[ "${output// }" ]]; then
-        [[ -z "$length" ]] && length="${#output}"
-        prin "$output"
-
-    else
-        err "Info: Couldn't detect ${1}."
-    fi
+    info_height+="${#info[@]}"
 }
 
 prin() {
@@ -2524,38 +2571,25 @@ prin() {
     [[ -z "$2" ]] && local subtitle_color="$info_color"
 
     # Format the output.
-    string="${1//$'\033[0m'}${2:+: $2}"
-    string="$(trim "$string")"
+    output="$(trim "$2")"
+    string="${1//$'\033[0m'}${output:+: ${output}}"
     string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
 
-    # Print the info.
+    # print the info.
     printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset} "
-
-    # Calculate info height.
-    ((++info_height))
-
-    # Log that prin was used.
-    prin=1
 }
 
 get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
-        underline="${underline_color}${underline// /$underline_char}"
+        info+=("${underline_color}${underline// /$underline_char}")
         unset -v length
     fi
 }
 
 get_line_break() {
-    # Print it directly.
-    printf "%s\n" "${zws} "
-
-    # Calculate info height.
-    ((++info_height))
-
-    # Tell info() that we printed manually.
-    prin=1
+    info+=("$zws")
 }
 
 get_bold() {
@@ -3876,6 +3910,7 @@ get_args() {
             ;;
 
             # Text Formatting
+            "--info_format") info_format="$2" ;;
             "--underline") underline_enabled="$2" ;;
             "--underline_char") underline_char="$2" ;;
             "--bold") bold="$2" ;;
@@ -4005,7 +4040,7 @@ main() {
     get_image_backend
     old_functions
     get_cache_dir
-    print_info 2>/dev/null
+    get_info
     dynamic_prompt
 
     # w3m-img: Draw the image a second time to fix
