@@ -2552,6 +2552,29 @@ get_info() {
             done
         ;;
 
+        "yaml")
+            for output in "${info[@]}"; do
+                [[ "$output" != *:* ]] && continue
+
+                info="\"$(trim "${output/*:}")\""
+                printf "%s\n" "${output/:*}: $info"
+            done
+        ;;
+
+        "json")
+            printf "%s\n" "{"
+            for output in "${info[@]}"; do
+                [[ "$output" != *:* ]] && continue
+
+                subtitle="${output/:*}"
+                info="$(trim "${output/*:}")"
+
+                printf "\t%s\n" "\"${subtitle}\": \"${info}\","
+            done
+            printf "\t%s\n" "\"Version\": \"2.1.0\""
+            printf "%s\n" "}"
+        ;;
+
         *)
             for output in "${info[@]}"; do
                 if [[ "${output/*:*/:}" == ":" ]]; then
@@ -2576,7 +2599,7 @@ prin() {
     string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
 
-    # print the info.
+    # Print the info.
     printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset} "
 }
 
@@ -4029,7 +4052,7 @@ main() {
     get_distro_colors
 
     # Minix doesn't support these sequences.
-    if [[ "$TERM" != "minix" ]]; then
+    if [[ "$TERM" != "minix" && ! "$info_format" =~ (tab|yaml|json) ]]; then
         # If the script exits for any reason, unhide the cursor.
         trap 'printf "\033[?25h\033[?7h"' EXIT
 
