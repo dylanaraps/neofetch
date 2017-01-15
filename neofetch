@@ -1088,8 +1088,8 @@ get_gpu() {
                     gpu="${gpu/Intel }"
                 fi
 
+                subtitles+=("${1}${gpu_num}")
                 info+=("$gpu")
-                ((++gpu_num))
             done
 
             multi_line="on"
@@ -1337,9 +1337,10 @@ get_song() {
         song="${song/$artist - }"
 
         if [[ "$song" != "$artist" ]]; then
-            info+=("$artist")
-            info+=("$song")
+            subtitles+=("Artist" "Song")
+            info+=("$artist" "$song")
         else
+            subtitles+=("${1}")
             info+=("$song")
         fi
 
@@ -1732,8 +1733,10 @@ get_disk() {
         esac
 
         # Append '(disk mount point)' to the subtitle.
+        subtitles+=("${1} (${disk_sub})")
         info+=("$disk")
     done
+
     multi_line="on"
 }
 
@@ -1759,6 +1762,7 @@ get_battery() {
                     "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
                 esac
 
+                subtitles+=("${1}${bat: -1}")
                 info+=("$battery")
             done
             multi_line="on"
@@ -2491,15 +2495,17 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
-    subtitles+=("$1")
     func_names+=("${2:-$1}")
 
     # Call the function.
-    "get_${2:-$1}" 2>/dev/null
+    "get_${func_names[-1]}" "$1" 2>/dev/null
 
     # If the function printed multiple lines of info,
     # dont append it to the array.
-    [[ -z "$multi_line" ]] && info+=("$(trim "${!2:-${!1}}")")
+    if [[ -z "$multi_line" ]]; then
+        subtitles+=("$1")
+        info+=("$(trim "${!func_names[-1]}")")
+    fi
 
     unset -v multi_line
 }
@@ -2527,6 +2533,8 @@ get_info() {
 
         "yaml")
             for i in "${!info[@]}"; do
+                echo "${subtitles[$i]}"
+                continue
                 [[ "${info[$i]}" ]] && printf "%s\n" "${func_names[$i]}: \"${info[$i]}\""
             done
         ;;
