@@ -300,8 +300,6 @@ get_model() {
 get_title() {
     user="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}"
     hostname="${HOSTNAME:-$(hostname)}"
-    title="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
-    length="$((${#user} + ${#hostname} + 1))"
 }
 
 get_kernel() {
@@ -1090,10 +1088,11 @@ get_gpu() {
                     gpu="${gpu/Intel }"
                 fi
 
-                prin "${subtitle}${gpu_num}" "$gpu"
+                info+=("$gpu")
                 ((++gpu_num))
             done
 
+            multi_line="on"
             return
         ;;
 
@@ -1338,11 +1337,13 @@ get_song() {
         song="${song/$artist - }"
 
         if [[ "$song" != "$artist" ]]; then
-            prin "Artist" "$artist"
-            prin "Song" "$song"
+            info+=("$artist")
+            info+=("$song")
         else
-            prin "$subtitle" "$song"
+            info+=("$song")
         fi
+
+        multi_line="on"
     fi
 }
 
@@ -1731,8 +1732,9 @@ get_disk() {
         esac
 
         # Append '(disk mount point)' to the subtitle.
-        prin "${subtitle} (${disk_sub})" "$disk"
+        info+=("$disk")
     done
+    multi_line="on"
 }
 
 get_battery() {
@@ -1757,8 +1759,9 @@ get_battery() {
                     "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
                 esac
 
-                prin "${subtitle}${bat: -1}" "$battery"
+                info+=("$battery")
             done
+            multi_line="on"
             return
         ;;
 
@@ -1930,14 +1933,11 @@ get_cols() {
         cols="${cols%%'nl'}"
         cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
 
-        printf "%b\n" "\033[${text_padding}C${zws}${cols}"
+        info+=("$cols")
         info_height="$((info_height+=block_height+2))"
     fi
 
     unset -v blocks blocks2 cols
-
-    # Tell info() that we printed manually.
-    prin=1
 }
 
 # IMAGES
@@ -2491,71 +2491,82 @@ scrot_program() {
 # TEXT FORMATTING
 
 info() {
-    # Save subtitle value.
-    subtitle="$1"
-
-    # Make sure that $prin is unset.
-    unset -v prin
+    subtitles+=("$1")
+    func_names+=("${2:-$1}")
 
     # Call the function.
     "get_${2:-$1}" 2>/dev/null
 
-    # If the get_func function called 'prin' directly, stop here.
-    [[ "$prin" ]] && return
+    # If the function printed multiple lines of info,
+    # dont append it to the array.
+    [[ -z "$multi_line" ]] && info+=("$(trim "${!2:-${!1}}")")
 
-    # Update the variable.
-    output="$(trim "${!2:-${!1}}")"
-
-    if [[ "$2" && "${output// }" ]]; then
-        length="$((${#1} + ${#output} + 2))"
-        prin "$1" "$output"
-
-    elif [[ "${output// }" ]]; then
-        [[ -z "$length" ]] && length="${#output}"
-        prin "$output"
-
-    else
-        err "Info: Couldn't detect ${1}."
-    fi
+    unset -v multi_line
 }
 
-prin() {
-    # If $2 doesn't exist we format $1 as info.
-    [[ -z "$2" ]] && local subtitle_color="$info_color"
+get_info() {
+    print_info
 
-    # Format the output.
-    string="${1//$'\033[0m'}${2:+: $2}"
-    string="$(trim "$string")"
-    string="${string/:/${reset}${colon_color}:${info_color}}"
-    string="${subtitle_color}${bold}${string}"
+    info_format="yaml"
+    case "$info_format" in
+        "tab")
+            for i in "${!info[@]}"; do
+                [[ "${info[$i]}" ]] && printf "%s\t%s\n" "${func_names[$i]}" "${info[$i]}"
+            done
+        ;;
 
-    # Print the info.
-    printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset} "
+        "json")
+            printf "%s\n" "{"
 
-    # Calculate info height.
-    ((++info_height))
+            for i in "${!info[@]}"; do
+                [[ "${info[$i]}" ]] && printf "\t%s\n" "\"${func_names[$i]}\": \"${info[$i]}\""
+            done
 
-    # Log that prin was used.
-    prin=1
-}
+            printf "%s\n" "}"
+        ;;
 
-get_underline() {
-    if [[ "$underline_enabled" == "on" ]]; then
-        printf -v underline "%${length}s"
-        underline="${underline_color}${underline// /$underline_char}"
-        unset -v length
-    fi
-}
+        "yaml")
+            for i in "${!info[@]}"; do
+                [[ "${info[$i]}" ]] && printf "%s\n" "${func_names[$i]}: \"${info[$i]}\""
+            done
+        ;;
 
-get_line_break() {
-    # Print it directly.
-    printf "%s\n" "${zws} "
+        *)
+            for i in "${!info[@]}"; do
+                # Line length
+                length="$((${#subtitles[$i]} + ${#info[$i]} + 2))"
 
-    # Calculate info height.
-    ((++info_height))
+                # Format the info.
+                case "${func_names[$i]}" in
+                    "title") string="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}" ;;
+                    "line_break") string="${zws}" ;;
+                    "cols") string="${info[$i]}" ;;
+                    "underline")
+                        if [[ "$underline_enabled" == "on" ]]; then
+                            printf -v underline "%${length}s"
+                            string="${underline_color}${underline// /$underline_char}"
+                        fi
+                    ;;
 
-    # Tell info() that we printed manually.
-    prin=1
+                    *)
+                        if [[ "${info[$i]}" ]]; then
+                            string="${subtitles[$i]}: ${info[$i]}"
+                            string="${string/:/${reset}${colon_color}:${info_color}}"
+                            string="${subtitle_color}${bold}${string}"
+                        else
+                            err "Info: Failed to detect ${func_names[$i]}"
+                            continue
+                        fi
+                    ;;
+                esac
+
+                # Print the info.
+                printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset} "
+                unset -v length
+                ((++info_height))
+            done
+        ;;
+    esac
 }
 
 get_bold() {
@@ -3445,7 +3456,6 @@ old_functions() {
         get_termfont() { get_term_font; termfont="$term_font"; }
         get_localip() { get_local_ip; localip="$local_ip"; }
         get_publicip() { get_public_ip; publicip="$public_ip"; }
-        get_linebreak() { get_line_break; linebreak="$line_break"; }
     fi
 
     get_birthday() { get_install_date; birthday="$install_date"; }
@@ -4005,7 +4015,9 @@ main() {
     get_image_backend
     old_functions
     get_cache_dir
-    print_info 2>/dev/null
+    get_info
+    # print_info 2>/dev/null
+
     dynamic_prompt
 
     # w3m-img: Draw the image a second time to fix
