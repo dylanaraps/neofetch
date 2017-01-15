@@ -3933,8 +3933,13 @@ get_args() {
                 colors+=(7 7 7 7 7 7)
             ;;
 
-            # Text Formatting
+            # Info formats
             "--info_format") info_format="$2" ;;
+            "--json") info_format="json" ;;
+            "--yaml") info_format="yaml" ;;
+            "--tab") info_format="tab" ;;
+
+            # Text Formatting
             "--underline") underline_enabled="$2" ;;
             "--underline_char") underline_char="$2" ;;
             "--bold") bold="$2" ;;
