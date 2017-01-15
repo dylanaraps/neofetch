@@ -3969,8 +3969,8 @@ get_args() {
             # Other
             "--config")
                 case "$2" in
-                    "none" | "off" | "") config="off" ;;
-                    *) config_file="$2"; config="on"; get_user_config 2>/dev/null ;;
+                    "none" | "off" | "") ;;
+                    *) config_file="$2"; get_user_config 2>/dev/null ;;
                 esac
             ;;
             "-v") verbose="on" ;;
