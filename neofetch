@@ -1937,11 +1937,10 @@ get_cols() {
         cols="${cols%%'nl'}"
         cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
 
-        info+=("$cols")
         info_height="$((info_height+=block_height+2))"
     fi
 
-    unset -v blocks blocks2 cols
+    unset -v blocks blocks2
 }
 
 # IMAGES
@@ -2513,7 +2512,7 @@ info() {
 get_info() {
     print_info
 
-    info_format="yaml"
+    info_format="nf"
     case "$info_format" in
         "tab")
             for i in "${!info[@]}"; do
@@ -2547,8 +2546,8 @@ get_info() {
                 # Format the info.
                 case "${func_names[$i]}" in
                     "title") string="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}" ;;
-                    "line_break") string="${zws}" ;;
-                    "cols") string="${info[$i]}" ;;
+                    "line_break") string="$zws" ;;
+                    "cols") string="$cols" ;;
                     "underline")
                         if [[ "$underline_enabled" == "on" ]]; then
                             printf -v underline "%${length}s"
@@ -2568,7 +2567,6 @@ get_info() {
                     ;;
                 esac
 
-                # Print the info.
                 printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset} "
                 unset -v length
                 ((++info_height))
