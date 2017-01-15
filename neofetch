@@ -3934,10 +3934,10 @@ get_args() {
             ;;
 
             # Info formats
-            "--info_format") info_format="$2" ;;
-            "--json") info_format="json" ;;
-            "--yaml") info_format="yaml" ;;
-            "--tab") info_format="tab" ;;
+            "--info_format") info_format="$2"; image_source="off" ;;
+            "--json") info_format="json"; image_source="off" ;;
+            "--yaml") info_format="yaml"; image_source="off" ;;
+            "--tab") info_format="tab"; image_source="off" ;;
 
             # Text Formatting
             "--underline") underline_enabled="$2" ;;
