@@ -1974,7 +1974,7 @@ get_cols() {
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
-        cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
+        cols="${cols//nl/\\n${text_padding:+\\033[${text_padding}C}${zws}}"
 
         info+=("$cols")
         info_height="$((info_height+=block_height+2))"
