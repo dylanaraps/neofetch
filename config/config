@@ -717,29 +717,6 @@ image_host="teknik"
 # Config Options
 
 
-# Enable/Disable config file
-#
-# Default: 'on'
-# Values:  'on', 'off'
-# Flag:    --config
-# --config off, none
-#
-# Note: This option is only used when neofetch sources this config
-# as a default config and NOT as a user config. Changing this in
-# your user config won't actually do anything.
-config="on"
-
-# Path to custom config file location
-#
-# Default: '${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config'
-# Values:  '/path/to/config'
-# Flag:    --config_file
-#
-# Note: This option is only used when neofetch sources this config
-# as a default config and NOT as a user config. Changing this in
-# your user config won't actually do anything.
-config_file="${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config"
-
 # Config version.
 #
 # NOTE: Don't change this value, neofetch reads this to determine
