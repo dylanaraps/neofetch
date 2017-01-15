@@ -564,7 +564,7 @@ get_shell() {
 
 get_de() {
     # If function was run, stop here.
-    ((de_run == 1)) && return
+    ((de_run == 1)) && { info+=("${subtitle}: $de"); return; }
 
     case "$os" in
         "Mac OS X") de="Aqua" ;;
@@ -576,7 +576,7 @@ get_de() {
         ;;
 
         *)
-            ((wm_run != 1)) && get_wm
+            ((wm_run != 1)) && get_wm -s
 
             if [[ "$XDG_CURRENT_DESKTOP" ]]; then
                 de="${XDG_CURRENT_DESKTOP/'X-'}"
@@ -618,12 +618,12 @@ get_de() {
     # Log that the function was run.
     de_run=1
 
-    [[ "$de" ]] && info+=("${subtitle}: $de")
+    [[ "$de" && "$1" != "-s" ]] && info+=("${subtitle}: $de")
 }
 
 get_wm() {
     # If function was run, stop here.
-    ((wm_run == 1)) && return
+    ((wm_run == 1)) && { info+=("${subtitle}: $wm"); return; }
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
@@ -650,12 +650,12 @@ get_wm() {
     # Log that the function was run.
     wm_run=1
 
-    [[ "$wm" ]] && info+=("${subtitle}: $wm")
+    [[ "$wm" && "$1" != "-s" ]] && info+=("${subtitle}: $wm")
 }
 
 get_wm_theme() {
-    ((wm_run != 1)) && get_wm
-    ((de_run != 1)) && get_de
+    ((wm_run != 1)) && get_wm -s
+    ((de_run != 1)) && get_de -s
 
     case "$wm"  in
         "E16") wm_theme="$(awk -F "= " '/theme.name/ {print $2}' "${HOME}/.e16/e_config--0.0.cfg")";;
@@ -1447,7 +1447,7 @@ get_style() {
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
-        ((de_run != 1)) && get_de
+        ((de_run != 1)) && get_de -s
 
         # Check for DE Theme.
         case "$de" in
@@ -1606,7 +1606,7 @@ get_font() {
 
 get_term() {
     # If function was run, stop here.
-    ((term_run == 1)) && return
+    ((term_run == 1)) && { info+=("${subtitle}: $term"); return; }
 
     # Workaround for macOS systems that
     # don't support the block below.
@@ -1634,11 +1634,11 @@ get_term() {
     # Log that the function was run.
     term_run=1
 
-    [[ "$term" ]] && info+=("${subtitle}: $term")
+    [[ "$term" && "$1" != "-s" ]] && info+=("${subtitle}: $term")
 }
 
 get_term_font() {
-    ((term_run != 1)) && get_term
+    ((term_run != 1)) && get_term -s
 
     case "$term" in
         "alacritty"*)
@@ -2152,7 +2152,7 @@ get_wallpaper() {
     case "$os" in
         "Linux" | "BSD" | "Solaris" | "MINIX" | "AIX")
             # Get DE if user has disabled the function.
-            ((de_run != 1)) && get_de
+            ((de_run != 1)) && get_de -s
 
             case "$de" in
                 "MATE"*) image="$(gsettings get org.mate.background picture-filename)" ;;
@@ -2578,8 +2578,12 @@ get_info() {
 
         *)
             for output in "${info[@]}"; do
-                if [[ "${output/*:*/:}" == ":" ]]; then
-                    prin "${output/:*}" "${output/*:}"
+                if [[ "$output" == *:* ]]; then
+                    if [[ "$(trim "${output/*:}")" ]]; then
+                        prin "${output/:*}" "${output/*:}"
+                    else
+                        err "Info: Failed to detect ${output/:*}"
+                    fi
                 else
                     prin "${output/:*}"
                 fi
@@ -3452,7 +3456,7 @@ get_term_padding() {
     #
     # Note: This issue only seems to affect
     # URxvt.
-    ((term_run != 1)) && get_term
+    ((term_run != 1)) && get_term -s
 
     case "$term" in
         "URxvt"*)
