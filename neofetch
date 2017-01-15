@@ -2587,7 +2587,7 @@ get_info() {
         ;;
     esac
 
-    info_height+="${#info[@]}"
+    info_height="$((info_height+="${#info[@]}"))"
 }
 
 prin() {
