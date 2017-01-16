@@ -1648,6 +1648,12 @@ get_term_font() {
             term_font="$(awk -F '=' '!/^($|#)/ && /Font/ {printf $2; exit}' "${HOME}/.minttyrc")"
         ;;
 
+        "pantheon"*)
+            term_font="$(gsettings get org.pantheon.terminal.settings font)"
+            [[ -z "${term_font//\'}" ]] && term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
+            term_font="$(trim_quotes "$term_font")"
+        ;;
+
         "sakura"*)
             term_font="$(awk -F '=' '/^font=/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
         ;;
