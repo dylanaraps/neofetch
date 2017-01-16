@@ -542,6 +542,15 @@ image_source="ascii"
 # Values:  'dir'
 thumbnail_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch"
 
+# Image loop
+# Setting this to on will make neofetch redraw the image constantly until
+# Ctrl+C is pressed. This fixes display issues in some terminal emulators.
+#
+# Default:  'off'
+# Values:   'on', 'off'
+# Flag:     --loop
+image_loop="off"
+
 # w3m-img path
 # Only works with the w3m backend.
 #

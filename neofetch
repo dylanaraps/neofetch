@@ -3731,6 +3731,7 @@ IMAGE:
                                 NOTE: --gap can take a negative value which will move the text closer to the left side.
 
     --clean                     Delete cached files and thumbnails.
+    --loop                      Redraw the image constantly until Ctrl+C is used. This fixes issues in some terminals emulators when using image mode.
 
 ASCII:
     --ascii value               Where to get the ascii from, Possible values:
@@ -3917,6 +3918,7 @@ get_args() {
             "--yoffset") yoffset="$2" ;;
             "--background_color" | "--bg_color") background_color="$2" ;;
             "--gap") gap="$2" ;;
+            "--loop") image_loop="on" ;;
             "--clean")
                 [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
@@ -4017,6 +4019,10 @@ main() {
 
     # Show error messages.
     [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
+
+    # If `--loop` was used, constantly redraw the image.
+    [[ "$image_backend" == "image" ]] && \
+        while [[ "$image_loop" == "on" ]]; do display_image; sleep 1s; done
 
     return 0
 }
