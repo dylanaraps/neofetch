@@ -597,9 +597,9 @@ get_de() {
         "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
         *"TDE_FULL_SESSION"*) de="Trinity" ;;
         *"MUFFIN"* | "Cinnamon") de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
-        *"xfce4"*) de="XFCE4" ;;
-        *"xfce5"*) de="XFCE5" ;;
-        *"xfce"*)  de="XFCE" ;;
+        *"xfce4"*) de="Xfce4" ;;
+        *"xfce5"*) de="Xfce5" ;;
+        *"xfce"*)  de="Xfce" ;;
         *"mate"*)  de="MATE" ;;
     esac
 
@@ -2110,7 +2110,7 @@ get_wallpaper() {
 
             case "$de" in
                 "MATE"*) image="$(gsettings get org.mate.background picture-filename)" ;;
-                "XFCE"*) image="$(xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image)" ;;
+                "Xfce"*) image="$(xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/workspace0/last-image)" ;;
 
                 "Cinnamon"*)
                     image="$(gsettings get org.cinnamon.desktop.background picture-uri)"
