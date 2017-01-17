@@ -3918,16 +3918,15 @@ get_args() {
             "--disk_display") disk_display="$2" ;;
 
             # Image backend
-            "--image_backend") image_backend="$2" ;;
-            "--image_source") image_source="$2" ;;
-            "--ascii") image_backend="ascii" ;;
-            "--caca") image_backend="caca" ;;
-            "--catimg") image_backend="catimg" ;;
-            "--jp2a") image_backend="jp2a" ;;
-            "--iterm2") image_backend="iterm2" ;;
-            "--off") image_backend="off" ;;
-            "--tycat") image_backend="tycat" ;;
-            "--w3m") image_backend="w3m" ;;
+            "--backend") image_backend="$2" ;;
+            "--source") image_source="$2" ;;
+            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--tycat" | "--w3m")
+                image_backend="${1/--}"
+                case "$2" in
+                    "-"* | "") ;;
+                    *) image_source="$2" ;;
+                esac
+            ;;
 
             # Image options
             "--image_size" | "--size") image_size="$2" ;;
