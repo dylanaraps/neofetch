@@ -188,7 +188,6 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 - [iTerm2] Fixed blank images.
 - Fixed bug where image mode would attempt to run in a TTY.
-
 - All of the image/ascii backend handling was rewritten. Backend and Image/File/Directory selection is universal now and should make usage easier.
     - Added `catimg` backend.
     - Added `caca` backend.
