@@ -14,6 +14,7 @@ Thanks to everyone who contributed this release, there were a lot of new faces t
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - **[@z33ky](https://github.com/z33ky)**
 - **[@mstraube](https://github.com/mstraube)**
+- **[@gavinhungry](https://github.com/gavinhungry)**
 
 ## IRC
 
@@ -58,6 +59,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Fixed artifacts when using line-breaks in TTYs.
 - Removed executable permission from config files. BASH can source them even if they're un-executable.
 - All errors are now sent to `stderr`.
+- Renamed `XFCE` --> `Xfce`. **[@gavinhungry](https://github.com/gavinhungry)**
 
 ## Info
 
