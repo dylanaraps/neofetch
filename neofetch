@@ -3261,8 +3261,8 @@ get_full_path() {
     [[ -f "${PWD}/${1/*\/}" ]] && { printf "%s\n" "${PWD}/${1/*\/}"; return; }
 
     if ! cd "${1%/*}"; then
-        printf "%s\n" "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
-        printf "%s\n" "       Check that the directory exists or try another directory."
+        err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
+        err "       Check that the directory exists or try another directory."
         exit 1
     fi
 
