@@ -46,6 +46,8 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 - Travis now runs [shellcheck](https://github.com/koalaman/shellcheck) on every commit and pull request.
     - We've had to exclude around 10 lint errors, see this wiki page for why we did this:
     - https://github.com/dylanaraps/neofetch/wiki/Shellcheck-Exclusions
+- Neofetch now supports relative path values when specifying the location to images, ascii files and config files.
+    - For example, `neofetch --w3m Pictures/Wallpapers/10.jpg` and `neofetch --w3m 10.jpg` now work.
 - Optimize usage of get_de(), get_wm() and get_term().
     - We were calling these multiple times, we now check to see if they were run previously.
 - Optimize info caching, only check for cache files in scripts that use caching.
