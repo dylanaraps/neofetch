@@ -42,6 +42,7 @@ Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any ques
 
 ## General
 
+- The config file is now installed to `/etc/neofetch/config` and acts as a system-wide config file for neofetch. Editing this file will make the changes available to all users on the system. Those packaging Neofetch **without** using the Makefile will need to make changes to support this.
 - Travis now runs [shellcheck](https://github.com/koalaman/shellcheck) on every commit and pull request.
     - We've had to exclude around 10 lint errors, see this wiki page for why we did this:
     - https://github.com/dylanaraps/neofetch/wiki/Shellcheck-Exclusions
