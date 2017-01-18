@@ -2017,7 +2017,7 @@ get_ascii() {
 
         else
             [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
-            ascii_dir="${script_dir}/ascii/distro"
+            ascii_dir="${script_dir%/*}/ascii/distro"
         fi
 
         image_source="${ascii_dir}/${ascii_file}"
@@ -2059,7 +2059,7 @@ get_ascii() {
 
 get_image_source() {
     case "$image_source" in
-        "auto" | "wall"*)
+        "auto" | "wallpaper")
             get_wallpaper 2>/dev/null
         ;;
 
@@ -3258,7 +3258,7 @@ get_full_path() {
     # For example "Pictures/Wallpapers" --> "/home/dylan/Pictures/Wallpapers"
 
     # If the file exists in the current directory, stop here.
-    [[ -f "${PWD}/${1/*\/}" ]] && { printf "%s\n" "${PWD}/${1/*\/}"; return; }
+    [[ -f "${PWD}/${1%/*}" ]] && { printf "%s\n" "${PWD}/${1%/*}"; return; }
 
     if ! cd "${1%/*}"; then
         err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
@@ -3290,8 +3290,8 @@ get_default_config() {
 
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
-        default_config="${script_dir}/config/config"
-        travis_config="${script_dir}/config/travis"
+        default_config="${script_dir%/*}/config/config"
+        travis_config="${script_dir%/*}/config/travis"
     fi
 
     if source "$default_config"; then
@@ -3333,7 +3333,7 @@ get_user_config() {
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
 
-        cp "${script_dir}/config/config" "${XDG_CONFIG_HOME}/neofetch"
+        cp "${script_dir%/*}/config/config" "${XDG_CONFIG_HOME}/neofetch"
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
     fi
 
@@ -4000,7 +4000,10 @@ get_args() {
             "--config")
                 case "$2" in
                     "none" | "off" | "") ;;
-                    *) config_file="$2"; get_user_config 2>/dev/null ;;
+                    *)
+                        config_file="$(get_full_path "$2")"
+                        get_user_config 2>/dev/null
+                    ;;
                 esac
             ;;
             "-v") verbose="on" ;;
