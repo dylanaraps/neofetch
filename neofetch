@@ -2013,8 +2013,8 @@ get_ascii() {
             ascii_dir="/data/data/com.termux/files/usr/share/neofetch/ascii/distro"
 
         else
-            get_script_dir 2>/dev/null
-            ascii_dir="${script_dir}/ascii/distro"
+            [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
+            ascii_dir="${script_dir%/*}/ascii/distro"
         fi
 
         image_source="${ascii_dir}/${ascii_file}"
@@ -2056,11 +2056,14 @@ get_ascii() {
 
 get_image_source() {
     case "$image_source" in
-        "auto" | "wall"*)
+        "auto" | "wallpaper")
             get_wallpaper 2>/dev/null
         ;;
 
         *)
+            # Get the absolute path.
+            image_source="$(get_full_path "$image_source")"
+
             if [[ -d "$image_source" ]]; then
                 shopt -s nullglob
                 files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif})
@@ -3247,22 +3250,32 @@ err() {
     err+="$(color 1)[!]\033[0m $1\n"
 }
 
-get_script_dir() {
-    [[ "$script_dir" ]] && return
+get_full_path() {
+    # This function finds the absolute path from a relative one.
+    # For example "Pictures/Wallpapers" --> "/home/dylan/Pictures/Wallpapers"
 
-    # Use $0 to get the script's physical path.
-    cd "${0%/*}" || exit
-    script_dir="${0##*/}"
+    # If the file exists in the current directory, stop here.
+    [[ -f "${PWD}/${1%/*}" ]] && { printf "%s\n" "${PWD}/${1%/*}"; return; }
+
+    if ! cd "${1%/*}"; then
+        err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
+        err "       Check that the directory exists or try another directory."
+        exit 1
+    fi
+
+    local full_dir="${1##*/}"
 
     # Iterate down a (possible) chain of symlinks.
-    while [[ -L "$script_dir" ]]; do
-        script_dir="$(readlink "$script_dir")"
-        cd "${script_dir%/*}" || exit
-        script_dir="${script_dir##*/}"
+    while [[ -L "$full_dir" ]]; do
+        full_dir="$(readlink "$full_dir")"
+        cd "${full_dir%/*}" || exit
+        full_dir="${full_dir##*/}"
     done
 
     # Final directory.
-    script_dir="$(pwd -P)"
+    full_dir="$(pwd -P)/${1/*\/}"
+
+    [[ -e "$full_dir" ]] && printf "%s\n" "$full_dir"
 }
 
 get_default_config() {
@@ -3273,9 +3286,9 @@ get_default_config() {
         default_config="/data/data/com.termux/files/etc/neofetch/config"
 
     else
-        get_script_dir
-        default_config="${script_dir}/config/config"
-        travis_config="${script_dir}/config/travis"
+        [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
+        default_config="${script_dir%/*}/config/config"
+        travis_config="${script_dir%/*}/config/travis"
     fi
 
     if source "$default_config"; then
@@ -3315,9 +3328,9 @@ get_user_config() {
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     else
-        get_script_dir
+        [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
 
-        cp "${script_dir}/config/config" "${XDG_CONFIG_HOME}/neofetch"
+        cp "${script_dir%/*}/config/config" "${XDG_CONFIG_HOME}/neofetch"
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
     fi
 
@@ -3984,7 +3997,10 @@ get_args() {
             "--config")
                 case "$2" in
                     "none" | "off" | "") ;;
-                    *) config_file="$2"; get_user_config 2>/dev/null ;;
+                    *)
+                        config_file="$(get_full_path "$2")"
+                        get_user_config 2>/dev/null
+                    ;;
                 esac
             ;;
             "-v") verbose="on" ;;
