@@ -1954,9 +1954,6 @@ image_backend() {
             image_backend="ascii"
             err "Image: Imagemagick not found, falling back to ascii mode."
         fi
-
-        # If X isn't running force ascii mode here.
-        [[ -z "$DISPLAY" ]] && image_backend="ascii"
     fi
 
     case "${image_backend:-off}" in
