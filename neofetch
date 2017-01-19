@@ -523,6 +523,10 @@ get_packages() {
             packages="$(lslpp -J -l -q | grep -cv '^#')"
             packages="$((packages+=$(rpm -qa | wc -l)))"
         ;;
+
+        "HP-UX")
+            packages="$(swlist | wc -l)"
+        ;;
     esac
 
     ((packages == 0)) && unset packages
