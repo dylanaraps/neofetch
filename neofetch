@@ -39,7 +39,8 @@ get_os() {
         "SunOS") os="Solaris" ;;
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
-        "AIX") os="AIX" ;;
+        "AIX")   os="AIX" ;;
+        "HP-UX") os="HP-UX" ;;
         *)
             printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
@@ -192,6 +193,10 @@ get_distro() {
 
         "AIX")
             distro="AIX $(oslevel)"
+        ;;
+
+        "HP-UX")
+            distro="HP-UX $kernel_version"
         ;;
     esac
 
