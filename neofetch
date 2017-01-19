@@ -3255,7 +3255,7 @@ get_full_path() {
     # For example "Pictures/Wallpapers" --> "/home/dylan/Pictures/Wallpapers"
 
     # If the file exists in the current directory, stop here.
-    [[ -f "${PWD}/${1%/*}" ]] && { printf "%s\n" "${PWD}/${1%/*}"; return; }
+    [[ -f "${PWD}/${1/*\/}" ]] && { printf "%s\n" "${PWD}/${1/*\/}"; return; }
 
     if ! cd "${1%/*}"; then
         err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
