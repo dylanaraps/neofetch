@@ -287,6 +287,10 @@ get_model() {
         "AIX")
             model="$(prtconf | awk -F':' '/System Model/ {printf $2}')"
         ;;
+
+        "HP-UX")
+            model="$(model)"
+        ;;
     esac
 
     # Remove dummy OEM info.
