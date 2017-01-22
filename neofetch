@@ -898,7 +898,6 @@ get_cpu() {
                 else
                     temp="[${temp}°C]"
                 fi
-
             fi
         ;;
 
