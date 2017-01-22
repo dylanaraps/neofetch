@@ -43,26 +43,25 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 ## General
 
 - The config file is now installed to `/etc/neofetch/config` and acts as a system-wide config file for neofetch. Editing this file will make the changes available to all users on the system. Those packaging Neofetch **without** using the Makefile will need to make changes to support this.
+- Removed executable permission from config files. BASH can source them even if they're un-executable.
 - Travis now runs [shellcheck](https://github.com/koalaman/shellcheck) on every commit and pull request.
     - We've had to exclude around 10 lint errors, see this wiki page for why we did this:
     - https://github.com/dylanaraps/neofetch/wiki/Shellcheck-Exclusions
 - Neofetch now supports relative path values when specifying the location to images, ascii files and config files.
     - For example, `neofetch --w3m Pictures/Wallpapers/10.jpg` and `neofetch --w3m 10.jpg` now work.
-- Optimize usage of get_de(), get_wm() and get_term().
-    - We were calling these multiple times, we now check to see if they were run previously.
-- Optimize info caching, only check for cache files in scripts that use caching.
-- Cleanup `main()`.
-- Renamed `old_flags()` --> `old_options()`.
+- Optimize usage of `get_de()`, `get_wm()` and `get_term().
+    - We were calling these multiple times, we now only run them once and check to see if they were run previously.
+- Optimize info caching, only check for cache files in functions that use caching.
 - The manpage is now generated using `help2man`. `help2man` parses the output of `--help` and `--version` to create a manpage. This ensures that our manpage stays 1:1 with the script documentation. We actually found a lot of outdated info in the old manpage thanks to this.
     - A new flag was added called `--gen-man` which generates a neofetch manpage in your current directory.
 - Delete most of `info()` and instead call `prin()`.
     - This removes a lot of duplicate code between `info()` and `prin()`.
 - Remove `printf` subshells and instead use `printf -v` to declare the variables.
-- Set fixed `$PATH` in the beginning of the script.
 - Fixed artifacts when using line-breaks in TTYs.
-- Removed executable permission from config files. BASH can source them even if they're un-executable.
 - All errors are now sent to `stderr`.
 - Renamed `XFCE` --> `Xfce`. **[@gavinhungry](https://github.com/gavinhungry)**
+- Cleanup `main()`.
+- Renamed `old_flags()` --> `old_options()`.
 
 ## Info
 
@@ -71,7 +70,7 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 - [Fish] Fixed memory leak caused by Fish.
 - Added support for `xonsh`.
 - Fixed version output on `ksh`.
-- Rewrote the function to remove duplicate code. All shells now use `$SHELL --version` to get the version info, with the exception of `mksh` which doesn't have a `--version` flag.
+- Rewrote the function to remove duplicate code.
 
 **Uptime**<br \>
 
@@ -89,8 +88,6 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 - [Linux] Don't simplify `cpufreq` speed option names for no reason.
 - [Linux] Fixed issues with CPU name detection for architectures other than x86/amd64/ARM.
 - [NetBSD] Remove case statement in favor of 1 line test.
-- Remove case sensitive substitutions.
-    - We match everything case insensitively so they were pointless.
 - Simplify check for low CPU speeds.
 - Expanded `cpu_temp` to take the values `C` and `F`. This means you can now display the CPU temperature as Fahrenheit.
 
@@ -115,7 +112,7 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 **~~Birthday~~ Install Date**<br \>
 
 - Renamed `get_birthday()` -- > `get_install_date()`
-- Removed all `date` usage from `get_install_date()`.
+- Removed all `date` command usage from `get_install_date()`.
 - Added a new function called `convert_time()` which takes the time stamped `ls` output and converts it to a pretty format. The function only uses bash so its much faster than calling `date`. This makes things simple and keeps the output consistent across all Operating Systems. Example: `2016-12-06 16:58:58.000000000` --> `Tue 06 Dec 2016 4:58 PM`
 - Added an option so users can choose between using 24-hour and 12-hour time format
 - `get_install_date()` will detect which `ls` program is being used instead of hardcoding them per OS.
@@ -146,11 +143,6 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 
 **Song**<br \>
 
-- [cmus] Simplify block and fix `artistsort` bug.
-- Removed `state` detection.
-- Removed duplicate `dbus-send` commands. **[@mstraube](https://github.com/mstraube)**
-- Hide output if no song is playing.
-- Enforce order `artist - title` in `get_song_dbus()`. **[@mstraube](https://github.com/mstraube)**
 - Added support for xmms2. **[@z33ky](https://github.com/z33ky)**
 - Added support for Exaile music player. **[@mstraube](https://github.com/mstraube)**
 - Added support for JuK .**[@mstraube](https://github.com/mstraube)**
@@ -160,6 +152,11 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 - Added support for Qmmp. **[@mstraube](https://github.com/mstraube)**
 - Added support for QuodLibet. **[@mstraube](https://github.com/mstraube)**
 - Added support for Mopidy. **[@d3rrial](https://github.com/d3rrial)**
+- [cmus] Simplify block and fix `artistsort` bug.
+- Removed `state` detection.
+- Removed duplicate `dbus-send` commands. **[@mstraube](https://github.com/mstraube)**
+- Hide output if no song is playing.
+- Enforce order `artist - title` in `get_song_dbus()`. **[@mstraube](https://github.com/mstraube)**
 
 **Terminal Font**<br \>
 
@@ -182,7 +179,7 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 
 **Color Blocks**<br \>
 
-- Use start++ instead of adding it manually after case. **[@konimex](https://github.com/konimex)**
+- Use `start++` instead of adding it manually after case. **[@konimex](https://github.com/konimex)**
 - Fixed bug where color blocks wouldn't respect width in TTYs.
 - Cursor positioning now takes `$block_height` into account.
 - Fixed all artifacts in virtual consoles.
