@@ -2359,7 +2359,7 @@ display_image() {
         ;;
 
         "catimg")
-            catimg -w "$((width * 2  / font_width))" -r 0 "$image" || to_off "Image: catimg failed to display the image."
+            catimg -w "$((width * 2 / font_width))" -r 0 "$image" || to_off "Image: catimg failed to display the image."
             zws=
         ;;
 
