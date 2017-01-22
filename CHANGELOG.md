@@ -1,9 +1,3 @@
-From the 2.0 release but it applies here too:
-
-> Some of the config options/arguments were renamed/changed and Neofetch will warn you on run if you're using deprecated options (`neofetch -v`). For this release I recommend using this release with a fresh config file so that you can make use of the new documentation.
-
-> I say this every release; This changelog is incomplete, for a full list of changes take a look through the commit history. Neofetch now has an unspoken commit style so reading the commit history won't hurt as much as it used to.
-
 Thanks to everyone who contributed this release, there were a lot of new faces this time around. :)
 
 
@@ -16,11 +10,17 @@ Thanks to everyone who contributed this release, there were a lot of new faces t
 - **[@mstraube](https://github.com/mstraube)**
 - **[@gavinhungry](https://github.com/gavinhungry)**
 
+
 ## IRC
 
 Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any questions, issues or ideas feel free to join the irc channel and I'll be happy to assist you. I know that we've already got the gitter chat but hopefully this makes things easier for those without a github account. :)
 
 [![Freenode](https://img.shields.io/badge/%23neofetch-%20on%20Freenode-brightgreen.svg)](http://irc.lc/freenode/neofetch)
+
+
+## Collaborators 
+
+I have given collaborator acces to both **[@konimex](https://github.com/konimex)** and **[@iandrewt](https://github.com/iandrewt)**. In short this allows them to push directly to the master branch of the repo, manage the issue tracker and also merge pull requests. They've been a huge help the past year so this made sense to me.
 
 
 ## OS
