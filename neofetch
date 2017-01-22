@@ -3737,6 +3737,7 @@ IMAGE BACKEND:
     --caca source               Shortcut to use 'caca' backend.
     --catimg source             Shortcut to use 'catimg' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
+    --jp2a source               Shortcut to use 'jp2a' backend.
     --tycat source              Shortcut to use 'tycat' backend.
     --w3m source                Shortcut to use 'w3m' backend.
     --off                       Shortcut to use 'off' backend.
