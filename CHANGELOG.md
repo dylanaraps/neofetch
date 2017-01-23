@@ -1,3 +1,9 @@
+This is another large release containing over `550` commits from 7 contributors. Due to the size and large amount of changes made this release expect at least one minor release to fix any bugs that come up. 
+
+The version number has been bumped to `3.0` due to the large amount of breaking changes introduced this update. I've added backwards compatibility for all of the new changes but there may still be some breakage. I highly recommend starting with a new config to avoid any issues that may arise. 
+
+Neofetch now supports displaying images using `catimg`, `libcaca` and `jp2a`. See this wiki page for screenshots. https://github.com/dylanaraps/neofetch/wiki/Image-Backends
+
 Thanks to everyone who contributed this release, there were a lot of new faces this time around. :)
 
 
@@ -13,14 +19,14 @@ Thanks to everyone who contributed this release, there were a lot of new faces t
 
 ## IRC
 
-Neofetch now has an irc channel at `#neofetch` on Freenode. If you have any questions, issues or ideas feel free to join the irc channel and I'll be happy to assist you. I know that we've already got the gitter chat but hopefully this makes things easier for those without a github account. :)
+Neofetch now has an IRC channel at `#neofetch` on Freenode. If you have any questions, issues or ideas feel free to join the IRC channel and I'll be happy to assist you. I know that we've already got the Gitter chat but hopefully this makes things easier for those without a GitHub account. :)
 
 [![Freenode](https://img.shields.io/badge/%23neofetch-%20on%20Freenode-brightgreen.svg)](http://irc.lc/freenode/neofetch)
 
 
 ## Collaborators 
 
-I have given collaborator acces to both **[@konimex](https://github.com/konimex)** and **[@iandrewt](https://github.com/iandrewt)**. In short this allows them to push directly to the master branch of the repo, manage the issue tracker and also merge pull requests. They've been a huge help the past year so this made sense to me.
+I have given collaborator access to both **[@konimex](https://github.com/konimex)** and **[@iandrewt](https://github.com/iandrewt)**. In short this allows them to push directly to the master branch of the repo, manage the issue tracker and also merge pull requests. They've been a huge help the past year so this made sense to me.
 
 
 ## OS
@@ -42,7 +48,7 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 
 ## General
 
-- The default config file is now installed to `/etc/neofetch/config` and acts as a system-wide config file for neofetch. Editing this file will make the changes available to all users on the system. Those packaging Neofetch **without** using the Makefile will need to make changes to support this.
+- The default config file is now installed to `/etc/neofetch/config` and acts as a system-wide config file for Neofetch. Editing this file will make the changes available to all users on the system. Those packaging Neofetch **without** using the Makefile will need to make changes to support this.
 - The Makefile was rewritten to remove GNU-isms.
 - Removed executable permission from config files. BASH can source them even if they're un-executable.
 - Travis now runs [shellcheck](https://github.com/koalaman/shellcheck) on every commit and pull request.
@@ -63,6 +69,7 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 - Renamed `XFCE` --> `Xfce`. **[@gavinhungry](https://github.com/gavinhungry)**
 - Cleanup `main()`.
 - Renamed `old_flags()` --> `old_options()`.
+
 
 ## Info
 
