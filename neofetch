@@ -1940,9 +1940,11 @@ get_cols() {
         cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
 
         printf "%b\n" "\033[${text_padding}C${zws}${cols}"
-        info_height="$((info_height+=block_height+2))"
+    else
+        printf "\n"
     fi
 
+    info_height="$((info_height+=block_height+2))"
     unset -v blocks blocks2 cols
 
     # Tell info() that we printed manually.
