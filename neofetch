@@ -3504,6 +3504,9 @@ old_options() {
 
     # Fahrenheit support was added to CPU so the options were changed.
     [[ "$cpu_temp" == "on" ]] && { err "Config: cpu_temp='on' is deprecated, use cpu_temp='C' or 'F' instead."; cpu_temp="C"; }
+
+    # Birthday was renamed to Install Date in 3.0
+    [[ -n "$birthday_time" ]] && { err "Config: \$birthday_time is deprecated, use \3install_time instead."; install_time="$birthday_time"; }
 }
 
 cache_uname() {
