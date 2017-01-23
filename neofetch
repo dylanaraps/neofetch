@@ -3484,11 +3484,11 @@ old_options() {
     [[ -n "$image" ]]            && { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
 
     # All progress_ variables were changed to bar_.
-    [[ -n "$progress_char" ]]          && err "Config: \$progress_char is deprecated, use \$bar_char_elapsed and \$bar_char_total instead."
-    [[ -n "$progress_border" ]]        && err "Config: \$progress_border is deprecated, use \$bar_border instead."
-    [[ -n "$progress_length" ]]        && err "Config: \$progress_length is deprecated, use \$bar_length instead."
-    [[ -n "$progress_color_elapsed" ]] && err "Config: \$progress_color_elapsed is deprecated, use \$bar_color_elapsed instead."
-    [[ -n "$progress_color_total" ]]   && err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."
+    [[ -n "$progress_char" ]] && err "Config: \$progress_char is deprecated, use \$bar_char_elapsed and \$bar_char_total instead."
+    [[ -n "$progress_border" ]] && { err "Config: \$progress_border is deprecated, use \$bar_border instead."; bar_border="$progress_border"; }
+    [[ -n "$progress_length" ]] && { err "Config: \$progress_length is deprecated, use \$bar_length instead."; bar_length="$progress_length"; }
+    [[ -n "$progress_color_elapsed" ]] && { err "Config: \$progress_color_elapsed is deprecated, use \$bar_color_elapsed instead."; bar_color_elapsed="$progress_color_elapsed"; }
+    [[ -n "$progress_color_total" ]] && { err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."; bar_color_total="$progress_color_total"; }
 
     # All cpufreq values were changed in 3.0.
     [[ "$speed_type" == "current" ]] && err "Config: speed_type='current' is deprecated, use speed_type='scaling_cur_freq' instead."
