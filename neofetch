@@ -1075,11 +1075,12 @@ get_gpu() {
                     ;;
 
                     *"intel"*)
-                        if [[ $(glxinfo | grep 'OpenGL renderer string: Mesa' | sed 's/ renderer.*//') = "OpenGL" ]]; then
-                            gpu="$(DRI_PRIME=1 glxinfo | grep 'OpenGL renderer' | sed '0,/^.*Intel/ s//Intel/' | sed 's/(R)//' | sed 's/\(\.* (\).*//')"
-                        else
-                            gpu="Intel Integrated Graphics"
-                        fi
+                        gpu="$(glxinfo | grep -F "Device:")"
+                        gpu="${gpu/*Intel/Intel}"
+                        gpu="${gpu/'(R)'}"
+                        gpu="${gpu/ \(*}"
+
+                        [[ -z "$(trim "$gpu")" ]] && gpu="Intel Integrated Graphics"
                     ;;
 
                     *"virtualbox"*)
