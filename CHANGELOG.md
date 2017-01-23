@@ -42,7 +42,8 @@ I have given collaborator acces to both **[@konimex](https://github.com/konimex)
 
 ## General
 
-- The config file is now installed to `/etc/neofetch/config` and acts as a system-wide config file for neofetch. Editing this file will make the changes available to all users on the system. Those packaging Neofetch **without** using the Makefile will need to make changes to support this.
+- The default config file is now installed to `/etc/neofetch/config` and acts as a system-wide config file for neofetch. Editing this file will make the changes available to all users on the system. Those packaging Neofetch **without** using the Makefile will need to make changes to support this.
+- The Makefile was rewritten to remove GNU-isms.
 - Removed executable permission from config files. BASH can source them even if they're un-executable.
 - Travis now runs [shellcheck](https://github.com/koalaman/shellcheck) on every commit and pull request.
     - We've had to exclude around 10 lint errors, see this wiki page for why we did this:
