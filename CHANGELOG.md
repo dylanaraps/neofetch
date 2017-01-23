@@ -1,6 +1,7 @@
 ## Contributors
 
 - **[@SomaUlte](https://github.com/SomaUlte)**
+- **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 
 ## Info
@@ -12,3 +13,7 @@
 **Color Blocks**<br \>
 
 - Fixed issue with `color_blocks="off"` adding an extra newline to the output.
+
+## Images
+
+- [iTerm2] Fixed issue with linebreaks printing spaces over the image. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
