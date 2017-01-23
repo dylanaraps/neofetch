@@ -1075,7 +1075,12 @@ get_gpu() {
                     ;;
 
                     *"intel"*)
-                        gpu="Intel Integrated Graphics"
+                        gpu="$(glxinfo | grep "Device:.*Intel")"
+                        gpu="${gpu/*Intel/Intel}"
+                        gpu="${gpu/'(R)'}"
+                        gpu="${gpu/ \(*}"
+
+                        [[ -z "$(trim "$gpu")" ]] && gpu="Intel Integrated Graphics"
                     ;;
 
                     *"virtualbox"*)
