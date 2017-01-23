@@ -3482,16 +3482,16 @@ old_options() {
     [[ -n "$progress_color_elapsed" ]] && err "Config: \$progress_color_elapsed is deprecated, use \$bar_color_elapsed instead."
     [[ -n "$progress_color_total" ]]   && err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."
 
-    # All cpufreq values were changed in 2.1.0.
+    # All cpufreq values were changed in 3.0.
     [[ "$speed_type" == "current" ]] && err "Config: speed_type='current' is deprecated, use speed_type='scaling_cur_freq' instead."
     [[ "$speed_type" == "min" ]]     && err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
     [[ "$speed_type" == "max" ]]     && err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
     [[ "$speed_type" == "bios" ]]    && err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
 
-    # Ascii_logo_size was removed in 2.1.0.
+    # Ascii_logo_size was removed in 3.0.
     [[ "$ascii_logo_size" ]] && err "Config: ascii_logo_size is deprecated, use ascii_distro='{alpine,arch,crux,gentoo,openbsd,void}_small' instead."
 
-    # $start and $end were replaced with ${block_range[@]} in 2.1.0.
+    # $start and $end were replaced with ${block_range[@]} in 3.0.
     [[ "$start" && "$end" ]] && { err "Config: \$start and \$end are deprecated, use block_range=(0 7) instead."; block_range=("$start" "$end"); }
 
     # Fahrenheit support was added to CPU so the options were changed.
@@ -3811,7 +3811,7 @@ exit 1
 }
 
 version() { printf "%s" "\
-Neofetch 2.1.0
+Neofetch 3.0
 
 Copyright (c) 2016-2017 Dylan Araps
 
