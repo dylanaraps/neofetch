@@ -2376,6 +2376,7 @@ display_image() {
 
         "iterm2")
             printf "%b\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$image")"
+            zws=
         ;;
 
         "tycat")
