@@ -2674,7 +2674,7 @@ get_distro_colors() {
         ;;
 
         "Arch"*)
-            set_colors 4 7 1
+            set_colors 4 4 7 1
             ascii_file="arch"
         ;;
 
