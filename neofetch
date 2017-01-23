@@ -1334,7 +1334,7 @@ get_song() {
         ;;
 
         *)
-            if type -p mpc >/dev/null; then song="$(mpc current)"; fi
+            mpc >/dev/null 2>&1 && song="$(mpc current)"
         ;;
     esac
 
