@@ -3811,7 +3811,7 @@ exit 1
 }
 
 version() { printf "%s" "\
-Neofetch 3.0
+Neofetch 3.0.1
 
 Copyright (c) 2016-2017 Dylan Araps
 
