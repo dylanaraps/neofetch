@@ -1332,6 +1332,10 @@ get_song() {
             song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
                     awk -F'"' '/artist/ {getline; a=$2} /title/ {getline; t=$2} END{print a " - " t}')"
         ;;
+
+        *)
+            if type -p mpc >/dev/null; then song="$(mpc current)"; fi
+        ;;
     esac
 
     [[ "$(trim "$song")" = "-" ]] && unset -v song
