@@ -2,6 +2,7 @@
 
 - **[@SomaUlte](https://github.com/SomaUlte)**
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
+- **[@dawidd6](https://github.com/dawidd6)**
 
 
 ## Info
@@ -13,6 +14,10 @@
 **Color Blocks**<br \>
 
 - Fixed issue with `color_blocks="off"` adding an extra newline to the output.
+
+**Song**<br \>
+
+- Fixed `mpd` detection when `mpd` is on a different host. **[@dawidd6](https://github.com/dawidd6)**
 
 ## Images
 
