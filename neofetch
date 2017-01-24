@@ -3299,7 +3299,6 @@ get_default_config() {
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
         default_config="${script_dir%/*}/config/config"
-        travis_config="${script_dir%/*}/config/travis"
     fi
 
     if source "$default_config"; then
@@ -3314,12 +3313,6 @@ get_user_config() {
     if [[ -f "$config_file" ]]; then
         source "$config_file"
         err "Config: Sourced user config.    (${config_file})"
-        old_options
-        return
-
-    elif [[ "$config_file" == "travis" ]]; then
-        source "$travis_config"
-        err "Config: Sourced user config.    (${travis_config})"
         old_options
         return
     fi
