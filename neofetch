@@ -525,7 +525,7 @@ get_shell() {
     esac
 
     if [[ "$shell_version" == "on" ]]; then
-        case "${SHELL##*/}" in
+        case "${shell_name:=${SHELL##*/}}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
             "sh" | "ash" | "dash") ;;
 
@@ -537,7 +537,7 @@ get_shell() {
 
             *)
                 shell+="$("$SHELL" --version 2>&1)"
-                shell="${shell/ ${SHELL##*/}}"
+                shell="${shell/ "${shell_name}"}"
             ;;
         esac
 
