@@ -5,6 +5,11 @@
 - **[@dawidd6](https://github.com/dawidd6)**
 
 
+## Operating System
+
+- Added support for ArchBox Linux.
+
+
 ## Config
 
 - Fixed default config not found.
@@ -12,6 +17,10 @@
 
 
 ## Info
+
+**Shell**<br \>
+
+- Fixed a crash when the user has `bash 3` installed.
 
 **GPU**<br \>
 
