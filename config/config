@@ -3,9 +3,6 @@
 # Neofetch config file
 # https://github.com/dylanaraps/neofetch
 
-# Speed up script by not using unicode
-export LC_ALL=C
-export LANG=C
 
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
