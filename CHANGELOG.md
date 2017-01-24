@@ -5,6 +5,11 @@
 - **[@dawidd6](https://github.com/dawidd6)**
 
 
+## Config
+
+- Fixed default config not found.
+
+
 ## Info
 
 **GPU**<br \>
@@ -18,6 +23,7 @@
 **Song**<br \>
 
 - Fixed `mpd` detection when `mpd` is on a different host. **[@dawidd6](https://github.com/dawidd6)**
+
 
 ## Images
 
