@@ -59,7 +59,6 @@ get_distro() {
                     "tiny") distro="Windows 10" ;;
                     *)      distro="$(lsb_release -sd) on Windows 10" ;;
                 esac
-                ascii_distro="Windows 10"
 
             elif [[ -f "/etc/GoboLinuxVersion" ]]; then
                 case "$distro_shorthand" in
@@ -3143,7 +3142,7 @@ get_distro_colors() {
             ascii_file="void"
         ;;
 
-        "Windows 8"* | "Windows 10"*)
+        *"[Windows 10]"* | *"on Windows 10"* | "Windows 8"* | "Windows 10"*)
             set_colors 6 7
             ascii_file="windows10"
         ;;
