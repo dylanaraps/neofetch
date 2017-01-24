@@ -3297,6 +3297,9 @@ get_default_config() {
     if [[ -f "/etc/neofetch/config" ]]; then
         default_config="/etc/neofetch/config"
 
+    elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
+        default_config="/usr/local/etc/neofetch/config"
+
     elif [[ -f "/data/data/com.termux/files/etc/neofetch/config" ]]; then
         default_config="/data/data/com.termux/files/etc/neofetch/config"
 
@@ -3327,11 +3330,11 @@ get_user_config() {
     if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
-    elif [[ -f "/usr/share/neofetch/config" ]]; then
+    elif [[ -f "/etc/neofetch/config" ]]; then
         cp "/usr/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
-    elif [[ -f "/usr/local/share/neofetch/config" ]]; then
+    elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
         cp "/usr/local/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
