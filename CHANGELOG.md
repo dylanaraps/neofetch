@@ -8,6 +8,7 @@
 ## Config
 
 - Fixed default config not found.
+- Don't set locale in config file.
 
 
 ## Info
