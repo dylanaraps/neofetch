@@ -2677,6 +2677,11 @@ get_distro_colors() {
             ascii_file="arch_old"
         ;;
 
+        "ArchBox"*)
+            set_colors 2 7 1
+            ascii_file="archbox"
+        ;;
+
         "Arch"*)
             set_colors 4 4 7 1
             ascii_file="arch"
