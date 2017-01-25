@@ -1987,7 +1987,6 @@ image_backend() {
                 clear
                 zws="​ "
             else
-                unset image_program
                 to_ascii "Image: Failed to find terminal window size."
                 err "Image: Check the 'Images in the terminal' wiki page for more info,"
                 return
@@ -2195,7 +2194,7 @@ get_term_size() {
         printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
         read_flags=(-d c)
 
-    elif [[ "$image_program" == "tycat" ]]; then
+    elif [[ "$image_backend" == "tycat" ]]; then
         printf "%b" "\033}qs\000"
 
     else
@@ -2209,7 +2208,7 @@ get_term_size() {
     IFS=";" read -s -t 1 "${read_flags[@]}" -r -a term_size
 
     # Split the string into height/width.
-    if [[ "$image_program" == "tycat" ]]; then
+    if [[ "$image_backend" == "tycat" ]]; then
         term_width="$((term_size[2] * term_size[0]))"
         term_height="$((term_size[3] * term_size[1]))"
 
@@ -2219,7 +2218,7 @@ get_term_size() {
     fi
 
     # Get terminal width/height if \033[14t is unsupported.
-    if [[ -z "$term_width" && "$image_program" == "w3m" ]]; then
+    if [[ -z "$term_width" && "$image_backend" == "w3m" ]]; then
         if type -p xdotool >/dev/null 2>&1; then
             current_window="$(xdotool getactivewindow)"
             source <(xdotool getwindowgeometry --shell "$current_window")
@@ -4067,7 +4066,7 @@ main() {
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_program" == *w3m* ]] && display_image 2>/dev/null
+    [[ "$image_backend" == *w3m* ]] && display_image 2>/dev/null
 
     # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
