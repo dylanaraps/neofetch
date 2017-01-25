@@ -39,6 +39,8 @@
 
 - [iTerm2] Fixed issue with linebreaks printing spaces over the image. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
+
 ## Ascii
 
 - [Windows 10] Fixed `ascii_distro` not working.
+- Fixed a bug where the backend is `ascii` but the image_source is an image file.
