@@ -38,6 +38,8 @@
 ## Images
 
 - [iTerm2] Fixed issue with linebreaks printing spaces over the image. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
+- Fixed issue with images not working in Terminology.
+- [w3m-img] Fixed issues with `w3m-img` and `tmux`.
 
 
 ## Ascii
