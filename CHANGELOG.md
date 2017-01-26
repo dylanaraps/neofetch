@@ -3,6 +3,7 @@
 - **[@SomaUlte](https://github.com/SomaUlte)**
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - **[@dawidd6](https://github.com/dawidd6)**
+- **[@mstraube](https://github.com/mstraube)**
 
 
 ## Operating System
@@ -37,7 +38,9 @@
 
 **Song**<br \>
 
+- Don't print `$song` if it's empty and `song_shorthand` is on. **[@mstraube](https://github.com/mstraube)**
 - Fixed `mpd` detection when `mpd` is on a different host. **[@dawidd6](https://github.com/dawidd6)**
+- Use `get_song_dbus` for Audacious. **[@mstraube](https://github.com/mstraube)**
 
 
 ## Images
