@@ -38,6 +38,15 @@ print_info() {
     info line_break
     info cols
     info line_break
+
+    # Testing
+    prin "prin"
+    prin "prin" "prin"
+    info underline
+
+    # Testing no subtitles.
+    info uptime
+    info disk
 }
 
 refresh_rate="on"
