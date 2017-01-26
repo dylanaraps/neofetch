@@ -2034,6 +2034,9 @@ get_ascii() {
 
         elif [[ -d "/data/data/com.termux/files/usr/share/neofetch/ascii/distro" ]]; then
             ascii_dir="/data/data/com.termux/files/usr/share/neofetch/ascii/distro"
+            
+        elif [[ -d "/boot/home/config/non-packaged/share/neofetch/ascii/distro" ]]; then
+            ascii_dir="/boot/home/config/non-packaged/share/neofetch/ascii/distro"
 
         else
             [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
@@ -3322,6 +3325,9 @@ get_default_config() {
 
     elif [[ -f "/data/data/com.termux/files/etc/neofetch/config" ]]; then
         default_config="/data/data/com.termux/files/etc/neofetch/config"
+    
+    elif [[ -f "/boot/home/config/non-packaged/etc/neofetch/config" ]]; then
+        default_config="/boot/home/config/non-packaged/etc/neofetch/config"
 
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
