@@ -2095,7 +2095,7 @@ get_image_source() {
         ;;
     esac
 
-    err "Image: Using image $image"
+    err "Image: Using image '$image'"
 }
 
 get_wallpaper() {
