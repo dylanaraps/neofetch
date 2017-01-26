@@ -1281,9 +1281,9 @@ get_song() {
         "google play"*) song="$(gpmdp-remote current)" ;;
         "rhythmbox"*)   song="$(rhythmbox-client --print-playing)" ;;
         "deadbeef"*)    song="$(deadbeef --nowplaying-tf  '%artist% - %title%')" ;;
-        "audacious"*)   song="$(audtool current-song)" ;;
         "xmms2d"*)      song="$(xmms2 current -f '${artist} - ${title}')" ;;
         "qmmp"*)        song="$(qmmp --nowplaying '%p - %t')" ;;
+        "audacious"*)   get_song_dbus "audacious" ;;
         "gnome-music"*) get_song_dbus "GnomeMusic" ;;
         "lollypop"*)    get_song_dbus "Lollypop" ;;
         "clementine"*)  get_song_dbus "clementine" ;;
