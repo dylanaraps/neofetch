@@ -1748,7 +1748,11 @@ get_disk() {
         esac
 
         # Append '(disk mount point)' to the subtitle.
-        prin "${subtitle:+${subtitle} (${disk_sub})}" "$disk"
+        if [[ -z "$subtitle" ]]; then
+            prin "${disk_sub}" "$disk"
+        else
+            prin "${subtitle} (${disk_sub})}" "$disk"
+        fi
     done
 }
 
