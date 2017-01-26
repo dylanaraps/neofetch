@@ -7,6 +7,8 @@ If you're suggesting a new feature then just a description will suffice.
 
 ## Screenshot
 
+## Config file
+
 ## Verbose log
 
 1. Run `neofetch -vv 2> neofetchlog`
