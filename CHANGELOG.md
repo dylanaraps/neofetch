@@ -10,6 +10,11 @@
 - Added support for ArchBox Linux.
 
 
+## General
+
+- Fix output if subtitles are disabled and `prin` is used in an info function.
+
+
 ## Config
 
 - Fixed default config not found.
