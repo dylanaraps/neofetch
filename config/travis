@@ -42,7 +42,6 @@ print_info() {
     # Testing
     prin "prin"
     prin "prin" "prin"
-    info underline
 
     # Testing no subtitles.
     info uptime
