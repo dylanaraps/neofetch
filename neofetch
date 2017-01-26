@@ -583,7 +583,7 @@ get_de() {
             # the desktop variables are sometimes also set to the
             # window manager name. This checks to see if WM == DE
             # and dicards the DE value.
-            [[ "$wm" && "$de" =~ $wm ]] && { unset -v de; return; }
+            [[ "$wm" && "$de" =~ ^$wm$ ]] && { unset -v de; return; }
         ;;
     esac
 
@@ -1966,7 +1966,7 @@ get_cols() {
 # IMAGES
 
 image_backend() {
-    if [[ ! "$image_backend" =~ (off|ascii) ]]; then
+    if [[ ! "$image_backend" =~ ^(off|ascii)$ ]]; then
         if ! type -p convert >/dev/null 2>&1; then
             image_backend="ascii"
             err "Image: Imagemagick not found, falling back to ascii mode."
@@ -2019,7 +2019,7 @@ get_ascii() {
           "$image_source" =~ \.(png|jpg|jpe|jpeg|gif)$ ]]; then
 
         # Fallback to distro ascii mode if custom ascii isn't found.
-        [[ ! "$image_source" =~ (auto|ascii)$ ]] && \
+        [[ ! "$image_source" =~ ^(auto|ascii)$ ]] && \
             err "Ascii: Ascii file not found, using distro ascii."
 
         # Fallback to distro ascii mode if source is an image.
@@ -2034,7 +2034,7 @@ get_ascii() {
 
         elif [[ -d "/data/data/com.termux/files/usr/share/neofetch/ascii/distro" ]]; then
             ascii_dir="/data/data/com.termux/files/usr/share/neofetch/ascii/distro"
-            
+
         elif [[ -d "/boot/home/config/non-packaged/share/neofetch/ascii/distro" ]]; then
             ascii_dir="/boot/home/config/non-packaged/share/neofetch/ascii/distro"
 
@@ -3325,7 +3325,7 @@ get_default_config() {
 
     elif [[ -f "/data/data/com.termux/files/etc/neofetch/config" ]]; then
         default_config="/data/data/com.termux/files/etc/neofetch/config"
-    
+
     elif [[ -f "/boot/home/config/non-packaged/etc/neofetch/config" ]]; then
         default_config="/boot/home/config/non-packaged/etc/neofetch/config"
 
