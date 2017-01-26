@@ -1337,7 +1337,7 @@ get_song() {
         ;;
     esac
 
-    [[ "$(trim "$song")" = "-" ]] && unset -v song
+    [[ "$(trim "$song")" == "-" ]] && unset -v song
 
     # Display Artist and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
