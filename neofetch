@@ -2075,7 +2075,7 @@ get_ascii() {
 
 get_image_source() {
     case "$image_source" in
-        "auto" | "wallpaper")
+        "auto" | "wall" | "wallpaper")
             get_wallpaper 2>/dev/null
         ;;
 
