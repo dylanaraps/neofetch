@@ -1,0 +1,9 @@
+ascii
+CHANGELOG.md
+config
+LICENSE.md
+Makefile
+movies.txt
+neofetch
+neofetch.1
+README.md

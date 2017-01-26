@@ -1093,7 +1093,7 @@ get_gpu() {
                     gpu="${gpu/Intel }"
                 fi
 
-                prin "${subtitle}${gpu_num}" "$gpu"
+                prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
                 ((++gpu_num))
             done
 
@@ -1748,7 +1748,7 @@ get_disk() {
         esac
 
         # Append '(disk mount point)' to the subtitle.
-        prin "${subtitle} (${disk_sub})" "$disk"
+        prin "${subtitle:+${subtitle} (${disk_sub})}" "$disk"
     done
 }
 
@@ -1774,7 +1774,7 @@ get_battery() {
                     "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
                 esac
 
-                prin "${subtitle}${bat: -1}" "$battery"
+                prin "${subtitle:+${subtitle}${bat: -1}}" "$battery"
             done
             return
         ;;
@@ -2519,7 +2519,7 @@ scrot_program() {
 
 info() {
     # Save subtitle value.
-    subtitle="$1"
+    [[ "$2" ]] && subtitle="$1"
 
     # Make sure that $prin is unset.
     unset -v prin
@@ -2544,14 +2544,20 @@ info() {
     else
         err "Info: Couldn't detect ${1}."
     fi
+
+    unset -v subtitle
 }
 
 prin() {
     # If $2 doesn't exist we format $1 as info.
-    [[ -z "$2" ]] && local subtitle_color="$info_color"
+    if [[ "$(trim "$1")" && "$2" ]]; then
+        string="${1//$'\033[0m'}${2:+: $2}"
+    else
+        string="${2:-$1}"
+        local subtitle_color="$info_color"
+    fi
 
     # Format the output.
-    string="${1//$'\033[0m'}${2:+: $2}"
     string="$(trim "$string")"
     string="${string/:/${reset}${colon_color}:${info_color}}"
     string="${subtitle_color}${bold}${string}"
