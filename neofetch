@@ -1619,6 +1619,7 @@ get_term_font() {
             term_font="$(awk -F ':|#' '/normal:/ {getline; print}' "${XDG_CONFIG_HOME}/alacritty/alacritty.yml")"
             term_font="${term_font/*family:}"
             term_font="${term_font/$'\n'*}"
+            term_font="${term_font/\#*}"
         ;;
 
         "Apple_Terminal")
