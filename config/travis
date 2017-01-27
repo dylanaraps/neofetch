@@ -39,13 +39,20 @@ print_info() {
     info cols
     info line_break
 
-    # Testing
+    # Testing.
     prin "prin"
     prin "prin" "prin"
 
     # Testing no subtitles.
     info uptime
     info disk
+
+    # Testing underlines.
+    info "Memory" memory
+    info underline
+
+    prin "This is a test"
+    info underline
 }
 
 refresh_rate="on"
