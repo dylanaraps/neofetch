@@ -46,13 +46,6 @@ print_info() {
     # Testing no subtitles.
     info uptime
     info disk
-
-    # Testing underlines.
-    info "Memory" memory
-    info underline
-
-    prin "This is a test"
-    info underline
 }
 
 refresh_rate="on"
