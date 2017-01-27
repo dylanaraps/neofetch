@@ -1250,7 +1250,7 @@ get_memory() {
             mem_used="$((mem_total - mem_free))"
         ;;
     esac
-    memory="${mem_used}MB / ${mem_total}MB"
+    memory="${mem_used}MiB / ${mem_total}MiB"
 
     # Bars.
     case "$memory_display" in
