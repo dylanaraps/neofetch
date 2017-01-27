@@ -1751,7 +1751,7 @@ get_disk() {
         if [[ -z "$subtitle" ]]; then
             prin "${disk_sub}" "$disk"
         else
-            prin "${subtitle} (${disk_sub})}" "$disk"
+            prin "${subtitle} (${disk_sub})" "$disk"
         fi
     done
 }
