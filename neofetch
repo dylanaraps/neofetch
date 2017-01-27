@@ -2584,11 +2584,9 @@ prin() {
 }
 
 get_underline() {
-    echo "$length"
-
     if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
-        printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${underline// /$underline_char}${reset} "
+        printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${underline_color}${underline// /$underline_char}${reset} "
         unset -v length
     fi
     prin=1
