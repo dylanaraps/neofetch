@@ -24,6 +24,10 @@
 
 ## Info
 
+**Memory**<br \>
+
+- Changed memory label to `MiB` on OS that output memory in Mebibytes.
+
 **Shell**<br \>
 
 - Fixed a crash when the user has `bash 3` installed.
