@@ -4,6 +4,7 @@
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - **[@dawidd6](https://github.com/dawidd6)**
 - **[@mstraube](https://github.com/mstraube)**
+- **[@YellowApple](https://github.com/YellowApple)**
 - **[@siiptuo](https://github.com/siiptuo)**
 
 
@@ -16,6 +17,7 @@
 
 - Fixed output if subtitles are disabled and `prin` is used in an info function.
 - Fixed underlines not working when used with `prin`.
+- Fixed HAIKU install path. **[@YellowApple](https://github.com/YellowApple)**
 
 
 ## Config
