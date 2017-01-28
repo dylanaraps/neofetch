@@ -4,6 +4,7 @@
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - **[@dawidd6](https://github.com/dawidd6)**
 - **[@mstraube](https://github.com/mstraube)**
+- **[@siiptuo](https://github.com/siiptuo)**
 
 
 ## Operating System
@@ -13,7 +14,8 @@
 
 ## General
 
-- Fix output if subtitles are disabled and `prin` is used in an info function.
+- Fixed output if subtitles are disabled and `prin` is used in an info function.
+- Fixed underlines not working when used with `prin`.
 
 
 ## Config
@@ -45,6 +47,10 @@
 - Don't print `$song` if it's empty and `song_shorthand` is on. **[@mstraube](https://github.com/mstraube)**
 - Fixed `mpd` detection when `mpd` is on a different host. **[@dawidd6](https://github.com/dawidd6)**
 - Use `get_song_dbus` for Audacious. **[@mstraube](https://github.com/mstraube)**
+
+**Terminal Font**<br \>
+
+- [Alacritty] Fixed font detection. **[@siiptuo](https://github.com/siiptuo)**
 
 
 ## Images
