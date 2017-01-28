@@ -39,7 +39,7 @@ print_info() {
     info cols
     info line_break
 
-    # Testing
+    # Testing.
     prin "prin"
     prin "prin" "prin"
 
