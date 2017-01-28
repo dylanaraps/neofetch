@@ -3339,8 +3339,8 @@ get_default_config() {
     elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
         default_config="/usr/local/etc/neofetch/config"
 
-    elif [[ -f "/data/data/com.termux/files/etc/neofetch/config" ]]; then
-        default_config="/data/data/com.termux/files/etc/neofetch/config"
+    elif [[ -f "/data/data/com.termux/files/usr/etc/neofetch/config" ]]; then
+        default_config="/data/data/com.termux/files/usr/etc/neofetch/config"
 
     elif [[ -f "/boot/home/config/non-packaged/etc/neofetch/config" ]]; then
         default_config="/boot/home/config/non-packaged/etc/neofetch/config"
