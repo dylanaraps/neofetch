@@ -2454,7 +2454,16 @@ scrot_upload() {
     fi
 
     image_file="${scrot_dir}${scrot_name}"
-    printf "%s\n" "Uploading image..."
+
+    # Print a message letting the user know we're uploading
+    # the screenshot.
+    printf "%s\r" "Uploading scrot"
+    sleep .2
+    printf "%s\r" "Uploading scrot."
+    sleep .2
+    printf "%s\r" "Uploading scrot.."
+    sleep .2
+    printf "%s\r" "Uploading scrot..."
 
     case "$image_host" in
         "teknik")
@@ -2517,6 +2526,16 @@ scrot_program() {
             "Haiku") scrot_program=(screenshot -s) ;;
         esac
     fi
+
+    # Print a message letting the user know we're taking
+    # a screenshot.
+    printf "%s\r" "Taking scrot"
+    sleep .2
+    printf "%s\r" "Taking scrot."
+    sleep .2
+    printf "%s\r" "Taking scrot.."
+    sleep .2
+    printf "%s\r" "Taking scrot..."
 
     # Take the scrot.
     "${scrot_program[@]}" "$1"
