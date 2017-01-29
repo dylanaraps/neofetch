@@ -6,7 +6,6 @@
 - **[@mstraube](https://github.com/mstraube)**
 - **[@YellowApple](https://github.com/YellowApple)**
 - **[@siiptuo](https://github.com/siiptuo)**
-- **[@siiptuo](https://github.com/siiptuo)**
 - **[@Head-on-a-Stick](https://github.com/Head-on-a-Stick)**
 
 
