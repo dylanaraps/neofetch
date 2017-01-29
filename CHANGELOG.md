@@ -6,6 +6,8 @@
 - **[@mstraube](https://github.com/mstraube)**
 - **[@YellowApple](https://github.com/YellowApple)**
 - **[@siiptuo](https://github.com/siiptuo)**
+- **[@siiptuo](https://github.com/siiptuo)**
+- **[@Head-on-a-Stick](https://github.com/Head-on-a-Stick)**
 
 
 ## Operating System
@@ -68,6 +70,7 @@
 - [Windows 10] Fixed `ascii_distro` not working.
 - Fixed a bug where the backend is `ascii` but the image_source is an image file.
 - Fixed custom ascii files not working.
+- Removed extra backslashes from OpenBSD ascii art. **[@Head-on-a-Stick](https://github.com/Head-on-a-Stick)**
 
 
 ## Scrot
