@@ -68,3 +68,9 @@
 - [Windows 10] Fixed `ascii_distro` not working.
 - Fixed a bug where the backend is `ascii` but the image_source is an image file.
 - Fixed custom ascii files not working.
+
+
+## Scrot
+
+- Add message to let users know that a screenshot was taken.
+
