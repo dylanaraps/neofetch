@@ -2625,6 +2625,7 @@ get_line_break() {
 
     # Calculate info height.
     ((++info_height))
+    line_breaks+=$'\n'
 
     # Tell info() that we printed manually.
     prin=1
@@ -3497,34 +3498,27 @@ get_term_padding() {
 
 dynamic_prompt() {
     case "$image_backend" in
-        "ascii") ;;
+        "ascii") printf "\n" ;;
         "off") return ;;
         *)
-            get_term_padding 2>/dev/null
-
-            # Calculate image height in terminal cells.
-            lines="$(((border * 2 + height + yoffset) / font_height))"
+            get_term_padding
+            lines="$(((border + height + yoffset) / font_height))"
+            image_prompt="on"
         ;;
     esac
 
     # If the info is higher than the ascii/image place the prompt
     # based on the info height instead of the ascii/image height.
     if ((lines < info_height)); then
-        printf "\n"
+        [[ "$image_prompt" ]] && printf "\n"
         return
     else
+        [[ "$image_prompt" ]] && printf "%b\n" "$line_breaks"
         lines="$((lines - info_height))"
     fi
 
     # Set the prompt location.
-    if ((lines < 0)); then
-        printf "%b" "\033[${lines/-}A"
-    else
-        printf "%b" "\033[${lines}B"
-    fi
-
-    # Add some padding.
-    printf "\n\n\n\n"
+    ((lines > 0)) && printf "%b" "\033[${lines}B"
 }
 
 old_functions() {
