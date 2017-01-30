@@ -84,5 +84,5 @@ Thanks for all of the bug reports and contributions. :)
 
 ## Scrot
 
-- Add message to let users know that a screenshot was taken.
+- Added message to let users know that a screenshot was taken.
 
