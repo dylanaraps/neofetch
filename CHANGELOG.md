@@ -1,3 +1,8 @@
+This minor release fixes all of the bugs that were found in the 3.0 release.
+
+Thanks for all of the bug reports and contributions. :)
+
+
 ## Contributors
 
 - **[@SomaUlte](https://github.com/SomaUlte)**
@@ -7,6 +12,7 @@
 - **[@YellowApple](https://github.com/YellowApple)**
 - **[@siiptuo](https://github.com/siiptuo)**
 - **[@Head-on-a-Stick](https://github.com/Head-on-a-Stick)**
+- **[@konimex](https://github.com/konimex)**
 
 
 ## Operating System
