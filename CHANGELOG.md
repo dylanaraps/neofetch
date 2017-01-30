@@ -37,6 +37,10 @@
 
 - Fixed a crash when the user has `bash 3` installed.
 
+**Packages**<br \>
+
+- Added support for Chromebrew.
+
 **GPU**<br \>
 
 - [Linux] Display detailed information about Intel GPUs. **[@SomaUlte](https://github.com/SomaUlte)**
