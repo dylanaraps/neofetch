@@ -470,6 +470,9 @@ get_packages() {
             type -p pkg_info >/dev/null && \
                 packages="$((packages+=$(pkg_info | wc -l)))"
 
+            type -p crew >/dev/null && \
+                packages="$((packages+=$(ls -l /usr/local/etc/crew/meta/*.filelist | wc -l)))"
+
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
                     "FreeBSD") packages="$((packages+=$(pkg info | wc -l)))" ;;
