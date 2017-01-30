@@ -8,6 +8,9 @@
 # Created by Dylan Araps
 # https://github.com/dylanaraps/
 
+# Neofetch version.
+version="3.0.1"
+
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
@@ -3886,7 +3889,7 @@ exit 1
 }
 
 version() { printf "%s" "\
-Neofetch 3.0.1
+Neofetch $version
 
 Copyright (c) 2016-2017 Dylan Araps
 
