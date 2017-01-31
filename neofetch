@@ -1949,22 +1949,22 @@ get_cols() {
         done
 
         # Convert height into spaces.
-        printf -v spaces "%${block_height}s"
+        printf -v block_spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
-        [[ "$blocks" ]] &&  cols+="${spaces// /${blocks}${reset}nl}"
-        [[ "$blocks2" ]] && cols+="${spaces// /${blocks2}${reset}nl}"
+        [[ "$blocks" ]] &&  cols+="${block_spaces// /${blocks}${reset}nl}"
+        [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}${reset}nl}"
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
         cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
 
+        # Add block height to info height.
+        info_height="$((info_height+=block_height+2))"
+
         printf "%b\n" "\033[${text_padding}C${zws}${cols}"
-    else
-        printf "\n"
     fi
 
-    info_height="$((info_height+=block_height+2))"
     unset -v blocks blocks2 cols
 
     # Tell info() that we printed manually.
@@ -3516,6 +3516,9 @@ dynamic_prompt() {
         [[ "$image_prompt" ]] && printf "%b\n" "$line_breaks"
         lines="$((lines - info_height))"
     fi
+
+    # Print a newline if color blocks are disabled.
+    [[ -z "$block_spaces" ]] && printf "\n"
 
     # Set the prompt location.
     ((lines > 0)) && printf "%b" "\033[${lines}B"
