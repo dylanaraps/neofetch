@@ -11,4 +11,5 @@
 ## Images
 
 - Added `libsixel` backend.
+- Added `termpix` backend.
 - Only use a zero width space in the `w3m` backend.
