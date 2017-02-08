@@ -1985,7 +1985,7 @@ image_backend() {
         "ascii") get_ascii ;;
         "off") image_backend="off" ;;
 
-        "caca" | "catimg" | "jp2a" | "iterm2" | "tycat" | "w3m" | "sixel")
+        "caca" | "catimg" | "jp2a" | "iterm2" | "termpix" | "tycat" | "w3m" | "sixel")
             get_image_source
 
             if [[ ! -f "$image" ]]; then
@@ -2010,7 +2010,7 @@ image_backend() {
 
         *)
             err "Image: Unknown image backend specified '$image_backend'."
-            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2', 'off', 'sixel', 'tycat', 'w3m')"
+            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2', 'off', 'sixel', 'termpix', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
             get_ascii
         ;;
@@ -2396,6 +2396,10 @@ display_image() {
 
         "sixel")
             img2sixel -w "$width" "$image" || to_off "Image: libsixel failed to display the image."
+        ;;
+
+        "termpix")
+            termpix --width "$((width / font_width))" "$image" || to_off "Image: termpix failed to display the image."
         ;;
 
         "iterm2")
@@ -3813,6 +3817,7 @@ IMAGE BACKEND:
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
     --sixel source              Shortcut to use 'sixel' backend.
+    --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
     --w3m source                Shortcut to use 'w3m' backend.
     --off                       Shortcut to use 'off' backend.
@@ -4015,7 +4020,7 @@ get_args() {
             # Image backend
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--sixel" | "--tycat" | "--w3m")
+            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--sixel" | "--termpix" | "--tycat" | "--w3m")
                 image_backend="${1/--}"
                 case "$2" in
                     "-"* | "") ;;
@@ -4112,7 +4117,6 @@ main() {
         printf "\033[?25l\033[?7l"
     fi
 
-    # get_image_backend
     image_backend
     old_functions
     get_cache_dir
