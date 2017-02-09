@@ -2232,7 +2232,7 @@ get_term_size() {
     fi
 
     # Get terminal width/height if \033[14t is unsupported.
-    if [[ -z "$term_width" && "$image_backend" == "w3m" ]]; then
+    if [[ -z "$term_width" ]]; then
         if type -p xdotool >/dev/null 2>&1; then
             current_window="$(xdotool getactivewindow)"
             source <(xdotool getwindowgeometry --shell "$current_window")
