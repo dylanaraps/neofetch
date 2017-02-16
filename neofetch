@@ -1290,7 +1290,7 @@ get_song() {
         "deadbeef"*)    song="$(deadbeef --nowplaying-tf  '%artist% - %title%')" ;;
         "xmms2d"*)      song="$(xmms2 current -f '${artist} - ${title}')" ;;
         "qmmp"*)        song="$(qmmp --nowplaying '%p - %t')" ;;
-        "audacious"*)   get_song_dbus "audacious" ;;
+        "audacious"*)   audtool current-song || get_song_dbus "audacious" ;;
         "gnome-music"*) get_song_dbus "GnomeMusic" ;;
         "lollypop"*)    get_song_dbus "Lollypop" ;;
         "clementine"*)  get_song_dbus "clementine" ;;
