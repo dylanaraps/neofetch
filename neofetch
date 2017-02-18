@@ -1290,7 +1290,6 @@ get_song() {
         "deadbeef"*)    song="$(deadbeef --nowplaying-tf  '%artist% - %title%')" ;;
         "xmms2d"*)      song="$(xmms2 current -f '${artist} - ${title}')" ;;
         "qmmp"*)        song="$(qmmp --nowplaying '%p - %t')" ;;
-        "audacious"*)   audtool current-song || get_song_dbus "audacious" ;;
         "gnome-music"*) get_song_dbus "GnomeMusic" ;;
         "lollypop"*)    get_song_dbus "Lollypop" ;;
         "clementine"*)  get_song_dbus "clementine" ;;
@@ -1298,6 +1297,15 @@ get_song() {
         "bluemindo"*)   get_song_dbus "Bluemindo" ;;
         "guayadeque"*)  get_song_dbus "guayadeque" ;;
         "yarock"*)      get_song_dbus "yarock" ;;
+
+        "audacious"*)
+            song="$(audtool current-song)"
+
+            # Remove Album from 'Artist - Album - Title'
+            song="${song/-* -/-}"
+
+            [[ -z "$song" ]] && get_song_dbus "audacious"
+        ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; print; print " - "} /tag title/ {$1=$2=""; print}')"
