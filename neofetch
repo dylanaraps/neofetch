@@ -629,7 +629,10 @@ get_wm() {
 
     else
         case "$os" in
-            "Mac OS X") wm="Quartz Compositor" ;;
+            "Mac OS X")
+              wm="Quartz Compositor"
+              ps -e | grep -q "[k]wm" && wm="Kwm"
+            ;;
             "Windows")
                 wm="$(tasklist | grep -m 1 -o -F -e "bugn" -e "Windawesome" -e "blackbox" -e "emerge" -e "litestep")"
                 [[ "$wm" == "blackbox" ]] && wm="bbLean (Blackbox)"
