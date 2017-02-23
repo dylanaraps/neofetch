@@ -1043,7 +1043,7 @@ get_cpu_usage() {
     case "$cpu_display" in
         "bar") cpu_usage="$(bar "$cpu_usage" 100)" ;;
         "infobar") cpu_usage="${cpu_usage}% $(bar "$cpu_usage" 100)" ;;
-        "barinfo") cpu_usage="$(bar "$cpu_usage" 100) ${cpu_usage}%" ;;
+        "barinfo") cpu_usage="$(bar "$cpu_usage" 100)${info_color} ${cpu_usage}%" ;;
         *) cpu_usage="${cpu_usage}%" ;;
     esac
 }
@@ -1267,7 +1267,7 @@ get_memory() {
     case "$memory_display" in
         "bar") memory="$(bar "${mem_used}" "${mem_total}")" ;;
         "infobar") memory="${memory} $(bar "${mem_used}" "${mem_total}")" ;;
-        "barinfo") memory="$(bar "${mem_used}" "${mem_total}") ${memory}" ;;
+        "barinfo") memory="$(bar "${mem_used}" "${mem_total}")${info_color} ${memory}" ;;
     esac
 }
 
@@ -1763,7 +1763,7 @@ get_disk() {
         case "$disk_display" in
             "bar") disk="$(bar "$disk_perc" "100")" ;;
             "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
-            "barinfo") disk="$(bar "$disk_perc" "100") $disk" ;;
+            "barinfo") disk="$(bar "$disk_perc" "100")${info_color} $disk" ;;
             "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
         esac
 
@@ -1795,7 +1795,7 @@ get_battery() {
                 case "$battery_display" in
                     "bar") battery="$(bar "$capacity" 100)" ;;
                     "infobar") battery+=" $(bar "$capacity" 100)" ;;
-                    "barinfo") battery="$(bar "$capacity" 100) ${battery}" ;;
+                    "barinfo") battery="$(bar "$capacity" 100)${info_color} ${battery}" ;;
                 esac
 
                 prin "${subtitle:+${subtitle}${bat: -1}}" "$battery"
@@ -1852,7 +1852,7 @@ get_battery() {
     case "$battery_display" in
         "bar") battery="$(bar "${battery/'%'*}" 100)" ;;
         "infobar") battery="${battery} $(bar "${battery/'%'*}" 100)" ;;
-        "barinfo") battery="$(bar "${battery/'%'*}" 100) ${battery}" ;;
+        "barinfo") battery="$(bar "${battery/'%'*}" 100)${info_color} ${battery}" ;;
     esac
 }
 
@@ -3326,8 +3326,8 @@ set_text_colors() {
     fi
 
     case "$bar_color_total $1" in
-        "distro "[736]) bar_color_total="$c2" ;;
-        "distro "[0-9]) bar_color_total="$c1" ;;
+        "distro "[736]) bar_color_total="$(color "$1")" ;;
+        "distro "[0-9]) bar_color_total="$(color "$2")" ;;
         *) bar_color_total="$(color "$bar_color_total")" ;;
     esac
 }
@@ -3448,9 +3448,9 @@ bar() {
 
     # Borders.
     [[ "$bar_border" == "on" ]] && \
-        bar="$(color fg)[${bar}$(color fg)]"
+        bar="${reset}[${bar}${reset}]"
 
-    printf "%b\n" "${bar}${info_color}"
+    printf "%b" "${bar}${info_color}"
 }
 
 cache() {
