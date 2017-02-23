@@ -1,6 +1,7 @@
 ## Contributors
 
 - **[@mstraube](https://github.com/mstraube)**
+- **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 
 ## Ascii
@@ -17,6 +18,10 @@
 
 
 ## Info
+
+**Window Manager**<br \>
+
+- [MacOS] Added support for Kwm. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 **Song**<br \>
 
