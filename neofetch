@@ -3335,7 +3335,7 @@ set_text_colors() {
 color() {
     case "$1" in
         [0-6]) printf "%b" "${reset}\033[3${1}m" ;;
-        7 | "fg") printf "%b" "$reset" ;;
+        7 | "fg") printf "%b" "\033[37m${reset}" ;;
         *) printf "%b" "\033[38;5;${1}m" ;;
     esac
 }
@@ -3443,12 +3443,12 @@ bar() {
     printf -v total "%$((bar_length - elapsed))s"
 
     # Set the colors and swap the spaces for $bar_char_.
-    bar+="${bar_color_elapsed}${prog// /$bar_char_elapsed}"
-    bar+="${bar_color_total}${total// /$bar_char_total}"
+    bar+="${bar_color_elapsed}${prog// /${bar_char_elapsed}}"
+    bar+="${bar_color_total}${total// /${bar_char_total}}"
 
     # Borders.
     [[ "$bar_border" == "on" ]] && \
-        bar="${reset}[${bar}${reset}]"
+        bar="$(color fg)[${bar}$(color fg)]"
 
     printf "%b" "${bar}${info_color}"
 }
