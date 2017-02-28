@@ -1859,7 +1859,8 @@ get_battery() {
 get_local_ip() {
     case "$os" in
         "Linux" | "BSD" | "Solaris" | "AIX")
-            local_ip="$(ip route get 1 | awk '{print $NF;exit}')"
+            local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
+            local_ip="${local_ip/uid*}"
             [[ -z "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
         ;;
 
