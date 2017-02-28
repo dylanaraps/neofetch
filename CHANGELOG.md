@@ -26,3 +26,7 @@
 **Song**<br \>
 
 - Fixed Audacious song output when `dbus-send` fails. **[@mstraube](https://github.com/mstraube)**
+
+**Local IP**<br \>
+
+- [Linux] Fixed UID showing instead of Local IP on several versions/configs of iproute2.
