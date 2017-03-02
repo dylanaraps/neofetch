@@ -22,6 +22,7 @@
 **Window Manager**<br \>
 
 - [MacOS] Added support for Kwm. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
+- [MacOS] Added support for Spectacle. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 **Song**<br \>
 
