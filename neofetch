@@ -1652,6 +1652,9 @@ get_term_font() {
             # See: https://groups.google.com/forum/#!topic/iterm2-discuss/0tO3xZ4Zlwg
             local currentProfileName=$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')
 
+            # Warning: Dynamic profiles are not taken into account here!
+            # https://www.iterm2.com/documentation-dynamic-profiles.html
+
             # Count Guids in "New Bookmarks"; they should be unique
             local profilesCount=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist | grep "Guid" | wc -l)
             for idx in $(seq 0 ${profilesCount}); do
