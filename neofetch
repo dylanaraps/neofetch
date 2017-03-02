@@ -1650,24 +1650,29 @@ get_term_font() {
             # thou, but that does not match to a guid in the plist.
             # So, be warned! Collisions may occur!
             # See: https://groups.google.com/forum/#!topic/iterm2-discuss/0tO3xZ4Zlwg
-            local currentProfileName=$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')
+            local currentProfileName
+            currentProfileName=$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')
 
             # Warning: Dynamic profiles are not taken into account here!
             # https://www.iterm2.com/documentation-dynamic-profiles.html
 
             # Count Guids in "New Bookmarks"; they should be unique
-            local profilesCount=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null | grep "Guid" | wc -l)
-            for idx in $(seq 0 ${profilesCount}); do
-                local profileName=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null)
+            local profilesCount
+            profilesCount=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null | grep -c "Guid")
+            for idx in $(seq 0 "${profilesCount}"); do
+                local profileName
+                profileName=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null)
                 if [[ "${profileName}" == "${currentProfileName}" ]]; then
                     # "Normal Font"
                     term_font=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Normal\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
                     # Font for non-ascii characters
                     # Only check for a different non-ascii font, if the user checked
                     # the "use a different font for non-ascii text" switch.
-                    local useDifferentFont=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Use\ Non-ASCII\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
+                    local useDifferentFont
+                    useDifferentFont=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Use\ Non-ASCII\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
                     if [[ "$useDifferentFont" == "true" ]]; then
-                        local nonAsciiFont=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Non\ Ascii\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
+                        local nonAsciiFont
+                        nonAsciiFont=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Non\ Ascii\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
                         if [[ "$term_font" != "$nonAsciiFont" ]]; then
                             term_font="$term_font (normal) / $nonAsciiFont (non-ascii)"
                         fi
