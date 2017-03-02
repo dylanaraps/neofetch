@@ -1645,6 +1645,10 @@ get_term_font() {
         ;;
 
         "iTerm2")
+            # Unfortunately the profile name is not unique, but it seems to be the only thing
+            # that identifies an active profile. There is the "id of current session of current window"
+            # thou, but that does not match to a guid in the plist.
+            # So, be warned! Collisions may occur!
             local currentProfileName=$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')
 
             # Count Guids in "New Bookmarks"; they should be unique
