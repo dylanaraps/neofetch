@@ -1656,9 +1656,9 @@ get_term_font() {
             # https://www.iterm2.com/documentation-dynamic-profiles.html
 
             # Count Guids in "New Bookmarks"; they should be unique
-            local profilesCount=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist | grep "Guid" | wc -l)
+            local profilesCount=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null | grep "Guid" | wc -l)
             for idx in $(seq 0 ${profilesCount}); do
-                local profileName=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist)
+                local profileName=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null)
                 if [[ "${profileName}" == "${currentProfileName}" ]]; then
                     # "Normal Font"
                     term_font=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Normal\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
