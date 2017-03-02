@@ -631,6 +631,7 @@ get_wm() {
         case "$os" in
             "Mac OS X")
                 wm="Quartz Compositor"
+                ps -e | grep -q '[S]pectacle' && wm='Spectacle'
                 ps -e | grep -q "[k]wm" && wm="Kwm"
             ;;
 
