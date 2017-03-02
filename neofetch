@@ -1663,7 +1663,7 @@ get_term_font() {
             term_font="${term_font/medium/}"
             term_font="${term_font/Medium/}"
             term_font="${term_font/CodePro/ Code Pro}"
-            term_font="${term_font/ForPowerline/ Code Pro}"
+            term_font="${term_font/ForPowerline/}"
         ;;
 
         "konsole"*)
