@@ -1655,6 +1655,12 @@ get_term_font() {
                     # "Normal Font"
                     term_font=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Normal\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
                     # Font for non-ascii characters
+                    # This font setting may differ from normal font, but this might be a false
+                    # positive, as there is a setting to use a different font for non-ascii
+                    # characters and this setting does not get updated when flipping the switch.
+                    # So it might be that the user checked the mark to use a different font,
+                    # selected one, but then decided to uncheck the "use different font" mark
+                    # again.
                     local nonAsciiFont=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Non\ Ascii\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
                     if [[ "$term_font" -ne "$nonAsciiFont" ]]; then
                         term_font="$term_font (normal) / $nonAsciiFont (non-ascii)"
