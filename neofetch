@@ -468,7 +468,7 @@ get_packages() {
                 packages="$((packages+=$(ls -d -1 /Programs/*/ | wc -l)))"
 
             type -p eopkg >/dev/null && \
-                packages="$((packages+=$(eopkg list-installed | wc -l)))"
+                packages="$((packages+=$(ls -1 /var/lib/eopkg/package | wc -l)))"
 
             type -p pkg_info >/dev/null && \
                 packages="$((packages+=$(pkg_info | wc -l)))"
