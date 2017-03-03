@@ -2,6 +2,7 @@
 
 - **[@mstraube](https://github.com/mstraube)**
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
+- **[@ikeydoherty](https://github.com/ikeydoherty)**
 
 
 ## Ascii
@@ -31,3 +32,6 @@
 **Local IP**<br \>
 
 - [Linux] Fixed UID showing instead of Local IP on several versions/configs of iproute2.
+
+**Packages**<br \>
+- [eopkg] Used a faster detection method. **[@ikeydoherty](https://github.com/ikeydoherty)**
