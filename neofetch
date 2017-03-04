@@ -1391,7 +1391,7 @@ get_resolution() {
 
         "Mac OS X")
             if type -p screenresolution >/dev/null; then
-                resolution="$(screenresolution get | awk '/Display/ {printf $6 "Hz, "}')"
+                resolution="$(screenresolution get 2>&1 | awk '/Display/ {printf $6 "Hz, "}')"
                 resolution="${resolution//x??@/ @ }"
 
             else
