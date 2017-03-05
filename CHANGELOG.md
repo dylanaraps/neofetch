@@ -3,6 +3,7 @@
 - **[@mstraube](https://github.com/mstraube)**
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - **[@ikeydoherty](https://github.com/ikeydoherty)**
+- **[@eliezio](https://github.com/eliezio)**
 
 
 ## Ascii
@@ -35,3 +36,6 @@
 
 **Packages**<br \>
 - [eopkg] Used a faster detection method. **[@ikeydoherty](https://github.com/ikeydoherty)**
+
+**Resolution**<br \>
+- [macOS] Fixed `screenresolution` not appearing at all on newer versions. **[@eliezio](https://github.com/eliezio)**
