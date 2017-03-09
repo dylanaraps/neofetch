@@ -810,11 +810,11 @@ get_cpu() {
                 speed="$(< "${speed_dir}/bios_limit")" || \
                 speed="$(< "${speed_dir}/scaling_max_freq")" || \
                 speed="$(< "${speed_dir}/cpuinfo_max_freq")"
-                speed="$((speed / 100000))"
+                speed="$((speed / 10000))"
 
             else
                 speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
-                speed="$((speed / 100))"
+                speed="$((speed / 10))"
             fi
 
             # Get CPU temp.
@@ -882,7 +882,7 @@ get_cpu() {
             # Get CPU speed.
             speed="$(sysctl -n hw.cpuspeed)"
             [[ -z "$speed" ]] && speed="$(sysctl -n  hw.clockrate)"
-            speed="$((speed / 100))"
+            speed="$((speed / 10))"
 
             # Get CPU cores.
             cores="$(sysctl -n hw.ncpu)"
@@ -920,7 +920,7 @@ get_cpu() {
 
             # Get CPU speed.
             speed="$(psrinfo -v | awk '/operates at/ {print $6; exit}')"
-            speed="$((speed / 100))"
+            speed="$((speed / 10))"
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -937,7 +937,7 @@ get_cpu() {
             # Get CPU speed.
             speed="$(sysinfo -cpu | awk '/running at/ {print $NF; exit}')"
             speed="${speed/MHz}"
-            speed="$((speed / 100))"
+            speed="$((speed / 10))"
 
             # Get CPU cores.
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
@@ -950,7 +950,7 @@ get_cpu() {
             # Get CPU speed.
             speed="$(prtconf | awk -F':' '/Processor Clock Speed/ {printf $2}')"
             speed="${speed/MHz}"
-            speed="$((speed / 100))"
+            speed="$((speed / 10))"
 
             # Get CPU cores.
             case "$cpu_cores" in
