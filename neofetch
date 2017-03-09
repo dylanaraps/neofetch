@@ -1676,9 +1676,9 @@ get_term_font() {
                     if [[ "$use_different_font" == "true" ]]; then
                         local non_ascii_font
                         non_ascii_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Non\ Ascii\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+
                         [[ "$term_font" != "$non_ascii_font" ]] && \
                             term_font="$term_font (normal) / $non_ascii_font (non-ascii)"
-
                     fi
                 fi
             done
