@@ -1382,7 +1382,6 @@ get_resolution() {
                     "off") resolution="$(xrandr --nograb --current | awk '/\*/ {printf $1 ", "}')" ;;
                 esac
                 resolution="${resolution//\*}"
-                resolution="${resolution//\.[0-9][0-9]}"
 
             elif type -p xdpyinfo >/dev/null; then
                 resolution="$(xdpyinfo | awk '/dimensions:/ {printf $2}')"
