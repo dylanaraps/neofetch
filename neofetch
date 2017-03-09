@@ -94,7 +94,7 @@ get_distro() {
                 esac
 
             elif type -p tazpkg >/dev/null; then
-                distro="SliTaz $(cat /etc/slitaz-release)"
+                distro="SliTaz $(< /etc/slitaz-release)"
 
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
@@ -480,7 +480,7 @@ get_packages() {
                 packages="$((packages+=$(ls -l /usr/local/etc/crew/meta/*.filelist | wc -l)))"
 
             type -p tazpkg >/dev/null && \
-                packages="$(($(tazpkg list|wc -l)-6))"
+                packages="$((packages+=$(tazpkg list | wc -l) - 6))"
 
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
