@@ -1659,9 +1659,11 @@ get_term_font() {
             # Count Guids in "New Bookmarks"; they should be unique
             local profiles_count
             profiles_count="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null | grep -c "Guid")"
+
             for ((i=0; i<=profiles_count; i++)); do
                 local profile_name
                 profile_name="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null)"
+
                 if [[ "$profile_name" == "$current_profile_name" ]]; then
                     # "Normal Font"
                     term_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Normal\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
@@ -1670,11 +1672,13 @@ get_term_font() {
                     # the "use a different font for non-ascii text" switch.
                     local use_different_font
                     use_different_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Use\ Non-ASCII\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+
                     if [[ "$use_different_font" == "true" ]]; then
                         local non_ascii_font
                         non_ascii_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Non\ Ascii\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
                         [[ "$term_font" != "$non_ascii_font" ]] && \
                             term_font="$term_font (normal) / $non_ascii_font (non-ascii)"
+
                     fi
                 fi
             done
