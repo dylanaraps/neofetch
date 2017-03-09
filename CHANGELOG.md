@@ -39,3 +39,4 @@
 
 **Resolution**<br \>
 - [macOS] Fixed `screenresolution` not appearing at all on newer versions. **[@eliezio](https://github.com/eliezio)**
+- [Linux] Show decimals.
