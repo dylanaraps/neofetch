@@ -810,11 +810,10 @@ get_cpu() {
                 speed="$(< "${speed_dir}/bios_limit")" || \
                 speed="$(< "${speed_dir}/scaling_max_freq")" || \
                 speed="$(< "${speed_dir}/cpuinfo_max_freq")"
-                speed="$((speed / 10000))"
+                speed="$((speed / 1000))"
 
             else
                 speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
-                speed="$((speed / 10))"
             fi
 
             # Get CPU temp.
@@ -882,7 +881,6 @@ get_cpu() {
             # Get CPU speed.
             speed="$(sysctl -n hw.cpuspeed)"
             [[ -z "$speed" ]] && speed="$(sysctl -n  hw.clockrate)"
-            speed="$((speed / 10))"
 
             # Get CPU cores.
             cores="$(sysctl -n hw.ncpu)"
@@ -920,7 +918,6 @@ get_cpu() {
 
             # Get CPU speed.
             speed="$(psrinfo -v | awk '/operates at/ {print $6; exit}')"
-            speed="$((speed / 10))"
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -937,7 +934,6 @@ get_cpu() {
             # Get CPU speed.
             speed="$(sysinfo -cpu | awk '/running at/ {print $NF; exit}')"
             speed="${speed/MHz}"
-            speed="$((speed / 10))"
 
             # Get CPU cores.
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
@@ -950,7 +946,6 @@ get_cpu() {
             # Get CPU speed.
             speed="$(prtconf | awk -F':' '/Processor Clock Speed/ {printf $2}')"
             speed="${speed/MHz}"
-            speed="$((speed / 10))"
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -960,8 +955,12 @@ get_cpu() {
         ;;
     esac
 
-    # Fix for speeds under 1ghz.
     if [[ "$speed" ]]; then
+        # Hide decimals if on.
+        [[ "$speed_shorthand" == "on" ]] && \
+            speed="$((speed / 100))"
+
+        # Fix for speeds under 1ghz.
         if [[ -z "${speed:1}" ]]; then
             speed="0.${speed}"
         else
@@ -3739,6 +3738,7 @@ INFO:
 
                                 NOTE: This only supports Linux with cpufreq.
 
+    --speed_shorthand on/off    Whether or not to show decimals in CPU speed.
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores type            Whether or not to display the number of CPU cores
@@ -3944,6 +3944,7 @@ get_args() {
             "--cpu_cores") cpu_cores="$2" ;;
             "--cpu_speed") cpu_speed="$2" ;;
             "--speed_type") speed_type="$2" ;;
+            "--speed_shorthand") speed_shorthand="$2" ;;
             "--distro_shorthand") distro_shorthand="$2" ;;
             "--kernel_shorthand") kernel_shorthand="$2" ;;
             "--uptime_shorthand") uptime_shorthand="$2" ;;
