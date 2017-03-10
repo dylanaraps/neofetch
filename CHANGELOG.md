@@ -4,6 +4,11 @@
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - **[@ikeydoherty](https://github.com/ikeydoherty)**
 - **[@eliezio](https://github.com/eliezio)**
+- **[@nilesr](https://github.com/nilesr)**
+
+## Operating System
+
+- Added support for SliTaz. **[@nilesr](https://github.com/nilesr)**
 
 
 ## Ascii
