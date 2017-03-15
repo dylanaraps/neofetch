@@ -5,6 +5,8 @@
 - **[@ikeydoherty](https://github.com/ikeydoherty)**
 - **[@eliezio](https://github.com/eliezio)**
 - **[@nilesr](https://github.com/nilesr)**
+- **[@dritter](https://github.com/dritter)**
+
 
 ## Operating System
 
@@ -25,6 +27,10 @@
 
 
 ## Info
+
+**Terminal Font**<br \>
+
+- Added \*experimental\* font detection for iTerm2. **[@dritter](https://github.com/dritter)**
 
 **Window Manager**<br \>
 
