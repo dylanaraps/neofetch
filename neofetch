@@ -636,10 +636,17 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                wm="Quartz Compositor"
-                ps -e | grep -q '[S]pectacle' && wm='Spectacle'
-                ps -e | grep -q "[A]methyst" && wm="Amethyst"
-                ps -e | grep -q "[k]wm" && wm="Kwm"
+                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm')"
+                
+                if echo "$ps_line" | grep -q "kwm"; then
+                    wm="Kwm"
+                elif echo "$ps_line" | grep -q "Amethyst"; then
+                    wm="Amethyst"
+                elif echo "$ps_line" | grep -q "Spectacle"; then
+                    wm="Spectacle"
+                else
+                    wm="Quartz Compositor"
+                fi
             ;;
 
             "Windows")
