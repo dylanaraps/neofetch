@@ -93,6 +93,9 @@ get_distro() {
                     "tiny") distro="${distro//version*}" ;;
                 esac
 
+            elif type -p tazpkg >/dev/null; then
+                distro="SliTaz $(< /etc/slitaz-release)"
+
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
@@ -476,6 +479,9 @@ get_packages() {
             type -p crew >/dev/null && \
                 packages="$((packages+=$(ls -l /usr/local/etc/crew/meta/*.filelist | wc -l)))"
 
+            type -p tazpkg >/dev/null && \
+                packages="$((packages+=$(tazpkg list | wc -l) - 6))"
+
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
                     "FreeBSD") packages="$((packages+=$(pkg info | wc -l)))" ;;
@@ -630,9 +636,14 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                wm="Quartz Compositor"
-                ps -e | grep -q '[S]pectacle' && wm='Spectacle'
-                ps -e | grep -q "[k]wm" && wm="Kwm"
+                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm')"
+                
+                case "$ps_line" in
+                    *"kwm"*) wm="Kwm" ;;
+                    *"Amethyst"*) wm="Amethyst" ;;
+                    *"Spectacle"*) wm="Spectacle" ;;
+                    *) wm="Quartz Compositor" ;;
+                esac   
             ;;
 
             "Windows")
@@ -810,11 +821,10 @@ get_cpu() {
                 speed="$(< "${speed_dir}/bios_limit")" || \
                 speed="$(< "${speed_dir}/scaling_max_freq")" || \
                 speed="$(< "${speed_dir}/cpuinfo_max_freq")"
-                speed="$((speed / 100000))"
+                speed="$((speed / 1000))"
 
             else
                 speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
-                speed="$((speed / 100))"
             fi
 
             # Get CPU temp.
@@ -882,7 +892,6 @@ get_cpu() {
             # Get CPU speed.
             speed="$(sysctl -n hw.cpuspeed)"
             [[ -z "$speed" ]] && speed="$(sysctl -n  hw.clockrate)"
-            speed="$((speed / 100))"
 
             # Get CPU cores.
             cores="$(sysctl -n hw.ncpu)"
@@ -920,7 +929,6 @@ get_cpu() {
 
             # Get CPU speed.
             speed="$(psrinfo -v | awk '/operates at/ {print $6; exit}')"
-            speed="$((speed / 100))"
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -937,7 +945,6 @@ get_cpu() {
             # Get CPU speed.
             speed="$(sysinfo -cpu | awk '/running at/ {print $NF; exit}')"
             speed="${speed/MHz}"
-            speed="$((speed / 100))"
 
             # Get CPU cores.
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
@@ -950,7 +957,6 @@ get_cpu() {
             # Get CPU speed.
             speed="$(prtconf | awk -F':' '/Processor Clock Speed/ {printf $2}')"
             speed="${speed/MHz}"
-            speed="$((speed / 100))"
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -960,8 +966,12 @@ get_cpu() {
         ;;
     esac
 
-    # Fix for speeds under 1ghz.
     if [[ "$speed" ]]; then
+        # Hide decimals if on.
+        [[ "$speed_shorthand" == "on" ]] && \
+            speed="$((speed / 100))"
+
+        # Fix for speeds under 1ghz.
         if [[ -z "${speed:1}" ]]; then
             speed="0.${speed}"
         else
@@ -1642,6 +1652,46 @@ get_term_font() {
 
         "Apple_Terminal")
             term_font="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
+        ;;
+
+        "iTerm2")
+            # Unfortunately the profile name is not unique, but it seems to be the only thing
+            # that identifies an active profile. There is the "id of current session of current window"
+            # thou, but that does not match to a guid in the plist.
+            # So, be warned! Collisions may occur!
+            # See: https://groups.google.com/forum/#!topic/iterm2-discuss/0tO3xZ4Zlwg
+            local current_profile_name
+            current_profile_name="$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')"
+
+            # Warning: Dynamic profiles are not taken into account here!
+            # https://www.iterm2.com/documentation-dynamic-profiles.html
+
+            # Count Guids in "New Bookmarks"; they should be unique
+            local profiles_count
+            profiles_count="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null | grep -c "Guid")"
+
+            for ((i=0; i<=profiles_count; i++)); do
+                local profile_name
+                profile_name="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null)"
+
+                if [[ "$profile_name" == "$current_profile_name" ]]; then
+                    # "Normal Font"
+                    term_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Normal\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+                    # Font for non-ascii characters
+                    # Only check for a different non-ascii font, if the user checked
+                    # the "use a different font for non-ascii text" switch.
+                    local use_different_font
+                    use_different_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Use\ Non-ASCII\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+
+                    if [[ "$use_different_font" == "true" ]]; then
+                        local non_ascii_font
+                        non_ascii_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Non\ Ascii\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+
+                        [[ "$term_font" != "$non_ascii_font" ]] && \
+                            term_font="$term_font (normal) / $non_ascii_font (non-ascii)"
+                    fi
+                fi
+            done
         ;;
 
         "deepin-terminal"*)
@@ -3020,6 +3070,11 @@ get_distro_colors() {
             ascii_file="netrunner"
         ;;
 
+        "Nitrux"*)
+            set_colors 4
+            ascii_file="nitrux"
+        ;;
+
         "NixOS"*)
             set_colors 4 6
             ascii_file="nixos"
@@ -3153,6 +3208,11 @@ get_distro_colors() {
         "Slackware"*)
             set_colors 4 7 1
             ascii_file="slackware"
+        ;;
+
+        "SliTaz"*)
+            set_colors 3 3
+            ascii_file="slitaz"
         ;;
 
         "SmartOS"*)
@@ -3743,6 +3803,7 @@ INFO:
 
                                 NOTE: This only supports Linux with cpufreq.
 
+    --speed_shorthand on/off    Whether or not to show decimals in CPU speed.
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores type            Whether or not to display the number of CPU cores
@@ -3948,6 +4009,7 @@ get_args() {
             "--cpu_cores") cpu_cores="$2" ;;
             "--cpu_speed") cpu_speed="$2" ;;
             "--speed_type") speed_type="$2" ;;
+            "--speed_shorthand") speed_shorthand="$2" ;;
             "--distro_shorthand") distro_shorthand="$2" ;;
             "--kernel_shorthand") kernel_shorthand="$2" ;;
             "--uptime_shorthand") uptime_shorthand="$2" ;;
