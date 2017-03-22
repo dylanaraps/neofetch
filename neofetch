@@ -2416,7 +2416,12 @@ display_image() {
         ;;
 
         "iterm2")
-            printf "%b\a\n" "\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$image")"
+            iterm_cmd="\033]1337;File=width=${width}px;height=${height}px;inline=1:$(base64 < "$image")"
+
+            # Tmux requires an additional escape sequence for this to work.
+            [[ -n "$TMUX" ]] && iterm_cmd="\033Ptmux;\033${iterm_cmd}\033\\"
+
+            printf "%b\a\n" "$iterm_cmd"
         ;;
 
         "tycat")
