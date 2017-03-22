@@ -3065,6 +3065,11 @@ get_distro_colors() {
             ascii_file="netrunner"
         ;;
 
+        "Nitrux"*)
+            set_colors 4
+            ascii_file="nitrux"
+        ;;
+
         "NixOS"*)
             set_colors 4 6
             ascii_file="nixos"
