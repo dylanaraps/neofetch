@@ -36,6 +36,7 @@
 
 - [MacOS] Added support for Kwm. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - [MacOS] Added support for Spectacle. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
+- [MacOS] Add support for Amethyst. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 **Song**<br \>
 
