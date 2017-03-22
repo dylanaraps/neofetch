@@ -11,6 +11,7 @@
 ## Operating System
 
 - Added support for SliTaz. **[@nilesr](https://github.com/nilesr)**
+- Add support for Nitrux. **[@mstraube](https://github.com/mstraube)**
 
 
 ## Ascii
