@@ -28,27 +28,27 @@
 
 ## Info
 
-**Terminal Font**<br \>
+**Terminal Font**
 
 - Added \*experimental\* font detection for iTerm2. **[@dritter](https://github.com/dritter)**
 
-**Window Manager**<br \>
+**Window Manager**
 
 - [MacOS] Added support for Kwm. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - [MacOS] Added support for Spectacle. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - [MacOS] Add support for Amethyst. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
-**Song**<br \>
+**Song**
 
 - Fixed Audacious song output when `dbus-send` fails. **[@mstraube](https://github.com/mstraube)**
 
-**Local IP**<br \>
+**Local IP**
 
 - [Linux] Fixed UID showing instead of Local IP on several versions/configs of iproute2.
 
-**Packages**<br \>
+**Packages**
 - [eopkg] Used a faster detection method. **[@ikeydoherty](https://github.com/ikeydoherty)**
 
-**Resolution**<br \>
+**Resolution**
 - [macOS] Fixed `screenresolution` not appearing at all on newer versions. **[@eliezio](https://github.com/eliezio)**
 - [Linux] Show decimals.
