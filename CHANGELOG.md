@@ -28,6 +28,10 @@
 
 ## Info
 
+**CPU**
+
+- Add option to show decimals in CPU speed.
+
 **Terminal Font**
 
 - Added \*experimental\* font detection for iTerm2. **[@dritter](https://github.com/dritter)**
