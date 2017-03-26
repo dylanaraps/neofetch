@@ -2518,6 +2518,8 @@ to_off() {
 take_scrot() {
     scrot_program "${scrot_dir}${scrot_name}" 2>/dev/null
 
+    err "Scrot: Saved screenshot as: ${scrot_dir}${scrot_name}"
+
     [[ "$scrot_upload" == "on" ]] && scrot_upload
 }
 
@@ -2557,15 +2559,16 @@ scrot_upload() {
 
 scrot_args() {
     scrot="on"
-    case "$2" in
-        "-"* | "") ;;
-        *)
-            scrot_name="${2##*/}"
-            scrot_dir="${2/$scrot_name}"
-        ;;
-    esac
 
-    [[ -z "$@" ]] && scrot_dir="${PWD:+${PWD}/}"
+    if [[ "$2" =~ \.(png|jpg|jpe|jpeg|gif)$ ]]; then
+        scrot_name="${2##*/}"
+        scrot_dir="${2/$scrot_name}"
+
+    elif [[ -d "$2" ]]; then
+        scrot_dir="$2"
+    else
+        scrot_dir="${PWD:+${PWD}/}"
+    fi
 }
 
 scrot_program() {
