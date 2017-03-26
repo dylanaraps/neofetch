@@ -53,8 +53,14 @@
 - [Linux] Fixed UID showing instead of Local IP on several versions/configs of iproute2.
 
 **Packages**
+
 - [eopkg] Used a faster detection method. **[@ikeydoherty](https://github.com/ikeydoherty)**
 
 **Resolution**
+
 - [macOS] Fixed `screenresolution` not appearing at all on newer versions. **[@eliezio](https://github.com/eliezio)**
 - [Linux] Show decimals.
+
+**GPU**
+
+- [Linux] Hide duplicate GPU lines (Only display 1).
