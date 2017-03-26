@@ -37,6 +37,7 @@ print_info() {
     # info "Public IP" public_ip
     # info "Users" users
     # info "Install Date" install_date
+    # info "Locale" locale
 
     info line_break
     info cols
