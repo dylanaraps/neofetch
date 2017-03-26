@@ -637,13 +637,13 @@ get_wm() {
         case "$os" in
             "Mac OS X")
                 ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm')"
-                
+
                 case "$ps_line" in
                     *"kwm"*) wm="Kwm" ;;
                     *"Amethyst"*) wm="Amethyst" ;;
                     *"Spectacle"*) wm="Spectacle" ;;
                     *) wm="Quartz Compositor" ;;
-                esac   
+                esac
             ;;
 
             "Windows")
@@ -1064,7 +1064,7 @@ get_gpu() {
         "Linux")
             # Read GPUs into array.
             IFS=$'\n'
-            gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
+            gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '!a[$0]++ && /"Display|"3D|"VGA/ {print $3 " " $4}'))
             IFS="$old_ifs"
 
             # Number the GPUs if more than one exists.
