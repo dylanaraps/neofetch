@@ -3651,6 +3651,9 @@ old_options() {
 
     # Birthday was renamed to Install Date in 3.0
     [[ -n "$birthday_time" ]] && { err "Config: \$birthday_time is deprecated, use \3install_time instead."; install_time="$birthday_time"; }
+
+    # Scrot dir was removed in 3.1.0.
+    [[ -n "$scrot_dir" ]] && scrot_dir=
 }
 
 cache_uname() {
