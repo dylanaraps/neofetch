@@ -2801,12 +2801,12 @@ get_distro_colors() {
         ;;
 
         "arch_small")
-            set_colors 4 7 1
+            set_colors 6 7 1
             ascii_file="arch_small"
         ;;
 
         "arch_old")
-            set_colors 4 7 1
+            set_colors 6 7 1
             ascii_file="arch_old"
         ;;
 
@@ -2816,7 +2816,7 @@ get_distro_colors() {
         ;;
 
         "Arch"*)
-            set_colors 4 4 7 1
+            set_colors 6 6 7 1
             ascii_file="arch"
         ;;
 
