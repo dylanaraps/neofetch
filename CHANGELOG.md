@@ -16,6 +16,7 @@
 
 ## Ascii
 
+- Arch ascii art now uses lighter colors.
 - Update Parabola logo. **[@mstraube](https://github.com/mstraube)**
 
 
