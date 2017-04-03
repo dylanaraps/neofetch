@@ -2516,11 +2516,9 @@ to_off() {
 # SCREENSHOT
 
 take_scrot() {
-    if [[ -d "$scrot_dir" ]]; then
-        scrot_program "${scrot_dir}${scrot_name}" 2>/dev/null
-    else
-        printf "%s\n" "Screenshot: $scrot_dir doesn't exist. Edit the config file or create the directory to take screenshots."
-    fi
+    scrot_program "${scrot_dir}${scrot_name}" 2>/dev/null
+
+    err "Scrot: Saved screenshot as: ${scrot_dir}${scrot_name}"
 
     [[ "$scrot_upload" == "on" ]] && scrot_upload
 }
@@ -2561,13 +2559,16 @@ scrot_upload() {
 
 scrot_args() {
     scrot="on"
-    case "$2" in
-        "-"* | "") ;;
-        *)
-            scrot_name="${2##*/}"
-            scrot_dir="${2/$scrot_name}"
-        ;;
-    esac
+
+    if [[ "$2" =~ \.(png|jpg|jpe|jpeg|gif)$ ]]; then
+        scrot_name="${2##*/}"
+        scrot_dir="${2/$scrot_name}"
+
+    elif [[ -d "$2" ]]; then
+        scrot_dir="$2"
+    else
+        scrot_dir="${PWD:+${PWD}/}"
+    fi
 }
 
 scrot_program() {
@@ -3658,6 +3659,9 @@ old_options() {
 
     # Birthday was renamed to Install Date in 3.0
     [[ -n "$birthday_time" ]] && { err "Config: \$birthday_time is deprecated, use \3install_time instead."; install_time="$birthday_time"; }
+
+    # Scrot dir was removed in 3.1.0.
+    [[ -n "$scrot_dir" ]] && scrot_dir=
 }
 
 cache_uname() {

@@ -681,16 +681,6 @@ scrot="off"
 # Flag:    --scrot_cmd
 scrot_cmd="auto"
 
-# Screenshot Directory
-# Where to save the screenshots
-#
-# Default: '~/Pictures/'
-# Values:  'dir'
-# Flag:    --scrot_dir
-#
-# Note: Neofetch won't create the directory if it doesn't exist.
-scrot_dir="$HOME/Pictures/"
-
 # Screenshot Filename
 # What to name the screenshots
 #
