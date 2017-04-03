@@ -12,6 +12,7 @@
 
 - Added support for SliTaz. **[@nilesr](https://github.com/nilesr)**
 - Added support for Nitrux. **[@mstraube](https://github.com/mstraube)**
+- Added support for DesaOS.
 
 
 ## Ascii
