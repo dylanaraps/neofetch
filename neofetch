@@ -2890,6 +2890,11 @@ get_distro_colors() {
             ascii_file="deepin"
         ;;
 
+        "DesaOS")
+            set_colors 2 7
+            ascii_file="desaos"
+        ;;
+
         "Devuan"*)
             set_colors 5 7
             ascii_file="devuan"
