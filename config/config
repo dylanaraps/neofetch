@@ -328,7 +328,7 @@ disk_show=('/')
 # What to append to the Disk subtitle.
 #
 # Default: 'mount'
-# Values:  'mount', 'name'
+# Values:  'mount', 'name', 'dir'
 # Flag:    --disk_subtitle
 #
 # Example:
@@ -337,6 +337,11 @@ disk_show=('/')
 #
 # mount:  'Disk (/): 74G / 118G (66%)'
 #         'Disk (/mnt/Local Disk): 74G / 118G (66%)'
+#         'Disk (/mnt/Videos): 74G / 118G (66%)'
+#
+# dir:    'Disk (/): 74G / 118G (66%)'
+#         'Disk (Local Disk): 74G / 118G (66%)'
+#         'Disk (Videos): 74G / 118G (66%)'
 disk_subtitle="mount"
 
 
