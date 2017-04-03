@@ -56,6 +56,10 @@ The screenshot feature no longer requires any configuration before working. We n
 - [MacOS] Added support for Spectacle. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - [MacOS] Add support for Amethyst. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
+**Disk**
+
+- Added new option to only show dir name in subtitle.
+
 **Song**
 
 - Fixed Audacious song output when `dbus-send` fails. **[@mstraube](https://github.com/mstraube)**
