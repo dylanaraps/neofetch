@@ -1997,6 +1997,10 @@ get_install_date() {
     install_date="$(convert_time "${install_date[@]}")"
 }
 
+get_locale() {
+    locale="$sys_locale"
+}
+
 get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
