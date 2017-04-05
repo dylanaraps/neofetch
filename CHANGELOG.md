@@ -43,9 +43,13 @@ The screenshot feature no longer requires any configuration before working. We n
 
 ## Info
 
+**Locale**
+
+- Added a new function to display system locale. (Disabled by default)
+
 **CPU**
 
-- Add option to show decimals in CPU speed.
+- Added option to show decimals in CPU speed.
 
 **Terminal Font**
 
@@ -55,7 +59,7 @@ The screenshot feature no longer requires any configuration before working. We n
 
 - [MacOS] Added support for Kwm. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - [MacOS] Added support for Spectacle. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
-- [MacOS] Add support for Amethyst. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
+- [MacOS] Added support for Amethyst. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
 **Disk**
 
@@ -71,7 +75,7 @@ The screenshot feature no longer requires any configuration before working. We n
 
 **Packages**
 
-- [eopkg] Used a faster detection method. **[@ikeydoherty](https://github.com/ikeydoherty)**
+- [eopkg] Use a faster detection method. **[@ikeydoherty](https://github.com/ikeydoherty)**
 
 **Resolution**
 
