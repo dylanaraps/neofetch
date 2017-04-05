@@ -38,7 +38,7 @@ get_os() {
         "Linux" | "GNU"*) os="Linux" ;;
         "Darwin") os="$(sw_vers -productName)" ;;
         *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
-        "CYGWIN"* | "MSYS"*) os="Windows" ;;
+        "CYGWIN"* | "MSYS"* | "MINGW"*) os="Windows" ;;
         "SunOS") os="Solaris" ;;
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
@@ -1967,7 +1967,7 @@ get_install_date() {
         "Windows")
             case "$kernel_name" in
                 "CYGWIN"*) install_file="/cygdrive/c/Windows/explorer.exe" ;;
-                "MSYS"*) install_file="/c/Windows/explorer.exe" ;;
+                "MSYS"* | "MINGW"*) install_file="/c/Windows/explorer.exe" ;;
             esac
         ;;
         "Haiku") install_file="/boot" ;;
@@ -2222,7 +2222,7 @@ get_wallpaper() {
                 "Windows XP")
                     case "$kernel_name" in
                         "CYGWIN"*) image="/cygdrive/c/Documents and Settings/${USER}" ;;
-                        "MSYS2"*)  image="/c/Documents and Settings/${USER}" ;;
+                        "MSYS2"* | "MINGW*")  image="/c/Documents and Settings/${USER}" ;;
                     esac
                     image+="/Local Settings/Application Data/Microsoft"
                     image+="/Wallpaper1.bmp"
