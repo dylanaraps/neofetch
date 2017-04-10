@@ -1833,26 +1833,24 @@ get_disk() {
 get_battery() {
     case "$os" in
         "Linux")
-            # We use 'prin' here and exit the function early so that we can
-            # do multi battery support with a single battery per line.
-            for bat in "/sys/class/power_supply/BAT"*; do
+            # We use 'prin' here so that we can do multi battery support
+            # with a single battery per line.
+            for bat in "/sys/class/power_supply/"{BAT,axp288_fuel_gauge}*; do
                 capacity="$(< "${bat}/capacity")"
                 status="$(< "${bat}/status")"
 
-                # Fix for bash on Windows 10 which includes /proc files
-                # for battery usage despite there not being a battery
-                # installed.
-                [[ -z "$capacity" ]] && return
+                if [[ "$capacity" ]]; then
+                    battery="${capacity}% [${status}]"
 
-                battery="${capacity}% [${status}]"
+                    case "$battery_display" in
+                        "bar") battery="$(bar "$capacity" 100)" ;;
+                        "infobar") battery+=" $(bar "$capacity" 100)" ;;
+                        "barinfo") battery="$(bar "$capacity" 100)${info_color} ${battery}" ;;
+                    esac
 
-                case "$battery_display" in
-                    "bar") battery="$(bar "$capacity" 100)" ;;
-                    "infobar") battery+=" $(bar "$capacity" 100)" ;;
-                    "barinfo") battery="$(bar "$capacity" 100)${info_color} ${battery}" ;;
-                esac
-
-                prin "${subtitle:+${subtitle}${bat: -1}}" "$battery"
+                    bat="${bat/*axp288_fuel_gauge}"
+                    prin "${subtitle:+${subtitle}${bat: -1}}" "$battery"
+                fi
             done
             return
         ;;
