@@ -61,6 +61,10 @@ The screenshot feature no longer requires any configuration before working. We n
 - [MacOS] Added support for Spectacle. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - [MacOS] Added support for Amethyst. **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 
+**Battery**
+
+- Added battery support for Bay Trail devices.  **[@mstraube](https://github.com/mstraube)**
+
 **Disk**
 
 - Added new option to only show dir name in subtitle.
