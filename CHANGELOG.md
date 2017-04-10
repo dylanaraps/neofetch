@@ -6,6 +6,7 @@
 - **[@eliezio](https://github.com/eliezio)**
 - **[@nilesr](https://github.com/nilesr)**
 - **[@dritter](https://github.com/dritter)**
+- **[@@HebaruSan](https://github.com/HebaruSan)**
 
 
 ## Operating System
@@ -26,9 +27,10 @@ The screenshot feature no longer requires any configuration before working. We n
 - `neofetch -s ~/test.png` will save a file in `~` called `test.png`.
 
 
-## Ascii
+## ASCII
 
-- Arch ascii art now uses lighter colors.
+- Arch ASCII art now uses lighter colors.
+- Fixed Ubuntu-Studio ASCII setting. **[@@HebaruSan](https://github.com/HebaruSan)**
 - Update Parabola logo. **[@mstraube](https://github.com/mstraube)**
 
 
