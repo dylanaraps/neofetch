@@ -1284,7 +1284,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet|deepin-music/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1312,6 +1312,7 @@ get_song() {
         "bluemindo"*)   get_song_dbus "Bluemindo" ;;
         "guayadeque"*)  get_song_dbus "guayadeque" ;;
         "yarock"*)      get_song_dbus "yarock" ;;
+        "deepin-music"*) get_song_dbus "deepinmusic" ;;
 
         "audacious"*)
             song="$(audtool current-song)"
