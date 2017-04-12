@@ -73,6 +73,8 @@ The screenshot feature no longer requires any configuration before working. We n
 
 **Song**
 
+- Added support for Deepin Music. **[@mstraube](https://github.com/mstraube)**
+- Added support for Tomahawk. **[@mstraube](https://github.com/mstraube)**
 - Fixed Audacious song output when `dbus-send` fails. **[@mstraube](https://github.com/mstraube)**
 
 **Local IP**
