@@ -1284,7 +1284,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/awk|Helper|Cache/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/ awk|Helper|Cache/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1299,19 +1299,21 @@ get_song() {
 
     case "${player/*\/}" in
         "mpd"* | "mopidy"*) song="$(mpc current)" ;;
-        "mocp"*)        song="$(mocp -Q "%artist - %song")" ;;
-        "google play"*) song="$(gpmdp-remote current)" ;;
-        "rhythmbox"*)   song="$(rhythmbox-client --print-playing)" ;;
-        "deadbeef"*)    song="$(deadbeef --nowplaying-tf  '%artist% - %title%')" ;;
-        "xmms2d"*)      song="$(xmms2 current -f '${artist} - ${title}')" ;;
-        "qmmp"*)        song="$(qmmp --nowplaying '%p - %t')" ;;
-        "gnome-music"*) get_song_dbus "GnomeMusic" ;;
-        "lollypop"*)    get_song_dbus "Lollypop" ;;
-        "clementine"*)  get_song_dbus "clementine" ;;
-        "juk"*)         get_song_dbus "juk" ;;
-        "bluemindo"*)   get_song_dbus "Bluemindo" ;;
-        "guayadeque"*)  get_song_dbus "guayadeque" ;;
-        "yarock"*)      get_song_dbus "yarock" ;;
+        "mocp"*)         song="$(mocp -Q "%artist - %song")" ;;
+        "google play"*)  song="$(gpmdp-remote current)" ;;
+        "rhythmbox"*)    song="$(rhythmbox-client --print-playing)" ;;
+        "deadbeef"*)     song="$(deadbeef --nowplaying-tf  '%artist% - %title%')" ;;
+        "xmms2d"*)       song="$(xmms2 current -f '${artist} - ${title}')" ;;
+        "qmmp"*)         song="$(qmmp --nowplaying '%p - %t')" ;;
+        "gnome-music"*)  get_song_dbus "GnomeMusic" ;;
+        "lollypop"*)     get_song_dbus "Lollypop" ;;
+        "clementine"*)   get_song_dbus "clementine" ;;
+        "juk"*)          get_song_dbus "juk" ;;
+        "bluemindo"*)    get_song_dbus "Bluemindo" ;;
+        "guayadeque"*)   get_song_dbus "guayadeque" ;;
+        "yarock"*)       get_song_dbus "yarock" ;;
+        "deepin-music"*) get_song_dbus "deepinmusic" ;;
+        "tomahawk"*)     get_song_dbus "tomahawk" ;;
 
         "audacious"*)
             song="$(audtool current-song)"
