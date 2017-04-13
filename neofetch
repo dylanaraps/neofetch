@@ -1398,6 +1398,8 @@ get_resolution() {
             elif type -p xdpyinfo >/dev/null; then
                 resolution="$(xdpyinfo | awk '/dimensions:/ {printf $2}')"
             fi
+
+        echo $resolution
         ;;
 
         "Mac OS X")
@@ -1409,6 +1411,7 @@ get_resolution() {
                 resolution="$(system_profiler SPDisplaysDataType | awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
+        echo $resolution
             scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
 
             # If no refresh rate is empty.
@@ -1425,6 +1428,9 @@ get_resolution() {
 
             [[ "$resolution" == *"0Hz"* ]] && \
                 resolution="${resolution// @ 0Hz}"
+
+        echo $resolution
+        echo $scale_factor
         ;;
 
         "Windows")
@@ -1442,6 +1448,7 @@ get_resolution() {
         "Haiku")
             resolution="$(screenmode | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
 
+        echo $resolution
             [[ "$refresh_rate" == "off" ]] && resolution="${resolution/ @*}"
         ;;
     esac
