@@ -1,0 +1,4 @@
+#!/bin/bash
+currentpaneid="$(expr "$(tmux display -pt "${TMUX_PANE:?}" '#{pane_index}')" + "1")"
+dimentionsofthepane="$(tmux list-panes -F "#{pane_width}x#{pane_height}x#{pane_active}" | awk "NR==${currentpaneid}")"
+echo $dimentionsofthepane
