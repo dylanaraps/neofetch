@@ -4273,10 +4273,6 @@ main() {
     # Show error messages.
     [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
 
-            echo "TERM WIDTH"
-            echo $term_width
-            echo "TERM HEIGHT"
-            echo $term_height
     return 0
 }
 
