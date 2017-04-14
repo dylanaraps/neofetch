@@ -2282,6 +2282,25 @@ get_term_size() {
         #printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
         #read_flags=(-d c)
         currentpaneid="$(expr "$(tmux display -pt "${TMUX_PANE:?}" '#{pane_index}')" + "1")"
+    term_blocks="$(stty size)"
+    echo "${term_blocks}"
+    #notice the values of term_blocks is the same as using tmuxlistpanes to get the dimentions of the specific pane
+    currentpaneid="$(expr "$(tmux display -pt "${TMUX_PANE:?}" '#{pane_index}')" + "1")"
+#^basically, get the current pane id, add 1 because panes are 0 indexed
+    dimentionsofthepane="$(tmux list-panes -F "#{pane_width}x#{pane_height}x#{pane_active}" | awk "NR==${currentpaneid}")"
+    #^Same as the value of term_blocks
+    #Also coincidentally the same as built in ncurses bash environment variables $LINES and $COLUMNS
+    dimentionsofthepan2=${dimentionsofthepane%x*}
+    #^ get the n'th row of the results (corresponding to 1 + id)
+    pane_rows="${dimentionsofthepan2%x*}"
+    pane_columns="${dimentionsofthepan2#*x}"
+    #^for efficiency sake, I would suggest u just use $term_blocks
+    window_rows="$(tmux display -p "#{window_height}")"
+    window_columns="$(tmux display -p "#{window_width}")"
+    window_resolution_x=$(xdpyinfo | awk -F '[ x]+' '/dimensions:/{print $3}')
+    window_resolution_y=$(xdpyinfo | awk -F '[ x]+' '/dimensions:/{print $4}')
+    term_height=$((window_resolution_y*pane_rows/window_rows))
+    term_width=$((window_resolution_x*pane_columns/window_columns))
         dimentionsofthepane="$(tmux list-panes -F "#{pane_width}x#{pane_height}x#{pane_active}" | awk "NR==${currentpaneid}")"
         dimentionsofthepan2=${dimentionsofthepane%x*}
         term_height="${dimentionsofthepan2%x*}"
