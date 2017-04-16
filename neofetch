@@ -2829,6 +2829,11 @@ get_distro_colors() {
             ascii_file="arch"
         ;;
 
+        "ARCHlabs"*)
+            set_colors 6 6 7 1
+            ascii_file="archlabs"
+        ;;
+
         "Bitrig"*)
             set_colors 2 7
             ascii_file="bitrig"
@@ -3092,6 +3097,11 @@ get_distro_colors() {
         "NixOS"*)
             set_colors 4 6
             ascii_file="nixos"
+        ;;
+
+        "OBRevenge"*)
+            set_colors 1 7 3
+            ascii_file="obrevenge"
         ;;
 
         "openbsd_small")
