@@ -1,14 +1,17 @@
 ## Contributors
 
+- **[@konimex](https://github.com/konimex)**
 - **[@mstraube](https://github.com/mstraube)**
 - **[@jorgegonzalez](https://github.com/jorgegonzalez)**
 - **[@ikeydoherty](https://github.com/ikeydoherty)**
 - **[@eliezio](https://github.com/eliezio)**
 - **[@nilesr](https://github.com/nilesr)**
 - **[@dritter](https://github.com/dritter)**
-- **[@@HebaruSan](https://github.com/HebaruSan)**
+- **[@HebaruSan](https://github.com/HebaruSan)**
 - **[@LER0ever](https://github.com/LER0ever)**
 - **[@obrevenge](https://github.com/obrevenge)**
+- **[@ajjames31](https://github.com/ajjames31)**
+- Eliezio Oliveira
 
 
 ## Operating System
