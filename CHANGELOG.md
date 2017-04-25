@@ -8,6 +8,7 @@
 - **[@dritter](https://github.com/dritter)**
 - **[@@HebaruSan](https://github.com/HebaruSan)**
 - **[@LER0ever](https://github.com/LER0ever)**
+- **[@obrevenge](https://github.com/obrevenge)**
 
 
 ## Operating System
@@ -17,6 +18,8 @@
 - Added support for Nitrux. **[@mstraube](https://github.com/mstraube)**
 - Added support for DesaOS.
 - Added support for MinGW.
+- Added support for OBRevenge. **[@obrevenge](https://github.com/obrevenge)**
+- Added support for ArchLabs. **[@obrevenge](https://github.com/obrevenge)**
 
 
 ## Screenshot
