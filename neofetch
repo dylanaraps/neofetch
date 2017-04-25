@@ -3967,6 +3967,7 @@ ASCII:
                                 Possible values: bar, infobar, barinfo, off
 
 IMAGE:
+    --loop                      Redraw the image constantly until Ctrl+C is used. This fixes issues in some terminals emulators when using image mode.
     --size 00px | --size 00%    How to size the image.
                                 Possible values: auto, 00px, 00%, none
     --crop_mode mode            Which crop mode to use
@@ -4151,6 +4152,7 @@ get_args() {
             ;;
 
             # Image options
+            "--loop") image_loop="on" ;;
             "--image_size" | "--size") image_size="$2" ;;
             "--crop_mode") crop_mode="$2" ;;
             "--crop_offset") crop_offset="$2" ;;
@@ -4254,6 +4256,9 @@ main() {
 
     # Show error messages.
     [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
+
+    # If `--loop` was used, constantly redraw the image.
+    while [[ "$image_loop" == "on" && "$image_backend" == "w3m" ]]; do display_image; sleep 1s; done
 
     return 0
 }
