@@ -7,10 +7,12 @@
 - **[@nilesr](https://github.com/nilesr)**
 - **[@dritter](https://github.com/dritter)**
 - **[@@HebaruSan](https://github.com/HebaruSan)**
+- **[@LER0ever](https://github.com/LER0ever)**
 
 
 ## Operating System
 
+- Added Chrome OS Crouton support. **[@LER0ever](https://github.com/LER0ever)**
 - Added support for SliTaz. **[@nilesr](https://github.com/nilesr)**
 - Added support for Nitrux. **[@mstraube](https://github.com/mstraube)**
 - Added support for DesaOS.
