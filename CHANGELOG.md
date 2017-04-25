@@ -16,3 +16,6 @@
 
 - [Termite] Fix font mismatch. **[@MatthewCox](https://github.com/MatthewCox)**
 
+**GPU**
+
+- [Linux] Fixed GPU sort.
