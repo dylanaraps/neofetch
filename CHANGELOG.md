@@ -36,7 +36,8 @@ The screenshot feature no longer requires any configuration before working. We n
 
 - Arch ASCII art now uses lighter colors.
 - Fixed Ubuntu-Studio ASCII setting. **[@@HebaruSan](https://github.com/HebaruSan)**
-- Update Parabola logo. **[@mstraube](https://github.com/mstraube)**
+- Updated Parabola logo. **[@mstraube](https://github.com/mstraube)**
+- Updated Raspbian ASCII art.
 
 
 ## Images
