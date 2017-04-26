@@ -1,6 +1,7 @@
 ## Contributors
 
 - **[@MatthewCox](https://github.com/MatthewCox)**
+- **[@dawidd6](https://github.com/dawidd6)**
 
 
 ## Images
@@ -19,3 +20,7 @@
 **GPU**
 
 - [Linux] Fixed GPU sort.
+
+**Song**
+
+- Do not detect ibus\* or indicator\* as player. **[@dawidd6](https://github.com/dawidd6)**
