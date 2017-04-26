@@ -1071,7 +1071,7 @@ get_gpu() {
         "Linux")
             # Read GPUs into array.
             IFS=$'\n'
-            gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}' | sort -u))
+            gpus=($(lspci -mm | awk -F '\\"|\\" \\"|\(' '/"Display|"3D|"VGA/ {print $3 " " $4}' | sort -u))
             IFS="$old_ifs"
 
             # Number the GPUs if more than one exists.
