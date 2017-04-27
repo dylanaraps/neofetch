@@ -206,6 +206,10 @@ get_distro() {
         "AIX")
             distro="AIX $(oslevel)"
         ;;
+
+        "IRIX")
+            distro="IRIX ${kernel_version}"
+        ;;
     esac
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
