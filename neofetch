@@ -43,6 +43,7 @@ get_os() {
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
         "AIX") os="AIX" ;;
+        "IRIX64") os="IRIX" ;;
         *)
             printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
@@ -3371,6 +3372,11 @@ get_distro_colors() {
                 "SunOS")
                     set_colors 3 7
                     ascii_file="solaris"
+                ;;
+
+                "IRIX")
+                    set_colors 4 7
+                    ascii_file="irix"
                 ;;
             esac
         ;;
