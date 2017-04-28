@@ -4,6 +4,12 @@
 - **[@dawidd6](https://github.com/dawidd6)**
 
 
+## General
+
+- Minimum required BASH version is now 3.2.
+    - (Neofetch has always used 3.2+ features, I've just made it obvious now in the documentation.)
+
+
 ## Images
 
 - [w3m] Added `--loop` flag which makes Neofetch draw the image once per second.
