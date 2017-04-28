@@ -1405,6 +1405,7 @@ get_resolution() {
             elif type -p xdpyinfo >/dev/null; then
                 resolution="$(xdpyinfo | awk '/dimensions:/ {printf $2}')"
             fi
+
         ;;
 
         "Mac OS X")
@@ -1432,6 +1433,7 @@ get_resolution() {
 
             [[ "$resolution" == *"0Hz"* ]] && \
                 resolution="${resolution// @ 0Hz}"
+
         ;;
 
         "Windows")
@@ -1449,6 +1451,7 @@ get_resolution() {
         "Haiku")
             resolution="$(screenmode | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
 
+        echo $resolution
             [[ "$refresh_rate" == "off" ]] && resolution="${resolution/ @*}"
         ;;
     esac
@@ -2283,59 +2286,88 @@ get_term_size() {
     # so we have to use a slightly different sequence to
     # get the terminal size.
     if [[ -n "$TMUX" ]]; then
-        printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
-        read_flags=(-d c)
+        #printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+        #read_flags=(-d c)
+        currentpaneid="$(expr "$(tmux display -pt "${TMUX_PANE:?}" '#{pane_index}')" + "1")"
+    term_blocks="$(stty size)"
+    echo "${term_blocks}"
+    #notice the values of term_blocks is the same as using tmuxlistpanes to get the dimentions of the specific pane
+    currentpaneid="$(expr "$(tmux display -pt "${TMUX_PANE:?}" '#{pane_index}')" + "1")"
+#^basically, get the current pane id, add 1 because panes are 0 indexed
+    dimentionsofthepane="$(tmux list-panes -F "#{pane_width}x#{pane_height}x#{pane_active}" | awk "NR==${currentpaneid}")"
+    #^Same as the value of term_blocks
+    #Also coincidentally the same as built in ncurses bash environment variables $LINES and $COLUMNS
+    dimentionsofthepan2=${dimentionsofthepane%x*}
+    #^ get the n'th row of the results (corresponding to 1 + id)
+    pane_rows="${dimentionsofthepan2%x*}"
+    pane_columns="${dimentionsofthepan2#*x}"
+    #^for efficiency sake, I would suggest u just use $term_blocks
+    window_rows="$(tmux display -p "#{window_height}")"
+    window_columns="$(tmux display -p "#{window_width}")"
+    window_resolution_x=$(xdpyinfo | awk -F '[ x]+' '/dimensions:/{print $3}')
+    window_resolution_y=$(xdpyinfo | awk -F '[ x]+' '/dimensions:/{print $4}')
+    term_height=$((window_resolution_y*pane_rows/window_rows))
+    term_width=$((window_resolution_x*pane_columns/window_columns))
+        dimentionsofthepane="$(tmux list-panes -F "#{pane_width}x#{pane_height}x#{pane_active}" | awk "NR==${currentpaneid}")"
+        dimentionsofthepan2=${dimentionsofthepane%x*}
+        term_height="${dimentionsofthepan2%x*}"
+        term_width="${dimentionsofthepan2#*x}"
+        #echo $term_height
+        #echo $term_width
 
-    elif [[ "$image_backend" == "tycat" ]]; then
-        printf "%b" "\033}qs\000"
+    #Basically, I split off the rest of the functions because if run by tmux, they will cause an error
+    else 
+        if [[ "$image_backend" == "tycat" ]]; then
+            printf "%b" "\033}qs\000"
 
-    else
-        printf "%b" "\033[14t\033[c"
-        read_flags=(-d c)
-    fi
+        else
+            printf "%b" "\033[14t\033[c"
+            read_flags=(-d c)
+        fi
 
-    # The escape codes above print the desired output as
-    # user input so we have to use read to store the out
-    # -put as a variable.
-    IFS=";" read -s -t 1 "${read_flags[@]}" -r -a term_size
+        # The escape codes above print the desired output as
+        # user input so we have to use read to store the out
+        # -put as a variable.
+        IFS=";" read -s -t 1 "${read_flags[@]}" -r -a term_size
 
-    # Split the string into height/width.
-    if [[ "$image_backend" == "tycat" ]]; then
-        term_width="$((term_size[2] * term_size[0]))"
-        term_height="$((term_size[3] * term_size[1]))"
+        # Split the string into height/width.
+        if [[ "$image_backend" == "tycat" ]]; then
+            term_width="$((term_size[2] * term_size[0]))"
+            term_height="$((term_size[3] * term_size[1]))"
 
-    else
-        term_height="${term_size[1]}"
-        term_width="${term_size[2]/t*}"
-    fi
+        else
+            term_height="${term_size[1]}"
+            term_width="${term_size[2]/t*}"
+        fi
 
-    # Get terminal width/height if \033[14t is unsupported.
-    if [[ -z "$term_width" ]]; then
-        if type -p xdotool >/dev/null 2>&1; then
-            current_window="$(xdotool getactivewindow)"
-            source <(xdotool getwindowgeometry --shell "$current_window")
-            term_height="$HEIGHT"
-            term_width="$WIDTH"
+        # Get terminal width/height if \033[14t is unsupported.
+        if [[ -z "$term_width" ]]; then
+            if type -p xdotool >/dev/null 2>&1; then
+                current_window="$(xdotool getactivewindow)"
+                source <(xdotool getwindowgeometry --shell "$current_window")
+                term_height="$HEIGHT"
+                term_width="$WIDTH"
 
-        elif type -p xwininfo >/dev/null 2>&1; then
-            # Get the focused window's ID.
-            if type -p xdpyinfo >/dev/null 2>&1; then
-                current_window="$(xdpyinfo | grep -E -o "focus:.*0x[0-9a-f]+")"
-                current_window="${current_window/*window }"
-            elif type -p xprop >/dev/null 2>&1; then
-                current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
-            fi
+            elif type -p xwininfo >/dev/null 2>&1; then
+                # Get the focused window's ID.
+                if type -p xdpyinfo >/dev/null 2>&1; then
+                    current_window="$(xdpyinfo | grep -E -o "focus:.*0x[0-9a-f]+")"
+                    current_window="${current_window/*window }"
+                elif type -p xprop >/dev/null 2>&1; then
+                    current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
+                fi
 
-            # If the ID was found get the window size.
-            if [[ "$current_window" ]]; then
-                term_size="$(xwininfo -id "$current_window" | awk -F ': ' '/Width|Height/ {printf $2 " "}')"
-                term_width="${term_size/ *}"
-                term_height="${term_size/${term_width}}"
+                # If the ID was found get the window size.
+                if [[ "$current_window" ]]; then
+                    term_size="$(xwininfo -id "$current_window" | awk -F ': ' '/Width|Height/ {printf $2 " "}')"
+                    term_width="${term_size/ *}"
+                    term_height="${term_size/${term_width}}"
+                else
+                    term_width=0
+                fi
             else
                 term_width=0
             fi
-        else
-            term_width=0
         fi
     fi
 }
@@ -2699,6 +2731,9 @@ prin() {
 }
 
 get_underline() {
+#!/bin/bash
+#!/bin/bash
+#!/bin/bash
     if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
         printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${underline_color}${underline// /$underline_char}${reset} "
