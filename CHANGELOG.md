@@ -21,6 +21,7 @@
 
 ## Ascii
 
+- Added Ubuntu-MATE ascii art.
 - Fixed ArchLabs ascii art.  **[@erikdubois](https://github.com/erikdubois)**
 
 
