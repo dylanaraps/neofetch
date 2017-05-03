@@ -1734,6 +1734,34 @@ get_term_font() {
             [[ "$profile_filename" ]] && term_font="$(awk -F '=|,' '/Font=/ {print $2 " " $3}' "$profile_filename")"
         ;;
 
+        "mate-terminal")
+            # To get the actual config we have to create a temporarily file with the --save-config option.
+            mateterm_config="/tmp/mateterm.cfg"
+
+            # Ensure /tmp exists and we do not overwrite anything.
+            if [[ -d /tmp && ! -f "$mateterm_config" ]]; then
+                mate-terminal --save-config="$mateterm_config"
+
+                role="$(xprop -id "${WINDOWID}" WM_WINDOW_ROLE)"
+                role="${role##*= }"
+
+                term_id="$(grep -A1 "${role//\"}" "$mateterm_config")"
+                term_id="${term_id##*=}"
+
+                profile="$(grep -A1 "\[$term_id\]" "$mateterm_config")"
+                profile="${profile##*=}"
+
+                rm -f "$mateterm_config"
+
+                if [[ "$(gsettings get org.mate.terminal.profile:/org/mate/terminal/profiles/"${profile}"/ use-system-font)" == "true" ]]; then
+                    term_font="$(gsettings get org.mate.interface monospace-font-name)"
+                else
+                    term_font="$(gsettings get org.mate.terminal.profile:/org/mate/terminal/profiles/"${profile}"/ font)"
+                fi
+                term_font="$(trim_quotes "$term_font")"
+            fi
+        ;;
+
         "mintty")
             term_font="$(awk -F '=' '!/^($|#)/ && /Font/ {printf $2; exit}' "${HOME}/.minttyrc")"
         ;;
