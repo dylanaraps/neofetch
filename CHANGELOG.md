@@ -3,6 +3,7 @@
 - **[@MatthewCox](https://github.com/MatthewCox)**
 - **[@dawidd6](https://github.com/dawidd6)**
 - **[@erikdubois](https://github.com/erikdubois)**
+- **[@mstraube](https://github.com/mstraube)**
 
 
 ## General
@@ -27,6 +28,7 @@
 
 **Terminal Emulator**
 
+- Added font support for mate-terminal. **[@mstraube](https://github.com/mstraube)**
 - [Termite] Fix font mismatch. **[@MatthewCox](https://github.com/MatthewCox)**
 
 **GPU**
