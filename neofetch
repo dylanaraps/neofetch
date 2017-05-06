@@ -2292,7 +2292,10 @@ get_w3m_img_path() {
 
     elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-
+    
+    elif [[ -x "/usr/local/libexec/w3m/w3mimgdisplay" ]]; then
+        w3m_img_path="/usr/local/libexec/w3m/w3mimgdisplay"
+    
     else
         err "Image: w3m-img wasn't found on your system"
     fi
