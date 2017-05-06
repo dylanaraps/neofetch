@@ -4,6 +4,7 @@
 - **[@dawidd6](https://github.com/dawidd6)**
 - **[@erikdubois](https://github.com/erikdubois)**
 - **[@mstraube](https://github.com/mstraube)**
+- **[@Artoriuz](https://github.com/Artoriuz)**
 
 
 ## General
@@ -17,6 +18,7 @@
 - [w3m] Added `--loop` flag which makes Neofetch draw the image once per second.
     - This is a workaround to the images disappearing on resize and workspace switch.
     - Use Ctrl+C to exit.
+- [w3m] Fixed w3m-img not found on FreeBSD 12. **[@Artoriuz](https://github.com/Artoriuz)**
 
 
 ## Ascii
