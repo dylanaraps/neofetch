@@ -7,6 +7,11 @@
 - **[@Artoriuz](https://github.com/Artoriuz)**
 
 
+## Operating System
+
+- Added support for Arch XFerience. **[@mstraube](https://github.com/mstraube)**
+
+
 ## General
 
 - Minimum required BASH version is now 3.2.
