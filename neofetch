@@ -976,6 +976,17 @@ get_cpu() {
                 "physical") cores="$(lparstat -i | awk -F':' '/Active Physical CPUs/ {printf $2}')"
             esac
         ;;
+
+        "IRIX")
+            # Get CPU name.
+            cpu="$(hinv -c | awk -F':' '/CPU:/ {printf $2}')"
+
+            # Get CPU speed.
+            cpu="$(hinv -c | awk 'NR==1{printf $2}')"
+
+            # Get CPU cores.
+            cores="$(sysconf NPROC_ONLN)" # Does this even work?
+        ;;
     esac
 
     if [[ "$speed" ]]; then
@@ -1054,6 +1065,7 @@ get_cpu_usage() {
                     "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                     "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
+                    "IRIX") cores="$(sysconf NPROC_ONLN)" # Does this even work?
                 esac
             fi
 
