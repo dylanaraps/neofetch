@@ -1789,9 +1789,9 @@ get_disk() {
     # Get "df" flags.
     case "$os" in
         "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
-        "Mac OS X") df_flags=(-P -h) ;;
-        "AIX") df_flags=(-P -g) ;;
-        *) df_flags=(-h) ;;
+        "Mac OS X") df_flags=(-P -k) ;;
+        "AIX") df_flags=(-P -k) ;;
+        *) df_flags=(-k) ;;
     esac
 
     # Create an array called 'disks' where each element is a separate line from
@@ -1810,7 +1810,7 @@ get_disk() {
         disk_info=($disk)
         disk_perc="${disk_info[4]/'%'}"
 
-        disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+        disk="$((${disk_info[2]}/1024/1024))G / $((${disk_info[1]}/1024/1024))G (${disk_perc}%)"
 
         # Subtitle.
         case "$disk_subtitle" in
