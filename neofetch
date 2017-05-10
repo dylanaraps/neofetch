@@ -1808,6 +1808,7 @@ get_disk() {
         "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
         "Mac OS X") df_flags=(-P -h) ;;
         "AIX") df_flags=(-P -g) ;;
+        "IRIX") df_flags=(-P -k) ;;
         *) df_flags=(-h) ;;
     esac
 
@@ -1827,7 +1828,15 @@ get_disk() {
         disk_info=($disk)
         disk_perc="${disk_info[4]/'%'}"
 
-        disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+        case "$os" in
+            "IRIX")
+                disk="$((disk_info[2]/1024/1024))G / $((disk_info[2]/1024/1024))G (${disk_perc}%)"
+            ;;
+
+            *)
+                disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+            ;;
+        esac
 
         # Subtitle.
         case "$disk_subtitle" in
