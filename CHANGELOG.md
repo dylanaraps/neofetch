@@ -10,6 +10,7 @@
 ## Operating System
 
 - Added support for Arch XFerience. **[@mstraube](https://github.com/mstraube)**
+- Added support for Maui. **[@mstraube](https://github.com/mstraube)**
 
 
 ## General
