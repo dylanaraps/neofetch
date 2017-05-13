@@ -5,6 +5,7 @@
 - **[@erikdubois](https://github.com/erikdubois)**
 - **[@mstraube](https://github.com/mstraube)**
 - **[@Artoriuz](https://github.com/Artoriuz)**
+- **[@WilsonRU](https://github.com/WilsonRU)**
 
 
 ## Operating System
@@ -31,6 +32,7 @@
 
 - Added Ubuntu-MATE ascii art.
 - Fixed ArchLabs ascii art.  **[@erikdubois](https://github.com/erikdubois)**
+- Updated GoboLinux ascii art. **[@WilsonRU](https://github.com/WilsonRU)**
 
 
 ## Info
