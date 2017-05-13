@@ -3102,6 +3102,11 @@ get_distro_colors() {
             ascii_file="manjaro"
         ;;
 
+        "Maui"*)
+            set_colors 6 7
+            ascii_file="maui"
+        ;;
+
         "Mer"*)
             set_colors 4 7 1
             ascii_file="mer"
