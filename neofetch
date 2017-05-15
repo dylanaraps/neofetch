@@ -2004,7 +2004,7 @@ get_install_date() {
             esac
         ;;
         "Haiku") install_file="/boot" ;;
-        "BSD" | "MINIX")
+        "BSD" | "MINIX" | "IRIX")
             case "$kernel_name" in
                 "FreeBSD") install_file="/etc/hostid" ;;
                 "NetBSD" | "DragonFly"*) install_file="/etc/defaults/rc.conf" ;;
@@ -2020,7 +2020,7 @@ get_install_date() {
         *"crtime"*) install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')" ;; # xpg4 (Solaris)
         *"ACFHLRSZ"*) install_date="$(ls -dl "$install_file" | awk '{printf $6 " " $7}')" ;; # Toybox
         *"GNU coreutils"*) install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')" ;;
-        *"ACFHLNRS"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls
+        *"ACFHLNRS"* | *"RadC1xmnlog"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls / IRIX ls
         *) install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
     esac
 
