@@ -537,6 +537,10 @@ get_packages() {
             packages="$(lslpp -J -l -q | grep -cv '^#')"
             packages="$((packages+=$(rpm -qa | wc -l)))"
         ;;
+
+        "IRIX")
+            packages="$(($(versions -b | wc -l)-3))"
+        ;;
     esac
 
     ((packages == 0)) && unset packages
