@@ -1298,8 +1298,8 @@ get_memory() {
 
         "IRIX")
             mem_stat=($(pmem | head -1))
-            mem_total="$((${mem_stat[3]} / 1024))"
-            mem_free="$((${mem_stat[5]} / 1024))"
+            mem_total="$((mem_stat[3] / 1024))"
+            mem_free="$((mem_stat[5] / 1024))"
             mem_used="$((mem_total - mem_free))"
         ;;
     esac
