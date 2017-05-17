@@ -2533,7 +2533,7 @@ display_image() {
             printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$image\n4;\n3;" |\
             "${w3m_img_path:-false}" -bg "$background_color" >/dev/null & 2>&1 || to_off "Image: w3m-img failed to display the image."
 
-            zws="​ "
+            zws="\xE2\x80\x8B\x20"
         ;;
     esac
 }
@@ -2740,11 +2740,11 @@ get_underline() {
 
 get_line_break() {
     # Print it directly.
-    printf "%s\n" "${zws}"
+    printf "%b\n" "${zws}"
 
     # Calculate info height.
     ((++info_height))
-    line_breaks+=$'\n'
+    line_breaks+="\n"
 
     # Tell info() that we printed manually.
     prin=1
@@ -2865,6 +2865,11 @@ get_distro_colors() {
         "ARCHlabs"*)
             set_colors 6 6 7 1
             ascii_file="archlabs"
+        ;;
+
+        *"XFerience"*)
+            set_colors 6 6 7 1
+            ascii_file="arch_xferience"
         ;;
 
         "Arch"*)
@@ -3095,6 +3100,11 @@ get_distro_colors() {
         "Manjaro"*)
             set_colors 2 7
             ascii_file="manjaro"
+        ;;
+
+        "Maui"*)
+            set_colors 6 7
+            ascii_file="maui"
         ;;
 
         "Mer"*)
