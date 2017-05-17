@@ -33,6 +33,7 @@
 - Added Ubuntu-MATE ascii art.
 - Fixed ArchLabs ascii art.  **[@erikdubois](https://github.com/erikdubois)**
 - Updated GoboLinux ascii art. **[@WilsonRU](https://github.com/WilsonRU)**
+- Fixed `--ascii_distro windows10` not working.
 
 
 ## Info
