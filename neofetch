@@ -1639,7 +1639,7 @@ get_term() {
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
         parent="$(get_ppid "$parent")"
-        if [ "$parent" -lt 2 ]; then
+        if [ "$parent" -lt 2 ]; then
             parent=1
             term="kernel shell on $(tty)"
         fi
