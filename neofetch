@@ -2292,10 +2292,10 @@ get_w3m_img_path() {
 
     elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-    
+
     elif [[ -x "/usr/local/libexec/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/local/libexec/w3m/w3mimgdisplay"
-    
+
     else
         err "Image: w3m-img wasn't found on your system"
     fi
@@ -3372,7 +3372,7 @@ get_distro_colors() {
             ascii_file="void"
         ;;
 
-        *"[Windows 10]"* | *"on Windows 10"* | "Windows 8"* | "Windows 10"*)
+        *"[Windows 10]"* | *"on Windows 10"* | "Windows 8"* | "Windows 10"* | "windows10" | "windows8" )
             set_colors 6 7
             ascii_file="windows10"
         ;;
