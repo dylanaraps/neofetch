@@ -105,7 +105,8 @@ get_distro() {
 
             elif type -p tazpkg >/dev/null; then
                 distro="SliTaz $(< /etc/slitaz-release)"
-
+            elif type -p kpm > /dev/null; then
+                distro="KSLinux"
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
@@ -437,6 +438,8 @@ get_packages() {
 
             type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
+            type -p kpm >/dev/null && \
+                packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
 
             type -p pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
@@ -1636,8 +1639,13 @@ get_term() {
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
         parent="$(get_ppid "$parent")"
-        name="$(get_process_name "$parent")"
+        if [ $parent -lt 2 ]; then
+            parent=1
+            term="kernel shell on $(tty)"
+        fi
 
+        name="$(get_process_name "$parent")"
+        
         case "${name// }" in
             "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
             "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
@@ -2295,10 +2303,10 @@ get_w3m_img_path() {
 
     elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-
+    
     elif [[ -x "/usr/local/libexec/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/local/libexec/w3m/w3mimgdisplay"
-
+    
     else
         err "Image: w3m-img wasn't found on your system"
     fi
@@ -3070,6 +3078,11 @@ get_distro_colors() {
             ascii_file="korora"
         ;;
 
+        "KSLinux"*)
+            set_colors 4 7 1
+            ascii_file="ks"
+        ;;
+
         "Kubuntu"*)
             set_colors 4 7 1
             ascii_file="kubuntu"
@@ -3375,7 +3388,7 @@ get_distro_colors() {
             ascii_file="void"
         ;;
 
-        *"[Windows 10]"* | *"on Windows 10"* | "Windows 8"* | "Windows 10"* | "windows10" | "windows8" )
+        *"[Windows 10]"* | *"on Windows 10"* | "Windows 8"* | "Windows 10"*)
             set_colors 6 7
             ascii_file="windows10"
         ;;
