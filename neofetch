@@ -91,7 +91,10 @@ get_distro() {
                 distro="$(lsb_release $lsb_flags)"
 
             elif type -p guix >/dev/null; then
-                distro="GuixSD"
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="GuixSD" ;;
+                    *) distro="GuixSD $(guix system -V | awk 'NR==1{printf $5}')"
+                esac
 
             elif type -p crux >/dev/null; then
                 distro="$(crux)"
