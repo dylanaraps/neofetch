@@ -1640,14 +1640,14 @@ get_term() {
     esac
 
     # Check $PPID for terminal emulator.
-    while [[ -z "$term" ]] || ((parent>1)); do
+    while [[ -z "$term" ]]; do
         parent="$(get_ppid "$parent")"
         name="$(get_process_name "$parent")"
         case "${name// }" in
             "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
-            "login"* | *"Login"* | "init" | "(init)") term="$(tty)";break ;;
+            "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
             "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) break ;;
-            "gnome-terminal-") term="gnome-terminal";break ;;
+            "gnome-terminal-") term="gnome-terminal" ;;
             *) term="${name##*/}" ;;
         esac
     done
