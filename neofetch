@@ -1640,12 +1640,7 @@ get_term() {
     esac
 
     # Check $PPID for terminal emulator.
-    while [[ -z "$term" ]]; do
-        parent="$(get_ppid "$parent")"
-        if [ "$parent" -lt 2 ]; then
-            parent=1
-            term="kernel shell on $(tty)"
-        fi
+    while [[ -z "$term" ]] || ((parent > 1)); do
 
         name="$(get_process_name "$parent")"
         
