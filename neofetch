@@ -1640,10 +1640,9 @@ get_term() {
     esac
 
     # Check $PPID for terminal emulator.
-    while [[ -z "$term" ]] || ((parent > 1)); do
-
+    while [[ -z "$term" ]]; do
+        parent="$(get_ppid "$parent")"
         name="$(get_process_name "$parent")"
-        
         case "${name// }" in
             "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
             "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
@@ -1651,7 +1650,6 @@ get_term() {
             "gnome-terminal-") term="gnome-terminal" ;;
             *) term="${name##*/}" ;;
         esac
-        break;
     done
 
     # Log that the function was run.
