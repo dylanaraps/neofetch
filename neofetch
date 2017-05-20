@@ -1651,6 +1651,7 @@ get_term() {
             "gnome-terminal-") term="gnome-terminal" ;;
             *) term="${name##*/}" ;;
         esac
+        break;
     done
 
     # Log that the function was run.
