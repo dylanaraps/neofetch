@@ -983,13 +983,18 @@ get_cpu() {
 
         "IRIX")
             # Get CPU name.
-            cpu="$(hinv -c | awk -F':' '/CPU:/ {printf $2}')"
+            cpu="$(hinv -c processor | awk -F':' '/CPU:/ {printf $2}')"
 
             # Get CPU speed.
-            cpu="$(hinv -c | awk 'NR==1{printf $2}')"
+            cpu="$(hinv -c processor | awk '/MHZ/ {printf $2}')"
+
+            # Note: This is an inaccurate way to count CPU speed.
+            #       Most of them use MHZ, I'm yet to see if they have
+            #       anything above 1 GHZ. So this will have to do as a
+            #       place holder.
 
             # Get CPU cores.
-            cores="$(sysconf NPROC_ONLN)" # Does this even work?
+            cores="$(sysconf NPROC_ONLN)"
         ;;
     esac
 
@@ -1069,7 +1074,7 @@ get_cpu_usage() {
                     "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                     "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
-                    "IRIX") cores="$(sysconf NPROC_ONLN)" # Does this even work?
+                    "IRIX") cores="$(sysconf NPROC_ONLN)"
                 esac
             fi
 
