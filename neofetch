@@ -988,11 +988,6 @@ get_cpu() {
             # Get CPU speed.
             cpu="$(hinv -c processor | awk '/MHZ/ {printf $2}')"
 
-            # Note: This is an inaccurate way to count CPU speed.
-            #       Most of them use MHZ, I'm yet to see if they have
-            #       anything above 1 GHZ. So this will have to do as a
-            #       place holder.
-
             # Get CPU cores.
             cores="$(sysconf NPROC_ONLN)"
         ;;
