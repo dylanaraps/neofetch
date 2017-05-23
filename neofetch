@@ -3563,7 +3563,7 @@ get_user_config() {
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     elif [[ -f "/etc/neofetch/config" ]]; then
-        cp "/usr/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
+        cp "/etc/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
