@@ -322,7 +322,7 @@ get_title() {
 }
 
 get_kernel() {
-    # Since these OSes are integrated systems, it's better to skip this function altogether
+    # Since these OS are integrated systems, it's better to skip this function altogether
     [[ "$os" =~ (AIX|IRIX) ]] && return
 
     case "$kernel_shorthand" in
