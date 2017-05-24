@@ -2300,10 +2300,10 @@ get_w3m_img_path() {
 
     elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-    
+
     elif [[ -x "/usr/local/libexec/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/local/libexec/w3m/w3mimgdisplay"
-    
+
     else
         err "Image: w3m-img wasn't found on your system"
     fi
@@ -3538,16 +3538,6 @@ get_full_path() {
 get_default_config() {
     if [[ -f "/etc/neofetch/config" ]]; then
         default_config="/etc/neofetch/config"
-
-    elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
-        default_config="/usr/local/etc/neofetch/config"
-
-    elif [[ -f "/data/data/com.termux/files/usr/etc/neofetch/config" ]]; then
-        default_config="/data/data/com.termux/files/usr/etc/neofetch/config"
-
-    elif [[ -f "/boot/home/config/non-packaged/etc/neofetch/config" ]]; then
-        default_config="/boot/home/config/non-packaged/etc/neofetch/config"
-
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
         default_config="${script_dir%/*}/config/config"
@@ -3576,11 +3566,7 @@ get_user_config() {
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     elif [[ -f "/etc/neofetch/config" ]]; then
-        cp "/usr/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
-
-    elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
-        cp "/usr/local/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
+        cp "/etc/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     else
