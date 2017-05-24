@@ -986,7 +986,7 @@ get_cpu() {
             cpu="$(hinv -c processor | awk -F':' '/CPU:/ {printf $2}')"
 
             # Get CPU speed.
-            cpu="$(hinv -c processor | awk '/MHZ/ {printf $2}')"
+            speed="$(hinv -c processor | awk '/MHZ/ {printf $2}')"
 
             # Get CPU cores.
             cores="$(sysconf NPROC_ONLN)"
