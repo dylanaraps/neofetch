@@ -11,6 +11,9 @@
 # Neofetch version.
 version="3.1.0-git"
 
+# Neofetch prefix.
+NEOFETCH_PREFIX="/usr"
+
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
