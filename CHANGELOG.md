@@ -6,18 +6,21 @@
 - **[@mstraube](https://github.com/mstraube)**
 - **[@Artoriuz](https://github.com/Artoriuz)**
 - **[@WilsonRU](https://github.com/WilsonRU)**
+- **[@Takeya-Yuki](https://github.com/Takeya-Yuki)**
 
 
 ## Operating System
 
 - Added support for Arch XFerience. **[@mstraube](https://github.com/mstraube)**
 - Added support for Maui. **[@mstraube](https://github.com/mstraube)**
+- Added support for KS Linux. **[@Takeya-Yuki](https://github.com/Takeya-Yuki)**
 
 
 ## General
 
 - Minimum required BASH version is now 3.2.
     - (Neofetch has always used 3.2+ features, I've just made it obvious now in the documentation.)
+- Fixed config file not being created.
 
 
 ## Images
