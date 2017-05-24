@@ -11,8 +11,9 @@
 # Neofetch version.
 version="3.1.0-git"
 
-# Neofetch prefix.
+# Neofetch prefix/destdir.
 NEOFETCH_PREFIX="/usr"
+NEOFETCH_DESTDIR=""
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
@@ -3530,8 +3531,8 @@ get_full_path() {
 }
 
 get_default_config() {
-    if [[ -f "${NEOFETCH_PREFIX}/etc/neofetch/config" ]]; then
-        default_config="${NEOFETCH_PREFIX}/etc/neofetch/config"
+    if [[ -f "${NEOFETCH_DESTDIR}/etc/neofetch/config" ]]; then
+        default_config="${NEOFETCH_DESTDIR}/etc/neofetch/config"
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
         default_config="${script_dir%/*}/config/config"
