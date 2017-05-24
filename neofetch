@@ -106,6 +106,9 @@ get_distro() {
             elif type -p tazpkg >/dev/null; then
                 distro="SliTaz $(< /etc/slitaz-release)"
 
+            elif type -p kpm > /dev/null; then
+                distro="KSLinux"
+
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
@@ -437,6 +440,9 @@ get_packages() {
 
             type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
+
+            type -p kpm >/dev/null && \
+                packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
 
             type -p pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
@@ -1637,7 +1643,6 @@ get_term() {
     while [[ -z "$term" ]]; do
         parent="$(get_ppid "$parent")"
         name="$(get_process_name "$parent")"
-
         case "${name// }" in
             "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
             "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
@@ -2295,10 +2300,10 @@ get_w3m_img_path() {
 
     elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-
+    
     elif [[ -x "/usr/local/libexec/w3m/w3mimgdisplay" ]]; then
         w3m_img_path="/usr/local/libexec/w3m/w3mimgdisplay"
-
+    
     else
         err "Image: w3m-img wasn't found on your system"
     fi
@@ -3068,6 +3073,11 @@ get_distro_colors() {
         "Korora"*)
             set_colors 4 7 1
             ascii_file="korora"
+        ;;
+
+        "KSLinux"*)
+            set_colors 4 7 1
+            ascii_file="kslinux"
         ;;
 
         "Kubuntu"*)
