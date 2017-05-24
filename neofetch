@@ -3530,8 +3530,8 @@ get_full_path() {
 }
 
 get_default_config() {
-    if [[ -f "${NEOFETCH_PREFIX}/neofetch/config" ]]; then
-        default_config="${NEOFETCH_PREFIX}/neofetch/config"
+    if [[ -f "${NEOFETCH_PREFIX}/etc/neofetch/config" ]]; then
+        default_config="${NEOFETCH_PREFIX}/etc/neofetch/config"
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
         default_config="${script_dir%/*}/config/config"
