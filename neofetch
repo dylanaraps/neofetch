@@ -263,7 +263,7 @@ get_model() {
                 "iPhone2,1") model="iPhone 3GS" ;;
                 "iPhone3,"[1-3]) model="iPhone 4" ;;
                 "iPhone4,1") model="iPhone 4S" ;;
-                "iPhone5,"[1-2]) model="iPhone 4" ;;
+                "iPhone5,"[1-2]) model="iPhone 5" ;;
                 "iPhone5,"[3-4]) model="iPhone 5c" ;;
                 "iPhone6,"[1-2]) model="iPhone 5s" ;;
                 "iPhone7,2") model="iPhone 6" ;;
