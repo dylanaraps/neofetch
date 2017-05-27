@@ -7,6 +7,7 @@
 - **[@Artoriuz](https://github.com/Artoriuz)**
 - **[@WilsonRU](https://github.com/WilsonRU)**
 - **[@Takeya-Yuki](https://github.com/Takeya-Yuki)**
+- **[@LER0ever](https://github.com/LER0ever)**
 
 
 ## Operating System
@@ -53,3 +54,7 @@
 **Song**
 
 - Do not detect ibus\* or indicator\* as player. **[@dawidd6](https://github.com/dawidd6)**
+
+**Model**
+
+- Specify when running on a Hackintosh. **[@LER0ever](https://github.com/LER0ever)**
