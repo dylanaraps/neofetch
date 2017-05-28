@@ -91,7 +91,10 @@ get_distro() {
                 distro="$(lsb_release $lsb_flags)"
 
             elif type -p guix >/dev/null; then
-                distro="GuixSD"
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="GuixSD" ;;
+                    *) distro="GuixSD $(guix system -V | awk 'NR==1{printf $5}')"
+                esac
 
             elif type -p crux >/dev/null; then
                 distro="$(crux)"
@@ -102,6 +105,9 @@ get_distro() {
 
             elif type -p tazpkg >/dev/null; then
                 distro="SliTaz $(< /etc/slitaz-release)"
+
+            elif type -p kpm > /dev/null; then
+                distro="KSLinux"
 
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
@@ -236,7 +242,13 @@ get_model() {
             fi
         ;;
 
-        "Mac OS X") model="$(sysctl -n hw.model)" ;;
+        "Mac OS X") 
+            if [[ "$(kextstat | grep "FakeSMC")" ]]; then
+                model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
+            else
+                model="$(sysctl -n hw.model)"
+            fi
+        ;;
         "iPhone OS")
             case "$machine_arch" in
                 "iPad1,1") model="iPad" ;;
@@ -257,7 +269,7 @@ get_model() {
                 "iPhone2,1") model="iPhone 3GS" ;;
                 "iPhone3,"[1-3]) model="iPhone 4" ;;
                 "iPhone4,1") model="iPhone 4S" ;;
-                "iPhone5,"[1-2]) model="iPhone 4" ;;
+                "iPhone5,"[1-2]) model="iPhone 5" ;;
                 "iPhone5,"[3-4]) model="iPhone 5c" ;;
                 "iPhone6,"[1-2]) model="iPhone 5s" ;;
                 "iPhone7,2") model="iPhone 6" ;;
@@ -434,6 +446,9 @@ get_packages() {
 
             type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
+
+            type -p kpm >/dev/null && \
+                packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
 
             type -p pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
@@ -1634,7 +1649,6 @@ get_term() {
     while [[ -z "$term" ]]; do
         parent="$(get_ppid "$parent")"
         name="$(get_process_name "$parent")"
-
         case "${name// }" in
             "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
             "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
@@ -3065,6 +3079,11 @@ get_distro_colors() {
         "Korora"*)
             set_colors 4 7 1
             ascii_file="korora"
+        ;;
+
+        "KSLinux"*)
+            set_colors 4 7 1
+            ascii_file="kslinux"
         ;;
 
         "Kubuntu"*)

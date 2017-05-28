@@ -6,18 +6,22 @@
 - **[@mstraube](https://github.com/mstraube)**
 - **[@Artoriuz](https://github.com/Artoriuz)**
 - **[@WilsonRU](https://github.com/WilsonRU)**
+- **[@Takeya-Yuki](https://github.com/Takeya-Yuki)**
+- **[@LER0ever](https://github.com/LER0ever)**
 
 
 ## Operating System
 
 - Added support for Arch XFerience. **[@mstraube](https://github.com/mstraube)**
 - Added support for Maui. **[@mstraube](https://github.com/mstraube)**
+- Added support for KS Linux. **[@Takeya-Yuki](https://github.com/Takeya-Yuki)**
 
 
 ## General
 
 - Minimum required BASH version is now 3.2.
     - (Neofetch has always used 3.2+ features, I've just made it obvious now in the documentation.)
+- Fixed config file not being created.
 
 
 ## Images
@@ -50,3 +54,7 @@
 **Song**
 
 - Do not detect ibus\* or indicator\* as player. **[@dawidd6](https://github.com/dawidd6)**
+
+**Model**
+
+- Specify when running on a Hackintosh. **[@LER0ever](https://github.com/LER0ever)**
