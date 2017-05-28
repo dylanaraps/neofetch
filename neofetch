@@ -242,13 +242,7 @@ get_model() {
             fi
         ;;
 
-        "Mac OS X") 
-            if [[ "$(kextstat | grep "FakeSMC")" ]]; then
-                model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
-            else
-                model="$(sysctl -n hw.model)"
-            fi
-        ;;
+        "Mac OS X") model="$(sysctl -n hw.model)" ;;
         "iPhone OS")
             case "$machine_arch" in
                 "iPad1,1") model="iPad" ;;
