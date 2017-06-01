@@ -1726,6 +1726,19 @@ get_term_font() {
             term_font="$(awk -F "," '/fontFamily/ {a=$1} END{print a}' "${HOME}/.hyper.js" | awk -F "'" '{a=$2} END{print a}')"
         ;;
 
+        "iTerm2"*)
+            line="$(defaults read -app iTerm | grep -F 'Normal Font')"
+            re='"Normal Font" = "([^-" ]+).*";'
+            [[ "$line" =~ $re ]] && term_font=${BASH_REMATCH[1]}
+
+            term_font="${term_font//-/ }"
+            term_font="${term_font/Mono/ Mono}"
+            term_font="${term_font/medium/}"
+            term_font="${term_font/Medium/}"
+            term_font="${term_font/CodePro/ Code Pro}"
+            term_font="${term_font/ForPowerline/}"
+        ;;
+
         "konsole"*)
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
