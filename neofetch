@@ -1652,6 +1652,7 @@ get_term() {
             term="$SSH_TTY"
         else
             parent="$(get_ppid "$parent")"
+            [[ -z "$parent" ]] && break
             name="$(get_process_name "$parent")"
             case "${name// }" in
                 "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
