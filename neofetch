@@ -1257,8 +1257,11 @@ get_memory() {
             case "$kernel_name" in
                 "NetBSD"*) mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
                 "FreeBSD"* | "DragonFly"*)
-                    mem_free="$(top -d 1 | awk -F ',' '/^Mem:/ {print $5}')"
-                    mem_free="${mem_free/M Free}"
+                    hw_pagesize="$(sysctl -n hw.pagesize)"
+                    mem_inactive="$(($(sysctl -n vm.stats.vm.v_inactive_count) * hw_pagesize))"
+                    mem_unused="$(($(sysctl -n vm.stats.vm.v_free_count) * hw_pagesize))"
+                    mem_cache="$(($(sysctl -n vm.stats.vm.v_cache_count) * hw_pagesize))"
+                    mem_free="$(((mem_inactive + mem_unused + mem_cache) / 1024 / 1024))"
                 ;;
                 "MINIX")
                     mem_free="$(top -d 1 | awk -F ',' '/^Memory:/ {print $2}')"
