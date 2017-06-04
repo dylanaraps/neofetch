@@ -47,6 +47,7 @@
 - Added font support for mate-terminal. **[@mstraube](https://github.com/mstraube)**
 - [Termite] Fix font mismatch. **[@MatthewCox](https://github.com/MatthewCox)**
 - Use `$SSH_TTY` for terminal detection if machine is connected via SSH.
+- Break from loop if PPID can't be accessed/not found.
 
 **GPU**
 
