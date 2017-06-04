@@ -60,3 +60,8 @@
 **Model**
 
 - Specify when running on a Hackintosh. **[@LER0ever](https://github.com/LER0ever)**
+
+
+**Memory**
+
+- [FreeBSD]: Fix inaccurate free memory calculation.
