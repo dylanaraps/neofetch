@@ -949,6 +949,7 @@ get_cpu() {
             cpu="${cpu//*$'\n'}"
             cpu="${cpu/[0-9]\.*}"
             cpu="${cpu/ @*}"
+            cpu="${cpu/\(portid*}"
 
             # Get CPU speed.
             speed="$(psrinfo -v | awk '/operates at/ {print $6; exit}')"
