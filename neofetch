@@ -216,8 +216,14 @@ get_distro() {
     [[ -z "$distro" ]] && distro="$os (Unknown)"
 
     # Get OS architecture.
-    [[ "$os_arch" == "on" ]] && \
+    if [[ "$os_arch" == "on" ]]; then
+        case "$os" in
+            "Solaris" | "AIX" | "BSD" | "macOS") machine_arch="$(uname -p)" ;;
+            *) machine_arch="$(uname -m)" ;;
+
+        esac
         distro+=" ${machine_arch}"
+    fi
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
@@ -3772,11 +3778,10 @@ old_options() {
 cache_uname() {
     # Cache the output of uname so we don't
     # have to spawn it multiple times.
-    uname=($(uname -srm))
+    uname=($(uname -sr))
 
     kernel_name="${uname[0]}"
     kernel_version="${uname[1]}"
-    machine_arch="${uname[2]}"
 }
 
 convert_time() {
