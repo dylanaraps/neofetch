@@ -1818,7 +1818,7 @@ get_disk() {
     df_version="$(df --version 2>&1)"
     case "$df_version" in
         *"blocks"*) err "Your version of df cannot be used due to the non-standard flags" ; return ;; # Haiku
-        *"recognized flag"*) df_flags=(-P -g) ;; # AIX, untested
+        *"IMitv"*) df_flags=(-P -g) ;; # AIX
         *"befhikm"*) df_flags=(-P -k) ;; # IRIX
         *) df_flags=(-P -h) ;;
     esac
