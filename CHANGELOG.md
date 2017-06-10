@@ -42,6 +42,10 @@
 
 ## Info
 
+**Distro**
+
+- [Solaris, AIX, Haiku] The machine architecture will now be shown properly instead of machine ID.
+
 **Terminal Emulator**
 
 - Added font support for mate-terminal. **[@mstraube](https://github.com/mstraube)**
