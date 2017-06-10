@@ -223,7 +223,7 @@ get_distro() {
     # Get OS architecture.
     if [[ "$os_arch" == "on" ]]; then
         case "$os" in
-            "Solaris" | "AIX" | "BSD" | "Haiku") machine_arch="$(uname -p)" ;;
+            "Solaris" | "AIX" | "BSD" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
             *) machine_arch="$(uname -m)" ;;
 
         esac
