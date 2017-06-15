@@ -248,7 +248,7 @@ get_model() {
             fi
         ;;
 
-        "Mac OS X") 
+        "Mac OS X")
             if [[ "$(kextstat | grep "FakeSMC")" != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
@@ -2662,7 +2662,7 @@ scrot_program() {
         elif type -p maim >/dev/null; then
             scrot_program=(maim)
 
-        elif type -p import >/dev/null; then
+        elif type -p import >/dev/null && [[ "$os" != "Mac OS X" ]]; then
             scrot_program=(import -window root)
 
         elif type -p imlib2_grab >/dev/null; then
