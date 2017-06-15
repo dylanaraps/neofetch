@@ -48,6 +48,7 @@
 
 **Terminal Emulator**
 
+- Added support for Neovim terminal emulator. **[@LER0ever](https://github.com/LER0ever)**
 - Added font support for mate-terminal. **[@mstraube](https://github.com/mstraube)**
 - [Termite] Fix font mismatch. **[@MatthewCox](https://github.com/MatthewCox)**
 - Use `$SSH_TTY` for terminal detection if machine is connected via SSH.
