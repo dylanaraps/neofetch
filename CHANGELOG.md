@@ -13,6 +13,7 @@
 ## Operating System
 
 - Added support for Arch XFerience. **[@mstraube](https://github.com/mstraube)**
+- Added support for CloverOS.
 - Added support for Maui. **[@mstraube](https://github.com/mstraube)**
 - Added support for KS Linux. **[@Takeya-Yuki](https://github.com/Takeya-Yuki)**
 
