@@ -2957,6 +2957,11 @@ get_distro_colors() {
             ascii_file="chrome"
         ;;
 
+        "Clover"*)
+            set_colors 2 6
+            ascii_file="cloveros"
+        ;;
+
         "crux_small")
             set_colors 4 5 7 6
             ascii_file="crux_small"
