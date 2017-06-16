@@ -1669,6 +1669,8 @@ get_term() {
                 "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
                 "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) break ;;
                 "gnome-terminal-") term="gnome-terminal" ;;
+                *"nvim") term="Neovim Terminal" ;;
+                *"NeoVimServer"*) term="VimR Terminal" ;;
                 *) term="${name##*/}" ;;
             esac
         fi
