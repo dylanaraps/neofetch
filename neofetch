@@ -20,8 +20,8 @@ old_ifs="$IFS"
 export LC_ALL=C
 export LANG=C
 
-# Add /usr/xpg4/bin, /usr/sbin, and /sbin to PATH.
-export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:${PATH}"
+# Add /usr/xpg4/bin, /usr/sbin, /sbin, and /usr/etc to PATH.
+export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:${PATH}"
 
 # Set no case match.
 shopt -s nocasematch
