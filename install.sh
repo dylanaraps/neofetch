@@ -28,8 +28,8 @@ mkdir -p "${DESTDIR}""${PREFIX}""${CONFDIR}"
 mkdir -p "${DESTDIR}""${PREFIX}""${ASCIIDIR}"
 mkdir -p "${DESTDIR}""${PREFIX}""${MANDIR}"
 
-sed -i -e "s|CONFDIR|/${PREFIX}${CONFDIR}|g" neofetch
-sed -i -e "s|ASCIIDIR|/${PREFIX}${ASCIIDIR}|g" neofetch
+sed -i -e "s|CONFDIR|${PREFIX}${CONFDIR}|g" neofetch
+sed -i -e "s|ASCIIDIR|${PREFIX}${ASCIIDIR}|g" neofetch
 
 cp -p neofetch "${DESTDIR}""${PREFIX}""${BINDIR}"
 cp -p config/config "${DESTDIR}""${PREFIX}""${CONFDIR}"
