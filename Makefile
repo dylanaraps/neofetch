@@ -12,6 +12,9 @@ install:
 	cp -p neofetch.1 $(DESTDIR)$(PREFIX)/share/man/man1/neofetch.1
 	cp -p config/config $(DESTDIR)/etc/neofetch/config
 	cp -p ascii/distro/* $(DESTDIR)$(PREFIX)/share/neofetch/ascii/distro
+	# Set the PREFIX/DESTDIR inside Neofetch.
+	sed -i'' -e "s|NEOFETCH_PREFIX=\".*\"|NEOFETCH_PREFIX=\"$(PREFIX)\"|" $(DESTDIR)$(PREFIX)/bin/neofetch
+	sed -i'' -e "s|NEOFETCH_DESTDIR=\"\"|NEOFETCH_DESTDIR=\"$(DESTDIR)\"|" $(DESTDIR)$(PREFIX)/bin/neofetch
 
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/neofetch
