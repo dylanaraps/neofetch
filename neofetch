@@ -2171,18 +2171,9 @@ get_ascii() {
         [[ "$image_source" =~ \.(png|jpg|jpe|jpeg|gif)$ ]] && \
             err "Image: Source is image file but ascii backend was selected. Using distro ascii."
 
-        if [[ -d "/usr/share/neofetch/ascii/distro" ]]; then
-            ascii_dir="/usr/share/neofetch/ascii/distro"
-
-        elif [[ -d "/usr/local/share/neofetch/ascii/distro" ]]; then
-            ascii_dir="/usr/local/share/neofetch/ascii/distro"
-
-        elif [[ -d "/data/data/com.termux/files/usr/share/neofetch/ascii/distro" ]]; then
-            ascii_dir="/data/data/com.termux/files/usr/share/neofetch/ascii/distro"
-
-        elif [[ -d "/boot/home/config/non-packaged/share/neofetch/ascii/distro" ]]; then
-            ascii_dir="/boot/home/config/non-packaged/share/neofetch/ascii/distro"
-
+        # Note: ASCIIDIR here is a placeholder -- it will be replaced with your ASCII directory.
+        if [[ -d "ASCIIDIR" ]]; then
+            ascii_dir="ASCIIDIR"
         else
             [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
             ascii_dir="${script_dir%/*}/ascii/distro"
@@ -3565,18 +3556,9 @@ get_full_path() {
 }
 
 get_default_config() {
-    if [[ -f "/etc/neofetch/config" ]]; then
-        default_config="/etc/neofetch/config"
-
-    elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
-        default_config="/usr/local/etc/neofetch/config"
-
-    elif [[ -f "/data/data/com.termux/files/usr/etc/neofetch/config" ]]; then
-        default_config="/data/data/com.termux/files/usr/etc/neofetch/config"
-
-    elif [[ -f "/boot/home/config/non-packaged/etc/neofetch/config" ]]; then
-        default_config="/boot/home/config/non-packaged/etc/neofetch/config"
-
+    # Note: CONFDIR here is a placeholder -- it will be replaced with your configuration directory.
+    if [[ -f "CONFDIR/config" ]]; then
+        default_config="CONFDIR/config"
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
         default_config="${script_dir%/*}/config/config"
@@ -3604,12 +3586,8 @@ get_user_config() {
     if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
-    elif [[ -f "/etc/neofetch/config" ]]; then
-        cp "/etc/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
-
-    elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
-        cp "/usr/local/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
+    elif [[ -f "CONFDIR/config" ]]; then
+        cp "CONFDIR/config" "${XDG_CONFIG_HOME}/neofetch"
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
     else
