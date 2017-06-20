@@ -1046,6 +1046,7 @@ get_cpu() {
     cpu="${cpu//with Radeon * Graphics}"
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
+    cpu="${cpu//Chip Revision*}"
 
     # Trim spaces from core output
     cores="${cores//[[:space:]]}"
