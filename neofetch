@@ -3486,7 +3486,7 @@ get_distro_colors() {
                     ascii_file="solaris"
                 ;;
 
-                "IRIX")
+                "IRIX"*)
                     set_colors 4 7
                     ascii_file="irix"
                 ;;
