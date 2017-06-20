@@ -1898,7 +1898,7 @@ get_disk() {
         disk_perc="${disk_info[4]/'%'}"
 
         case "$df_version" in
-            *"befhikm"*) disk="$((disk_info[2]/1024/1024))G / $((disk_info[2]/1024/1024))G (${disk_perc}%)" ;;
+            *"befhikm"*) disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)" ;;
             *) disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)" ;;
         esac
 
