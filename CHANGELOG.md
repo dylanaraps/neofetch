@@ -12,6 +12,7 @@
 
 ## Operating System
 
+- Added support for IRIX.
 - Added support for Arch XFerience. **[@mstraube](https://github.com/mstraube)**
 - Added support for CloverOS.
 - Added support for Maui. **[@mstraube](https://github.com/mstraube)**
