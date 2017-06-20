@@ -12,10 +12,16 @@ while [[ "$1" ]]; do
 	shift
 done
 
-[[ -z "$BINDIR" ]] && BINDIR="/usr/bin"
+if [[ -z "$PREFIX" ]]; then
+	[[ -z "$BINDIR" ]] && BINDIR="/usr/bin"
+	[[ -z "$ASCIIDIR" ]] && ASCIIDIR="/usr/share/neofetch/ascii/distro"
+	[[ -z "$MANDIR" ]] && MANDIR="/usr/share/man/man1"
+else
+	[[ -z "$BINDIR" ]] && BINDIR="/bin"
+	[[ -z "$ASCIIDIR" ]] && ASCIIDIR="/share/neofetch/ascii/distro"
+	[[ -z "$MANDIR" ]] && MANDIR="/share/man/man1"
+fi
 [[ -z "$CONFDIR" ]] && CONFDIR="/etc/neofetch"
-[[ -z "$ASCIIDIR" ]] && ASCIIDIR="/usr/share/neofetch/ascii/distro"
-[[ -z "$MANDIR" ]] && MANDIR="/usr/share/man/man1"
 
 mkdir -p "${DESTDIR}""${PREFIX}""${BINDIR}"
 mkdir -p "${DESTDIR}""${PREFIX}""${CONFDIR}"
