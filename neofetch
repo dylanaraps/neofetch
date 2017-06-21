@@ -221,12 +221,12 @@ get_distro() {
     [[ -z "$distro" ]] && distro="$os (Unknown)"
 
     # Get OS architecture.
-    if [[ "$os_arch" == "on" ]]; then
-        case "$os" in
-            "Solaris" | "AIX" | "BSD" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
-            *) machine_arch="$(uname -m)" ;;
+    case "$os" in
+        "Solaris" | "AIX" | "BSD" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
+        *) machine_arch="$(uname -m)" ;;
 
-        esac
+    esac
+    if [[ "$os_arch" == "on" ]]; then
         distro+=" ${machine_arch}"
     fi
 
