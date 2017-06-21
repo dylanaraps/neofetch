@@ -828,26 +828,22 @@ get_cpu() {
     case "$os" in
         "Linux" | "MINIX" | "Windows")
             # Get CPU name.
-            case "$distro" in
-                "Android"*) cpu="$(getprop ro.product.board)" ;;
-                *)
-                    case "$machine_arch" in
-                        "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
-                            cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' /proc/cpuinfo)"
-                        ;;
-                        "s390"*)
-                            cpu="$(awk -F'=' '/machine/ {print $4; exit}' /proc/cpuinfo)"
-                        ;;
-                        "ia64" | "m32r")
-                            cpu="$(awk -F':' '/model/ {print $2; exit}' /proc/cpuinfo)"
-                            [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' /proc/cpuinfo)"
-                        ;;
-                        *)
-                            cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {printf $2; exit}' /proc/cpuinfo)"
-                        ;;
-                    esac
-                ;;
-            esac
+                case "$machine_arch" in
+                    "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
+                        cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' /proc/cpuinfo)"
+                    ;;
+                    "s390"*)
+                        cpu="$(awk -F'=' '/machine/ {print $4; exit}' /proc/cpuinfo)"
+                    ;;
+                    "ia64" | "m32r")
+                        cpu="$(awk -F':' '/model/ {print $2; exit}' /proc/cpuinfo)"
+                        [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' /proc/cpuinfo)"
+                    ;;
+                    *)
+                        cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {printf $2; exit}' /proc/cpuinfo)"
+                       [[ "$cpu" == *"processor rev"* ]] && cpu="$(awk -F':' '/Hardware/ {print $2; exit}' /proc/cpuinfo)"
+                    ;;
+                esac
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
             temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
@@ -1047,6 +1043,7 @@ get_cpu() {
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
     cpu="${cpu//Chip Revision*}"
+    cpu="${cpu//Technologies, Inc}"
 
     # Trim spaces from core output
     cores="${cores//[[:space:]]}"
@@ -1068,6 +1065,7 @@ get_cpu() {
             cpu="${cpu/AMD }"
             cpu="${cpu/Intel }"
             cpu="${cpu/Core? Duo }"
+            cpu="${cpu/Qualcomm }"
 
             [[ "$cpu_shorthand" == "tiny" ]] && cpu="${cpu/@*}"
         ;;
