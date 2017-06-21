@@ -316,7 +316,7 @@ get_model() {
         ;;
 
         "AIX")
-            model="$(prtconf | awk -F':' '/System Model/ {printf $2}')"
+            model="$(/usr/bin/uname -M)"
         ;;
     esac
 
