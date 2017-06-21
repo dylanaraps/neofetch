@@ -994,7 +994,7 @@ get_cpu() {
             cpu="$(prtconf | awk -F':' '/Processor Type/ {printf $2}')"
 
             # Get CPU speed.
-            speed="$(prtconf | awk -F':' '/Processor Clock Speed/ {printf $2}')"
+            speed="$(prtconf -s | awk -F':' '{printf $2}')"
             speed="${speed/MHz}"
 
             # Get CPU cores.
