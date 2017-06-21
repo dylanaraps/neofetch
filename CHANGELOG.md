@@ -3,10 +3,12 @@
 - **[@MatthewCox](https://github.com/MatthewCox)**
 - **[@dawidd6](https://github.com/dawidd6)**
 - **[@erikdubois](https://github.com/erikdubois)**
+- **[@konimex](https://github.com/konimex)**
 - **[@mstraube](https://github.com/mstraube)**
 - **[@Artoriuz](https://github.com/Artoriuz)**
 - **[@WilsonRU](https://github.com/WilsonRU)**
 - **[@Takeya-Yuki](https://github.com/Takeya-Yuki)**
+- **[@iandrewt](https://github.com/iandrewt)**
 - **[@LER0ever](https://github.com/LER0ever)**
 
 
@@ -23,7 +25,7 @@
 
 - Minimum required BASH version is now 3.2.
     - (Neofetch has always used 3.2+ features, I've just made it obvious now in the documentation.)
-- Fixed config file not being created.
+- Fixed config file not being created on first install.
 
 
 ## Images

@@ -9,7 +9,7 @@
 # https://github.com/dylanaraps/
 
 # Neofetch version.
-version="3.1.0-git"
+version="3.2.0"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
