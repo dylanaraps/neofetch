@@ -9,7 +9,7 @@
 # https://github.com/dylanaraps/
 
 # Neofetch version.
-version="3.1.0-git"
+version="3.2.1-git"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
@@ -20,8 +20,8 @@ old_ifs="$IFS"
 export LC_ALL=C
 export LANG=C
 
-# Add /usr/xpg4/bin, /usr/sbin, and /sbin to PATH.
-export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:${PATH}"
+# Add /usr/xpg4/bin, /usr/sbin, /sbin, and /usr/etc to PATH.
+export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:${PATH}"
 
 # Set no case match.
 shopt -s nocasematch
@@ -43,6 +43,7 @@ get_os() {
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
         "AIX") os="AIX" ;;
+        "IRIX64") os="IRIX" ;;
         *)
             printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
@@ -211,13 +212,23 @@ get_distro() {
         "AIX")
             distro="AIX $(oslevel)"
         ;;
+
+        "IRIX")
+            distro="IRIX ${kernel_version}"
+        ;;
     esac
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
 
     # Get OS architecture.
-    [[ "$os_arch" == "on" ]] && \
+    case "$os" in
+        "Solaris" | "AIX" | "BSD" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
+        *) machine_arch="$(uname -m)" ;;
+
+    esac
+    if [[ "$os_arch" == "on" ]]; then
         distro+=" ${machine_arch}"
+    fi
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
@@ -242,7 +253,7 @@ get_model() {
             fi
         ;;
 
-        "Mac OS X") 
+        "Mac OS X")
             if [[ "$(kextstat | grep "FakeSMC")" != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
@@ -330,8 +341,8 @@ get_title() {
 }
 
 get_kernel() {
-    # Since AIX is an integrated system, it's better to skip this function altogether
-    [[ "$os" == "AIX" ]] && return
+    # Since these OS are integrated systems, it's better to skip this function altogether
+    [[ "$os" =~ (AIX|IRIX) ]] && return
 
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
@@ -379,7 +390,7 @@ get_uptime() {
                     seconds="${seconds/.*}"
                 ;;
 
-                "AIX")
+                "AIX" | "IRIX")
                     t="$(LC_ALL=POSIX ps -o etime= -p 1)"
                     d="0" h="0"
                     case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
@@ -547,6 +558,10 @@ get_packages() {
         "AIX")
             packages="$(lslpp -J -l -q | grep -cv '^#')"
             packages="$((packages+=$(rpm -qa | wc -l)))"
+        ;;
+
+        "IRIX")
+            packages="$(($(versions -b | wc -l)-3))"
         ;;
     esac
 
@@ -949,6 +964,7 @@ get_cpu() {
             cpu="${cpu//*$'\n'}"
             cpu="${cpu/[0-9]\.*}"
             cpu="${cpu/ @*}"
+            cpu="${cpu/\(portid*}"
 
             # Get CPU speed.
             speed="$(psrinfo -v | awk '/operates at/ {print $6; exit}')"
@@ -987,6 +1003,17 @@ get_cpu() {
                 "physical") cores="$(lparstat -i | awk -F':' '/Active Physical CPUs/ {printf $2}')"
             esac
         ;;
+
+        "IRIX")
+            # Get CPU name.
+            cpu="$(hinv -c processor | awk -F':' '/CPU:/ {printf $2}')"
+
+            # Get CPU speed.
+            speed="$(hinv -c processor | awk '/MHZ/ {printf $2}')"
+
+            # Get CPU cores.
+            cores="$(sysconf NPROC_ONLN)"
+        ;;
     esac
 
     if [[ "$speed" ]]; then
@@ -1019,6 +1046,7 @@ get_cpu() {
     cpu="${cpu//with Radeon * Graphics}"
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
+    cpu="${cpu//Chip Revision*}"
 
     # Trim spaces from core output
     cores="${cores//[[:space:]]}"
@@ -1065,6 +1093,7 @@ get_cpu_usage() {
                     "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                     "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
+                    "IRIX") cores="$(sysconf NPROC_ONLN)"
                 esac
             fi
 
@@ -1257,8 +1286,11 @@ get_memory() {
             case "$kernel_name" in
                 "NetBSD"*) mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
                 "FreeBSD"* | "DragonFly"*)
-                    mem_free="$(top -d 1 | awk -F ',' '/^Mem:/ {print $5}')"
-                    mem_free="${mem_free/M Free}"
+                    hw_pagesize="$(sysctl -n hw.pagesize)"
+                    mem_inactive="$(($(sysctl -n vm.stats.vm.v_inactive_count) * hw_pagesize))"
+                    mem_unused="$(($(sysctl -n vm.stats.vm.v_free_count) * hw_pagesize))"
+                    mem_cache="$(($(sysctl -n vm.stats.vm.v_cache_count) * hw_pagesize))"
+                    mem_free="$(((mem_inactive + mem_unused + mem_cache) / 1024 / 1024))"
                 ;;
                 "MINIX")
                     mem_free="$(top -d 1 | awk -F ',' '/^Memory:/ {print $2}')"
@@ -1293,6 +1325,13 @@ get_memory() {
             mem_free="${mem_stat[16]/.*}"
             mem_used="$((mem_total - mem_free))"
             mem_label="MB"
+        ;;
+
+        "IRIX")
+            mem_stat=($(pmem | head -1))
+            mem_total="$((mem_stat[3] / 1024))"
+            mem_free="$((mem_stat[5] / 1024))"
+            mem_used="$((mem_total - mem_free))"
         ;;
     esac
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB}"
@@ -1648,15 +1687,22 @@ get_term() {
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
-        parent="$(get_ppid "$parent")"
-        name="$(get_process_name "$parent")"
-        case "${name// }" in
-            "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
-            "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-            "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) break ;;
-            "gnome-terminal-") term="gnome-terminal" ;;
-            *) term="${name##*/}" ;;
-        esac
+        if [[ "$SSH_CONNECTION" ]]; then
+            term="$SSH_TTY"
+        else
+            parent="$(get_ppid "$parent")"
+            [[ -z "$parent" ]] && break
+            name="$(get_process_name "$parent")"
+            case "${name// }" in
+                "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
+                "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
+                "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) break ;;
+                "gnome-terminal-") term="gnome-terminal" ;;
+                *"nvim") term="Neovim Terminal" ;;
+                *"NeoVimServer"*) term="VimR Terminal" ;;
+                *) term="${name##*/}" ;;
+            esac
+        fi
     done
 
     # Log that the function was run.
@@ -1829,12 +1875,13 @@ get_disk() {
     type -p df >/dev/null 2>&1 || \
         { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
-    # Get "df" flags.
-    case "$os" in
-        "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
-        "Mac OS X") df_flags=(-P -h) ;;
-        "AIX") df_flags=(-P -g) ;;
-        *) df_flags=(-h) ;;
+    # Get "df" version.
+    df_version="$(df --version 2>&1)"
+    case "$df_version" in
+        *"blocks"*) err "Your version of df cannot be used due to the non-standard flags" ; return ;; # Haiku
+        *"IMitv"*) df_flags=(-P -g) ;; # AIX
+        *"befhikm"*) df_flags=(-P -k) ;; # IRIX
+        *) df_flags=(-P -h) ;;
     esac
 
     # Create an array called 'disks' where each element is a separate line from
@@ -1853,7 +1900,10 @@ get_disk() {
         disk_info=($disk)
         disk_perc="${disk_info[4]/'%'}"
 
-        disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+        case "$df_version" in
+            *"befhikm"*) disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)" ;;
+            *) disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)" ;;
+        esac
 
         # Subtitle.
         case "$disk_subtitle" in
@@ -1962,7 +2012,7 @@ get_battery() {
 
 get_local_ip() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris" | "AIX")
+        "Linux" | "BSD" | "Solaris" | "AIX" | "IRIX")
             local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
             local_ip="${local_ip/uid*}"
             [[ -z "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
@@ -2021,7 +2071,7 @@ get_install_date() {
             esac
         ;;
         "Haiku") install_file="/boot" ;;
-        "BSD" | "MINIX")
+        "BSD" | "MINIX" | "IRIX")
             case "$kernel_name" in
                 "FreeBSD") install_file="/etc/hostid" ;;
                 "NetBSD" | "DragonFly"*) install_file="/etc/defaults/rc.conf" ;;
@@ -2037,7 +2087,7 @@ get_install_date() {
         *"crtime"*) install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')" ;; # xpg4 (Solaris)
         *"ACFHLRSZ"*) install_date="$(ls -dl "$install_file" | awk '{printf $6 " " $7}')" ;; # Toybox
         *"GNU coreutils"*) install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')" ;;
-        *"ACFHLNRS"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls
+        *"ACFHLNRS"* | *"RadC1xmnlog"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls / IRIX ls
         *) install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
     esac
 
@@ -2647,7 +2697,7 @@ scrot_program() {
         elif type -p maim >/dev/null; then
             scrot_program=(maim)
 
-        elif type -p import >/dev/null; then
+        elif type -p import >/dev/null && [[ "$os" != "Mac OS X" ]]; then
             scrot_program=(import -window root)
 
         elif type -p imlib2_grab >/dev/null; then
@@ -2940,6 +2990,11 @@ get_distro_colors() {
         "Chrom"*)
             set_colors 2 1 3 4 7
             ascii_file="chrome"
+        ;;
+
+        "Clover"*)
+            set_colors 2 6
+            ascii_file="cloveros"
         ;;
 
         "crux_small")
@@ -3438,6 +3493,11 @@ get_distro_colors() {
                     set_colors 3 7
                     ascii_file="solaris"
                 ;;
+
+                "IRIX"*)
+                    set_colors 4 7
+                    ascii_file="irix"
+                ;;
             esac
         ;;
     esac
@@ -3763,11 +3823,10 @@ old_options() {
 cache_uname() {
     # Cache the output of uname so we don't
     # have to spawn it multiple times.
-    uname=($(uname -srm))
+    uname=($(uname -sr))
 
     kernel_name="${uname[0]}"
     kernel_version="${uname[1]}"
-    machine_arch="${uname[2]}"
 }
 
 convert_time() {
