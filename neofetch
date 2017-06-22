@@ -987,7 +987,7 @@ get_cpu() {
 
         "AIX")
             # Get CPU name.
-            cpu="$(prtconf | awk -F':' '/Processor Type/ {printf $2}')"
+            cpu="$(lsattr -El proc0 -a type | awk '{printf $2}')"
 
             # Get CPU speed.
             speed="$(prtconf -s | awk -F':' '{printf $2}')"
