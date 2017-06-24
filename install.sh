@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-while [[ "$1" ]]; do
+while [ "$1" ]; do
 	case "$1" in
 		"--destdir") DESTDIR="$2" ;;
 		"--bindir") BINDIR="$2" ;;
@@ -12,16 +12,16 @@ while [[ "$1" ]]; do
 	shift
 done
 
-if [[ -z "$PREFIX" ]]; then
-	[[ -z "$BINDIR" ]] && BINDIR="/usr/bin"
-	[[ -z "$ASCIIDIR" ]] && ASCIIDIR="/usr/share/neofetch/ascii/distro"
-	[[ -z "$MANDIR" ]] && MANDIR="/usr/share/man/man1"
+if [ -z "$PREFIX" ]; then
+	[ -z "$BINDIR" ] && BINDIR="/usr/bin"
+	[ -z "$ASCIIDIR" ] && ASCIIDIR="/usr/share/neofetch/ascii/distro"
+	[ -z "$MANDIR" ] && MANDIR="/usr/share/man/man1"
 else
-	[[ -z "$BINDIR" ]] && BINDIR="/bin"
-	[[ -z "$ASCIIDIR" ]] && ASCIIDIR="/share/neofetch/ascii/distro"
-	[[ -z "$MANDIR" ]] && MANDIR="/share/man/man1"
+	[ -z "$BINDIR" ] && BINDIR="/bin"
+	[ -z "$ASCIIDIR" ] && ASCIIDIR="/share/neofetch/ascii/distro"
+	[ -z "$MANDIR" ] && MANDIR="/share/man/man1"
 fi
-[[ -z "$CONFDIR" ]] && CONFDIR="/etc/neofetch"
+[ -z "$CONFDIR" ] && CONFDIR="/etc/neofetch"
 
 mkdir -p "${DESTDIR}""${PREFIX}""${BINDIR}"
 mkdir -p "${DESTDIR}""${PREFIX}""${CONFDIR}"
