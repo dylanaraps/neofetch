@@ -1511,7 +1511,7 @@ get_resolution() {
 
 get_diagonal() {
     case "$os" in
-        *)
+        Linux)
             mm=($(xrandr | awk '/mm/' | grep -oP '[0-9]+(?=mm)'))
             diagonal="$(echo "scale=1; sqrt(${mm[0]}^2 + ${mm[1]}^2) / 25.4" | bc)\""
             unset mm
