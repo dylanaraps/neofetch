@@ -2171,7 +2171,6 @@ get_ascii() {
         [[ "$image_source" =~ \.(png|jpg|jpe|jpeg|gif)$ ]] && \
             err "Image: Source is image file but ascii backend was selected. Using distro ascii."
 
-        # Note: ASCIIDIR here is a placeholder -- it will be replaced with your ASCII directory.
         if [[ -d "ASCIIDIR" ]]; then
             ascii_dir="ASCIIDIR"
         else
@@ -3556,7 +3555,6 @@ get_full_path() {
 }
 
 get_default_config() {
-    # Note: CONFDIR here is a placeholder -- it will be replaced with your configuration directory.
     if [[ -f "CONFDIR/config" ]]; then
         default_config="CONFDIR/config"
     else
