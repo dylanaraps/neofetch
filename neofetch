@@ -1686,7 +1686,7 @@ get_term() {
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
         if [[ "$SSH_CONNECTION" ]]; then
-            term="$SSH_TTY"
+            term="$SSH_TTY"; break
         else
             parent="$(get_ppid "$parent")"
             [[ -z "$parent" ]] && break
