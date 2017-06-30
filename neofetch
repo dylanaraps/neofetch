@@ -3641,7 +3641,7 @@ get_user_config() {
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
     elif [[ -f "/etc/neofetch/config.conf" ]]; then
-        cp "/etc/neofetch/config.conf" "${XDG_CONFIG_HOME}/neofetch.conf"
+        cp "/etc/neofetch/config.conf" "${XDG_CONFIG_HOME}/neofetch"
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
     elif [[ -f "/usr/local/etc/neofetch/config.conf" ]]; then
