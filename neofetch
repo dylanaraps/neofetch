@@ -3637,7 +3637,10 @@ get_user_config() {
 
     # Check ${XDG_CONFIG_HOME}/neofetch and create the
     # dir/files if they don't exist.
-    if [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
+    if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
+        config_file="${XDG_CONFIG_HOME}/neofetch/config"
+
+    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
     elif [[ -f "/etc/neofetch/config.conf" ]]; then
