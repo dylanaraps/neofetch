@@ -1510,6 +1510,21 @@ get_resolution() {
     resolution="${resolution%,*}"
 }
 
+get_diagonal() {
+    case "$os" in
+        Linux)
+            # Using --nograb and --current make xrandr print REALLY fast.
+            # Replaced the grep and awk with a single grep command. The less pipes the better.
+            mm=($(xrandr | grep -oP '[0-9]+(?=mm)'))
+
+            # Using <<< you can remove the call to echo.
+            diagonal="$(bc <<< "scale=1; sqrt(${mm[0]}^2 + ${mm[1]}^2) / 25.4")\""
+
+            unset mm
+        ;;
+    esac
+}
+
 get_style() {
     # Fix weird output when the function is run multiple times.
     unset gtk2_theme gtk3_theme theme path
@@ -3874,7 +3889,6 @@ convert_time() {
         5) week_day="Fri" ;;
         6) week_day="Sat" ;;
     esac
-
     # Convert 24 hour time to 12 hour time + AM/PM.
     case "$install_time_format" in
         "12h")
@@ -3885,10 +3899,8 @@ convert_time() {
         ;;
         *) time="$4" ;;
     esac
-
     # Toggle showing the time.
     [[ "$install_time" == "off" ]] && unset time
-
     # Print the install date.
     printf "%s" "$week_day $day $month $year $time"
 }
