@@ -10,3 +10,8 @@
 **Terminal**
 
 - [SSH] Fixed infinite loop if neofetch is run on non-interactive shells.
+
+
+## Images
+
+- Fixed division by 0 error in XTerm.
