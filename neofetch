@@ -1038,6 +1038,7 @@ get_cpu() {
     cpu="${cpu//Quad-Core}"
     cpu="${cpu//Six-Core}"
     cpu="${cpu//Eight-Core}"
+    cpu="${cpu//, * Compute Cores}"
     cpu="${cpu//Core}"
     cpu="${cpu//with Radeon * Graphics}"
     cpu="${cpu//, altivec supported}"
