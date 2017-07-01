@@ -32,6 +32,6 @@ sed -i -e "s|CONFDIR|${PREFIX}${CONFDIR}|g" neofetch
 sed -i -e "s|ASCIIDIR|${PREFIX}${ASCIIDIR}|g" neofetch
 
 cp -p neofetch "${DESTDIR}""${PREFIX}""${BINDIR}"
-cp -p config/config "${DESTDIR}""${PREFIX}""${CONFDIR}"
+cp -p config/config.conf "${DESTDIR}""${PREFIX}""${CONFDIR}"
 cp -p ascii/distro/* "${DESTDIR}""${PREFIX}""${ASCIIDIR}"
 cp -p neofetch.1 "${DESTDIR}""${PREFIX}""${MANDIR}"
