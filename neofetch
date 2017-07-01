@@ -1038,6 +1038,7 @@ get_cpu() {
     cpu="${cpu//Quad-Core}"
     cpu="${cpu//Six-Core}"
     cpu="${cpu//Eight-Core}"
+    cpu="${cpu//, * Compute Cores}"
     cpu="${cpu//Core}"
     cpu="${cpu//with Radeon * Graphics}"
     cpu="${cpu//, altivec supported}"
@@ -3601,21 +3602,21 @@ get_full_path() {
 }
 
 get_default_config() {
-    if [[ -f "/etc/neofetch/config" ]]; then
-        default_config="/etc/neofetch/config"
+    if [[ -f "/etc/neofetch/config.conf" ]]; then
+        default_config="/etc/neofetch/config.conf"
 
-    elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
-        default_config="/usr/local/etc/neofetch/config"
+    elif [[ -f "/usr/local/etc/neofetch/config.conf" ]]; then
+        default_config="/usr/local/etc/neofetch/config.conf"
 
-    elif [[ -f "/data/data/com.termux/files/usr/etc/neofetch/config" ]]; then
-        default_config="/data/data/com.termux/files/usr/etc/neofetch/config"
+    elif [[ -f "/data/data/com.termux/files/usr/etc/neofetch/config.conf" ]]; then
+        default_config="/data/data/com.termux/files/usr/etc/neofetch/config.conf"
 
-    elif [[ -f "/boot/home/config/non-packaged/etc/neofetch/config" ]]; then
-        default_config="/boot/home/config/non-packaged/etc/neofetch/config"
+    elif [[ -f "/boot/home/config/non-packaged/etc/neofetch/config.conf" ]]; then
+        default_config="/boot/home/config/non-packaged/etc/neofetch/config.conf"
 
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
-        default_config="${script_dir%/*}/config/config"
+        default_config="${script_dir%/*}/config/config.conf"
     fi
 
     if source "$default_config"; then
@@ -3640,19 +3641,22 @@ get_user_config() {
     if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
-    elif [[ -f "/etc/neofetch/config" ]]; then
-        cp "/etc/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
+    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
-    elif [[ -f "/usr/local/etc/neofetch/config" ]]; then
-        cp "/usr/local/share/neofetch/config" "${XDG_CONFIG_HOME}/neofetch"
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
+    elif [[ -f "/etc/neofetch/config.conf" ]]; then
+        cp "/etc/neofetch/config.conf" "${XDG_CONFIG_HOME}/neofetch"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
+
+    elif [[ -f "/usr/local/etc/neofetch/config.conf" ]]; then
+        cp "/usr/local/share/neofetch/config.conf" "${XDG_CONFIG_HOME}/neofetch"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
 
-        cp "${script_dir%/*}/config/config" "${XDG_CONFIG_HOME}/neofetch"
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
+        cp "${script_dir%/*}/config/config.conf" "${XDG_CONFIG_HOME}/neofetch"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
     fi
 
     source "$config_file"
