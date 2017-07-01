@@ -4,7 +4,7 @@
 ## General
 
 - Config file now has a `.conf` suffix.
-
+- Neofetch now assumes target directories (config file and ASCII directory) at install time, this fixes problems with systems such as NixOS.
 
 ## Info
 
