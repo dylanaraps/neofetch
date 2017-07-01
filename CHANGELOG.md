@@ -1,6 +1,11 @@
 ## Contributors
 
 
+## General
+
+- Config file now has a `.conf` suffix.
+
+
 ## Info
 
 **CPU**
