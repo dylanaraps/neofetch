@@ -9,7 +9,7 @@
 # https://github.com/dylanaraps/
 
 # Neofetch version.
-version="3.1.0-git"
+version="3.2.1-git"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
@@ -20,8 +20,8 @@ old_ifs="$IFS"
 export LC_ALL=C
 export LANG=C
 
-# Add /usr/xpg4/bin, /usr/sbin, and /sbin to PATH.
-export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:${PATH}"
+# Add /usr/xpg4/bin, /usr/sbin, /sbin, and /usr/etc to PATH.
+export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:${PATH}"
 
 # Set no case match.
 shopt -s nocasematch
@@ -43,6 +43,7 @@ get_os() {
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
         "AIX") os="AIX" ;;
+        "IRIX64") os="IRIX" ;;
         *)
             printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
@@ -211,17 +212,21 @@ get_distro() {
         "AIX")
             distro="AIX $(oslevel)"
         ;;
+
+        "IRIX")
+            distro="IRIX ${kernel_version}"
+        ;;
     esac
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
 
     # Get OS architecture.
-    if [[ "$os_arch" == "on" ]]; then
-        case "$os" in
-            "Solaris" | "AIX" | "BSD" | "Haiku") machine_arch="$(uname -p)" ;;
-            *) machine_arch="$(uname -m)" ;;
+    case "$os" in
+        "Solaris" | "AIX" | "BSD" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
+        *) machine_arch="$(uname -m)" ;;
 
-        esac
+    esac
+    if [[ "$os_arch" == "on" ]]; then
         distro+=" ${machine_arch}"
     fi
 
@@ -311,7 +316,7 @@ get_model() {
         ;;
 
         "AIX")
-            model="$(prtconf | awk -F':' '/System Model/ {printf $2}')"
+            model="$(/usr/bin/uname -M)"
         ;;
     esac
 
@@ -336,8 +341,8 @@ get_title() {
 }
 
 get_kernel() {
-    # Since AIX is an integrated system, it's better to skip this function altogether
-    [[ "$os" == "AIX" ]] && return
+    # Since these OS are integrated systems, it's better to skip this function altogether
+    [[ "$os" =~ (AIX|IRIX) ]] && return
 
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
@@ -385,7 +390,7 @@ get_uptime() {
                     seconds="${seconds/.*}"
                 ;;
 
-                "AIX")
+                "AIX" | "IRIX")
                     t="$(LC_ALL=POSIX ps -o etime= -p 1)"
                     d="0" h="0"
                     case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
@@ -553,6 +558,10 @@ get_packages() {
         "AIX")
             packages="$(lslpp -J -l -q | grep -cv '^#')"
             packages="$((packages+=$(rpm -qa | wc -l)))"
+        ;;
+
+        "IRIX")
+            packages="$(($(versions -b | wc -l)-3))"
         ;;
     esac
 
@@ -819,26 +828,22 @@ get_cpu() {
     case "$os" in
         "Linux" | "MINIX" | "Windows")
             # Get CPU name.
-            case "$distro" in
-                "Android"*) cpu="$(getprop ro.product.board)" ;;
-                *)
-                    case "$machine_arch" in
-                        "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
-                            cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' /proc/cpuinfo)"
-                        ;;
-                        "s390"*)
-                            cpu="$(awk -F'=' '/machine/ {print $4; exit}' /proc/cpuinfo)"
-                        ;;
-                        "ia64" | "m32r")
-                            cpu="$(awk -F':' '/model/ {print $2; exit}' /proc/cpuinfo)"
-                            [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' /proc/cpuinfo)"
-                        ;;
-                        *)
-                            cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {printf $2; exit}' /proc/cpuinfo)"
-                        ;;
-                    esac
-                ;;
-            esac
+                case "$machine_arch" in
+                    "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
+                        cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' /proc/cpuinfo)"
+                    ;;
+                    "s390"*)
+                        cpu="$(awk -F'=' '/machine/ {print $4; exit}' /proc/cpuinfo)"
+                    ;;
+                    "ia64" | "m32r")
+                        cpu="$(awk -F':' '/model/ {print $2; exit}' /proc/cpuinfo)"
+                        [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' /proc/cpuinfo)"
+                    ;;
+                    *)
+                        cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {printf $2; exit}' /proc/cpuinfo)"
+                       [[ "$cpu" == *"processor rev"* ]] && cpu="$(awk -F':' '/Hardware/ {print $2; exit}' /proc/cpuinfo)"
+                    ;;
+                esac
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
             temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
@@ -982,10 +987,10 @@ get_cpu() {
 
         "AIX")
             # Get CPU name.
-            cpu="$(prtconf | awk -F':' '/Processor Type/ {printf $2}')"
+            cpu="$(lsattr -El proc0 -a type | awk '{printf $2}')"
 
             # Get CPU speed.
-            speed="$(prtconf | awk -F':' '/Processor Clock Speed/ {printf $2}')"
+            speed="$(prtconf -s | awk -F':' '{printf $2}')"
             speed="${speed/MHz}"
 
             # Get CPU cores.
@@ -993,6 +998,17 @@ get_cpu() {
                 "logical" | "on") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
                 "physical") cores="$(lparstat -i | awk -F':' '/Active Physical CPUs/ {printf $2}')"
             esac
+        ;;
+
+        "IRIX")
+            # Get CPU name.
+            cpu="$(hinv -c processor | awk -F':' '/CPU:/ {printf $2}')"
+
+            # Get CPU speed.
+            speed="$(hinv -c processor | awk '/MHZ/ {printf $2}')"
+
+            # Get CPU cores.
+            cores="$(sysconf NPROC_ONLN)"
         ;;
     esac
 
@@ -1022,10 +1038,13 @@ get_cpu() {
     cpu="${cpu//Quad-Core}"
     cpu="${cpu//Six-Core}"
     cpu="${cpu//Eight-Core}"
+    cpu="${cpu//, * Compute Cores}"
     cpu="${cpu//Core}"
     cpu="${cpu//with Radeon * Graphics}"
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
+    cpu="${cpu//Chip Revision*}"
+    cpu="${cpu//Technologies, Inc}"
 
     # Trim spaces from core output
     cores="${cores//[[:space:]]}"
@@ -1047,6 +1066,7 @@ get_cpu() {
             cpu="${cpu/AMD }"
             cpu="${cpu/Intel }"
             cpu="${cpu/Core? Duo }"
+            cpu="${cpu/Qualcomm }"
 
             [[ "$cpu_shorthand" == "tiny" ]] && cpu="${cpu/@*}"
         ;;
@@ -1072,6 +1092,7 @@ get_cpu_usage() {
                     "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                     "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
+                    "IRIX") cores="$(sysconf NPROC_ONLN)"
                 esac
             fi
 
@@ -1303,6 +1324,13 @@ get_memory() {
             mem_free="${mem_stat[16]/.*}"
             mem_used="$((mem_total - mem_free))"
             mem_label="MB"
+        ;;
+
+        "IRIX")
+            mem_stat=($(pmem | head -1))
+            mem_total="$((mem_stat[3] / 1024))"
+            mem_free="$((mem_stat[5] / 1024))"
+            mem_used="$((mem_total - mem_free))"
         ;;
     esac
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB}"
@@ -1659,7 +1687,7 @@ get_term() {
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
         if [[ "$SSH_CONNECTION" ]]; then
-            term="$SSH_TTY"
+            term="$SSH_TTY"; break
         else
             parent="$(get_ppid "$parent")"
             [[ -z "$parent" ]] && break
@@ -1846,12 +1874,13 @@ get_disk() {
     type -p df >/dev/null 2>&1 || \
         { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
-    # Get "df" flags.
-    case "$os" in
-        "Haiku") err "Disk doesn't work on Haiku due to the non-standard 'df'"; return ;;
-        "Mac OS X") df_flags=(-P -h) ;;
-        "AIX") df_flags=(-P -g) ;;
-        *) df_flags=(-h) ;;
+    # Get "df" version.
+    df_version="$(df --version 2>&1)"
+    case "$df_version" in
+        *"blocks"*) err "Your version of df cannot be used due to the non-standard flags" ; return ;; # Haiku
+        *"IMitv"*) df_flags=(-P -g) ;; # AIX
+        *"befhikm"*) df_flags=(-P -k) ;; # IRIX
+        *) df_flags=(-P -h) ;;
     esac
 
     # Create an array called 'disks' where each element is a separate line from
@@ -1870,7 +1899,10 @@ get_disk() {
         disk_info=($disk)
         disk_perc="${disk_info[4]/'%'}"
 
-        disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+        case "$df_version" in
+            *"befhikm"*) disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)" ;;
+            *) disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)" ;;
+        esac
 
         # Subtitle.
         case "$disk_subtitle" in
@@ -1979,7 +2011,7 @@ get_battery() {
 
 get_local_ip() {
     case "$os" in
-        "Linux" | "BSD" | "Solaris" | "AIX")
+        "Linux" | "BSD" | "Solaris" | "AIX" | "IRIX")
             local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
             local_ip="${local_ip/uid*}"
             [[ -z "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
@@ -2038,7 +2070,7 @@ get_install_date() {
             esac
         ;;
         "Haiku") install_file="/boot" ;;
-        "BSD" | "MINIX")
+        "BSD" | "MINIX" | "IRIX")
             case "$kernel_name" in
                 "FreeBSD") install_file="/etc/hostid" ;;
                 "NetBSD" | "DragonFly"*) install_file="/etc/defaults/rc.conf" ;;
@@ -2054,7 +2086,7 @@ get_install_date() {
         *"crtime"*) install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')" ;; # xpg4 (Solaris)
         *"ACFHLRSZ"*) install_date="$(ls -dl "$install_file" | awk '{printf $6 " " $7}')" ;; # Toybox
         *"GNU coreutils"*) install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')" ;;
-        *"ACFHLNRS"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls
+        *"ACFHLNRS"* | *"RadC1xmnlog"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls / IRIX ls
         *) install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
     esac
 
@@ -2363,7 +2395,7 @@ get_term_size() {
     fi
 
     # Get terminal width/height if \033[14t is unsupported.
-    if [[ -z "$term_width" ]]; then
+    if [[ -z "$term_width" ]] || (( "$term_width" < 50 )); then
         if type -p xdotool >/dev/null 2>&1; then
             current_window="$(xdotool getactivewindow)"
             source <(xdotool getwindowgeometry --shell "$current_window")
@@ -3450,6 +3482,11 @@ get_distro_colors() {
                     set_colors 3 7
                     ascii_file="solaris"
                 ;;
+
+                "IRIX"*)
+                    set_colors 4 7
+                    ascii_file="irix"
+                ;;
             esac
         ;;
     esac
@@ -3555,11 +3592,12 @@ get_full_path() {
 }
 
 get_default_config() {
-    if [[ -f "CONFDIR/config" ]]; then
-        default_config="CONFDIR/config"
+    if [[ -f "CONFDIR/config.conf" ]]; then
+        default_config="CONFDIR/config.conf"
+
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
-        default_config="${script_dir%/*}/config/config"
+        default_config="${script_dir%/*}/config/config.conf"
     fi
 
     if source "$default_config"; then
@@ -3584,15 +3622,18 @@ get_user_config() {
     if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
         config_file="${XDG_CONFIG_HOME}/neofetch/config"
 
-    elif [[ -f "CONFDIR/config" ]]; then
-        cp "CONFDIR/config" "${XDG_CONFIG_HOME}/neofetch"
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
+    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
+
+    elif [[ -f "CONFDIR/config.conf" ]]; then
+        cp "CONFDIR/config.conf" "${XDG_CONFIG_HOME}/neofetch"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
     else
         [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
 
-        cp "${script_dir%/*}/config/config" "${XDG_CONFIG_HOME}/neofetch"
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
+        cp "${script_dir%/*}/config/config.conf" "${XDG_CONFIG_HOME}/neofetch"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
     fi
 
     source "$config_file"
