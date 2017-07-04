@@ -216,7 +216,7 @@ get_distro() {
 
         "IRIX" | "HP-UX")
             distro="$os ${kernel_version}"
-            case "$distro_shortahand" in
+            case "$distro_shorthand" in
                 "on" | "tiny") distro="${distro/ ${kernel_version}}" ;;
             esac
         ;;
