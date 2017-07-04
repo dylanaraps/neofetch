@@ -1022,6 +1022,18 @@ get_cpu() {
             # Get CPU cores.
             cores="$(sysconf NPROC_ONLN)"
         ;;
+
+        "HP-UX")
+            # Get CPU name.
+            # This will be partial for now, because apparently hppa and
+            # IA64 has different approaches of how it should be handled.
+
+            # Get CPU speed.
+            # Same reasons as above.
+
+            # Get CPU cores.
+            cores="$(ioscan -k | grep -c "processor")"
+        ;;
     esac
 
     if [[ "$speed" ]]; then
