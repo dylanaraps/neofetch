@@ -399,7 +399,7 @@ get_uptime() {
                 ;;
 
                 "AIX" | "IRIX" | "HP-UX")
-                    t="$(LC_ALL=POSIX UNIX95= ps -o etime= -p 1)"
+                    t="$(LC_ALL=POSIX UNIX95=1 ps -o etime= -p 1)"
                     d="0" h="0"
                     case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
                     case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
