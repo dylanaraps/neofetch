@@ -215,7 +215,10 @@ get_distro() {
         ;;
 
         "IRIX" | "HP-UX")
-            distro="${kernel_name} ${kernel_version}"
+            distro="$os ${kernel_version}"
+            case "$distro_shortahand" in
+                "on" | "tiny") distro="${distro/ ${kernel_version}}" ;;
+            esac
         ;;
     esac
 
@@ -346,8 +349,8 @@ get_title() {
 }
 
 get_kernel() {
-    # Since these OS are integrated systems, it's better to skip this function altogether
-    [[ "$os" =~ (AIX|IRIX) ]] && return
+    # Since AIX has no useful output in uname, it's better to skip this function altogether
+    [[ "$os" == "AIX" ]] && return
 
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
@@ -355,7 +358,7 @@ get_kernel() {
     esac
 
     # Hide kernel info if it's identical to the distro info.
-    if [[ "$os" =~ (BSD|MINIX) && "$distro" == *"$kernel_name"* ]]; then
+    if [[ "$os" =~ (BSD|MINIX|IRIX|HP-UX) && "$distro" == *"$kernel_name"* ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
             *) unset kernel ;;
