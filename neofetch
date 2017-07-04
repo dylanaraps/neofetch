@@ -1917,7 +1917,10 @@ get_disk() {
     # Create an array called 'disks' where each element is a separate line from
     # df's output. We then unset the first element which removes the column titles.
     IFS=$'\n'
-    disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}" 2>/dev/null))
+    case "$os" in
+        "HP-UX") disks=($(bdf "${disk_show[@]:-/}" 2>/dev/null)); df_version="bdf" ;;
+        *) disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}" 2>/dev/null)) ;;
+    esac
     unset 'disks[0]'
     IFS="$old_ifs"
 
@@ -1931,7 +1934,7 @@ get_disk() {
         disk_perc="${disk_info[4]/'%'}"
 
         case "$df_version" in
-            *"befhikm"*) disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)" ;;
+            *"befhikm"*|"bdf") disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)" ;;
             *) disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)" ;;
         esac
 
