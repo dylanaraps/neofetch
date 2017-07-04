@@ -6,11 +6,11 @@
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![Latest release](https://img.shields.io/github/release/dylanaraps/neofetch.svg)](https://github.com/dylanaraps/neofetch/releases)
 
-Neofetch is a CLI system information tool written in BASH. Neofetch displays information about your system next to an image, your OS logo, or any ascii file of your choice. The main purpose of Neofetch is to be used in screenshots to show other users what OS/Distro you're running, what Theme/Icons you're using and etc.
+Neofetch is a CLI system information tool written in BASH. Neofetch displays information about your system next to an image, your OS logo, or any ASCII file of your choice. The main purpose of Neofetch is to be used in screenshots to show other users what OS/Distro you're running, what Theme/Icons you're using etc.
 
-Neofetch is highly customizable through the use of commandline flags or the user config file. There are over 50 config options to mess around with and there's the `print_info()` function and friends which let you add your own custom info.
+Neofetch is highly customizable through the use of command line flags or the user config file. There are over 50 config options to mess around with and there's the `print_info()` function and friends which let you add your own custom info.
 
-Neofetch can be used on any OS that has BASH, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku`, `GNU Hurd`, `MINIX`, `AIX`, and `Windows (Cygwin/MSYS2/Windows 10 Linux subsystem)`.
+Neofetch can be used on any OS that has BASH 3.2+, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku`, `GNU Hurd`, `MINIX`, `AIX`, `IRIX`, and `Windows (Cygwin/MSYS2/MinGW/Windows 10 Linux subsystem)`.
 
 For more information:
 
@@ -48,7 +48,7 @@ https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 
 ### Customizing the script using a custom alias
 
-If you don't want to use the config file you can customize almost everything using launch flags!
+If you don't want to use the config file you can customize almost everything using launch flags.
 
 Here's an example neofetch alias:
 
@@ -76,6 +76,6 @@ Thanks to:
     - Thanks for using Neofetch!
 - [Screenfetch](https://github.com/KittyKatt/screenFetch):
     - We've used some snippets as a base for a few functions in this script.
-    - Some of the ascii logos.
+    - Some of the ASCII logos.
 - [ufetch](https://github.com/jschx/ufetch):
-    - Tiny ascii logos
+    - Tiny ASCII logos
