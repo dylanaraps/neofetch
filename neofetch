@@ -1359,10 +1359,10 @@ get_memory() {
         ;;
 
         "HP-UX")
-            # Partial support. Again, hppa and IA64 have a different
-            # command of how to access this. And they need root for
-            # some rason.
+            mem_total="$(machinfo | awk -F':' '/Memory/ {print $2}')"
+            mem_total="${mem_total/MB*}"
             mem_free="$(($(vmstat | awk 'NR==3{printf $5}') / 1024))"
+            mem_used="$((mem_total - mem_free))"
         ;;
     esac
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB}"
