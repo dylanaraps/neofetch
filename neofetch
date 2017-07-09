@@ -2585,7 +2585,7 @@ display_image() {
             # appearing in specific terminal emulators.
             sleep 0.05
             printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$image\n4;\n3;" |\
-            "${w3m_img_path:-false}" -bg "$background_color" >/dev/null & 2>&1 || to_off "Image: w3m-img failed to display the image."
+            "${w3m_img_path:-false}" -bg "$background_color" >/dev/null 2>&1 || to_off "Image: w3m-img failed to display the image."
 
             zws="\xE2\x80\x8B\x20"
         ;;
