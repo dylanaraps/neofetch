@@ -1891,7 +1891,7 @@ get_disk() {
     IFS="$old_ifs"
 
     # Stop here if 'df' fails to print disk info.
-    [[ -z "${disks[@]}" ]] && \
+    [[ -z "${disks[*]}" ]] && \
         { err "Disk: df failed to print the disks, make sure the disk_show array is set properly."; return; }
 
     for disk in "${disks[@]}"; do
@@ -4150,7 +4150,7 @@ exit 1
 
 get_args() {
     # Check the commandline flags early for '--config'.
-    [[ "$@" != *--config* ]] && get_user_config 2>/dev/null
+    [[ "$*" != *--config* ]] && get_user_config 2>/dev/null
 
     while [[ "$1" ]]; do
         case "$1" in
