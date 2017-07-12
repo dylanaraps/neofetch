@@ -778,7 +778,7 @@ get_wm_theme() {
             kde_config_dir
 
             if [[ -f "${kde_config_dir}/kwinrc" ]]; then
-                wm_theme="$(awk '/theme=kwin4/{gsub(/theme=kwin4_decoration_qml_/,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
+                wm_theme="$(awk '/theme=/{gsub(/theme=.*_/,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
                 [[ -z "$wm_theme" ]] && wm_theme="$(awk '/library=org.kde/{gsub(/library=org.kde./,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
                 [[ -z "$wm_theme" ]] && wm_theme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
 
