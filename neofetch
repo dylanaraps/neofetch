@@ -1497,7 +1497,10 @@ get_resolution() {
             if type -p xrandr >/dev/null; then
                 case "$refresh_rate" in
                     "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
-                    "off") resolution="$(xrandr --nograb --current | awk '/\*/ {printf $1 ", "}')" ;;
+                    "off")
+                        resolution="$(xrandr --nograb --current | awk -F 'connected |+' '/ connected/ {printf $2 ", "}')"
+                        resolution="${resolution/primary }"
+                    ;;
                 esac
                 resolution="${resolution//\*}"
 
