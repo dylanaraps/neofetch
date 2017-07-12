@@ -22,6 +22,10 @@
 
 - [SSH] Fixed infinite loop if neofetch is run on non-interactive shells.
 
+**Theme**
+
+- [Qt/KDE] Fixed inaccurate theme naming.
+
 
 ## Images
 
