@@ -71,12 +71,6 @@ get_distro() {
                     *)      distro="$(lsb_release -sd) on Chrome OS" ;;
                 esac
 
-            elif [[ -f "/etc/GoboLinuxVersion" ]]; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="GoboLinux" ;;
-                    *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
-                esac
-
             elif [[ -f "/etc/redstar-release" ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Red Star OS" ;;
@@ -90,6 +84,12 @@ get_distro() {
                     *)      lsb_flags="-sd" ;;
                 esac
                 distro="$(lsb_release $lsb_flags)"
+
+            elif [[ -f "/etc/GoboLinuxVersion" ]]; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="GoboLinux" ;;
+                    *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
+                esac
 
             elif type -p guix >/dev/null; then
                 case "$distro_shorthand" in
