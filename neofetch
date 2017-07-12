@@ -1530,7 +1530,7 @@ get_style() {
                 if [[ -f "${kde_config_dir}/kdeglobals" ]]; then
                     kde_config_file="${kde_config_dir}/kdeglobals"
 
-                    theme="$(grep "^[^#]*${kde}" "$kde_config_file")"
+                    theme="$(grep "^${kde}" "$kde_config_file")"
                     theme="${theme/${kde}*=}"
                     theme="$(uppercase "$theme")"
 
@@ -1648,7 +1648,7 @@ get_theme() {
     gsettings="gtk-theme"
     gconf="gtk_theme"
     xfconf="/Net/ThemeName"
-    kde="widgetStyle"
+    kde="Name"
 
     get_style
 }
