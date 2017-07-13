@@ -3951,6 +3951,9 @@ INFO:
                                 NOTE: This only supports Linux with cpufreq.
 
     --speed_shorthand on/off    Whether or not to show decimals in CPU speed.
+
+                                NOTE: This flag is not supported in systems with CPU speed less than 1 GHz.
+
     --cpu_shorthand type        Shorten the output of CPU
                                 Possible values: name, speed, tiny, on, off
     --cpu_cores type            Whether or not to display the number of CPU cores
