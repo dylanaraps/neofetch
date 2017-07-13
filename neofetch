@@ -621,7 +621,7 @@ get_de() {
                 de="${de/Budgie:GNOME/Budgie}"
 
             elif [[ "$DESKTOP_SESSION" ]]; then
-                de="${DESKTOP_SESSION/ *}"
+                de="${DESKTOP_SESSION##*/}"
 
             elif [[ "$GNOME_DESKTOP_SESSION_ID" ]]; then
                 de="GNOME"
