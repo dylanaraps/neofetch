@@ -18,6 +18,7 @@
 
 - [Linux] Fixed inaccurate output on ARM SoC devices.
 - [NetBSD] Added support for CPU temperature. (NOTE: This only supports newer Intel processors)
+- Fixed inaccurate speed output in systems with CPU speed less than 1 GHz.
 
 **Terminal**
 
