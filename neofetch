@@ -1013,16 +1013,6 @@ get_cpu() {
         ;;
     esac
 
-    if [[ "$speed" ]]; then
-        if (( speed < 1000 )); then
-            cpu="$cpu @ ${speed}MHz $temp"
-        else
-            [[ "$speed_shorthand" == "on" ]] && speed="$((speed / 100))"
-            speed="${speed:0:1}.${speed:1}"
-            cpu="$cpu @ ${speed}GHz $temp"
-        fi
-    fi
-
     # Remove un-needed patterns from cpu output.
     cpu="${cpu//(TM)}"
     cpu="${cpu//(tm)}"
@@ -1047,11 +1037,18 @@ get_cpu() {
 
     # Add CPU cores to the output.
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
-        cpu="${cpu/@/(${cores}) @}"
+        cpu="$cpu ($cores)"
 
-    # Remove CPU speed from the output.
-    [[ "$cpu_speed" == "off" ]] && \
-        cpu="${cpu/@ *GHz}"
+    # Add CPU speed to the output.
+    if [[ "$cpu_speed" != "off" && "$speed" ]]; then
+        if (( speed < 1000 )); then
+            cpu="$cpu @ ${speed}MHz $temp"
+        else
+            [[ "$speed_shorthand" == "on" ]] && speed="$((speed / 100))"
+            speed="${speed:0:1}.${speed:1}"
+            cpu="$cpu @ ${speed}GHz $temp"
+        fi
+    fi
 
     # Make the output of CPU shorter.
     case "$cpu_shorthand" in
