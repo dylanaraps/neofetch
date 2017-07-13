@@ -934,7 +934,7 @@ get_cpu() {
             # Get CPU temp.
             if [[ "$cpu_temp" != "off" ]]; then
                 case "$kernel_name" in
-                    "FreeBSD"* | "DragonFly"*)
+                    "FreeBSD"* | "DragonFly"* | "NetBSD"*)
                         temp="$(sysctl -n dev.cpu.0.temperature)"
                         temp="${temp/C}"
                     ;;
@@ -3968,7 +3968,7 @@ INFO:
 
                                 NOTE: This only works on Linux and BSD.
 
-                                NOTE: For FreeBSD-based systems, you need to enable coretemp kernel module.
+                                NOTE: For FreeBSD and NetBSD-based systems, you need to enable coretemp kernel module. This only supports newer Intel processors.
 
     --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
 

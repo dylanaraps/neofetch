@@ -17,6 +17,7 @@
 **CPU**
 
 - [Linux] Fixed inaccurate output on ARM SoC devices.
+- [NetBSD] Added support for CPU temperature. (NOTE: This only supports newer Intel processors)
 
 **Terminal**
 
