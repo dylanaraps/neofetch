@@ -1014,18 +1014,13 @@ get_cpu() {
     esac
 
     if [[ "$speed" ]]; then
-        # Hide decimals if on.
-        [[ "$speed_shorthand" == "on" ]] && \
-            speed="$((speed / 100))"
-
-        # Fix for speeds under 1ghz.
-        if [[ -z "${speed:1}" ]]; then
-            speed="0.${speed}"
+        if (( speed < 1000 )); then
+            cpu="$cpu @ ${speed}MHz $temp"
         else
+            [[ "$speed_shorthand" == "on" ]] && speed="$((speed / 100))"
             speed="${speed:0:1}.${speed:1}"
+            cpu="$cpu @ ${speed}GHz $temp"
         fi
-
-        cpu="$cpu @ ${speed}GHz $temp"
     fi
 
     # Remove un-needed patterns from cpu output.
