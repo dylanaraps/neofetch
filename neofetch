@@ -859,7 +859,8 @@ get_cpu() {
                 speed="$((speed / 1000))"
 
             else
-                speed="$(awk -F ': |\\.' '/cpu MHz/ {printf $2; exit}' /proc/cpuinfo)"
+                speed="$(awk -F ': |\\.' '/cpu MHz|^clock/ {printf $2; exit}' /proc/cpuinfo)"
+                speed="${speed/MHz}"
             fi
 
             # Get CPU temp.
