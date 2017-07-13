@@ -22,6 +22,10 @@
 - [NetBSD] Added support for CPU temperature. (NOTE: This only supports newer Intel processors)
 - Fixed inaccurate speed output in systems with CPU speed less than 1 GHz.
 
+**Uptime**
+
+- [AIX/IRIX] Fixed Neofetch crashing when calculating uptime.
+
 **Terminal**
 
 - [SSH] Fixed infinite loop if neofetch is run on non-interactive shells.
@@ -29,6 +33,7 @@
 **Theme**
 
 - [Qt/KDE] Fixed inaccurate theme naming. **[@mstraube](https://github.com/mstraube)**
+
 
 ## Images
 
