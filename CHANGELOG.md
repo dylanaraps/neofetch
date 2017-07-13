@@ -1,5 +1,7 @@
 ## Contributors
 
+**[@mstraube](https://github.com/mstraube)**
+
 
 ## General
 
@@ -26,8 +28,7 @@
 
 **Theme**
 
-- [Qt/KDE] Fixed inaccurate theme naming.
-
+- [Qt/KDE] Fixed inaccurate theme naming. **[@mstraube](https://github.com/mstraube)**
 
 ## Images
 
