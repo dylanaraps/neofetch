@@ -663,10 +663,13 @@ get_wm() {
 
     if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         id="$(xprop -root -notype | awk '$1=="_NET_SUPPORTING_WM_CHECK:"{print $5}')"
-        wm="$(xprop -id "$id" -notype -f _NET_WM_NAME 8t)"
+        wm="$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)"
         wm="${wm/*_NET_WM_NAME = }"
         wm="${wm/\"}"
         wm="${wm/\"*}"
+
+        # Window Maker does not set _NET_WM_NAME
+        [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
 
         # Fallback for Wayland wms.
         [[ "$wm" == "xwlc" ]] && \
