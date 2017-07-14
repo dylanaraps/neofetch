@@ -22,6 +22,7 @@
 - [Linux] Fixed CPU speed not appearing on PowerPC systems.
 - [NetBSD] Added support for CPU temperature. (NOTE: This only supports newer Intel processors)
 - Fixed inaccurate speed output in systems with CPU speed less than 1 GHz.
+- Deprecated `cpu_shorthand` in favor of `cpu_brand`.
 
 **Terminal**
 

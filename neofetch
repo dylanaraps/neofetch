@@ -1036,6 +1036,14 @@ get_cpu() {
     # Trim spaces from core output
     cores="${cores//[[:space:]]}"
 
+    # Remove CPU brand from the output.
+    if [[ "$cpu_brand" == "off" ]]; then
+        cpu="${cpu/AMD }"
+        cpu="${cpu/Intel }"
+        cpu="${cpu/Core? Duo }"
+        cpu="${cpu/Qualcomm }"
+    fi
+
     # Add CPU cores to the output.
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
         cpu="$cpu ($cores)"
@@ -1050,21 +1058,6 @@ get_cpu() {
             cpu="$cpu @ ${speed}GHz $temp"
         fi
     fi
-
-    # Make the output of CPU shorter.
-    case "$cpu_shorthand" in
-        "name")  cpu="${cpu/@*}" ;;
-        "speed") cpu="${cpu#*@ }" ;;
-
-        "on" | "tiny")
-            cpu="${cpu/AMD }"
-            cpu="${cpu/Intel }"
-            cpu="${cpu/Core? Duo }"
-            cpu="${cpu/Qualcomm }"
-
-            [[ "$cpu_shorthand" == "tiny" ]] && cpu="${cpu/@*}"
-        ;;
-    esac
 }
 
 get_cpu_usage() {
@@ -3799,6 +3792,9 @@ old_options() {
 
     # Scrot dir was removed in 3.1.0.
     [[ -n "$scrot_dir" ]] && scrot_dir=
+
+    # cpu_shorthand was deprecated in 3.3.0
+    [[ -n "$cpu_shorthand" ]] && { err "Config: \$cpu_shorthand is deprecated, use \$cpu_brand, \$cpu_cores, and \$cpu_speed instead."; }
 }
 
 cache_uname() {
@@ -3952,8 +3948,7 @@ INFO:
 
                                 NOTE: This flag is not supported in systems with CPU speed less than 1 GHz.
 
-    --cpu_shorthand type        Shorten the output of CPU
-                                Possible values: name, speed, tiny, on, off
+    --cpu_brand on/off          Enable/Disable CPU brand in output.
     --cpu_cores type            Whether or not to display the number of CPU cores
                                 Possible values: logical, physical, off
 
@@ -4168,7 +4163,7 @@ get_args() {
             "--distro_shorthand") distro_shorthand="$2" ;;
             "--kernel_shorthand") kernel_shorthand="$2" ;;
             "--uptime_shorthand") uptime_shorthand="$2" ;;
-            "--cpu_shorthand") cpu_shorthand="$2" ;;
+            "--cpu_brand") cpu_brand="$2" ;;
             "--gpu_brand") gpu_brand="$2" ;;
             "--gpu_type") gpu_type="$2" ;;
             "--refresh_rate") refresh_rate="$2" ;;
