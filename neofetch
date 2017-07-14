@@ -2402,7 +2402,8 @@ get_term_size() {
                 current_window="$(xdpyinfo | grep -E -o "focus:.*0x[0-9a-f]+")"
                 current_window="${current_window/*window }"
             elif type -p xprop >/dev/null 2>&1; then
-                current_window="$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')"
+                current_window="$(xprop -root _NET_ACTIVE_WINDOW)"
+                current_window="${current_window##* }"
             fi
 
             # If the ID was found get the window size.
