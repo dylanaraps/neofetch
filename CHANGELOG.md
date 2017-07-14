@@ -36,6 +36,9 @@
 
 - [Qt/KDE] Fixed inaccurate theme naming. **[@mstraube](https://github.com/mstraube)**
 
+**Window Manager**
+
+- Fix incorrect output when using WindowMaker. **[@mstraube](https://github.com/mstraube)**
 
 ## Images
 
