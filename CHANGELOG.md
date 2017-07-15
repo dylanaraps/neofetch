@@ -32,6 +32,11 @@
 
 - [SSH] Fixed infinite loop if neofetch is run on non-interactive shells.
 
+**Terminal Font**
+
+- Added support for LXTerminal. **[@mstraube](https://github.com/mstraube)**
+- Fixed Xfce4-terminal font output when system-wide font is used. **[@mstraube](https://github.com/mstraube)**
+
 **Theme**
 
 - [Qt/KDE] Fixed inaccurate theme naming. **[@mstraube](https://github.com/mstraube)**
@@ -39,6 +44,10 @@
 **Window Manager**
 
 - Fix incorrect output when using WindowMaker. **[@mstraube](https://github.com/mstraube)**
+
+**Song**
+
+- Added support for Pogo. **[@mstraube](https://github.com/mstraube)**
 
 ## Images
 
