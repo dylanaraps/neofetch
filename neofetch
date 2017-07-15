@@ -1793,6 +1793,10 @@ get_term_font() {
             [[ "$profile_filename" ]] && term_font="$(awk -F '=|,' '/Font=/ {print $2 " " $3}' "$profile_filename")"
         ;;
 
+        "lxterminal"*)
+            term_font="$(awk -F '=' '/fontname=/ {print $2; exit}' "${XDG_CONFIG_HOME}/lxterminal/lxterminal.conf")"
+        ;;
+
         "mate-terminal")
             # To get the actual config we have to create a temporarily file with the --save-config option.
             mateterm_config="/tmp/mateterm.cfg"
