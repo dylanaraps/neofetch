@@ -64,7 +64,7 @@ get_distro() {
                     *)      distro="$(lsb_release -sd) on Windows 10" ;;
                 esac
 
-            elif [[ "$(< /proc/version)" == *"cros"* || -f "/dev/cros_ec" ]]; then
+            elif [[ "$(< /proc/version)" == *"chrome-bot"* || -f "/dev/cros_ec" ]]; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Chrome OS]" ;;
                     "tiny") distro="Chrome OS" ;;
