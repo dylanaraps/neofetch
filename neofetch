@@ -1336,7 +1336,7 @@ get_memory() {
 
 get_song() {
     # This is absurdly long.
-    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1414,6 +1414,11 @@ get_song() {
         "quodlibet"*)
             song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
                     awk -F'"' '/artist/ {getline; a=$2} /title/ {getline; t=$2} END{print a " - " t}')"
+        ;;
+
+        "pogo"*)
+            song="$(dbus-send --print-reply --dest=org.mpris.pogo /Player org.freedesktop.MediaPlayer.GetMetadata |
+                    awk -F'"' '/string "artist"/ {getline; a=$2} /string "title"/ {getline; t=$2} END{print a " - " t}')"
         ;;
 
         *)
@@ -1762,7 +1767,8 @@ get_term_font() {
         ;;
 
         "Hyper"*)
-            term_font="$(awk -F "," '/fontFamily/ {a=$1} END{print a}' "${HOME}/.hyper.js" | awk -F "'" '{a=$2} END{print a}')"
+            term_font="$(awk -F':|,' '/fontFamily/ {print $2; exit}' "${HOME}/.hyper.js")"
+            term_font="$(trim_quotes "$term_font")"
         ;;
 
         "konsole"*)
@@ -1786,6 +1792,10 @@ get_term_font() {
             profile_filename="$(grep -l "Name=${profile}" "${HOME}"/.local/share/konsole/*.profile)"
             profile_filename="${profile_filename/$'\n'*}"
             [[ "$profile_filename" ]] && term_font="$(awk -F '=|,' '/Font=/ {print $2 " " $3}' "$profile_filename")"
+        ;;
+
+        "lxterminal"*)
+            term_font="$(awk -F '=' '/fontname=/ {print $2; exit}' "${XDG_CONFIG_HOME}/lxterminal/lxterminal.conf")"
         ;;
 
         "mate-terminal")
@@ -1827,7 +1837,7 @@ get_term_font() {
         ;;
 
         "sakura"*)
-            term_font="$(awk -F '=' '/^font=/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
+            term_font="$(awk -F '=' '/^font=/ {print $2; exit}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
         ;;
 
         "terminology")
@@ -1859,7 +1869,15 @@ get_term_font() {
         ;;
 
         "xfce4-terminal")
-            term_font="$(awk -F '=' '/^FontName/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
+            term_font="$(awk -F '=' '/^FontName/ {a=$2} /^FontUseSystem=TRUE/ {a=$0} END{print a}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
+
+            if [[ "$term_font" == "FontUseSystem=TRUE" ]]; then
+                term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
+                term_font="$(trim_quotes "$term_font")"
+            fi
+
+            # Default fallback font hardcoded in terminal-preferences.c
+            [[ -z "$term_font" ]] && term_font="Monospace 12"
         ;;
     esac
 }
