@@ -1875,8 +1875,9 @@ get_term_font() {
                 term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
                 term_font="$(trim_quotes "$term_font")"
             fi
-            # TODO: Figure out how to get the fallback font when not using system-font
-            #       and no font is set in the config file.
+
+            # Default fallback font hardcoded in terminal-preferences.c
+            [[ -z "$term_font" ]] && term_font="Monospace 12"
         ;;
     esac
 }
