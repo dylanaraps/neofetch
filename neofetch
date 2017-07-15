@@ -1837,7 +1837,7 @@ get_term_font() {
         ;;
 
         "sakura"*)
-            term_font="$(awk -F '=' '/^font=/ {a=$2} END{print a}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
+            term_font="$(awk -F '=' '/^font=/ {print $2; exit}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
         ;;
 
         "terminology")
