@@ -12,6 +12,7 @@
 ## Operating System
 
 - Added support for Sabotage Linux.
+- Fixed Raspbian being detected as ChromeOS.
 
 
 ## Info
