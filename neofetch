@@ -222,7 +222,7 @@ get_distro() {
 
     # Get OS architecture.
     case "$os" in
-        "Solaris" | "AIX" | "BSD" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
+        "Solaris" | "AIX" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
         *) machine_arch="$(uname -m)" ;;
 
     esac
