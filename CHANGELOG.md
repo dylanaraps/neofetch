@@ -12,7 +12,7 @@
 ## Operating System
 
 - Added support for Sabotage Linux.
-- Added support for Parsix GNU/Linux.
+- Added support for Parsix GNU/Linux. **[@mstraube](https://github.com/mstraube)**
 - Fixed Raspbian being detected as ChromeOS.
 
 
