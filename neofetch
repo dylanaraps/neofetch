@@ -2746,8 +2746,10 @@ info() {
     unset -v prin
 
     # Call the function.
-    "get_${2:-$1}" 2>/dev/null
-
+    case "$verbose" in
+        "on") "get_${2:-$1}" ;;
+        *) "get_${2:-$1}" ;;
+    esac
     # If the get_func function called 'prin' directly, stop here.
     [[ "$prin" ]] && return
 
@@ -4362,9 +4364,15 @@ get_args() {
 main() {
     cache_uname
     get_os
-    get_default_config 2>/dev/null
+    case "$verbose" in
+        "on") get_default_config ;;
+        *) get_default_config 2>/dev/null ;;
+    esac
     get_args "$@"
-    get_distro 2>/dev/null
+    case "$verbose" in
+        "on") get_distro ;;
+        *) get_distro 2>/dev/null ;;
+    esac
     get_bold
     get_distro_colors
 
@@ -4380,7 +4388,10 @@ main() {
     image_backend
     old_functions
     get_cache_dir
-    print_info 2>/dev/null
+    case "$verbose" in
+        "on") print_info ;;
+        *) print_info 2>/dev/null ;;
+    esac
     dynamic_prompt
 
     # w3m-img: Draw the image a second time to fix
