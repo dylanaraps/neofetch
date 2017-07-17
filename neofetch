@@ -3285,6 +3285,11 @@ get_distro_colors() {
             ascii_file="parrot"
         ;;
 
+        "Parsix"*)
+            set_colors 3 1 7 8
+            ascii_file="parsix"
+        ;;
+
         "PCBSD"* | "TrueOS"*)
             set_colors 1 7 3
             ascii_file="trueos"
