@@ -116,7 +116,7 @@ get_distro() {
             elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" ]]; then
                 # Source the os-release file
                 for file in /etc/os-release /usr/lib/os-release; do
-                    source "$file" 2>/dev/null && break
+                    source "$file" && break
                 done
 
                 # Format the distro name.
@@ -1737,11 +1737,11 @@ get_term_font() {
 
             # Count Guids in "New Bookmarks"; they should be unique
             local profiles_count
-            profiles_count="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null | grep -c "Guid")"
+            profiles_count="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist | grep -c "Guid")"
 
             for ((i=0; i<=profiles_count; i++)); do
                 local profile_name
-                profile_name="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist 2>/dev/null)"
+                profile_name="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
 
                 if [[ "$profile_name" == "$current_profile_name" ]]; then
                     # "Normal Font"
@@ -1899,7 +1899,7 @@ get_disk() {
     # Create an array called 'disks' where each element is a separate line from
     # df's output. We then unset the first element which removes the column titles.
     IFS=$'\n'
-    disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}" 2>/dev/null))
+    disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}"))
     unset 'disks[0]'
     IFS="$old_ifs"
 
@@ -2188,7 +2188,7 @@ image_backend() {
 
             get_image_size
             make_thumbnail
-            display_image 2>/dev/null
+            display_image
         ;;
 
         *)
@@ -2234,7 +2234,7 @@ get_ascii() {
     export LC_ALL="$sys_locale"
 
     # Turn file into variable.
-    while IFS=$'\n' read -r line 2>/dev/null; do
+    while IFS=$'\n' read -r line; do
         print+="$line \n"
 
         # Calculate size of ascii file in line length / line count.
@@ -2263,7 +2263,7 @@ get_ascii() {
 get_image_source() {
     case "$image_source" in
         "auto" | "wall" | "wallpaper")
-            get_wallpaper 2>/dev/null
+            get_wallpaper
         ;;
 
         *)
@@ -2614,7 +2614,7 @@ to_ascii() {
     image_backend="ascii"
 
     # Print the ascii art.
-    get_ascii 2>/dev/null
+    get_ascii
 
     # Set cursor position next image/ascii.
     printf "%b" "\033[${lines:-0}A\033[9999999D"
@@ -2630,7 +2630,7 @@ to_off() {
 # SCREENSHOT
 
 take_scrot() {
-    scrot_program "${scrot_dir}${scrot_name}" 2>/dev/null
+    scrot_program "${scrot_dir}${scrot_name}"
 
     err "Scrot: Saved screenshot as: ${scrot_dir}${scrot_name}"
 
@@ -2746,7 +2746,7 @@ info() {
     unset -v prin
 
     # Call the function.
-    "get_${2:-$1}" 2>/dev/null
+    "get_${2:-$1}"
 
     # If the get_func function called 'prin' directly, stop here.
     [[ "$prin" ]] && return
@@ -4179,7 +4179,7 @@ exit 1
 
 get_args() {
     # Check the commandline flags early for '--config'.
-    [[ "$*" != *--config* ]] && get_user_config 2>/dev/null
+    [[ "$*" != *--config* ]] && get_user_config
 
     while [[ "$1" ]]; do
         case "$1" in
@@ -4344,7 +4344,7 @@ get_args() {
                     "none" | "off" | "") ;;
                     *)
                         config_file="$(get_full_path "$2")"
-                        get_user_config 2>/dev/null
+                        get_user_config
                     ;;
                 esac
             ;;
@@ -4362,9 +4362,10 @@ get_args() {
 main() {
     cache_uname
     get_os
-    get_default_config 2>/dev/null
+    get_default_config
     get_args "$@"
-    get_distro 2>/dev/null
+    [[ "$verbose" != "on" ]] && exec 2>/dev/null
+    get_distro
     get_bold
     get_distro_colors
 
@@ -4380,12 +4381,12 @@ main() {
     image_backend
     old_functions
     get_cache_dir
-    print_info 2>/dev/null
+    print_info
     dynamic_prompt
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_backend" == *w3m* ]] && display_image 2>/dev/null
+    [[ "$image_backend" == *w3m* ]] && display_image
 
     # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
