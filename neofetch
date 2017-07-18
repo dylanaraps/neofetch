@@ -3838,7 +3838,7 @@ cache_uname() {
 convert_time() {
     # Convert ls timestamp to 'Tue 06 Dec 2016 4:58 PM' format.
     year="$1"
-    day="$3"
+    day="${3#0}"
 
     # Split time into hours/minutes.
     hour="${4/:*}"
