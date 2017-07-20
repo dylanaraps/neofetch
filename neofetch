@@ -1038,8 +1038,9 @@ get_cpu() {
     cpu="${cpu//Chip Revision*}"
     cpu="${cpu//Technologies, Inc}"
 
-    # Trim spaces from core output
+    # Trim spaces from core and speed output
     cores="${cores//[[:space:]]}"
+    speed="${speed//[[:space:]]}"
 
     # Remove CPU brand from the output.
     if [[ "$cpu_brand" == "off" ]]; then
