@@ -868,15 +868,9 @@ get_cpu() {
             fi
 
             # Get CPU temp.
-            if [[ "$cpu_temp" != "off" && -f "$temp_dir" ]]; then
+            if [[ -f "$temp_dir" ]]; then
                 temp="$(< "$temp_dir")"
                 temp="$((temp * 100 / 10000))"
-
-                # Convert to fahrenheit if enabled.
-                [[ "$cpu_temp" == "F" ]] && temp="$((temp * 90 / 50 + 320))"
-
-                # Format the output.
-                temp="[${temp/${temp: -1}}.${temp: -1}°${cpu_temp:-C}]"
             fi
 
             # Get CPU cores.
@@ -937,27 +931,16 @@ get_cpu() {
             cores="$(sysctl -n hw.ncpu)"
 
             # Get CPU temp.
-            if [[ "$cpu_temp" != "off" ]]; then
-                case "$kernel_name" in
-                    "FreeBSD"* | "DragonFly"* | "NetBSD"*)
-                        temp="$(sysctl -n dev.cpu.0.temperature)"
-                        temp="${temp/C}"
-                    ;;
-                    "OpenBSD"* | "Bitrig"*)
-                        temp="$(sysctl -n hw.sensors.lm0.temp0)"
-                        temp="${temp/ degC}"
-                    ;;
-                esac
-
-                # Convert to fahrenheit if enabled.
-                if [[ "$cpu_temp" == "F" ]]; then
-                    temp="${temp//.}"
-                    temp="$((temp * 90 / 50 + 320))"
-                    temp="[${temp/${temp: -1}}.${temp: -1}°F]"
-                else
-                    temp="[${temp}°C]"
-                fi
-            fi
+            case "$kernel_name" in
+                "FreeBSD"* | "DragonFly"* | "NetBSD"*)
+                    temp="$(sysctl -n dev.cpu.0.temperature)"
+                    temp="${temp/C}"
+                ;;
+                "OpenBSD"* | "Bitrig"*)
+                    temp="$(sysctl -n hw.sensors.lm0.temp0)"
+                    temp="${temp/ degC}"
+                ;;
+            esac
         ;;
 
         "Solaris")
@@ -1060,12 +1043,24 @@ get_cpu() {
     # Add CPU speed to the output.
     if [[ "$cpu_speed" != "off" && "$speed" ]]; then
         if (( speed < 1000 )); then
-            cpu="$cpu @ ${speed}MHz $temp"
+            cpu="$cpu @ ${speed}MHz"
         else
             [[ "$speed_shorthand" == "on" ]] && speed="$((speed / 100))"
             speed="${speed:0:1}.${speed:1}"
-            cpu="$cpu @ ${speed}GHz $temp"
+            cpu="$cpu @ ${speed}GHz"
         fi
+    fi
+
+    # Add CPU temp to the output.
+    if [[ "$cpu_temp" != "off" && "$temp" ]]; then
+        temp="${temp//.}"
+
+        # Convert to Fahrenheit if enabled
+        [[ "$cpu_temp" == "F" ]] && temp="$((temp * 90 / 50 + 320))"
+
+        # Format the output
+        temp="[${temp/${temp: -1}}.${temp: -1}°${cpu_temp:-C}]"
+        cpu="$cpu $temp"
     fi
 }
 
