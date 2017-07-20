@@ -1052,7 +1052,10 @@ get_cpu() {
 
     # Add CPU cores to the output.
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
-        cpu="$cpu ($cores)"
+        case "$os" in
+            "Mac OS X") cpu="${cpu/@/(${cores}) @}" ;;
+            *) cpu="$cpu ($cores)" ;;
+        esac
 
     # Add CPU speed to the output.
     if [[ "$cpu_speed" != "off" && "$speed" ]]; then
