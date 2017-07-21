@@ -2893,6 +2893,11 @@ get_distro_colors() {
             ascii_file="alpine"
         ;;
 
+        "Amazon"*)
+            set_colors 3 7
+            ascii_file="amazon"
+        ;;
+
         "Android"*)
             set_colors 2 7
             ascii_file="android"
