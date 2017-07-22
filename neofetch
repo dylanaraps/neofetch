@@ -3242,6 +3242,11 @@ get_distro_colors() {
             ascii_file="nitrux"
         ;;
 
+        "nixos_small")
+            set_colors 4 6
+            ascii_file="nixos_small"
+        ;;
+
         "NixOS"*)
             set_colors 4 6
             ascii_file="nixos"
