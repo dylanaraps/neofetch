@@ -517,6 +517,9 @@ get_packages() {
             type -p tazpkg >/dev/null && \
                 packages="$((packages+=$(tazpkg list | wc -l) - 6))"
 
+            type -p sorcery >/dev/null && \
+                packages="$((packages+=$(gaze installed | wc -l)))"
+
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
                     "FreeBSD") packages="$((packages+=$(pkg info | wc -l)))" ;;
@@ -3392,6 +3395,11 @@ get_distro_colors() {
         "Solus"*)
             set_colors 4 7 1
             ascii_file="solus"
+        ;;
+
+        "Source Mage"*)
+            set_colors 4 7 1
+            ascii_file="source_mage"
         ;;
 
         "Sparky"*)
