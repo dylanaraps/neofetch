@@ -18,6 +18,14 @@
 - Fixed Raspbian being detected as ChromeOS.
 
 
+## ASCII
+
+- Added small Debian.
+- Added small FreeBSD.
+- Added small macOS.
+- Added small NixOS.
+
+
 ## Info
 
 **CPU**

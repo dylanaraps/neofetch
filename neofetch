@@ -4127,9 +4127,9 @@ ASCII:
 
                                 NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME', 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
 
-                                NOTE: Alpine, Arch, Crux, Gentoo, OpenBSD, and Void have a smaller logo variant.
+                                NOTE: Alpine, Arch, CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, and Void have a smaller logo variant.
 
-                                NOTE: Change this to 'alpine_small', 'arch_small', 'crux_small', 'gentoo_small', 'openbsd_small', and 'void_small' to use the small logos.
+                                NOTE: Use '{distro name}_small' to use the small variants.
 
     --ascii_bold on/off         Whether or not to bold the ascii logo.
     -L, --logo                  Hide the info text and only show the ascii logo.
