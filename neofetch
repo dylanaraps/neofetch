@@ -3067,6 +3067,11 @@ get_distro_colors() {
             ascii_file="fedora"
         ;;
 
+        "freebsd_small")
+            set_colors 1 7 3
+            ascii_file="freebsd_small"
+        ;;
+
         "FreeBSD"*)
             set_colors 1 7 3
             ascii_file="freebsd"
