@@ -3057,6 +3057,11 @@ get_distro_colors() {
             ascii_file="elementary"
         ;;
 
+        "Endless"*)
+            set_colors 1 7
+            ascii_file="endless"
+        ;;
+
         "Exherbo"*)
             set_colors 4 7 1
             ascii_file="exherbo"
