@@ -12,6 +12,7 @@
 ## Operating System
 
 - Added support for Amazon Linux AMI.
+- Added support for Endless OS.
 - Added support for Sabotage Linux.
 - Added support for Source Mage.
 - Added support for Parsix GNU/Linux. **[@mstraube](https://github.com/mstraube)**
