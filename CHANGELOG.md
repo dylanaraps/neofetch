@@ -19,6 +19,11 @@
 - Fixed Raspbian being detected as ChromeOS.
 
 
+## Images
+
+- [w3m] Fixed w3m-img not found on NixOS.
+
+
 ## ASCII
 
 - Added small Debian.
