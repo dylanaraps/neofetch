@@ -1,6 +1,7 @@
 ## Contributors
 
-**[@mstraube](https://github.com/mstraube)**
+- **[@mstraube](https://github.com/mstraube)**
+- **[@dominiklohmann](https://github.com/dominiklohmann)**
 
 
 ## General
@@ -61,6 +62,7 @@
 
 **Window Manager**
 
+- [macOS] Added support for `chunkwm`. **[@dominiklohmann](https://github.com/dominiklohmann)**
 - Fix incorrect output when using WindowMaker. **[@mstraube](https://github.com/mstraube)**
 
 **Song**
