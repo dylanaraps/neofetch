@@ -682,10 +682,11 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm')"
+                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hunkwm')"
 
                 case "$ps_line" in
                     *"kwm"*) wm="Kwm" ;;
+                    *"chunkwm"*) wm="chunkwm" ;;
                     *"Amethyst"*) wm="Amethyst" ;;
                     *"Spectacle"*) wm="Spectacle" ;;
                     *) wm="Quartz Compositor" ;;
