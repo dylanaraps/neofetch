@@ -520,6 +520,9 @@ get_packages() {
             type -p sorcery >/dev/null && \
                 packages="$((packages+=$(gaze installed | wc -l)))"
 
+            type -p alps >/dev/null && \
+                packages="$((packages+=$(alps showinstalled | wc -l)))"
+
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
                     "FreeBSD") packages="$((packages+=$(pkg info | wc -l)))" ;;
@@ -2954,6 +2957,11 @@ get_distro_colors() {
         "Arch"*)
             set_colors 6 6 7 1
             ascii_file="arch"
+        ;;
+
+        "Arya"*)
+            set_colors 2 1
+            ascii_file="arya"
         ;;
 
         "Bitrig"*)
