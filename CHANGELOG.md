@@ -12,6 +12,7 @@
 
 ## Operating System
 
+- Added support for AryaLinux. **[@mstraube](https://github.com/mstraube)**
 - Added support for Amazon Linux AMI.
 - Added support for Endless OS.
 - Added support for Sabotage Linux.
