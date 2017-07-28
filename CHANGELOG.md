@@ -24,6 +24,8 @@
 ## Images
 
 - [w3m] Fixed w3m-img not found on NixOS.
+- Added support for using all image types as input.
+    - Neofetch now supports `svg`, `tiff` etc.
 
 
 ## ASCII

@@ -2497,7 +2497,14 @@ get_image_size() {
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    image_name="$crop_mode-$crop_offset-$width-$height-${image//\//_}.jpg"
+    image_name="$crop_mode-$crop_offset-$width-$height-${image//'/'/_}"
+
+    # Handle file extensions.
+    case "${image##*.}" in
+        "eps"|"pdf"|"svg"|"gif"|"png")
+            image_name+=".png" ;;
+        *)  image_name+=".jpg" ;;
+    esac
 
     # Create the thumbnail dir if it doesn't exist.
     mkdir -p "$thumbnail_dir"
@@ -2523,6 +2530,7 @@ make_thumbnail() {
                     -format "%[pixel:p{0,0}]" info:)"
 
                 convert \
+                    -background none \
                     "$image" \
                     -trim +repage \
                     -gravity south \
@@ -2534,6 +2542,7 @@ make_thumbnail() {
 
             "fill")
                 convert \
+                    -background none \
                     "$image" \
                     -trim +repage \
                     -scale "$width"x"$height"^ \
@@ -2544,6 +2553,7 @@ make_thumbnail() {
             "none") cp "$image" "$thumbnail_dir/$image_name" ;;
             *)
                 convert \
+                    -background none \
                     "$image" \
                     -gravity "$crop_offset" \
                     -crop "$size"x"$size"+0+0 \
