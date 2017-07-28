@@ -1814,13 +1814,12 @@ get_term_font() {
                 mate-terminal --save-config="$mateterm_config"
 
                 role="$(xprop -id "${WINDOWID}" WM_WINDOW_ROLE)"
-                role="${role##*= }"
+                role="${role##* }"
+                role="${role//\"}"
 
-                term_id="$(grep -A1 "${role//\"}" "$mateterm_config")"
-                term_id="${term_id##*=}"
-
-                profile="$(grep -A1 "\[$term_id\]" "$mateterm_config")"
-                profile="${profile##*=}"
+                profile="$(awk -F '=' -v r="$role" \
+                           '$0~r {getline; if(/Maximized/) getline; if(/Fullscreen/) getline; id=$2"]"}
+                            $0~id {if(id) {getline; print $2; exit}}' "$mateterm_config")"
 
                 rm -f "$mateterm_config"
 
