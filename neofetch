@@ -2277,7 +2277,7 @@ get_image_source() {
 
             if [[ -d "$image_source" ]]; then
                 shopt -s nullglob
-                files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif})
+                files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif,svg})
                 shopt -u nullglob
                 image="${files[RANDOM % ${#files[@]}]}"
 
@@ -2497,14 +2497,7 @@ get_image_size() {
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    image_name="$crop_mode-$crop_offset-$width-$height"
-
-    # Check to see if the image has a file extension,
-    # if it doesn't then add one.
-    case "${image##*/}" in
-        *"."*) image_name="${image_name}-${image##*/}" ;;
-        *) image_name="${image_name}-${image##*/}.jpg" ;;
-    esac
+    image_name="$crop_mode-$crop_offset-$width-$height-${image//\//_}.jpg"
 
     # Create the thumbnail dir if it doesn't exist.
     mkdir -p "$thumbnail_dir"
