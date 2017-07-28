@@ -1701,7 +1701,7 @@ get_term() {
             case "${name// }" in
                 "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
                 "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-                "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) break ;;
+                "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"* | "kdeinit"*) break ;;
                 "gnome-terminal-") term="gnome-terminal" ;;
                 *"nvim") term="Neovim Terminal" ;;
                 *"NeoVimServer"*) term="VimR Terminal" ;;
