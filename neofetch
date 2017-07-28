@@ -2702,11 +2702,11 @@ scrot_program() {
         if [[ "$scrot_cmd" != "auto" ]] && type -p "$scrot_cmd" >/dev/null; then
             scrot_program=("$scrot_cmd")
 
-        elif type -p scrot >/dev/null; then
-            scrot_program=(scrot)
-
         elif type -p maim >/dev/null; then
             scrot_program=(maim)
+
+        elif type -p scrot >/dev/null; then
+            scrot_program=(scrot)
 
         elif type -p import >/dev/null && [[ "$os" != "Mac OS X" ]]; then
             scrot_program=(import -window root)
