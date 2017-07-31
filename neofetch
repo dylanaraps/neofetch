@@ -1715,7 +1715,7 @@ get_term() {
 }
 
 get_term_font() {
-    ((term_run != 1)) && get_term
+    ((term_run != 1)) && get_term 2>/dev/null
 
     case "$term" in
         "alacritty"*)
@@ -3782,7 +3782,7 @@ get_term_padding() {
     #
     # Note: This issue only seems to affect
     # URxvt.
-    ((term_run != 1)) && get_term
+    ((term_run != 1)) && get_term 2>/dev/null
 
     case "$term" in
         "URxvt"*)
