@@ -1701,7 +1701,7 @@ get_term() {
             case "${name// }" in
                 "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
                 "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-                "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"*) break ;;
+                "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"* | "kdeinit"*) break ;;
                 "gnome-terminal-") term="gnome-terminal" ;;
                 *"nvim") term="Neovim Terminal" ;;
                 *"NeoVimServer"*) term="VimR Terminal" ;;
@@ -2277,7 +2277,7 @@ get_image_source() {
 
             if [[ -d "$image_source" ]]; then
                 shopt -s nullglob
-                files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif})
+                files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif,svg})
                 shopt -u nullglob
                 image="${files[RANDOM % ${#files[@]}]}"
 
@@ -2497,13 +2497,13 @@ get_image_size() {
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    image_name="$crop_mode-$crop_offset-$width-$height"
+    image_name="$crop_mode-$crop_offset-$width-$height-${image//'/'/_}"
 
-    # Check to see if the image has a file extension,
-    # if it doesn't then add one.
-    case "${image##*/}" in
-        *"."*) image_name="${image_name}-${image##*/}" ;;
-        *) image_name="${image_name}-${image##*/}.jpg" ;;
+    # Handle file extensions.
+    case "${image##*.}" in
+        "eps"|"pdf"|"svg"|"gif"|"png")
+            image_name+=".png" ;;
+        *)  image_name+=".jpg" ;;
     esac
 
     # Create the thumbnail dir if it doesn't exist.
@@ -2530,6 +2530,7 @@ make_thumbnail() {
                     -format "%[pixel:p{0,0}]" info:)"
 
                 convert \
+                    -background none \
                     "$image" \
                     -trim +repage \
                     -gravity south \
@@ -2541,6 +2542,7 @@ make_thumbnail() {
 
             "fill")
                 convert \
+                    -background none \
                     "$image" \
                     -trim +repage \
                     -scale "$width"x"$height"^ \
@@ -2551,6 +2553,7 @@ make_thumbnail() {
             "none") cp "$image" "$thumbnail_dir/$image_name" ;;
             *)
                 convert \
+                    -background none \
                     "$image" \
                     -gravity "$crop_offset" \
                     -crop "$size"x"$size"+0+0 \
@@ -2702,11 +2705,11 @@ scrot_program() {
         if [[ "$scrot_cmd" != "auto" ]] && type -p "$scrot_cmd" >/dev/null; then
             scrot_program=("$scrot_cmd")
 
-        elif type -p scrot >/dev/null; then
-            scrot_program=(scrot)
-
         elif type -p maim >/dev/null; then
             scrot_program=(maim)
+
+        elif type -p scrot >/dev/null; then
+            scrot_program=(scrot)
 
         elif type -p import >/dev/null && [[ "$os" != "Mac OS X" ]]; then
             scrot_program=(import -window root)
