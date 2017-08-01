@@ -46,6 +46,10 @@
 - Fixed inaccurate speed output in systems with CPU speed less than 1 GHz.
 - Deprecated `cpu_shorthand` in favor of `cpu_brand`.
 
+**GPU**
+
+- [Linux] Filter out duplicate entries.
+
 **Uptime**
 
 - [AIX/IRIX] Fixed Neofetch crashing when calculating uptime.
