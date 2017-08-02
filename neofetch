@@ -765,7 +765,7 @@ get_wm_theme() {
 
         "E17" | "Enlightenment")
             if type -p eet >/dev/null; then
-                wm_theme="$(eet -d "${HOME}/.e/e/config/standard/e.cfg" config | \
+                wm_theme="$(eet -d "${HOME}/.e/e/config/standard/e.cfg" config |\
                             awk '/value \"file\" string.*.edj/ {print $4}')"
                 wm_theme="${wm_theme##*/}"
                 wm_theme="${wm_theme%.*}"
@@ -900,9 +900,9 @@ get_cpu() {
             # Get CPU speed.
             if [[ -d "$speed_dir" ]]; then
                 # Fallback to bios_limit if $speed_type fails.
-                speed="$(< "${speed_dir}/${speed_type}")" || \
-                speed="$(< "${speed_dir}/bios_limit")" || \
-                speed="$(< "${speed_dir}/scaling_max_freq")" || \
+                speed="$(< "${speed_dir}/${speed_type}")" ||\
+                speed="$(< "${speed_dir}/bios_limit")" ||\
+                speed="$(< "${speed_dir}/scaling_max_freq")" ||\
                 speed="$(< "${speed_dir}/cpuinfo_max_freq")"
                 speed="$((speed / 1000))"
 
@@ -1161,7 +1161,7 @@ get_gpu() {
 
             for gpu in "${gpus[@]}"; do
                 # GPU shorthand tests.
-                [[ "$gpu_type" == "dedicated" && "$gpu" =~ (i|I)ntel ]] || \
+                [[ "$gpu_type" == "dedicated" && "$gpu" =~ (i|I)ntel ]] ||\
                 [[ "$gpu_type" == "integrated" && ! "$gpu" =~ (i|I)ntel ]] && \
                     { unset -v gpu; continue; }
 
@@ -1215,7 +1215,7 @@ get_gpu() {
                 source "${cache_dir}/neofetch/gpu"
 
             else
-                gpu="$(system_profiler SPDisplaysDataType | \
+                gpu="$(system_profiler SPDisplaysDataType |\
                        awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
                 gpu="${gpu//'/ $'}"
                 gpu="${gpu%,*}"
@@ -1262,7 +1262,7 @@ get_gpu() {
         ;;
 
         "Haiku")
-            gpu="$(listdev | grep -A2 -F 'device Display controller' | \
+            gpu="$(listdev | grep -A2 -F 'device Display controller' |\
                    awk -F':' '/device beef/ {print $2}')"
         ;;
 
@@ -1568,7 +1568,7 @@ get_resolution() {
                     ;;
 
                     "off")
-                        resolution="$(xrandr --nograb --current | \
+                        resolution="$(xrandr --nograb --current |\
                                       awk -F 'connected |\\+' '/ connected/ {printf $2 ", "}')"
                         resolution="${resolution/primary }"
                     ;;
@@ -1984,7 +1984,7 @@ get_term_font() {
 }
 
 get_disk() {
-    type -p df >/dev/null 2>&1 || \
+    type -p df >/dev/null 2>&1 ||\
         { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
     # Get "df" version.
