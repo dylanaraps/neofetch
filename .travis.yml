@@ -21,3 +21,4 @@ script:
     # See this wiki page for why we're disabling these errors.
     # https://github.com/dylanaraps/neofetch/wiki/Shellcheck-Exclusions
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then shellcheck neofetch -e SC1090,SC2009,SC2012,SC2016,SC2034,SC2128,SC2153,SC2154,SC2178,SC2010; fi
+    - ! grep '.\{101\}' neofetch
