@@ -796,7 +796,7 @@ get_wm_theme() {
 
         "PekWM")
             [[ -f "${HOME}/.pekwm/config" ]] && \
-                wm_theme="$(awk -F "/" '/Theme/ {gsub(/\"/,""); print $NF}' "${HOME}/.pekwm/config")"
+                wm_theme="$(awk -F "/" '/Theme/{gsub(/\"/,""); print $NF}' "${HOME}/.pekwm/config")"
         ;;
 
         "Xfwm4")
@@ -809,11 +809,16 @@ get_wm_theme() {
             kwinrc="${kde_config_dir}/kwinrc"
             kdebugrc="${kde_config_dir}/kdebugrc"
 
-            # TODO: Fix line length here.
             if [[ -f "$kwinrc" ]]; then
-                wm_theme="$(awk '/theme=/{gsub(/theme=.*qml_|theme=.*svg__/,"",$0); print $0; exit}' "$kwinrc")"
-                [[ -z "$wm_theme" ]] && wm_theme="$(awk '/library=org.kde/{gsub(/library=org.kde./,"",$0); print $0; exit}' "$kwinrc")"
-                [[ -z "$wm_theme" ]] && wm_theme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "$kwinrc")"
+                wm_theme="$(awk '/theme=/{gsub(/theme=.*qml_|theme=.*svg__/,"",$0);
+                                 print $0; exit}' "$kwinrc")"
+
+                [[ -z "$wm_theme" ]] && \
+                    wm_theme="$(awk '/library=org.kde/{gsub(/library=org.kde./,"",$0);
+                                     print $0; exit}' "$kwinrc")"
+                [[ -z "$wm_theme" ]] && \
+                    wm_theme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0);
+                                     print $0; exit}' "$kwinrc")"
 
             elif [[ -f "$kdebugrc" ]]; then
                 wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kdebugrc")"
@@ -881,9 +886,11 @@ get_cpu() {
                 ;;
 
                 *)
-                    # TODO: Fix line length here.
-                    cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {printf $2; exit}' "$cpu_file")"
-                    [[ "$cpu" == *"processor rev"* ]] && cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
+                    cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/
+                                           {printf $2; exit}' "$cpu_file")"
+
+                    [[ "$cpu" == *"processor rev"* ]] && \
+                        cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
                 ;;
             esac
 
@@ -1384,8 +1391,11 @@ get_memory() {
 }
 
 get_song() {
-    # TODO: Fix line length here.
-    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo/ {printf $5 " " $6; exit}')"
+    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|
+                          Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|
+                          xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|
+                          guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo/
+                          {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1855,7 +1865,6 @@ get_term_font() {
 
             for i in "${konsole_instances[@]}"; do
                 konsole_sessions=($(qdbus "${i}" | grep '/Sessions/'))
-                # TODO: Swap to a while loop here.
                 for session in "${konsole_sessions[@]}"; do
                     if ((child == "$(qdbus "${i}" "${session}" processId)")); then
                         profile="$(qdbus "${i}" "${session}" environment |\
@@ -1898,11 +1907,15 @@ get_term_font() {
 
                 rm -f "$mateterm_config"
 
-                # TODO: Limit line length here.
-                if [[ "$(gsettings get org.mate.terminal.profile:/org/mate/terminal/profiles/"${profile}"/ use-system-font)" == "true" ]]; then
+                mate_get() {
+                   gsettings get org.mate.terminal.profile:\
+                   /org/mate/terminal/profiles/"$1"/ "$2"
+                }
+
+                if [[ "$(mate_get "$profile" "use-system-font")" == "true" ]]; then
                     term_font="$(gsettings get org.mate.interface monospace-font-name)"
                 else
-                    term_font="$(gsettings get org.mate.terminal.profile:/org/mate/terminal/profiles/"${profile}"/ font)"
+                    term_font="$(mate_get "$profile" "font")"
                 fi
                 term_font="$(trim_quotes "$term_font")"
             fi
