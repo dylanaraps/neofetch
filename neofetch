@@ -886,7 +886,7 @@ get_cpu() {
                 ;;
 
                 *)
-                    cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/
+                    cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/\
                                            {printf $2; exit}' "$cpu_file")"
 
                     [[ "$cpu" == *"processor rev"* ]] && \
