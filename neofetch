@@ -1391,9 +1391,9 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|
-                          Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|
-                          xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|
+    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|\
+                          Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|\
+                          xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|\
                           guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo/
                           {printf $5 " " $6; exit}')"
 
