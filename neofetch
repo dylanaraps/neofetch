@@ -4040,7 +4040,7 @@ old_options() {
     # cpu_shorthand was deprecated in 3.3.0
     [[ -n "$cpu_shorthand" ]] && \
         { err "Config: \$cpu_shorthand is deprecated, use \$cpu_brand, \$cpu_cores, and
-          \$cpu_speed instead."; }
+            \$cpu_speed instead."; }
 }
 
 cache_uname() {
