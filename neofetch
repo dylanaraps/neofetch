@@ -20,8 +20,8 @@ old_ifs="$IFS"
 export LC_ALL=C
 export LANG=C
 
-# Add /usr/xpg4/bin, /usr/sbin, /sbin, and /usr/etc to PATH.
-export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:${PATH}"
+# Add more paths to $PATH.
+export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec:${PATH}"
 
 # Set no case match.
 shopt -s nocasematch
@@ -821,7 +821,7 @@ get_wm_theme() {
         ;;
 
         "Quartz Compositor")
-            wm_theme="$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" \
+            wm_theme="$(PlistBuddy -c "Print AppleAquaColorVariant" \
                         "${HOME}/Library/Preferences/.GlobalPreferences.plist")"
 
             if [[ -z "$wm_theme" ]] || ((wm_theme == 1)); then
@@ -1511,7 +1511,7 @@ get_resolution() {
                               awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
-            scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" \
+            scale_factor="$(PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" \
                             /Library/Preferences/com.apple.windowserver.plist)"
 
             # If no refresh rate is empty.
@@ -1759,7 +1759,9 @@ get_term() {
             case "${name// }" in
                 "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
                 "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-                "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"* | "kdeinit"*) break ;;
+                "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"* | "kdeinit"*)
+                    break
+                ;;
                 "gnome-terminal-") term="gnome-terminal" ;;
                 *"nvim") term="Neovim Terminal" ;;
                 *"NeoVimServer"*) term="VimR Terminal" ;;
@@ -1777,58 +1779,67 @@ get_term_font() {
 
     case "$term" in
         "alacritty"*)
-            term_font="$(awk -F ':|#' '/normal:/ {getline; print}' "${XDG_CONFIG_HOME}/alacritty/alacritty.yml")"
+            term_font="$(awk -F ':|#' '/normal:/ {getline; print}' \
+                         "${XDG_CONFIG_HOME}/alacritty/alacritty.yml")"
             term_font="${term_font/*family:}"
             term_font="${term_font/$'\n'*}"
             term_font="${term_font/\#*}"
         ;;
 
         "Apple_Terminal")
-            term_font="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
+            term_font="$(osascript -e 'tell application "Terminal" to
+                                       font name of window frontmost')"
         ;;
 
         "iTerm2")
             # Unfortunately the profile name is not unique, but it seems to be the only thing
-            # that identifies an active profile. There is the "id of current session of current window"
-            # thou, but that does not match to a guid in the plist.
-            # So, be warned! Collisions may occur!
+            # that identifies an active profile. There is the "id of current session of current win-
+            # dow" though, but that does not match to a guid in the plist.
+            # So, be warned, collisions may occur!
             # See: https://groups.google.com/forum/#!topic/iterm2-discuss/0tO3xZ4Zlwg
-            local current_profile_name
-            current_profile_name="$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')"
+            local current_profile_name profiles_count profile_name diff_font none_ascii
+
+            current_profile_name="$(osascript -e 'tell application "iTerm2" to profile name
+                                                  of current session of current window')"
 
             # Warning: Dynamic profiles are not taken into account here!
             # https://www.iterm2.com/documentation-dynamic-profiles.html
 
             # Count Guids in "New Bookmarks"; they should be unique
-            local profiles_count
-            profiles_count="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:" ~/Library/Preferences/com.googlecode.iterm2.plist | grep -c "Guid")"
+            profiles_count="$(PlistBuddy -c "Print :New\ Bookmarks:" \
+                              "" |\
+                              grep -c "Guid")"
+
+            font_file="${HOME}/Library/Preferences/com.googlecode.iterm2.plist"
 
             for ((i=0; i<=profiles_count; i++)); do
-                local profile_name
-                profile_name="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Name:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+                profile_name="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Name:" "$font_file")"
 
                 if [[ "$profile_name" == "$current_profile_name" ]]; then
                     # "Normal Font"
-                    term_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Normal\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+                    term_font="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Normal\ Font:" \
+                                 "$font_file")"
+
                     # Font for non-ascii characters
                     # Only check for a different non-ascii font, if the user checked
                     # the "use a different font for non-ascii text" switch.
-                    local use_different_font
-                    use_different_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Use\ Non-ASCII\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+                    diff_font="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Use\ Non-ASCII\ Font:" \
+                                 "$font_file")"
 
-                    if [[ "$use_different_font" == "true" ]]; then
-                        local non_ascii_font
-                        non_ascii_font="$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${i}:Non\ Ascii\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)"
+                    if [[ "$diff_font" == "true" ]]; then
+                        non_ascii="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Non\ Ascii\ Font:" \
+                                     "$font_file")"
 
-                        [[ "$term_font" != "$non_ascii_font" ]] && \
-                            term_font="$term_font (normal) / $non_ascii_font (non-ascii)"
+                        [[ "$term_font" != "$non_ascii" ]] && \
+                            term_font="$term_font (normal) / $non_ascii (non-ascii)"
                     fi
                 fi
             done
         ;;
 
         "deepin-terminal"*)
-            term_font="$(awk -F '=' '/font=/ {a=$2} /font_size/ {b=$2} END{print a " " b}' "${XDG_CONFIG_HOME}/deepin/deepin-terminal/config.conf")"
+            term_font="$(awk -F '=' '/font=/ {a=$2} /font_size/ {b=$2} END{print a " " b}' \
+                         "${XDG_CONFIG_HOME}/deepin/deepin-terminal/config.conf")"
         ;;
 
         "Hyper"*)
@@ -1844,9 +1855,11 @@ get_term_font() {
 
             for i in "${konsole_instances[@]}"; do
                 konsole_sessions=($(qdbus "${i}" | grep '/Sessions/'))
+                # TODO: Swap to a while loop here.
                 for session in "${konsole_sessions[@]}"; do
                     if ((child == "$(qdbus "${i}" "${session}" processId)")); then
-                        profile="$(qdbus "${i}" "${session}" environment | awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
+                        profile="$(qdbus "${i}" "${session}" environment |\
+                                   awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
                         break
                     fi
                 done
@@ -1856,15 +1869,18 @@ get_term_font() {
             # We could have two profile files for the same profile name, take first match
             profile_filename="$(grep -l "Name=${profile}" "${HOME}"/.local/share/konsole/*.profile)"
             profile_filename="${profile_filename/$'\n'*}"
-            [[ "$profile_filename" ]] && term_font="$(awk -F '=|,' '/Font=/ {print $2 " " $3}' "$profile_filename")"
+            [[ "$profile_filename" ]] && \
+                term_font="$(awk -F '=|,' '/Font=/ {print $2 " " $3}' "$profile_filename")"
         ;;
 
         "lxterminal"*)
-            term_font="$(awk -F '=' '/fontname=/ {print $2; exit}' "${XDG_CONFIG_HOME}/lxterminal/lxterminal.conf")"
+            term_font="$(awk -F '=' '/fontname=/ {print $2; exit}' \
+                         "${XDG_CONFIG_HOME}/lxterminal/lxterminal.conf")"
         ;;
 
         "mate-terminal")
-            # To get the actual config we have to create a temporarily file with the --save-config option.
+            # To get the actual config we have to create a temporarily file with the
+            # --save-config option.
             mateterm_config="/tmp/mateterm.cfg"
 
             # Ensure /tmp exists and we do not overwrite anything.
@@ -1876,11 +1892,13 @@ get_term_font() {
                 role="${role//\"}"
 
                 profile="$(awk -F '=' -v r="$role" \
-                           '$0~r {getline; if(/Maximized/) getline; if(/Fullscreen/) getline; id=$2"]"}
+                           '$0~r {getline; if(/Maximized/) getline;
+                            if(/Fullscreen/) getline; id=$2"]"}
                             $0~id {if(id) {getline; print $2; exit}}' "$mateterm_config")"
 
                 rm -f "$mateterm_config"
 
+                # TODO: Limit line length here.
                 if [[ "$(gsettings get org.mate.terminal.profile:/org/mate/terminal/profiles/"${profile}"/ use-system-font)" == "true" ]]; then
                     term_font="$(gsettings get org.mate.interface monospace-font-name)"
                 else
@@ -1896,23 +1914,31 @@ get_term_font() {
 
         "pantheon"*)
             term_font="$(gsettings get org.pantheon.terminal.settings font)"
-            [[ -z "${term_font//\'}" ]] && term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
+
+            [[ -z "${term_font//\'}" ]] && \
+                term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
+
             term_font="$(trim_quotes "$term_font")"
         ;;
 
         "sakura"*)
-            term_font="$(awk -F '=' '/^font=/ {print $2; exit}' "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
+            term_font="$(awk -F '=' '/^font=/ {print $2; exit}' \
+                         "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
         ;;
 
         "terminology")
-            term_font="$(strings "${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg" | awk '/^font\.name$/{print a}{a=$0}')"
+            term_font="$(strings "${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg" |\
+                         awk '/^font\.name$/{print a}{a=$0}')"
             term_font="${term_font/.pcf}"
             term_font="${term_font/:*}"
         ;;
 
         "termite")
-            [[ -f "${XDG_CONFIG_HOME}/termite/config" ]] && termite_config="${XDG_CONFIG_HOME}/termite/config"
-            term_font="$(awk -F '= ' '/\[options\]/ {opt=1} /^\s*font/ {if(opt==1) a=$2; opt=0} END{print a}' "/etc/xdg/termite/config" "$termite_config")"
+            [[ -f "${XDG_CONFIG_HOME}/termite/config" ]] && \
+                termite_config="${XDG_CONFIG_HOME}/termite/config"
+
+            term_font="$(awk -F '= ' '/\[options\]/ {opt=1} /^\s*font/ {if(opt==1) a=$2; opt=0}
+                                      END{print a}' "/etc/xdg/termite/config" "$termite_config")"
         ;;
 
         "urxvt" | "urxvtd" | "rxvt-unicode" | "xterm")
@@ -1933,7 +1959,8 @@ get_term_font() {
         ;;
 
         "xfce4-terminal")
-            term_font="$(awk -F '=' '/^FontName/ {a=$2} /^FontUseSystem=TRUE/ {a=$0} END{print a}' "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
+            term_font="$(awk -F '=' '/^FontName/ {a=$2} /^FontUseSystem=TRUE/ {a=$0} END{print a}' \
+                         "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
 
             if [[ "$term_font" == "FontUseSystem=TRUE" ]]; then
                 term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
@@ -1953,7 +1980,10 @@ get_disk() {
     # Get "df" version.
     df_version="$(df --version 2>&1)"
     case "$df_version" in
-        *"blocks"*) err "Your version of df cannot be used due to the non-standard flags" ; return ;; # Haiku
+        *"blocks"*) # Haiku
+            err "Your version of df cannot be used due to the non-standard flags"
+            return
+        ;;
         *"IMitv"*) df_flags=(-P -g) ;; # AIX
         *"befhikm"*) df_flags=(-P -k) ;; # IRIX
         *) df_flags=(-P -h) ;;
@@ -1967,8 +1997,10 @@ get_disk() {
     IFS="$old_ifs"
 
     # Stop here if 'df' fails to print disk info.
-    [[ -z "${disks[*]}" ]] && \
-        { err "Disk: df failed to print the disks, make sure the disk_show array is set properly."; return; }
+    if [[ -z "${disks[*]}" ]]; then
+        err "Disk: df failed to print the disks, make sure the disk_show array is set properly."
+        return
+    fi
 
     for disk in "${disks[@]}"; do
         # Create a second array and make each element split at whitespace this time.
@@ -1976,7 +2008,9 @@ get_disk() {
         disk_perc="${disk_info[4]/'%'}"
 
         case "$df_version" in
-            *"befhikm"*) disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)" ;;
+            *"befhikm"*)
+                disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)"
+            ;;
             *) disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)" ;;
         esac
 
@@ -2158,11 +2192,27 @@ get_install_date() {
 
     ls_prog="$(ls --version 2>&1)"
     case "$ls_prog" in
-        *"BusyBox"*) install_date="$(ls -tdce "$install_file" | awk '{printf $10 " " $7 " " $8 " " $9}')" ;;
-        *"crtime"*) install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')" ;; # xpg4 (Solaris)
-        *"ACFHLRSZ"*) install_date="$(ls -dl "$install_file" | awk '{printf $6 " " $7}')" ;; # Toybox
-        *"GNU coreutils"*) install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')" ;;
-        *"ACFHLNRS"* | *"RadC1xmnlog"*) err "Install Date doesn't work because your 'ls' does not support showing full date and time."; return ;; # AIX ls / IRIX ls
+        *"BusyBox"*)
+            install_date="$(ls -tdce "$install_file" | awk '{printf $10 " " $7 " " $8 " " $9}')"
+        ;;
+
+        *"crtime"*) # xpg4 (Solaris)
+            install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')"
+        ;;
+
+        *"ACFHLRSZ"*) # Toybox
+            install_date="$(ls -dl "$install_file" | awk '{printf $6 " " $7}')"
+        ;;
+
+        *"GNU coreutils"*)
+            install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')"
+        ;;
+
+        *"ACFHLNRS"* | *"RadC1xmnlog"*) # AIX ls / IRIX ls
+            err "Install Date doesn't work because your 'ls' doesn't support full date/time."
+            return
+        ;;
+
         *) install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
     esac
 
@@ -2256,7 +2306,8 @@ image_backend() {
 
         *)
             err "Image: Unknown image backend specified '$image_backend'."
-            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2', 'off', 'sixel', 'termpix', 'tycat', 'w3m')"
+            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2',
+                                            'off', 'sixel', 'termpix', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
             get_ascii
         ;;
