@@ -57,7 +57,8 @@ get_distro() {
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
-            if [[ "$(< /proc/version)" == *"Microsoft"* || "$kernel_version" == *"Microsoft"* ]]; then
+            if [[ "$(< /proc/version)" == *"Microsoft"* ||
+                  "$kernel_version" == *"Microsoft"* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
@@ -114,8 +115,10 @@ get_distro() {
                 distro="Android $(getprop ro.build.version.release)"
 
             elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" ]]; then
+                files=("/etc/os-release" "/usr/lib/os-release")
+
                 # Source the os-release file
-                for file in /etc/os-release /usr/lib/os-release; do
+                for file in "${files[@]}"; do
                     source "$file" && break
                 done
 
@@ -127,8 +130,8 @@ get_distro() {
                 esac
 
                 # Workarounds for distros that go against the os-release standard.
-                [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}' /etc/os-release /usr/lib/os-release)"
-                [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}' /etc/os-release /usr/lib/os-release)"
+                [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}')" "${files[@]}"
+                [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}')"  "${files[@]}"
 
             else
                 for release_file in /etc/*-release; do
@@ -145,7 +148,9 @@ get_distro() {
                     # Workarounds for FreeBSD based distros.
                     [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
                     [[ -f "/etc/rc.conf.trueos" ]] && distro="TrueOS"
-                    [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD" # /etc/pacbsd-release is an empty file
+
+                    # /etc/pacbsd-release is an empty file
+                    [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
                 fi
             fi
             distro="$(trim_quotes "$distro")"
@@ -493,9 +498,6 @@ get_packages() {
             type -p pacman-g2 >/dev/null && \
                 packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
 
-            type -p cave >/dev/null && \
-                packages="$((packages+=$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* /var/db/paludis/repositories/installed/data/* | wc -l)))"
-
             type -p lvu >/dev/null && \
                 packages="$((packages+=$(lvu installed | wc -l)))"
 
@@ -522,6 +524,11 @@ get_packages() {
 
             type -p alps >/dev/null && \
                 packages="$((packages+=$(alps showinstalled | wc -l)))"
+
+            if type -p cave >/dev/null; then
+                package_dir=(/var/db/paludis/repositories/{cross-installed,installed}/*/data/*)
+                packages="$((packages+=$(ls -d -1 "${package_dir[@]}" | wc -l)))"
+            fi
 
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
@@ -697,7 +704,11 @@ get_wm() {
             ;;
 
             "Windows")
-                wm="$(tasklist | grep -m 1 -o -F -e "bugn" -e "Windawesome" -e "blackbox" -e "emerge" -e "litestep")"
+                wm="$(tasklist | grep -m 1 -o -F -e "bugn" \
+                                                 -e "Windawesome" \
+                                                 -e "blackbox" \
+                                                 -e "emerge" \
+                                                 -e "litestep")"
                 [[ "$wm" == "blackbox" ]] && wm="bbLean (Blackbox)"
                 wm="${wm:+$wm, }Explorer"
             ;;
@@ -713,8 +724,14 @@ get_wm_theme() {
     ((de_run != 1)) && get_de
 
     case "$wm"  in
-        "E16") wm_theme="$(awk -F "= " '/theme.name/ {print $2}' "${HOME}/.e16/e_config--0.0.cfg")";;
-        "Sawfish") wm_theme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' "${HOME}/.sawfish/custom")" ;;
+        "E16")
+            wm_theme="$(awk -F "= " '/theme.name/ {print $2}' "${HOME}/.e16/e_config--0.0.cfg")"
+        ;;
+
+        "Sawfish")
+            wm_theme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' \
+                      "${HOME}/.sawfish/custom")"
+        ;;
 
         "Cinnamon" | "Muffin" | "Mutter (Muffin)")
             detheme="$(gsettings get org.cinnamon.theme name)"
@@ -748,7 +765,8 @@ get_wm_theme() {
 
         "E17" | "Enlightenment")
             if type -p eet >/dev/null; then
-                wm_theme="$(eet -d "${HOME}/.e/e/config/standard/e.cfg" config | awk '/value \"file\" string.*.edj/ {print $4}')"
+                wm_theme="$(eet -d "${HOME}/.e/e/config/standard/e.cfg" config | \
+                            awk '/value \"file\" string.*.edj/ {print $4}')"
                 wm_theme="${wm_theme##*/}"
                 wm_theme="${wm_theme%.*}"
             fi
@@ -772,7 +790,8 @@ get_wm_theme() {
                 ob_file="rc"
             fi
 
-            wm_theme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' "${XDG_CONFIG_HOME}/openbox/${ob_file}.xml")";
+            wm_theme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' \
+                        "${XDG_CONFIG_HOME}/openbox/${ob_file}.xml")";
         ;;
 
         "PekWM")
@@ -787,19 +806,24 @@ get_wm_theme() {
 
         "KWin"*)
             kde_config_dir
+            kwinrc="${kde_config_dir}/kwinrc"
+            kdebugrc="${kde_config_dir}/kdebugrc"
 
-            if [[ -f "${kde_config_dir}/kwinrc" ]]; then
-                wm_theme="$(awk '/theme=/{gsub(/theme=.*qml_|theme=.*svg__/,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
-                [[ -z "$wm_theme" ]] && wm_theme="$(awk '/library=org.kde/{gsub(/library=org.kde./,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
-                [[ -z "$wm_theme" ]] && wm_theme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "${kde_config_dir}/kwinrc")"
+            # TODO: Fix line length here.
+            if [[ -f "$kwinrc" ]]; then
+                wm_theme="$(awk '/theme=/{gsub(/theme=.*qml_|theme=.*svg__/,"",$0); print $0; exit}' "$kwinrc")"
+                [[ -z "$wm_theme" ]] && wm_theme="$(awk '/library=org.kde/{gsub(/library=org.kde./,"",$0); print $0; exit}' "$kwinrc")"
+                [[ -z "$wm_theme" ]] && wm_theme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0); print $0; exit}' "$kwinrc")"
 
-            elif [[ -f "${kde_config_dir}/kdebugrc" ]]; then
-                wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "${kde_config_dir}/kdebugrc")"
+            elif [[ -f "$kdebugrc" ]]; then
+                wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kdebugrc")"
             fi
         ;;
 
         "Quartz Compositor")
-            wm_theme="$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" ~/Library/Preferences/.GlobalPreferences.plist)"
+            wm_theme="$(/usr/libexec/PlistBuddy -c "Print AppleAquaColorVariant" \
+                        "${HOME}/Library/Preferences/.GlobalPreferences.plist")"
+
             if [[ -z "$wm_theme" ]] || ((wm_theme == 1)); then
                 wm_theme="Blue"
             else
@@ -840,22 +864,28 @@ get_cpu() {
     case "$os" in
         "Linux" | "MINIX" | "Windows")
             # Get CPU name.
-                case "$machine_arch" in
-                    "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
-                        cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' /proc/cpuinfo)"
-                    ;;
-                    "s390"*)
-                        cpu="$(awk -F'=' '/machine/ {print $4; exit}' /proc/cpuinfo)"
-                    ;;
-                    "ia64" | "m32r")
-                        cpu="$(awk -F':' '/model/ {print $2; exit}' /proc/cpuinfo)"
-                        [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' /proc/cpuinfo)"
-                    ;;
-                    *)
-                        cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {printf $2; exit}' /proc/cpuinfo)"
-                       [[ "$cpu" == *"processor rev"* ]] && cpu="$(awk -F':' '/Hardware/ {print $2; exit}' /proc/cpuinfo)"
-                    ;;
-                esac
+            cpu_file="/proc/cpuinfo"
+
+            case "$machine_arch" in
+                "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
+                    cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' "$cpu_file")"
+                ;;
+
+                "s390"*)
+                    cpu="$(awk -F'=' '/machine/ {print $4; exit}' "$cpu_file")"
+                ;;
+
+                "ia64" | "m32r")
+                    cpu="$(awk -F':' '/model/ {print $2; exit}' "$cpu_file")"
+                    [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
+                ;;
+
+                *)
+                    # TODO: Fix line length here.
+                    cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {printf $2; exit}' "$cpu_file")"
+                    [[ "$cpu" == *"processor rev"* ]] && cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
+                ;;
+            esac
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
             temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
@@ -870,7 +900,7 @@ get_cpu() {
                 speed="$((speed / 1000))"
 
             else
-                speed="$(awk -F ': |\\.' '/cpu MHz|^clock/ {printf $2; exit}' /proc/cpuinfo)"
+                speed="$(awk -F ': |\\.' '/cpu MHz|^clock/ {printf $2; exit}' "$cpu_file")"
                 speed="${speed/MHz}"
             fi
 
@@ -882,8 +912,8 @@ get_cpu() {
 
             # Get CPU cores.
             case "$cpu_cores" in
-                "logical" | "on") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
-                "physical") cores="$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)" ;;
+                "logical" | "on") cores="$(grep -c "^processor" "$cpu_file")" ;;
+                "physical") cores="$(grep "^core id" "$cpu_file" | sort -u | wc -l)" ;;
             esac
         ;;
 
@@ -991,7 +1021,10 @@ get_cpu() {
 
             # Get CPU cores.
             case "$cpu_cores" in
-                "logical" | "on") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
+                "logical" | "on")
+                    cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')"
+                ;;
+
                 "physical") cores="$(lparstat -i | awk -F':' '/Active Physical CPUs/ {printf $2}')"
             esac
         ;;
@@ -1175,7 +1208,8 @@ get_gpu() {
                 source "${cache_dir}/neofetch/gpu"
 
             else
-                gpu="$(system_profiler SPDisplaysDataType | awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
+                gpu="$(system_profiler SPDisplaysDataType | \
+                       awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
                 gpu="${gpu//'/ $'}"
                 gpu="${gpu%,*}"
 
@@ -1221,7 +1255,8 @@ get_gpu() {
         ;;
 
         "Haiku")
-            gpu="$(listdev | grep -A2 -F 'device Display controller' | awk -F':' '/device beef/ {print $2}')"
+            gpu="$(listdev | grep -A2 -F 'device Display controller' | \
+                   awk -F':' '/device beef/ {print $2}')"
         ;;
 
         *)
@@ -1256,7 +1291,9 @@ get_memory() {
                 case "$a" in
                     "MemTotal") mem_used="$((mem_used+=${b/kB}))"; mem_total="${b/kB}" ;;
                     "Shmem") mem_used="$((mem_used+=${b/kB}))"  ;;
-                    "MemFree" | "Buffers" | "Cached" | "SReclaimable") mem_used="$((mem_used-=${b/kB}))" ;;
+                    "MemFree" | "Buffers" | "Cached" | "SReclaimable")
+                        mem_used="$((mem_used-=${b/kB}))"
+                    ;;
                 esac
             done < /proc/meminfo
 
@@ -1281,7 +1318,10 @@ get_memory() {
 
             # Mem free.
             case "$kernel_name" in
-                "NetBSD"*) mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))" ;;
+                "NetBSD"*)
+                    mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))"
+                ;;
+
                 "FreeBSD"* | "DragonFly"*)
                     hw_pagesize="$(sysctl -n hw.pagesize)"
                     mem_inactive="$(($(sysctl -n vm.stats.vm.v_inactive_count) * hw_pagesize))"
@@ -1289,10 +1329,12 @@ get_memory() {
                     mem_cache="$(($(sysctl -n vm.stats.vm.v_cache_count) * hw_pagesize))"
                     mem_free="$(((mem_inactive + mem_unused + mem_cache) / 1024 / 1024))"
                 ;;
+
                 "MINIX")
                     mem_free="$(top -d 1 | awk -F ',' '/^Memory:/ {print $2}')"
                     mem_free="${mem_free/M Free}"
                 ;;
+
                 "OpenBSD"*) ;;
                 *) mem_free="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
             esac
@@ -1342,7 +1384,7 @@ get_memory() {
 }
 
 get_song() {
-    # This is absurdly long.
+    # TODO: Fix line length here.
     player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
@@ -1350,7 +1392,8 @@ get_song() {
         # This function saves us using the same command throughout the function.
         song="$(\
             dbus-send --print-reply --dest=org.mpris.MediaPlayer2."${1}" /org/mpris/MediaPlayer2 \
-            org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata' |\
+            org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
+            string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
             awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}'
         )"
@@ -1384,7 +1427,8 @@ get_song() {
         ;;
 
         "cmus"*)
-            song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; print; print " - "} /tag title/ {$1=$2=""; print}')"
+            song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; print; print " - "}
+                                          /tag title/ {$1=$2=""; print}')"
         ;;
 
         "spotify"*)
@@ -1392,21 +1436,25 @@ get_song() {
                 "Linux") get_song_dbus "spotify" ;;
 
                 "Mac OS X")
-                    song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
+                    song="$(osascript -e 'tell application "Spotify" to artist of current track as
+                                          string & " - " & name of current track as string')"
                 ;;
             esac
         ;;
 
         "itunes"*)
-            song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
+            song="$(osascript -e 'tell application "iTunes" to artist of current track as
+                                  string & " - " & name of current track as string')"
         ;;
 
         "banshee"*)
-            song="$(banshee --query-artist --query-title | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
+            song="$(banshee --query-artist --query-title |\
+                    awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
         ;;
 
         "amarok"*)
-            song="$(qdbus org.kde.amarok /Player GetMetadata | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
+            song="$(qdbus org.kde.amarok /Player GetMetadata |\
+                    awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
         ;;
 
         "pragha"*)
@@ -1419,18 +1467,20 @@ get_song() {
         ;;
 
         "quodlibet"*)
-            song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
-                    awk -F'"' '/artist/ {getline; a=$2} /title/ {getline; t=$2} END{print a " - " t}')"
+            song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet \
+                    /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
+                    awk -F'"' '/artist/ {getline; a=$2}
+                               /title/ {getline; t=$2} END{print a " - " t}')"
         ;;
 
         "pogo"*)
-            song="$(dbus-send --print-reply --dest=org.mpris.pogo /Player org.freedesktop.MediaPlayer.GetMetadata |
-                    awk -F'"' '/string "artist"/ {getline; a=$2} /string "title"/ {getline; t=$2} END{print a " - " t}')"
+            song="$(dbus-send --print-reply --dest=org.mpris.pogo /Player \
+                    org.freedesktop.MediaPlayer.GetMetadata |
+                    awk -F'"' '/string "artist"/ {getline; a=$2} /string "title"/ {getline; t=$2}
+                               END{print a " - " t}')"
         ;;
 
-        *)
-            mpc >/dev/null 2>&1 && song="$(mpc current)"
-        ;;
+        *) mpc >/dev/null 2>&1 && song="$(mpc current)" ;;
     esac
 
     [[ "$(trim "$song")" == "-" ]] && unset -v song
@@ -1457,10 +1507,12 @@ get_resolution() {
                 resolution="${resolution//x??@/ @ }"
 
             else
-                resolution="$(system_profiler SPDisplaysDataType | awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
+                resolution="$(system_profiler SPDisplaysDataType |\
+                              awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
-            scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" /Library/Preferences/com.apple.windowserver.plist)"
+            scale_factor="$(/usr/libexec/PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" \
+                            /Library/Preferences/com.apple.windowserver.plist)"
 
             # If no refresh rate is empty.
             [[ "$resolution" == *"@ Hz"* ]] && \
@@ -1499,9 +1551,15 @@ get_resolution() {
         *)
             if type -p xrandr >/dev/null; then
                 case "$refresh_rate" in
-                    "on") resolution="$(xrandr --nograb --current | awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')" ;;
+                    "on")
+                        resolution="$(xrandr --nograb --current |\
+                                      awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ "
+                                           substr($0,RSTART,RLENGTH) "Hz, "}')"
+                    ;;
+
                     "off")
-                        resolution="$(xrandr --nograb --current | awk -F 'connected |\\+' '/ connected/ {printf $2 ", "}')"
+                        resolution="$(xrandr --nograb --current | \
+                                      awk -F 'connected |\\+' '/ connected/ {printf $2 ", "}')"
                         resolution="${resolution/primary }"
                     ;;
                 esac
