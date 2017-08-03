@@ -3648,6 +3648,7 @@ stdout() {
     unset text_padding
     unset zws
     unset reset
+    unset color_blocks
 }
 
 err() {
