@@ -2963,6 +2963,11 @@ get_distro_colors() {
             ascii_file="arch"
         ;;
 
+        "Artix"*)
+            set_colors 4 7
+            ascii_file="artix"
+        ;;
+
         "Arya"*)
             set_colors 2 1
             ascii_file="arya"
