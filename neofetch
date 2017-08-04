@@ -3649,6 +3649,7 @@ stdout() {
     unset zws
     unset reset
     unset color_blocks
+    unset get_line_break
 }
 
 err() {
