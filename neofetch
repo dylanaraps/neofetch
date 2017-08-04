@@ -1153,7 +1153,9 @@ get_gpu() {
         "Linux")
             # Read GPUs into array.
             IFS=$'\n'
-            gpus=($(lspci -mm | awk -F '\\"|\\" \\"' '/"Display|"3D|"VGA/ {print $3 " " $4}'))
+            gpus=($(lspci -mm | awk -F '\\"|\\" \\"|\\(' \
+                                       '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END{for(i in a)
+                                        {if(!seen[a[i]]++) print a[i]}}'))
             IFS="$old_ifs"
 
             # Number the GPUs if more than one exists.
@@ -2934,7 +2936,7 @@ prin() {
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
-    printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset} "
+    printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset}"
 
     # Calculate info height.
     ((++info_height))
@@ -2947,7 +2949,7 @@ get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
         printf "%b%b\n" "${text_padding:+\033[${text_padding}C}${zws}${underline_color}" \
-                        "${underline// /$underline_char}${reset} "
+                        "${underline// /$underline_char}${reset}"
         unset -v length
     fi
     prin=1
@@ -3771,6 +3773,22 @@ color() {
 
 # OTHER
 
+stdout() {
+    image_backend="off"
+    unset subtitle_color
+    unset colon_color
+    unset info_color
+    unset underline_color
+    unset bold
+    unset title_color
+    unset at_color
+    unset text_padding
+    unset zws
+    unset reset
+    unset color_blocks
+    unset get_line_break
+}
+
 err() {
     err+="$(color 1)[!]\033[0m $1\n"
 }
@@ -4354,6 +4372,7 @@ SCREENSHOT:
 OTHER:
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
+    --stdout                    Turn off all colors and disables any ASCII/image backend.
     --help                      Print this text and exit
     --version                   Show neofetch version
     -v                          Display error messages.
@@ -4572,6 +4591,7 @@ get_args() {
                     ;;
                 esac
             ;;
+            "--stdout") stdout="on" ;;
             "-v") verbose="on" ;;
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
@@ -4596,9 +4616,10 @@ main() {
     get_distro
     get_bold
     get_distro_colors
+    [[ "$stdout" == "on" ]] && stdout
 
     # Minix doesn't support these sequences.
-    if [[ "$TERM" != "minix" ]]; then
+    if [[ "$TERM" != "minix" && "$stdout" != "on" ]]; then
         # If the script exits for any reason, unhide the cursor.
         trap 'printf "\033[?25h\033[?7h"' EXIT
 

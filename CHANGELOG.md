@@ -8,6 +8,10 @@
 
 - Config file now has a `.conf` suffix.
 - Neofetch now assumes target directories (config file and ASCII directory) at install time, this fixes problems with systems such as NixOS.
+- `stdout` mode is now reimplemented.
+    - This mode prints the information in plain text.
+    - You can use it with `--stdout`.
+    - Example: https://gist.github.com/dylanaraps/151c205322cf3acae62661b76464a3f7
 
 
 ## Operating System
@@ -45,6 +49,10 @@
 - [NetBSD] Added support for CPU temperature. (NOTE: This only supports newer Intel processors)
 - Fixed inaccurate speed output in systems with CPU speed less than 1 GHz.
 - Deprecated `cpu_shorthand` in favor of `cpu_brand`.
+
+**GPU**
+
+- [Linux] Filter out duplicate entries.
 
 **Uptime**
 
