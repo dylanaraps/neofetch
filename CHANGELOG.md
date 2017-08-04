@@ -9,6 +9,9 @@
 - Config file now has a `.conf` suffix.
 - Neofetch now assumes target directories (config file and ASCII directory) at install time, this fixes problems with systems such as NixOS.
 - `stdout` mode is now reimplemented.
+    - This mode prints the information in plain text.
+    - You can use it with `--stdout`.
+    - Example: https://gist.github.com/dylanaraps/151c205322cf3acae62661b76464a3f7
 
 
 ## Operating System
