@@ -1775,6 +1775,12 @@ get_term_font() {
             term_font="$(awk -F '=' '/font=/ {a=$2} /font_size/ {b=$2} END{print a " " b}' "${XDG_CONFIG_HOME}/deepin/deepin-terminal/config.conf")"
         ;;
 
+        "GNUstep_Terminal")
+             term_font="$(awk -F '>|<' '/>TerminalFont</ {getline; f=$3}
+                          />TerminalFontSize</ {getline; s=$3} END{print f " " s}' \
+                          "${HOME}/GNUstep/Defaults/Terminal.plist")"
+        ;;
+
         "Hyper"*)
             term_font="$(awk -F':|,' '/fontFamily/ {print $2; exit}' "${HOME}/.hyper.js")"
             term_font="$(trim_quotes "$term_font")"
