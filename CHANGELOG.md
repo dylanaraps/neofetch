@@ -66,6 +66,7 @@
 **Terminal Font**
 
 - Added support for LXTerminal. **[@mstraube](https://github.com/mstraube)**
+- Added support for GNUStep Terminal. **[@mstraube](https://github.com/mstraube)**
 - Fixed Xfce4-terminal font output when system-wide font is used. **[@mstraube](https://github.com/mstraube)**
 
 **Theme**
