@@ -3426,6 +3426,11 @@ get_distro_colors() {
             ascii_file="nixos"
         ;;
 
+        "Nurunner"*)
+            set_colors 4
+            ascii_file="nurunner"
+        ;;
+
         "OBRevenge"*)
             set_colors 1 7 3
             ascii_file="obrevenge"
