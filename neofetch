@@ -78,6 +78,12 @@ get_distro() {
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
 
+            elif [[ -f "/etc/siduction-version" ]]; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="Siduction" ;;
+                    *) distro="Siduction ($(lsb_release -sic))"
+                esac
+
             elif type -p lsb_release >/dev/null; then
                 case "$distro_shorthand" in
                     "on")   lsb_flags="-sir" ;;
@@ -3558,6 +3564,11 @@ get_distro_colors() {
         "Scientific"*)
             set_colors 4 7 1
             ascii_file="scientific"
+        ;;
+
+	"Siduction"*)
+            set_colors 4 4
+            ascii_file="siduction"
         ;;
 
         "Slackware"*)
