@@ -1577,7 +1577,8 @@ get_resolution() {
 
                     "off")
                         resolution="$(xrandr --nograb --current |\
-                                      awk -F 'connected |\\+' '/ connected/ {printf $2 ", "}')"
+                                      awk -F 'connected |\\+|\\(' \
+                                             '/ connected/ && $2 {printf $2 ", "}')"
                         resolution="${resolution/primary }"
                     ;;
                 esac
