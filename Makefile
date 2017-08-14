@@ -1,20 +1,28 @@
 PREFIX = /usr
+SYSCONFDIR = /etc
 
 all:
-	@echo Run \'make install\' to install Neofetch
+	@echo Run \'make install\' to install Neofetch.
 
 install:
-	mkdir -p $(DESTDIR)$(PREFIX)/bin
-	mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
-	mkdir -p $(DESTDIR)/etc/neofetch
-	mkdir -p $(DESTDIR)$(PREFIX)/share/neofetch/ascii/distro
-	cp -p neofetch $(DESTDIR)$(PREFIX)/bin/neofetch
-	cp -p neofetch.1 $(DESTDIR)$(PREFIX)/share/man/man1/neofetch.1
-	cp -p config/config $(DESTDIR)/etc/neofetch/config
-	cp -p ascii/distro/* $(DESTDIR)$(PREFIX)/share/neofetch/ascii/distro
+	@echo 'Making directories...'
+	@mkdir -p $(DESTDIR)$(PREFIX)/bin
+	@mkdir -p $(DESTDIR)$(PREFIX)/share/neofetch/ascii/distro
+	@mkdir -p $(DESTDIR)$(PREFIX)/share/man/man1
+	@mkdir -p $(DESTDIR)$(SYSCONFDIR)/neofetch
+
+	@echo 'Installing binaries...'
+	@sed "s|ASCIIDIR|$(PREFIX)/share/neofetch/ascii/distro|g;s|CONFDIR|$(SYSCONFDIR)/neofetch|g" < neofetch > $(DESTDIR)$(PREFIX)/bin/neofetch
+	@chmod 755 $(DESTDIR)$(PREFIX)/bin/neofetch
+
+	@echo 'Installing ASCII files, man page and config file...'
+	@cp -p ascii/distro/* $(DESTDIR)$(PREFIX)/share/neofetch/ascii/distro
+	@cp -p neofetch.1 $(DESTDIR)$(PREFIX)/share/man/man1
+	@cp -p config/config.conf $(DESTDIR)$(SYSCONFDIR)/neofetch/config.conf
 
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/bin/neofetch
-	rm -f $(DESTDIR)$(PREFIX)/share/man/man1/neofetch.1
-	rm -f -r $(DESTDIR)$(PREFIX)/share/neofetch
-	rm -f -r $(DESTDIR)/etc/neofetch
+	@echo 'Removing files...'
+	@rm -rf $(DESTDIR)$(PREFIX)/bin/neofetch
+	@rm -rf $(DESTDIR)$(PREFIX)/share/man/man1/neofetch.1*
+	@rm -rf $(DESTDIR)$(PREFIX)/share/neofetch
+	@rm -rf $(DESTDIR)$(SYSCONFDIR)/neofetch
