@@ -2251,6 +2251,26 @@ get_locale() {
     locale="$sys_locale"
 }
 
+get_virtual_host() {
+    case "$os" in
+        "Linux")
+            for file in /sys/class/dmi/id/*_vender; do
+                vendor+="$(< "$file")"
+            done
+        ;;
+    esac
+
+    case "$vendor" in
+        *"innotek"*) virtual_host="VirtualBox" ;;
+        *"Vmware"|"vmw"*) virtual_host="VMWare" ;;
+        *"Microsoft"*) virtual_host="Hyper-V/VirtualPC" ;;
+        *"QEMU"*) virtual_host="KVM/QEMU" ;;
+        *"XEN"*) virtual_host="XEN" ;;
+        *"Bochs"*) virtual_host="Bochs" ;;
+        *) virtual_host="Physical" ;;
+    esac
+}
+
 get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
