@@ -342,6 +342,10 @@ get_model() {
     model="${model//Default string}"
     model="${model//Not Specified}"
     model="${model//Type1ProductConfigId}"
+
+    case "$model" in
+        "Standard PC"*) model="KVM/QEMU" ;;
+    esac
 }
 
 get_title() {
