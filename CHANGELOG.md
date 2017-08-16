@@ -2,6 +2,7 @@
 
 - **[@mstraube](https://github.com/mstraube)**
 - **[@dominiklohmann](https://github.com/dominiklohmann)**
+- **[@lexruee](https://github.com/lexruee)**
 
 
 ## General
@@ -21,8 +22,10 @@
 - Added support for Artix Linux.
 - Added support for Endless OS.
 - Added support for Sabotage Linux.
+- Added support for Siduction. **[@lexruee](https://github.com/lexruee)**
 - Added support for Source Mage.
 - Added support for Parsix GNU/Linux. **[@mstraube](https://github.com/mstraube)**
+- Added support for Nurunner. **[@mstraube](https://github.com/mstraube)**
 - Fixed Raspbian being detected as ChromeOS.
 
 
