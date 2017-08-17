@@ -833,6 +833,8 @@ get_wm_theme() {
             elif [[ -f "$kdebugrc" ]]; then
                 wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kdebugrc")"
             fi
+
+            wm_theme="${wm_theme/'theme='}"
         ;;
 
         "Quartz Compositor")
