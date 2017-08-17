@@ -1616,8 +1616,8 @@ get_style() {
                     kde_config_file="${kde_config_dir}/kdeglobals"
 
                     kde_theme="$(grep "^${kde}" "$kde_config_file")"
-                    kde_theme="${theme/${kde}*=}"
-                    kde_theme="$(uppercase "$theme")"
+                    kde_theme="${kde_theme/${kde}*=}"
+                    kde_theme="$(uppercase "$kde_theme") [KDE], "
                 else
                     err "Theme: KDE config files not found, skipping."
                 fi
@@ -1699,10 +1699,9 @@ get_style() {
         # Toggle visibility of GTK themes.
         [[ "$gtk2" == "off" ]] && unset gtk2_theme
         [[ "$gtk3" == "off" ]] && unset gtk3_theme
-        [[ "$kde" == "off" ]] && unset kde_theme
 
         # Format the string based on which themes exist.
-        if  [[ "$gtk2_theme" && "$gtk2_theme" == "$gtk3_theme" ]]; then
+        if [[ "$gtk2_theme" && "$gtk2_theme" == "$gtk3_theme" ]]; then
             gtk3_theme+=" [GTK2/3]"
             unset gtk2_theme
 
@@ -1717,6 +1716,7 @@ get_style() {
 
         # Final string.
         theme="${kde_theme}${gtk2_theme}${gtk3_theme}"
+        theme="${theme%, }"
 
         # Make the output shorter by removing "[GTKX]" from the string.
         if [[ "$gtk_shorthand" == "on" ]]; then
