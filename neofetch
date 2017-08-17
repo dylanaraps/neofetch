@@ -1927,8 +1927,7 @@ get_term_font() {
                 rm -f "$mateterm_config"
 
                 mate_get() {
-                   gsettings get org.mate.terminal.profile:\
-                   /org/mate/terminal/profiles/"$1"/ "$2"
+                   gsettings get org.mate.terminal.profile:/org/mate/terminal/profiles/"$1"/ "$2"
                 }
 
                 if [[ "$(mate_get "$profile" "use-system-font")" == "true" ]]; then
