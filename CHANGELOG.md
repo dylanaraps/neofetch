@@ -58,6 +58,11 @@
 
 - [Linux] Filter out duplicate entries.
 
+**Model**
+
+- Added support for QEMU/KVM.
+- Renamed subtitle to `Host:`.
+
 **Uptime**
 
 - [AIX/IRIX] Fixed Neofetch crashing when calculating uptime.
@@ -71,10 +76,12 @@
 - Added support for LXTerminal. **[@mstraube](https://github.com/mstraube)**
 - Added support for GNUStep Terminal. **[@mstraube](https://github.com/mstraube)**
 - Fixed Xfce4-terminal font output when system-wide font is used. **[@mstraube](https://github.com/mstraube)**
+- Fixed MATE-Terminal issue. **[@mstraube](https://github.com/mstraube)**
 
 **Theme**
 
 - [Qt/KDE] Fixed inaccurate theme naming. **[@mstraube](https://github.com/mstraube)**
+- [Qt/KDE] GTK theme is now shows as well.
 
 **Window Manager**
 
