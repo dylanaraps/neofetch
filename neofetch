@@ -3548,6 +3548,11 @@ get_distro_colors() {
             ascii_file="redhat"
         ;;
 
+        "Refracted Devuan"*)
+            set_colors 8 7
+            ascii_file="refracta"
+        ;;
+
         "Rosa"*)
             set_colors 4 7 1
             ascii_file="rosa"
