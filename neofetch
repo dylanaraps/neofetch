@@ -2077,7 +2077,7 @@ get_battery() {
         "Linux")
             # We use 'prin' here so that we can do multi battery support
             # with a single battery per line.
-            for bat in "/sys/class/power_supply/"{BAT,axp288_fuel_gauge}*; do
+            for bat in "/sys/class/power_supply/"{BAT,axp288_fuel_gauge,CMB}*; do
                 capacity="$(< "${bat}/capacity")"
                 status="$(< "${bat}/status")"
 
