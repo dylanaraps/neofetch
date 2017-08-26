@@ -3,6 +3,7 @@
 - **[@mstraube](https://github.com/mstraube)**
 - **[@dominiklohmann](https://github.com/dominiklohmann)**
 - **[@lexruee](https://github.com/lexruee)**
+- **[@deadda7a](https://github.com/deadda7a)**
 
 
 ## General
@@ -91,6 +92,11 @@
 **Song**
 
 - Added support for Pogo. **[@mstraube](https://github.com/mstraube)**
+- Fixed bug with players not being found.
+
+**Battery**
+
+- Added battery support for Thinkpads and other devices that use the `CMB` naming for batteries. **[@deadda7a](https://github.com/deadda7a)**
 
 ## Images
 
