@@ -4,6 +4,7 @@
 - **[@dominiklohmann](https://github.com/dominiklohmann)**
 - **[@lexruee](https://github.com/lexruee)**
 - **[@deadda7a](https://github.com/deadda7a)**
+- **[@winneon](https://github.com/winneon)**
 
 
 ## General
@@ -99,6 +100,11 @@
 
 - Added battery support for Thinkpads and other devices that use the `CMB` naming for batteries. **[@deadda7a](https://github.com/deadda7a)**
 
+
 ## Images
 
 - Fixed division by 0 error in XTerm.
+
+## Screenshot
+
+- Fixed `scrot_cmd` arguments not being used. **[@winneon](https://github.com/winneon)**
