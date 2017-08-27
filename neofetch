@@ -2857,8 +2857,9 @@ scrot_program() {
     # We first check to see if an X server is running before
     # falling back to OS specific screenshot tools.
     if [[ -n "$DISPLAY" ]]; then
-        if [[ "$scrot_cmd" != "auto" ]] && type -p "$scrot_cmd" >/dev/null; then
-            scrot_program=("$scrot_cmd")
+        if [[ "$scrot_cmd" != "auto" ]] && type -p $(awk '{print $1;}' <<< $scrot_cmd) >/dev/null; then
+            scrot_program=$(awk '{print $1;}' <<< $scrot_cmd)
+            scrot_args=$(echo ${scrot_cmd//$scrot_program} | xargs)
 
         elif type -p maim >/dev/null; then
             scrot_program=(maim)
@@ -2897,7 +2898,7 @@ scrot_program() {
     printf "%s\r" "Taking scrot..."
 
     # Take the scrot.
-    "${scrot_program[@]}" "$1"
+    $scrot_program $scrot_args "$1"
 
     err "Scrot: Screen captured using ${scrot_program[0]}"
 }
