@@ -14,6 +14,7 @@
     - This mode prints the information in plain text.
     - You can use it with `--stdout`.
     - Example: https://gist.github.com/dylanaraps/151c205322cf3acae62661b76464a3f7
+- Fixed prompt location if color blocks are disabled.
 
 
 ## Operating System
