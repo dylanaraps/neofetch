@@ -2858,8 +2858,8 @@ scrot_program() {
     # falling back to OS specific screenshot tools.
     if [[ -n "$DISPLAY" ]]; then
         if [[ "$scrot_cmd" != "auto" ]] && type -p $(awk '{print $1;}' <<< $scrot_cmd) >/dev/null; then
-          scrot_program=$(awk '{print $1;}' <<< $scrot_cmd)
-          scrot_args=$(echo ${scrot_cmd//$scrot_program} | xargs)
+            scrot_program=$(awk '{print $1;}' <<< $scrot_cmd)
+            scrot_args=$(echo ${scrot_cmd//$scrot_program} | xargs)
 
         elif type -p maim >/dev/null; then
             scrot_program=(maim)
