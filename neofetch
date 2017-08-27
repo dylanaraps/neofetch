@@ -2857,8 +2857,8 @@ scrot_program() {
     # We first check to see if an X server is running before
     # falling back to OS specific screenshot tools.
     if [[ -n "$DISPLAY" ]]; then
-        if [[ "$scrot_cmd" != "auto" ]] && type -p "$scrot_cmd" >/dev/null; then
-            scrot_program=("$scrot_cmd")
+        if [[ "$scrot_cmd" != "auto" ]] && type -p "${scrot_cmd%% *}" >/dev/null; then
+            scrot_program=($scrot_cmd)
 
         elif type -p maim >/dev/null; then
             scrot_program=(maim)
