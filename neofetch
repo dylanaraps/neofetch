@@ -4008,9 +4008,6 @@ dynamic_prompt() {
         lines="$((lines - info_height))"
     fi
 
-    # Print a newline if color blocks are disabled.
-    [[ -z "$block_spaces" ]] && printf "\n"
-
     # Set the prompt location.
     ((lines > 0)) && printf "%b" "\033[${lines}B"
 }
