@@ -2258,6 +2258,14 @@ get_locale() {
     locale="$sys_locale"
 }
 
+get_gpu_driver() {
+    case "$os" in
+        "Linux")
+            gpu_driver="$(lspci -nnk | awk -F ': ' '/VGA/{nr[NR+2]}; NR in nr {print $2}')"
+        ;;
+    esac
+}
+
 get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
