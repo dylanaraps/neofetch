@@ -80,6 +80,7 @@
 - Added support for GNUStep Terminal. **[@mstraube](https://github.com/mstraube)**
 - Fixed Xfce4-terminal font output when system-wide font is used. **[@mstraube](https://github.com/mstraube)**
 - Fixed MATE-Terminal issue. **[@mstraube](https://github.com/mstraube)**
+- Fixed URxvt font detection failing if `.` is used. **[@winneon](https://github.com/winneon)**
 
 **Theme**
 
