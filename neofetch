@@ -1972,7 +1972,7 @@ get_term_font() {
         ;;
 
         "urxvt" | "urxvtd" | "rxvt-unicode" | "xterm")
-            term_font="$(grep -i -F "${term/d}*font" < <(xrdb -query))"
+            term_font="$(grep -i "${term/d}\*\.*font" < <(xrdb -query))"
             term_font="${term_font/*"*font:"}"
             term_font="$(trim "$term_font")"
 
