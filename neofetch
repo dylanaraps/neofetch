@@ -1976,6 +1976,12 @@ get_term_font() {
             term_font="${term_font/*"*font:"}"
             term_font="$(trim "$term_font")"
 
+            if [[ -z "$term_font" ]]; then
+                term_font="$(grep -i -F "${term/d}.font" < <(xrdb -query))"
+                term_font="${term_font/*".font:"}"
+                term_font="$(trim "$term_font")"
+            fi
+
             # Xresources has two different font formats, this checks which
             # one is in use and formats it accordingly.
             case "$term_font" in
