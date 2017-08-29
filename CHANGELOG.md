@@ -49,6 +49,11 @@
 
 ## Info
 
+**GPU Driver**
+
+- [Linux] Added a new info function (*off by default*) to display the GPU Driver currently in use.
+- Add `info "GPU Driver" gpu_driver` to your config to use it.
+
 **CPU**
 
 - [Linux] Fixed inaccurate output on ARM SoC devices.
