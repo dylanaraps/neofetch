@@ -5,6 +5,7 @@
 - **[@lexruee](https://github.com/lexruee)**
 - **[@deadda7a](https://github.com/deadda7a)**
 - **[@winneon](https://github.com/winneon)**
+- **[@DamnWidget](https://github.com/DamnWidget)**
 
 
 ## General
@@ -22,7 +23,7 @@
 
 - Added support for AryaLinux. **[@mstraube](https://github.com/mstraube)**
 - Added support for Amazon Linux AMI.
-- Added support for Artix Linux.
+- Added support for Artix Linux. **[@DamnWidget](https://github.com/DamnWidget)**
 - Added support for Endless OS.
 - Added support for Sabotage Linux.
 - Added support for Siduction. **[@lexruee](https://github.com/lexruee)**
