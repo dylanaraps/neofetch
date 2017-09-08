@@ -3130,7 +3130,7 @@ get_distro_colors() {
         ;;
 
         "Artix"*)
-            set_colors 4 7
+            set_colors 6 4 2 7
             ascii_file="artix"
         ;;
 
