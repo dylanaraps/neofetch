@@ -84,6 +84,12 @@ get_distro() {
                     *) distro="Siduction ($(lsb_release -sic))"
                 esac
 
+            elif [[ -x "/usr/bin/pveversion" ]]; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="Proxmox VE" ;;
+                    *) distro="Proxmox VE $(pveversion | grep -oP 'pve-manager\/\K\d+\.\d+')"
+                esac
+
             elif type -p lsb_release >/dev/null; then
                 case "$distro_shorthand" in
                     "on")   lsb_flags="-sir" ;;
@@ -3532,6 +3538,11 @@ get_distro_colors() {
         "Porteus"*)
             set_colors 6 7
             ascii_file="porteus"
+        ;;
+
+        "Proxmox VE"*)
+            set_colors 7 202
+            ascii_file="proxmox_ve"
         ;;
 
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
