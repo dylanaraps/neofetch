@@ -1618,7 +1618,12 @@ get_style() {
                     kde_config_file="${kde_config_dir}/kdeglobals"
 
                     kde_theme="$(grep "^${kde}" "$kde_config_file")"
-                    kde_theme="${kde_theme/${kde}*=}"
+                    kde_theme="${kde_theme/*=}"
+                    if [[ "$kde" == "font" ]]; then
+                        kde_font_size="${kde_theme#*,}"
+                        kde_font_size="${kde_font_size/,*}"
+                        kde_theme="${kde_theme/,*} ${kde_theme/*,} ${kde_font_size}"
+                    fi
                     kde_theme="$(uppercase "$kde_theme") [KDE], "
                 else
                     err "Theme: KDE config files not found, skipping."
