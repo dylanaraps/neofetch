@@ -160,6 +160,7 @@ get_distro() {
                 fi
             fi
             distro="$(trim_quotes "$distro")"
+            distro="${distro/'NAME='}"
         ;;
 
         "Mac OS X")
