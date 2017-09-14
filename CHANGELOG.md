@@ -1,8 +1,11 @@
 ## Contributors
 
+- **[@konimex](https://github.com/konimex)**
 - **[@mstraube](https://github.com/mstraube)**
 - **[@dominiklohmann](https://github.com/dominiklohmann)**
+- **[@ybden](https://github.com/ybden)**
 - **[@lexruee](https://github.com/lexruee)**
+- **[@AMDmi3](https://github.com/AMDmi3)**
 - **[@deadda7a](https://github.com/deadda7a)**
 - **[@winneon](https://github.com/winneon)**
 - **[@DamnWidget](https://github.com/DamnWidget)**
@@ -17,6 +20,7 @@
     - You can use it with `--stdout`.
     - Example: https://gist.github.com/dylanaraps/151c205322cf3acae62661b76464a3f7
 - Fixed prompt location if color blocks are disabled.
+- Make makefile more portable. **[@AMDmi3](https://github.com/AMDmi3)**
 
 
 ## Operating System
@@ -114,4 +118,5 @@
 
 ## Screenshot
 
+- Use `maim` over `scrot`. **[@ybden](https://github.com/ybden)**
 - Fixed `scrot_cmd` arguments not being used. **[@winneon](https://github.com/winneon)**
