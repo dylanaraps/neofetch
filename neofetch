@@ -1412,7 +1412,7 @@ get_song() {
     player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|\
 Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|\
 xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|\
-guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo/ {printf $5 " " $6; exit}')"
+guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " " $6; exit}')"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1443,6 +1443,7 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo/ {printf $5 " " $6; 
         "yarock"*)       get_song_dbus "yarock" ;;
         "deepin-music"*) get_song_dbus "deepinmusic" ;;
         "tomahawk"*)     get_song_dbus "tomahawk" ;;
+        "elisa"*)        get_song_dbus "elisa" ;;
 
         "audacious"*)
             song="$(audtool current-song)"
