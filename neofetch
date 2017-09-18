@@ -345,6 +345,7 @@ get_model() {
     model="${model//Default string}"
     model="${model//Not Specified}"
     model="${model//Type1ProductConfigId}"
+    model="${model//INVALID}"
 
     case "$model" in
         "Standard PC"*) model="KVM/QEMU (${model})" ;;
