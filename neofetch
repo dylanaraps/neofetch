@@ -3202,6 +3202,11 @@ get_distro_colors() {
             ascii_file="cloveros"
         ;;
 
+        "Container Linux by CoreOS"*)
+            set_colors 4 7 1
+            ascii_file="coreos"
+        ;;
+
         "crux_small")
             set_colors 4 5 7 6
             ascii_file="crux_small"
