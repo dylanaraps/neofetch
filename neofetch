@@ -134,7 +134,12 @@ get_distro() {
                     "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
                     "off") distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
-
+		
+                # Workaround for CoreOS - CoreOS has a VERSION_ID that is epoch since the project
+		# started and hence will change every upgrade. This breaks the catchall os-release
+		# test.	
+		[[ $NAME == "Container Linux by CoreOS" ]] && distro="$ID"
+		
                 # Workarounds for distros that go against the os-release standard.
                 [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}')" "${files[@]}"
                 [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}')"  "${files[@]}"
@@ -3202,7 +3207,7 @@ get_distro_colors() {
             ascii_file="cloveros"
         ;;
 
-        "Container Linux by CoreOS"*)
+        "coreos"*)
             set_colors 4 7 1
             ascii_file="coreos"
         ;;
