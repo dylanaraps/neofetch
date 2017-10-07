@@ -1423,7 +1423,7 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
             awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
-            awk -F '"' '/artist/ {a=$2} /title/ {t=$2} END{print a " - " t}'
+            awk -F '"' '/artist/ {a=$2} /album"/ {b=$2} /title/ {t=$2} END{print a " - " b " - " t}'
         )"
     }
 
@@ -1450,13 +1450,14 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
             song="$(audtool current-song)"
 
             # Remove Album from 'Artist - Album - Title'
-            song="${song/-* -/-}"
+            #song="${song/-* -/-}"
 
             [[ -z "$song" ]] && get_song_dbus "audacious"
         ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; print; print " - "}\
+                                          /tag album/ {$1=$2=""; print; print " - "}\
                                           /tag title/ {$1=$2=""; print}')"
         ;;
 
@@ -1465,14 +1466,16 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
                 "Linux") get_song_dbus "spotify" ;;
 
                 "Mac OS X")
-                    song="$(osascript -e 'tell application "Spotify" to artist of current track as \
+                    song="$(osascript -e 'tell application "Spotify" to artist of current track as¬
+                                          string & " - " & album of current track as¬
                                           string & " - " & name of current track as string')"
                 ;;
             esac
         ;;
 
         "itunes"*)
-            song="$(osascript -e 'tell application "iTunes" to artist of current track as \
+            song="$(osascript -e 'tell application "iTunes" to artist of current track as¬
+                                  string & " - " & album of current track as¬
                                   string & " - " & name of current track as string')"
         ;;
 
@@ -1514,13 +1517,16 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
 
     [[ "$(trim "$song")" == "-" ]] && unset -v song
 
-    # Display Artist and Title on separate lines.
+    # Display Artist, Album and Title on separate lines.
     if [[ "$song_shorthand" == "on" && "$song" ]]; then
         artist="${song/ -*}"
+        album="${song#*- }"
+        album="${album% -*}"
         song="${song/*-}"
 
         if [[ "$song" != "$artist" ]]; then
             prin "Artist" "$artist"
+            prin "Album" "$album"
             prin "Song" "$song"
         else
             prin "$subtitle" "$song"
