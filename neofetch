@@ -2492,7 +2492,7 @@ get_wallpaper() {
 
                 *)
                     if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
-                        image="$(< "${HOME}/.fehbg")"
+                        image="$(awk '{print $NF}' "${HOME}/.fehbg")"
                         image="${image#*\'}"
                         image="${image%\'*}"
 
