@@ -1427,6 +1427,8 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
         )"
     }
 
+    player="cmus"
+
     case "${player/*\/}" in
         "mpd"* | "mopidy"*) song="$(mpc current)" ;;
         "mocp"*)         song="$(mocp -Q "%artist - %song")" ;;
@@ -1456,9 +1458,11 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
         ;;
 
         "cmus"*)
-            song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; print; print " - "}\
-                                          /tag album/ {$1=$2=""; print; print " - "}\
-                                          /tag title/ {$1=$2=""; print}')"
+            song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
+                                          /tag artist/ {$1=$2=""; sub("  ", ""); a=$0}\
+                                          /tag album/ {$1=$2=""; sub("  ", ""); b=$0}\
+                                          /tag title/ {$1=$2=""; sub("  ", ""); t=$0}\
+                                          END { print a " - " b " - " t }')"
         ;;
 
         "spotify"*)
