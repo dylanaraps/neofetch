@@ -2256,7 +2256,7 @@ get_install_date() {
 
         *)
             if [[ "$os" == "Mac OS X" ]]; then
-                install_date="$(ls -dlctuT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8}')"
+                install_date="$(ls -dlctUT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8}')"
             else
                 install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8}')"
             fi
