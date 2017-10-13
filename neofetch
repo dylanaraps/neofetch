@@ -1427,8 +1427,6 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
         )"
     }
 
-    player="cmus"
-
     case "${player/*\/}" in
         "mpd"* | "mopidy"*) song="$(mpc current)" ;;
         "mocp"*)         song="$(mocp -Q "%artist - %song")" ;;
