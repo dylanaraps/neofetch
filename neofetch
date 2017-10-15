@@ -3388,6 +3388,11 @@ get_distro_colors() {
             ascii_file="lubuntu"
         ;;
 
+        "Lunar"*)
+            set_colors 4 7 3
+            ascii_file="lunar"
+        ;;
+
         "mac"*"_small")
             set_colors 2 3 1 5 4
             ascii_file="mac_small"
