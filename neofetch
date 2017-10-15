@@ -2254,7 +2254,13 @@ get_install_date() {
             return
         ;;
 
-        *) install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')" ;;
+        *"HLOPRSTUWabc"*) # macOS ls
+            install_date="$(ls -dlctUT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')"
+        ;;
+
+        *)
+            install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8}')"
+        ;;
     esac
 
     install_date="${install_date//-/ }"
