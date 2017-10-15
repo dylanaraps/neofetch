@@ -2254,12 +2254,12 @@ get_install_date() {
             return
         ;;
 
+        *"HLOPRSTUWabc"*) # macOS ls
+            install_date="$(ls -dlctUT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')"
+        ;;
+
         *)
-            if [[ "$os" == "Mac OS X" ]]; then
-                install_date="$(ls -dlctUT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')"
-            else
-                install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8}')"
-            fi
+            install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8}')"
         ;;
     esac
 
