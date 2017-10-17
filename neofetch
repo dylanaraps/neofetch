@@ -2280,6 +2280,13 @@ get_gpu_driver() {
                           '/Display|3D|VGA/{nr[NR+2]}; NR in nr {printf $2 ", "}')"
             gpu_driver="${gpu_driver%, }"
         ;;
+        "Mac OS X")
+            if [[ "$(kextstat | grep "GeForceWeb")" != "" ]]; then
+                gpu_driver="Nvidia Web Driver"
+            else
+                gpu_driver="macOS Default Graphics Driver"
+            fi
+        ;;
     esac
 }
 
