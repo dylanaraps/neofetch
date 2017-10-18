@@ -1540,14 +1540,18 @@ get_resolution() {
                               awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
-            scale_factor="$(PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" \
-                            /Library/Preferences/com.apple.windowserver.plist)"
+            if [[ -e "/Library/Preferences/com.apple.windowserver.plist" ]]; then
+                scale_factor="$(PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" \
+                                /Library/Preferences/com.apple.windowserver.plist)"
+            else
+                scale_factor=""
+            fi
 
             # If no refresh rate is empty.
             [[ "$resolution" == *"@ Hz"* ]] && \
                 resolution="${resolution//@ Hz}"
 
-            ((${scale_factor%.*} == 2)) && \
+            [[ "${scale_factor%.*}" == 2 ]] && \
                 resolution="${resolution// @/@2x @}"
 
             if [[ "$refresh_rate" == "off" ]]; then
