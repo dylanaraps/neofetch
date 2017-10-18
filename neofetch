@@ -177,7 +177,7 @@ get_distro() {
                 "10.10"*) codename="OS X Yosemite" ;;
                 "10.11"*) codename="OS X El Capitan" ;;
                 "10.12"*) codename="macOS Sierra" ;;
-		"10.13"*) codename="macOS High Sierra" ;;
+                "10.13"*) codename="macOS High Sierra" ;;
                 *)        codename="macOS" ;;
             esac
             distro="$codename $osx_version $osx_build"
