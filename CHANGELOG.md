@@ -18,4 +18,9 @@
 - [macOS] Fixed chunkwm being detected as Kwm. [**@iandrewt**](https://github.com/iandrewt)
 
 **Install Date**
+
 - [macOS] Fixed Install Date. [**@iandrewt**](https://github.com/iandrewt)
+
+**Resolution**
+
+- [macOS] Fixed errors on non-retina screens. [**@iandrewt**](https://github.com/iandrewt)
