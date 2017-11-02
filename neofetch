@@ -3571,6 +3571,11 @@ get_distro_colors() {
             ascii_file="peppermint"
         ;;
 
+        "Pop!_OS"*)
+            set_colors 6 7
+            ascii_file="pop_os"
+        ;;
+
         "Porteus"*)
             set_colors 6 7
             ascii_file="porteus"
