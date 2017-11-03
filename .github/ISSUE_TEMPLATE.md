@@ -1,12 +1,13 @@
 ## Description
 
-Only fill in the fields below if relevant. If you're
-suggesting a new feature then just a description will suffice.
+If you're suggesting a new feature then just a description will suffice.
 
 
 #### Neofetch version
 
 ## Screenshot
+
+## Config file
 
 ## Verbose log
 
