@@ -1,22 +1,27 @@
 ## Contributors
 
+- [**@yslgirl**](https://github.com/yslgirl)
+- [**@iandrewt**](https://github.com/iandrewt)
+- [**@chrisweeksnz**](https://github.com/chrisweeksnz)
 
-## General
 
-- Config file now has a `.conf` suffix.
-- Neofetch now assumes target directories (config file and ASCII directory) at install time, this fixes problems with systems such as NixOS.
+## OS
+
+- Fixed detection bug with Gentoo.
+- Added support for macOS High Sierra. [**@yslgirl**](https://github.com/yslgirl)
+- Added support for Container Linux by CoreOS. [**@chrisweeksnz**](https://github.com/chrisweeksnz)
+- Added support for 2017 iOS devices [**@iandrewt**](https://github.com/iandrewt)
 
 ## Info
 
-**CPU**
+**Window Manager**
 
-- [Linux] Fixed inaccurate output on ARM SoC devices.
+- [macOS] Fixed chunkwm being detected as Kwm. [**@iandrewt**](https://github.com/iandrewt)
 
-**Terminal**
+**Install Date**
 
-- [SSH] Fixed infinite loop if neofetch is run on non-interactive shells.
+- [macOS] Fixed Install Date. [**@iandrewt**](https://github.com/iandrewt)
 
+**Resolution**
 
-## Images
-
-- Fixed division by 0 error in XTerm.
+- [macOS] Fixed errors on non-retina screens. [**@iandrewt**](https://github.com/iandrewt)
