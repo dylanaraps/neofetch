@@ -3397,6 +3397,11 @@ get_distro_colors() {
             ascii_file="kubuntu"
         ;;
 
+        "LEDE"*)
+            set_colors 4 7 1
+            ascii_file="lede"
+        ;;
+
         "Linux")
             set_colors fg 8 3
             ascii_file="linux"
