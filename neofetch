@@ -551,6 +551,9 @@ get_packages() {
                 package_dir=(/var/db/paludis/repositories/{cross-installed,installed}/*/data/*)
                 packages="$((packages+=$(ls -d -1 "${package_dir[@]}" | wc -l)))"
             fi
+           
+            type -p butch >/dev/null && \
+                packages="$((packages+=$(butch list | wc -l)))" 
 
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
