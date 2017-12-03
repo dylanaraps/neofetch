@@ -3003,7 +3003,7 @@ prin() {
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
-    printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset}"
+    printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset} "
 
     # Calculate info height.
     ((++info_height))
@@ -3016,7 +3016,7 @@ get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
         printf "%b%b\n" "${text_padding:+\033[${text_padding}C}${zws}${underline_color}" \
-                        "${underline// /$underline_char}${reset}"
+                        "${underline// /$underline_char}${reset} "
         unset -v length
     fi
     prin=1
