@@ -5,6 +5,7 @@
 - [**@chrisweeksnz**](https://github.com/chrisweeksnz)
 - [**@dawidd6**](https://github.com/dawidd6)
 - [**@MitchWeaver**](https://github.com/MitchWeaver)
+- [**@StarryTony**](https://github.com/StarryTony)
 
 
 ## OS
@@ -15,6 +16,12 @@
 - Added support for Container Linux by CoreOS. [**@chrisweeksnz**](https://github.com/chrisweeksnz)
 - Added support for 2017 iOS devices [**@iandrewt**](https://github.com/iandrewt)
 - Added support for LEDE. [**@dawidd6**](https://github.com/dawidd6)
+
+
+## Images
+
+- [MacOS/iTerm2] Fixed thumbnail not appearing (replaced by placeholder) [**@StarryTony**](https://github.com/StarryTony)
+
 
 ## Info
 
