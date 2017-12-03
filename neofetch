@@ -2689,7 +2689,6 @@ get_image_size() {
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    # fix in mac cannot replace '/' with '_', optionally can use ${image//\//_}
     image_name="$crop_mode-$crop_offset-$width-$height-${image##*/}"
 
     # Handle file extensions.
