@@ -689,6 +689,7 @@ get_de() {
         *"xfce5"*) de="Xfce5" ;;
         *"xfce"*)  de="Xfce" ;;
         *"mate"*)  de="MATE" ;;
+        *"GNOME"*) de="GNOME $(gnome-shell --version)" ;;
     esac
 
     # Log that the function was run.
