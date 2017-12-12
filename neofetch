@@ -551,9 +551,9 @@ get_packages() {
                 package_dir=(/var/db/paludis/repositories/{cross-installed,installed}/*/data/*)
                 packages="$((packages+=$(ls -d -1 "${package_dir[@]}" | wc -l)))"
             fi
-           
+
             type -p butch >/dev/null && \
-                packages="$((packages+=$(butch list | wc -l)))" 
+                packages="$((packages+=$(butch list | wc -l)))"
 
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
@@ -2293,10 +2293,16 @@ get_gpu_driver() {
             gpu_driver="$(lspci -nnk | awk -F ': ' \
                           '/Display|3D|VGA/{nr[NR+2]}; NR in nr {printf $2 ", "}')"
             gpu_driver="${gpu_driver%, }"
+
+            if [[ "$gpu_driver" == *"nvidia"* ]]; then
+                gpu_driver="$(< /proc/driver/nvidia/version)"
+                gpu_driver="${gpu_driver/*Module  }"
+                gpu_driver="NVIDIA ${gpu_driver/  *}"
+            fi
         ;;
         "Mac OS X")
             if [[ "$(kextstat | grep "GeForceWeb")" != "" ]]; then
-                gpu_driver="Nvidia Web Driver"
+                gpu_driver="NVIDIA Web Driver"
             else
                 gpu_driver="macOS Default Graphics Driver"
             fi
