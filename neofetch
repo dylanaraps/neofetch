@@ -2690,6 +2690,12 @@ get_image_size() {
             width="${size%% *}"
             height="${size##* }"
             crop_mode="none"
+
+            while (( "$width" >= ("$term_width" / 2) ||
+                     "$height" >= "$term_height" )); do
+                width="$((width / 2))"
+                height="$((height / 2))"
+            done
         ;;
 
         *) image_size="${image_size/px}" ;;
