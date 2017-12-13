@@ -4098,7 +4098,7 @@ dynamic_prompt() {
     fi
 
     # Set the prompt location.
-    ((lines > 0)) && printf "%b" "\033[${lines}B"
+    ((lines > 1)) && printf "%b" "\033[${lines}B"
 }
 
 old_functions() {
