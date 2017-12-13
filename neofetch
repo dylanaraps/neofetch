@@ -2704,7 +2704,7 @@ make_thumbnail() {
     # Create the thumbnail dir if it doesn't exist.
     mkdir -p "$thumbnail_dir"
 
-    if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
+    [[ ! -f "$thumbnail_dir/$image_name" ]] && \
         convert \
             "$image" \
             -strip \
@@ -2714,7 +2714,6 @@ make_thumbnail() {
             -sample "$width"x"$height"^ \
             -extent "$width"x"$height" \
             "$thumbnail_dir/$image_name"
-    fi
 
     image="$thumbnail_dir/$image_name"
 }
@@ -4403,11 +4402,9 @@ ASCII:
 IMAGE:
     --loop                      Redraw the image constantly until Ctrl+C is used. This fixes issues
                                 in some terminals emulators when using image mode.
-    --size 00px | --size 00%    How to size the image.
+    --size auto | --size square How to size the image.
                                 Possible values: auto, 00px, 00%, none
-    --crop_mode mode            Which crop mode to use
-                                Takes the values: normal, fit, fill
-    --crop_offset value         Change the crop offset for normal mode.
+    --crop_offset value         Change the crop offset for square mode.
                                 Possible values: northwest, north, northeast,
                                 west, center, east, southwest, south, southeast
 
