@@ -2692,7 +2692,7 @@ get_image_size() {
 
 make_thumbnail() {
     # Name the thumbnail using variables so we can use it later.
-    image_name="$crop_mode-$crop_offset-$width-$height-${image##*/}"
+    image_name="$image_size-$crop_offset-$width-$height-${image##*/}"
 
     # Handle file extensions.
     case "${image##*.}" in
@@ -2705,21 +2705,15 @@ make_thumbnail() {
     mkdir -p "$thumbnail_dir"
 
     if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
-        case "$image_size" in
-            "square")
-                convert \
-                    "$image" \
-                    -strip \
-                    -quality 50 \
-                    -gravity "$crop_offset" \
-                    -background none \
-                    -sample "$width"x"$height"^ \
-                    -extent "$width"x"$height" \
-                    "$thumbnail_dir/$image_name"
-            ;;
-
-            *) cp "$image" "$thumbnail_dir/$image_name" ;;
-        esac
+        convert \
+            "$image" \
+            -strip \
+            -quality 50 \
+            -gravity "$crop_offset" \
+            -background none \
+            -sample "$width"x"$height"^ \
+            -extent "$width"x"$height" \
+            "$thumbnail_dir/$image_name"
     fi
 
     image="$thumbnail_dir/$image_name"
