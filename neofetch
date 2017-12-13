@@ -949,8 +949,8 @@ get_cpu() {
 
             # Get CPU temp.
             if [[ -f "$temp_dir" ]]; then
-                temp="$(< "$temp_dir")"
-                temp="$((temp * 100 / 10000))"
+                deg="$(< "$temp_dir")"
+                deg="$((deg * 100 / 10000))"
             fi
 
             # Get CPU cores.
@@ -1013,12 +1013,12 @@ get_cpu() {
             # Get CPU temp.
             case "$kernel_name" in
                 "FreeBSD"* | "DragonFly"* | "NetBSD"*)
-                    temp="$(sysctl -n dev.cpu.0.temperature)"
-                    temp="${temp/C}"
+                    deg="$(sysctl -n dev.cpu.0.temperature)"
+                    deg="${deg/C}"
                 ;;
                 "OpenBSD"* | "Bitrig"*)
-                    temp="$(sysctl -n hw.sensors.lm0.temp0)"
-                    temp="${temp/ degC}"
+                    deg="$(sysctl -n hw.sensors.lm0.temp0)"
+                    deg="${deg/ degC}"
                 ;;
             esac
         ;;
@@ -1135,15 +1135,15 @@ get_cpu() {
     fi
 
     # Add CPU temp to the output.
-    if [[ "$cpu_temp" != "off" && "$temp" ]]; then
-        temp="${temp//.}"
+    if [[ "$cpu_temp" != "off" && "$deg" ]]; then
+        deg="${deg//.}"
 
         # Convert to Fahrenheit if enabled
-        [[ "$cpu_temp" == "F" ]] && temp="$((temp * 90 / 50 + 320))"
+        [[ "$cpu_temp" == "F" ]] && deg="$((deg * 90 / 50 + 320))"
 
         # Format the output
-        temp="[${temp/${temp: -1}}.${temp: -1}°${cpu_temp:-C}]"
-        cpu="$cpu $temp"
+        deg="[${deg/${deg: -1}}.${deg: -1}°${cpu_temp:-C}]"
+        cpu="$cpu $deg"
     fi
 }
 
