@@ -758,7 +758,7 @@ get_wm_theme() {
         ;;
 
         "Sawfish")
-            wm_theme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' \
+            wm_theme="$(awk -F "'|)" '!/^;/ && /default-frame-style/ {a=$(NF-1)} END{print a}') \
                       "${HOME}/.sawfish/custom")"
         ;;
 
