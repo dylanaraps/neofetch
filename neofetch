@@ -2374,7 +2374,8 @@ image_backend() {
         "ascii") get_ascii ;;
         "off") image_backend="off" ;;
 
-        "caca" | "catimg" | "jp2a" | "iterm2" | "termpix" | "tycat" | "w3m" | "sixel")
+        "caca" | "catimg" | "jp2a" | "iterm2" | "termpix" |\
+        "tycat" | "w3m" | "sixel" | "pixterm")
             get_image_source
 
             if [[ ! -f "$image" ]]; then
@@ -2400,7 +2401,7 @@ image_backend() {
         *)
             err "Image: Unknown image backend specified '$image_backend'."
             err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2',
-                                            'off', 'sixel', 'termpix', 'tycat', 'w3m')"
+                                            'off', 'sixel', 'pixterm', 'termpix', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
             get_ascii
         ;;
@@ -2800,8 +2801,16 @@ display_image() {
                 to_off "Image: jp2a failed to display the image."
         ;;
 
+        "pixterm")
+            pixterm -tc "$((width / font_width))" \
+                    -tr "$((height / font_height))" \
+                    "$image" ||\
+                to_off "Image: pixterm failed to display the image."
+        ;;
+
         "sixel")
-            img2sixel -w "$width" "$image" || to_off "Image: libsixel failed to display the image."
+            img2sixel -w "$width" "$image" ||\
+                to_off "Image: libsixel failed to display the image."
         ;;
 
         "termpix")
@@ -4430,6 +4439,7 @@ IMAGE BACKEND:
     --catimg source             Shortcut to use 'catimg' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
+    --pixterm source               Shortcut to use 'pixterm' backend.
     --sixel source              Shortcut to use 'sixel' backend.
     --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
@@ -4645,8 +4655,8 @@ get_args() {
             # Image backend
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--sixel" |\
-            "--termpix" | "--tycat" | "--w3m")
+            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--pixterm" |\
+            "--sixel" | "--termpix" | "--tycat" | "--w3m")
                 image_backend="${1/--}"
                 case "$2" in
                     "-"* | "") ;;
