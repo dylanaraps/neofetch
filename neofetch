@@ -704,27 +704,24 @@ get_wm() {
     ((wm_run == 1)) && return
 
     if [[ "$WAYLAND_DISPLAY" ]]; then
-        if [[ "$SWAYSOCK" ]]; then
-            wm="sway"
-
-        else
-            wm="$(ps -e | grep -m 1 -o -F -e "asc" \
-                                          -e "fireplace" \
-                                          -e "grefsen" \
-                                          -e "mazecompositor" \
-                                          -e "maynard" \
-                                          -e "motorcar" \
-                                          -e "orbment" \
-                                          -e "orbital" \
-                                          -e "perceptia" \
-                                          -e "rustland" \
-                                          -e "velox" \
-                                          -e "wavy" \
-                                          -e "wayhouse" \
-                                          -e "way-cooler" \
-                                          -e "westford" \
-                                          -e "weston")"
-        fi
+        wm="$(ps -e | grep -m 1 -o -F \
+                           -e "asc" \
+                           -e "fireplace" \
+                           -e "grefsen" \
+                           -e "mazecompositor" \
+                           -e "maynard" \
+                           -e "motorcar" \
+                           -e "orbment" \
+                           -e "orbital" \
+                           -e "perceptia" \
+                           -e "rustland" \
+                           -e "sway" \
+                           -e "velox" \
+                           -e "wavy" \
+                           -e "wayhouse" \
+                           -e "way-cooler" \
+                           -e "westford" \
+                           -e "weston")"
 
     elif [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
@@ -752,11 +749,13 @@ get_wm() {
             ;;
 
             "Windows")
-                wm="$(tasklist | grep -m 1 -o -F -e "bugn" \
-                                                 -e "Windawesome" \
-                                                 -e "blackbox" \
-                                                 -e "emerge" \
-                                                 -e "litestep")"
+                wm="$(tasklist | grep -m 1 -o -F \
+                                      -e "bugn" \
+                                      -e "Windawesome" \
+                                      -e "blackbox" \
+                                      -e "emerge" \
+                                      -e "litestep")"
+
                 [[ "$wm" == "blackbox" ]] && wm="bbLean (Blackbox)"
                 wm="${wm:+$wm, }Explorer"
             ;;
