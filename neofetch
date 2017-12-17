@@ -716,7 +716,11 @@ get_wm() {
 
         # Fallback for Wayland wms.
         [[ "$wm" == "xwlc" ]] && \
-            wm="$(ps -e | grep -m 1 -o -F -e "sway" -e "orbment" -e "velox" -e "orbital")"
+            wm="$(ps -e | grep -m 1 -o -F -e "sway" \
+                                          -e "orbment" \
+                                          -e "velox" \
+                                          -e "orbital" \
+                                          -e "way-cooler")"
 
     else
         case "$os" in
