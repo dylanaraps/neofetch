@@ -718,7 +718,6 @@ get_wm() {
         [[ "$wm" == "xwlc" ]] && \
             wm="$(ps -e | grep -m 1 -o -F -e "sway" \
                                           -e "orbment" \
-                                          -e "velox" \
                                           -e "orbital" \
                                           -e "way-cooler")"
 
