@@ -114,7 +114,7 @@ get_distro() {
             elif type -p tazpkg >/dev/null; then
                 distro="SliTaz $(< /etc/slitaz-release)"
 
-            elif type -p kpm > /dev/null; then
+            elif type -p kpt /dev/null && type -p kpm > /dev/null; then
                 distro="KSLinux"
 
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
@@ -476,6 +476,7 @@ get_packages() {
     # This solves issues with neofetch opening the "pacman" game.
     local PATH=":${PATH}:"
     local PATH="${PATH/':/usr/games:'/:}"
+    local PATH="${PATH/':/opt/trinity/bin:'/:}"
     local PATH="${PATH%:}"
     local PATH="${PATH#:}"
 
@@ -666,6 +667,9 @@ get_de() {
 
             elif [[ "$MATE_DESKTOP_SESSION_ID" ]]; then
                 de="MATE"
+
+            elif [[ "$TDE_FULL_SESSION" ]]; then
+                de="Trinity"
             fi
 
             # When a window manager is started from a display manager
@@ -683,7 +687,6 @@ get_de() {
     # Format strings.
     case "$de" in
         "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
-        *"TDE_FULL_SESSION"*) de="Trinity" ;;
         *"MUFFIN"* | "Cinnamon") de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
         *"xfce4"*) de="Xfce4" ;;
         *"xfce5"*) de="Xfce5" ;;
@@ -707,7 +710,7 @@ get_wm() {
         id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
         id="${id##* }"
         wm="$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)"
-        wm="${wm/*_NET_WM_NAME = }"
+        wm="${wm/*WM_NAME = }"
         wm="${wm/\"}"
         wm="${wm/\"*}"
 
