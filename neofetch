@@ -114,7 +114,8 @@ get_distro() {
             elif type -p tazpkg >/dev/null; then
                 distro="SliTaz $(< /etc/slitaz-release)"
 
-            elif type -p kpt /dev/null && type -p kpm > /dev/null; then
+            elif type -p kpt >/dev/null && \
+                 type -p kpm >/dev/null; then
                 distro="KSLinux"
 
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
@@ -543,8 +544,9 @@ get_packages() {
 
             type -p alps >/dev/null && \
                 packages="$((packages+=$(alps showinstalled | wc -l)))"
-            `
-            [[ "$distro" == "KSLinux" ]] && type -p kpm >/dev/null && \
+
+            type -p kpt >/dev/null && \
+            type -p kpm >/dev/null && \
                 packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
 
             if type -p cave >/dev/null; then
