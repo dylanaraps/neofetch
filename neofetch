@@ -476,7 +476,6 @@ get_packages() {
     # This solves issues with neofetch opening the "pacman" game.
     local PATH=":${PATH}:"
     local PATH="${PATH/':/usr/games:'/:}"
-    local PATH="${PATH/':/opt/trinity/bin:'/:}"
     local PATH="${PATH%:}"
     local PATH="${PATH#:}"
 
@@ -487,9 +486,6 @@ get_packages() {
 
             type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
-
-            type -p kpm >/dev/null && \
-                packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
 
             type -p pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
@@ -547,6 +543,9 @@ get_packages() {
 
             type -p alps >/dev/null && \
                 packages="$((packages+=$(alps showinstalled | wc -l)))"
+            `
+            [[ "$distro" == "KSLinux" ]] && type -p kpm >/dev/null && \
+                packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
 
             if type -p cave >/dev/null; then
                 package_dir=(/var/db/paludis/repositories/{cross-installed,installed}/*/data/*)
