@@ -681,7 +681,7 @@ get_de() {
     esac
 
     # Fallback to using xprop.
-    [[ -n "$DISPLAY" && -z "$de" ]] && \
+    [[ "$DISPLAY" && -z "$de" ]] && \
         de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
     # Format strings.
@@ -706,7 +706,27 @@ get_wm() {
     # If function was run, stop here.
     ((wm_run == 1)) && return
 
-    if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    if [[ "$WAYLAND_DISPLAY" ]]; then
+        wm="$(ps -e | grep -m 1 -o -F \
+                           -e "asc" \
+                           -e "fireplace" \
+                           -e "grefsen" \
+                           -e "mazecompositor" \
+                           -e "maynard" \
+                           -e "motorcar" \
+                           -e "orbment" \
+                           -e "orbital" \
+                           -e "perceptia" \
+                           -e "rustland" \
+                           -e "sway" \
+                           -e "velox" \
+                           -e "wavy" \
+                           -e "wayhouse" \
+                           -e "way-cooler" \
+                           -e "westford" \
+                           -e "weston")"
+
+    elif [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
         id="${id##* }"
         wm="$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)"
@@ -716,13 +736,6 @@ get_wm() {
 
         # Window Maker does not set _NET_WM_NAME
         [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
-
-        # Fallback for Wayland wms.
-        [[ "$wm" == "xwlc" ]] && \
-            wm="$(ps -e | grep -m 1 -o -F -e "sway" \
-                                          -e "orbment" \
-                                          -e "orbital" \
-                                          -e "way-cooler")"
 
     else
         case "$os" in
@@ -739,11 +752,13 @@ get_wm() {
             ;;
 
             "Windows")
-                wm="$(tasklist | grep -m 1 -o -F -e "bugn" \
-                                                 -e "Windawesome" \
-                                                 -e "blackbox" \
-                                                 -e "emerge" \
-                                                 -e "litestep")"
+                wm="$(tasklist | grep -m 1 -o -F \
+                                      -e "bugn" \
+                                      -e "Windawesome" \
+                                      -e "blackbox" \
+                                      -e "emerge" \
+                                      -e "litestep")"
+
                 [[ "$wm" == "blackbox" ]] && wm="bbLean (Blackbox)"
                 wm="${wm:+$wm, }Explorer"
             ;;
@@ -1637,7 +1652,7 @@ get_style() {
     # Fix weird output when the function is run multiple times.
     unset gtk2_theme gtk3_theme theme path
 
-    if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    if [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
         ((de_run != 1)) && get_de
 
