@@ -1212,7 +1212,7 @@ get_gpu() {
             # Read GPUs into array.
             IFS=$'\n'
             gpus=($(lspci -mm | awk -F '\\"|\\" \\"|\\(' \
-                                       '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END{for(i in a)
+                                       '/"Display|"3D|"VGA/ {a[$0] = $1 $3 " " $4} END{for(i in a)
                                         {if(!seen[a[i]]++) print a[i]}}'))
             IFS="$old_ifs"
 
@@ -1224,6 +1224,8 @@ get_gpu() {
                 [[ "$gpu_type" == "dedicated" && "$gpu" =~ (i|I)ntel ]] ||\
                 [[ "$gpu_type" == "integrated" && ! "$gpu" =~ (i|I)ntel ]] && \
                     { unset -v gpu; continue; }
+
+                freq="$(< /sys/devices/pci0000\:00/0000\:"${gpu/ *}"/drm/card0/gt_cur_freq_mhz)"
 
                 case "$gpu" in
                     *"advanced"*)
@@ -1267,6 +1269,10 @@ get_gpu() {
                 fi
 
                 prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
+
+                [[ "$gpu_freq" == "on" && "$freq" ]] && \
+                    prin "GPU Frequency" "${freq}Mhz"
+
                 ((++gpu_num))
             done
 
