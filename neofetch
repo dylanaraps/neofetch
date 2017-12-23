@@ -1225,7 +1225,6 @@ get_gpu() {
                 [[ "$gpu_type" == "integrated" && ! "$gpu" =~ (i|I)ntel ]] && \
                     { unset -v gpu; continue; }
 
-                freq="$(< /sys/devices/pci0000\:00/0000\:"${gpu/ *}"/drm/card0/gt_cur_freq_mhz)"
 
                 case "$gpu" in
                     *"advanced"*)
@@ -1246,6 +1245,8 @@ get_gpu() {
                     ;;
 
                     *"intel"*)
+                        freq="$(< /sys/devices/pci0000:00/0000:"${gpu/ *}"/drm/card0/gt_cur_freq_mhz)"
+
                         type -p glxinfo >/dev/null && \
                             gpu="$(glxinfo | grep "Device:.*Intel")"
 
@@ -1270,7 +1271,7 @@ get_gpu() {
 
                 prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
 
-                [[ "$gpu_freq" == "on" && "$freq" ]] && \
+                [[ "${gpu_freq:-on}" == "on" && "$freq" ]] && \
                     prin "GPU Frequency" "${freq}Mhz"
 
                 ((++gpu_num))
