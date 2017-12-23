@@ -1244,7 +1244,9 @@ get_gpu() {
                     ;;
 
                     *"intel"*)
-                        freq="$(< /sys/devices/pci0000:00/0000:"${gpu/ *}"/drm/card0/gt_cur_freq_mhz)"
+                        # (sorry)
+                        freq="$(< /sys/devices/pci0000:00/0000:\
+"${gpu/ *}"/drm/card0/gt_cur_freq_mhz)"
 
                         type -p glxinfo >/dev/null && \
                             gpu="$(glxinfo | grep "Device:.*Intel")"
