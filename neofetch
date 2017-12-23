@@ -1225,7 +1225,6 @@ get_gpu() {
                 [[ "$gpu_type" == "integrated" && ! "$gpu" =~ (i|I)ntel ]] && \
                     { unset -v gpu; continue; }
 
-
                 case "$gpu" in
                     *"advanced"*)
                         gpu="${gpu/'[AMD/ATI]' }"
@@ -1269,10 +1268,7 @@ get_gpu() {
                     gpu="${gpu/Intel }"
                 fi
 
-                prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
-
-                [[ "${gpu_freq:-on}" == "on" && "$freq" ]] && \
-                    prin "GPU Frequency" "${freq}Mhz"
+                prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu ${freq:+@ ${freq}Mhz}"
 
                 ((++gpu_num))
             done
