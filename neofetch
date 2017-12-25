@@ -1428,13 +1428,13 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
     }
 
     case "${player/*\/}" in
-        "mpd"* | "mopidy"*) song="$(mpc current)" ;;
-        "mocp"*)         song="$(mocp -Q "%artist - %song")" ;;
+        "mpd"* | "mopidy"*) song="$(mpc -f '%artist% - %album% - %title%' current)" ;;
+        "mocp"*)         song="$(mocp -Q "%artist - %album - %song")" ;;
         "google play"*)  song="$(gpmdp-remote current)" ;;
-        "rhythmbox"*)    song="$(rhythmbox-client --print-playing)" ;;
-        "deadbeef"*)     song="$(deadbeef --nowplaying-tf  '%artist% - %title%')" ;;
-        "xmms2d"*)       song="$(xmms2 current -f '${artist} - ${title}')" ;;
-        "qmmp"*)         song="$(qmmp --nowplaying '%p - %t')" ;;
+        "rhythmbox"*)    song="$(rhythmbox-client --print-playing-format '%ta - %at - %tt')" ;;
+        "deadbeef"*)     song="$(deadbeef --nowplaying-tf '%artist% - %album% - %title%')" ;;
+        "xmms2d"*)       song="$(xmms2 current -f '${artist} - ${album} - ${title}')" ;;
+        "qmmp"*)         song="$(qmmp --nowplaying '%p - %a - %t')" ;;
         "gnome-music"*)  get_song_dbus "GnomeMusic" ;;
         "lollypop"*)     get_song_dbus "Lollypop" ;;
         "clementine"*)   get_song_dbus "clementine" ;;
@@ -1448,10 +1448,6 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
 
         "audacious"*)
             song="$(audtool current-song)"
-
-            # Remove Album from 'Artist - Album - Title'
-            #song="${song/-* -/-}"
-
             [[ -z "$song" ]] && get_song_dbus "audacious"
         ;;
 
@@ -1482,41 +1478,46 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
         ;;
 
         "banshee"*)
-            song="$(banshee --query-artist --query-title |\
-                    awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
+            song="$(banshee --query-artist --query-album --query-title |\
+                    awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
+                    END{print a " - " b " - "t}')"
         ;;
 
         "amarok"*)
             song="$(qdbus org.kde.amarok /Player GetMetadata |\
-                    awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
+                    awk -F':' '/^artist:/ {a=$2} /^album:/ {b=$2} /^title:/ {t=$2}
+                    END{print a " - " b " - " t}')"
         ;;
 
         "pragha"*)
-            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^title/ {t=$2} END{print a " - " t}')"
+            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
+                                END{print a " - " b " - " t}')"
         ;;
 
         "exaile"*)
             song="$(dbus-send --print-reply --dest=org.exaile.Exaile  /org/exaile/Exaile \
-                    org.exaile.Exaile.Query | awk -F':|,' '{if ($6 && $4) printf $6 " -" $4}')"
+                    org.exaile.Exaile.Query |
+                    awk -F':|,' '{if ($6 && $8 && $4) printf $6 " -" $8 " -" $4}')"
         ;;
 
         "quodlibet"*)
             song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet \
                     /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
-                    awk -F'"' '/artist/ {getline; a=$2} \
-                               /title/ {getline; t=$2} END{print a " - " t}')"
+                    awk -F'"' '/artist/ {getline; a=$2} /album/ {getline; b=$2}
+                               /title/ {getline; t=$2} END{print a " - " b " - " t}')"
         ;;
 
         "pogo"*)
             song="$(dbus-send --print-reply --dest=org.mpris.pogo /Player \
                     org.freedesktop.MediaPlayer.GetMetadata |
-                    awk -F'"' '/string "artist"/ {getline; a=$2} /string "title"/ {getline; t=$2} \
-                               END{print a " - " t}')"
+                    awk -F'"' '/string "artist"/ {getline; a=$2} /string "album"/ {getline; b=$2} \
+                               /string "title"/ {getline; t=$2} END{print a " - " b " - " t}')"
         ;;
 
-        *) mpc >/dev/null 2>&1 && song="$(mpc current)" ;;
+        *) mpc >/dev/null 2>&1 && song="$(mpc -f '%artist% - %album% - %title%' current)" ;;
     esac
 
+    # TODO: adjust for album: "$(trim "$song")" == "- -"
     [[ "$(trim "$song")" == "-" ]] && unset -v song
 
     # Display Artist, Album and Title on separate lines.
