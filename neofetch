@@ -4132,7 +4132,11 @@ dynamic_prompt() {
     fi
 
     # Set the prompt location.
-    ((lines > 1)) && printf "%b" "\\e[${lines}B"
+    if ((lines > 1)) && [[ "$kernel_name" != "OpenBSD" ]]; then
+        printf "%b" "\\e[${lines}B"
+    else
+        tput cub "$lines"
+    fi
 }
 
 old_functions() {
