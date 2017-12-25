@@ -1411,7 +1411,7 @@ get_memory() {
 
             # Mem used.
             case "$kernel_name" in
-                "OpenBSD"*) mem_used="$(($(vmstat | awk 'END{printf $4}') / 1024))" ;;
+                "OpenBSD"*) mem_used="$(($(vmstat | awk -F ' |M' 'END{printf $4}') / 1024))" ;;
                 *) mem_used="$((mem_total - mem_free))" ;;
             esac
         ;;
