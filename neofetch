@@ -4135,7 +4135,7 @@ dynamic_prompt() {
     if ((lines > 1)) && [[ "$kernel_name" != "OpenBSD" ]]; then
         printf "%b" "\\e[${lines}B"
     else
-        tput cub "$lines"
+        tput cud "$lines"
     fi
 }
 
