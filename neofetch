@@ -4132,10 +4132,11 @@ dynamic_prompt() {
     fi
 
     # Set the prompt location.
-    if ((lines > 1)) && [[ "$kernel_name" != "OpenBSD" ]]; then
-        printf "%b" "\\e[${lines}B"
-    else
-        tput cud "$lines"
+    if ((lines > 1)); then
+        case "$kernel_name" in
+            "OpenBSD") tput cud "$lines" ;;
+            *) printf "%b" "\\e[${lines}B" ;;
+        esac
     fi
 }
 
