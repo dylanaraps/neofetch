@@ -1454,7 +1454,7 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
                                           /tag artist/ {$1=$2=""; sub("  ", ""); a=$0}\
-                                          /tag album/ {$1=$2=""; sub("  ", ""); b=$0}\
+                                          /tag album / {$1=$2=""; sub("  ", ""); b=$0}\
                                           /tag title/ {$1=$2=""; sub("  ", ""); t=$0}\
                                           END { print a " - " b " - " t }')"
         ;;
