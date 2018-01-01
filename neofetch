@@ -441,7 +441,6 @@ get_uptime() {
                     now="$(date +%s)"
                     seconds="$((now - boot))"
                 ;;
-
             esac
 
             days="$((seconds / 60 / 60 / 24)) days"
@@ -625,7 +624,6 @@ get_packages() {
             type -p rpm >/dev/null && \
                 packages="$((packages+=$(rpm -qa | wc -l)))"
         ;;
-
     esac
 
     ((packages == 0)) && unset packages
@@ -678,21 +676,16 @@ get_de() {
         "FreeMiNT")
             get_wm
 
-            if [ -e /proc/thing* ]; then
-                de="Thing"
-            elif [ -e /proc/jinnee* ]; then
-                de="Jinnee"
-            elif [ -e /proc/tera* ]; then
-                de="Teradesk"
-            elif [ -e /proc/mdesk ]; then
-                de="mDesk"
-            elif [ -e /proc/neod* ]; then
-                de="NeoDesk"
-            elif [ -e /proc/zdesk* ]; then
-                de="zDesk"
-            else
-                de="Atari"
-            fi
+            for possibles in "$(ls /proc)"; do
+                case "$possibles" in
+                    *thing*) de="Thing" ;;
+                    *jinnee*) de="Jinnee" ;;
+                    *tera*) de="Teradesk" ;;
+                    *neod*) de="NeoDesk" ;;
+                    *zdesk*) de="zDesk" ;;
+                    *mdesk*) de="mDesk" ;;
+                esac  
+            done
         ;;
 
         *)
@@ -807,19 +800,16 @@ get_wm() {
             ;;
 
             "FreeMiNT")
-                if [ -e /proc/xaaes* ]; then
-                    wm="XaAES"
-                elif [ -e /proc/myaes* ]; then
-                    wm="MyAES"
-                elif [ -e /proc/naes* ]; then
-                    wm="N.AES"
-                elif [ -e /proc/geneva* ]; then
-                    wm="Geneva"
-                else
-                    wm="Atari AES"
-                fi
+                wm="Atari AES"
+                for possibles in "$(ls /proc | awk -F'[ .]' '/aes|geneva/ {print $1}')"; do
+                    case "$possibles" in
+                        *xaaes*) wm="XaAES" ;;
+                        *myaes*) wm="MyAES" ;;
+                        *naes*) wm="N.AES" ;;
+                        geneva) wm="Geneva" ;;
+                    esac  
+                done
             ;;
-
         esac
     fi
 
@@ -1163,10 +1153,9 @@ get_cpu() {
         ;;
 
         "FreeMiNT")
-            cpu="$(cat /kern/cpuinfo | awk -F':' '/CPU:/ {printf $2}')"
-            speed="$(cat /kern/cpuinfo | awk -F':' '/Clocking:/ {printf $2}' | awk -F'.' '{ printf $1 }')"
+            cpu="$(awk -F':' '/CPU:/ {printf $2}' /kern/cpuinfo)"
+            speed="$(awk -F'[:.]' '/Clocking:/ {printf $2}' /kern/cpuinfo)"
         ;;
-
     esac
 
     # Remove un-needed patterns from cpu output.
@@ -1511,11 +1500,11 @@ get_memory() {
         ;;
 
         "FreeMiNT")
-            mem_total="$(cat /kern/meminfo | awk -F ':|kB' '/MemTotal:/ {printf $2}')"
-            mem_free="$(cat /kern/meminfo | awk -F ':|kB' '/MemFree:/ {printf $2}')"
-            mem_used="$(( mem_total - mem_free ))"
-            mem_total="$(( mem_total / 1024 ))"
-            mem_used="$(( mem_used / 1024 ))"
+            mem_total="$(awk -F ':|kB' '/MemTotal:/ {printf $2}' /kern/meminfo)"
+            mem_free="$(awk -F ':|kB' '/MemFree:/ {printf $2}' /kern/meminfo)"
+            mem_used="$((mem_total - mem_free))"
+            mem_total="$((mem_total / 1024))"
+            mem_used="$((mem_used / 1024))"
         ;;
 
     esac
@@ -1907,9 +1896,8 @@ get_term() {
     esac
 
     # Most likely TosWin2 on FreeMiNT - quick check
-    if [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]]; then
+    [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && \
         term="TosWin2"
-    fi
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -2464,9 +2452,8 @@ get_cols() {
 
     # TosWin2 on FreeMiNT is terrible at this,
     # so we'll reset colors arbitrarily
-    if [ "${term}" == "TosWin2" ]; then
+    [[ "$term" == "TosWin2" ]] && \
         printf "%b\n" "\\e[30;47m"
-    fi
 
     # Tell info() that we printed manually.
     prin=1
