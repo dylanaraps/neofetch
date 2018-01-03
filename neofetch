@@ -412,7 +412,7 @@ get_uptime() {
                     seconds="${seconds/.*}"
                 ;;
 
-                "Mac OS X" | "iPhone OS" | "BSD")
+                "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
                     boot="$(sysctl -n kern.boottime)"
                     boot="${boot/'{ sec = '}"
                     boot="${boot/,*}"
@@ -434,12 +434,6 @@ get_uptime() {
                     case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
                     h="${h#0}" t="${t#0}"
                     seconds="$((d*86400 + h*3600 + ${t%%:*}*60 + ${t#*:}))"
-                ;;
-
-                "FreeMiNT")
-                    boot="$(sysctl -n kern.boottime)"
-                    now="$(date +%s)"
-                    seconds="$((now - boot))"
                 ;;
             esac
 
@@ -676,8 +670,8 @@ get_de() {
         "FreeMiNT")
             get_wm
 
-            for possibles in "$(ls /proc)"; do
-                case "$possibles" in
+            for files in /proc/*; do
+                case "$files" in
                     *thing*) de="Thing" ;;
                     *jinnee*) de="Jinnee" ;;
                     *tera*) de="Teradesk" ;;
@@ -801,8 +795,8 @@ get_wm() {
 
             "FreeMiNT")
                 wm="Atari AES"
-                for possibles in "$(ls /proc | awk -F'[ .]' '/aes|geneva/ {print $1}')"; do
-                    case "$possibles" in
+                for files in /proc/*; do
+                    case "$files" in
                         *xaaes*) wm="XaAES" ;;
                         *myaes*) wm="MyAES" ;;
                         *naes*) wm="N.AES" ;;
@@ -1154,7 +1148,7 @@ get_cpu() {
 
         "FreeMiNT")
             cpu="$(awk -F':' '/CPU:/ {printf $2}' /kern/cpuinfo)"
-            speed="$(awk -F'[:.]' '/Clocking:/ {printf $2}' /kern/cpuinfo)"
+            speed="$(awk -F '[:.M]' '/Clocking:/ {printf $2}' /kern/cpuinfo)"
         ;;
     esac
 
@@ -1500,8 +1494,9 @@ get_memory() {
         ;;
 
         "FreeMiNT")
-            mem_total="$(awk -F ':|kB' '/MemTotal:/ {printf $2}' /kern/meminfo)"
-            mem_free="$(awk -F ':|kB' '/MemFree:/ {printf $2}' /kern/meminfo)"
+            mem="$(awk -F ':|kB' '/MemTotal:|MemFree:/ {printf $2, " "}' /kern/meminfo)"
+            mem_free="${mem/*  }"
+            mem_total="${mem/  *}"
             mem_used="$((mem_total - mem_free))"
             mem_total="$((mem_total / 1024))"
             mem_used="$((mem_used / 1024))"
