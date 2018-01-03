@@ -21,7 +21,8 @@ For more information:
 
 **https://github.com/dylanaraps/neofetch/wiki**
 
-![neofetch screenshot](https://u.teknik.io/KlBsD.png)
+<img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" width="420px">
+<img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" width="420px">
 
 
 ## Dependencies
