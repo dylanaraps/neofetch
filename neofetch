@@ -2446,7 +2446,7 @@ get_cols() {
     unset -v blocks blocks2 cols
 
     # TosWin2 on FreeMiNT is terrible at this,
-    # so we'll reset colors arbitrarily
+    # so we'll reset colors arbitrarily.
     [[ "$term" == "TosWin2" ]] && \
         printf "%b\n" "\\e[30;47m"
 
@@ -3436,8 +3436,7 @@ get_distro_colors() {
 
         "FreeMiNT"*)
             # Don't explicitly set colors since
-            # TosWin2 doesn't reset well
-            # set_colors 0
+            # TosWin2 doesn't reset well.
             ascii_file="gem"
         ;;
 
