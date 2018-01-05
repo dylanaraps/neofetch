@@ -640,6 +640,10 @@ get_shell() {
                 shell="${shell/version}"
             ;;
 
+            "tcsh")
+                shell+="$("$SHELL" -c 'printf "%s" "$tcsh"')"
+            ;;
+
             *)
                 shell+="$("$SHELL" --version 2>&1)"
                 shell="${shell/ "${shell_name}"}"
