@@ -43,7 +43,7 @@ get_os() {
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
         "AIX") os="AIX" ;;
-        "IRIX64" | "IRIX") os="IRIX" ;;
+        "IRIX64") os="IRIX" ;;
         "FreeMiNT") os="FreeMiNT" ;;
         *)
             printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
