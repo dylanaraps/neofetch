@@ -43,7 +43,8 @@ get_os() {
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
         "AIX") os="AIX" ;;
-        "IRIX64") os="IRIX" ;;
+        "IRIX"*) os="IRIX" ;;
+        "FreeMiNT") os="FreeMiNT" ;;
         *)
             printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
@@ -230,6 +231,10 @@ get_distro() {
         "IRIX")
             distro="IRIX ${kernel_version}"
         ;;
+        
+        "FreeMiNT")
+            distro="FreeMiNT"
+        ;;
     esac
 
     distro="${distro//Enterprise Server}"
@@ -238,7 +243,7 @@ get_distro() {
 
     # Get OS architecture.
     case "$os" in
-        "Solaris" | "AIX" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
+        "Solaris" | "AIX" | "Haiku" | "IRIX" | "FreeMiNT") machine_arch="$(uname -p)" ;;
         *) machine_arch="$(uname -m)" ;;
 
     esac
@@ -340,6 +345,10 @@ get_model() {
         "AIX")
             model="$(/usr/bin/uname -M)"
         ;;
+
+        "FreeMiNT")
+            model="$(sysctl -n hw.model)"
+        ;;
     esac
 
     # Remove dummy OEM info.
@@ -403,7 +412,7 @@ get_uptime() {
                     seconds="${seconds/.*}"
                 ;;
 
-                "Mac OS X" | "iPhone OS" | "BSD")
+                "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
                     boot="$(sysctl -n kern.boottime)"
                     boot="${boot/'{ sec = '}"
                     boot="${boot/,*}"
@@ -604,6 +613,11 @@ get_packages() {
         "IRIX")
             packages="$(($(versions -b | wc -l)-3))"
         ;;
+
+        "FreeMiNT")
+            type -p rpm >/dev/null && \
+                packages="$((packages+=$(rpm -qa | wc -l)))"
+        ;;
     esac
 
     ((packages == 0)) && unset packages
@@ -624,6 +638,10 @@ get_shell() {
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
                 shell="${shell/ * KSH}"
                 shell="${shell/version}"
+            ;;
+
+            "tcsh")
+                shell+="$("$SHELL" -c 'printf "%s" "$tcsh"')"
             ;;
 
             *)
@@ -651,6 +669,21 @@ get_de() {
                 "Windows 8"* | "Windows 10"*) de="Modern UI/Metro" ;;
                 *) de="Aero" ;;
             esac
+        ;;
+
+        "FreeMiNT")
+            get_wm
+
+            for files in /proc/*; do
+                case "$files" in
+                    *thing*) de="Thing" ;;
+                    *jinnee*) de="Jinnee" ;;
+                    *tera*) de="Teradesk" ;;
+                    *neod*) de="NeoDesk" ;;
+                    *zdesk*) de="zDesk" ;;
+                    *mdesk*) de="mDesk" ;;
+                esac  
+            done
         ;;
 
         *)
@@ -727,7 +760,7 @@ get_wm() {
                            -e "westford" \
                            -e "weston")"
 
-    elif [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    elif [[ "$DISPLAY" && "$os" != "Mac OS X" && "$os" != "FreeMiNT" ]]; then
         id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
         id="${id##* }"
         wm="$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)"
@@ -762,6 +795,18 @@ get_wm() {
 
                 [[ "$wm" == "blackbox" ]] && wm="bbLean (Blackbox)"
                 wm="${wm:+$wm, }Explorer"
+            ;;
+
+            "FreeMiNT")
+                wm="Atari AES"
+                for files in /proc/*; do
+                    case "$files" in
+                        *xaaes*) wm="XaAES" ;;
+                        *myaes*) wm="MyAES" ;;
+                        *naes*) wm="N.AES" ;;
+                        geneva) wm="Geneva" ;;
+                    esac  
+                done
             ;;
         esac
     fi
@@ -1104,6 +1149,11 @@ get_cpu() {
             # Get CPU cores.
             cores="$(sysconf NPROC_ONLN)"
         ;;
+
+        "FreeMiNT")
+            cpu="$(awk -F':' '/CPU:/ {printf $2}' /kern/cpuinfo)"
+            speed="$(awk -F '[:.M]' '/Clocking:/ {printf $2}' /kern/cpuinfo)"
+        ;;
     esac
 
     # Remove un-needed patterns from cpu output.
@@ -1188,7 +1238,8 @@ get_cpu_usage() {
                     "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                     "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
-                    "IRIX") cores="$(sysconf NPROC_ONLN)"
+                    "IRIX") cores="$(sysconf NPROC_ONLN)" ;;
+                    "FreeMiNT") cores="$(sysctl -n hw.ncpu)" 
                 esac
             fi
 
@@ -1445,6 +1496,16 @@ get_memory() {
             mem_free="$((mem_stat[5] / 1024))"
             mem_used="$((mem_total - mem_free))"
         ;;
+
+        "FreeMiNT")
+            mem="$(awk -F ':|kB' '/MemTotal:|MemFree:/ {printf $2, " "}' /kern/meminfo)"
+            mem_free="${mem/*  }"
+            mem_total="${mem/  *}"
+            mem_used="$((mem_total - mem_free))"
+            mem_total="$((mem_total / 1024))"
+            mem_used="$((mem_used / 1024))"
+        ;;
+
     esac
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB}"
 
@@ -1832,6 +1893,10 @@ get_term() {
         "Hyper") term="HyperTerm" ;;
         *) term="${TERM_PROGRAM/\.app}" ;;
     esac
+
+    # Most likely TosWin2 on FreeMiNT - quick check
+    [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && \
+        term="TosWin2"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -2383,6 +2448,11 @@ get_cols() {
     fi
 
     unset -v blocks blocks2 cols
+
+    # TosWin2 on FreeMiNT is terrible at this,
+    # so we'll reset colors arbitrarily.
+    [[ "$term" == "TosWin2" ]] && \
+        printf "%b\n" "\\e[30;47m"
 
     # Tell info() that we printed manually.
     prin=1
@@ -3366,6 +3436,12 @@ get_distro_colors() {
         "FreeBSD"*)
             set_colors 1 7 3
             ascii_file="freebsd"
+        ;;
+
+        "FreeMiNT"*)
+            # Don't explicitly set colors since
+            # TosWin2 doesn't reset well.
+            ascii_file="gem"
         ;;
 
         "Frugalware"*)
