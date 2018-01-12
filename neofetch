@@ -122,8 +122,8 @@ get_distro() {
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
-            elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" ]]; then
-                files=("/etc/os-release" "/usr/lib/os-release")
+            elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" || -f "/etc/openwrt_release" ]]; then
+                files=("/etc/os-release" "/usr/lib/os-release" "/etc/openwrt_release")
 
                 # Source the os-release file
                 for file in "${files[@]}"; do
