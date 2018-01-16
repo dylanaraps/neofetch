@@ -1086,8 +1086,9 @@ get_cpu() {
                     deg="${deg/C}"
                 ;;
                 "OpenBSD"* | "Bitrig"*)
-                    deg="$(sysctl -n hw.sensors.lm0.temp0)"
-                    deg="${deg/ degC}"
+                    deg_var="$(sysctl hw.sensors | grep -m1 temp0 | cut -d'=' -f1)"
+                    deg="$(sysctl -n $deg_var)"
+                    deg="${deg/0 degC}"
                 ;;
             esac
         ;;
