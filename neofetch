@@ -3788,7 +3788,7 @@ get_distro_colors() {
             ascii_file="scientific"
         ;;
 
-	"Siduction"*)
+        "Siduction"*)
             set_colors 4 4
             ascii_file="siduction"
         ;;
