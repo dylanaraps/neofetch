@@ -1086,7 +1086,8 @@ get_cpu() {
                     deg="${deg/C}"
                 ;;
                 "OpenBSD"* | "Bitrig"*)
-                    deg="$(sysctl hw.sensors | awk -F '=| degC' '/lm0.temp|cpu0.temp/ {print $2; exit}')"
+                    deg="$(sysctl hw.sensors | \
+                           awk -F '=| degC' '/lm0.temp|cpu0.temp/ {print $2; exit}')"
                     deg="${deg/00/0}"
                 ;;
             esac
