@@ -6,6 +6,7 @@
 - [**@dawidd6**](https://github.com/dawidd6)
 - [**@MitchWeaver**](https://github.com/MitchWeaver)
 - [**@StarryTony**](https://github.com/StarryTony)
+- [**@rage311**](https://github.com/rage311)
 
 
 ## OS
@@ -64,11 +65,16 @@
 
 - [linux] Detect the correct temperature file to use.
 - [windows] Removed `$temp` usage as it's an envar.
+- [OpenBSD] Fixed CPU temperature that fails to appear in some systems. [**@rage311**](https://github.com/rage311)
 
 **GPU**
 
 - [linux] Added driver version to NVIDIA output.
 - [macOS] Added NVIDIA support. [**@iandrewt**](https://github.com/iandrewt)
+
+**Memory**
+
+- [OpenBSD] Fixed memory usage values. [**@rage311**](https://github.com/rage311)
 
 **Package Manager**
 
