@@ -1086,8 +1086,9 @@ get_cpu() {
                     deg="${deg/C}"
                 ;;
                 "OpenBSD"* | "Bitrig"*)
-                    deg="$(sysctl -n hw.sensors.lm0.temp0)"
-                    deg="${deg/ degC}"
+                    deg="$(sysctl hw.sensors | \
+                           awk -F '=| degC' '/lm0.temp|cpu0.temp/ {print $2; exit}')"
+                    deg="${deg/00/0}"
                 ;;
             esac
         ;;
@@ -1465,9 +1466,10 @@ get_memory() {
             # Mem used.
             case "$kernel_name" in
                 "OpenBSD"*)
-                    mem_used="$(vmstat | awk 'END{printf $4}')"
-                    mem_used="$((${mem_used/M} / 1024))"
+                    mem_used="$(vmstat | awk 'END{printf $3}')"
+                    mem_used="${mem_used/M}"
                 ;;
+
                 *) mem_used="$((mem_total - mem_free))" ;;
             esac
         ;;
@@ -3786,7 +3788,7 @@ get_distro_colors() {
             ascii_file="scientific"
         ;;
 
-	"Siduction"*)
+        "Siduction"*)
             set_colors 4 4
             ascii_file="siduction"
         ;;
