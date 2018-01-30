@@ -2261,7 +2261,7 @@ get_battery() {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining)"
             battery="${battery/EstimatedChargeRemaining}"
-            batttery=“$(trim “$battery”)%”
+            batttery="$(trim "$battery")%"
         ;;
 
         "Haiku")
