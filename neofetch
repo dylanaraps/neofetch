@@ -1522,7 +1522,36 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|[Ss]potify|Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " " $6; exit}')"
+    player="$(ps -e | grep -m 1 -o -F \
+                           -e "Google Play" \
+                           -e "Spotify" \
+                           -e "amarok" \
+                           -e "audacious" \
+                           -e "banshee" \
+                           -e "bluemindo" \
+                           -e "clementine" \
+                           -e "cmus" \
+                           -e "deadbeef" \
+                           -e "deepin-music" \
+                           -e "elisa" \
+                           -e "exaile" \
+                           -e "gnome-music" \
+                           -e "guayadeque" \
+                           -e "iTunes.app" \
+                           -e "juk" \
+                           -e "lollypop" \
+                           -e "mocp" \
+                           -e "mopidy" \
+                           -e "mpd" \
+                           -e "pogo" \
+                           -e "pragha" \
+                           -e "qmmp" \
+                           -e "quodlibet" \
+                           -e "rhythmbox" \
+                           -e "spotify" \
+                           -e "tomahawk" \
+                           -e "xmms2d" \
+                           -e "yarock")"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
