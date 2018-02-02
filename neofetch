@@ -1603,13 +1603,23 @@ get_song() {
                 "Linux") get_song_dbus "spotify" ;;
 
                 "Mac OS X")
-                    song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
+                    song="$(osascript <<END
+tell application "Spotify"
+    artist of current track as string & " - " & name of current track as string
+end tell
+END
+)"
                 ;;
             esac
         ;;
 
         "itunes"*)
-            song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
+            song="$(osascript <<END
+tell application "iTunes"
+    artist of current track as string & " - " & name of current track as string
+end tell
+END
+)"
         ;;
 
         "banshee"*)
@@ -1965,7 +1975,10 @@ get_term_font() {
         ;;
 
         "Apple_Terminal")
-            term_font="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
+            term_font="$(osascript <<END
+tell application "Terminal" to font name of window frontmost
+END
+)"
         ;;
 
         "iTerm2")
@@ -1976,7 +1989,10 @@ get_term_font() {
             # See: https://groups.google.com/forum/#!topic/iterm2-discuss/0tO3xZ4Zlwg
             local current_profile_name profiles_count profile_name diff_font none_ascii
 
-            current_profile_name="$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')"
+            current_profile_name="$(osascript <<END
+tell application "iTerm2" to profile name of current session of current window
+END
+)"
 
             # Warning: Dynamic profiles are not taken into account here!
             # https://www.iterm2.com/documentation-dynamic-profiles.html
@@ -2620,7 +2636,10 @@ get_image_source() {
 get_wallpaper() {
     case "$os" in
         "Mac OS X")
-            image="$(osascript -e 'tell application "System Events" to picture of current desktop')"
+            image="$(osascript <<END
+tell application "System Events" to picture of current desktop
+END
+)"
         ;;
 
         "Windows")
