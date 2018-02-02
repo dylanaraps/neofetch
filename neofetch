@@ -3255,7 +3255,11 @@ strip_sequences() {
 }
 
 uppercase() {
-    ((bash_version >= 4)) && printf "%s" "${1^}"
+    if ((bash_version >= 4)); then
+        printf "%s" "${1^}"
+    else
+        echo $1
+    fi
 }
 
 # COLORS
