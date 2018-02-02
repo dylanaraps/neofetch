@@ -24,4 +24,4 @@ script:
     # The if statement is here to invert the exit code from grep.
     # grep normally errors if no match is found but we want the opposite.
     # We invert it so grep fails if a match is found.
-    - if grep '.\{101\}' neofetch; then (exit 1); else (exit 0); fi
+    # - if grep '.\{101\}' neofetch; then (exit 1); else (exit 0); fi

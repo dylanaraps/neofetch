@@ -1,22 +1,28 @@
 # Neofetch
 
+<a href="https://repology.org/metapackage/neofetch">
+    <img src="https://repology.org/badge/vertical-allrepos/neofetch.svg" alt="Packaging status" align="right" height="400px">
+</a>
+
 [![Gitter](https://badges.gitter.im/dylanaraps/fetch.svg)](https://gitter.im/dylanaraps/fetch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Build Status](https://travis-ci.org/dylanaraps/neofetch.svg?branch=master)](https://travis-ci.org/dylanaraps/neofetch)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![Latest release](https://img.shields.io/github/release/dylanaraps/neofetch.svg)](https://github.com/dylanaraps/neofetch/releases)
 [![Donate](https://img.shields.io/badge/donate-patreon-yellow.svg)](https://www.patreon.com/dyla)
 
+
 Neofetch is a CLI system information tool written in BASH. Neofetch displays information about your system next to an image, your OS logo, or any ASCII file of your choice. The main purpose of Neofetch is to be used in screenshots to show other users what OS/Distro you're running, what Theme/Icons you're using etc.
 
 Neofetch is highly customizable through the use of command line flags or the user config file. There are over 50 config options to mess around with and there's the `print_info()` function and friends which let you add your own custom info.
 
-Neofetch can be used on any OS that has BASH 3.2+, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku`, `GNU Hurd`, `MINIX`, `AIX`, `IRIX`, and `Windows (Cygwin/MSYS2/MinGW/Windows 10 Linux subsystem)`.
+Neofetch can be used on any OS that has BASH 3.2+, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku`, `GNU Hurd`, `MINIX`, `AIX`, `IRIX`, `FreeMint`, and `Windows (Cygwin/MSYS2/MinGW/Windows 10 Linux subsystem)`.
 
 For more information:
 
 **https://github.com/dylanaraps/neofetch/wiki**
 
-![neofetch screenshot](https://u.teknik.io/KlBsD.png)
+<img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" width="434px">
+<img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" width="434px">
 
 
 ## Dependencies
@@ -89,3 +95,6 @@ Donations will allow me to spend more time working on `neofetch`.
 If you like `neofetch` and want to give back in some way you can donate here:
 
 **https://patreon.com/dyla**
+
+
+<sup><sub>hey rtexel</sub></sup>

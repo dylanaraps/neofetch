@@ -27,7 +27,7 @@ export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec:${PATH}"
 shopt -s nocasematch
 
 # Reset colors and bold.
-reset="\033[0m"
+reset="\\e[0m"
 
 # DETECT INFORMATION
 
@@ -43,7 +43,8 @@ get_os() {
         "Haiku") os="Haiku" ;;
         "MINIX") os="MINIX" ;;
         "AIX") os="AIX" ;;
-        "IRIX64") os="IRIX" ;;
+        "IRIX"*) os="IRIX" ;;
+        "FreeMiNT") os="FreeMiNT" ;;
         *)
             printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
@@ -114,14 +115,17 @@ get_distro() {
             elif type -p tazpkg >/dev/null; then
                 distro="SliTaz $(< /etc/slitaz-release)"
 
-            elif type -p kpm > /dev/null; then
+            elif type -p kpt >/dev/null && \
+                 type -p kpm >/dev/null; then
                 distro="KSLinux"
 
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
-            elif [[ -f "/etc/os-release" || -f "/usr/lib/os-release" ]]; then
-                files=("/etc/os-release" "/usr/lib/os-release")
+            elif [[ -f "/etc/os-release" || \
+                    -f "/usr/lib/os-release" || \
+                    -f "/etc/openwrt_release" ]]; then
+                files=("/etc/os-release" "/usr/lib/os-release" "/etc/openwrt_release")
 
                 # Source the os-release file
                 for file in "${files[@]}"; do
@@ -153,7 +157,7 @@ get_distro() {
 
                     # Workarounds for FreeBSD based distros.
                     [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
-                    [[ -f "/etc/rc.conf.trueos" ]] && distro="TrueOS"
+                    [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
 
                     # /etc/pacbsd-release is an empty file
                     [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
@@ -229,6 +233,10 @@ get_distro() {
         "IRIX")
             distro="IRIX ${kernel_version}"
         ;;
+
+        "FreeMiNT")
+            distro="FreeMiNT"
+        ;;
     esac
 
     distro="${distro//Enterprise Server}"
@@ -237,7 +245,7 @@ get_distro() {
 
     # Get OS architecture.
     case "$os" in
-        "Solaris" | "AIX" | "Haiku" | "IRIX") machine_arch="$(uname -p)" ;;
+        "Solaris" | "AIX" | "Haiku" | "IRIX" | "FreeMiNT") machine_arch="$(uname -p)" ;;
         *) machine_arch="$(uname -m)" ;;
 
     esac
@@ -339,6 +347,10 @@ get_model() {
         "AIX")
             model="$(/usr/bin/uname -M)"
         ;;
+
+        "FreeMiNT")
+            model="$(sysctl -n hw.model)"
+        ;;
     esac
 
     # Remove dummy OEM info.
@@ -402,7 +414,7 @@ get_uptime() {
                     seconds="${seconds/.*}"
                 ;;
 
-                "Mac OS X" | "iPhone OS" | "BSD")
+                "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
                     boot="$(sysctl -n kern.boottime)"
                     boot="${boot/'{ sec = '}"
                     boot="${boot/,*}"
@@ -487,9 +499,6 @@ get_packages() {
             type -p dpkg >/dev/null && \
                 packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
 
-            type -p kpm >/dev/null && \
-                packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
-
             type -p pkgtool >/dev/null && \
                 packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
 
@@ -547,10 +556,17 @@ get_packages() {
             type -p alps >/dev/null && \
                 packages="$((packages+=$(alps showinstalled | wc -l)))"
 
+            type -p kpt >/dev/null && \
+            type -p kpm >/dev/null && \
+                packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
+
             if type -p cave >/dev/null; then
                 package_dir=(/var/db/paludis/repositories/{cross-installed,installed}/*/data/*)
                 packages="$((packages+=$(ls -d -1 "${package_dir[@]}" | wc -l)))"
             fi
+
+            type -p butch >/dev/null && \
+                packages="$((packages+=$(butch list | wc -l)))"
 
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
@@ -599,6 +615,11 @@ get_packages() {
         "IRIX")
             packages="$(($(versions -b | wc -l)-3))"
         ;;
+
+        "FreeMiNT")
+            type -p rpm >/dev/null && \
+                packages="$((packages+=$(rpm -qa | wc -l)))"
+        ;;
     esac
 
     ((packages == 0)) && unset packages
@@ -619,6 +640,10 @@ get_shell() {
                 shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
                 shell="${shell/ * KSH}"
                 shell="${shell/version}"
+            ;;
+
+            "tcsh")
+                shell+="$("$SHELL" -c 'printf "%s" "$tcsh"')"
             ;;
 
             *)
@@ -648,6 +673,21 @@ get_de() {
             esac
         ;;
 
+        "FreeMiNT")
+            get_wm
+
+            for files in /proc/*; do
+                case "$files" in
+                    *thing*) de="Thing" ;;
+                    *jinnee*) de="Jinnee" ;;
+                    *tera*) de="Teradesk" ;;
+                    *neod*) de="NeoDesk" ;;
+                    *zdesk*) de="zDesk" ;;
+                    *mdesk*) de="mDesk" ;;
+                esac
+            done
+        ;;
+
         *)
             ((wm_run != 1)) && get_wm
 
@@ -663,6 +703,9 @@ get_de() {
 
             elif [[ "$MATE_DESKTOP_SESSION_ID" ]]; then
                 de="MATE"
+
+            elif [[ "$TDE_FULL_SESSION" ]]; then
+                de="Trinity"
             fi
 
             # When a window manager is started from a display manager
@@ -674,18 +717,21 @@ get_de() {
     esac
 
     # Fallback to using xprop.
-    [[ -n "$DISPLAY" && -z "$de" ]] && \
+    [[ "$DISPLAY" && -z "$de" ]] && \
         de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
     # Format strings.
     case "$de" in
         "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
-        *"TDE_FULL_SESSION"*) de="Trinity" ;;
         *"MUFFIN"* | "Cinnamon") de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
         *"xfce4"*) de="Xfce4" ;;
         *"xfce5"*) de="Xfce5" ;;
         *"xfce"*)  de="Xfce" ;;
         *"mate"*)  de="MATE" ;;
+        *"GNOME"*)
+            de="$(gnome-shell --version)"
+            de="${de/Shell }"
+        ;;
     esac
 
     # Log that the function was run.
@@ -696,20 +742,36 @@ get_wm() {
     # If function was run, stop here.
     ((wm_run == 1)) && return
 
-    if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    if [[ "$WAYLAND_DISPLAY" ]]; then
+        wm="$(ps -e | grep -m 1 -o -F \
+                           -e "asc" \
+                           -e "fireplace" \
+                           -e "grefsen" \
+                           -e "mazecompositor" \
+                           -e "maynard" \
+                           -e "motorcar" \
+                           -e "orbment" \
+                           -e "orbital" \
+                           -e "perceptia" \
+                           -e "rustland" \
+                           -e "sway" \
+                           -e "velox" \
+                           -e "wavy" \
+                           -e "wayhouse" \
+                           -e "way-cooler" \
+                           -e "westford" \
+                           -e "weston")"
+
+    elif [[ "$DISPLAY" && "$os" != "Mac OS X" && "$os" != "FreeMiNT" ]]; then
         id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
         id="${id##* }"
         wm="$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)"
-        wm="${wm/*_NET_WM_NAME = }"
+        wm="${wm/*WM_NAME = }"
         wm="${wm/\"}"
         wm="${wm/\"*}"
 
         # Window Maker does not set _NET_WM_NAME
         [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
-
-        # Fallback for Wayland wms.
-        [[ "$wm" == "xwlc" ]] && \
-            wm="$(ps -e | grep -m 1 -o -F -e "sway" -e "orbment" -e "velox" -e "orbital")"
 
     else
         case "$os" in
@@ -726,13 +788,27 @@ get_wm() {
             ;;
 
             "Windows")
-                wm="$(tasklist | grep -m 1 -o -F -e "bugn" \
-                                                 -e "Windawesome" \
-                                                 -e "blackbox" \
-                                                 -e "emerge" \
-                                                 -e "litestep")"
+                wm="$(tasklist | grep -m 1 -o -F \
+                                      -e "bugn" \
+                                      -e "Windawesome" \
+                                      -e "blackbox" \
+                                      -e "emerge" \
+                                      -e "litestep")"
+
                 [[ "$wm" == "blackbox" ]] && wm="bbLean (Blackbox)"
                 wm="${wm:+$wm, }Explorer"
+            ;;
+
+            "FreeMiNT")
+                wm="Atari AES"
+                for files in /proc/*; do
+                    case "$files" in
+                        *xaaes*) wm="XaAES" ;;
+                        *myaes*) wm="MyAES" ;;
+                        *naes*) wm="N.AES" ;;
+                        geneva) wm="Geneva" ;;
+                    esac
+                done
             ;;
         esac
     fi
@@ -751,7 +827,7 @@ get_wm_theme() {
         ;;
 
         "Sawfish")
-            wm_theme="$(awk -F ")" '/\(quote default-frame-style/ {print $2}' \
+            wm_theme="$(awk -F '\\(quote|\\)' '/default-frame-style/ {print $(NF-4)}' \
                       "${HOME}/.sawfish/custom")"
         ;;
 
@@ -919,7 +995,12 @@ get_cpu() {
             esac
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
-            temp_dir="/sys/class/hwmon/hwmon0/temp1_input"
+
+            # Select the right temperature file.
+            for temp_dir in /sys/class/hwmon/*; do
+                [[ "$(< "${temp_dir}/name")" =~ (coretemp|fam15h_power) ]] && \
+                    { temp_dir="${temp_dir}/temp1_input"; break; }
+            done
 
             # Get CPU speed.
             if [[ -d "$speed_dir" ]]; then
@@ -937,8 +1018,8 @@ get_cpu() {
 
             # Get CPU temp.
             if [[ -f "$temp_dir" ]]; then
-                temp="$(< "$temp_dir")"
-                temp="$((temp * 100 / 10000))"
+                deg="$(< "$temp_dir")"
+                deg="$((deg * 100 / 10000))"
             fi
 
             # Get CPU cores.
@@ -1001,12 +1082,13 @@ get_cpu() {
             # Get CPU temp.
             case "$kernel_name" in
                 "FreeBSD"* | "DragonFly"* | "NetBSD"*)
-                    temp="$(sysctl -n dev.cpu.0.temperature)"
-                    temp="${temp/C}"
+                    deg="$(sysctl -n dev.cpu.0.temperature)"
+                    deg="${deg/C}"
                 ;;
                 "OpenBSD"* | "Bitrig"*)
-                    temp="$(sysctl -n hw.sensors.lm0.temp0)"
-                    temp="${temp/ degC}"
+                    deg="$(sysctl hw.sensors | \
+                           awk -F '=| degC' '/lm0.temp|cpu0.temp/ {print $2; exit}')"
+                    deg="${deg/00/0}"
                 ;;
             esac
         ;;
@@ -1070,6 +1152,11 @@ get_cpu() {
             # Get CPU cores.
             cores="$(sysconf NPROC_ONLN)"
         ;;
+
+        "FreeMiNT")
+            cpu="$(awk -F':' '/CPU:/ {printf $2}' /kern/cpuinfo)"
+            speed="$(awk -F '[:.M]' '/Clocking:/ {printf $2}' /kern/cpuinfo)"
+        ;;
     esac
 
     # Remove un-needed patterns from cpu output.
@@ -1123,15 +1210,15 @@ get_cpu() {
     fi
 
     # Add CPU temp to the output.
-    if [[ "$cpu_temp" != "off" && "$temp" ]]; then
-        temp="${temp//.}"
+    if [[ "$cpu_temp" != "off" && "$deg" ]]; then
+        deg="${deg//.}"
 
         # Convert to Fahrenheit if enabled
-        [[ "$cpu_temp" == "F" ]] && temp="$((temp * 90 / 50 + 320))"
+        [[ "$cpu_temp" == "F" ]] && deg="$((deg * 90 / 50 + 320))"
 
         # Format the output
-        temp="[${temp/${temp: -1}}.${temp: -1}°${cpu_temp:-C}]"
-        cpu="$cpu $temp"
+        deg="[${deg/${deg: -1}}.${deg: -1}°${cpu_temp:-C}]"
+        cpu="$cpu $deg"
     fi
 }
 
@@ -1154,7 +1241,8 @@ get_cpu_usage() {
                     "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
                     "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
                     "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
-                    "IRIX") cores="$(sysconf NPROC_ONLN)"
+                    "IRIX") cores="$(sysconf NPROC_ONLN)" ;;
+                    "FreeMiNT") cores="$(sysctl -n hw.ncpu)"
                 esac
             fi
 
@@ -1210,9 +1298,12 @@ get_gpu() {
                     ;;
 
                     *"intel"*)
-                        gpu="$(glxinfo | grep "Device:.*Intel")"
+                        type -p glxinfo >/dev/null && \
+                            gpu="$(glxinfo | grep "Device:.*Intel")"
+
                         gpu="${gpu/*Intel/Intel}"
                         gpu="${gpu/'(R)'}"
+                        gpu="${gpu/'Corporation'}"
                         gpu="${gpu/ \(*}"
 
                         [[ -z "$(trim "$gpu")" ]] && gpu="Intel Integrated Graphics"
@@ -1374,7 +1465,11 @@ get_memory() {
 
             # Mem used.
             case "$kernel_name" in
-                "OpenBSD"*) mem_used="$(($(vmstat | awk 'END{printf $4}') / 1024))" ;;
+                "OpenBSD"*)
+                    mem_used="$(vmstat | awk 'END{printf $3}')"
+                    mem_used="${mem_used/M}"
+                ;;
+
                 *) mem_used="$((mem_total - mem_free))" ;;
             esac
         ;;
@@ -1405,6 +1500,16 @@ get_memory() {
             mem_free="$((mem_stat[5] / 1024))"
             mem_used="$((mem_total - mem_free))"
         ;;
+
+        "FreeMiNT")
+            mem="$(awk -F ':|kB' '/MemTotal:|MemFree:/ {printf $2, " "}' /kern/meminfo)"
+            mem_free="${mem/*  }"
+            mem_total="${mem/  *}"
+            mem_used="$((mem_total - mem_free))"
+            mem_total="$((mem_total / 1024))"
+            mem_used="$((mem_used / 1024))"
+        ;;
+
     esac
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB}"
 
@@ -1417,10 +1522,36 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|\
-Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|\
-xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|\
-guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " " $6; exit}')"
+    player="$(ps -e | grep -m 1 -o -F \
+                           -e "Google Play" \
+                           -e "Spotify" \
+                           -e "amarok" \
+                           -e "audacious" \
+                           -e "banshee" \
+                           -e "bluemindo" \
+                           -e "clementine" \
+                           -e "cmus" \
+                           -e "deadbeef" \
+                           -e "deepin-music" \
+                           -e "elisa" \
+                           -e "exaile" \
+                           -e "gnome-music" \
+                           -e "guayadeque" \
+                           -e "iTunes.app" \
+                           -e "juk" \
+                           -e "lollypop" \
+                           -e "mocp" \
+                           -e "mopidy" \
+                           -e "mpd" \
+                           -e "pogo" \
+                           -e "pragha" \
+                           -e "qmmp" \
+                           -e "quodlibet" \
+                           -e "rhythmbox" \
+                           -e "spotify" \
+                           -e "tomahawk" \
+                           -e "xmms2d" \
+                           -e "yarock")"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1472,15 +1603,13 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
                 "Linux") get_song_dbus "spotify" ;;
 
                 "Mac OS X")
-                    song="$(osascript -e 'tell application "Spotify" to artist of current track as \
-                                          string & " - " & name of current track as string')"
+                    song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
                 ;;
             esac
         ;;
 
         "itunes"*)
-            song="$(osascript -e 'tell application "iTunes" to artist of current track as \
-                                  string & " - " & name of current track as string')"
+            song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
         ;;
 
         "banshee"*)
@@ -1619,7 +1748,7 @@ get_style() {
     # Fix weird output when the function is run multiple times.
     unset gtk2_theme gtk3_theme theme path
 
-    if [[ -n "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    if [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
         ((de_run != 1)) && get_de
 
@@ -1793,6 +1922,10 @@ get_term() {
         *) term="${TERM_PROGRAM/\.app}" ;;
     esac
 
+    # Most likely TosWin2 on FreeMiNT - quick check
+    [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && \
+        term="TosWin2"
+
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
         if [[ "$SSH_CONNECTION" ]]; then
@@ -1832,8 +1965,7 @@ get_term_font() {
         ;;
 
         "Apple_Terminal")
-            term_font="$(osascript -e 'tell application "Terminal" to \
-                                       font name of window frontmost')"
+            term_font="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
         ;;
 
         "iTerm2")
@@ -1844,8 +1976,7 @@ get_term_font() {
             # See: https://groups.google.com/forum/#!topic/iterm2-discuss/0tO3xZ4Zlwg
             local current_profile_name profiles_count profile_name diff_font none_ascii
 
-            current_profile_name="$(osascript -e 'tell application "iTerm2" to profile name \
-                                                  of current session of current window')"
+            current_profile_name="$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')"
 
             # Warning: Dynamic profiles are not taken into account here!
             # https://www.iterm2.com/documentation-dynamic-profiles.html
@@ -2032,7 +2163,7 @@ get_disk() {
     # Get "df" version.
     df_version="$(df --version 2>&1)"
     case "$df_version" in
-        *"blocks"*) # Haiku
+        *"Tracker"*) # Haiku
             err "Your version of df cannot be used due to the non-standard flags"
             return
         ;;
@@ -2152,7 +2283,7 @@ get_battery() {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining)"
             battery="${battery/EstimatedChargeRemaining}"
-            [[ "$(trim "$battery")" ]] && battery="%"
+            batttery="$(trim "$battery")%"
         ;;
 
         "Haiku")
@@ -2290,10 +2421,16 @@ get_gpu_driver() {
             gpu_driver="$(lspci -nnk | awk -F ': ' \
                           '/Display|3D|VGA/{nr[NR+2]}; NR in nr {printf $2 ", "}')"
             gpu_driver="${gpu_driver%, }"
+
+            if [[ "$gpu_driver" == *"nvidia"* ]]; then
+                gpu_driver="$(< /proc/driver/nvidia/version)"
+                gpu_driver="${gpu_driver/*Module  }"
+                gpu_driver="NVIDIA ${gpu_driver/  *}"
+            fi
         ;;
         "Mac OS X")
             if [[ "$(kextstat | grep "GeForceWeb")" != "" ]]; then
-                gpu_driver="Nvidia Web Driver"
+                gpu_driver="NVIDIA Web Driver"
             else
                 gpu_driver="macOS Default Graphics Driver"
             fi
@@ -2313,9 +2450,9 @@ get_cols() {
         # Generate the string.
         for ((start; start<=end; start++)); do
             case "$start" in
-                [0-6]) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
-                7) blocks+="${reset}\033[3${start}m\033[4${start}m${block_width}" ;;
-                *) blocks2+="\033[38;5;${start}m\033[48;5;${start}m${block_width}" ;;
+                [0-6]) blocks+="${reset}\\e[3${start}m\\e[4${start}m${block_width}" ;;
+                7) blocks+="${reset}\\e[3${start}m\\e[4${start}m${block_width}" ;;
+                *) blocks2+="\\e[38;5;${start}m\\e[48;5;${start}m${block_width}" ;;
             esac
         done
 
@@ -2328,15 +2465,20 @@ get_cols() {
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
-        cols="${cols//nl/\\n\\033[${text_padding}C${zws}}"
+        cols="${cols//nl/\\n\\\e[${text_padding}C${zws}}"
 
         # Add block height to info height.
         info_height="$((info_height+=block_height+2))"
 
-        printf "%b\n" "\033[${text_padding}C${zws}${cols}"
+        printf "%b\n" "\\e[${text_padding}C${zws}${cols}"
     fi
 
     unset -v blocks blocks2 cols
+
+    # TosWin2 on FreeMiNT is terrible at this,
+    # so we'll reset colors arbitrarily.
+    [[ "$term" == "TosWin2" ]] && \
+        printf "%b\n" "\\e[30;47m"
 
     # Tell info() that we printed manually.
     prin=1
@@ -2356,7 +2498,8 @@ image_backend() {
         "ascii") get_ascii ;;
         "off") image_backend="off" ;;
 
-        "caca" | "catimg" | "jp2a" | "iterm2" | "termpix" | "tycat" | "w3m" | "sixel")
+        "caca" | "catimg" | "jp2a" | "iterm2" | "termpix" |\
+        "tycat" | "w3m" | "sixel" | "pixterm")
             get_image_source
 
             if [[ ! -f "$image" ]]; then
@@ -2382,14 +2525,14 @@ image_backend() {
         *)
             err "Image: Unknown image backend specified '$image_backend'."
             err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2',
-                                            'off', 'sixel', 'termpix', 'tycat', 'w3m')"
+                                            'off', 'sixel', 'pixterm', 'termpix', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
             get_ascii
         ;;
     esac
 
     # Set cursor position next image/ascii.
-    [[ "$image_backend" != "off" ]] && printf "%b" "\033[${lines:-0}A\033[9999999D"
+    [[ "$image_backend" != "off" ]] && printf "%b" "\\e[${lines:-0}A\\e[9999999D"
 }
 
 get_ascii() {
@@ -2577,14 +2720,14 @@ get_term_size() {
     # so we have to use a slightly different sequence to
     # get the terminal size.
     if [[ -n "$TMUX" ]]; then
-        printf "%b" "\033Ptmux;\033\033[14t\033\033[c\033\\"
+        printf "%b" "\\ePtmux;\\e\\e[14t\\e\\e[c\\e\\"
         read_flags=(-d c)
 
     elif [[ "$image_backend" == "tycat" ]]; then
-        printf "%b" "\033}qs\000"
+        printf "%b" "\\e}qs\000"
 
     else
-        printf "%b" "\033[14t\033[c"
+        printf "%b" "\\e[14t\\e[c"
         read_flags=(-d c)
     fi
 
@@ -2603,7 +2746,7 @@ get_term_size() {
         term_width="${term_size[2]/t*}"
     fi
 
-    # Get terminal width/height if \033[14t is unsupported.
+    # Get terminal width/height if \\e[14t is unsupported.
     if [[ -z "$term_width" ]] || (( "$term_width" < 50 )); then
         if type -p xdotool >/dev/null 2>&1; then
             current_window="$(xdotool getactivewindow)"
@@ -2672,6 +2815,12 @@ get_image_size() {
             width="${size%% *}"
             height="${size##* }"
             crop_mode="none"
+
+            while (( "$width" >= ("$term_width" / 2) ||
+                     "$height" >= "$term_height" )); do
+                width="$((width / 2))"
+                height="$((height / 2))"
+            done
         ;;
 
         *) image_size="${image_size/px}" ;;
@@ -2686,7 +2835,7 @@ get_image_size() {
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    image_name="$crop_mode-$crop_offset-$width-$height-${image//'/'/_}"
+    image_name="$crop_mode-$crop_offset-$width-$height-${image##*/}"
 
     # Handle file extensions.
     case "${image##*.}" in
@@ -2776,8 +2925,16 @@ display_image() {
                 to_off "Image: jp2a failed to display the image."
         ;;
 
+        "pixterm")
+            pixterm -tc "$((width / font_width))" \
+                    -tr "$((height / font_height))" \
+                    "$image" ||\
+                to_off "Image: pixterm failed to display the image."
+        ;;
+
         "sixel")
-            img2sixel -w "$width" "$image" || to_off "Image: libsixel failed to display the image."
+            img2sixel -w "$width" "$image" ||\
+                to_off "Image: libsixel failed to display the image."
         ;;
 
         "termpix")
@@ -2787,10 +2944,10 @@ display_image() {
 
         "iterm2")
             image="$(base64 < "$image")"
-            iterm_cmd="\033]1337;File=width=${width}px;height=${height}px;inline=1:${image}"
+            iterm_cmd="\\e]1337;File=width=${width}px;height=${height}px;inline=1:${image}"
 
             # Tmux requires an additional escape sequence for this to work.
-            [[ -n "$TMUX" ]] && iterm_cmd="\033Ptmux;\033${iterm_cmd}\033\\"
+            [[ -n "$TMUX" ]] && iterm_cmd="\\ePtmux;\\e${iterm_cmd}\\e\\"
 
             printf "%b\a\n" "$iterm_cmd"
         ;;
@@ -2826,7 +2983,7 @@ to_ascii() {
     get_ascii
 
     # Set cursor position next image/ascii.
-    printf "%b" "\033[${lines:-0}A\033[9999999D"
+    printf "%b" "\\e[${lines:-0}A\\e[9999999D"
 }
 
 to_off() {
@@ -2986,7 +3143,7 @@ prin() {
         string="${2:-$1}"
         local subtitle_color="$info_color"
     fi
-    string="$(trim "${string//$'\033[0m'}")"
+    string="$(trim "${string//$'\\e[0m'}")"
 
     # Log length if it doesn't exist.
     if [[ -z "$length" ]]; then
@@ -2999,7 +3156,7 @@ prin() {
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
-    printf "%b\n" "${text_padding:+\033[${text_padding}C}${zws}${string}${reset}"
+    printf "%b\n" "${text_padding:+\\e[${text_padding}C}${zws}${string}${reset} "
 
     # Calculate info height.
     ((++info_height))
@@ -3011,8 +3168,8 @@ prin() {
 get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
-        printf "%b%b\n" "${text_padding:+\033[${text_padding}C}${zws}${underline_color}" \
-                        "${underline// /$underline_char}${reset}"
+        printf "%b%b\n" "${text_padding:+\\e[${text_padding}C}${zws}${underline_color}" \
+                        "${underline// /$underline_char}${reset} "
         unset -v length
     fi
     prin=1
@@ -3032,12 +3189,12 @@ get_line_break() {
 
 get_bold() {
     case "$ascii_bold" in
-        "on") ascii_bold="\033[1m" ;;
+        "on") ascii_bold="\\e[1m" ;;
         "off") ascii_bold="" ;;
     esac
 
     case "$bold" in
-        "on") bold="\033[1m" ;;
+        "on") bold="\\e[1m" ;;
         "off") bold="" ;;
     esac
 }
@@ -3066,10 +3223,10 @@ trim_quotes() {
 }
 
 strip_sequences() {
-    strip="${1//$'\033['3[0-9]m}"
-    strip="${strip//$'\033['38\;5\;[0-9]m}"
-    strip="${strip//$'\033['38\;5\;[0-9][0-9]m}"
-    strip="${strip//$'\033['38\;5\;[0-9][0-9][0-9]m}"
+    strip="${1//$'\\e['3[0-9]m}"
+    strip="${strip//$'\\e['38\;5\;[0-9]m}"
+    strip="${strip//$'\\e['38\;5\;[0-9][0-9]m}"
+    strip="${strip//$'\\e['38\;5\;[0-9][0-9][0-9]m}"
 
     printf "%s\n" "$strip"
 }
@@ -3307,6 +3464,12 @@ get_distro_colors() {
             ascii_file="freebsd"
         ;;
 
+        "FreeMiNT"*)
+            # Don't explicitly set colors since
+            # TosWin2 doesn't reset well.
+            ascii_file="gem"
+        ;;
+
         "Frugalware"*)
             set_colors 4 7 1
             ascii_file="frugalware"
@@ -3395,6 +3558,11 @@ get_distro_colors() {
         "Kubuntu"*)
             set_colors 4 7 1
             ascii_file="kubuntu"
+        ;;
+
+        "LEDE"*)
+            set_colors 4 7 1
+            ascii_file="lede"
         ;;
 
         "Linux")
@@ -3642,7 +3810,7 @@ get_distro_colors() {
             ascii_file="scientific"
         ;;
 
-	"Siduction"*)
+        "Siduction"*)
             set_colors 4 4
             ascii_file="siduction"
         ;;
@@ -3863,9 +4031,9 @@ set_text_colors() {
 
 color() {
     case "$1" in
-        [0-6]) printf "%b" "${reset}\033[3${1}m" ;;
-        7 | "fg") printf "%b" "\033[37m${reset}" ;;
-        *) printf "%b" "\033[38;5;${1}m" ;;
+        [0-6]) printf "%b" "${reset}\\e[3${1}m" ;;
+        7 | "fg") printf "%b" "\\e[37m${reset}" ;;
+        *) printf "%b" "\\e[38;5;${1}m" ;;
     esac
 }
 
@@ -3888,7 +4056,7 @@ stdout() {
 }
 
 err() {
-    err+="$(color 1)[!]\033[0m $1\n"
+    err+="$(color 1)[!]\\e[0m $1\n"
 }
 
 get_full_path() {
@@ -4069,7 +4237,12 @@ dynamic_prompt() {
     fi
 
     # Set the prompt location.
-    ((lines > 0)) && printf "%b" "\033[${lines}B"
+    if ((lines > 1)); then
+        case "$kernel_name" in
+            "OpenBSD") tput cud "$lines" ;;
+            *) printf "%b" "\\e[${lines}B" ;;
+        esac
+    fi
 }
 
 old_functions() {
@@ -4401,6 +4574,7 @@ IMAGE BACKEND:
     --catimg source             Shortcut to use 'catimg' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
+    --pixterm source               Shortcut to use 'pixterm' backend.
     --sixel source              Shortcut to use 'sixel' backend.
     --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
@@ -4616,8 +4790,8 @@ get_args() {
             # Image backend
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--sixel" |\
-            "--termpix" | "--tycat" | "--w3m")
+            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--pixterm" |\
+            "--sixel" | "--termpix" | "--tycat" | "--w3m")
                 image_backend="${1/--}"
                 case "$2" in
                     "-"* | "") ;;
@@ -4716,10 +4890,10 @@ main() {
     # Minix doesn't support these sequences.
     if [[ "$TERM" != "minix" && "$stdout" != "on" ]]; then
         # If the script exits for any reason, unhide the cursor.
-        trap 'printf "\033[?25h\033[?7h"' EXIT
+        trap 'printf "\\e[?25h\\e[?7h"' EXIT
 
         # Hide the cursor and disable line wrap.
-        printf "\033[?25l\033[?7l"
+        printf "\\e[?25l\\e[?7l"
     fi
 
     image_backend
@@ -4734,6 +4908,11 @@ main() {
 
     # Take a screenshot.
     [[ "$scrot" == "on" ]] && take_scrot
+
+    # Add neofetch info to verbose output.
+    err "Neofetch command: $0 $*"
+    err "Neofetch version: $version"
+    err "Neofetch config:  $config_version"
 
     # Show error messages.
     [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
