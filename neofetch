@@ -1522,7 +1522,7 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps -e | grep -m 1 -o -F \
+    player="$(ps -e | grep -m 1 -o \
                            -e "Google Play" \
                            -e "Spotify" \
                            -e "amarok" \
@@ -1537,7 +1537,7 @@ get_song() {
                            -e "exaile" \
                            -e "gnome-music" \
                            -e "guayadeque" \
-                           -e "iTunes.app" \
+                           -e "iTunes$" \
                            -e "juk" \
                            -e "lollypop" \
                            -e "mocp" \
@@ -1604,9 +1604,11 @@ get_song() {
 
                 "Mac OS X")
                     song="$(osascript <<END
-tell application "Spotify"
-    artist of current track as string & " - " & name of current track as string
-end tell
+if application "Spotify" is running then
+    tell application "Spotify"
+        artist of current track as string & " - " & name of current track as string
+    end tell
+end if
 END
 )"
                 ;;
@@ -1615,9 +1617,11 @@ END
 
         "itunes"*)
             song="$(osascript <<END
-tell application "iTunes"
-    artist of current track as string & " - " & name of current track as string
-end tell
+if application "iTunes" is running then
+    tell application "iTunes"
+        artist of current track as string & " - " & name of current track as string
+    end tell
+end if
 END
 )"
         ;;
