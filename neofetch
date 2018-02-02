@@ -1611,11 +1611,12 @@ get_song() {
 
                 "Mac OS X")
                     song="$(osascript <<END
-if application "Spotify" is running then
-    tell application "Spotify"
-        artist of current track as string & " - " & name of current track as string
-    end tell
-end if
+                            if application "Spotify" is running then
+                                tell application "Spotify"
+                                    artist of current track as string & \
+                                    " - " & name of current track as string
+                                end tell
+                            end if
 END
 )"
                 ;;
@@ -1624,11 +1625,12 @@ END
 
         "itunes"*)
             song="$(osascript <<END
-if application "iTunes" is running then
-    tell application "iTunes"
-        artist of current track as string & " - " & name of current track as string
-    end tell
-end if
+                    if application "iTunes" is running then
+                        tell application "iTunes"
+                            artist of current track as string & \
+                            " - " & name of current track as string
+                        end tell
+                    end if
 END
 )"
         ;;
@@ -1987,7 +1989,7 @@ get_term_font() {
 
         "Apple_Terminal")
             term_font="$(osascript <<END
-tell application "Terminal" to font name of window frontmost
+                         tell application "Terminal" to font name of window frontmost
 END
 )"
         ;;
@@ -2001,7 +2003,8 @@ END
             local current_profile_name profiles_count profile_name diff_font none_ascii
 
             current_profile_name="$(osascript <<END
-tell application "iTerm2" to profile name of current session of current window
+                                    tell application "iTerm2" to profile name \
+                                    of current session of current window
 END
 )"
 
@@ -2648,7 +2651,7 @@ get_wallpaper() {
     case "$os" in
         "Mac OS X")
             image="$(osascript <<END
-tell application "System Events" to picture of current desktop
+                     tell application "System Events" to picture of current desktop
 END
 )"
         ;;
