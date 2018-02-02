@@ -11,6 +11,7 @@
 - [**@szfcbr**](https://github.com/szfcbr)
 - [**@ArmstrongJ**](https://github.com/ArmstrongJ)
 - [**@robertwolter**](https://github.com/robertwolter)
+- [**@JadeMatrix**](https://github.com/JadeMatrix)
 
 
 ## OS
@@ -37,6 +38,8 @@
 - Added more info to verbose mode for debugging.
 - Fixed bug in prompt location calculation.
 - Fixed prompt bug in OpenBSD.
+- Fixed broken AppleScript blocks. [**@JadeMatrix**](https://github.com/JadeMatrix)
+- Fixed  function not working in bash 3. [**@JadeMatrix**](https://github.com/JadeMatrix)
 - Swapped sequences from `\033` to `\e`.
 
 
@@ -66,6 +69,7 @@
 **Window Manager Theme**
 
 - Fixed `sawfish` detection.
+- [macOS] Now detects Light/Dark theme. [**@JadeMatrix**](https://github.com/JadeMatrix)
 
 **Install Date**
 
@@ -102,6 +106,7 @@
 **Song**
 
 - Added support for Elisa. [**@mstraube**](https://github.com/mstraube)
+- macOS detection is now more reliable. [**@JadeMatrix**](https://github.com/JadeMatrix)
 
 **Model**
 
