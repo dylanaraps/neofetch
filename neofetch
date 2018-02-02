@@ -3265,7 +3265,7 @@ uppercase() {
     if ((bash_version >= 4)); then
         printf "%s" "${1^}"
     else
-        echo $1
+        echo "$1"
     fi
 }
 
