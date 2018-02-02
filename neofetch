@@ -3242,7 +3242,7 @@ get_distro_colors() {
         ;;
 
         "Anarchy"*)
-            set_colors 4 6
+            set_colors 7 4
             ascii_file="anarchy"
         ;;
 
@@ -3338,7 +3338,7 @@ get_distro_colors() {
         ;;
 
         "Calculate"*)
-            set_colors 0 3 
+            set_colors 7 3
             ascii_file="calculate"
         ;;
 
@@ -3649,7 +3649,7 @@ get_distro_colors() {
         ;;
 
         "NuTyX"*)
-            set_colors 4
+            set_colors 4 1
             ascii_file="nutyx"
         ;;
 
@@ -3863,7 +3863,7 @@ get_distro_colors() {
             ascii_file="tails"
         ;;
 
-        "Trisquel"*)
+       "Trisquel"*)
             set_colors 4 6
             ascii_file="trisquel"
         ;;
