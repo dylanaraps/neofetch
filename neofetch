@@ -3263,6 +3263,11 @@ get_distro_colors() {
             ascii_file="amazon"
         ;;
 
+        "Anarchy"*)
+            set_colors 7 4
+            ascii_file="anarchy"
+        ;;
+
         "Android"*)
             set_colors 2 7
             ascii_file="android"
@@ -3352,6 +3357,11 @@ get_distro_colors() {
         "BunsenLabs"*)
             set_colors fg 7
             ascii_file="bunsenlabs"
+        ;;
+
+        "Calculate"*)
+            set_colors 7 3
+            ascii_file="calculate"
         ;;
 
         "CentOS"*)
@@ -3658,6 +3668,11 @@ get_distro_colors() {
         "Nurunner"*)
             set_colors 4
             ascii_file="nurunner"
+        ;;
+
+        "NuTyX"*)
+            set_colors 4 1
+            ascii_file="nutyx"
         ;;
 
         "OBRevenge"*)
