@@ -1522,10 +1522,36 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps x | awk '!(/ awk|Helper|Cache|ibus|indicator/) && /mpd|mopidy|cmus|mocp|spotify|\
-Google Play|iTunes.app|rhythmbox|banshee|amarok|deadbeef|audacious|\
-xmms2d|gnome-music|lollypop|clementine|pragha|exaile|juk|bluemindo|\
-guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " " $6; exit}')"
+    player="$(ps -e | grep -m 1 -o -F \
+                           -e "Google Play" \
+                           -e "Spotify" \
+                           -e "amarok" \
+                           -e "audacious" \
+                           -e "banshee" \
+                           -e "bluemindo" \
+                           -e "clementine" \
+                           -e "cmus" \
+                           -e "deadbeef" \
+                           -e "deepin-music" \
+                           -e "elisa" \
+                           -e "exaile" \
+                           -e "gnome-music" \
+                           -e "guayadeque" \
+                           -e "iTunes.app" \
+                           -e "juk" \
+                           -e "lollypop" \
+                           -e "mocp" \
+                           -e "mopidy" \
+                           -e "mpd" \
+                           -e "pogo" \
+                           -e "pragha" \
+                           -e "qmmp" \
+                           -e "quodlibet" \
+                           -e "rhythmbox" \
+                           -e "spotify" \
+                           -e "tomahawk" \
+                           -e "xmms2d" \
+                           -e "yarock")"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -1577,15 +1603,13 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
                 "Linux") get_song_dbus "spotify" ;;
 
                 "Mac OS X")
-                    song="$(osascript -e 'tell application "Spotify" to artist of current track as \
-                                          string & " - " & name of current track as string')"
+                    song="$(osascript -e 'tell application "Spotify" to artist of current track as string & " - " & name of current track as string')"
                 ;;
             esac
         ;;
 
         "itunes"*)
-            song="$(osascript -e 'tell application "iTunes" to artist of current track as \
-                                  string & " - " & name of current track as string')"
+            song="$(osascript -e 'tell application "iTunes" to artist of current track as string & " - " & name of current track as string')"
         ;;
 
         "banshee"*)
@@ -1941,8 +1965,7 @@ get_term_font() {
         ;;
 
         "Apple_Terminal")
-            term_font="$(osascript -e 'tell application "Terminal" to \
-                                       font name of window frontmost')"
+            term_font="$(osascript -e 'tell application "Terminal" to font name of window frontmost')"
         ;;
 
         "iTerm2")
@@ -1953,8 +1976,7 @@ get_term_font() {
             # See: https://groups.google.com/forum/#!topic/iterm2-discuss/0tO3xZ4Zlwg
             local current_profile_name profiles_count profile_name diff_font none_ascii
 
-            current_profile_name="$(osascript -e 'tell application "iTerm2" to profile name \
-                                                  of current session of current window')"
+            current_profile_name="$(osascript -e 'tell application "iTerm2" to profile name of current session of current window')"
 
             # Warning: Dynamic profiles are not taken into account here!
             # https://www.iterm2.com/documentation-dynamic-profiles.html
@@ -3863,7 +3885,7 @@ get_distro_colors() {
             ascii_file="tails"
         ;;
 
-       "Trisquel"*)
+        "Trisquel"*)
             set_colors 4 6
             ascii_file="trisquel"
         ;;
