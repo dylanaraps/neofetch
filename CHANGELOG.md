@@ -10,6 +10,7 @@
 - [**@matoro**](https://github.com/matoro)
 - [**@szfcbr**](https://github.com/szfcbr)
 - [**@ArmstrongJ**](https://github.com/ArmstrongJ)
+- [**@robertwolter**](https://github.com/robertwolter)
 
 
 ## OS
@@ -22,6 +23,9 @@
 - Added support for Lunar Linux.
 - Added support for 32-bit IRIX. [**@szfcbr**](https://github.com/szfcbr)
 - Added support for FreeMINT. [**@ArmstrongJ**](https://github.com/ArmstrongJ)
+- Added support for Anarchy Linux. [**@robertwolter**](https://github.com/robertwolter)
+- Added support for Calculate Linux. [**@robertwolter**](https://github.com/robertwolter)
+- Added support for NuTyX. [**@robertwolter**](https://github.com/robertwolter)
 - Fixed detection bug with Gentoo.
 - Fixed detection bug with OpenWRT. [**@dawidd6**](https://github.com/dawidd6)
 - Fixed detection bug with LEDE. [**@dawidd6**](https://github.com/dawidd6)
