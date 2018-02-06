@@ -3354,6 +3354,11 @@ get_distro_colors() {
             ascii_file="arch_xferience"
         ;;
 
+        "ArchMerge"*)
+            set_colors 6 6 7 1
+            ascii_file="archmerge"
+        ;;
+
         "Arch"*)
             set_colors 6 6 7 1
             ascii_file="arch"
