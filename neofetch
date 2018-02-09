@@ -2467,11 +2467,12 @@ get_gpu_driver() {
 }
 
 get_libc() {
-    # Definitly works with musl and glibc. Only Linux as other OS's unlikely to be mix and match with components
+    # Definitly works with musl and glibc.
     if [[ "$os" == "Linux" ]]; then
         libc="$(ldd --version 2>&1 | head -n 1)"
+        # glibc prettification
         if [[ "${libc:0:3}" == "ldd" ]]; then
-            libc=${libc:3}
+            libc=$(echo ${libc:3} | sed 's/[()]//g')
         fi
     fi
 }
