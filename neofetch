@@ -2466,6 +2466,16 @@ get_gpu_driver() {
     esac
 }
 
+get_libc() {
+    # Definitly works with musl and glibc. Only Linux as other OS's unlikely to be mix and match with components
+    if [[ "$os" == "Linux" ]]; then
+        libc="$(ldd --version 2>&1 | head -n 1)"
+        if [[ "${libc:0:3}" == "ldd" ]]; then
+            libc=${libc:3}
+        fi
+    fi
+}
+
 get_cols() {
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
