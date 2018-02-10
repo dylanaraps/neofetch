@@ -125,3 +125,7 @@
 **Shell**
 
 - Added support for `tcsh`. [**@szfcbr**](https://github.com/szfcbr)
+
+**Terminal Font**
+
+- Added more paths for Alacritty.
