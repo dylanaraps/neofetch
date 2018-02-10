@@ -3650,6 +3650,11 @@ get_distro_colors() {
             ascii_file="mageia"
         ;;
 
+        "MagpieOS"*)
+            set_colors 2 1 3 5
+            ascii_file="magpieos"
+        ;;
+
         "Manjaro"*)
             set_colors 2 7
             ascii_file="manjaro"
