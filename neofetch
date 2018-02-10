@@ -1978,8 +1978,18 @@ get_term_font() {
 
     case "$term" in
         "alacritty"*)
+            if [[ -f "${XDG_CONFIG_HOME}/alacritty.yml" ]]; then
+                alacritty_file="${XDG_CONFIG_HOME}/alacritty.yml"
+
+            elif [[ -f "${XDG_CONFIG_HOME}/alacritty/alacritty.yml" ]]; then
+                alacritty_file="${XDG_CONFIG_HOME}/alacritty/alacritty.yml"
+
+            elif [[ -f "${HOME}/.alacritty.yml" ]]; then
+                alacritty_file="${HOME}/.alacritty.yml"
+            fi
+
             term_font="$(awk -F ':|#' '/normal:/ {getline; print}' \
-                         "${XDG_CONFIG_HOME}/alacritty/alacritty.yml")"
+                         "$alacritty_file")"
             term_font="${term_font/*family:}"
             term_font="${term_font/$'\n'*}"
             term_font="${term_font/\#*}"
