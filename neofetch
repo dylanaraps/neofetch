@@ -4308,7 +4308,7 @@ dynamic_prompt() {
         return
     else
         [[ "$image_prompt" ]] && printf "%b\n" "$line_breaks"
-        lines="$((lines - info_height))"
+        lines="$((lines - info_height + 1))"
     fi
 
     # Set the prompt location.
