@@ -3820,6 +3820,11 @@ get_distro_colors() {
             ascii_file="porteus"
         ;;
 
+        "PostMarketOS"*)
+            set_colors 2 7
+            ascii_file="postmarketos"
+        ;;
+
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
             set_colors 4 7
             ascii_file="puppy"
