@@ -67,6 +67,7 @@
 **Window Manager**
 
 - Added support for most (*if not all*) current Wayland compositors/window manager's.
+- Added support for some non-EWMH window managers.
 - [macOS] Fixed `chunkwm` being detected as `Kwm`. [**@iandrewt**](https://github.com/iandrewt)
 
 **Window Manager Theme**
