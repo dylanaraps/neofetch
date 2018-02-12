@@ -773,6 +773,13 @@ get_wm() {
         # Window Maker does not set _NET_WM_NAME
         [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
 
+        # Fallback for non-EWMH WMs.
+        [[ -z "$wm" ]] && \
+            wm="$(ps -e | grep -m 1 -o -F \
+                               -e "catwm" \
+                               -e "monsterwm" \
+                               -e "tinywm")"
+
     else
         case "$os" in
             "Mac OS X")
