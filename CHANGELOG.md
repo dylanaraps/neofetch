@@ -19,6 +19,7 @@
 - Added support for ArchMerge.
 - Added support for MagpieOS.
 - Added support for PostMarketOS.
+- Added support for Hyperbola GNU/Linux-libre [**@mstraube**](https://github.com/mstraube)
 - Added support for macOS High Sierra. [**@yslgirl**](https://github.com/yslgirl)
 - Added support for Container Linux by CoreOS. [**@chrisweeksnz**](https://github.com/chrisweeksnz)
 - Added support for 2017 iOS devices. [**@iandrewt**](https://github.com/iandrewt)
