@@ -3592,6 +3592,11 @@ get_distro_colors() {
             ascii_file="haiku"
         ;;
 
+        "Hyperbola"*)
+            set_colors 8
+            ascii_file="hyperbola"
+        ;;
+
         "Kali"*)
             set_colors 4 8
             ascii_file="kali"
