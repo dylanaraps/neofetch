@@ -57,6 +57,7 @@
 - [MacOS/iTerm2] Fixed thumbnail not appearing. [**@StarryTony**](https://github.com/StarryTony)
 - Fixed bug with getting wallpaper from feh.
 - Added `pixterm` backend.
+- Don't force resolution in `catimg`.
 
 ## Info
 
