@@ -4661,7 +4661,7 @@ IMAGE BACKEND:
     --catimg source             Shortcut to use 'catimg' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
-    --pixterm source               Shortcut to use 'pixterm' backend.
+    --pixterm source            Shortcut to use 'pixterm' backend.
     --sixel source              Shortcut to use 'sixel' backend.
     --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
