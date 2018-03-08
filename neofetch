@@ -2071,6 +2071,22 @@ END
             term_font="$(trim_quotes "$term_font")"
         ;;
 
+        "kitty"*)
+            if [[ -f "${KITTY_CONFIG_DIRECTORY}/kitty/kitty.conf" ]]; then
+                kitty_file="${KITTY_CONFIG_DIRECTORY}/kitty/kitty.conf"
+            elif [[ -f "${XDG_CONFIG_HOME}/kitty/kitty.conf" ]]; then
+                kitty_file="${XDG_CONFIG_HOME}/kitty/kitty.conf"
+            elif [[ -f "${HOME}/.config/kitty/kitty.conf" ]]; then
+                kitty_file="${HOME}/.config/kitty/kitty.conf"
+            elif [[ -f "${HOME}/Library/Preferences/kitty/kitty.conf" ]]; then
+                kitty_file="${HOME}/Library/Preferences/kitty/kitty.conf"
+            fi
+
+            term_font="$(awk '/font_family/ { $1 = ""; gsub(/^[[:space:]]/, ""); font = $0 } \
+                         /font_size/ { size = $2 } END { print font " " size}' \
+                         "${kitty_file}")"
+        ;;
+
         "konsole"*)
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
