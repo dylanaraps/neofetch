@@ -31,6 +31,7 @@
 - Added support for Anarchy Linux. [**@robertwolter**](https://github.com/robertwolter)
 - Added support for Calculate Linux. [**@robertwolter**](https://github.com/robertwolter)
 - Added support for NuTyX. [**@robertwolter**](https://github.com/robertwolter)
+- Added suport for openSUSE Tumbleweed. [**@robertwolter**](http://github.com/robertwolter)
 - Fixed detection bug with Gentoo.
 - Fixed detection bug with OpenWRT. [**@dawidd6**](https://github.com/dawidd6)
 - Fixed detection bug with LEDE. [**@dawidd6**](https://github.com/dawidd6)
