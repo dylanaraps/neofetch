@@ -104,6 +104,7 @@
 **Package Manager**
 
 - Added detection for Sabotage Linux's `butch` [**@MitchWeaver**](https://github.com/MitchWeaver)
+- Changed `pacman` detection to fix issues in other distros. [**@MitchWeaver**](https://github.com/MitchWeaver)
 
 **Resolution**
 
