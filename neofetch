@@ -484,16 +484,9 @@ get_uptime() {
 }
 
 get_packages() {
-    # Remove /usr/games from $PATH.
-    # This solves issues with neofetch opening the "pacman" game.
-    local PATH=":${PATH}:"
-    local PATH="${PATH/':/usr/games:'/:}"
-    local PATH="${PATH%:}"
-    local PATH="${PATH#:}"
-
     case "$os" in
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
-            type -p pacman >/dev/null && \
+            type -p paclog-pkglist >/dev/null && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
             type -p dpkg >/dev/null && \
@@ -772,6 +765,13 @@ get_wm() {
 
         # Window Maker does not set _NET_WM_NAME
         [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
+
+        # Fallback for non-EWMH WMs.
+        [[ -z "$wm" ]] && \
+            wm="$(ps -e | grep -m 1 -o -F \
+                               -e "catwm" \
+                               -e "monsterwm" \
+                               -e "tinywm")"
 
     else
         case "$os" in
@@ -1978,8 +1978,18 @@ get_term_font() {
 
     case "$term" in
         "alacritty"*)
+            if [[ -f "${XDG_CONFIG_HOME}/alacritty.yml" ]]; then
+                alacritty_file="${XDG_CONFIG_HOME}/alacritty.yml"
+
+            elif [[ -f "${XDG_CONFIG_HOME}/alacritty/alacritty.yml" ]]; then
+                alacritty_file="${XDG_CONFIG_HOME}/alacritty/alacritty.yml"
+
+            elif [[ -f "${HOME}/.alacritty.yml" ]]; then
+                alacritty_file="${HOME}/.alacritty.yml"
+            fi
+
             term_font="$(awk -F ':|#' '/normal:/ {getline; print}' \
-                         "${XDG_CONFIG_HOME}/alacritty/alacritty.yml")"
+                         "$alacritty_file")"
             term_font="${term_font/*family:}"
             term_font="${term_font/$'\n'*}"
             term_font="${term_font/\#*}"
@@ -2052,6 +2062,26 @@ END
         "Hyper"*)
             term_font="$(awk -F':|,' '/fontFamily/ {print $2; exit}' "${HOME}/.hyper.js")"
             term_font="$(trim_quotes "$term_font")"
+        ;;
+
+        "kitty"*)
+            if [[ -f "${KITTY_CONFIG_DIRECTORY}/kitty/kitty.conf" ]]; then
+                kitty_file="${KITTY_CONFIG_DIRECTORY}/kitty/kitty.conf"
+
+            elif [[ -f "${XDG_CONFIG_HOME}/kitty/kitty.conf" ]]; then
+                kitty_file="${XDG_CONFIG_HOME}/kitty/kitty.conf"
+
+            elif [[ -f "${HOME}/.config/kitty/kitty.conf" ]]; then
+                kitty_file="${HOME}/.config/kitty/kitty.conf"
+
+            elif [[ -f "${HOME}/Library/Preferences/kitty/kitty.conf" ]]; then
+                kitty_file="${HOME}/Library/Preferences/kitty/kitty.conf"
+
+            fi
+
+            term_font="$(awk '/font_family/ { $1 = ""; gsub(/^[[:space:]]/, ""); font = $0 } \
+                         /font_size/ { size = $2 } END { print font " " size}' \
+                         "${kitty_file}")"
         ;;
 
         "konsole"*)
@@ -2947,7 +2977,7 @@ display_image() {
         ;;
 
         "catimg")
-            catimg -w "$((width * 2 / font_width))" -r 0 "$image" ||\
+            catimg -w "$((width * 2 / font_width))" "$image" ||\
                 to_off "Image: catimg failed to display the image."
         ;;
 
@@ -3354,6 +3384,11 @@ get_distro_colors() {
             ascii_file="arch_xferience"
         ;;
 
+        "ArchMerge"*)
+            set_colors 6 6 7 1
+            ascii_file="archmerge"
+        ;;
+
         "Arch"*)
             set_colors 6 6 7 1
             ascii_file="arch"
@@ -3474,6 +3509,16 @@ get_distro_colors() {
             ascii_file="dracos"
         ;;
 
+        "dragonfly_old"*)
+            set_colors 1 7 3
+            ascii_file="dragonflybsd_old"
+        ;;
+
+        "dragonfly_small"*)
+            set_colors 1 7 3
+            ascii_file="dragonflybsd_small"
+        ;;
+
         "DragonFly"*)
             set_colors 1 7 3
             ascii_file="dragonflybsd"
@@ -3568,6 +3613,11 @@ get_distro_colors() {
         "Haiku"*)
             set_colors 2 8
             ascii_file="haiku"
+        ;;
+
+        "Hyperbola"*)
+            set_colors 8
+            ascii_file="hyperbola"
         ;;
 
         "Kali"*)
@@ -3805,6 +3855,11 @@ get_distro_colors() {
             ascii_file="porteus"
         ;;
 
+        "PostMarketOS"*)
+            set_colors 2 7
+            ascii_file="postmarketos"
+        ;;
+
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
             set_colors 4 7
             ascii_file="puppy"
@@ -3908,6 +3963,11 @@ get_distro_colors() {
         "SunOS" | "Solaris")
             set_colors 3 7
             ascii_file="solaris"
+        ;;
+
+        "openSUSE Tumbleweed"*)
+            set_colors 2 7
+            ascii_file="tumbleweed"
         ;;
 
         "openSUSE"* | "open SUSE"* | "SUSE"*)
@@ -4288,7 +4348,7 @@ dynamic_prompt() {
         return
     else
         [[ "$image_prompt" ]] && printf "%b\n" "$line_breaks"
-        lines="$((lines - info_height))"
+        lines="$((lines - info_height + 1))"
     fi
 
     # Set the prompt location.
@@ -4629,7 +4689,7 @@ IMAGE BACKEND:
     --catimg source             Shortcut to use 'catimg' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
-    --pixterm source               Shortcut to use 'pixterm' backend.
+    --pixterm source            Shortcut to use 'pixterm' backend.
     --sixel source              Shortcut to use 'sixel' backend.
     --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
