@@ -58,22 +58,7 @@ get_distro() {
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
-            if [[ "$(< /proc/version)" == *"Microsoft"* ||
-                  "$kernel_version" == *"Microsoft"* ]]; then
-                case "$distro_shorthand" in
-                    "on")   distro="$(lsb_release -sir) [Windows 10]" ;;
-                    "tiny") distro="Windows 10" ;;
-                    *)      distro="$(lsb_release -sd) on Windows 10" ;;
-                esac
-
-            elif [[ "$(< /proc/version)" == *"chrome-bot"* || -f "/dev/cros_ec" ]]; then
-                case "$distro_shorthand" in
-                    "on")   distro="$(lsb_release -sir) [Chrome OS]" ;;
-                    "tiny") distro="Chrome OS" ;;
-                    *)      distro="$(lsb_release -sd) on Chrome OS" ;;
-                esac
-
-            elif [[ -f "/etc/redstar-release" ]]; then
+            if [[ -f "/etc/redstar-release" ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Red Star OS" ;;
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
@@ -163,6 +148,23 @@ get_distro() {
                     [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
                 fi
             fi
+
+            if [[ "$(< /proc/version)" == *"Microsoft"* ||
+                  "$kernel_version" == *"Microsoft"* ]]; then
+                case "$distro_shorthand" in
+                    "on")   distro+=" [Windows 10]" ;;
+                    "tiny") distro="Windows 10" ;;
+                    *)      distro+=" on Windows 10" ;;
+                esac
+
+            elif [[ "$(< /proc/version)" == *"chrome-bot"* || -f "/dev/cros_ec" ]]; then
+                case "$distro_shorthand" in
+                    "on")   distro+=" [Chrome OS]" ;;
+                    "tiny") distro="Chrome OS" ;;
+                    *)      distro+=" on Chrome OS" ;;
+                esac
+            fi
+
             distro="$(trim_quotes "$distro")"
             distro="${distro/'NAME='}"
         ;;

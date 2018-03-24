@@ -36,6 +36,7 @@
 - Fixed detection bug with OpenWRT. [**@dawidd6**](https://github.com/dawidd6)
 - Fixed detection bug with LEDE. [**@dawidd6**](https://github.com/dawidd6)
 - Fixed detection bug with TrueOS. [**@dawidd6**](https://github.com/dawidd6)
+- Fixed detection bug with Windows Subsystem for Linux and Crouton when an OS without lsb_release is installed.
 
 
 ## General
