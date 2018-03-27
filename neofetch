@@ -2082,7 +2082,7 @@ END
             fi
 
             term_font="$(awk '/font_family/ { $1 = ""; gsub(/^[[:space:]]/, ""); font = $0 } \
-                         /font_size/ { size = $2 } END { print font " " size}' \
+                         /\s?font_size\s/ { size = $2 } END { print font " " size}' \
                          "${kitty_file}")"
         ;;
 
