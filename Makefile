@@ -1,10 +1,10 @@
 UNAME != uname -s
 PREFIX=/usr
 SHARE=/share
-.if "${UNAME}" == "OpenBSD"
+ifeq "${UNAME}" "OpenBSD"
 PREFIX = /usr/local
 SHARE =  
-.endif
+endif
 
 all:
 	@echo Run \'make install\' to install Neofetch
