@@ -3263,7 +3263,7 @@ get_bold() {
 }
 
 trim() {
-    printf "%s" "${1//[[:space:]]/ }"
+    printf '%s\n' "$1" | tr -s "[:space:]"
 }
 
 trim_quotes() {
