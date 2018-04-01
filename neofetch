@@ -1178,7 +1178,7 @@ get_cpu() {
     cpu="${cpu//Six-Core}"
     cpu="${cpu//Eight-Core}"
     cpu="${cpu//, * Compute Cores}"
-    cpu="${cpu//Core}"
+    cpu="${cpu//Core / }"
     cpu="${cpu//(\"AuthenticAMD\"*)}"
     cpu="${cpu//with Radeon * Graphics}"
     cpu="${cpu//, altivec supported}"
