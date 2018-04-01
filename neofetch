@@ -1560,6 +1560,10 @@ get_song() {
                            -e "xmms2d" \
                            -e "yarock")"
 
+    [[ "$music_player" && "$music_player" != "auto" ]] && \
+        player="$music_player"
+
+
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
         # This function saves us using the same command throughout the function.
@@ -4637,6 +4641,8 @@ INFO:
 
     --ip_host url               URL to query for public IP
     --song_shorthand on/off     Print the Artist/Title on separate lines
+    --music_player player-name  Manually specify a player to use.
+                                Available values are listed in the config file
     --install_time on/off       Enable/Disable showing the time in Install Date output.
     --install_time_format 12h/24h
                                 Set time format in Install Date to be 12 hour or 24 hour.
@@ -4822,6 +4828,7 @@ get_args() {
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
+            "--music_player") music_player="$2" ;;
             "--install_time") install_time="$2" ;;
             "--install_time_format") install_time_format="$2" ;;
             "--cpu_temp")
