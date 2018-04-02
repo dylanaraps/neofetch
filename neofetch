@@ -1318,6 +1318,7 @@ get_gpu() {
                         gpu="${gpu/'(R)'}"
                         gpu="${gpu/'Corporation'}"
                         gpu="${gpu/ \(*}"
+                        gpu="${gpu/Integrated Graphics Controller}"
 
                         [[ -z "$(trim "$gpu")" ]] && gpu="Intel Integrated Graphics"
                     ;;
