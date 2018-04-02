@@ -107,6 +107,12 @@ get_distro() {
             elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
+            # Chrome OS doesn't conform to the /etc/*-release standard.
+            # While the file is a series of variables they can't be sourced
+            # by the shell since the values aren't quoted.
+            elif [[ -f "/etc/lsb-release" && "$(< /etc/lsb-release)" == *CHROMEOS* ]]; then
+                distro="$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)"
+
             elif [[ -f "/etc/os-release" || \
                     -f "/usr/lib/os-release" || \
                     -f "/etc/openwrt_release" ]]; then
