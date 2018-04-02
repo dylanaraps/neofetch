@@ -2193,7 +2193,6 @@ END
             if [[ -z "$term_font" && "$term" == "xterm" ]]; then
                 term_font="$(grep -E '^XTerm.vt100.faceName' <<< "$xrdb")"
                 term_font="${term_font/*"faceName:"}"
-                term_font="$(trim "$term_font")"
             fi
 
             # xft: isn't required at the beginning so we prepend it if it's missing
