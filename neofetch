@@ -1570,7 +1570,6 @@ get_song() {
     [[ "$music_player" && "$music_player" != "auto" ]] && \
         player="$music_player"
 
-
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
         # This function saves us using the same command throughout the function.
