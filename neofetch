@@ -1191,7 +1191,6 @@ get_cpu() {
     cpu="${cpu//FPU*}"
     cpu="${cpu//Chip Revision*}"
     cpu="${cpu//Technologies, Inc}"
-    cpu="${cpu//Integrated Graphics Controller}"
 
     # Trim spaces from core and speed output
     cores="${cores//[[:space:]]}"
