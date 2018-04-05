@@ -12,6 +12,9 @@
 - [**@ArmstrongJ**](https://github.com/ArmstrongJ)
 - [**@robertwolter**](https://github.com/robertwolter)
 - [**@JadeMatrix**](https://github.com/JadeMatrix)
+- [**@MindTooth**](https://github.com/MindTooth)
+- [**@aidanharris**](https://github.com/aidanharris)
+- [**@khoacao96**](https://github.com/khoacao96)
 
 
 ## OS
@@ -37,6 +40,7 @@
 - Fixed detection bug with LEDE. [**@dawidd6**](https://github.com/dawidd6)
 - Fixed detection bug with TrueOS. [**@dawidd6**](https://github.com/dawidd6)
 - Fixed detection bug with Windows Subsystem for Linux and Crouton when an OS without lsb_release is installed.
+- Fixed ChromeOS detection.
 
 
 ## General
@@ -47,11 +51,15 @@
 - Fixed broken AppleScript blocks. [**@JadeMatrix**](https://github.com/JadeMatrix)
 - Fixed  function not working in bash 3. [**@JadeMatrix**](https://github.com/JadeMatrix)
 - Swapped sequences from `\033` to `\e`.
+- Fixed Pacman name conflict with the game. [**@MitchWeaver**](https://github.com/MitchWeaver)
+- Removed the last `echo` in the script.
+- Fixed typo. [**@khoacao96**](https://github.com/khoacao96)
 
 
 ## Ascii
 
 - Added color updates for Kubuntu logo. **Maulik Mistry**
+- Added new DragonflyBSD log. [**@MitchWeaver**](https://github.com/MitchWeaver)
 
 
 ## Images
@@ -114,6 +122,7 @@
 
 **Song**
 
+- Added option to manually specify the player to use.
 - Added support for Elisa. [**@mstraube**](https://github.com/mstraube)
 - macOS detection is now more reliable. [**@JadeMatrix**](https://github.com/JadeMatrix)
 
@@ -136,3 +145,6 @@
 **Terminal Font**
 
 - Added more paths for Alacritty.
+- Added font support for Kitty. [**@MindTooth**](https://github.com/MindTooth)
+- Fixed Kitty `font_size` regex. [**@aidanharris**](https://github.com/aidanharris)
+- Added support for `XTerm.vt11.facename`. [**@aidanharris**](https://github.com/aidanharris)
