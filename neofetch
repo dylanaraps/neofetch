@@ -2653,6 +2653,9 @@ get_ascii() {
         print+="$line \n"
 
         # Calculate size of ascii file in line length / line count.
+        line="${line//[??;?;??m}"
+        line="${line//[??;?;???m}"
+        line="${line//[0m}"
         line="${line//\$\{??\}}"
         line="${line//\\\\/\\}"
         ((${#line} > ascii_length)) && ascii_length="${#line}"
