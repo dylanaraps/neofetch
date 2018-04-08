@@ -1284,13 +1284,21 @@ get_gpu() {
                                         {if(!seen[a[i]]++) print a[i]}}'))
             IFS="$old_ifs"
 
-            # Number the GPUs if more than one exists.
-            ((${#gpus[@]} > 1)) && gpu_num=1
+            # Remove duplicate Intel Graphics outputs.
+            # This fixes cases where the outputs are both
+            # Intel but not entirely identical.
+            #
+            # Checking the first two array elements should
+            # be safe since there won't be 2 intel outputs if
+            # there's a dedicated GPU in play.
+            [[ "${gpus[0]}" == *Intel* && \
+               "${gpus[1]}" == *Intel* ]] && \
+               unset -v "gpus[0]"
 
             for gpu in "${gpus[@]}"; do
                 # GPU shorthand tests.
-                [[ "$gpu_type" == "dedicated" && "$gpu" =~ (i|I)ntel ]] ||\
-                [[ "$gpu_type" == "integrated" && ! "$gpu" =~ (i|I)ntel ]] && \
+                [[ "$gpu_type" == "dedicated" && "$gpu" == *Intel* ]] || \
+                [[ "$gpu_type" == "integrated" && ! "$gpu" == *Intel* ]] && \
                     { unset -v gpu; continue; }
 
                 case "$gpu" in
@@ -1336,7 +1344,6 @@ get_gpu() {
                 fi
 
                 prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
-                ((++gpu_num))
             done
 
             return
