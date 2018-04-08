@@ -2179,7 +2179,7 @@ END
         ;;
 
         "st")
-            if term_font="$(ps -o command= -p $parent | grep -E '\-f\s?.*?:?')"; then
+            if term_font="$(ps -o command= -p "$parent" | grep -E '\-f\s?.*?:?')"; then
                 term_font="${term_font/*-f/}"
                 term_font="${term_font/ -*/}"
             else
