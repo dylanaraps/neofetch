@@ -2178,6 +2178,32 @@ END
                          "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
         ;;
 
+        "st")
+            if term_font="$(ps -o command= -p $parent | grep -E '\-f\s?.*?:?')"; then
+                term_font="${term_font/*-f/}"
+                term_font="${term_font/ -*/}"
+            else
+                binary=""
+
+                # On Linux we can get the exact path to the running binary through the procfs
+                # on other systems we just have to guess and assume `st` is invoked from somewhere
+                # in the users $PATH
+                [[ -L /proc/$parent/exe ]] && binary="/proc/$parent/exe"
+                [[ -z "$binary" ]] && binary="$(command -v st)"
+
+                # Grep the output of strings on the `st` binary for anything that looks vaguely
+                # like a font definition. NOTE: There is a slight limitation in this approach.
+                # Technically "Font Name" is a valid font. As it doesn't specify any font options
+                # though it is hard to match it correctly amongst the rest of the noise.
+                [[ -n "$binary" ]] && \
+                    term_font="$(strings "$binary" | \
+                    grep -E '(pixelsize=|size=|antialias=|autohint=)' | head -1)"
+            fi
+
+            term_font="${term_font/xft:}"
+            term_font="${term_font/:*}"
+        ;;
+
         "terminology")
             term_font="$(strings "${XDG_CONFIG_HOME}/terminology/config/standard/base.cfg" |\
                          awk '/^font\.name$/{print a}{a=$0}')"
