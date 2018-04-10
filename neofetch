@@ -2179,6 +2179,8 @@ END
         ;;
 
         "st")
+            [[ -z "$parent" ]] && parent="$(get_ppid "$PPID")"
+
             term_font="$(ps -o command= -p "$parent" | grep -F -- "-f")"
             if [[ "$term_font" ]]; then
                 term_font="${term_font/*-f/}"
