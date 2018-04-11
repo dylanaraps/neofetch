@@ -23,6 +23,9 @@ export LANG=C
 # Add more paths to $PATH.
 export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec:${PATH}"
 
+# Fix issues with gsettings.
+export GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
+
 # Set no case match.
 shopt -s nocasematch
 
