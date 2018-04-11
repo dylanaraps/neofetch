@@ -30,7 +30,7 @@ export GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
 shopt -s nocasematch
 
 # Reset colors and bold.
-reset="\\e[0m"
+reset="\e[0m"
 
 # DETECT INFORMATION
 
@@ -2543,9 +2543,9 @@ get_cols() {
         # Generate the string.
         for ((start; start<=end; start++)); do
             case "$start" in
-                [0-6]) blocks+="${reset}\\e[3${start}m\\e[4${start}m${block_width}" ;;
-                7) blocks+="${reset}\\e[3${start}m\\e[4${start}m${block_width}" ;;
-                *) blocks2+="\\e[38;5;${start}m\\e[48;5;${start}m${block_width}" ;;
+                [0-6]) blocks+="${reset}\e[3${start}m\e[4${start}m${block_width}" ;;
+                7) blocks+="${reset}\e[3${start}m\e[4${start}m${block_width}" ;;
+                *) blocks2+="\e[38;5;${start}m\e[48;5;${start}m${block_width}" ;;
             esac
         done
 
@@ -2558,12 +2558,12 @@ get_cols() {
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
-        cols="${cols//nl/\\n\\\e[${text_padding}C${zws}}"
+        cols="${cols//nl/\\n\\e[${text_padding}C${zws}}"
 
         # Add block height to info height.
         info_height="$((info_height+=block_height+2))"
 
-        printf "%b\n" "\\e[${text_padding}C${zws}${cols}"
+        printf "%b\n" "\e[${text_padding}C${zws}${cols}"
     fi
 
     unset -v blocks blocks2 cols
@@ -2571,7 +2571,7 @@ get_cols() {
     # TosWin2 on FreeMiNT is terrible at this,
     # so we'll reset colors arbitrarily.
     [[ "$term" == "TosWin2" ]] && \
-        printf "%b\n" "\\e[30;47m"
+        printf "%b\n" "\e[30;47m"
 
     # Tell info() that we printed manually.
     prin=1
@@ -2625,7 +2625,7 @@ image_backend() {
     esac
 
     # Set cursor position next image/ascii.
-    [[ "$image_backend" != "off" ]] && printf "%b" "\\e[${lines:-0}A\\e[9999999D"
+    [[ "$image_backend" != "off" ]] && printf "%b" "\e[${lines:-0}A\e[9999999D"
 }
 
 get_ascii() {
@@ -2819,14 +2819,14 @@ get_term_size() {
     # so we have to use a slightly different sequence to
     # get the terminal size.
     if [[ -n "$TMUX" ]]; then
-        printf "%b" "\\ePtmux;\\e\\e[14t\\e\\e[c\\e\\"
+        printf "%b" "\ePtmux;\e\e[14t\e\e[c\e\\"
         read_flags=(-d c)
 
     elif [[ "$image_backend" == "tycat" ]]; then
-        printf "%b" "\\e}qs\000"
+        printf "%b" "\e}qs\000"
 
     else
-        printf "%b" "\\e[14t\\e[c"
+        printf "%b" "\e[14t\e[c"
         read_flags=(-d c)
     fi
 
@@ -2845,7 +2845,7 @@ get_term_size() {
         term_width="${term_size[2]/t*}"
     fi
 
-    # Get terminal width/height if \\e[14t is unsupported.
+    # Get terminal width/height if \e[14t is unsupported.
     if [[ -z "$term_width" ]] || (( "$term_width" < 50 )); then
         if type -p xdotool >/dev/null 2>&1; then
             current_window="$(xdotool getactivewindow)"
@@ -3043,10 +3043,10 @@ display_image() {
 
         "iterm2")
             image="$(base64 < "$image")"
-            iterm_cmd="\\e]1337;File=width=${width}px;height=${height}px;inline=1:${image}"
+            iterm_cmd="\e]1337;File=width=${width}px;height=${height}px;inline=1:${image}"
 
             # Tmux requires an additional escape sequence for this to work.
-            [[ -n "$TMUX" ]] && iterm_cmd="\\ePtmux;\\e${iterm_cmd}\\e\\"
+            [[ -n "$TMUX" ]] && iterm_cmd="\ePtmux;\e${iterm_cmd}\e\\"
 
             printf "%b\a\n" "$iterm_cmd"
         ;;
@@ -3082,7 +3082,7 @@ to_ascii() {
     get_ascii
 
     # Set cursor position next image/ascii.
-    printf "%b" "\\e[${lines:-0}A\\e[9999999D"
+    printf "%b" "\e[${lines:-0}A\e[9999999D"
 }
 
 to_off() {
@@ -3242,7 +3242,7 @@ prin() {
         string="${2:-$1}"
         local subtitle_color="$info_color"
     fi
-    string="$(trim "${string//$'\\e[0m'}")"
+    string="$(trim "${string//$'\e[0m'}")"
 
     # Log length if it doesn't exist.
     if [[ -z "$length" ]]; then
@@ -3255,7 +3255,7 @@ prin() {
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
-    printf "%b\n" "${text_padding:+\\e[${text_padding}C}${zws}${string}${reset} "
+    printf "%b\n" "${text_padding:+\e[${text_padding}C}${zws}${string}${reset} "
 
     # Calculate info height.
     ((++info_height))
@@ -3267,7 +3267,7 @@ prin() {
 get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
-        printf "%b%b\n" "${text_padding:+\\e[${text_padding}C}${zws}${underline_color}" \
+        printf "%b%b\n" "${text_padding:+\e[${text_padding}C}${zws}${underline_color}" \
                         "${underline// /$underline_char}${reset} "
         unset -v length
     fi
@@ -3288,12 +3288,12 @@ get_line_break() {
 
 get_bold() {
     case "$ascii_bold" in
-        "on") ascii_bold="\\e[1m" ;;
+        "on") ascii_bold="\e[1m" ;;
         "off") ascii_bold="" ;;
     esac
 
     case "$bold" in
-        "on") bold="\\e[1m" ;;
+        "on") bold="\e[1m" ;;
         "off") bold="" ;;
     esac
 }
@@ -3313,10 +3313,10 @@ trim_quotes() {
 }
 
 strip_sequences() {
-    strip="${1//$'\\e['3[0-9]m}"
-    strip="${strip//$'\\e['38\;5\;[0-9]m}"
-    strip="${strip//$'\\e['38\;5\;[0-9][0-9]m}"
-    strip="${strip//$'\\e['38\;5\;[0-9][0-9][0-9]m}"
+    strip="${1//$'\e['3[0-9]m}"
+    strip="${strip//$'\e['38\;5\;[0-9]m}"
+    strip="${strip//$'\e['38\;5\;[0-9][0-9]m}"
+    strip="${strip//$'\e['38\;5\;[0-9][0-9][0-9]m}"
 
     printf "%s\n" "$strip"
 }
@@ -4175,9 +4175,9 @@ set_text_colors() {
 
 color() {
     case "$1" in
-        [0-6]) printf "%b" "${reset}\\e[3${1}m" ;;
-        7 | "fg") printf "%b" "\\e[37m${reset}" ;;
-        *) printf "%b" "\\e[38;5;${1}m" ;;
+        [0-6]) printf "%b" "${reset}\e[3${1}m" ;;
+        7 | "fg") printf "%b" "\e[37m${reset}" ;;
+        *) printf "%b" "\e[38;5;${1}m" ;;
     esac
 }
 
@@ -4200,7 +4200,7 @@ stdout() {
 }
 
 err() {
-    err+="$(color 1)[!]\\e[0m $1\n"
+    err+="$(color 1)[!]\e[0m $1\n"
 }
 
 get_full_path() {
@@ -4384,7 +4384,7 @@ dynamic_prompt() {
     if ((lines > 1)); then
         case "$kernel_name" in
             "OpenBSD") tput cud "$lines" ;;
-            *) printf "%b" "\\e[${lines}B" ;;
+            *) printf "%b" "\e[${lines}B" ;;
         esac
     fi
 }
@@ -5037,10 +5037,10 @@ main() {
     # Minix doesn't support these sequences.
     if [[ "$TERM" != "minix" && "$stdout" != "on" ]]; then
         # If the script exits for any reason, unhide the cursor.
-        trap 'printf "\\e[?25h\\e[?7h"' EXIT
+        trap 'printf "\e[?25h\e[?7h"' EXIT
 
         # Hide the cursor and disable line wrap.
-        printf "\\e[?25l\\e[?7l"
+        printf "\e[?25l\e[?7l"
     fi
 
     image_backend
