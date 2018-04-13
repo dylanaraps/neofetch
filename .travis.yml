@@ -1,13 +1,6 @@
 language: bash
 sudo: required
 
-addons:
-    apt:
-        sources:
-            - debian-sid
-        packages:
-            - shellcheck
-
 os:
     - linux
     - osx
