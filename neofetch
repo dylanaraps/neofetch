@@ -1281,11 +1281,10 @@ get_gpu() {
     case "$os" in
         "Linux")
             # Read GPUs into array.
-            IFS=$'\n'
-            gpus=($(lspci -mm | awk -F '\\"|\\" \\"|\\(' \
-                                       '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END{for(i in a)
-                                        {if(!seen[a[i]]++) print a[i]}}'))
-            IFS="$old_ifs"
+            gpu_cmd="$(lspci -mm | awk -F '\\"|\\" \\"|\\(' \
+                                          '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END{for(i in a)
+                                           {if(!seen[a[i]]++) print a[i]}}')"
+            IFS=$'\n' read -d "" -ra gpus <<< "$gpu_cmd"
 
             # Remove duplicate Intel Graphics outputs.
             # This fixes cases where the outputs are both
@@ -2296,10 +2295,8 @@ get_disk() {
 
     # Create an array called 'disks' where each element is a separate line from
     # df's output. We then unset the first element which removes the column titles.
-    IFS=$'\n'
-    disks=($(df "${df_flags[@]}" "${disk_show[@]:-/}"))
-    unset 'disks[0]'
-    IFS="$old_ifs"
+    IFS=$'\n' read -d "" -ra disks <<< "$(df "${df_flags[@]}" "${disk_show[@]:-/}")"
+    unset "disks[0]"
 
     # Stop here if 'df' fails to print disk info.
     if [[ -z "${disks[*]}" ]]; then
@@ -2309,7 +2306,7 @@ get_disk() {
 
     for disk in "${disks[@]}"; do
         # Create a second array and make each element split at whitespace this time.
-        disk_info=($disk)
+        IFS=" " read -ra disk_info <<< "$disk"
         disk_perc="${disk_info[4]/'%'}"
 
         case "$df_version" in
@@ -4507,7 +4504,7 @@ old_options() {
 cache_uname() {
     # Cache the output of uname so we don't
     # have to spawn it multiple times.
-    uname=($(uname -sr))
+    IFS=" " read -ra uname <<< "$(uname -sr)"
 
     kernel_name="${uname[0]}"
     kernel_version="${uname[1]}"
@@ -4837,11 +4834,6 @@ Report bugs to https://github.com/dylanaraps/neofetch/issues
 exit 1
 }
 
-version() {
-    printf "%s\\n" "Neofetch $version"
-    exit 1
-}
-
 get_args() {
     # Check the commandline flags early for '--config'.
     [[ "$*" != *--config* ]] && get_user_config
@@ -5019,7 +5011,10 @@ get_args() {
             "-v") verbose="on" ;;
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
-            "--version") version ;;
+            "--version")
+                printf "%s\\n" "Neofetch $version"
+                exit 1
+            ;;
             "--gen-man")
                 help2man -n "A fast, highly customizable system info script" \
                           -N ./neofetch -o neofetch.1
