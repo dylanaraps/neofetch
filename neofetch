@@ -2189,12 +2189,12 @@ END
         ;;
 
         "st")
-            [[ -z "$parent" ]] && parent="$(get_ppid "$PPID")"
-
             term_font="$(ps -o command= -p "$parent" | grep -F -- "-f")"
+
             if [[ "$term_font" ]]; then
                 term_font="${term_font/*-f/}"
                 term_font="${term_font/ -*/}"
+
             else
                 # On Linux we can get the exact path to the running binary through the procfs
                 # (in case `st` is launched from outside of $PATH) on other systems we just
@@ -2206,8 +2206,11 @@ END
                 # Technically "Font Name" is a valid font. As it doesn't specify any font options
                 # though it is hard to match it correctly amongst the rest of the noise.
                 [[ -n "$binary" ]] && \
-                    term_font="$(strings "$binary" | \
-                    grep -F -m 1 -e "pixelsize=" -e "size=" -e "antialias=" -e "autohint=")"
+                    term_font="$(strings "$binary" | grep -F -m 1 \
+                                                          -e "pixelsize=" \
+                                                          -e "size=" \
+                                                          -e "antialias=" \
+                                                          -e "autohint=")"
             fi
 
             term_font="${term_font/xft:}"
