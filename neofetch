@@ -2757,7 +2757,10 @@ END
                 ;;
 
                 *)
-                    if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
+                    if [[ -f "${HOME}/.cache/wal/wal" ]]; then
+                       image="$(< "${HOME}/.cache/wal/wal")"
+
+                    elif type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
                         image="$(awk -F\' '/feh/ {printf $(NF-1)}' "${HOME}/.fehbg")"
 
                     elif type -p nitrogen >/dev/null; then
