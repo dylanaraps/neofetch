@@ -2744,6 +2744,11 @@ END
             # Get DE if user has disabled the function.
             ((de_run != 1)) && get_de
 
+            if type -p wal >/dev/null && [[ -f "${HOME}/.cache/wal/wal" ]]; then
+               image="$(< "${HOME}/.cache/wal/wal")"
+               return
+            fi
+
             case "$de" in
                 "MATE"*) image="$(gsettings get org.mate.background picture-filename)" ;;
                 "Xfce"*)
@@ -2757,10 +2762,7 @@ END
                 ;;
 
                 *)
-                    if [[ -f "${HOME}/.cache/wal/wal" ]]; then
-                       image="$(< "${HOME}/.cache/wal/wal")"
-
-                    elif type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
+                    if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
                         image="$(awk -F\' '/feh/ {printf $(NF-1)}' "${HOME}/.fehbg")"
 
                     elif type -p nitrogen >/dev/null; then
