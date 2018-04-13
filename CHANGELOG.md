@@ -1,5 +1,7 @@
 ## Contributors
 
+- [**@aidanharris**](https://github.com/aidanharris)
+
 
 ## General
 
@@ -22,3 +24,6 @@
 
 - Fixed duplicate Intel GPUs.
 
+**Terminal Font**
+
+- Added support for `st`. [**@aidanharris**](https://github.com/aidanharris)
