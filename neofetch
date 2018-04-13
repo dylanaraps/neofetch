@@ -14,7 +14,6 @@ version="3.4.1-git"
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
-old_ifs="$IFS"
 
 # Speed up script by not using unicode.
 export LC_ALL=C
