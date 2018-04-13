@@ -2525,7 +2525,7 @@ get_install_date() {
 
     install_date="${install_date//-/ }"
     install_date="${install_date%:*}"
-    install_date=($install_date)
+    IFS=" " read -ra install_date <<< "$install_date"
     install_date="$(convert_time "${install_date[@]}")"
 }
 
@@ -3189,7 +3189,7 @@ scrot_program() {
     # falling back to OS specific screenshot tools.
     if [[ -n "$DISPLAY" ]]; then
         if [[ "$scrot_cmd" != "auto" ]] && type -p "${scrot_cmd%% *}" >/dev/null; then
-            scrot_program=($scrot_cmd)
+            IFS=" " read -ra scrot_program <<< "$scrot_cmd"
 
         elif type -p maim >/dev/null; then
             scrot_program=(maim)
@@ -4874,7 +4874,7 @@ get_args() {
                     case "$arg" in
                         "--disk_show") ;;
                         "-"*) break ;;
-                        *) disk_show+=($arg)
+                        *) disk_show+=("$arg") ;;
                     esac
                 done
             ;;
@@ -4898,7 +4898,7 @@ get_args() {
                 for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
                     case "$arg" in
                         "-"*) break ;;
-                        *) colors+=($arg)
+                        *) colors+=("$arg") ;;
                     esac
                 done
                 colors+=(7 7 7 7 7 7)
@@ -4966,7 +4966,7 @@ get_args() {
                 for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
                     case "$arg" in
                         "-"*) break ;;
-                        *) ascii_colors+=($arg)
+                        *) ascii_colors+=("$arg")
                     esac
                 done
                 ascii_colors+=(7 7 7 7 7 7)
