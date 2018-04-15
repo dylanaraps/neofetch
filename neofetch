@@ -1432,10 +1432,10 @@ get_gpu() {
 get_memory() {
     case "$os" in
         "Linux" | "Windows")
+            IFS=$'\n'":kB" read -d "" -ra mem < /proc/meminfo
+
             # MemUsed = Memtotal + Shmem - MemFree - Buffers - Cached - SReclaimable
             # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
-            IFS=$'\n'"|:|kB" read -d "" -ra mem < /proc/meminfo
-
             mem_used="$(((mem[1] + mem[64] - mem[4] - mem[11] - mem[14]- mem[70]) / 1024))"
             mem_total="$((mem[1] / 1024))"
         ;;
