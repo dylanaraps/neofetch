@@ -28,18 +28,18 @@ For more information: \[[**Dependencies**](https://github.com/dylanaraps/neofetc
 
 ## Articles
 
-- https://www.omgubuntu.co.uk/2016/11/neofetch-terminal-system-info-app
-- https://www.omgubuntu.co.uk/2017/01/neofetch-3-0-released
-- https://www.omgubuntu.co.uk/2016/12/cli-system-tool-neofetch-2-0-released
-- https://linuxconfig.org/how-to-display-system-information-with-neofetch
-- https://www.ostechnix.com/neofetch-display-linux-systems-information/
-- https://www.tecmint.com/neofetch-shows-linux-system-information-with-logo/
-- https://www.maketecheasier.com/display-system-information-neofetch-linux/
-- https://www.cyberciti.biz/howto/neofetch-awesome-system-info-bash-script-for-linux-unix-macos/
-- https://www.2daygeek.com/neofetch-display-linux-systems-information-ascii-distribution-logo-terminal/
-- https://www.techrepublic.com/article/how-to-get-all-the-information-you-need-about-your-linux-machine-with-a-single-command/
-- https://www.lffl.org/2016/11/neofetch-le-informazioni-sistema-sul-terminale-stile.html
 - https://lamiradadelreplicante.com/2016/05/15/la-informacion-de-tu-sistema-en-la-terminal-con-neofetch/
+- https://linuxconfig.org/how-to-display-system-information-with-neofetch
+- https://www.2daygeek.com/neofetch-display-linux-systems-information-ascii-distribution-logo-terminal/
+- https://www.cyberciti.biz/howto/neofetch-awesome-system-info-bash-script-for-linux-unix-macos/
+- https://www.lffl.org/2016/11/neofetch-le-informazioni-sistema-sul-terminale-stile.html
+- https://www.maketecheasier.com/display-system-information-neofetch-linux/
+- https://www.omgubuntu.co.uk/2016/11/neofetch-terminal-system-info-app
+- https://www.omgubuntu.co.uk/2016/12/cli-system-tool-neofetch-2-0-released
+- https://www.omgubuntu.co.uk/2017/01/neofetch-3-0-released
+- https://www.ostechnix.com/neofetch-display-linux-systems-information/
+- https://www.techrepublic.com/article/how-to-get-all-the-information-you-need-about-your-linux-machine-with-a-single-command/
+- https://www.tecmint.com/neofetch-shows-linux-system-information-with-logo/
 
 
 ## Thanks
