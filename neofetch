@@ -1434,18 +1434,10 @@ get_memory() {
         "Linux" | "Windows")
             # MemUsed = Memtotal + Shmem - MemFree - Buffers - Cached - SReclaimable
             # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
-            while IFS=":" read -r a b; do
-                case "$a" in
-                    "MemTotal") mem_used="$((mem_used+=${b/kB}))"; mem_total="${b/kB}" ;;
-                    "Shmem") mem_used="$((mem_used+=${b/kB}))"  ;;
-                    "MemFree" | "Buffers" | "Cached" | "SReclaimable")
-                        mem_used="$((mem_used-=${b/kB}))"
-                    ;;
-                esac
-            done < /proc/meminfo
+            IFS=$'\n'"|:|kB" read -d "" -ra mem < /proc/meminfo
 
-            mem_used="$((mem_used / 1024))"
-            mem_total="$((mem_total / 1024))"
+            mem_used="$(((mem[1] + mem[64] - mem[4] - mem[11] - mem[14]- mem[70]) / 1024))"
+            mem_total="$((mem[1] / 1024))"
         ;;
 
         "Mac OS X" | "iPhone OS")
