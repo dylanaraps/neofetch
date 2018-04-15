@@ -21,7 +21,7 @@ For more information:
 
 \[[**Dependencies**](https://github.com/dylanaraps/neofetch/wiki/Dependencies)\] \[[**Installation**](https://github.com/dylanaraps/neofetch/wiki/Installation)\] \[[**Wiki**](https://github.com/dylanaraps/neofetch/wiki)\]
 
-<br>
+<br><br>
 
 
 <img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" width="434px">
