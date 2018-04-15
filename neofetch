@@ -1510,7 +1510,8 @@ get_memory() {
         ;;
 
         "AIX")
-            mem_stat=($(svmon -G -O unit=MB))
+            IFS=$'\n'"| " read -d "" -ra mem_stat <<< "$(svmon -G -O unit=MB)"
+
             mem_total="${mem_stat[11]/.*}"
             mem_free="${mem_stat[16]/.*}"
             mem_used="$((mem_total - mem_free))"
@@ -1518,7 +1519,9 @@ get_memory() {
         ;;
 
         "IRIX")
-            mem_stat=($(pmem | head -1))
+            IFS=$'\n' read -d "" -ra mem_cmd <<< "$(pmem)"
+            IFS=" " read -ra mem_stat <<< "${mem_cmd[0]}"
+
             mem_total="$((mem_stat[3] / 1024))"
             mem_free="$((mem_stat[5] / 1024))"
             mem_used="$((mem_total - mem_free))"
