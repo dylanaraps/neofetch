@@ -54,6 +54,4 @@ For more information: \[[**Dependencies**](https://github.com/dylanaraps/neofetc
 
 Donations will allow me to spend more time working on `neofetch`.
 
-If you like `neofetch` and want to give back in some way you can donate here:
-
-**https://patreon.com/dyla**
+If you like `neofetch` and want to give back in some way you can donate here: **https://patreon.com/dyla**
