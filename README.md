@@ -26,7 +26,7 @@ For more information: \[[**Dependencies**](https://github.com/dylanaraps/neofetc
 <img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" width="434px">
 
 
-## In the press
+## Articles
 
 - https://www.omgubuntu.co.uk/2016/11/neofetch-terminal-system-info-app
 - https://www.omgubuntu.co.uk/2017/01/neofetch-3-0-released
