@@ -1,7 +1,7 @@
 # Neofetch
 
 <a href="https://repology.org/metapackage/neofetch">
-    <img src="https://repology.org/badge/vertical-allrepos/neofetch.svg" alt="Packaging status" align="right" height="400px">
+    <img src="https://repology.org/badge/vertical-allrepos/neofetch.svg" alt="Packaging status" align="right" width="150px">
 </a>
 
 [![Build Status](https://travis-ci.org/dylanaraps/neofetch.svg?branch=master)](https://travis-ci.org/dylanaraps/neofetch)
@@ -22,8 +22,8 @@ Neofetch supports almost 150 different operating systems. From Linux to Windows,
 For more information: \[[**Dependencies**](https://github.com/dylanaraps/neofetch/wiki/Dependencies)\] \[[**Installation**](https://github.com/dylanaraps/neofetch/wiki/Installation)\] \[[**Wiki**](https://github.com/dylanaraps/neofetch/wiki)\]
 
 
-<img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" width="434px">
-<img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" width="434px">
+<img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" width="349px">
+<img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" width="349px">
 
 
 ## Articles
