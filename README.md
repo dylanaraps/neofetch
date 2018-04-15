@@ -26,21 +26,28 @@ For more information: \[[**Dependencies**](https://github.com/dylanaraps/neofetc
 <img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" width="434px">
 
 
+## In the press
+
+- https://www.omgubuntu.co.uk/2016/11/neofetch-terminal-system-info-app
+- https://www.omgubuntu.co.uk/2017/01/neofetch-3-0-released
+- https://www.omgubuntu.co.uk/2016/12/cli-system-tool-neofetch-2-0-released
+- https://linuxconfig.org/how-to-display-system-information-with-neofetch
+- https://www.ostechnix.com/neofetch-display-linux-systems-information/
+- https://www.tecmint.com/neofetch-shows-linux-system-information-with-logo/
+- https://www.maketecheasier.com/display-system-information-neofetch-linux/
+- https://www.cyberciti.biz/howto/neofetch-awesome-system-info-bash-script-for-linux-unix-macos/
+- https://www.2daygeek.com/neofetch-display-linux-systems-information-ascii-distribution-logo-terminal/
+- https://www.techrepublic.com/article/how-to-get-all-the-information-you-need-about-your-linux-machine-with-a-single-command/
+- https://www.lffl.org/2016/11/neofetch-le-informazioni-sistema-sul-terminale-stile.html
+- https://lamiradadelreplicante.com/2016/05/15/la-informacion-de-tu-sistema-en-la-terminal-con-neofetch/
+
+
 ## Thanks
 
-Thanks to:
-
 - [Contributors](https://github.com/dylanaraps/neofetch/contributors)
-    - Thanks for making Neofetch better, I really appreciate it.
 - [Packagers](https://github.com/dylanaraps/neofetch/issues/115)
-    - Thanks for maintaining Neofetch packages.
-- Users
-    - Thanks for using Neofetch!
-- [Screenfetch](https://github.com/KittyKatt/screenFetch):
-    - We've used some snippets as a base for a few functions in this script.
-    - Some of the ASCII logos.
-- [ufetch](https://github.com/jschx/ufetch):
-    - Tiny ASCII logos
+- [Screenfetch](https://github.com/KittyKatt/screenFetch)
+- [ufetch](https://github.com/jschx/ufetch)
 
 
 ## Donate
