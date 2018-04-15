@@ -1510,7 +1510,7 @@ get_memory() {
         ;;
 
         "AIX")
-            IFS=" " read -ra mem_stat <<< "$(svmon -G -O unit=MB)"
+            IFS=$'\n'"| " read -d "" -ra mem_stat <<< "$(svmon -G -O unit=MB)"
 
             mem_total="${mem_stat[11]/.*}"
             mem_free="${mem_stat[16]/.*}"
