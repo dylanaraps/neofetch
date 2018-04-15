@@ -17,12 +17,7 @@ You can further configure Neofetch to display exactly what you want it to. Throu
 
 Neofetch supports almost 150 different operating systems. From Linux to Windows, all the way to more obscure operating systems like Minix, AIX and Haiku. If your favourite operating system is unsupported: Open up an issue and support will be added.
 
-For more information:
-
-\[[**Dependencies**](https://github.com/dylanaraps/neofetch/wiki/Dependencies)\] \[[**Installation**](https://github.com/dylanaraps/neofetch/wiki/Installation)\] \[[**Wiki**](https://github.com/dylanaraps/neofetch/wiki)\]
-
-<br><br>
-
+For more information: \[[**Dependencies**](https://github.com/dylanaraps/neofetch/wiki/Dependencies)\] \[[**Installation**](https://github.com/dylanaraps/neofetch/wiki/Installation)\] \[[**Wiki**](https://github.com/dylanaraps/neofetch/wiki)\]
 
 <img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" width="434px">
 <img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" width="434px">
