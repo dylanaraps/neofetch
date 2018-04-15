@@ -1,7 +1,7 @@
 # Neofetch
 
 <a href="https://repology.org/metapackage/neofetch">
-    <img src="https://repology.org/badge/vertical-allrepos/neofetch.svg" alt="Packaging status" align="right" width="150px" height="727px">
+    <img src="https://repology.org/badge/vertical-allrepos/neofetch.svg" alt="Packaging status" align="right" width="150px" height="730px">
 </a>
 
 [![Build Status](https://travis-ci.org/dylanaraps/neofetch.svg?branch=master)](https://travis-ci.org/dylanaraps/neofetch)
