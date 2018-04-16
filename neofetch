@@ -747,21 +747,28 @@ get_wm() {
 
     if [[ "$WAYLAND_DISPLAY" ]]; then
         wm="$(ps -e | grep -m 1 -o -F \
+                           -e "arcan" \
                            -e "asc" \
+                           -e "clayland" \
                            -e "fireplace" \
+                           -e "greenfield" \
                            -e "grefsen" \
-                           -e "mazecompositor" \
+                           -e "lipstick" \
                            -e "maynard" \
+                           -e "mazecompositor" \
                            -e "motorcar" \
-                           -e "orbment" \
                            -e "orbital" \
+                           -e "orbment" \
                            -e "perceptia" \
                            -e "rustland" \
                            -e "sway" \
+                           -e "ulubis" \
                            -e "velox" \
                            -e "wavy" \
-                           -e "wayhouse" \
                            -e "way-cooler" \
+                           -e "wayfire" \
+                           -e "wayhouse" \
+                           -e "westeros" \
                            -e "westford" \
                            -e "weston")"
 
