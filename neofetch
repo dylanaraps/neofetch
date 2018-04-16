@@ -750,6 +750,7 @@ get_wm() {
                            -e "arcan" \
                            -e "asc" \
                            -e "clayland" \
+                           -e "dwc" \
                            -e "fireplace" \
                            -e "greenfield" \
                            -e "grefsen" \
