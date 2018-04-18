@@ -564,7 +564,7 @@ get_packages() {
                 packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
 
             if type -p cave >/dev/null; then
-                package_dir=(/var/db/paludis/repositories/{cross-installed,installed}/*/data/*)
+                package_dir=(/var/db/paludis/repositories/{cross-installed/*,installed}/data/*)
                 packages="$((packages+=$(ls -d -1 "${package_dir[@]}" | wc -l)))"
             fi
 
