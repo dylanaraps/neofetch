@@ -792,6 +792,15 @@ get_wm() {
                                -e "monsterwm" \
                                -e "tinywm")"
 
+        if [[ "$wm_version" == "on" ]]; then
+            wmv="$wm $("${wm,,}" --version || "${wm,,}" -v)"
+            wmv="${wmv/$wm $wm/$wm}"
+            wmv="${wmv/copyright*}"
+            wmv="${wmv/version }"
+            wmv="${wmv/©*}"
+            wmv="${wmv/(c)*}"
+            wm="$wmv"
+        fi
     else
         case "$os" in
             "Mac OS X")
@@ -4699,6 +4708,7 @@ INFO:
 
                                 NOTE: This only supports Linux.
 
+    --wm_version on/off         Show/Hide Window Manager version.
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
@@ -4869,6 +4879,7 @@ get_args() {
             "--cpu_brand") cpu_brand="$2" ;;
             "--gpu_brand") gpu_brand="$2" ;;
             "--gpu_type") gpu_type="$2" ;;
+            "--wm_version") wm_version="$2" ;;
             "--refresh_rate") refresh_rate="$2" ;;
             "--gtk_shorthand") gtk_shorthand="$2" ;;
             "--gtk2") gtk2="$2" ;;
