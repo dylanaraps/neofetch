@@ -2,6 +2,7 @@
 
 - [**@aidanharris**](https://github.com/aidanharris)
 - [**@DanySpin97**](https://github.com/DanySpin97)
+- [**@SolitudeSF**](https://github.com/SolitudeSF)
 
 
 ## General
@@ -13,6 +14,7 @@
 ## Images
 
 - Added `wal`/`pywal` support to get the current wallpaper.
+- Added `kitty` image backend. [**@SolitudeSF**](https://github.com/SolitudeSF)
 
 
 ## Info
