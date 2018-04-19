@@ -1,6 +1,7 @@
 ## Contributors
 
 - [**@aidanharris**](https://github.com/aidanharris)
+- [**@DanySpin97**](https://github.com/DanySpin97)
 
 
 ## General
@@ -27,3 +28,7 @@
 **Terminal Font**
 
 - Added support for `st`. [**@aidanharris**](https://github.com/aidanharris)
+
+**Packages**
+
+- Fixed package count in Exherbo. [**@DanySpin97**](https://github.com/DanySpin97)
