@@ -32,3 +32,7 @@
 **Packages**
 
 - Fixed package count in Exherbo. [**@DanySpin97**](https://github.com/DanySpin97)
+
+**Window Manager**
+
+- Added support for detecting `dwm`.
