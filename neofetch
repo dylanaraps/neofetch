@@ -2629,7 +2629,7 @@ image_backend() {
         "off") image_backend="off" ;;
 
         "caca" | "catimg" | "jp2a" | "iterm2" | "termpix" |\
-        "tycat" | "w3m" | "sixel" | "pixterm")
+        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty")
             get_image_source
 
             if [[ ! -f "$image" ]]; then
@@ -2654,7 +2654,7 @@ image_backend() {
 
         *)
             err "Image: Unknown image backend specified '$image_backend'."
-            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2',
+            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2', 'kitty',
                                             'off', 'sixel', 'pixterm', 'termpix', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
             get_ascii
@@ -3064,6 +3064,11 @@ display_image() {
         "jp2a")
             jp2a --width="$((width / font_width))" --colors "$image" ||\
                 to_off "Image: jp2a failed to display the image."
+        ;;
+
+        "kitty")
+            kitty icat --align left --place "${width}x${height}@${xoffset}x${yoffset}" "$image" ||\
+                to_off "Image: kitty failed to display the image."
         ;;
 
         "pixterm")
@@ -4762,6 +4767,7 @@ IMAGE BACKEND:
     --catimg source             Shortcut to use 'catimg' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
+    --kitty source              Shortcut to use 'kitty' backend.
     --pixterm source            Shortcut to use 'pixterm' backend.
     --sixel source              Shortcut to use 'sixel' backend.
     --termpix source            Shortcut to use 'termpix' backend.
@@ -4949,7 +4955,7 @@ get_args() {
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
             "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--pixterm" |\
-            "--sixel" | "--termpix" | "--tycat" | "--w3m")
+            "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
                 image_backend="${1/--}"
                 case "$2" in
                     "-"* | "") ;;
