@@ -2648,7 +2648,6 @@ image_backend() {
             fi
 
             get_image_size
-            make_thumbnail
             display_image
         ;;
 
@@ -2921,130 +2920,23 @@ get_term_size() {
 }
 
 get_image_size() {
-    # This functions determines the size to make
-    # the thumbnail image.
+    # This functions determines the size to make the thumbnail image.
+    read -r lines columns <<< "$(stty size)"
 
-    # Get terminal lines and columns.
-    term_blocks="$(stty size)"
-    columns="${term_blocks/* }"
-    lines="${term_blocks/ *}"
-
-    # Calculate font size.
     font_width="$((term_width / columns))"
     font_height="$((term_height / lines))"
 
-    case "$image_size" in
-        "auto")
-            image_size="$((columns * font_width / 2))"
-            term_height="$((term_height - term_height / 4))"
+    read -r width height <<< "$(identify -format "%w %h" "$image")"
 
-            ((term_height < image_size)) && \
-                image_size="$term_height"
-        ;;
-
-        *"%")
-            percent="${image_size/\%}"
-            image_size="$((percent * term_width / 100))"
-
-            (((percent * term_height / 50) < image_size)) && \
-                image_size="$((percent * term_height / 100))"
-        ;;
-
-        "none")
-            # Get image size so that we can do a better crop.
-            size="$(identify -format "%w %h" "$image")"
-            width="${size%% *}"
-            height="${size##* }"
-            crop_mode="none"
-
-            while (( "$width" >= ("$term_width" / 2) ||
-                     "$height" >= "$term_height" )); do
-                width="$((width / 2))"
-                height="$((height / 2))"
-            done
-        ;;
-
-        *) image_size="${image_size/px}" ;;
-    esac
-
-    width="${width:-$image_size}"
-    height="${height:-$image_size}"
+    # Calculate image size based on terminal size.
+    # We multiply the sizes by 10 to do some more precise division.
+    while ((width  >= (term_width * 10 / 25) ||
+            height >= (term_height * 10 / 15))); do
+        width="$((width * 10 / 12))"
+        height="$((height * 10 / 12))"
+    done
 
     text_padding="$((width / font_width + gap + xoffset/font_width))"
-}
-
-make_thumbnail() {
-    # Name the thumbnail using variables so we can
-    # use it later.
-    image_name="$crop_mode-$crop_offset-$width-$height-${image##*/}"
-
-    # Handle file extensions.
-    case "${image##*.}" in
-        "eps"|"pdf"|"svg"|"gif"|"png")
-            image_name+=".png" ;;
-        *)  image_name+=".jpg" ;;
-    esac
-
-    # Create the thumbnail dir if it doesn't exist.
-    mkdir -p "$thumbnail_dir"
-
-    # Check to see if the thumbnail exists before we do any cropping.
-    if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
-        # Get image size so that we can do a better crop.
-        if [[ -z "$size" ]]; then
-            size="$(identify -format "%w %h" "$image")"
-            og_width="${size%% *}"
-            og_height="${size##* }"
-
-            # This checks to see if height is greater than width
-            # so we can do a better crop of portrait images.
-            size="$og_height"
-            ((og_height > og_width)) && size="$og_width"
-        fi
-
-        case "$crop_mode" in
-            "fit")
-                c="$(convert "$image" \
-                    -colorspace srgb \
-                    -format "%[pixel:p{0,0}]" info:)"
-
-                convert \
-                    -background none \
-                    "$image" \
-                    -trim +repage \
-                    -gravity south \
-                    -background "$c" \
-                    -extent "$size"x"$size" \
-                    -scale "$width"x"$height" \
-                    "$thumbnail_dir/$image_name"
-            ;;
-
-            "fill")
-                convert \
-                    -background none \
-                    "$image" \
-                    -trim +repage \
-                    -scale "$width"x"$height"^ \
-                    -extent "$width"x"$height" \
-                    "$thumbnail_dir/$image_name"
-            ;;
-
-            "none") cp "$image" "$thumbnail_dir/$image_name" ;;
-            *)
-                convert \
-                    -background none \
-                    "$image" \
-                    -gravity "$crop_offset" \
-                    -crop "$size"x"$size"+0+0 \
-                    -quality 95 \
-                    -scale "$width"x"$height" \
-                    "$thumbnail_dir/$image_name"
-            ;;
-        esac
-    fi
-
-    # The final image.
-    image="$thumbnail_dir/$image_name"
 }
 
 display_image() {
