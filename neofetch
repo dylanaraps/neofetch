@@ -2802,6 +2802,11 @@ END
                     if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
                         image="$(awk -F\' '/feh/ {printf $(NF-1)}' "${HOME}/.fehbg")"
 
+                    elif type -p setroot >/dev/null && \
+                         [[ -f "${XDG_CONFIG_HOME}/setroot/.setroot-restore" ]]; then
+                        image="$(awk -F\' '/setroot/ {printf $(NF-1)}' \
+                                 "${XDG_CONFIG_HOME}/setroot/.setroot-restore")"
+
                     elif type -p nitrogen >/dev/null; then
                         image="$(awk -F'=' '/file/ {printf $2;exit;}' \
                                  "${XDG_CONFIG_HOME}/nitrogen/bg-saved.cfg")"
