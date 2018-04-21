@@ -1022,7 +1022,7 @@ get_cpu() {
 
             # Select the right temperature file.
             for temp_dir in /sys/class/hwmon/*; do
-                [[ "$(< "${temp_dir}/name")" =~ (coretemp|fam15h_power) ]] && \
+                [[ "$(< "${temp_dir}/name")" =~ (coretemp|fam15h_power|k10temp) ]] && \
                     { temp_dir="${temp_dir}/temp1_input"; break; }
             done
 
