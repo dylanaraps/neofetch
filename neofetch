@@ -2928,11 +2928,7 @@ get_term_size() {
 get_image_size() {
     # This functions determines the size to make
     # the thumbnail image.
-
-    # Get terminal lines and columns.
-    term_blocks="$(stty size)"
-    columns="${term_blocks/* }"
-    lines="${term_blocks/ *}"
+    read -r lines columns <<< "$(stty size)"
 
     # Calculate font size.
     font_width="$((term_width / columns))"
@@ -2957,9 +2953,7 @@ get_image_size() {
 
         "none")
             # Get image size so that we can do a better crop.
-            size="$(identify -format "%w %h" "$image")"
-            width="${size%% *}"
-            height="${size##* }"
+            read -r width height <<< "$(identify -format "%w %h" "$image")"
             crop_mode="none"
 
             while (( "$width" >= ("$term_width" / 2) ||
@@ -2997,14 +2991,8 @@ make_thumbnail() {
     if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
         # Get image size so that we can do a better crop.
         if [[ -z "$size" ]]; then
-            size="$(identify -format "%w %h" "$image")"
-            og_width="${size%% *}"
-            og_height="${size##* }"
-
-            # This checks to see if height is greater than width
-            # so we can do a better crop of portrait images.
-            size="$og_height"
-            ((og_height > og_width)) && size="$og_width"
+            read -r og_width og_height <<< "$(identify -format "%w %h" "$image")"
+            ((og_height > og_width)) && size="$og_width" || size="$og_height"
         fi
 
         case "$crop_mode" in
