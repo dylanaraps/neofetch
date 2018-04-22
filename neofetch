@@ -76,7 +76,7 @@ get_distro() {
                 case "$distro_shorthand" in
                     "on")   lsb_flags="-sir" ;;
                     "tiny") lsb_flags="-si" ;;
-                    *)      lsb_flags="-sdr" ;;
+                    *)      lsb_flags="-sd" ;;
                 esac
                 distro="$(lsb_release "$lsb_flags")"
 
