@@ -3,6 +3,7 @@
 - [**@aidanharris**](https://github.com/aidanharris)
 - [**@DanySpin97**](https://github.com/DanySpin97)
 - [**@SolitudeSF**](https://github.com/SolitudeSF)
+- [**@Kayant**](https://github.com/Kayant)
 
 
 ## General
@@ -22,6 +23,10 @@
 **Title**
 
 - Fixed unexpected backslash being inserted on some systems.
+
+**CPU**
+
+- Added temperature support for Zen processors. [**@Kayant**](https://github.com/Kayant)
 
 **GPU**
 
