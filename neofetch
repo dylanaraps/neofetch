@@ -2920,7 +2920,7 @@ get_term_size() {
 }
 
 get_image_size() {
-    # This functions determines the size to make the thumbnail image.
+    # This functions determines the size to make the images.
     read -r lines columns <<< "$(stty size)"
     read -r width height  <<< "$(identify -format "%w %h" "$image")"
 
@@ -4714,7 +4714,7 @@ IMAGE:
                                 NOTE: --gap can take a negative value which will move the text
                                 closer to the left side.
 
-    --clean                     Delete cached files and thumbnails.
+    --clean                     Delete cached files.
 
 SCREENSHOT:
     -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
@@ -4864,7 +4864,6 @@ get_args() {
             "--background_color" | "--bg_color") background_color="$2" ;;
             "--gap") gap="$2" ;;
             "--clean")
-                [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
                 rm -rf "/tmp/neofetch/"
                 exit
