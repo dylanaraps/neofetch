@@ -2922,11 +2922,10 @@ get_term_size() {
 get_image_size() {
     # This functions determines the size to make the thumbnail image.
     read -r lines columns <<< "$(stty size)"
+    read -r width height  <<< "$(identify -format "%w %h" "$image")"
 
     font_width="$((term_width / columns))"
     font_height="$((term_height / lines))"
-
-    read -r width height <<< "$(identify -format "%w %h" "$image")"
 
     # Calculate image size based on terminal size.
     # We multiply the sizes by 10 to do some more precise division.
