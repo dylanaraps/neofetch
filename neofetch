@@ -76,9 +76,9 @@ get_distro() {
                 case "$distro_shorthand" in
                     "on")   lsb_flags="-sir" ;;
                     "tiny") lsb_flags="-si" ;;
-                    *)      lsb_flags="-sd" ;;
+                    *)      lsb_flags="-sdr" ;;
                 esac
-                distro="$(lsb_release $lsb_flags)"
+                distro="$(lsb_release "$lsb_flags")"
 
             elif [[ -f "/etc/GoboLinuxVersion" ]]; then
                 case "$distro_shorthand" in
