@@ -3428,6 +3428,11 @@ get_distro_colors() {
             ascii_file="apricity"
         ;;
 
+        "ArcoLinux"*)
+            set_colors 7 4
+            ascii_file="arcolinux"
+        ;;
+
         "arch_small")
             set_colors 6 7 1
             ascii_file="arch_small"
@@ -3727,6 +3732,11 @@ get_distro_colors() {
         "LEDE"*)
             set_colors 4 7 1
             ascii_file="lede"
+        ;;
+
+        "Linux Lite"*)
+            set_colors fg 8 3
+            ascii_file="linuxlite"
         ;;
 
         "Linux")
