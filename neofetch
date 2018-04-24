@@ -3734,11 +3734,6 @@ get_distro_colors() {
             ascii_file="lede"
         ;;
 
-        "Linux Lite"*)
-            set_colors fg 8 3
-            ascii_file="linuxlite"
-        ;;
-
         "Linux")
             set_colors fg 8 3
             ascii_file="linux"
