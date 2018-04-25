@@ -2640,7 +2640,7 @@ image_backend() {
             get_term_size
 
             if [[ "$term_width" ]] && ((term_width >= 1)); then
-                clear
+                printf "\e[2J\e[H"
             else
                 to_ascii "Image: Failed to find terminal window size."
                 err "Image: Check the 'Images in the terminal' wiki page for more info,"
@@ -2649,6 +2649,9 @@ image_backend() {
 
             get_image_size
             make_thumbnail
+
+            [[ "$image_backend" == *"w3m"* ]] && zws="\xE2\x80\x8B\x20"
+
             display_image
         ;;
 
@@ -2662,7 +2665,7 @@ image_backend() {
     esac
 
     # Set cursor position next image/ascii.
-    [[ "$image_backend" != "off" ]] && printf "%b" "\e[${lines:-0}A\e[9999999D"
+    [[ "$image_backend" != "off" ]] && printf "\e[${lines:-0}A\e[9999999D"
 }
 
 get_ascii() {
@@ -3105,8 +3108,6 @@ display_image() {
             printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$image\n4;\n3;" |\
             "${w3m_img_path:-false}" -bg "$background_color" >/dev/null 2>&1 ||\
                 to_off "Image: w3m-img failed to display the image."
-
-            zws="\xE2\x80\x8B\x20"
         ;;
     esac
 }
