@@ -1,9 +1,16 @@
 ## Contributors
 
+<!-- - [**@**](https://github.com/) -->
 - [**@aidanharris**](https://github.com/aidanharris)
 - [**@DanySpin97**](https://github.com/DanySpin97)
 - [**@SolitudeSF**](https://github.com/SolitudeSF)
 - [**@Kayant**](https://github.com/Kayant)
+- [**@robertwolter**](https://github.com/robertwolter)
+
+
+## Operating System
+
+- Added support for ArcoLinux.
 
 
 ## General
@@ -16,6 +23,7 @@
 
 - Added `wal`/`pywal` support to get the current wallpaper.
 - Added `kitty` image backend. [**@SolitudeSF**](https://github.com/SolitudeSF)
+- Added `setroot` wallpaper support. [**@SolitudeSF**](https://github.com/SolitudeSF)
 
 
 ## Info
