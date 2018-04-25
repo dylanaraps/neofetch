@@ -1313,8 +1313,10 @@ get_gpu() {
 
                 case "$gpu" in
                     *"advanced"*)
-                        brand="${gpu/*AMD*/AMD}"
+                        brand="${gpu/*AMD*ATI*/AMD ATI}"
+                        brand="${brand:-${gpu/*AMD*/AMD}}"
                         brand="${brand:-${gpu/*ATI*/ATi}}"
+
                         gpu="${gpu/'[AMD/ATI]' }"
                         gpu="${gpu/'[AMD]' }"
                         gpu="${gpu/OEM }"
