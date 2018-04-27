@@ -3406,7 +3406,6 @@ get_distro_colors() {
         "Android"*)
             set_colors 2 7
             ascii_file="android"
-            ascii_length_force=19
         ;;
 
         "Antergos"*)
