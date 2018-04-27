@@ -2665,7 +2665,7 @@ image_backend() {
     esac
 
     # Set cursor position next image/ascii.
-    [[ "$image_backend" != "off" ]] && printf "\e[${lines:-0}A\e[9999999D"
+    [[ "$image_backend" != "off" ]] && printf "%b" "\e[${lines:-0}A\e[9999999D"
 }
 
 get_ascii() {
