@@ -697,6 +697,7 @@ get_de() {
             if [[ "$XDG_CURRENT_DESKTOP" ]]; then
                 de="${XDG_CURRENT_DESKTOP/'X-'}"
                 de="${de/Budgie:GNOME/Budgie}"
+                de="${de/:Unity7:ubuntu}"
 
             elif [[ "$DESKTOP_SESSION" ]]; then
                 de="${DESKTOP_SESSION##*/}"
