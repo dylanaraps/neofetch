@@ -6,6 +6,8 @@
 - [**@SolitudeSF**](https://github.com/SolitudeSF)
 - [**@Kayant**](https://github.com/Kayant)
 - [**@robertwolter**](https://github.com/robertwolter)
+- [**@TsundereBug**](https://github.com/TsundereBug)
+- [**@dawidd6**](https://github.com/dawidd6)
 
 
 ## Operating System
@@ -24,6 +26,11 @@
 - Added `wal`/`pywal` support to get the current wallpaper.
 - Added `kitty` image backend. [**@SolitudeSF**](https://github.com/SolitudeSF)
 - Added `setroot` wallpaper support. [**@SolitudeSF**](https://github.com/SolitudeSF)
+
+
+## Ascii
+
+- Updated Android ascii art to better work on non-unicode terminals. [**@TsundereBug**](https://github.com/TsundereBug)
 
 
 ## Info
@@ -47,6 +54,10 @@
 **Packages**
 
 - Fixed package count in Exherbo. [**@DanySpin97**](https://github.com/DanySpin97)
+
+**Desktop Environment**
+
+- Fixed Unity output in Ubuntu 18.04. [**@dawidd6**](https://github.com/dawidd6)
 
 **Window Manager**
 
