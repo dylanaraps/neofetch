@@ -1463,6 +1463,7 @@ get_memory() {
             mem_wired="$(vm_stat | awk '/wired/ { print $4 }')"
             mem_active="$(vm_stat | awk '/active / { printf $3 }')"
             mem_compressed="$(vm_stat | awk '/occupied/ { printf $5 }')"
+            mem_compressed="${mem_compressed:-0}"
             mem_used="$(((${mem_wired//.} + ${mem_active//.} + ${mem_compressed//.}) * 4 / 1024))"
         ;;
 
