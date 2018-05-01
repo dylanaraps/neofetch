@@ -794,8 +794,12 @@ get_wm() {
                                -e "tinywm")"
 
         if [[ "$wm_version" == "on" ]]; then
-            wmv="$wm $("${wm,,}" --version || "${wm,,}" -v)"
+            wmv="$wm $("${wm,,}" --version || \
+                       "${wm,,}" -v || \
+                       "${wm,,}_x11" -v)" || \
+                       "${wm,,}_wayland" -v")"
             wmv="${wmv/$wm $wm/$wm}"
+            wmv="${wmv/$wm $wm-/$wm}"
             wmv="${wmv/copyright*}"
             wmv="${wmv/version }"
             wmv="${wmv/©*}"
