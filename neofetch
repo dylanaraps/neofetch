@@ -32,7 +32,7 @@ shopt -s nocasematch
 reset="\e[0m"
 
 # Neofetch default config.
-readarray -t config <<'EOM'
+read -rd '' config <<'EOF'
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
 print_info() {
@@ -801,7 +801,7 @@ stdout="off"
 # NOTE: Don't change this value, neofetch reads this to determine
 # how to handle backwards compatibility.
 config_version="3.4.1-git"
-EOM
+EOF
 
 
 # DETECT INFORMATION
@@ -7842,7 +7842,7 @@ get_user_config() {
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
         # The config file doesn't exist, create it.
-        printf "%s\n" "${config[@]}" > "$config_file"
+        printf "%s\n" "$config" > "$config_file"
     fi
 
     source "$config_file"
@@ -8625,7 +8625,7 @@ main() {
     get_os
 
     # Load default config.
-    source /dev/stdin < <(printf "%s\\n" "${config[@]}")
+    source /dev/stdin < <(printf "%s\n" "$config")
 
     get_args "$@"
     [[ "$verbose" != "on" ]] && exec 2>/dev/null
