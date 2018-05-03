@@ -5952,231 +5952,798 @@ EOF
         "Linux Mint"* | "LinuxMint"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
-
+${c1}MMMMMMMMMMMMMMMMMMMMMMMMMmds+.
+MMm----::-://////////////oymNMd+`
+MMd      ${c2}/++                ${c1}-sNMd:
+MMNso/`  ${c2}dMM    `.::-. .-::.` ${c1}.hMN:
+ddddMMh  ${c2}dMM   :hNMNMNhNMNMNh: ${c1}`NMm
+    NMm  ${c2}dMM  .NMN/-+MMM+-/NMN` ${c1}dMM
+    NMm  ${c2}dMM  -MMm  `MMM   dMM. ${c1}dMM
+    NMm  ${c2}dMM  -MMm  `MMM   dMM. ${c1}dMM
+    NMm  ${c2}dMM  .mmd  `mmm   yMM. ${c1}dMM
+    NMm  ${c2}dMM`  ..`   ...   ydm. ${c1}dMM
+    hMM- ${c2}+MMd/-------...-:sdds  ${c1}dMM
+    -NMm- ${c2}:hNMNNNmdddddddddy/`  ${c1}dMM
+     -dMNs-${c2}``-::::-------.``    ${c1}dMM
+      `/dMNmy+/:-------------:/yMMM
+         ./ydNMMMMMMMMMMMMMMMMMMMMM
+            .MMMMMMMMMMMMMMMMMMM
 EOF
         ;;
 
         "MX"*)
             set_colors 4 6 7
             read -rd '' ascii_data <<'EOF'
-
+${c3}MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNMMMMMMMMM
+MMMMMMMMMMNs..yMMMMMMMMMMMMMm: +NMMMMMMM
+MMMMMMMMMN+    :mMMMMMMMMMNo` -dMMMMMMMM
+MMMMMMMMMMMs.   `oNMMMMMMh- `sNMMMMMMMMM
+MMMMMMMMMMMMN/    -hMMMN+  :dMMMMMMMMMMM
+MMMMMMMMMMMMMMh-    +ms. .sMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMN+`   `  +NMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMNMMd:    .dMMMMMMMMMMMMMMM
+MMMMMMMMMMMMm/-hMd-     `sNMMMMMMMMMMMMM
+MMMMMMMMMMNo`   -` :h/    -dMMMMMMMMMMMM
+MMMMMMMMMd:       /NMMh-   `+NMMMMMMMMMM
+MMMMMMMNo`         :mMMN+`   `-hMMMMMMMM
+MMMMMMh.            `oNMMd:    `/mMMMMMM
+MMMMm/                -hMd-      `sNMMMM
+MMNs`                   -          :dMMM
+Mm:                                 `oMM
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 EOF
         ;;
 
         "NetBSD"*)
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
-
+${c1}                     `-/oshdmNMNdhyo+:-`
+${c2}y${c1}/s+:-``    `.-:+oydNMMMMNhs/-``
+${c2}-m+${c1}NMMMMMMMMMMMMMMMMMMMNdhmNMMMmdhs+/-`
+ ${c2}-m+${c1}NMMMMMMMMMMMMMMMMMMMMmy+:`
+  ${c2}-N/${c1}dMMMMMMMMMMMMMMMds:`
+   ${c2}-N/${c1}hMMMMMMMMMmho:`
+    ${c2}-N/${c1}-:/++/:.`
+${c2}     :M+
+      :Mo
+       :Ms
+        :Ms
+         :Ms
+          :Ms
+           :Ms
+            :Ms
+             :Ms
+              :Ms
 EOF
         ;;
 
         "Netrunner"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-
+${c1}           .:oydmMMMMMMmdyo:`
+        -smMMMMMMMMMMMMMMMMMMds-
+      +mMMMMMMMMMMMMMMMMMMMMMMMMd+
+    /mMMMMMMMMMMMMMMMMMMMMMMMMMMMMm/
+  `hMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMy`
+ .mMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMd`
+ dMMMMMMMMMMMMMMMMMMMMMMNdhmMMMMMMMMMMh
++MMMMMMMMMMMMMNmhyo+/-.   -MMMMMMMMMMMM/
+mMMMMMMMMd+:.`           `mMMMMMMMMMMMMd
+MMMMMMMMMMMdy/.          yMMMMMMMMMMMMMM
+MMMMMMMMMMMMMMMNh+`     +MMMMMMMMMMMMMMM
+mMMMMMMMMMMMMMMMMMs    -NMMMMMMMMMMMMMMd
++MMMMMMMMMMMMMMMMMN.  `mMMMMMMMMMMMMMMM/
+ dMMMMMMMMMMMMMMMMMy  hMMMMMMMMMMMMMMMh
+ `dMMMMMMMMMMMMMMMMM-+MMMMMMMMMMMMMMMd`
+  `hMMMMMMMMMMMMMMMMmMMMMMMMMMMMMMMMy
+    /mMMMMMMMMMMMMMMMMMMMMMMMMMMMMm:
+      +dMMMMMMMMMMMMMMMMMMMMMMMMd/
+        -odMMMMMMMMMMMMMMMMMMdo-
+           `:+ydmNMMMMNmhy+-`
 EOF
         ;;
 
         "Nitrux"*)
             set_colors 4
             read -rd '' ascii_data <<'EOF'
-
+${c1}`:/.
+`/yo
+`/yo
+`/yo      .+:.
+`/yo      .sys+:.`
+`/yo       `-/sys+:.`
+`/yo           ./sss+:.`
+`/yo              .:oss+:-`
+`/yo                 ./o///:-`
+`/yo              `.-:///////:`
+`/yo           `.://///++//-``
+`/yo       `.-:////++++/-`
+`/yo    `-://///++o+/-`
+`/yo `-/+o+++ooo+/-`
+`/s+:+oooossso/.`
+`//+sssssso:.
+`+syyyy+:`
+:+s+-
 EOF
         ;;
 
         "nixos_small")
             set_colors 4 6
             read -rd '' ascii_data <<'EOF'
-
+  ${c1}\\\\  \\\\ //
+ ==\\\\__\\\\/ //
+   //   \\\\//
+==//     //==
+ //\\\\___//
+// /\\\\  \\\\==
+  // \\\\  \\\\
 EOF
         ;;
 
         "NixOS"*)
             set_colors 4 6
             read -rd '' ascii_data <<'EOF'
-
+${c1}          ::::.    ${c2}':::::     ::::'
+${c1}          ':::::    ${c2}':::::.  ::::'
+${c1}            :::::     ${c2}'::::.:::::
+${c1}      .......:::::..... ${c2}::::::::
+${c1}     ::::::::::::::::::. ${c2}::::::    ${c1}::::.
+    ::::::::::::::::::::: ${c2}:::::.  ${c1}.::::'
+${c2}           .....           ::::' ${c1}:::::'
+${c2}          :::::            '::' ${c1}:::::'
+${c2} ........:::::               ' ${c1}:::::::::::.
+${c2}:::::::::::::                 ${c1}:::::::::::::
+${c2} ::::::::::: ${c1}..              ${c1}:::::
+${c2}     .::::: ${c1}.:::            ${c1}:::::
+${c2}    .:::::  ${c1}:::::          ${c1}'''''    ${c2}.....
+    :::::   ${c1}':::::.  ${c2}......:::::::::::::'
+     :::     ${c1}::::::. ${c2}':::::::::::::::::'
+${c1}            .:::::::: ${c2}'::::::::::
+${c1}           .::::''::::.     ${c2}'::::.
+${c1}          .::::'   ::::.     ${c2}'::::.
+${c1}         .::::      ::::      ${c2}'::::.
 EOF
         ;;
 
         "Nurunner"*)
             set_colors 4
             read -rd '' ascii_data <<'EOF'
-
+${c1}                  ,xc
+                ;00cxXl
+              ;K0,   .xNo.
+            :KO'       .lXx.
+          cXk.    ;xl     cXk.
+        cXk.    ;k:.,xo.    cXk.
+     .lXx.    :x::0MNl,dd.    :KO,
+   .xNx.    cx;:KMMMMMNo'dx.    ;KK;
+ .dNl.    cd,cXMMMMMMMMMWd,ox'    'OK:
+;WK.    'K,.KMMMMMMMMMMMMMWc.Kx     lMO
+ 'OK:    'dl'xWMMMMMMMMMM0::x:    'OK:
+   .kNo    .xo'xWMMMMMM0;:O:    ;KK;
+     .dXd.   .do,oNMMO;ck:    ;00,
+        oNd.   .dx,;'cO;    ;K0,
+          oNx.    okk;    ;K0,
+            lXx.        :KO'
+              cKk'    cXk.
+                ;00:lXx.
+                  ,kd.
 EOF
         ;;
 
         "NuTyX"*)
             set_colors 4 1
             read -rd '' ascii_data <<'EOF'
-
+${c1}                                      .
+                                    .
+                                 ...
+                               ...
+            ....     .........--.
+       ..-++-----....--++++++---.
+    .-++++++-.   .-++++++++++++-----..
+  .--...  .++..-+++--.....-++++++++++--..
+ .     .-+-. .**-            ....  ..-+----..
+     .+++.  .*+.         +            -++-----.
+   .+++++-  ++.         .*+.     .....-+++-----.
+  -+++-++. .+.          .-+***++***++--++++.  .
+ -+-. --   -.          -*- ......        ..--.
+.-. .+-    .          -+.
+.  .+-                +.
+   --                 --
+  -+----.              .-
+  -++-.+.                .
+ .++. --
+  +.  ----.
+  .  .+. ..
+      -  .
+      .
 EOF
         ;;
 
         "OBRevenge"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-
+${c1}   __   __
+     _@@@@   @@@g_
+   _@@@@@@   @@@@@@
+  _@@@@@@M   W@@@@@@_
+ j@@@@P        ^W@@@@
+ @@@@L____  _____Q@@@@
+Q@@@@@@@@@@j@@@@@@@@@@
+@@@@@    T@j@    T@@@@@
+@@@@@ ___Q@J@    _@@@@@
+@@@@@fMMM@@j@jggg@@@@@@
+@@@@@    j@j@^MW@P @@@@
+Q@@@@@ggg@@f@   @@@@@@L
+^@@@@WWMMP  ^    Q@@@@
+ @@@@@_         _@@@@l
+  W@@@@@g_____g@@@@@P
+   @@@@@@@@@@@@@@@@l
+    ^W@@@@@@@@@@@P
+       ^TMMMMTll
 EOF
         ;;
 
         "openbsd_small")
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
-
+${c1}      _____
+    \\-     -/
+ \\_/         \\
+ |        ${c2}O O${c1} |
+ |_  <   )  3 )
+ / \\         /
+    /-_____-\\
 EOF
         ;;
 
         "OpenBSD"*)
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
-
+                                    ${c3} _
+                                    (_)
+${c1}              |    .
+${c1}          .   |L  /|   .         ${c3} _
+${c1}      _ . |\ _| \--+._/| .       ${c3}(_)
+${c1}     / ||\| Y J  )   / |/| ./
+    J  |)'( |        ` F`.'/       ${c3} _
+${c1}  -<|  F         __     .-<        ${c3}(_)
+${c1}    | /       .-'${c3}. ${c1}`.  /${c3}-. ${c1}L___
+    J \\      <    ${c3}\ ${c1} | | ${c5}O${c3}\\${c1}|.-' ${c3} _
+${c1}  _J \\  .-    \\${c3}/ ${c5}O ${c3}| ${c1}| \\  |${c1}F    ${c3}(_)
+${c1} '-F  -<_.     \\   .-'  `-' L__
+__J  _   _.     >-'  ${c1})${c4}._.   ${c1}|-'
+${c1} `-|.'   /_.          ${c4}\_|  ${c1} F
+  /.-   .                _.<
+ /'    /.'             .'  `\\
+  /L  /'   |/      _.-'-\\
+ /'J       ___.---'\|
+   |\  .--' V  | `. `
+   |/`. `-.     `._)
+      / .-.\\
+      \\ (  `\\
+       `.\
 EOF
         ;;
 
         "OpenIndiana"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
+${c2}                         .sy/
+                         .yh+
 
+           ${c1}-+syyyo+-     ${c2} /+.
+         ${c1}+ddo/---/sdh/   ${c2} ym-
+       ${c1}`hm+        `sms${c2}   ym-```````.-.
+       ${c1}sm+           sm/ ${c2} ym-         +s
+       ${c1}hm.           /mo ${c2} ym-         /h
+       ${c1}omo           ym: ${c2} ym-       `os`
+        ${c1}smo`       .ym+ ${c2}  ym-     .os-
+     ``  ${c1}:ymy+///oyms- ${c2}   ym-  .+s+.
+   ..`     ${c1}`:+oo+/-`  ${c2}    -//oyo-
+ -:`                   .:oys/.
++-               `./oyys/.
+h+`      `.-:+oyyyo/-`
+`/ossssysso+/-.`
 EOF
         ;;
 
         "OpenMandriva"*)
             set_colors 4 3
             read -rd '' ascii_data <<'EOF'
-
+${c2}                        ``
+                       `-.
+${c1}      `               ${c2}.---
+${c1}    -/               ${c2}-::--`
+${c1}  `++    ${c2}`----...```-:::::.
+${c1} `os.      ${c2}.::::::::::::::-```     `  `
+${c1} +s+         ${c2}.::::::::::::::::---...--`
+${c1}-ss:          ${c2}`-::::::::::::::::-.``.``
+${c1}/ss-           ${c2}.::::::::::::-.``   `
+${c1}+ss:          ${c2}.::::::::::::-
+${c1}/sso         ${c2}.::::::-::::::-
+${c1}.sss/       ${c2}-:::-.`   .:::::
+${c1} /sss+.    ${c2}..`${c1}  `--`    ${c2}.:::
+${c1}  -ossso+/:://+/-`        ${c2}.:`
+${c1}    -/+ooo+/-.              ${c2}`
 EOF
         ;;
 
         "OpenWrt"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-
+${c1} _______
+|       |.-----.-----.-----.
+|   -   ||  _  |  -__|     |
+|_______||   __|_____|__|__|
+         |__|
+ ________        __
+|  |  |  |.----.|  |_
+|  |  |  ||   _||   _|
+|________||__|  |____|
 EOF
         ;;
 
         "Open Source Media Center"* | "osmc")
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-
+${c1}            -+shdmNNNNmdhs+-
+        .+hMNho/:..``..:/ohNMh+.
+      :hMdo.                .odMh:
+    -dMy-                      -yMd-
+   sMd-                          -dMs
+  hMy       +.            .+       yMh
+ yMy        dMs.        .sMd        yMy
+:Mm         dMNMs`    `sMNMd        `mM:
+yM+         dM//mNs``sNm//Md         +My
+mM-         dM:  +NNNN+  :Md         -Mm
+mM-         dM: `oNN+    :Md         -Mm
+yM+         dM/+NNo`     :Md         +My
+:Mm`        dMMNs`       :Md        `mM:
+ yMy        dMs`         -ms        yMy
+  hMy       +.                     yMh
+   sMd-                          -dMs
+    -dMy-                      -yMd-
+      :hMdo.                .odMh:
+        .+hMNho/:..``..:/ohNMh+.
+            -+shdmNNNNmdhs+-
 EOF
         ;;
 
         "Oracle"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-
+${c1}
+      `-/+++++++++++++++++/-.`
+   `/syyyyyyyyyyyyyyyyyyyyyyys/.
+  :yyyyo/-...............-/oyyyy/
+ /yyys-                     .oyyy+
+.yyyy`                       `syyy-
+:yyyo                         /yyy/
+.yyyy`                       `syyy-
+ /yyys.                     .oyyyo
+  /yyyyo:-...............-:oyyyy/`
+   `/syyyyyyyyyyyyyyyyyyyyyyys+.
+     `.:/+ooooooooooooooo+/:.`
 EOF
         ;;
 
         "PacBSD"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-
+${c1}      :+sMs.
+  `:ddNMd-                         -o--`
+ -sMMMMh:                          `+N+``
+ yMMMMMs`     .....-/-...           `mNh/
+ yMMMMMmh+-`:sdmmmmmmMmmmmddy+-``./ddNMMm
+ yNMMNMMMMNdyyNNMMMMMMMMMMMMMMMhyshNmMMMm
+ :yMMMMMMMMMNdooNMMMMMMMMMMMMMMMMNmy:mMMd
+  +MMMMMMMMMmy:sNMMMMMMMMMMMMMMMMMMMmshs-
+  :hNMMMMMMN+-+MMMMMMMMMMMMMMMMMMMMMMMs.
+ .omysmNNhy/+yNMMMMMMMMMMNMMMMMMMMMNdNNy-
+ /hMM:::::/hNMMMMMMMMMMMm/-yNMMMMMMN.mMNh`
+.hMMMMdhdMMMMMMMMMMMMMMmo  `sMMMMMMN mMMm-
+:dMMMMMMMMMMMMMMMMMMMMMdo+  oMMMMMMN`smMNo`
+/dMMMMMMMMMMMMMMMMMMMMMNd/` :yMMMMMN:-hMMM.
+:dMMMMMMMMMMMMMMMMMMMMMNh`  oMMMMMMNo/dMNN`
+:hMMMMMMMMMMMMMMMMMMMMMMNs--sMMMMMMMNNmy++`
+ sNMMMMMMMMMMMMMMMMMMMMMMMmmNMMMMMMNho::o.
+ :yMMMMMMMMMMMMMNho+sydNNNNNNNmysso/` -//
+  /dMMMMMMMMMMMMMs-  ````````..``
+   .oMMMMMMMMMMMMNs`               ./y:`
+     +dNMMNMMMMMMMmy`          ``./ys.
+      `/hMMMMMMMMMMMNo-``    `.+yy+-`
+        `-/hmNMNMMMMMMmmddddhhy/-`
+            `-+oooyMMMdsoo+/:.
 EOF
         ;;
 
         "Parabola"*)
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
-
+${c1}                          `.-.    `.
+                   `.`  `:++.   `-+o+.
+             `` `:+/. `:+/.   `-+oooo+
+        ``-::-.:+/. `:+/.   `-+oooooo+
+    `.-:///-  ..`   .-.   `-+oooooooo-
+ `..-..`                 `+ooooooooo:
+``                        :oooooooo/
+                          `ooooooo:
+                          `oooooo:
+                          -oooo+.
+                          +ooo/`
+                         -ooo-
+                        `+o/.
+                        /+-
+                       //`
+                      -.
 EOF
         ;;
 
         "Pardus"*)
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
-
+${c1} .smNdy+-    `.:/osyyso+:.`    -+ydmNs.
+/Md- -/ymMdmNNdhso/::/oshdNNmdMmy/. :dM/
+mN.     oMdyy- -y          `-dMo     .Nm
+.mN+`  sMy hN+ -:             yMs  `+Nm.
+ `yMMddMs.dy `+`               sMddMMy`
+   +MMMo  .`  .                 oMMM+
+   `NM/    `````.`    `.`````    +MN`
+   yM+   `.-:yhomy    ymohy:-.`   +My
+   yM:          yo    oy          :My
+   +Ms         .N`    `N.      +h sM+
+   `MN      -   -::::::-   : :o:+`NM`
+    yM/    sh   -dMMMMd-   ho  +y+My
+    .dNhsohMh-//: /mm/ ://-yMyoshNd`
+      `-ommNMm+:/. oo ./:+mMNmmo:`
+     `/o+.-somNh- :yy: -hNmos-.+o/`
+    ./` .s/`s+sMdd+``+ddMs+s`/s. `/.
+        : -y.  -hNmddmNy.  .y- :
+         -+       `..`       +-
 EOF
         ;;
 
         "Parrot"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
-
+${c1}  `:oho/-`
+`mMMMMMMMMMMMNmmdhy-
+ dMMMMMMMMMMMMMMMMMMs`
+ +MMsohNMMMMMMMMMMMMMm/
+ .My   .+dMMMMMMMMMMMMMh.
+  +       :NMMMMMMMMMMMMNo
+           `yMMMMMMMMMMMMMm:
+             /NMMMMMMMMMMMMMy`
+              .hMMMMMMMMMMMMMN+
+                  ``-NMMMMMMMMMd-
+                     /MMMMMMMMMMMs`
+                      mMMMMMMMsyNMN/
+                      +MMMMMMMo  :sNh.
+                      `NMMMMMMm     -o/
+                       oMMMMMMM.
+                       `NMMMMMM+
+                        +MMd/NMh
+                         mMm -mN`
+                         /MM  `h:
+                          dM`   .
+                          :M-
+                           d:
+                           -+
+                            -
 EOF
         ;;
 
         "Parsix"*)
             set_colors 3 1 7 8
             read -rd '' ascii_data <<'EOF'
-
+                 ${c2}-/+/:.
+               ${c2}.syssssys.
+       ${c1}.--.    ${c2}ssssssssso${c1}   ..--.
+     :++++++:  ${c2}+ssssssss+${c1} ./++/+++:
+    /+++++++++.${c2}.yssooooy`${c1}-+///////o-
+    /++++++++++.${c2}+soooos:${c1}:+////////+-
+     :+++++////o-${c2}oooooo-${c1}+/////////-
+      `-/++//++-${c4}.-----.-${c1}:+/////:-
+  ${c3}-://::--${c1}-:/:${c4}.--.````.--.${c1}:::-${c3}--::::::.
+${c3}-/:::::::://:${c4}.:-`      `-:${c3}`:/:::::::--/-
+${c3}/::::::::::/-${c4}--.        .-.${c3}-/://///::::/
+${c3}-/:::::::::/:${c4}`:-.      .-:${c3}`:///////////-
+ `${c3}-::::--${c1}.-://.${c4}---....---${c1}`:+/:-${c3}--::::-`
+       ${c1}-/+///+o/-${c4}.----.${c1}.:oo+++o+.
+     ${c1}-+/////+++o:${c2}syyyyy.${c1}o+++++++++:
+    ${c1}.+////+++++-${c2}+sssssy+${c1}.++++++++++\
+    ${c1}.+:/++++++.${c2}.yssssssy-${c1}`+++++++++:
+     ${c1}:/+++++-  ${c2}+sssssssss  ${c1}-++++++-
+       ${c1}`--`    ${c2}+sssssssso    ${c1}`--`
+                ${c2}+sssssy+`
+                 ${c2}`.::-`
 EOF
         ;;
 
         "PCBSD"* | "TrueOS"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-
+${c1}                       ..
+                        s.
+                        +y
+                        yN
+                       -MN  `.
+                      :NMs `m
+                    .yMMm` `No
+            `-/+++sdMMMNs+-`+Ms
+        `:oo+-` .yMMMMy` `-+oNMh
+      -oo-     +NMMMM/       oMMh-
+    .s+` `    oMMMMM/     -  oMMMhy.
+   +s`- ::   :MMMMMd     -o `mMMMy`s+
+  y+  h .Ny+oNMMMMMN/    sh+NMMMMo  +y
+ s+ .ds  -NMMMMMMMMMMNdhdNMMMMMMh`   +s
+-h .NM`   `hMMMMMMMMMMMMMMNMMNy:      h-
+y- hMN`     hMMmMMMMMMMMMNsdMNs.      -y
+m` mMMy`    oMMNoNMMMMMMo`  sMMMo     `m
+m` :NMMMdyydMMMMo+MdMMMs     sMMMd`   `m
+h-  `+ymMMMMMMMM--M+hMMN/    +MMMMy   -h
+:y     `.sMMMMM/ oMM+.yMMNddNMMMMMm   y:
+ y:   `s  dMMN- .MMMM/ :MMMMMMMMMMh  :y
+ `h:  `mdmMMM/  yMMMMs  sMMMMMMMMN- :h`
+   so  -NMMMN   /mmd+  `dMMMMMMMm- os
+    :y: `yMMM`       `+NMMMMMMNo`:y:
+      /s+`.omy      /NMMMMMNh/.+s:
+        .+oo:-.     /mdhs+::oo+.
+            -/o+++++++++++/-
 EOF
         ;;
 
         "PCLinuxOS"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-
+            ${c1}mhhhyyyyhhhdN
+        dyssyhhhhhhhhhhhssyhN
+     Nysyhhyo/:-.....-/oyhhhssd
+   Nsshhy+.              `/shhysm
+  dohhy/                    -shhsy
+ dohhs`                       /hhys
+N+hho   ${c2}+ssssss+-   .+syhys+   ${c1}/hhsy
+ohhh`   ${c2}ymmo++hmm+`smmy/::+y`   ${c1}shh+
++hho    ${c2}ymm-  /mmy+mms          ${c1}:hhod
+/hh+    ${c2}ymmhhdmmh.smm/          ${c1}.hhsh
++hhs    ${c2}ymm+::-`  /mmy`    `    ${c1}/hh+m
+yyhh-   ${c2}ymm-       /dmdyosyd`  ${c1}`yhh+
+ ohhy`  ${c2}://`         -/+++/-   ${c1}ohhom
+ N+hhy-                      `shhoh
+   sshho.                  `+hhyom
+    dsyhhs/.            `:ohhhoy
+      dysyhhhso///://+syhhhssh
+         dhyssyhhhhhhyssyyhN
+              mddhdhdmN
 EOF
         ;;
 
         "Peppermint"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-
+${c1}          8ZZZZZZ${c2}MMMMM
+${c1}       .ZZZZZZZZZ${c2}MMMMMMM.
+${c2}     MM${c1}ZZZZZZZZZ${c2}MMMMMMM${c1}ZZZZ
+${c2}   MMMMM${c1}ZZZZZZZZ${c2}MMMMM${c1}ZZZZZZZM
+${c2}  MMMMMMM${c1}ZZZZZZZ${c2}MMMM${c1}ZZZZZZZZZ.
+${c2} MMMMMMMMM${c1}ZZZZZZ${c2}MMM${c1}ZZZZZZZZZZZI
+${c2}MMMMMMMMMMM${c1}ZZZZZZ${c2}MM${c1}ZZZZZZZZZZ${c2}MMM
+${c1}.ZZZ${c2}MMMMMMMMMM${c1}IZZ${c2}MM${c1}ZZZZZ${c2}MMMMMMMMM
+${c1}ZZZZZZZ${c2}MMMMMMMM${c1}ZZ${c2}M${c1}ZZZZ${c2}MMMMMMMMMMM
+${c1}ZZZZZZZZZZZZZZZZ${c2}M${c1}Z${c2}MMMMMMMMMMMMMMM
+${c1}.ZZZZZZZZZZZZZ${c2}MMM${c1}Z${c2}M${c1}ZZZZZZZZZZ${c2}MMMM
+${c1}.ZZZZZZZZZZZ${c2}MMM${c1}7ZZ${c2}MM${c1}ZZZZZZZZZZ7${c2}M
+${c1} ZZZZZZZZZ${c2}MMMM${c1}ZZZZ${c2}MMMM${c1}ZZZZZZZ77
+${c2}  MMMMMMMMMMMM${c1}ZZZZZ${c2}MMMM${c1}ZZZZZ77
+${c2}   MMMMMMMMMM${c1}7ZZZZZZ${c2}MMMMM${c1}ZZ77
+${c2}    .MMMMMMM${c1}ZZZZZZZZ${c2}MMMMM${c1}Z7Z
+${c2}      MMMMM${c1}ZZZZZZZZZ${c2}MMMMMMM
+${c1}        NZZZZZZZZZZZ${c2}MMMMM
+${c1}           ZZZZZZZZZ${c2}MM)
 EOF
         ;;
 
         "Pop!_OS"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
-
+${c1}             /////////////
+         /////////////////////
+      ///////${c2}*767${c1}////////////////
+    //////${c2}7676767676*${c1}//////////////
+   /////${c2}76767${c1}//${c2}7676767${c1}//////////////
+  /////${c2}767676${c1}///${c2}*76767${c1}///////////////
+ ///////${c2}767676${c1}///${c2}76767${c1}.///${c2}7676*${c1}///////
+/////////${c2}767676${c1}//${c2}76767${c1}///${c2}767676${c1}////////
+//////////${c2}76767676767${c1}////${c2}76767${c1}/////////
+///////////${c2}76767676${c1}//////${c2}7676${c1}//////////
+////////////,${c2}7676${c1},///////${c2}767${c1}///////////
+/////////////*${c2}7676${c1}///////${c2}76${c1}////////////
+///////////////${c2}7676${c1}////////////////////
+ ///////////////${c2}7676${c1}///${c2}767${c1}////////////
+  //////////////////////${c2}'${c1}////////////
+   //////${c2}.7676767676767676767,${c1}//////
+    /////${c2}767676767676767676767${c1}/////
+      ///////////////////////////
+         /////////////////////
+             /////////////
 EOF
         ;;
 
         "Porteus"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
-
+${c1}             `.-:::-.`
+         -+ydmNNNNNNNmdy+-
+      .+dNmdhs+//////+shdmdo.
+    .smmy+-`             ./sdy:
+  `omdo.    `.-/+osssso+/-` `+dy.
+ `yms.   `:shmNmdhsoo++osyyo-``oh.
+ hm/   .odNmds/.`    ``.....:::-+s
+/m:  `+dNmy:`   `./oyhhhhyyooo++so
+ys  `yNmy-    .+hmmho:-.`     ```
+s:  yNm+`   .smNd+.
+`` /Nm:    +dNd+`
+   yN+   `smNy.
+   dm    oNNy`
+   hy   -mNm.
+   +y   oNNo
+   `y`  sNN:
+    `:  +NN:
+     `  .mNo
+         /mm`
+          /my`
+           .sy`
+             .+:
+                `
 EOF
         ;;
 
         "PostMarketOS"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
-
+${c1}                    ss
+                 `hMMh`
+                .dMMMMd.
+               -NMMMMMMN-
+              /MMMMMMMMMN/
+              hMMMMMMMMMMMo
+            y+`mMMmdNMMMMMMy
+          `dMM-.-:- .mMMMMMMh`
+         .mMMMMMMd`  `dMMMMMMm.
+        :NMMMMMMy      yMMMMMMN:
+       /MMMMMMMo        oMMMmdmN/
+      oMMMMMMM/          /MN.-/:-.
+    `yMMMMMMN-            -:.NMMMMy`
+   `dMMMMMMM- -/////////////dMMMMMMd`
+  -mMMMMMMMMN+`sMMMMMMMMMMMMMMMMMMMMm-
+ :NMMMMMMMMMMM/ yMMMMMMMMMMMMMMMMMMMMN:
++MMMMMMMMMMMh.:mMMMMMMMMMMMMMMMMMMMMMMM+
 EOF
         ;;
 
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
             set_colors 4 7
             read -rd '' ascii_data <<'EOF'
-
+${c1}           `-/osyyyysosyhhhhhyys+-
+  -ohmNNmh+/hMMMMMMMMNNNNd+dMMMMNM+
+ yMMMMNNmmddo/NMMMNNNNNNNNNo+NNNNNy
+.NNNNNNmmmddds:MMNNNNNNNNNNNh:mNNN/
+-NNNdyyyhdmmmd`dNNNNNmmmmNNmdd/os/
+.Nm+shddyooo+/smNNNNmmmmNh.   :mmd.
+ NNNNy:`   ./hmmmmmmmNNNN:     hNMh
+ NMN-    -++- +NNNNNNNNNNm+..-sMMMM-
+.MMo    oNNNNo hNNNNNNNNmhdNNNMMMMM+
+.MMs    /NNNN/ dNmhs+:-`  yMMMMMMMM+
+ mMM+     .. `sNN+.      hMMMMhhMMM-
+ +MMMmo:...:sNMMMMMms:` hMMMMm.hMMy
+  yMMMMMMMMMMMNdMMMMMM::/+o+//dMMd`
+   sMMMMMMMMMMN+:oyyo:sMMMNNMMMNy`
+    :mMMMMMMMMMMMmddNMMMMMMMMmh/
+      /dMMMMMMMMMMMMMMMMMMNdy/`
+        .+hNMMMMMMMMMNmdhs/.
+            .:/+ooo+/:-.
 EOF
         ;;
 
         "Qubes"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
-
+${c1}               `..--..`
+            `.----------.`
+        `..----------------..`
+     `.------------------------.``
+ `..-------------....-------------..`
+.::----------..``    ``..----------:+:
+:////:----..`            `..---:/ossso
+:///////:`                  `/osssssso
+:///////:                    /ssssssso
+:///////:                    /ssssssso
+:///////:                    /ssssssso
+:///////:                    /ssssssso
+:///////:                    /ssssssso
+:////////-`                .:sssssssso
+:///////////-.`        `-/osssssssssso
+`//////////////:-```.:+ssssssssssssso-
+  .-://////////////sssssssssssssso/-`
+     `.:///////////sssssssssssssso:.
+         .-:///////ssssssssssssssssss/`
+            `.:////ssss+/+ssssssssssss.
+                `--//-    `-/osssso/.
 EOF
         ;;
 
         "Raspbian"*)
             set_colors 2 1
             read -rd '' ascii_data <<'EOF'
-
+${c1}  `.::///+:/-.        --///+//-:``
+ `+oooooooooooo:   `+oooooooooooo:
+  /oooo++//ooooo:  ooooo+//+ooooo.
+  `+ooooooo:-:oo-  +o+::/ooooooo:
+   `:oooooooo+``    `.oooooooo+-
+     `:++ooo/.        :+ooo+/.`
+        ${c2}...`  `.----.` ``..
+     .::::-``:::::::::.`-:::-`
+    -:::-`   .:::::::-`  `-:::-
+   `::.  `.--.`  `` `.---.``.::`
+       .::::::::`  -::::::::` `
+ .::` .:::::::::- `::::::::::``::.
+-:::` ::::::::::.  ::::::::::.`:::-
+::::  -::::::::.   `-::::::::  ::::
+-::-   .-:::-.``....``.-::-.   -::-
+ .. ``       .::::::::.     `..`..
+   -:::-`   -::::::::::`  .:::::`
+   :::::::` -::::::::::` :::::::.
+   .:::::::  -::::::::. ::::::::
+    `-:::::`   ..--.`   ::::::.
+      `...`  `...--..`  `...`
+            .::::::::::
+             `.-::::-`
 EOF
         ;;
 
         "Red Star"* | "Redstar"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-
+${c1}                    ..
+                  .oK0l
+                 :0KKKKd.
+               .xKO0KKKKd
+              ,Od' .d0000l
+             .c;.   .'''...           ..'.
+.,:cloddxxxkkkkOOOOkkkkkkkkxxxxxxxxxkkkx:
+;kOOOOOOOkxOkc'...',;;;;,,,'',;;:cllc:,.
+ .okkkkd,.lko  .......',;:cllc:;,,'''''.
+   .cdo. :xd' cd:.  ..';'',,,'',,;;;,'.
+      . .ddl.;doooc'..;oc;'..';::;,'.
+        coo;.oooolllllllcccc:'.  .
+       .ool''lllllccccccc:::::;.
+       ;lll. .':cccc:::::::;;;;'
+       :lcc:'',..';::::;;;;;;;,,.
+       :cccc::::;...';;;;;,,,,,,.
+       ,::::::;;;,'.  ..',,,,'''.
+        ........          ......
 EOF
         ;;
 
         "Redhat"* | "Red Hat"* | "rhel"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-
+${c1}             `.-..........`
+            `////////::.`-/.
+            -: ....-////////.
+            //:-::///////////`
+     `--::: `-://////////////:
+     //////-    ``.-:///////// .`
+     `://////:-.`    :///////::///:`
+       .-/////////:---/////////////:
+          .-://////////////////////.
+${c2}         yMN+`.-${c1}::///////////////-`
+${c2}      .-`:NMMNMs`  `..-------..`
+       MN+/mMMMMMhoooyysshsss
+MMM    MMMMMMMMMMMMMMyyddMMM+
+ MMMM   MMMMMMMMMMMMMNdyNMMh`     hyhMMM
+  MMMMMMMMMMMMMMMMyoNNNMMM+.   MMMMMMMM
+   MMNMMMNNMMMMMNM+ mhsMNyyyyMNMMMMsMM
 EOF
         ;;
 
