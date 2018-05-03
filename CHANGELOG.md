@@ -8,6 +8,7 @@
 - [**@robertwolter**](https://github.com/robertwolter)
 - [**@TsundereBug**](https://github.com/TsundereBug)
 - [**@dawidd6**](https://github.com/dawidd6)
+- [**@mstraube**](https://github.com/mstraube)
 
 
 ## Operating System
@@ -50,6 +51,7 @@
 **Terminal Font**
 
 - Added support for `st`. [**@aidanharris**](https://github.com/aidanharris)
+- Added support for `qterminal`. [**@mstraube**](https://github.com/mstraube)
 
 **Packages**
 
