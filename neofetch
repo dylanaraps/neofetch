@@ -7538,32 +7538,131 @@ EOF
             case "$kernel_name" in
                 *"BSD")
                     set_colors 1 7 4 3 6
-                    ascii_file="bsd"
+                    read -rd '' ascii_data <<'EOF'
+${c1}             ,        ,
+            /(        )`
+            \ \___   / |
+            /- _  `-/  '
+           (${c2}/\/ \ ${c1}\   /\
+           ${c2}/ /   | `    ${c1}\
+           ${c3}O O   ${c2}) ${c1}/    |
+           ${c2}`-^--'${c1}`<     '
+          (_.)  _  )   /
+           `.___/`    /
+             `-----' /
+${c4}<----.     __ / __   \
+${c4}<----|====${c1}O)))${c4}==${c1}) \) /${c4}====|
+<----'    ${c1}`--' `.__,' \
+             |        |
+              \       /       /\
+         ${c5}______${c1}( (_  / \______/
+       ${c5},'  ,-----'   |
+       `--{__________)
+EOF
                 ;;
 
                 "Darwin")
                     set_colors 2 3 1 1 5 4
-                    ascii_file="mac"
+                    read -rd '' ascii_data <<'EOF'
+${c1}                    'c.
+                 ,xNMM.
+               .OMMMMo
+               OMMM0,
+     .;loddo:' loolloddol;.
+   cKMMMMMMMMMMNWMMMMMMMMMM0:
+${c2} .KMMMMMMMMMMMMMMMMMMMMMMMWd.
+ XMMMMMMMMMMMMMMMMMMMMMMMX.
+${c3};MMMMMMMMMMMMMMMMMMMMMMMM:
+:MMMMMMMMMMMMMMMMMMMMMMMM:
+${c4}.MMMMMMMMMMMMMMMMMMMMMMMMX.
+ kMMMMMMMMMMMMMMMMMMMMMMMMWd.
+ ${c5}.XMMMMMMMMMMMMMMMMMMMMMMMMMMk
+  .XMMMMMMMMMMMMMMMMMMMMMMMMK.
+    ${c6}kMMMMMMMMMMMMMMMMMMMMMMd
+     ;KMMMMMMMWXXWMMMMMMMk.
+       .cooc,.    .,coo:.
+EOF
                 ;;
 
                 "GNU"*)
                     set_colors fg 7
-                    ascii_file="gnu"
+                    read -rd '' ascii_data <<'EOF'
+${c1}    _-`````-,           ,- '- .
+  .'   .- - |          | - -.  `.
+ /.'  /                     `.   \
+:/   :      _...   ..._      ``   :
+::   :     /._ .`:'_.._\.    ||   :
+::    `._ ./  ,`  :    \ . _.''   .
+`:.      /   |  -.  \-. \\_      /
+  \:._ _/  .'   .@)  \@) ` `\ ,.'
+     _/,--'       .- .\,-.`--`.
+       ,'/''     (( \ `  )
+        /'/'  \    `-'  (
+         '/''  `._,-----'
+          ''/'    .,---'
+           ''/'      ;:
+             ''/''  ''/
+               ''/''/''
+                 '/'/'
+                  `;
+EOF
                 ;;
 
                 "Linux")
                     set_colors fg 8 3
-                    ascii_file="linux"
+                    read -rd '' ascii_data <<'EOF'
+${c2}        #####
+${c2}       #######
+${c2}       ##${c1}O${c2}#${c1}O${c2}##
+${c2}       #${c3}#####${c2}#
+${c2}     ##${c1}##${c3}###${c1}##${c2}##
+${c2}    #${c1}##########${c2}##
+${c2}   #${c1}############${c2}##
+${c2}   #${c1}############${c2}###
+${c3}  ##${c2}#${c1}###########${c2}##${c3}#
+${c3}######${c2}#${c1}#######${c2}#${c3}######
+${c3}#######${c2}#${c1}#####${c2}#${c3}#######
+${c3}  #####${c2}#######${c3}#####
+EOF
                 ;;
 
                 "SunOS")
                     set_colors 3 7
-                    ascii_file="solaris"
+                    read -rd '' ascii_data <<'EOF'
+${c1}                 `-     `
+          `--    `+-    .:
+           .+:  `++:  -/+-     .
+    `.::`  -++/``:::`./+/  `.-/.
+      `++/-`.`          ` /++:`
+  ``   ./:`                .: `..`.-
+``./+/:-                     -+++:-
+    -/+`                      :.
+EOF
                 ;;
 
                 "IRIX"*)
                     set_colors 4 7
-                    ascii_file="irix"
+                    read -rd '' ascii_data <<'EOF'
+${c1}           ./ohmNd/  +dNmho/-
+     `:+ydNMMMMMMMM.-MMMMMMMMMdyo:.
+   `hMMMMMMNhs/sMMM-:MMM+/shNMMMMMMh`
+   -NMMMMMmo-` /MMM-/MMM- `-omMMMMMN.
+ `.`-+hNMMMMMNhyMMM-/MMMshmMMMMMmy+...`
++mMNds:-:sdNMMMMMMMyyMMMMMMMNdo:.:sdMMm+
+dMMMMMMmy+.-/ymNMMMMMMMMNmy/-.+hmMMMMMMd
+oMMMMmMMMMNds:.+MMMmmMMN/.-odNMMMMmMMMM+
+.MMMM-/ymMMMMMmNMMy..hMMNmMMMMMmy/-MMMM.
+ hMMM/ `/dMMMMMMMN////NMMMMMMMd/. /MMMh
+ /MMMdhmMMMmyyMMMMMMMMMMMMhymMMMmhdMMM:
+ `mMMMMNho//sdMMMMM//NMMMMms//ohNMMMMd
+  `/so/:+ymMMMNMMMM` mMMMMMMMmh+::+o/`
+     `yNMMNho-yMMMM` NMMMm.+hNMMNh`
+     -MMMMd:  oMMMM. NMMMh  :hMMMM-
+      -yNMMMmooMMMM- NMMMyomMMMNy-
+        .omMMMMMMMM-`NMMMMMMMmo.
+          `:hMMMMMM. NMMMMMh/`
+             .odNm+  /dNms.
+EOF
                 ;;
             esac
         ;;
