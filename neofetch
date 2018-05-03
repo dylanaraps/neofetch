@@ -2195,6 +2195,11 @@ END
             term_font="$(trim_quotes "$term_font")"
         ;;
 
+        "qterminal")
+            term_font="$(awk -F '=' '/fontFamily=/ {a=$2} /fontSize=/ {b=$2} END{print a " " b}' \
+                         "${XDG_CONFIG_HOME}/qterminal.org/qterminal.ini")"
+        ;;
+
         "sakura"*)
             term_font="$(awk -F '=' '/^font=/ {print $2; exit}' \
                          "${XDG_CONFIG_HOME}/sakura/sakura.conf")"
