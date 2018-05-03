@@ -5313,6 +5313,32 @@ dhhyys+/-`
 EOF
         ;;
 
+        "ArcoLinux"*)
+            set_colors 7 4
+            read -rd '' ascii_data <<'EOF'
+${c2}                    /-
+                   ooo:
+                  yoooo/
+                 yooooooo
+                yooooooooo
+               yooooooooooo
+             .yooooooooooooo
+            .oooooooooooooooo
+           .oooooooarcoooooooo
+          .ooooooooo-oooooooooo
+         .ooooooooo-  oooooooooo
+        :ooooooooo.    :ooooooooo
+       :ooooooooo.      :ooooooooo
+      :oooarcooo         .oooarcooo
+     :ooooooooy           .ooooooooo
+    :ooooooooo   ${c1}/ooooooooooooooooooo${c2}
+   :ooooooooo      ${c1}.-ooooooooooooooooo.${c2}
+  ooooooooo-             ${c1}-ooooooooooooo.${c2}
+ ooooooooo-                 ${c1}.-oooooooooo.${c2}
+ooooooooo.                     ${c1}-ooooooooo${c2}
+EOF
+        ;;
+
         "arch_small")
             set_colors 6 7 1
             read -rd '' ascii_data <<'EOF'
