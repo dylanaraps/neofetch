@@ -4272,21 +4272,25 @@ EOF
 
         "Android"*)
             set_colors 2 7
-            ascii_length_force=19
             read -rd '' ascii_data <<'EOF'
-${c1}     ╲ ▁▂▂▂▁ ╱
-     ▄███████▄
-    ▄██${c2} ${c1}███${c2} ${c1}██▄
-   ▄███████████▄
-▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄ █▄
-██ █████████████ ██
-██ █████████████ ██
-██ █████████████ ██
-██ █████████████ ██
-   █████████████
-    ███████████
-     ██     ██
-     ██     ██
+${c1}         -o          o-
+          +hydNNNNdyh+
+        +mMMMMMMMMMMMMm+
+      `dMM${c2}m:${c1}NMMMMMMN${c2}:m${c1}MMd`
+      hMMMMMMMMMMMMMMMMMMh
+  ..  yyyyyyyyyyyyyyyyyyyy  ..
+.mMMm`MMMMMMMMMMMMMMMMMMMM`mMMm.
+:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:
+:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:
+:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:
+:MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM:
+-MMMM-MMMMMMMMMMMMMMMMMMMM-MMMM-
+ +yy+ MMMMMMMMMMMMMMMMMMMM +yy+
+      mMMMMMMMMMMMMMMMMMMm
+      `/++MMMMh++hMMMM++/`
+          MMMMo  oMMMM
+          MMMMo  oMMMM
+          oNMm-  -mMNs
 EOF
         ;;
 
