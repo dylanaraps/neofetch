@@ -3450,19 +3450,6 @@ get_ascii() {
         # Fallback to distro ascii mode if source is an image.
         [[ "$image_source" =~ \.(png|jpg|jpe|jpeg|gif)$ ]] && \
             err "Image: Source is image file but ascii backend was selected. Using distro ascii."
-
-        if [[ -d "ASCIIDIR" ]]; then
-            ascii_dir="ASCIIDIR"
-        else
-            [[ -z "$script_dir" ]] && script_dir="$(get_full_path "$0")"
-            ascii_dir="${script_dir%/*}/ascii/distro"
-        fi
-
-        image_source="${ascii_dir}/${ascii_file}"
-
-        # Fallback to no ascii mode if distro ascii isn't found.
-        [[ ! -f "$image_source" ]] && \
-            { to_off "Ascii: Failed to find distro ascii, falling back to no ascii mode."; return; }
     fi
 
     # Set locale to get correct padding.
@@ -3480,7 +3467,7 @@ get_ascii() {
         line="${line//\\\\/\\}"
         ((${#line} > ascii_length)) && ascii_length="${#line}"
         ((++lines))
-    done < "$image_source"
+    done <<< "$ascii_data"
 
     # Colors.
     print="${print//'${c1}'/$c1}"
@@ -4159,745 +4146,1457 @@ get_distro_colors() {
     case "$ascii_distro" in
         "AIX"*)
             set_colors 2 7
-            ascii_file="aix"
+            read -rd '' ascii_data <<'EOF'
+${c1}           `:+ssssossossss+-`
+        .oys///oyhddddhyo///sy+.
+      /yo:+hNNNNNNNNNNNNNNNNh+:oy/
+    :h/:yNNNNNNNNNNNNNNNNNNNNNNy-+h:
+  `ys.yNNNNNNNNNNNNNNNNNNNNNNNNNNy.ys
+ `h+-mNNNNNNNNNNNNNNNNNNNNNNNNNNNNm-oh
+ h+-NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN.oy
+/d`mNNNNNNN/::mNNNd::m+:/dNNNo::dNNNd`m:
+h//NNNNNNN: . .NNNh  mNo  od. -dNNNNN:+y
+N.sNNNNNN+ -N/ -NNh  mNNd.   sNNNNNNNo-m
+N.sNNNNNs  +oo  /Nh  mNNs` ` /mNNNNNNo-m
+h//NNNNh  ossss` +h  md- .hm/ `sNNNNN:+y
+:d`mNNN+/yNNNNNd//y//h//oNNNNy//sNNNd`m-
+ yo-NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNm.ss
+ `h+-mNNNNNNNNNNNNNNNNNNNNNNNNNNNNm-oy
+   sy.yNNNNNNNNNNNNNNNNNNNNNNNNNNs.yo
+    :h+-yNNNNNNNNNNNNNNNNNNNNNNs-oh-
+      :ys:/yNNNNNNNNNNNNNNNmy/:sy:
+        .+ys///osyhhhhys+///sy+.
+            -/osssossossso/-
+EOF
         ;;
 
         "alpine_small")
             set_colors 4 7
-            ascii_file="alpine_small"
+            read -rd '' ascii_data <<'EOF'
+${c1}   /\\ /\\
+  /${c2}/ ${c1}\\  \\
+ /${c2}/   ${c1}\\  \\
+/${c2}//    ${c1}\\  \\
+${c2}//      ${c1}\\  \\
+         \\
+EOF
         ;;
 
         "Alpine"*)
             set_colors 4 5 7 6
-            ascii_file="alpine"
+            read -rd '' ascii_data <<'EOF'
+${c1}       .hddddddddddddddddddddddh.
+      :dddddddddddddddddddddddddd:
+     /dddddddddddddddddddddddddddd/
+    +dddddddddddddddddddddddddddddd+
+  `sdddddddddddddddddddddddddddddddds`
+ `ydddddddddddd++hdddddddddddddddddddy`
+.hddddddddddd+`  `+ddddh:-sdddddddddddh.
+hdddddddddd+`      `+y:    .sddddddddddh
+ddddddddh+`   `//`   `.`     -sddddddddd
+ddddddh+`   `/hddh/`   `:s-    -sddddddd
+ddddh+`   `/+/dddddh/`   `+s-    -sddddd
+ddd+`   `/o` :dddddddh/`   `oy-    .yddd
+hdddyo+ohddyosdddddddddho+oydddy++ohdddh
+.hddddddddddddddddddddddddddddddddddddh.
+ `yddddddddddddddddddddddddddddddddddy`
+  `sdddddddddddddddddddddddddddddddds`
+    +dddddddddddddddddddddddddddddd+
+     /dddddddddddddddddddddddddddd/
+      :dddddddddddddddddddddddddd:
+       .hddddddddddddddddddddddh.
+EOF
         ;;
 
         "Amazon"*)
             set_colors 3 7
-            ascii_file="amazon"
+            read -rd '' ascii_data <<'EOF'
+${c1}             `-/oydNNdyo:.`
+      `.:+shmMMMMMMMMMMMMMMmhs+:.`
+    -+hNNMMMMMMMMMMMMMMMMMMMMMMNNho-
+.``      -/+shmNNMMMMMMNNmhs+/-      ``.
+dNmhs+:.       `.:/oo/:.`       .:+shmNd
+dMMMMMMMNdhs+:..        ..:+shdNMMMMMMMd
+dMMMMMMMMMMMMMMNds    odNMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+.:+ydNMMMMMMMMMMMh    yMMMMMMMMMMMNdy+:.
+     `.:+shNMMMMMh    yMMMMMNhs+:``
+            `-+shy    shs+:`
+EOF
         ;;
 
         "Anarchy"*)
             set_colors 7 4
-            ascii_file="anarchy"
+            read -rd '' ascii_data <<'EOF'
+                         ${c2}..${c1}
+                        ${c2}..${c1}
+                      ${c2}:..${c1}
+                    ${c2}:+++.${c1}
+              .:::++${c2}++++${c1}+::.
+          .:+######${c2}++++${c1}######+:.
+       .+#########${c2}+++++${c1}##########:.
+     .+##########${c2}+++++++${c1}##${c2}+${c1}#########+.
+    +###########${c2}+++++++++${c1}############:
+   +##########${c2}++++++${c1}#${c2}++++${c1}#${c2}+${c1}###########+
+  +###########${c2}+++++${c1}###${c2}++++${c1}#${c2}+${c1}###########+
+ :##########${c2}+${c1}#${c2}++++${c1}####${c2}++++${c1}#${c2}+${c1}############:
+ ###########${c2}+++++${c1}#####${c2}+++++${c1}#${c2}+${c1}###${c2}++${c1}######+
+.##########${c2}++++++${c1}#####${c2}++++++++++++${c1}#######.
+.##########${c2}+++++++++++++++++++${c1}###########.
+ #####${c2}++++++++++++++${c1}###${c2}++++++++${c1}#########+
+ :###${c2}++++++++++${c1}#########${c2}+++++++${c1}#########:
+  +######${c2}+++++${c1}##########${c2}++++++++${c1}#######+
+   +####${c2}+++++${c1}###########${c2}+++++++++${c1}#####+
+    :##${c2}++++++${c1}############${c2}++++++++++${c1}##:
+     .${c2}++++++${c1}#############${c2}++++++++++${c1}+.
+      :${c2}++++${c1}###############${c2}+++++++${c1}::
+     .${c2}++. .:+${c1}##############${c2}+++++++${c1}..
+     ${c2}.:.${c1}      ..::++++++::..:${c2}++++${c1}+.
+     ${c2}.${c1}                       ${c2}.:+++${c1}.
+                                ${c2}.:${c1}:
+                                   ${c2}..${c1}
+                                    ${c2}..${c1}
+EOF
         ;;
 
         "Android"*)
             set_colors 2 7
-            ascii_file="android"
             ascii_length_force=19
+            read -rd '' ascii_data <<'EOF'
+${c1}     ╲ ▁▂▂▂▁ ╱
+     ▄███████▄
+    ▄██${c2} ${c1}███${c2} ${c1}██▄
+   ▄███████████▄
+▄█ ▄▄▄▄▄▄▄▄▄▄▄▄▄ █▄
+██ █████████████ ██
+██ █████████████ ██
+██ █████████████ ██
+██ █████████████ ██
+   █████████████
+    ███████████
+     ██     ██
+     ██     ██
+EOF
         ;;
 
         "Antergos"*)
             set_colors 4 6
-            ascii_file="antergos"
+            read -rd '' ascii_data <<'EOF'
+${c2}              `.-/::/-``
+            .-/osssssssso/.
+           :osyysssssssyyys+-
+        `.+yyyysssssssssyyyyy+.
+       `/syyyyyssssssssssyyyyys-`
+      `/yhyyyyysss${c1}++${c2}ssosyyyyhhy/`
+     .ohhhyyyys${c1}o++/+o${c2}so${c1}+${c2}syy${c1}+${c2}shhhho.
+    .shhhhys${c1}oo++//+${c2}sss${c1}+++${c2}yyy${c1}+s${c2}hhhhs.
+   -yhhhhs${c1}+++++++o${c2}ssso${c1}+++${c2}yyy${c1}s+o${c2}hhddy:
+  -yddhhy${c1}o+++++o${c2}syyss${c1}++++${c2}yyy${c1}yooy${c2}hdddy-
+ .yddddhs${c1}o++o${c2}syyyyys${c1}+++++${c2}yyhh${c1}sos${c2}hddddy`
+`odddddhyosyhyyyyyy${c1}++++++${c2}yhhhyosddddddo
+.dmdddddhhhhhhhyyyo${c1}+++++${c2}shhhhhohddddmmh.
+ddmmdddddhhhhhhhso${c1}++++++${c2}yhhhhhhdddddmmdy
+dmmmdddddddhhhyso${c1}++++++${c2}shhhhhddddddmmmmh
+-dmmmdddddddhhys${c1}o++++o${c2}shhhhdddddddmmmmd-
+.smmmmddddddddhhhhhhhhhdddddddddmmmms.
+   `+ydmmmdddddddddddddddddddmmmmdy/.
+      `.:+ooyyddddddddddddyyso+:.`
+EOF
         ;;
 
         "antiX"*)
             set_colors 1 7 3
-            ascii_file="antix"
+            read -rd '' ascii_data <<'EOF'
+${c1}
+                    \
+         , - ~ ^ ~ - \        /
+     , '              \ ' ,  /
+   ,                   \   '/
+  ,                     \  / ,
+ ,___,                   \/   ,
+ /   |   _  _  _|_ o     /\   ,
+|,   |  / |/ |  |  |    /  \  ,
+ \,_/\_/  |  |_/|_/|_/_/    \,
+   ,                  /     ,\
+     ,               /  , '   \
+      ' - , _ _ _ ,  '
+EOF
         ;;
 
         "AOSC"*)
             set_colors 4 7 1
-            ascii_file="aosc"
+            read -rd '' ascii_data <<'EOF'
+${c2}             .:+syhhhhys+:.
+         .ohNMMMMMMMMMMMMMMNho.
+      `+mMMMMMMMMMMmdmNMMMMMMMMm+`
+     +NMMMMMMMMMMMM/   `./smMMMMMN+
+   .mMMMMMMMMMMMMMMo        -yMMMMMm.
+  :NMMMMMMMMMMMMMMMs          .hMMMMN:
+ .NMMMMhmMMMMMMMMMMm+/-         oMMMMN.
+ dMMMMs  ./ymMMMMMMMMMMNy.       sMMMMd
+-MMMMN`      oMMMMMMMMMMMN:      `NMMMM-
+/MMMMh       NMMMMMMMMMMMMm       hMMMM/
+/MMMMh       NMMMMMMMMMMMMm       hMMMM/
+-MMMMN`      :MMMMMMMMMMMMy.     `NMMMM-
+ dMMMMs       .yNMMMMMMMMMMMNy/. sMMMMd
+ .NMMMMo         -/+sMMMMMMMMMMMmMMMMN.
+  :NMMMMh.          .MMMMMMMMMMMMMMMN:
+   .mMMMMMy-         NMMMMMMMMMMMMMm.
+     +NMMMMMms/.`    mMMMMMMMMMMMN+
+      `+mMMMMMMMMNmddMMMMMMMMMMm+`
+         .ohNMMMMMMMMMMMMMMNho.
+             .:+syhhhhys+:.
+EOF
         ;;
 
         "Apricity"*)
             set_colors 4 7 1
-            ascii_file="apricity"
+            read -rd '' ascii_data <<'EOF'
+${c2}                                    ./o-
+          ``...``              `:. -/:
+     `-+ymNMMMMMNmho-`      :sdNNm/
+   `+dMMMMMMMMMMMMMMMmo` sh:.:::-
+  /mMMMMMMMMMMMMMMMMMMMm/`sNd/
+ oMMMMMMMMMMMMMMMMMMMMMMMs -`
+:MMMMMMMMMMMMMMMMMMMMMMMMM/
+NMMMMMMMMMMMMMMMMMMMMMMMMMd
+MMMMMMMmdmMMMMMMMMMMMMMMMMd
+MMMMMMy` .mMMMMMMMMMMMmho:`
+MMMMMMNo/sMMMMMMMNdy+-.`-/
+MMMMMMMMMMMMNdy+:.`.:ohmm:
+MMMMMMMmhs+-.`.:+ymNMMMy.
+MMMMMM/`.-/ohmNMMMMMMy-
+MMMMMMNmNNMMMMMMMMmo.
+MMMMMMMMMMMMMMMms:`
+MMMMMMMMMMNds/.
+dhhyys+/-`
+EOF
         ;;
 
         "arch_small")
             set_colors 6 7 1
-            ascii_file="arch_small"
+            read -rd '' ascii_data <<'EOF'
+${c1}      /\
+     /^^\
+    /\   \
+   /${c2}  __  \
+  /  (  )  \
+ / __|  |__\\\
+///        \\\\\
+EOF
         ;;
 
         "arch_old")
             set_colors 6 7 1
-            ascii_file="arch_old"
+            read -rd '' ascii_data <<'EOF'
+${c1}             __
+         _=(SDGJT=_
+       _GTDJHGGFCVS)
+      ,GTDJGGDTDFBGX0
+${c1}     JDJDIJHRORVFSBSVL${c2}-=+=,_
+${c1}    IJFDUFHJNXIXCDXDSV,${c2}  "DEBL
+${c1}   [LKDSDJTDU=OUSCSBFLD.${c2}   '?ZWX,
+${c1}  ,LMDSDSWH'     `DCBOSI${c2}     DRDS],
+${c1}  SDDFDFH'         !YEWD,${c2}   )HDROD
+${c1} !KMDOCG            &GSU|${c2}\_GFHRGO\'
+${c1} HKLSGP'${c2}           __${c1}\TKM0${c2}\GHRBV)'
+${c1}JSNRVW'${c2}       __+MNAEC${c1}\IOI,${c2}\BN'
+${c1}HELK['${c2}    __,=OFFXCBGHC${c1}\FD)
+${c1}?KGHE ${c2}\_-#DASDFLSV='${c1}    'EF
+'EHTI                    !H
+ `0F'                    '!
+EOF
         ;;
 
         "ArchBox"*)
             set_colors 2 7 1
-            ascii_file="archbox"
+            read -rd '' ascii_data <<'EOF'
+${c1}              ...:+oh/:::..
+         ..-/oshhhhhh`   `::::-.
+     .:/ohhhhhhhhhhhh`        `-::::.
+ .+shhhhhhhhhhhhhhhhh`             `.::-.
+ /`-:+shhhhhhhhhhhhhh`            .-/+shh
+ /      .:/ohhhhhhhhh`       .:/ohhhhhhhh
+ /           `-:+shhh`  ..:+shhhhhhhhhhhh
+ /                 .:ohhhhhhhhhhhhhhhhhhh
+ /                  `hhhhhhhhhhhhhhhhhhhh
+ /                  `hhhhhhhhhhhhhhhhhhhh
+ /                  `hhhhhhhhhhhhhhhhhhhh
+ /                  `hhhhhhhhhhhhhhhhhhhh
+ /      .+o+        `hhhhhhhhhhhhhhhhhhhh
+ /     -hhhhh       `hhhhhhhhhhhhhhhhhhhh
+ /     ohhhhho      `hhhhhhhhhhhhhhhhhhhh
+ /:::+`hhhhoos`     `hhhhhhhhhhhhhhhhhs+`
+    `--/:`   /:     `hhhhhhhhhhhho/-
+             -/:.   `hhhhhhs+:-`
+                ::::/ho/-`
+EOF
         ;;
 
         "ARCHlabs"*)
             set_colors 6 6 7 1
-            ascii_file="archlabs"
+            read -rd '' ascii_data <<'EOF'
+${c1}                     'c'
+                    'kKk,
+                   .dKKKx.
+                  .oKXKXKd.
+                 .l0XXXXKKo.
+                 c0KXXXXKX0l.
+                :0XKKOxxOKX0l.
+               :OXKOc. .c0XX0l.
+              :OK0o. ${c4}...${c1}'dKKX0l.
+             :OX0c  ${c4};xOx'${c1}'dKXX0l.
+            :0KKo.${c4}.o0XXKd'.${c1}lKXX0l.
+           c0XKd.${c4}.oKXXXXKd..${c1}oKKX0l.
+         .c0XKk;${c4}.l0K0OO0XKd..${c1}oKXXKo.
+        .l0XXXk:${c4},dKx,.'l0XKo.${c1}.kXXXKo.
+       .o0XXXX0d,${c4}:x;   .oKKx'${c1}.dXKXXKd.
+      .oKXXXXKK0c.${c4};.    :00c'${c1}cOXXXXXKd.
+     .dKXXXXXXXXk,${c4}.     cKx'${c1}'xKXXXXXXKx'
+    'xKXXXXK0kdl:.     ${c4}.ok; ${c1}.cdk0KKXXXKx'
+   'xKK0koc,..         ${c4}'c, ${c1}    ..,cok0KKk,
+  ,xko:'.             ${c4}.. ${c1}           .':okx;
+ .,'.                                   .',.
+EOF
         ;;
 
         *"XFerience"*)
             set_colors 6 6 7 1
-            ascii_file="arch_xferience"
+            read -rd '' ascii_data <<'EOF'
+${c1}           ``--:::::::-.`
+        .-/+++ooooooooo+++:-`
+     `-/+oooooooooooooooooo++:.
+    -/+oooooo/+ooooooooo+/ooo++:`
+  `/+oo++oo.   .+oooooo+.-: +:-o+-
+ `/+o/.  -o.    :oooooo+ ```:.+oo+-
+`:+oo-    -/`   :oooooo+ .`-`+oooo/.
+.+ooo+.    .`   `://///+-+..oooooo+:`
+-+ooo:`                ``.-+oooooo+/`
+-+oo/`                       :+oooo/.
+.+oo:            ..-/. .      -+oo+/`
+`/++-         -:::++::/.      -+oo+-
+ ./o:          `:///+-     `./ooo+:`
+  .++-         `` /-`   -:/+oooo+:`
+   .:+/:``          `-:ooooooo++-
+     ./+o+//:...../+oooooooo++:`
+       `:/++ooooooooooooo++/-`
+          `.-//++++++//:-.`
+               ``````
+EOF
         ;;
 
         "ArchMerge"*)
             set_colors 6 6 7 1
-            ascii_file="archmerge"
+            read -rd '' ascii_data <<'EOF'
+${c1}                    y:
+                  sMN-
+                 +MMMm`
+                /MMMMMd`
+               :NMMMMMMy
+              -NMMMMMMMMs
+             .NMMMMMMMMMM+
+            .mMMMMMMMMMMMM+
+            oNMMMMMMMMMMMMM+
+          `+:-+NMMMMMMMMMMMM+
+          .sNMNhNMMMMMMMMMMMM/
+        `hho/sNMMMMMMMMMMMMMMM/
+       `.`omMMmMMMMMMMMMMMMMMMM+
+      .mMNdshMMMMd+::oNMMMMMMMMMo
+     .mMMMMMMMMM+     `yMMMMMMMMMs
+    .NMMMMMMMMM/        yMMMMMMMMMy
+   -NMMMMMMMMMh         `mNMMMMMMMMd`
+  /NMMMNds+:.`             `-/oymMMMm.
+ +Mmy/.                          `:smN:
+/+.                                  -o.
+EOF
         ;;
 
         "Arch"*)
             set_colors 6 6 7 1
-            ascii_file="arch"
+            read -rd '' ascii_data <<'EOF'
+${c1}                   -`
+                  .o+`
+                 `ooo/
+                `+oooo:
+               `+oooooo:
+               -+oooooo+:
+             `/:-:++oooo+:
+            `/++++/+++++++:
+           `/++++++++++++++:
+          `/+++o${c2}oooooooo${c1}oooo/`
+${c2}         ${c1}./${c2}ooosssso++osssssso${c1}+`
+${c2}        .oossssso-````/ossssss+`
+       -osssssso.      :ssssssso.
+      :osssssss/        osssso+++.
+     /ossssssss/        +ssssooo/-
+   `/ossssso+/:-        -:/+osssso+-
+  `+sso+:-`                 `.-/+oso:
+ `++:.                           `-/+/
+ .`                                 `/
+EOF
         ;;
 
         "Artix"*)
             set_colors 6 4 2 7
-            ascii_file="artix"
+            read -rd '' ascii_data <<'EOF'
+${c1}                        d${c2}c.
+${c1}                       x${c2}dc.
+${c1}                  '.${c4}.${c1} d${c2}dlc.
+${c1}                 c${c2}0d:${c1}o${c2}xllc;
+${c1}                :${c2}0ddlolc,lc,
+${c1}           :${c1}ko${c4}.${c1}:${c2}0ddollc..dlc.
+${c1}          ;${c1}K${c2}kxoOddollc'  cllc.
+${c1}         ,${c1}K${c2}kkkxdddllc,   ${c4}.${c2}lll:
+${c1}        ,${c1}X${c2}kkkddddlll;${c3}...';${c1}d${c2}llll${c3}dxk:
+${c1}       ,${c1}X${c2}kkkddddllll${c3}oxxxddo${c2}lll${c3}oooo,
+${c3}    xxk${c1}0${c2}kkkdddd${c1}o${c2}lll${c1}o${c3}ooooooolooooc;${c1}.
+${c3}    ddd${c2}kkk${c1}d${c2}ddd${c1}ol${c2}lc:${c3}:;,'.${c3}... .${c2}lll;
+${c1}   .${c3}xd${c1}x${c2}kk${c1}xd${c2}dl${c1}'cl:${c4}.           ${c2}.llc,
+${c1}   .${c1}0${c2}kkkxddl${c4}. ${c2};'${c4}.             ${c2};llc.
+${c1}  .${c1}K${c2}Okdcddl${c4}.                   ${c2}cllc${c4}.
+${c1}  0${c2}Okd''dc.                    .cll;
+${c1} k${c2}Okd'                          .llc,
+${c1} d${c2}Od,                            'lc.
+${c1} :,${c4}.                              ${c2}...
+EOF
         ;;
 
         "Arya"*)
             set_colors 2 1
-            ascii_file="arya"
+            read -rd '' ascii_data <<'EOF'
+${c1}                `oyyy/${c2}-yyyyyy+
+${c1}               -syyyy/${c2}-yyyyyy+
+${c1}              .syyyyy/${c2}-yyyyyy+
+${c1}              :yyyyyy/${c2}-yyyyyy+
+${c1}           `/ :yyyyyy/${c2}-yyyyyy+
+${c1}          .+s :yyyyyy/${c2}-yyyyyy+
+${c1}         .oys :yyyyyy/${c2}-yyyyyy+
+${c1}        -oyys :yyyyyy/${c2}-yyyyyy+
+${c1}       :syyys :yyyyyy/${c2}-yyyyyy+
+${c1}      /syyyys :yyyyyy/${c2}-yyyyyy+
+${c1}     +yyyyyys :yyyyyy/${c2}-yyyyyy+
+${c1}   .oyyyyyyo. :yyyyyy/${c2}-yyyyyy+ ---------
+${c1}  .syyyyyy+`  :yyyyyy/${c2}-yyyyy+-+syyyyyyyy
+${c1} -syyyyyy/    :yyyyyy/${c2}-yyys:.syyyyyyyyyy
+${c1}:syyyyyy/     :yyyyyy/${c2}-yyo.:syyyyyyyyyyy
+EOF
         ;;
 
         "Bitrig"*)
             set_colors 2 7
-            ascii_file="bitrig"
+            read -rd '' ascii_data <<'EOF'
+${c1}   `hMMMMN+
+   -MMo-dMd`
+   oMN- oMN`
+   yMd  /NM:
+  .mMmyyhMMs
+  :NMMMhsmMh
+  +MNhNNoyMm-
+  hMd.-hMNMN:
+  mMmsssmMMMo
+ .MMdyyhNMMMd
+ oMN.`/dMddMN`
+ yMm/hNm+./MM/
+.dMMMmo.``.NMo
+:NMMMNmmmmmMMh
+/MN/-------oNN:
+hMd.       .dMh
+sm/         /ms
+EOF
         ;;
 
         "BLAG"*)
             set_colors 5 7
-            ascii_file="blag"
+            read -rd '' ascii_data <<'EOF'
+${c1}             d
+            ,MK:
+            xMMMX:
+           .NMMMMMX;
+           lMMMMMMMM0clodkO0KXWW:
+           KMMMMMMMMMMMMMMMMMMX'
+      .;d0NMMMMMMMMMMMMMMMMMMK.
+ .;dONMMMMMMMMMMMMMMMMMMMMMMx
+'dKMMMMMMMMMMMMMMMMMMMMMMMMl
+   .:xKWMMMMMMMMMMMMMMMMMMM0.
+       .:xNMMMMMMMMMMMMMMMMMK.
+          lMMMMMMMMMMMMMMMMMMK.
+          ,MMMMMMMMWkOXWMMMMMM0
+          .NMMMMMNd.     `':ldko
+           OMMMK:
+           oWk,
+           ;:
+EOF
         ;;
 
         "BlankOn"*)
             set_colors 1 7 3
-            ascii_file="blankon"
+            read -rd '' ascii_data <<'EOF'
+${c2}        `./ohdNMMMMNmho+.` ${c1}       .+oo:`
+${c2}      -smMMMMMMMMMMMMMMMMmy-`    ${c1}`yyyyy+
+${c2}   `:dMMMMMMMMMMMMMMMMMMMMMMd/`  ${c1}`yyyyys
+${c2}  .hMMMMMMMNmhso/++symNMMMMMMMh- ${c1}`yyyyys
+${c2} -mMMMMMMms-`         -omMMMMMMN-${c1}.yyyyys
+${c2}.mMMMMMMy.              .yMMMMMMm:${c1}yyyyys
+${c2}sMMMMMMy                 `sMMMMMMh${c1}yyyyys
+${c2}NMMMMMN:                  .NMMMMMN${c1}yyyyys
+${c2}MMMMMMm.                   NMMMMMN${c1}yyyyys
+${c2}hMMMMMM+                  /MMMMMMN${c1}yyyyys
+${c2}:NMMMMMN:                :mMMMMMM+${c1}yyyyys
+${c2} oMMMMMMNs-            .sNMMMMMMs.${c1}yyyyys
+${c2}  +MMMMMMMNho:.`  `.:ohNMMMMMMNo ${c1}`yyyyys
+${c2}   -hMMMMMMMMNNNmmNNNMMMMMMMMh-  ${c1}`yyyyys
+${c2}     :yNMMMMMMMMMMMMMMMMMMNy:`   ${c1}`yyyyys
+${c2}       .:sdNMMMMMMMMMMNds/.      ${c1}`yyyyyo
+${c2}           `.:/++++/:.`           ${c1}:oys+.
+EOF
         ;;
 
        "BSD")
             set_colors 1 7 4 3 6
-            ascii_file="bsd"
+            read -rd '' ascii_data <<'EOF'
+${c1}             ,        ,
+            /(        )`
+            \ \___   / |
+            /- _  `-/  '
+           (${c2}/\/ \ ${c1}\   /\
+           ${c2}/ /   | `    ${c1}\
+           ${c3}O O   ${c2}) ${c1}/    |
+           ${c2}`-^--'${c1}`<     '
+          (_.)  _  )   /
+           `.___/`    /
+             `-----' /
+${c4}<----.     __ / __   \
+${c4}<----|====${c1}O)))${c4}==${c1}) \) /${c4}====|
+<----'    ${c1}`--' `.__,' \
+             |        |
+              \       /       /\
+         ${c5}______${c1}( (_  / \______/
+       ${c5},'  ,-----'   |
+       `--{__________)
+EOF
         ;;
 
         "BunsenLabs"*)
             set_colors fg 7
-            ascii_file="bunsenlabs"
+            read -rd '' ascii_data <<'EOF'
+${c1}        `++
+      -yMMs
+    `yMMMMN`
+   -NMMMMMMm.
+  :MMMMMMMMMN-
+ .NMMMMMMMMMMM/
+ yMMMMMMMMMMMMM/
+`MMMMMMNMMMMMMMN.
+-MMMMN+ /mMMMMMMy
+-MMMm`   `dMMMMMM
+`MMN.     .NMMMMM.
+ hMy       yMMMMM`
+ -Mo       +MMMMN
+  /o       +MMMMs
+           +MMMN`
+           hMMM:
+          `NMM/
+          +MN:
+          mh.
+         -/
+EOF
         ;;
 
         "Calculate"*)
             set_colors 7 3
-            ascii_file="calculate"
+            read -rd '' ascii_data <<'EOF'
+${c1}                              ......
+                           ,,+++++++,.
+                         .,,,....,,,${c2}+**+,,.${c1}
+                       ............,${c2}++++,,,${c1}
+                      ...............
+                    ......,,,........
+                  .....+*#####+,,,*+.
+              .....,*###############,..,,,,,,..
+           ......,*#################*..,,,,,..,,,..
+         .,,....*####################+***+,,,,...,++,
+       .,,..,..*#####################*,
+     ,+,.+*..*#######################.
+   ,+,,+*+..,########################*
+.,++++++.  ..+##**###################+
+.....      ..+##***#################*.
+           .,.*#*****##############*.
+           ..,,*********#####****+.
+     ${c2}.,++*****+++${c1}*****************${c2}+++++,.${c1}
+      ${c2},++++++**+++++${c1}***********${c2}+++++++++,${c1}
+     ${c2}.,,,,++++,..  .,,,,,.....,+++,.,,${c1}
+EOF
         ;;
 
         "CentOS"*)
             set_colors 3 2 4 5 7
-            ascii_file="centos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Chakra"*)
             set_colors 4 5 7 6
-            ascii_file="chakra"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "ChaletOS"*)
             set_colors 4 7 1
-            ascii_file="chaletos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Chapeau"*)
             set_colors 2 7
-            ascii_file="chapeau"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Chrom"*)
             set_colors 2 1 3 4 7
-            ascii_file="chrome"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Clover"*)
             set_colors 2 6
-            ascii_file="cloveros"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Container Linux by CoreOS"*)
             set_colors 4 7 1
-            ascii_file="coreos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "crux_small")
             set_colors 4 5 7 6
-            ascii_file="crux_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "CRUX"*)
             set_colors 4 5 7 6
-            ascii_file="crux"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "debian_small")
             set_colors 1 7 3
-            ascii_file="debian_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Debian"*)
             set_colors 1 7 3
-            ascii_file="debian"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Deepin"*)
             set_colors 2 7
-            ascii_file="deepin"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "DesaOS")
             set_colors 2 7
-            ascii_file="desaos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Devuan"*)
             set_colors 5 7
-            ascii_file="devuan"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "DracOS"*)
             set_colors 1 7 3
-            ascii_file="dracos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "dragonfly_old"*)
             set_colors 1 7 3
-            ascii_file="dragonflybsd_old"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "dragonfly_small"*)
             set_colors 1 7 3
-            ascii_file="dragonflybsd_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "DragonFly"*)
             set_colors 1 7 3
-            ascii_file="dragonflybsd"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Elementary"*)
             set_colors 4 7 1
-            ascii_file="elementary"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Endless"*)
             set_colors 1 7
-            ascii_file="endless"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Exherbo"*)
             set_colors 4 7 1
-            ascii_file="exherbo"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Fedora"* | "RFRemix"*)
             set_colors 4 7 1
-            ascii_file="fedora"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "freebsd_small")
             set_colors 1 7 3
-            ascii_file="freebsd_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "FreeBSD"*)
             set_colors 1 7 3
-            ascii_file="freebsd"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "FreeMiNT"*)
             # Don't explicitly set colors since
             # TosWin2 doesn't reset well.
-            ascii_file="gem"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Frugalware"*)
             set_colors 4 7 1
-            ascii_file="frugalware"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Funtoo"*)
             set_colors 5 7
-            ascii_file="funtoo"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "GalliumOS"*)
             set_colors 4 7 1
-            ascii_file="galliumos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "gentoo_small")
             set_colors 5 7
-            ascii_file="gentoo_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Gentoo"*)
             set_colors 5 7
-            ascii_file="gentoo"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "gNewSense"*)
             set_colors 4 5 7 6
-            ascii_file="gnewsense"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "GNU")
             set_colors fg 7
-            ascii_file="gnu"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "GoboLinux"*)
             set_colors 5 4 6 2
-            ascii_file="gobolinux"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Grombyang"*)
             set_colors 4 2 1
-            ascii_file="grombyang"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "GuixSD"*)
             set_colors 3 7 6 1 8
-            ascii_file="guixsd"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Haiku"*)
             set_colors 2 8
-            ascii_file="haiku"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Hyperbola"*)
             set_colors 8
-            ascii_file="hyperbola"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Kali"*)
             set_colors 4 8
-            ascii_file="kali"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "KaOS"*)
             set_colors 4 7 1
-            ascii_file="kaos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "KDE"*)
             set_colors 2 7
-            ascii_file="kde"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Kogaion"*)
             set_colors 4 7 1
-            ascii_file="kogaion"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Korora"*)
             set_colors 4 7 1
-            ascii_file="korora"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "KSLinux"*)
             set_colors 4 7 1
-            ascii_file="kslinux"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Kubuntu"*)
             set_colors 4 7 1
-            ascii_file="kubuntu"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "LEDE"*)
             set_colors 4 7 1
-            ascii_file="lede"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Linux")
             set_colors fg 8 3
-            ascii_file="linux"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "LMDE"*)
             set_colors 2 7
-            ascii_file="lmde"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Lubuntu"*)
             set_colors 4 7 1
-            ascii_file="lubuntu"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Lunar"*)
             set_colors 4 7 3
-            ascii_file="lunar"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "mac"*"_small")
             set_colors 2 3 1 5 4
-            ascii_file="mac_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "mac" | "Darwin")
             set_colors 2 3 1 1 5 4
-            ascii_file="mac"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Mageia"*)
             set_colors 6 7
-            ascii_file="mageia"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "MagpieOS"*)
             set_colors 2 1 3 5
-            ascii_file="magpieos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Manjaro"*)
             set_colors 2 7
-            ascii_file="manjaro"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Maui"*)
             set_colors 6 7
-            ascii_file="maui"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Mer"*)
             set_colors 4 7 1
-            ascii_file="mer"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Minix"*)
             set_colors 1 7 3
-            ascii_file="minix"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Linux Mint"* | "LinuxMint"*)
             set_colors 2 7
-            ascii_file="mint"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "MX"*)
             set_colors 4 6 7
-            ascii_file="mx"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "NetBSD"*)
             set_colors 5 7
-            ascii_file="netbsd"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Netrunner"*)
             set_colors 4 7 1
-            ascii_file="netrunner"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Nitrux"*)
             set_colors 4
-            ascii_file="nitrux"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "nixos_small")
             set_colors 4 6
-            ascii_file="nixos_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "NixOS"*)
             set_colors 4 6
-            ascii_file="nixos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Nurunner"*)
             set_colors 4
-            ascii_file="nurunner"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "NuTyX"*)
             set_colors 4 1
-            ascii_file="nutyx"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "OBRevenge"*)
             set_colors 1 7 3
-            ascii_file="obrevenge"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "openbsd_small")
             set_colors 3 7 6 1 8
-            ascii_file="openbsd_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "OpenBSD"*)
             set_colors 3 7 6 1 8
-            ascii_file="openbsd"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "OpenIndiana"*)
             set_colors 4 7 1
-            ascii_file="openindiana"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "OpenMandriva"*)
             set_colors 4 3
-            ascii_file="openmandriva"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "OpenWrt"*)
             set_colors 4 7 1
-            ascii_file="openwrt"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Open Source Media Center"* | "osmc")
             set_colors 4 7 1
-            ascii_file="osmc"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Oracle"*)
             set_colors 1 7 3
-            ascii_file="oracle"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "PacBSD"*)
             set_colors 1 7 3
-            ascii_file="pacbsd"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Parabola"*)
             set_colors 5 7
-            ascii_file="parabola"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Pardus"*)
             set_colors 3 7 6 1 8
-            ascii_file="pardus"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Parrot"*)
             set_colors 6 7
-            ascii_file="parrot"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Parsix"*)
             set_colors 3 1 7 8
-            ascii_file="parsix"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "PCBSD"* | "TrueOS"*)
             set_colors 1 7 3
-            ascii_file="trueos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "PCLinuxOS"*)
             set_colors 4 7 1
-            ascii_file="pclinuxos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Peppermint"*)
             set_colors 1 7 3
-            ascii_file="peppermint"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Pop!_OS"*)
             set_colors 6 7
-            ascii_file="pop_os"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Porteus"*)
             set_colors 6 7
-            ascii_file="porteus"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "PostMarketOS"*)
             set_colors 2 7
-            ascii_file="postmarketos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*)
             set_colors 4 7
-            ascii_file="puppy"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Qubes"*)
             set_colors 4 5 7 6
-            ascii_file="qubes"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Raspbian"*)
             set_colors 2 1
-            ascii_file="raspbian"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Red Star"* | "Redstar"*)
             set_colors 1 7 3
-            ascii_file="redstar"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Redhat"* | "Red Hat"* | "rhel"*)
             set_colors 1 7 3
-            ascii_file="redhat"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Refracted Devuan"*)
             set_colors 8 7
-            ascii_file="refracta"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Rosa"*)
             set_colors 4 7 1
-            ascii_file="rosa"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "sabotage"*)
             set_colors 4 7 1
-            ascii_file="sabotage"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Sabayon"*)
             set_colors 4 7 1
-            ascii_file="sabayon"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "SailfishOS"*)
             set_colors 4 5 7 6
-            ascii_file="sailfishos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "SalentOS"*)
             set_colors 2 1 3 7
-            ascii_file="salentos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Scientific"*)
             set_colors 4 7 1
-            ascii_file="scientific"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Siduction"*)
             set_colors 4 4
-            ascii_file="siduction"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Slackware"*)
             set_colors 4 7 1
-            ascii_file="slackware"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "SliTaz"*)
             set_colors 3 3
-            ascii_file="slitaz"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "SmartOS"*)
             set_colors 6 7
-            ascii_file="smartos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Solus"*)
             set_colors 4 7 1
-            ascii_file="solus"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Source Mage"*)
             set_colors 4 7 1
-            ascii_file="source_mage"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Sparky"*)
             set_colors 1 7
-            ascii_file="sparky"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "SteamOS"*)
             set_colors 5 7
-            ascii_file="steamos"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "SunOS" | "Solaris")
             set_colors 3 7
-            ascii_file="solaris"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "openSUSE Tumbleweed"*)
             set_colors 2 7
-            ascii_file="tumbleweed"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "openSUSE"* | "open SUSE"* | "SUSE"*)
             set_colors 2 7
-            ascii_file="suse"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "SwagArch"*)
             set_colors 4 7 1
-            ascii_file="swagarch"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Tails"*)
             set_colors 5 7
-            ascii_file="tails"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Trisquel"*)
             set_colors 4 6
-            ascii_file="trisquel"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Ubuntu-Budgie"*)
             set_colors 4 7 1
-            ascii_file="ubuntu-budgie"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Ubuntu-GNOME"*)
             set_colors 4 5 7 6
-            ascii_file="ubuntu-gnome"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Ubuntu-MATE"*)
             set_colors 2 7
-            ascii_file="ubuntu-mate"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "ubuntu_old")
             set_colors 1 7 3
-            ascii_file="ubuntu_old"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Ubuntu-Studio")
             set_colors 6 7
-            ascii_file="ubuntu-studio"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Ubuntu"*)
             set_colors 1 7 3
-            ascii_file="ubuntu"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "void_small")
             set_colors 2 8
-            ascii_file="void_small"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Void"*)
             set_colors 2 8
-            ascii_file="void"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         *"[Windows 10]"* | *"on Windows 10"* | "Windows 8"* |\
         "Windows 10"* | "windows10" | "windows8" )
             set_colors 6 7
-            ascii_file="windows10"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Windows"*)
             set_colors 1 2 4 3
-            ascii_file="windows"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Xubuntu"*)
             set_colors 4 7 1
-            ascii_file="xubuntu"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         "Zorin"*)
             set_colors 4 6
-            ascii_file="zorin"
+            read -rd '' ascii_data <<'EOF'
+
+EOF
         ;;
 
         *)
