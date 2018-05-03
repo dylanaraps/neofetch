@@ -50,6 +50,7 @@ shopt -s nocasematch
 reset="\e[0m"
 
 # Neofetch default config.
+
 read -rd '' config <<'EOF'
 # See this wiki page for more info:
 # https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
@@ -4159,914 +4160,6 @@ uppercase() {
 
 # COLORS
 
-set_colors() {
-    c1="$(color "$1")${ascii_bold}"
-    c2="$(color "$2")${ascii_bold}"
-    c3="$(color "$3")${ascii_bold}"
-    c4="$(color "$4")${ascii_bold}"
-    c5="$(color "$5")${ascii_bold}"
-    c6="$(color "$6")${ascii_bold}"
-
-    [[ "$color_text" != "off" ]] && set_text_colors "$@"
-}
-
-set_text_colors() {
-    if [[ "${colors[0]}" == "distro" ]]; then
-        title_color="$(color "$1")"
-        at_color="$reset"
-        underline_color="$reset"
-        subtitle_color="$(color "$2")"
-        colon_color="$reset"
-        info_color="$reset"
-
-        # If the ascii art uses 8 as a color, make the text the fg.
-        ((${1:-1} == 8)) && title_color="$reset"
-        ((${2:-7} == 8)) && subtitle_color="$reset"
-
-        # If the second color is white use the first for the subtitle.
-        ((${2:-7} == 7)) && subtitle_color="$(color "$1")"
-        ((${1:-1} == 7)) && title_color="$reset"
-    else
-        title_color="$(color "${colors[0]}")"
-        at_color="$(color "${colors[1]}")"
-        underline_color="$(color "${colors[2]}")"
-        subtitle_color="$(color "${colors[3]}")"
-        colon_color="$(color "${colors[4]}")"
-        info_color="$(color "${colors[5]}")"
-    fi
-
-    # Bar colors.
-    if [[ "$bar_color_elapsed" == "distro" ]]; then
-        bar_color_elapsed="$(color fg)"
-    else
-        bar_color_elapsed="$(color "$bar_color_elapsed")"
-    fi
-
-    case "$bar_color_total $1" in
-        "distro "[736]) bar_color_total="$(color "$1")" ;;
-        "distro "[0-9]) bar_color_total="$(color "$2")" ;;
-        *) bar_color_total="$(color "$bar_color_total")" ;;
-    esac
-}
-
-color() {
-    case "$1" in
-        [0-6]) printf "%b" "${reset}\e[3${1}m" ;;
-        7 | "fg") printf "%b" "\e[37m${reset}" ;;
-        *) printf "%b" "\e[38;5;${1}m" ;;
-    esac
-}
-
-# OTHER
-
-stdout() {
-    image_backend="off"
-    unset subtitle_color
-    unset colon_color
-    unset info_color
-    unset underline_color
-    unset bold
-    unset title_color
-    unset at_color
-    unset text_padding
-    unset zws
-    unset reset
-    unset color_blocks
-    unset get_line_break
-}
-
-err() {
-    err+="$(color 1)[!]\e[0m $1\n"
-}
-
-get_full_path() {
-    # This function finds the absolute path from a relative one.
-    # For example "Pictures/Wallpapers" --> "/home/dylan/Pictures/Wallpapers"
-
-    # If the file exists in the current directory, stop here.
-    [[ -f "${PWD}/${1/*\/}" ]] && { printf "%s\n" "${PWD}/${1/*\/}"; return; }
-
-    if ! cd "${1%/*}"; then
-        err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
-        err "       Check that the directory exists or try another directory."
-        exit 1
-    fi
-
-    local full_dir="${1##*/}"
-
-    # Iterate down a (possible) chain of symlinks.
-    while [[ -L "$full_dir" ]]; do
-        full_dir="$(readlink "$full_dir")"
-        cd "${full_dir%/*}" || exit
-        full_dir="${full_dir##*/}"
-    done
-
-    # Final directory.
-    full_dir="$(pwd -P)/${1/*\/}"
-
-    [[ -e "$full_dir" ]] && printf "%s\n" "$full_dir"
-}
-
-get_user_config() {
-    # Check $config_file.
-    if [[ -f "$config_file" ]]; then
-        source "$config_file"
-        err "Config: Sourced user config.    (${config_file})"
-        old_options
-        return
-    fi
-    mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
-
-    # Check ${XDG_CONFIG_HOME}/neofetch and create the
-    # dir/files if they don't exist.
-    if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
-
-    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
-        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
-
-    else
-        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
-
-        # The config file doesn't exist, create it.
-        printf "%s\n" "$config" > "$config_file"
-    fi
-
-    source "$config_file"
-    err "Config: Sourced user config.    (${config_file})"
-    old_options
-}
-
-bar() {
-    # Get the values.
-    elapsed="$(($1 * bar_length / $2))"
-
-    # Create the bar with spaces.
-    printf -v prog  "%${elapsed}s"
-    printf -v total "%$((bar_length - elapsed))s"
-
-    # Set the colors and swap the spaces for $bar_char_.
-    bar+="${bar_color_elapsed}${prog// /${bar_char_elapsed}}"
-    bar+="${bar_color_total}${total// /${bar_char_total}}"
-
-    # Borders.
-    [[ "$bar_border" == "on" ]] && \
-        bar="$(color fg)[${bar}$(color fg)]"
-
-    printf "%b" "${bar}${info_color}"
-}
-
-cache() {
-    if [[ "$2" ]]; then
-        mkdir -p "${cache_dir}/neofetch"
-        printf "%s" "${1/*-}=\"$2\"" > "${cache_dir}/neofetch/${1/*-}"
-    fi
-}
-
-get_cache_dir() {
-    case "$os" in
-        "Mac OS X") cache_dir="/Library/Caches" ;;
-        *) cache_dir="/tmp" ;;
-    esac
-}
-
-kde_config_dir() {
-    # If the user is using KDE get the KDE
-    # configuration directory.
-    if [[ "$kde_config_dir" ]]; then
-        return
-
-    elif type -p kf5-config >/dev/null 2>&1; then
-        kde_config_dir="$(kf5-config --path config)"
-
-    elif type -p kde4-config >/dev/null 2>&1; then
-        kde_config_dir="$(kde4-config --path config)"
-
-    elif type -p kde-config >/dev/null 2>&1; then
-        kde_config_dir="$(kde-config --path config)"
-
-    elif [[ -d "${HOME}/.kde4" ]]; then
-        kde_config_dir="${HOME}/.kde4/share/config"
-
-    elif [[ -d "${HOME}/.kde3" ]]; then
-        kde_config_dir="${HOME}/.kde3/share/config"
-    fi
-
-    kde_config_dir="${kde_config_dir/$'/:'*}"
-}
-
-get_term_padding() {
-    # Terminal info.
-    #
-    # Parse terminal config files to get
-    # info about padding. Due to how w3m-img
-    # works padding around the terminal throws
-    # off the cursor placement calculation in
-    # specific terminals.
-    #
-    # Note: This issue only seems to affect
-    # URxvt.
-    ((term_run != 1)) && get_term
-
-    case "$term" in
-        "URxvt"*)
-            border="$(xrdb -query | awk -F ':' '/^(URxvt|\*).internalBorder/ {printf $2; exit}')"
-        ;;
-    esac
-}
-
-dynamic_prompt() {
-    case "$image_backend" in
-        "ascii") printf "\n" ;;
-        "off") return ;;
-        *)
-            get_term_padding
-            lines="$(((border + height + yoffset) / font_height))"
-            image_prompt="on"
-        ;;
-    esac
-
-    # If the info is higher than the ascii/image place the prompt
-    # based on the info height instead of the ascii/image height.
-    if ((lines < info_height)); then
-        [[ "$image_prompt" ]] && printf "\n"
-        return
-    else
-        [[ "$image_prompt" ]] && printf "%b\n" "$line_breaks"
-        lines="$((lines - info_height + 1))"
-    fi
-
-    # Set the prompt location.
-    if ((lines > 1)); then
-        case "$kernel_name" in
-            "OpenBSD") tput cud "$lines" ;;
-            *) printf "%b" "\e[${lines}B" ;;
-        esac
-    fi
-}
-
-old_functions() {
-    # Deprecated functions.
-    # Neofetch 2.0 changed the names of a few variables.
-    # This function adds backwards compatibility for the
-    # old variable names.
-    if type printinfo >/dev/null 2>&1; then
-        print_info() { printinfo ; }
-        get_wmtheme() { get_wm_theme; wmtheme="$wm_theme"; }
-        get_termfont() { get_term_font; termfont="$term_font"; }
-        get_localip() { get_local_ip; localip="$local_ip"; }
-        get_publicip() { get_public_ip; publicip="$public_ip"; }
-        get_linebreak() { get_line_break; linebreak="$line_break"; }
-    fi
-
-    get_birthday() { get_install_date; birthday="$install_date"; }
-}
-
-old_options() {
-    [[ -n "$osx_buildversion" ]] && \
-        err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
-    [[ -n "$osx_codename" ]] && \
-        err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
-    [[ "$cpu_cores" == "on" ]] && \
-        err "Config: cpu_cores='on' is deprecated, use cpu_cores='logical|physical|off' instead."
-    [[ -n "$image" ]] && \
-        { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
-
-    # All progress_ variables were changed to bar_.
-    [[ -n "$progress_char" ]] && \
-        err "Config: \$progress_char is deprecated, use \$bar_char_{elapsed,total} instead."
-    [[ -n "$progress_border" ]] && \
-        { err "Config: \$progress_border is deprecated, use \$bar_border instead."; \
-          bar_border="$progress_border"; }
-    [[ -n "$progress_length" ]] && \
-        { err "Config: \$progress_length is deprecated, use \$bar_length instead."; \
-          bar_length="$progress_length"; }
-    [[ -n "$progress_color_elapsed" ]] && \
-        { err "Config: \$progress_color_elapsed is deprecated, use \$bar_color_elapsed instead."; \
-          bar_color_elapsed="$progress_color_elapsed"; }
-    [[ -n "$progress_color_total" ]] && \
-        { err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."; \
-          bar_color_total="$progress_color_total"; }
-
-    # All cpufreq values were changed in 3.0.
-    [[ "$speed_type" == "current" ]] && \
-        err "Config: speed_type='current' is deprecated, use speed_type='scaling_cur_freq' instead."
-    [[ "$speed_type" == "min" ]] && \
-        err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
-    [[ "$speed_type" == "max" ]] && \
-        err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
-    [[ "$speed_type" == "bios" ]] && \
-        err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
-
-    # Ascii_logo_size was removed in 3.0.
-    [[ "$ascii_logo_size" ]] && \
-        err "Config: ascii_logo_size is deprecated, use ascii_distro='{distro}_small' instead."
-
-    # $start and $end were replaced with ${block_range[@]} in 3.0.
-    [[ "$start" && "$end" ]] && \
-        { err "Config: \$start and \$end are deprecated, use block_range=(0 7) instead."; \
-          block_range=("$start" "$end"); }
-
-    # Fahrenheit support was added to CPU so the options were changed.
-    [[ "$cpu_temp" == "on" ]] && \
-        { err "Config: cpu_temp='on' is deprecated, use cpu_temp='C' or 'F' instead.";
-          cpu_temp="C"; }
-
-    # Birthday was renamed to Install Date in 3.0
-    [[ -n "$birthday_time" ]] && \
-        { err "Config: \$birthday_time is deprecated, use \3install_time instead."; \
-          install_time="$birthday_time"; }
-
-    # Scrot dir was removed in 3.1.0.
-    [[ -n "$scrot_dir" ]] && scrot_dir=
-
-    # cpu_shorthand was deprecated in 3.3.0
-    [[ -n "$cpu_shorthand" ]] && \
-        { err "Config: \$cpu_shorthand is deprecated, use \$cpu_brand, \$cpu_cores, and
-            \$cpu_speed instead."; }
-}
-
-cache_uname() {
-    # Cache the output of uname so we don't
-    # have to spawn it multiple times.
-    IFS=" " read -ra uname <<< "$(uname -sr)"
-
-    kernel_name="${uname[0]}"
-    kernel_version="${uname[1]}"
-}
-
-convert_time() {
-    # Convert ls timestamp to 'Tue 06 Dec 2016 4:58 PM' format.
-    year="$1"
-    day="${3#0}"
-
-    # Split time into hours/minutes.
-    hour="${4/:*}"
-    min="${4/${hour}}"
-
-    # Get month. (Month code is used for day of week)
-    # Due to different versions of 'ls', the month can be 1, 01 or Jan.
-    case "$2" in
-        1  | 01 | "Jan") month="Jan"; month_code=0 ;;
-        2  | 02 | "Feb") month="Feb"; month_code=3 ;;
-        3  | 03 | "Mar") month="Mar"; month_code=3 ;;
-        4  | 04 | "Apr") month="Apr"; month_code=6 ;;
-        5  | 05 | "May") month="May"; month_code=1 ;;
-        6  | 06 | "Jun") month="Jun"; month_code=4 ;;
-        7  | 07 | "Jul") month="Jul"; month_code=6 ;;
-        8  | 08 | "Aug") month="Aug"; month_code=2 ;;
-        9  | 09 | "Sep") month="Sep"; month_code=5 ;;
-        10      | "Oct") month="Oct"; month_code=0 ;;
-        11      | "Nov") month="Nov"; month_code=3 ;;
-        12      | "Dec") month="Dec"; month_code=5 ;;
-    esac
-
-    # Get leap year.
-    # Source: http://stackoverflow.com/questions/725098/leap-year-calculation
-    [[ "$((year % 4))" == 0 && "$((year % 100))" != 0 || "$((year % 400))" == 0 ]] && \
-    [[ "$month" =~ (Jan|Feb) ]] && \
-        leap_code=1
-
-    # Calculate day of week.
-    # Source: http://blog.artofmemory.com/how-to-calculate-the-day-of-the-week-4203.html
-    year_code="$((${year/??} + (${year/??} / 4) % 7))"
-    week_day="$(((year_code + month_code + 6 + day - leap_code) % 7))"
-
-    case "$week_day" in
-        0) week_day="Sun" ;;
-        1) week_day="Mon" ;;
-        2) week_day="Tue" ;;
-        3) week_day="Wed" ;;
-        4) week_day="Thu" ;;
-        5) week_day="Fri" ;;
-        6) week_day="Sat" ;;
-    esac
-
-    # Convert 24 hour time to 12 hour time + AM/PM.
-    case "$install_time_format" in
-        "12h")
-            case "$hour" in
-                [0-9] | 0[0-9] | 1[0-1]) time="${hour/00/12}${min} AM" ;;
-                *) time="$((hour - 12))${min} PM" ;;
-            esac
-        ;;
-        *) time="$4" ;;
-    esac
-
-    # Toggle showing the time.
-    [[ "$install_time" == "off" ]] && unset time
-
-    # Print the install date.
-    printf "%s" "$week_day $day $month $year $time"
-}
-
-get_ppid() {
-    # Get parent process ID of PID.
-    case "$os" in
-        "Windows")
-            ppid="$(ps -p "${1:-$PPID}" | awk '{printf $2}')"
-            ppid="${ppid/'PPID'}"
-        ;;
-
-        "Linux")
-            ppid="$(grep -i -F "PPid:" "/proc/${1:-$PPID}/status")"
-            ppid="$(trim "${ppid/PPid:}")"
-        ;;
-
-        *)
-            ppid="$(ps -p "${1:-$PPID}" -o ppid=)"
-        ;;
-    esac
-
-    printf "%s" "$ppid"
-}
-
-get_process_name() {
-    # Get PID name.
-    case "$os" in
-        "Windows")
-            name="$(ps -p "${1:-$PPID}" | awk '{printf $8}')"
-            name="${name/'COMMAND'}"
-            name="${name/*\/}"
-        ;;
-
-        "Linux")
-            name="$(< "/proc/${1:-$PPID}/comm")"
-        ;;
-
-        *)
-            name="$(ps -p "${1:-$PPID}" -o comm=)"
-        ;;
-    esac
-
-    printf "%s" "$name"
-}
-
-decode_url() {
-    decode="${1//+/ }"
-    printf "%b" "${decode//%/\\x}"
-}
-
-# FINISH UP
-
-usage() { printf "%s" "\
-Usage: neofetch --option \"value\" --option \"value\"
-
-Neofetch is a CLI system information tool written in BASH. Neofetch
-displays information about your system next to an image, your OS logo,
-or any ASCII file of your choice.
-
-NOTE: Every launch flag has a config option.
-
-Options:
-
-INFO:
-    --disable infoname          Allows you to disable an info line from appearing
-                                in the output.
-
-                                NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
-
-    --os_arch on/off            Hide/Show OS architecture.
-    --speed_type type           Change the type of cpu speed to display.
-                                Possible values: current, min, max, bios,
-                                scaling_current, scaling_min, scaling_max
-
-                                NOTE: This only supports Linux with cpufreq.
-
-    --speed_shorthand on/off    Whether or not to show decimals in CPU speed.
-
-                                NOTE: This flag is not supported in systems with CPU speed less than
-                                1 GHz.
-
-    --cpu_brand on/off          Enable/Disable CPU brand in output.
-    --cpu_cores type            Whether or not to display the number of CPU cores
-                                Possible values: logical, physical, off
-
-                                NOTE: 'physical' doesn't work on BSD.
-
-    --cpu_speed on/off          Hide/Show cpu speed.
-    --cpu_temp C/F/off          Hide/Show cpu temperature.
-
-                                NOTE: This only works on Linux and BSD.
-
-                                NOTE: For FreeBSD and NetBSD-based systems, you need to enable
-                                coretemp kernel module. This only supports newer Intel processors.
-
-    --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
-
-                                NOTE: This option won't work in Windows (Cygwin)
-
-    --kernel_shorthand on/off   Shorten the output of kernel
-
-                                NOTE: This option won't work in BSDs (except PacBSD and PC-BSD)
-
-    --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
-    --refresh_rate on/off       Whether to display the refresh rate of each monitor
-                                Unsupported on Windows
-    --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
-    --gpu_type type             Which GPU to display. (all, dedicated, integrated)
-
-                                NOTE: This only supports Linux.
-
-    --gtk_shorthand on/off      Shorten output of gtk theme/icons
-    --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
-    --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
-    --shell_path on/off         Enable/Disable showing \$SHELL path
-    --shell_version on/off      Enable/Disable showing \$SHELL version
-    --disk_show value           Which disks to display.
-                                Possible values: '/', '/dev/sdXX', '/path/to/mount point'
-
-                                NOTE: Multiple values can be given. (--disk_show '/' '/dev/sdc1')
-
-    --disk_subtitle type        What information to append to the Disk subtitle.
-                                Takes: name, mount, dir
-
-                                'name' shows the disk's name (sda1, sda2, etc)
-
-                                'mount' shows the disk's mount point (/, /mnt/Local Disk, etc)
-
-                                'dir' shows the basename of the disks's path. (/, Local Disk, etc)
-
-    --ip_host url               URL to query for public IP
-    --song_shorthand on/off     Print the Artist/Title on separate lines
-    --music_player player-name  Manually specify a player to use.
-                                Available values are listed in the config file
-    --install_time on/off       Enable/Disable showing the time in Install Date output.
-    --install_time_format 12h/24h
-                                Set time format in Install Date to be 12 hour or 24 hour.
-
-TEXT FORMATTING:
-    --colors x x x x x x        Changes the text colors in this order:
-                                title, @, underline, subtitle, colon, info
-    --underline on/off          Enable/Disable the underline.
-    --underline_char char       Character to use when underlining title
-    --bold on/off               Enable/Disable bold text
-
-COLOR BLOCKS:
-    --color_blocks on/off       Enable/Disable the color blocks
-    --block_width num           Width of color blocks in spaces
-    --block_height num          Height of color blocks in lines
-    --block_range num num       Range of colors to print as blocks
-
-BARS:
-    --bar_char 'elapsed char' 'total char'
-                                Characters to use when drawing bars.
-    --bar_border on/off         Whether or not to surround the bar with '[]'
-    --bar_length num            Length in spaces to make the bars.
-    --bar_colors num num        Colors to make the bar.
-                                Set in this order: elapsed, total
-    --cpu_display mode          Bar mode.
-                                Possible values: bar, infobar, barinfo, off
-    --memory_display mode       Bar mode.
-                                Possible values: bar, infobar, barinfo, off
-    --battery_display mode      Bar mode.
-                                Possible values: bar, infobar, barinfo, off
-    --disk_display mode         Bar mode.
-                                Possible values: bar, infobar, barinfo, off
-
-IMAGE BACKEND:
-    --backend backend           Which image backend to use.
-                                Possible values: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2', 'off',
-                                'sixel', 'tycat', 'w3m'
-    --source source             Which image or ascii file to use.
-                                Possible values: 'auto', 'ascii', 'wallpaper', '/path/to/img',
-                                '/path/to/ascii', '/path/to/dir/'
-    --ascii source              Shortcut to use 'ascii' backend.
-    --caca source               Shortcut to use 'caca' backend.
-    --catimg source             Shortcut to use 'catimg' backend.
-    --iterm2 source             Shortcut to use 'iterm2' backend.
-    --jp2a source               Shortcut to use 'jp2a' backend.
-    --kitty source              Shortcut to use 'kitty' backend.
-    --pixterm source            Shortcut to use 'pixterm' backend.
-    --sixel source              Shortcut to use 'sixel' backend.
-    --termpix source            Shortcut to use 'termpix' backend.
-    --tycat source              Shortcut to use 'tycat' backend.
-    --w3m source                Shortcut to use 'w3m' backend.
-    --off                       Shortcut to use 'off' backend.
-
-    NOTE: 'source; can be any of the following: 'auto', 'ascii', 'wallpaper', '/path/to/img',
-    '/path/to/ascii', '/path/to/dir/'
-
-ASCII:
-    --ascii_colors x x x x x x  Colors to print the ascii art
-    --ascii_distro distro       Which Distro's ascii art to print
-
-                                NOTE: Arch and Ubuntu have 'old' logo variants.
-
-                                NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
-
-                                NOTE: Ubuntu has flavor variants.
-
-                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME',
-                                'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
-
-                                NOTE: Alpine, Arch, CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS,
-                                OpenBSD, and Void have a smaller logo variant.
-
-                                NOTE: Use '{distro name}_small' to use the small variants.
-
-    --ascii_bold on/off         Whether or not to bold the ascii logo.
-    -L, --logo                  Hide the info text and only show the ascii logo.
-
-                                Possible values: bar, infobar, barinfo, off
-
-IMAGE:
-    --loop                      Redraw the image constantly until Ctrl+C is used. This fixes issues
-                                in some terminals emulators when using image mode.
-    --size 00px | --size 00%    How to size the image.
-                                Possible values: auto, 00px, 00%, none
-    --crop_mode mode            Which crop mode to use
-                                Takes the values: normal, fit, fill
-    --crop_offset value         Change the crop offset for normal mode.
-                                Possible values: northwest, north, northeast,
-                                west, center, east, southwest, south, southeast
-
-    --xoffset px                How close the image will be to the left edge of the
-                                window. This only works with w3m.
-    --yoffset px                How close the image will be to the top edge of the
-                                window. This only works with w3m.
-    --bg_color color            Background color to display behind transparent image.
-                                This only works with w3m.
-    --gap num                   Gap between image and text.
-
-                                NOTE: --gap can take a negative value which will move the text
-                                closer to the left side.
-
-    --clean                     Delete cached files and thumbnails.
-
-SCREENSHOT:
-    -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
-                                shot function will use \$scrot_dir and \$scrot_name.
-    -su, --upload /path/to/img  Same as --scrot but uploads the scrot to a website.
-    --image_host imgur/teknik   Website to upload scrots to.
-    --scrot_cmd cmd             Screenshot program to launch
-
-OTHER:
-    --config /path/to/config    Specify a path to a custom config file
-    --config none               Launch the script without a config file
-    --stdout                    Turn off all colors and disables any ASCII/image backend.
-    --help                      Print this text and exit
-    --version                   Show neofetch version
-    -v                          Display error messages.
-    -vv                         Display a verbose log for error reporting.
-
-DEVELOPER:
-    --gen-man                   Generate a manpage for Neofetch in your PWD. (Requires GNU help2man)
-
-
-Report bugs to https://github.com/dylanaraps/neofetch/issues
-
-"
-exit 1
-}
-
-get_args() {
-    # Check the commandline flags early for '--config'.
-    [[ "$*" != *--config* ]] && get_user_config
-
-    while [[ "$1" ]]; do
-        case "$1" in
-            # Info
-            "--os_arch") os_arch="$2" ;;
-            "--cpu_cores") cpu_cores="$2" ;;
-            "--cpu_speed") cpu_speed="$2" ;;
-            "--speed_type") speed_type="$2" ;;
-            "--speed_shorthand") speed_shorthand="$2" ;;
-            "--distro_shorthand") distro_shorthand="$2" ;;
-            "--kernel_shorthand") kernel_shorthand="$2" ;;
-            "--uptime_shorthand") uptime_shorthand="$2" ;;
-            "--cpu_brand") cpu_brand="$2" ;;
-            "--gpu_brand") gpu_brand="$2" ;;
-            "--gpu_type") gpu_type="$2" ;;
-            "--refresh_rate") refresh_rate="$2" ;;
-            "--gtk_shorthand") gtk_shorthand="$2" ;;
-            "--gtk2") gtk2="$2" ;;
-            "--gtk3") gtk3="$2" ;;
-            "--shell_path") shell_path="$2" ;;
-            "--shell_version") shell_version="$2" ;;
-            "--ip_host") public_ip_host="$2" ;;
-            "--song_shorthand") song_shorthand="$2" ;;
-            "--music_player") music_player="$2" ;;
-            "--install_time") install_time="$2" ;;
-            "--install_time_format") install_time_format="$2" ;;
-            "--cpu_temp")
-                cpu_temp="$2"
-                [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
-            ;;
-
-            "--disk_subtitle") disk_subtitle="$2" ;;
-            "--disk_show")
-                unset disk_show
-                for arg in "$@"; do
-                    case "$arg" in
-                        "--disk_show") ;;
-                        "-"*) break ;;
-                        *) disk_show+=("$arg") ;;
-                    esac
-                done
-            ;;
-
-            "--disable")
-                for func in "$@"; do
-                    case "$func" in
-                        "--disable") continue ;;
-                        "-"*) break ;;
-                        *)
-                            ((bash_version >= 4)) && func="${func,,}"
-                            unset -f "get_$func"
-                        ;;
-                    esac
-                done
-            ;;
-
-            # Text Colors
-            "--colors")
-                unset colors
-                for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
-                    case "$arg" in
-                        "-"*) break ;;
-                        *) colors+=("$arg") ;;
-                    esac
-                done
-                colors+=(7 7 7 7 7 7)
-            ;;
-
-            # Text Formatting
-            "--underline") underline_enabled="$2" ;;
-            "--underline_char") underline_char="$2" ;;
-            "--bold") bold="$2" ;;
-
-            # Color Blocks
-            "--color_blocks") color_blocks="$2" ;;
-            "--block_range") block_range=("$2" "$3") ;;
-            "--block_width") block_width="$2" ;;
-            "--block_height") block_height="$2" ;;
-
-            # Bars
-            "--bar_char")
-                bar_char_elapsed="$2"
-                bar_char_total="$3"
-            ;;
-
-            "--bar_border") bar_border="$2" ;;
-            "--bar_length") bar_length="$2" ;;
-            "--bar_colors")
-                bar_color_elapsed="$2"
-                bar_color_total="$3"
-            ;;
-
-            "--cpu_display") cpu_display="$2" ;;
-            "--memory_display") memory_display="$2" ;;
-            "--battery_display") battery_display="$2" ;;
-            "--disk_display") disk_display="$2" ;;
-
-            # Image backend
-            "--backend") image_backend="$2" ;;
-            "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--pixterm" |\
-            "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
-                image_backend="${1/--}"
-                case "$2" in
-                    "-"* | "") ;;
-                    *) image_source="$2" ;;
-                esac
-            ;;
-
-            # Image options
-            "--loop") image_loop="on" ;;
-            "--image_size" | "--size") image_size="$2" ;;
-            "--crop_mode") crop_mode="$2" ;;
-            "--crop_offset") crop_offset="$2" ;;
-            "--xoffset") xoffset="$2" ;;
-            "--yoffset") yoffset="$2" ;;
-            "--background_color" | "--bg_color") background_color="$2" ;;
-            "--gap") gap="$2" ;;
-            "--clean")
-                [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
-                rm -rf "/Library/Caches/neofetch/"
-                rm -rf "/tmp/neofetch/"
-                exit
-            ;;
-
-            "--ascii_colors")
-                unset ascii_colors
-                for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
-                    case "$arg" in
-                        "-"*) break ;;
-                        *) ascii_colors+=("$arg")
-                    esac
-                done
-                ascii_colors+=(7 7 7 7 7 7)
-            ;;
-
-            "--ascii_distro")
-                image_backend="ascii"
-                ascii_distro="$2"
-                case "$2" in "-"* | "") ascii_distro="$distro" ;; esac
-            ;;
-
-            "--ascii_bold") ascii_bold="$2" ;;
-            "--logo" | "-L")
-                image_backend="ascii"
-                print_info() { info line_break; }
-            ;;
-
-            # Screenshot
-            "--scrot" | "-s")
-                scrot_args "$@"
-            ;;
-            "--upload" | "-su")
-                scrot_upload="on"
-                scrot_args "$@"
-            ;;
-
-            "--image_host") image_host="$2" ;;
-            "--scrot_cmd") scrot_cmd="$2" ;;
-
-            # Other
-            "--config")
-                case "$2" in
-                    "none" | "off" | "") ;;
-                    *)
-                        config_file="$(get_full_path "$2")"
-                        get_user_config
-                    ;;
-                esac
-            ;;
-            "--stdout") stdout="on" ;;
-            "-v") verbose="on" ;;
-            "-vv") set -x; verbose="on" ;;
-            "--help") usage ;;
-            "--version")
-                printf "%s\\n" "Neofetch $version"
-                exit 1
-            ;;
-            "--gen-man")
-                help2man -n "A fast, highly customizable system info script" \
-                          -N ./neofetch -o neofetch.1
-                exit 1
-            ;;
-
-            "--travis")
-                print_info() {
-                    info title
-                    info underline
-
-                    info "OS" distro
-                    info "Host" model
-                    info "Kernel" kernel
-                    info "Uptime" uptime
-                    info "Packages" packages
-                    info "Shell" shell
-                    info "Resolution" resolution
-                    info "DE" de
-                    info "WM" wm
-                    info "WM Theme" wm_theme
-                    info "Theme" theme
-                    info "Icons" icons
-                    info "Terminal" term
-                    info "Terminal Font" term_font
-                    info "CPU" cpu
-                    info "GPU" gpu
-                    info "GPU Driver" gpu_driver
-                    info "Memory" memory
-
-                    info "CPU Usage" cpu_usage
-                    info "Disk" disk
-                    info "Battery" battery
-                    info "Font" font
-                    info "Song" song
-                    info "Local IP" local_ip
-                    info "Public IP" public_ip
-                    info "Users" users
-                    info "Install Date" install_date
-
-                    info line_break
-                    info cols
-                    info line_break
-
-                    # Testing.
-                    prin "prin"
-                    prin "prin" "prin"
-
-                    # Testing no subtitles.
-                    info uptime
-                    info disk
-                }
-
-                refresh_rate="on"
-                shell_version="on"
-                cpu_display="infobar"
-                memory_display="infobar"
-                disk_display="infobar"
-                cpu_temp="C"
-            ;;
-        esac
-
-        shift
-    done
-}
-
 get_distro_colors() {
     # This function sets the text colors according
     # to your OS/Distro's logo colors.
@@ -8661,6 +7754,914 @@ EOF
         color_text="off"
         set_colors "${ascii_colors[@]}"
     fi
+}
+
+set_colors() {
+    c1="$(color "$1")${ascii_bold}"
+    c2="$(color "$2")${ascii_bold}"
+    c3="$(color "$3")${ascii_bold}"
+    c4="$(color "$4")${ascii_bold}"
+    c5="$(color "$5")${ascii_bold}"
+    c6="$(color "$6")${ascii_bold}"
+
+    [[ "$color_text" != "off" ]] && set_text_colors "$@"
+}
+
+set_text_colors() {
+    if [[ "${colors[0]}" == "distro" ]]; then
+        title_color="$(color "$1")"
+        at_color="$reset"
+        underline_color="$reset"
+        subtitle_color="$(color "$2")"
+        colon_color="$reset"
+        info_color="$reset"
+
+        # If the ascii art uses 8 as a color, make the text the fg.
+        ((${1:-1} == 8)) && title_color="$reset"
+        ((${2:-7} == 8)) && subtitle_color="$reset"
+
+        # If the second color is white use the first for the subtitle.
+        ((${2:-7} == 7)) && subtitle_color="$(color "$1")"
+        ((${1:-1} == 7)) && title_color="$reset"
+    else
+        title_color="$(color "${colors[0]}")"
+        at_color="$(color "${colors[1]}")"
+        underline_color="$(color "${colors[2]}")"
+        subtitle_color="$(color "${colors[3]}")"
+        colon_color="$(color "${colors[4]}")"
+        info_color="$(color "${colors[5]}")"
+    fi
+
+    # Bar colors.
+    if [[ "$bar_color_elapsed" == "distro" ]]; then
+        bar_color_elapsed="$(color fg)"
+    else
+        bar_color_elapsed="$(color "$bar_color_elapsed")"
+    fi
+
+    case "$bar_color_total $1" in
+        "distro "[736]) bar_color_total="$(color "$1")" ;;
+        "distro "[0-9]) bar_color_total="$(color "$2")" ;;
+        *) bar_color_total="$(color "$bar_color_total")" ;;
+    esac
+}
+
+color() {
+    case "$1" in
+        [0-6]) printf "%b" "${reset}\e[3${1}m" ;;
+        7 | "fg") printf "%b" "\e[37m${reset}" ;;
+        *) printf "%b" "\e[38;5;${1}m" ;;
+    esac
+}
+
+# OTHER
+
+stdout() {
+    image_backend="off"
+    unset subtitle_color
+    unset colon_color
+    unset info_color
+    unset underline_color
+    unset bold
+    unset title_color
+    unset at_color
+    unset text_padding
+    unset zws
+    unset reset
+    unset color_blocks
+    unset get_line_break
+}
+
+err() {
+    err+="$(color 1)[!]\e[0m $1\n"
+}
+
+get_full_path() {
+    # This function finds the absolute path from a relative one.
+    # For example "Pictures/Wallpapers" --> "/home/dylan/Pictures/Wallpapers"
+
+    # If the file exists in the current directory, stop here.
+    [[ -f "${PWD}/${1/*\/}" ]] && { printf "%s\n" "${PWD}/${1/*\/}"; return; }
+
+    if ! cd "${1%/*}"; then
+        err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
+        err "       Check that the directory exists or try another directory."
+        exit 1
+    fi
+
+    local full_dir="${1##*/}"
+
+    # Iterate down a (possible) chain of symlinks.
+    while [[ -L "$full_dir" ]]; do
+        full_dir="$(readlink "$full_dir")"
+        cd "${full_dir%/*}" || exit
+        full_dir="${full_dir##*/}"
+    done
+
+    # Final directory.
+    full_dir="$(pwd -P)/${1/*\/}"
+
+    [[ -e "$full_dir" ]] && printf "%s\n" "$full_dir"
+}
+
+get_user_config() {
+    # Check $config_file.
+    if [[ -f "$config_file" ]]; then
+        source "$config_file"
+        err "Config: Sourced user config.    (${config_file})"
+        old_options
+        return
+    fi
+    mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
+
+    # Check ${XDG_CONFIG_HOME}/neofetch and create the
+    # dir/files if they don't exist.
+    if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
+        config_file="${XDG_CONFIG_HOME}/neofetch/config"
+
+    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
+
+    else
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
+
+        # The config file doesn't exist, create it.
+        printf "%s\n" "$config" > "$config_file"
+    fi
+
+    source "$config_file"
+    err "Config: Sourced user config.    (${config_file})"
+    old_options
+}
+
+bar() {
+    # Get the values.
+    elapsed="$(($1 * bar_length / $2))"
+
+    # Create the bar with spaces.
+    printf -v prog  "%${elapsed}s"
+    printf -v total "%$((bar_length - elapsed))s"
+
+    # Set the colors and swap the spaces for $bar_char_.
+    bar+="${bar_color_elapsed}${prog// /${bar_char_elapsed}}"
+    bar+="${bar_color_total}${total// /${bar_char_total}}"
+
+    # Borders.
+    [[ "$bar_border" == "on" ]] && \
+        bar="$(color fg)[${bar}$(color fg)]"
+
+    printf "%b" "${bar}${info_color}"
+}
+
+cache() {
+    if [[ "$2" ]]; then
+        mkdir -p "${cache_dir}/neofetch"
+        printf "%s" "${1/*-}=\"$2\"" > "${cache_dir}/neofetch/${1/*-}"
+    fi
+}
+
+get_cache_dir() {
+    case "$os" in
+        "Mac OS X") cache_dir="/Library/Caches" ;;
+        *) cache_dir="/tmp" ;;
+    esac
+}
+
+kde_config_dir() {
+    # If the user is using KDE get the KDE
+    # configuration directory.
+    if [[ "$kde_config_dir" ]]; then
+        return
+
+    elif type -p kf5-config >/dev/null 2>&1; then
+        kde_config_dir="$(kf5-config --path config)"
+
+    elif type -p kde4-config >/dev/null 2>&1; then
+        kde_config_dir="$(kde4-config --path config)"
+
+    elif type -p kde-config >/dev/null 2>&1; then
+        kde_config_dir="$(kde-config --path config)"
+
+    elif [[ -d "${HOME}/.kde4" ]]; then
+        kde_config_dir="${HOME}/.kde4/share/config"
+
+    elif [[ -d "${HOME}/.kde3" ]]; then
+        kde_config_dir="${HOME}/.kde3/share/config"
+    fi
+
+    kde_config_dir="${kde_config_dir/$'/:'*}"
+}
+
+get_term_padding() {
+    # Terminal info.
+    #
+    # Parse terminal config files to get
+    # info about padding. Due to how w3m-img
+    # works padding around the terminal throws
+    # off the cursor placement calculation in
+    # specific terminals.
+    #
+    # Note: This issue only seems to affect
+    # URxvt.
+    ((term_run != 1)) && get_term
+
+    case "$term" in
+        "URxvt"*)
+            border="$(xrdb -query | awk -F ':' '/^(URxvt|\*).internalBorder/ {printf $2; exit}')"
+        ;;
+    esac
+}
+
+dynamic_prompt() {
+    case "$image_backend" in
+        "ascii") printf "\n" ;;
+        "off") return ;;
+        *)
+            get_term_padding
+            lines="$(((border + height + yoffset) / font_height))"
+            image_prompt="on"
+        ;;
+    esac
+
+    # If the info is higher than the ascii/image place the prompt
+    # based on the info height instead of the ascii/image height.
+    if ((lines < info_height)); then
+        [[ "$image_prompt" ]] && printf "\n"
+        return
+    else
+        [[ "$image_prompt" ]] && printf "%b\n" "$line_breaks"
+        lines="$((lines - info_height + 1))"
+    fi
+
+    # Set the prompt location.
+    if ((lines > 1)); then
+        case "$kernel_name" in
+            "OpenBSD") tput cud "$lines" ;;
+            *) printf "%b" "\e[${lines}B" ;;
+        esac
+    fi
+}
+
+old_functions() {
+    # Deprecated functions.
+    # Neofetch 2.0 changed the names of a few variables.
+    # This function adds backwards compatibility for the
+    # old variable names.
+    if type printinfo >/dev/null 2>&1; then
+        print_info() { printinfo ; }
+        get_wmtheme() { get_wm_theme; wmtheme="$wm_theme"; }
+        get_termfont() { get_term_font; termfont="$term_font"; }
+        get_localip() { get_local_ip; localip="$local_ip"; }
+        get_publicip() { get_public_ip; publicip="$public_ip"; }
+        get_linebreak() { get_line_break; linebreak="$line_break"; }
+    fi
+
+    get_birthday() { get_install_date; birthday="$install_date"; }
+}
+
+old_options() {
+    [[ -n "$osx_buildversion" ]] && \
+        err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
+    [[ -n "$osx_codename" ]] && \
+        err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
+    [[ "$cpu_cores" == "on" ]] && \
+        err "Config: cpu_cores='on' is deprecated, use cpu_cores='logical|physical|off' instead."
+    [[ -n "$image" ]] && \
+        { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
+
+    # All progress_ variables were changed to bar_.
+    [[ -n "$progress_char" ]] && \
+        err "Config: \$progress_char is deprecated, use \$bar_char_{elapsed,total} instead."
+    [[ -n "$progress_border" ]] && \
+        { err "Config: \$progress_border is deprecated, use \$bar_border instead."; \
+          bar_border="$progress_border"; }
+    [[ -n "$progress_length" ]] && \
+        { err "Config: \$progress_length is deprecated, use \$bar_length instead."; \
+          bar_length="$progress_length"; }
+    [[ -n "$progress_color_elapsed" ]] && \
+        { err "Config: \$progress_color_elapsed is deprecated, use \$bar_color_elapsed instead."; \
+          bar_color_elapsed="$progress_color_elapsed"; }
+    [[ -n "$progress_color_total" ]] && \
+        { err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."; \
+          bar_color_total="$progress_color_total"; }
+
+    # All cpufreq values were changed in 3.0.
+    [[ "$speed_type" == "current" ]] && \
+        err "Config: speed_type='current' is deprecated, use speed_type='scaling_cur_freq' instead."
+    [[ "$speed_type" == "min" ]] && \
+        err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
+    [[ "$speed_type" == "max" ]] && \
+        err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
+    [[ "$speed_type" == "bios" ]] && \
+        err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
+
+    # Ascii_logo_size was removed in 3.0.
+    [[ "$ascii_logo_size" ]] && \
+        err "Config: ascii_logo_size is deprecated, use ascii_distro='{distro}_small' instead."
+
+    # $start and $end were replaced with ${block_range[@]} in 3.0.
+    [[ "$start" && "$end" ]] && \
+        { err "Config: \$start and \$end are deprecated, use block_range=(0 7) instead."; \
+          block_range=("$start" "$end"); }
+
+    # Fahrenheit support was added to CPU so the options were changed.
+    [[ "$cpu_temp" == "on" ]] && \
+        { err "Config: cpu_temp='on' is deprecated, use cpu_temp='C' or 'F' instead.";
+          cpu_temp="C"; }
+
+    # Birthday was renamed to Install Date in 3.0
+    [[ -n "$birthday_time" ]] && \
+        { err "Config: \$birthday_time is deprecated, use \3install_time instead."; \
+          install_time="$birthday_time"; }
+
+    # Scrot dir was removed in 3.1.0.
+    [[ -n "$scrot_dir" ]] && scrot_dir=
+
+    # cpu_shorthand was deprecated in 3.3.0
+    [[ -n "$cpu_shorthand" ]] && \
+        { err "Config: \$cpu_shorthand is deprecated, use \$cpu_brand, \$cpu_cores, and
+            \$cpu_speed instead."; }
+}
+
+cache_uname() {
+    # Cache the output of uname so we don't
+    # have to spawn it multiple times.
+    IFS=" " read -ra uname <<< "$(uname -sr)"
+
+    kernel_name="${uname[0]}"
+    kernel_version="${uname[1]}"
+}
+
+convert_time() {
+    # Convert ls timestamp to 'Tue 06 Dec 2016 4:58 PM' format.
+    year="$1"
+    day="${3#0}"
+
+    # Split time into hours/minutes.
+    hour="${4/:*}"
+    min="${4/${hour}}"
+
+    # Get month. (Month code is used for day of week)
+    # Due to different versions of 'ls', the month can be 1, 01 or Jan.
+    case "$2" in
+        1  | 01 | "Jan") month="Jan"; month_code=0 ;;
+        2  | 02 | "Feb") month="Feb"; month_code=3 ;;
+        3  | 03 | "Mar") month="Mar"; month_code=3 ;;
+        4  | 04 | "Apr") month="Apr"; month_code=6 ;;
+        5  | 05 | "May") month="May"; month_code=1 ;;
+        6  | 06 | "Jun") month="Jun"; month_code=4 ;;
+        7  | 07 | "Jul") month="Jul"; month_code=6 ;;
+        8  | 08 | "Aug") month="Aug"; month_code=2 ;;
+        9  | 09 | "Sep") month="Sep"; month_code=5 ;;
+        10      | "Oct") month="Oct"; month_code=0 ;;
+        11      | "Nov") month="Nov"; month_code=3 ;;
+        12      | "Dec") month="Dec"; month_code=5 ;;
+    esac
+
+    # Get leap year.
+    # Source: http://stackoverflow.com/questions/725098/leap-year-calculation
+    [[ "$((year % 4))" == 0 && "$((year % 100))" != 0 || "$((year % 400))" == 0 ]] && \
+    [[ "$month" =~ (Jan|Feb) ]] && \
+        leap_code=1
+
+    # Calculate day of week.
+    # Source: http://blog.artofmemory.com/how-to-calculate-the-day-of-the-week-4203.html
+    year_code="$((${year/??} + (${year/??} / 4) % 7))"
+    week_day="$(((year_code + month_code + 6 + day - leap_code) % 7))"
+
+    case "$week_day" in
+        0) week_day="Sun" ;;
+        1) week_day="Mon" ;;
+        2) week_day="Tue" ;;
+        3) week_day="Wed" ;;
+        4) week_day="Thu" ;;
+        5) week_day="Fri" ;;
+        6) week_day="Sat" ;;
+    esac
+
+    # Convert 24 hour time to 12 hour time + AM/PM.
+    case "$install_time_format" in
+        "12h")
+            case "$hour" in
+                [0-9] | 0[0-9] | 1[0-1]) time="${hour/00/12}${min} AM" ;;
+                *) time="$((hour - 12))${min} PM" ;;
+            esac
+        ;;
+        *) time="$4" ;;
+    esac
+
+    # Toggle showing the time.
+    [[ "$install_time" == "off" ]] && unset time
+
+    # Print the install date.
+    printf "%s" "$week_day $day $month $year $time"
+}
+
+get_ppid() {
+    # Get parent process ID of PID.
+    case "$os" in
+        "Windows")
+            ppid="$(ps -p "${1:-$PPID}" | awk '{printf $2}')"
+            ppid="${ppid/'PPID'}"
+        ;;
+
+        "Linux")
+            ppid="$(grep -i -F "PPid:" "/proc/${1:-$PPID}/status")"
+            ppid="$(trim "${ppid/PPid:}")"
+        ;;
+
+        *)
+            ppid="$(ps -p "${1:-$PPID}" -o ppid=)"
+        ;;
+    esac
+
+    printf "%s" "$ppid"
+}
+
+get_process_name() {
+    # Get PID name.
+    case "$os" in
+        "Windows")
+            name="$(ps -p "${1:-$PPID}" | awk '{printf $8}')"
+            name="${name/'COMMAND'}"
+            name="${name/*\/}"
+        ;;
+
+        "Linux")
+            name="$(< "/proc/${1:-$PPID}/comm")"
+        ;;
+
+        *)
+            name="$(ps -p "${1:-$PPID}" -o comm=)"
+        ;;
+    esac
+
+    printf "%s" "$name"
+}
+
+decode_url() {
+    decode="${1//+/ }"
+    printf "%b" "${decode//%/\\x}"
+}
+
+# FINISH UP
+
+usage() { printf "%s" "\
+Usage: neofetch --option \"value\" --option \"value\"
+
+Neofetch is a CLI system information tool written in BASH. Neofetch
+displays information about your system next to an image, your OS logo,
+or any ASCII file of your choice.
+
+NOTE: Every launch flag has a config option.
+
+Options:
+
+INFO:
+    --disable infoname          Allows you to disable an info line from appearing
+                                in the output.
+
+                                NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
+
+    --os_arch on/off            Hide/Show OS architecture.
+    --speed_type type           Change the type of cpu speed to display.
+                                Possible values: current, min, max, bios,
+                                scaling_current, scaling_min, scaling_max
+
+                                NOTE: This only supports Linux with cpufreq.
+
+    --speed_shorthand on/off    Whether or not to show decimals in CPU speed.
+
+                                NOTE: This flag is not supported in systems with CPU speed less than
+                                1 GHz.
+
+    --cpu_brand on/off          Enable/Disable CPU brand in output.
+    --cpu_cores type            Whether or not to display the number of CPU cores
+                                Possible values: logical, physical, off
+
+                                NOTE: 'physical' doesn't work on BSD.
+
+    --cpu_speed on/off          Hide/Show cpu speed.
+    --cpu_temp C/F/off          Hide/Show cpu temperature.
+
+                                NOTE: This only works on Linux and BSD.
+
+                                NOTE: For FreeBSD and NetBSD-based systems, you need to enable
+                                coretemp kernel module. This only supports newer Intel processors.
+
+    --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
+
+                                NOTE: This option won't work in Windows (Cygwin)
+
+    --kernel_shorthand on/off   Shorten the output of kernel
+
+                                NOTE: This option won't work in BSDs (except PacBSD and PC-BSD)
+
+    --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
+    --refresh_rate on/off       Whether to display the refresh rate of each monitor
+                                Unsupported on Windows
+    --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
+    --gpu_type type             Which GPU to display. (all, dedicated, integrated)
+
+                                NOTE: This only supports Linux.
+
+    --gtk_shorthand on/off      Shorten output of gtk theme/icons
+    --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
+    --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
+    --shell_path on/off         Enable/Disable showing \$SHELL path
+    --shell_version on/off      Enable/Disable showing \$SHELL version
+    --disk_show value           Which disks to display.
+                                Possible values: '/', '/dev/sdXX', '/path/to/mount point'
+
+                                NOTE: Multiple values can be given. (--disk_show '/' '/dev/sdc1')
+
+    --disk_subtitle type        What information to append to the Disk subtitle.
+                                Takes: name, mount, dir
+
+                                'name' shows the disk's name (sda1, sda2, etc)
+
+                                'mount' shows the disk's mount point (/, /mnt/Local Disk, etc)
+
+                                'dir' shows the basename of the disks's path. (/, Local Disk, etc)
+
+    --ip_host url               URL to query for public IP
+    --song_shorthand on/off     Print the Artist/Title on separate lines
+    --music_player player-name  Manually specify a player to use.
+                                Available values are listed in the config file
+    --install_time on/off       Enable/Disable showing the time in Install Date output.
+    --install_time_format 12h/24h
+                                Set time format in Install Date to be 12 hour or 24 hour.
+
+TEXT FORMATTING:
+    --colors x x x x x x        Changes the text colors in this order:
+                                title, @, underline, subtitle, colon, info
+    --underline on/off          Enable/Disable the underline.
+    --underline_char char       Character to use when underlining title
+    --bold on/off               Enable/Disable bold text
+
+COLOR BLOCKS:
+    --color_blocks on/off       Enable/Disable the color blocks
+    --block_width num           Width of color blocks in spaces
+    --block_height num          Height of color blocks in lines
+    --block_range num num       Range of colors to print as blocks
+
+BARS:
+    --bar_char 'elapsed char' 'total char'
+                                Characters to use when drawing bars.
+    --bar_border on/off         Whether or not to surround the bar with '[]'
+    --bar_length num            Length in spaces to make the bars.
+    --bar_colors num num        Colors to make the bar.
+                                Set in this order: elapsed, total
+    --cpu_display mode          Bar mode.
+                                Possible values: bar, infobar, barinfo, off
+    --memory_display mode       Bar mode.
+                                Possible values: bar, infobar, barinfo, off
+    --battery_display mode      Bar mode.
+                                Possible values: bar, infobar, barinfo, off
+    --disk_display mode         Bar mode.
+                                Possible values: bar, infobar, barinfo, off
+
+IMAGE BACKEND:
+    --backend backend           Which image backend to use.
+                                Possible values: 'ascii', 'caca', 'catimg', 'jp2a', 'iterm2', 'off',
+                                'sixel', 'tycat', 'w3m'
+    --source source             Which image or ascii file to use.
+                                Possible values: 'auto', 'ascii', 'wallpaper', '/path/to/img',
+                                '/path/to/ascii', '/path/to/dir/'
+    --ascii source              Shortcut to use 'ascii' backend.
+    --caca source               Shortcut to use 'caca' backend.
+    --catimg source             Shortcut to use 'catimg' backend.
+    --iterm2 source             Shortcut to use 'iterm2' backend.
+    --jp2a source               Shortcut to use 'jp2a' backend.
+    --kitty source              Shortcut to use 'kitty' backend.
+    --pixterm source            Shortcut to use 'pixterm' backend.
+    --sixel source              Shortcut to use 'sixel' backend.
+    --termpix source            Shortcut to use 'termpix' backend.
+    --tycat source              Shortcut to use 'tycat' backend.
+    --w3m source                Shortcut to use 'w3m' backend.
+    --off                       Shortcut to use 'off' backend.
+
+    NOTE: 'source; can be any of the following: 'auto', 'ascii', 'wallpaper', '/path/to/img',
+    '/path/to/ascii', '/path/to/dir/'
+
+ASCII:
+    --ascii_colors x x x x x x  Colors to print the ascii art
+    --ascii_distro distro       Which Distro's ascii art to print
+
+                                NOTE: Arch and Ubuntu have 'old' logo variants.
+
+                                NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
+
+                                NOTE: Ubuntu has flavor variants.
+
+                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME',
+                                'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
+
+                                NOTE: Alpine, Arch, CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS,
+                                OpenBSD, and Void have a smaller logo variant.
+
+                                NOTE: Use '{distro name}_small' to use the small variants.
+
+    --ascii_bold on/off         Whether or not to bold the ascii logo.
+    -L, --logo                  Hide the info text and only show the ascii logo.
+
+                                Possible values: bar, infobar, barinfo, off
+
+IMAGE:
+    --loop                      Redraw the image constantly until Ctrl+C is used. This fixes issues
+                                in some terminals emulators when using image mode.
+    --size 00px | --size 00%    How to size the image.
+                                Possible values: auto, 00px, 00%, none
+    --crop_mode mode            Which crop mode to use
+                                Takes the values: normal, fit, fill
+    --crop_offset value         Change the crop offset for normal mode.
+                                Possible values: northwest, north, northeast,
+                                west, center, east, southwest, south, southeast
+
+    --xoffset px                How close the image will be to the left edge of the
+                                window. This only works with w3m.
+    --yoffset px                How close the image will be to the top edge of the
+                                window. This only works with w3m.
+    --bg_color color            Background color to display behind transparent image.
+                                This only works with w3m.
+    --gap num                   Gap between image and text.
+
+                                NOTE: --gap can take a negative value which will move the text
+                                closer to the left side.
+
+    --clean                     Delete cached files and thumbnails.
+
+SCREENSHOT:
+    -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
+                                shot function will use \$scrot_dir and \$scrot_name.
+    -su, --upload /path/to/img  Same as --scrot but uploads the scrot to a website.
+    --image_host imgur/teknik   Website to upload scrots to.
+    --scrot_cmd cmd             Screenshot program to launch
+
+OTHER:
+    --config /path/to/config    Specify a path to a custom config file
+    --config none               Launch the script without a config file
+    --stdout                    Turn off all colors and disables any ASCII/image backend.
+    --help                      Print this text and exit
+    --version                   Show neofetch version
+    -v                          Display error messages.
+    -vv                         Display a verbose log for error reporting.
+
+DEVELOPER:
+    --gen-man                   Generate a manpage for Neofetch in your PWD. (Requires GNU help2man)
+
+
+Report bugs to https://github.com/dylanaraps/neofetch/issues
+
+"
+exit 1
+}
+
+get_args() {
+    # Check the commandline flags early for '--config'.
+    [[ "$*" != *--config* ]] && get_user_config
+
+    while [[ "$1" ]]; do
+        case "$1" in
+            # Info
+            "--os_arch") os_arch="$2" ;;
+            "--cpu_cores") cpu_cores="$2" ;;
+            "--cpu_speed") cpu_speed="$2" ;;
+            "--speed_type") speed_type="$2" ;;
+            "--speed_shorthand") speed_shorthand="$2" ;;
+            "--distro_shorthand") distro_shorthand="$2" ;;
+            "--kernel_shorthand") kernel_shorthand="$2" ;;
+            "--uptime_shorthand") uptime_shorthand="$2" ;;
+            "--cpu_brand") cpu_brand="$2" ;;
+            "--gpu_brand") gpu_brand="$2" ;;
+            "--gpu_type") gpu_type="$2" ;;
+            "--refresh_rate") refresh_rate="$2" ;;
+            "--gtk_shorthand") gtk_shorthand="$2" ;;
+            "--gtk2") gtk2="$2" ;;
+            "--gtk3") gtk3="$2" ;;
+            "--shell_path") shell_path="$2" ;;
+            "--shell_version") shell_version="$2" ;;
+            "--ip_host") public_ip_host="$2" ;;
+            "--song_shorthand") song_shorthand="$2" ;;
+            "--music_player") music_player="$2" ;;
+            "--install_time") install_time="$2" ;;
+            "--install_time_format") install_time_format="$2" ;;
+            "--cpu_temp")
+                cpu_temp="$2"
+                [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
+            ;;
+
+            "--disk_subtitle") disk_subtitle="$2" ;;
+            "--disk_show")
+                unset disk_show
+                for arg in "$@"; do
+                    case "$arg" in
+                        "--disk_show") ;;
+                        "-"*) break ;;
+                        *) disk_show+=("$arg") ;;
+                    esac
+                done
+            ;;
+
+            "--disable")
+                for func in "$@"; do
+                    case "$func" in
+                        "--disable") continue ;;
+                        "-"*) break ;;
+                        *)
+                            ((bash_version >= 4)) && func="${func,,}"
+                            unset -f "get_$func"
+                        ;;
+                    esac
+                done
+            ;;
+
+            # Text Colors
+            "--colors")
+                unset colors
+                for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
+                    case "$arg" in
+                        "-"*) break ;;
+                        *) colors+=("$arg") ;;
+                    esac
+                done
+                colors+=(7 7 7 7 7 7)
+            ;;
+
+            # Text Formatting
+            "--underline") underline_enabled="$2" ;;
+            "--underline_char") underline_char="$2" ;;
+            "--bold") bold="$2" ;;
+
+            # Color Blocks
+            "--color_blocks") color_blocks="$2" ;;
+            "--block_range") block_range=("$2" "$3") ;;
+            "--block_width") block_width="$2" ;;
+            "--block_height") block_height="$2" ;;
+
+            # Bars
+            "--bar_char")
+                bar_char_elapsed="$2"
+                bar_char_total="$3"
+            ;;
+
+            "--bar_border") bar_border="$2" ;;
+            "--bar_length") bar_length="$2" ;;
+            "--bar_colors")
+                bar_color_elapsed="$2"
+                bar_color_total="$3"
+            ;;
+
+            "--cpu_display") cpu_display="$2" ;;
+            "--memory_display") memory_display="$2" ;;
+            "--battery_display") battery_display="$2" ;;
+            "--disk_display") disk_display="$2" ;;
+
+            # Image backend
+            "--backend") image_backend="$2" ;;
+            "--source") image_source="$2" ;;
+            "--ascii" | "--caca" | "--catimg" | "--jp2a" | "--iterm2" | "--off" | "--pixterm" |\
+            "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
+                image_backend="${1/--}"
+                case "$2" in
+                    "-"* | "") ;;
+                    *) image_source="$2" ;;
+                esac
+            ;;
+
+            # Image options
+            "--loop") image_loop="on" ;;
+            "--image_size" | "--size") image_size="$2" ;;
+            "--crop_mode") crop_mode="$2" ;;
+            "--crop_offset") crop_offset="$2" ;;
+            "--xoffset") xoffset="$2" ;;
+            "--yoffset") yoffset="$2" ;;
+            "--background_color" | "--bg_color") background_color="$2" ;;
+            "--gap") gap="$2" ;;
+            "--clean")
+                [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
+                rm -rf "/Library/Caches/neofetch/"
+                rm -rf "/tmp/neofetch/"
+                exit
+            ;;
+
+            "--ascii_colors")
+                unset ascii_colors
+                for arg in "$2" "$3" "$4" "$5" "$6" "$7"; do
+                    case "$arg" in
+                        "-"*) break ;;
+                        *) ascii_colors+=("$arg")
+                    esac
+                done
+                ascii_colors+=(7 7 7 7 7 7)
+            ;;
+
+            "--ascii_distro")
+                image_backend="ascii"
+                ascii_distro="$2"
+                case "$2" in "-"* | "") ascii_distro="$distro" ;; esac
+            ;;
+
+            "--ascii_bold") ascii_bold="$2" ;;
+            "--logo" | "-L")
+                image_backend="ascii"
+                print_info() { info line_break; }
+            ;;
+
+            # Screenshot
+            "--scrot" | "-s")
+                scrot_args "$@"
+            ;;
+            "--upload" | "-su")
+                scrot_upload="on"
+                scrot_args "$@"
+            ;;
+
+            "--image_host") image_host="$2" ;;
+            "--scrot_cmd") scrot_cmd="$2" ;;
+
+            # Other
+            "--config")
+                case "$2" in
+                    "none" | "off" | "") ;;
+                    *)
+                        config_file="$(get_full_path "$2")"
+                        get_user_config
+                    ;;
+                esac
+            ;;
+            "--stdout") stdout="on" ;;
+            "-v") verbose="on" ;;
+            "-vv") set -x; verbose="on" ;;
+            "--help") usage ;;
+            "--version")
+                printf "%s\\n" "Neofetch $version"
+                exit 1
+            ;;
+            "--gen-man")
+                help2man -n "A fast, highly customizable system info script" \
+                          -N ./neofetch -o neofetch.1
+                exit 1
+            ;;
+
+            "--travis")
+                print_info() {
+                    info title
+                    info underline
+
+                    info "OS" distro
+                    info "Host" model
+                    info "Kernel" kernel
+                    info "Uptime" uptime
+                    info "Packages" packages
+                    info "Shell" shell
+                    info "Resolution" resolution
+                    info "DE" de
+                    info "WM" wm
+                    info "WM Theme" wm_theme
+                    info "Theme" theme
+                    info "Icons" icons
+                    info "Terminal" term
+                    info "Terminal Font" term_font
+                    info "CPU" cpu
+                    info "GPU" gpu
+                    info "GPU Driver" gpu_driver
+                    info "Memory" memory
+
+                    info "CPU Usage" cpu_usage
+                    info "Disk" disk
+                    info "Battery" battery
+                    info "Font" font
+                    info "Song" song
+                    info "Local IP" local_ip
+                    info "Public IP" public_ip
+                    info "Users" users
+                    info "Install Date" install_date
+
+                    info line_break
+                    info cols
+                    info line_break
+
+                    # Testing.
+                    prin "prin"
+                    prin "prin" "prin"
+
+                    # Testing no subtitles.
+                    info uptime
+                    info disk
+                }
+
+                refresh_rate="on"
+                shell_version="on"
+                cpu_display="infobar"
+                memory_display="infobar"
+                disk_display="infobar"
+                cpu_temp="C"
+            ;;
+        esac
+
+        shift
+    done
 }
 
 main() {
