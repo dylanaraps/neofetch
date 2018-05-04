@@ -12,6 +12,9 @@ different system hierarchies. None of this is necessary anymore.
 Those using distributions with an outdated Neofetch version in their repos
 can now easily install the latest version.
 
+Thanks to those who contributed this time around and thanks to those who
+discussed proposed changes in the bug tracker. I appreciate it. :+1:
+
 
 ## Contributors
 
