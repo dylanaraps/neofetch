@@ -352,6 +352,16 @@ gtk3="on"
 public_ip_host="http://ident.me"
 
 
+# Window Manager
+
+
+# Show Window Manager Version.
+#
+# Default: 'off'
+# Values:  'on', off
+# Flag:    --wm_version
+wm_version="off"
+
 
 # Disk
 
@@ -1582,6 +1592,19 @@ get_wm() {
                                -e "dwm" \
                                -e "monsterwm" \
                                -e "tinywm")"
+
+        if [[ "$wm_version" == "on" && "$wm" ]]; then
+            wmv="$("${wm,,}" --version || "${wm,,}" -v 2>&1)"
+            wmv="$wm ${wmv:-$("${wm,,}_x11" -v || "${wm,,}_wayland" -v)}"
+            wmv="${wmv/$wm ${wm}?/$wm }"
+            wmv="${wmv/$wm $wm/$wm}"
+            wmv="${wmv/copyright*}"
+            wmv="${wmv/version }"
+            wmv="${wmv/©*}"
+            wmv="${wmv/(c)*}"
+            wmv="${wmv/ : }"
+            wm="$wmv"
+        fi
 
     else
         case "$os" in
@@ -4667,6 +4690,7 @@ INFO:
 
                                 NOTE: This only supports Linux.
 
+    --wm_version on/off         Show/Hide Window Manager version.
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
@@ -4837,6 +4861,7 @@ get_args() {
             "--cpu_brand") cpu_brand="$2" ;;
             "--gpu_brand") gpu_brand="$2" ;;
             "--gpu_type") gpu_type="$2" ;;
+            "--wm_version") wm_version="$2" ;;
             "--refresh_rate") refresh_rate="$2" ;;
             "--gtk_shorthand") gtk_shorthand="$2" ;;
             "--gtk2") gtk2="$2" ;;
