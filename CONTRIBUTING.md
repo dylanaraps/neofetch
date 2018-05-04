@@ -20,6 +20,8 @@
   and variable names.
 - Keep lines below `100` characters long.
 - Use `[[ ]]` for tests.
+- Double Quote **EVERYTHING**.
+- Don’t use single quotes, except for special cases.
 
 ### ShellCheck
 
