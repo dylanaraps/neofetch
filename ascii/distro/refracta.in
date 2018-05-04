@@ -1,0 +1,21 @@
+read -r -d '' ascii_refracta << 'EOF'
+${c2}                             A
+                            VW
+                           VVW\\
+                         .yWWW\\
+ ,;,,u,;yy;;v;uyyyyyyy  ,WWWWW^
+    *WWWWWWWWWWWWWWWW/  $VWWWWw      ,
+        ^*%WWWWWWVWWX  $WWWW**    ,yy
+        ,    "**WWW/' **'   ,yy/WWW*`
+       &WWWWwy    `*`  <,ywWW%VWWW*
+     yWWWWWWWWWW*    .,   "**WW%W
+   ,&WWWWWM*"`  ,y/  &WWWww   ^*
+  XWWX*^   ,yWWWW09 .WWWWWWWWwy,
+ *`        &WWWWWM  WWWWWWWWWWWWWww,
+           (WWWWW` /#####WWW***********
+           ^WWWW
+            VWW
+            Wh.
+            V/
+
+EOF
