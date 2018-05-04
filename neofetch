@@ -821,7 +821,6 @@ stdout="off"
 config_version="3.4.1-git"
 EOF
 
-
 # DETECT INFORMATION
 
 get_os() {
