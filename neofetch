@@ -27,7 +27,7 @@
 # SOFTWARE.
 
 # Neofetch version.
-version="3.4.1-git"
+version="4.0.0-git"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
@@ -818,7 +818,7 @@ stdout="off"
 #
 # NOTE: Don't change this value, neofetch reads this to determine
 # how to handle backwards compatibility.
-config_version="3.4.1-git"
+config_version="4.0.0-git"
 EOF
 
 # DETECT INFORMATION
