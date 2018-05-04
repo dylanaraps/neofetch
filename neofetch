@@ -4270,7 +4270,7 @@ get_user_config() {
     # Check $config_file.
     if [[ -f "$config_file" ]]; then
         source "$config_file"
-        err "Config: Sourced user config.    (${config_file})"
+        err "Config: Sourced user config. (${config_file})"
         old_options
         return
     fi
