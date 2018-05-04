@@ -1,7 +1,5 @@
 # How to Contribute
 
-
-## Table of Contents
 <!-- vim-markdown-toc GFM -->
 
 * [Coding Conventions](#coding-conventions)
