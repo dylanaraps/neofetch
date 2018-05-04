@@ -5067,9 +5067,8 @@ get_args() {
     done
 }
 
-get_distro_colors() {
-    # This function sets the text colors according
-    # to your OS/Distro's logo colors.
+get_distro_ascii() {
+    # This function gets the distro ascii art and colors.
     #
     # $ascii_distro is the same as $distro.
     case "$ascii_distro" in
@@ -8674,7 +8673,7 @@ main() {
     [[ "$verbose" != "on" ]] && exec 2>/dev/null
     get_distro
     get_bold
-    get_distro_colors
+    get_distro_ascii
     [[ "$stdout" == "on" ]] && stdout
 
     # Minix doesn't support these sequences.
