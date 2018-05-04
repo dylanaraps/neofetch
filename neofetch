@@ -77,6 +77,7 @@ print_info() {
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "CPU Usage" cpu_usage
+    # info "Boot Method" boot_method
     # info "Disk" disk
     # info "Battery" battery
     # info "Font" font
@@ -1195,6 +1196,17 @@ get_kernel() {
             *) unset kernel ;;
         esac
     fi
+}
+
+get_boot_method() {
+    case "$os" in
+        "Linux")
+            [ -d /sys/firmware/efi ] && boot_method="UEFI" || boot_method="BIOS"
+        ;;
+        *)
+            boot_method="UNKNOWN"
+        ;;
+    esac
 }
 
 get_uptime() {
