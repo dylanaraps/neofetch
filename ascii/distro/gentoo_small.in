@@ -1,0 +1,9 @@
+read -r -d '' ascii_gentoo_small << 'EOF'
+${c1} _-----_
+(       \\
+\    0   \\
+${c2} \        )
+ /      _/
+(     _-
+\____-
+EOF

@@ -1,0 +1,8 @@
+read -r -d '' ascii_debian_small << 'EOF'
+  ${c1}_____
+ /  __ \\
+|  /    |
+|  \\___-
+-_
+  --_
+EOF

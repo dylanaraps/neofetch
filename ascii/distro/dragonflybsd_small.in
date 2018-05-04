@@ -1,0 +1,6 @@
+read -r -d '' ascii_dragonflybsd_small << 'EOF'
+${c2}(\${c3}"${c2}/)
+${c2}(/${c1}|${c2}\)
+${c1}  |
+  |
+EOF

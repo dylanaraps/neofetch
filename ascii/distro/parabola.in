@@ -1,0 +1,18 @@
+read -r -d '' ascii_parabola << 'EOF'
+${c1}                          `.-.    `.
+                   `.`  `:++.   `-+o+.
+             `` `:+/. `:+/.   `-+oooo+
+        ``-::-.:+/. `:+/.   `-+oooooo+
+    `.-:///-  ..`   .-.   `-+oooooooo-
+ `..-..`                 `+ooooooooo:
+``                        :oooooooo/
+                          `ooooooo:
+                          `oooooo:
+                          -oooo+.
+                          +ooo/`
+                         -ooo-
+                        `+o/.
+                        /+-
+                       //`
+                      -.
+EOF
