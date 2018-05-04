@@ -15,6 +15,9 @@
 
 ## Coding Conventions
 
+- Use `bash` built-ins wherever possible.
+- Try not to pipe (`|`) at all.
+- Limit usage of external commands `$(cmd)`.
 - Indent 4 spaces.
 - Use [snake_case](https://en.wikipedia.org/wiki/Snake_case) for function
   and variable names.
@@ -42,6 +45,10 @@ request on the repo and our Travis.ci hook will run ShellCheck for you.
 
 ### No no's
 
+- Don’t use GNU conventions in commands.
+    - Use POSIX arguments and flags.
+- Don’t use `cut`.
+    - Use `bash`'s built-in [parameter expansion](http://wiki.bash-hackers.org/syntax/pe).
 - Don’t use `echo`.
     - Use `printf "%s\n"`
 - Don’t use `bc`.
