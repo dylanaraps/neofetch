@@ -1,6 +1,18 @@
 # How to Contribute
 
 
+## Table of Contents
+<!-- vim-markdown-toc GFM -->
+
+* [ShellCheck](#shellcheck)
+* [Coding Conventions](#coding-conventions)
+* [No no's](#no-nos)
+* [If Statements](#if-statements)
+* [Case Statements](#case-statements)
+
+<!-- vim-markdown-toc -->
+
+
 ## ShellCheck
 
 For your contribution to be accepted, your changes need to pass
@@ -52,7 +64,7 @@ fi
 # Good
 [[ "$var" ]] && echo "$var"
 
-# Also good (Use this for longer lines.
+# Also good (Use this for longer lines).
 [[ "$var" ]] && \
     echo "$var"
 ```
