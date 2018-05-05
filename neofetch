@@ -1203,9 +1203,6 @@ get_boot_method() {
         "Linux")
             [ -d /sys/firmware/efi ] && boot_method="UEFI" || boot_method="BIOS"
         ;;
-        *)
-            boot_method="UNKNOWN"
-        ;;
     esac
 }
 
