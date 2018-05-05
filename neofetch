@@ -1201,7 +1201,7 @@ get_kernel() {
 get_boot_method() {
     case "$os" in
         "Linux")
-            [ -d /sys/firmware/efi ] && boot_method="UEFI" || boot_method="BIOS"
+            [[ -d "/sys/firmware/efi" ]] && boot_method="UEFI" || boot_method="BIOS"
         ;;
     esac
 }
