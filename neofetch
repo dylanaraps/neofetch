@@ -2652,11 +2652,12 @@ get_style() {
             if [[ -f "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}" ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}")"
 
+            elif [[ -f "/etc/gtk-2.0/gtkrc" ]]; then
+                gtk2_theme="$(grep "^[^#]*${name}" /etc/gtk-2.0/gtkrc)"
+
             elif [[ -f "/usr/share/gtk-2.0/gtkrc" ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" /usr/share/gtk-2.0/gtkrc)"
 
-            elif [[ -f "/etc/gtk-2.0/gtkrc" ]]; then
-                gtk2_theme="$(grep "^[^#]*${name}" /etc/gtk-2.0/gtkrc)"
             fi
 
             gtk2_theme="${gtk2_theme/${name}*=}"
