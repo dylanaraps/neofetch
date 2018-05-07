@@ -1580,6 +1580,7 @@ get_wm() {
             wm="$(ps -e | grep -m 1 -o -F \
                                -e "catwm" \
                                -e "dwm" \
+                               -e "2bwm" \
                                -e "monsterwm" \
                                -e "tinywm")"
 
