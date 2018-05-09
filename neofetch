@@ -1530,6 +1530,8 @@ guayadeque|yarock|qmmp|quodlibet|deepin-music|tomahawk|pogo|elisa/ {printf $5 " 
         [[ "$(trim "$album")" ]]  && prin "Album" "$album"
         [[ "$(trim "$song")" ]]   && prin "Song" "$song"
     fi
+
+    song="${song//‡/-}"
 }
 
 get_resolution() {
