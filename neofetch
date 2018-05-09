@@ -2490,10 +2490,7 @@ get_song() {
 
     # Display Artist, Album and Title on separate lines.
     if [[ "$song_shorthand" == "on" && "$song" ]]; then
-        artist="${song/ ‡*}"
-        album="${song#*‡ }"
-        album="${album% ‡*}"
-        song="${song/*‡}"
+        LC_ALL="$sys_locale" IFS="‡" read -r artist album song <<< "$song"
 
         [[ "$(trim "$artist")" ]] && prin "Artist" "$artist"
         [[ "$(trim "$album")" ]]  && prin "Album" "$album"
