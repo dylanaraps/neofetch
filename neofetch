@@ -437,6 +437,16 @@ disk_subtitle="mount"
 # yarock
 music_player="auto"
 
+# Format to display song information.
+#
+# Default: '%artist% - %album% - %title%'
+# Values:  '%artist%', '%album%', '%title%'
+# Flag:    --song_format
+#
+# Example:
+# default: 'Song: Jet - Get Born - Sgt Major'
+song_format="%artist% - %album% - %title%"
+
 # Print the Artist and Title on separate lines
 #
 # Default: 'off'
@@ -2486,18 +2496,20 @@ get_song() {
         *) mpc >/dev/null 2>&1 && song="$(mpc -f '%artist% ‡ %album% ‡ %title%' current)" ;;
     esac
 
-    [[ "$song" != *[a-z]* ]] && unset -v song
+    [[ "$song" != *[a-z]* ]] && { unset -v song; return; }
+
+    LC_ALL="$sys_locale" IFS="‡" read -r artist album title <<< "$song"
 
     # Display Artist, Album and Title on separate lines.
-    if [[ "$song_shorthand" == "on" && "$song" ]]; then
-        LC_ALL="$sys_locale" IFS="‡" read -r artist album song <<< "$song"
-
+    if [[ "$song_shorthand" == "on" ]]; then
         [[ "$(trim "$artist")" ]] && prin "Artist" "$artist"
         [[ "$(trim "$album")" ]]  && prin "Album" "$album"
-        [[ "$(trim "$song")" ]]   && prin "Song" "$song"
+        [[ "$(trim "$song")" ]]   && prin "Song" "$title"
+    else
+        song="${song_format/\%artist\%/${artist}}"
+        song="${song/\%album\%/${album}}"
+        song="${song/\%title\%/${title}}"
     fi
-
-    song="${song//‡/-}"
 }
 
 get_resolution() {
@@ -4678,7 +4690,8 @@ INFO:
                                 'dir' shows the basename of the disks's path. (/, Local Disk, etc)
 
     --ip_host url               URL to query for public IP
-    --song_shorthand on/off     Print the Artist/Title on separate lines
+    --song_format format        Print the song data in a specific format (see config file).
+    --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
     --install_time on/off       Enable/Disable showing the time in Install Date output.
@@ -4835,6 +4848,7 @@ get_args() {
             "--shell_path") shell_path="$2" ;;
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
+            "--song_format") song_format="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
             "--music_player") music_player="$2" ;;
             "--install_time") install_time="$2" ;;
