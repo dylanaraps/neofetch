@@ -1,13 +1,6 @@
 language: bash
 sudo: required
 
-addons:
-    apt:
-        sources:
-            - debian-sid
-        packages:
-            - shellcheck
-
 os:
     - linux
     - osx
@@ -17,11 +10,13 @@ before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install screenresolution; fi
 
 script:
-    - time ./neofetch --ascii --config config/travis.conf -v
+    - time ./neofetch --travis -v
     # See this wiki page for why we're disabling these errors.
     # https://github.com/dylanaraps/neofetch/wiki/Shellcheck-Exclusions
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then shellcheck neofetch -e SC1090,SC2009,SC2012,SC2016,SC2034,SC2128,SC2153,SC2154,SC2178,SC2010,SC1004; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then shellcheck neofetch -e SC1090,SC2009,SC2012,SC2016,SC2034,SC2128,SC2153,SC2154,SC2178,SC2010,SC1004,SC1091,SC1117; fi
     # The if statement is here to invert the exit code from grep.
     # grep normally errors if no match is found but we want the opposite.
     # We invert it so grep fails if a match is found.
-    - if grep '.\{101\}' neofetch; then (exit 1); else (exit 0); fi
+    # Check for lines longer than 100 chars.
+    # There are 3 lines that must be longer than 100 chars.
+    - if (("$(grep '.\{101\}' neofetch | wc -l)" > 3)); then (exit 1); else (exit 0); fi

@@ -1,91 +1,58 @@
 # Neofetch
 
-[![Gitter](https://badges.gitter.im/dylanaraps/fetch.svg)](https://gitter.im/dylanaraps/fetch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+<a href="https://repology.org/metapackage/neofetch">
+    <img src="https://repology.org/badge/vertical-allrepos/neofetch.svg" alt="Packaging status" align="right" width="150px" height="730px">
+</a>
+
+[![Discord](https://img.shields.io/discord/440354555197128704.svg)](https://discord.gg/BtnTPFF)
 [![Build Status](https://travis-ci.org/dylanaraps/neofetch.svg?branch=master)](https://travis-ci.org/dylanaraps/neofetch)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.md)
 [![Latest release](https://img.shields.io/github/release/dylanaraps/neofetch.svg)](https://github.com/dylanaraps/neofetch/releases)
 [![Donate](https://img.shields.io/badge/donate-patreon-yellow.svg)](https://www.patreon.com/dyla)
 
-Neofetch is a CLI system information tool written in BASH. Neofetch displays information about your system next to an image, your OS logo, or any ASCII file of your choice. The main purpose of Neofetch is to be used in screenshots to show other users what OS/Distro you're running, what Theme/Icons you're using etc.
+Neofetch is a command-line system information tool written in `bash 3.2+`. Neofetch displays information about your operating system, software and hardware in an aesthetic and visually pleasing way.
 
-Neofetch is highly customizable through the use of command line flags or the user config file. There are over 50 config options to mess around with and there's the `print_info()` function and friends which let you add your own custom info.
+The overall purpose of Neofetch is to be used in screen-shots of your system. Neofetch shows the information other people want to see. There are other tools available for proper system statistic/diagnostics.
 
-Neofetch can be used on any OS that has BASH 3.2+, it's just a matter of adding support. If your OS/Distro isn't in the list below, feel free to open an issue on the repo and I'll gladly add support. Neofetch currently supports `Linux`, `MacOS`, `iOS`, `BSD`, `Solaris`, `Android`, `Haiku`, `GNU Hurd`, `MINIX`, `AIX`, `IRIX`, and `Windows (Cygwin/MSYS2/MinGW/Windows 10 Linux subsystem)`.
+The information by default is displayed alongside your operating system's logo. You can further configure Neofetch to instead use an image, a custom ASCII file, your wallpaper or nothing at all.
 
-For more information:
+You can further configure Neofetch to display exactly what you want it to. Through the use of command-line flags and the configuration file you can change existing information outputs or add your own custom ones.
 
-**https://github.com/dylanaraps/neofetch/wiki**
-
-![neofetch screenshot](https://u.teknik.io/KlBsD.png)
+Neofetch supports almost 150 different operating systems. From Linux to Windows, all the way to more obscure operating systems like Minix, AIX and Haiku. If your favourite operating system is unsupported: Open up an issue and support will be added.<br>
 
 
-## Dependencies
+### For more information: \[[Dependencies](https://github.com/dylanaraps/neofetch/wiki/Dependencies)\] \[[Installation](https://github.com/dylanaraps/neofetch/wiki/Installation)\] \[[Wiki](https://github.com/dylanaraps/neofetch/wiki)\]
 
-https://github.com/dylanaraps/neofetch/wiki/Dependencies
+<img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" width="349px">
+<img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" width="349px">
 
+## Articles
 
-## Installation
-
-https://github.com/dylanaraps/neofetch/wiki/Installation
-
-
-## Post Install
-
-
-### Using the config file
-
-Neofetch will by default create a config file at `$HOME/.config/neofetch/config` and this file contains all of the script's options/settings. The config file allows you to keep your customizations between script versions and allows you to easily share your customizations with other people.
-
-You can launch the script without a config file by using the flag `--config none` and you can specify a custom config location using `--config path/to/config`.
-
-See this wiki page for the default config: https://github.com/dylanaraps/neofetch/wiki/Config-File
-
-
-### Customizing what info gets displayed
-
-https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
-
-
-### Customizing the script using a custom alias
-
-If you don't want to use the config file you can customize almost everything using launch flags.
-
-Here's an example neofetch alias:
-
-```sh
-alias neofetch2="neofetch \
---config off \
---block_range 1 8 \
---bold off \
---uptime_shorthand on \
---gtk_shorthand on \
---colors 4 1 8 8 8 7 \
-"
-```
+- https://lamiradadelreplicante.com/2016/05/15/la-informacion-de-tu-sistema-en-la-terminal-con-neofetch/
+- https://linuxconfig.org/how-to-display-system-information-with-neofetch
+- https://www.2daygeek.com/neofetch-display-linux-systems-information-ascii-distribution-logo-terminal/
+- https://www.cyberciti.biz/howto/neofetch-awesome-system-info-bash-script-for-linux-unix-macos/
+- https://www.lffl.org/2016/11/neofetch-le-informazioni-sistema-sul-terminale-stile.html
+- https://www.maketecheasier.com/display-system-information-neofetch-linux/
+- https://www.omgubuntu.co.uk/2016/11/neofetch-terminal-system-info-app
+- https://www.omgubuntu.co.uk/2016/12/cli-system-tool-neofetch-2-0-released
+- https://www.omgubuntu.co.uk/2017/01/neofetch-3-0-released
+- https://www.ostechnix.com/neofetch-display-linux-systems-information/
+- https://www.techrepublic.com/article/how-to-get-all-the-information-you-need-about-your-linux-machine-with-a-single-command/
+- https://www.tecmint.com/neofetch-shows-linux-system-information-with-logo/
+- https://www.youtube.com/watch?v=bgepGW858fc
 
 
 ## Thanks
 
-Thanks to:
-
 - [Contributors](https://github.com/dylanaraps/neofetch/contributors)
-    - Thanks for making Neofetch better, I really appreciate it.
 - [Packagers](https://github.com/dylanaraps/neofetch/issues/115)
-    - Thanks for maintaining Neofetch packages.
-- Users
-    - Thanks for using Neofetch!
-- [Screenfetch](https://github.com/KittyKatt/screenFetch):
-    - We've used some snippets as a base for a few functions in this script.
-    - Some of the ASCII logos.
-- [ufetch](https://github.com/jschx/ufetch):
-    - Tiny ASCII logos
-
+- [Screenfetch](https://github.com/KittyKatt/screenFetch)
+- [ufetch](https://github.com/jschx/ufetch)
 
 
 ## Donate
 
 Donations will allow me to spend more time working on `neofetch`.
 
-If you like `neofetch` and want to give back in some way you can donate here:
-
-**https://patreon.com/dyla**
+If you like `neofetch` and want to give back in some way you can donate here: **https://patreon.com/dyla**
