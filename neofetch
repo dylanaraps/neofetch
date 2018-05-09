@@ -2417,7 +2417,7 @@ get_song() {
 
         "audacious"*)
             song="$(audtool current-song)"
-            [[ -z "$song" ]] && get_song_dbus "audacious"
+            [[ -z "$song" || "$song_shorthand" == "on" ]] && get_song_dbus "audacious"
         ;;
 
         "cmus"*)
