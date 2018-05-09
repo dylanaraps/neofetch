@@ -2906,8 +2906,8 @@ END
 
             fi
 
-            term_font="$(awk '/font_family/ { $1 = ""; gsub(/^[[:space:]]/, ""); font = $0 } \
-                         /\^[\S\n_#]+?font_size\s+?\d+?/ { size = $2 } END { print font " " size}' \
+            term_font="$(awk '/^[\S\n_#]+?font_family\s+?/ { $1 = ""; gsub(/^[[:space:]]/, ""); font = $0 } \
+                         /^[\S\n_#]+?font_size\s+?\d+?/ { size = $2 } END { print font " " size}' \
                          "${kitty_file}")"
         ;;
 
