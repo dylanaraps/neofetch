@@ -444,7 +444,7 @@ music_player="auto"
 # Flag:    --song_format
 #
 # Example:
-# on:  'Song: Jet - Get Born - Sgt Major'
+# default: 'Song: Jet - Get Born - Sgt Major'
 song_format="%artist% - %album% - %title%"
 
 # Print the Artist and Title on separate lines
