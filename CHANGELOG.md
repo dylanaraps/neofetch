@@ -14,15 +14,12 @@ The entirety of Neofetch is now contained within a single executable.
 Everything has been in-lined. Installing Neofetch is now as easy as
 downloading the script and running it.
 
-Packaging Neofetch is now easier as well. We were using `sed` in the
-`Makefile` to replace specific paths and we have had to work around
-different system hierarchies. None of this is necessary anymore.
-
 Those using distributions with an outdated Neofetch version in their repos
-can now easily install the latest version.
+can now easily install the latest version themselves.
 
 Thanks to those who contributed this time around and thanks to those who
-discussed proposed changes in the bug tracker. I appreciate it. :+1:
+discussed proposed changes in the bug tracker and Discord. I appreciate
+it. :+1:
 
 
 ## Contributors
@@ -36,6 +33,8 @@ discussed proposed changes in the bug tracker. I appreciate it. :+1:
 - [**@TsundereBug**](https://github.com/TsundereBug)
 - [**@dawidd6**](https://github.com/dawidd6)
 - [**@mstraube**](https://github.com/mstraube)
+- [**@iandrewt**](https://github.com/iandrewt)
+- [**@MindTooth**](https://github.com/MindTooth)
 
 
 ## Operating System
@@ -64,6 +63,12 @@ discussed proposed changes in the bug tracker. I appreciate it. :+1:
 
 ## Info
 
+**Song**
+
+- Added album data to song output. [**@mstraube**](https://github.com/mstraube), [**@iandrewt**](https://github.com/iandrewt)
+- Added `song_format` to change the display format of the data.
+    - Default: `%artist% - %album% - %title%`.
+
 **Title**
 
 - Fixed unexpected backslash being inserted on some systems.
@@ -80,6 +85,7 @@ discussed proposed changes in the bug tracker. I appreciate it. :+1:
 
 - Added support for `st`. [**@aidanharris**](https://github.com/aidanharris)
 - Added support for `qterminal`. [**@mstraube**](https://github.com/mstraube)
+- Fixed `kitty` font bug. [**@MindTooth**](https://github.com/MindTooth)
 
 **Packages**
 
