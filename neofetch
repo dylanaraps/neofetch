@@ -435,6 +435,7 @@ disk_subtitle="mount"
 # tomahawk
 # xmms2d
 # yarock
+# sayonara
 music_player="auto"
 
 # Format to display song information.
@@ -2389,7 +2390,8 @@ get_song() {
                            -e "spotify" \
                            -e "tomahawk" \
                            -e "xmms2d" \
-                           -e "yarock")"
+                           -e "yarock" \
+                           -e "sayonara")"
 
     [[ "$music_player" && "$music_player" != "auto" ]] && \
         player="$music_player"
@@ -2424,6 +2426,7 @@ get_song() {
         "deepin-music"*) get_song_dbus "deepinmusic" ;;
         "tomahawk"*)     get_song_dbus "tomahawk" ;;
         "elisa"*)        get_song_dbus "elisa" ;;
+        "sayonara"*)     get_song_dbus "sayonara" ;;
 
         "audacious"*)
             song="$(audtool current-song)"
