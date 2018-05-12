@@ -448,7 +448,7 @@ music_player="auto"
 # default: 'Song: Jet - Get Born - Sgt Major'
 song_format="%artist% - %album% - %title%"
 
-# Print the Artist and Title on separate lines
+# Print the Artist, Album and Title on separate lines
 #
 # Default: 'off'
 # Values:  'on', 'off'
@@ -456,9 +456,10 @@ song_format="%artist% - %album% - %title%"
 #
 # Example:
 # on:  'Artist: The Fratellis'
+#      'Album: Costello Music'
 #      'Song: Chelsea Dagger'
 #
-# off: 'Song: The Fratellis - Chelsea Dagger'
+# off: 'Song: The Fratellis - Costello Music - Chelsea Dagger'
 song_shorthand="off"
 
 
