@@ -2424,7 +2424,7 @@ get_song() {
         "bluemindo"*)    get_song_dbus "Bluemindo" ;;
         "guayadeque"*)   get_song_dbus "guayadeque" ;;
         "yarock"*)       get_song_dbus "yarock" ;;
-        "deepin-music"*) get_song_dbus "deepinmusic" ;;
+        "deepin-music"*) get_song_dbus "DeepinMusic" ;;
         "tomahawk"*)     get_song_dbus "tomahawk" ;;
         "elisa"*)        get_song_dbus "elisa" ;;
         "sayonara"*)     get_song_dbus "sayonara" ;;
