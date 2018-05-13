@@ -436,6 +436,7 @@ disk_subtitle="mount"
 # xmms2d
 # yarock
 # sayonara
+# vlc
 music_player="auto"
 
 # Format to display song information.
@@ -2392,7 +2393,8 @@ get_song() {
                            -e "tomahawk" \
                            -e "xmms2d" \
                            -e "yarock" \
-                           -e "sayonara")"
+                           -e "sayonara" \
+                           -e "vlc")"
 
     [[ "$music_player" && "$music_player" != "auto" ]] && \
         player="$music_player"
@@ -2429,6 +2431,7 @@ get_song() {
         "elisa"*)        get_song_dbus "elisa" ;;
         "sayonara"*)     get_song_dbus "sayonara" ;;
         "audacious"*)    get_song_dbus "audacious" ;;
+        "vlc"*)          get_song_dbus "vlc" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
