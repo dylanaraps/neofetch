@@ -2404,8 +2404,8 @@ get_song() {
             dbus-send --print-reply --dest=org.mpris.MediaPlayer2."${1}" /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
-            awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
-            awk -F '"' '/artist/ {a=$2} /album"/ {b=$2} /title/ {t=$2} END{print a " ‡ " b " ‡ " t}'
+            awk -F '"' 'BEGIN {RS=" entry"}; /xesam:artist/ {a = $4} /xesam:album/ {b = $4}
+                        /xesam:title/ {t = $4} END {print a " ‡ " b " ‡ " t}'
         )"
     }
 
