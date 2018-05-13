@@ -2428,11 +2428,7 @@ get_song() {
         "tomahawk"*)     get_song_dbus "tomahawk" ;;
         "elisa"*)        get_song_dbus "elisa" ;;
         "sayonara"*)     get_song_dbus "sayonara" ;;
-
-        "audacious"*)
-            song="$(audtool current-song)"
-            [[ -z "$song" || "$song_shorthand" == "on" ]] && get_song_dbus "audacious"
-        ;;
+        "audacious"*)    get_song_dbus "audacious" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
