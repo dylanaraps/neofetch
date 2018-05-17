@@ -8427,8 +8427,8 @@ ${c1}     -1vvnvv.     `~+++`        ++|+++
 EOF
         ;;
 
-        *"[Windows 10]"* | *"on Windows 10"* | "Windows 8"* |\
-        "Windows 10"* | "windows10" | "windows8" )
+        *"[Windows 10]"*|*"on Windows 10"*|"Windows 8"*|\
+        "Windows 10"* |"windows10"|"windows8")
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
 ${c1}                                ..,
