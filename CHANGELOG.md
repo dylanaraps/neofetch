@@ -24,8 +24,9 @@ it. :+1:
 
 ## Discord
 
-Neofetch now has a Discord server. Come and join the discussion! <a
-href="https://discord.gg/BtnTPFF"><img
+Neofetch now has a Discord server. Come and join the discussion!
+
+<a href="https://discord.gg/BtnTPFF"><img
 src="https://img.shields.io/discord/440354555197128704.svg"></a>
 
 
