@@ -2789,7 +2789,8 @@ get_term() {
             case "${name// }" in
                 "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
                 "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-                "ruby" | "1" | "systemd" | "sshd"* | "python"* | "USER"*"PID"* | "kdeinit"*)
+                "ruby" | "1" | "systemd" | "sshd"* | "python"* |
+                "USER"*"PID"* | "kdeinit"* | "launchd"*)
                     break
                 ;;
                 "gnome-terminal-") term="gnome-terminal" ;;
