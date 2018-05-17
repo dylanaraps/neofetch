@@ -6,7 +6,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016-2017 Dylan Araps
+# Copyright (c) 2016-2018 Dylan Araps
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -435,6 +435,8 @@ disk_subtitle="mount"
 # tomahawk
 # xmms2d
 # yarock
+# sayonara
+# vlc
 music_player="auto"
 
 # Format to display song information.
@@ -447,7 +449,7 @@ music_player="auto"
 # default: 'Song: Jet - Get Born - Sgt Major'
 song_format="%artist% - %album% - %title%"
 
-# Print the Artist and Title on separate lines
+# Print the Artist, Album and Title on separate lines
 #
 # Default: 'off'
 # Values:  'on', 'off'
@@ -455,9 +457,10 @@ song_format="%artist% - %album% - %title%"
 #
 # Example:
 # on:  'Artist: The Fratellis'
+#      'Album: Costello Music'
 #      'Song: Chelsea Dagger'
 #
-# off: 'Song: The Fratellis - Chelsea Dagger'
+# off: 'Song: The Fratellis - Costello Music - Chelsea Dagger'
 song_shorthand="off"
 
 
@@ -2389,7 +2392,9 @@ get_song() {
                            -e "spotify" \
                            -e "tomahawk" \
                            -e "xmms2d" \
-                           -e "yarock")"
+                           -e "yarock" \
+                           -e "sayonara" \
+                           -e "vlc")"
 
     [[ "$music_player" && "$music_player" != "auto" ]] && \
         player="$music_player"
@@ -2401,8 +2406,8 @@ get_song() {
             dbus-send --print-reply --dest=org.mpris.MediaPlayer2."${1}" /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
-            awk -F 'string "' '/string|array/ {printf "%s",$2; next}{print ""}' |\
-            awk -F '"' '/artist/ {a=$2} /album"/ {b=$2} /title/ {t=$2} END{print a " ‡ " b " ‡ " t}'
+            awk -F '"' 'BEGIN {RS=" entry"}; /xesam:artist/ {a = $4} /xesam:album/ {b = $4}
+                        /xesam:title/ {t = $4} END {print a " ‡ " b " ‡ " t}'
         )"
     }
 
@@ -2421,14 +2426,12 @@ get_song() {
         "bluemindo"*)    get_song_dbus "Bluemindo" ;;
         "guayadeque"*)   get_song_dbus "guayadeque" ;;
         "yarock"*)       get_song_dbus "yarock" ;;
-        "deepin-music"*) get_song_dbus "deepinmusic" ;;
+        "deepin-music"*) get_song_dbus "DeepinMusic" ;;
         "tomahawk"*)     get_song_dbus "tomahawk" ;;
         "elisa"*)        get_song_dbus "elisa" ;;
-
-        "audacious"*)
-            song="$(audtool current-song)"
-            [[ -z "$song" || "$song_shorthand" == "on" ]] && get_song_dbus "audacious"
-        ;;
+        "sayonara"*)     get_song_dbus "sayonara" ;;
+        "audacious"*)    get_song_dbus "audacious" ;;
+        "vlc"*)          get_song_dbus "vlc" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
@@ -2907,9 +2910,11 @@ END
 
             fi
 
-            term_font="$(awk '/^[\S\n_#]+?font_family\s+?/ {$1="";gsub(/^[[:space:]]/,"");font=$0}\
-                         /^[\S\n_#]+?font_size\s+?\d+?/ { size = $2 } END { print font " " size}' \
-                         "${kitty_file}")"
+            term_font="$(awk '/^[\S\n_#]+?font_family\s+?/
+                              { $1 = ""; gsub(/^[[:space:]]/, ""); font = $0 }
+                              /^[\S\n_#]+?font_size\s+?\d+?/
+                              { size = $2 } END { print font " " size}' \
+                              "${kitty_file}")"
         ;;
 
         "konsole"*)
