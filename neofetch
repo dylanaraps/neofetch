@@ -2787,15 +2787,16 @@ get_term() {
             [[ -z "$parent" ]] && break
             name="$(get_process_name "$parent")"
             case "${name// }" in
-                "${SHELL/*\/}" | *"sh" | "tmux"* | "screen" | "su"*) ;;
+                "${SHELL/*\/}" | *"sh" | "screen" | "su"*) ;;
                 "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-                "ruby" | "1" | "systemd" | "sshd"* | "python"* |
+                "ruby" | "1" | "systemd" | "sshd"* | "python"* |\
                 "USER"*"PID"* | "kdeinit"* | "launchd"*)
                     break
                 ;;
                 "gnome-terminal-") term="gnome-terminal" ;;
                 *"nvim") term="Neovim Terminal" ;;
                 *"NeoVimServer"*) term="VimR Terminal" ;;
+                *"tmux"*) term="tmux" ;;
                 *) term="${name##*/}" ;;
             esac
         fi
