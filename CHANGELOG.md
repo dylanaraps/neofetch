@@ -22,6 +22,13 @@ discussed proposed changes in the bug tracker and Discord. I appreciate
 it. :+1:
 
 
+## Discord
+
+Neofetch now has a Discord server. Come and join the discussion! <a
+href="https://discord.gg/BtnTPFF"><img
+src="https://img.shields.io/discord/440354555197128704.svg"></a>
+
+
 ## Contributors
 
 <!-- - [**@**](https://github.com/) -->
