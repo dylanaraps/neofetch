@@ -65,6 +65,8 @@ it. :+1:
 
 **Song**
 
+- Added support for VLC. [**@mstraube**](https://github.com/mstraube)
+- Added support for Sayonara. [**@mstraube**](https://github.com/mstraube)
 - Added album data to song output. [**@mstraube**](https://github.com/mstraube), [**@iandrewt**](https://github.com/iandrewt)
 - Added `song_format` to change the display format of the data.
     - Default: `%artist% - %album% - %title%`.
