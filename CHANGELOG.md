@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+    
+## [4.0.0] - 2018-05-17
+
 This release bumps the version number up to `4.0.0` as it contains major
 changes to how Neofetch is packaged and installed.
 
@@ -24,9 +27,10 @@ it. :+1:
 
 ## Discord
 
-Neofetch now has a Discord server. Come and join the discussion!
+Neofetch now has a Discord server. Come and join the discussion! 
 
-<a href="https://discord.gg/BtnTPFF"><img
+<a
+href="https://discord.gg/BtnTPFF"><img
 src="https://img.shields.io/discord/440354555197128704.svg"></a>
 
 
@@ -109,12 +113,12 @@ src="https://img.shields.io/discord/440354555197128704.svg"></a>
 
 - Added support for detecting `dwm`.
 
-
+    
 ## [3.4.0] - 2018-04-05
 
 This release adds support for a large number of Linux distros as well as support for the latest macOS and iOS devices. This release also contains a large number of bug fixes and some minor features.
 
-I'm pretty sure that this release is the largest in terms of number of contributors. Thanks to everyone who contributed this release!
+I'm pretty sure that this release is the largest in terms of number of contributors. Thanks to everyone who contributed this release! 
 
 ## Contributors
 
@@ -267,7 +271,7 @@ I'm pretty sure that this release is the largest in terms of number of contribut
 - Fixed Kitty `font_size` regex. [**@aidanharris**](https://github.com/aidanharris)
 - Added support for `XTerm.vt11.facename`. [**@aidanharris**](https://github.com/aidanharris)
 
-
+    
 ## [3.3.0] - 2017-09-14
 
 Thanks to everyone who contributed this release, I appreciate ya!
@@ -395,13 +399,13 @@ Thanks to everyone who contributed this release, I appreciate ya!
 - Use `maim` over `scrot`. **[@ybden](https://github.com/ybden)**
 - Fixed `scrot_cmd` arguments not being used. **[@winneon](https://github.com/winneon)**
 
-
+    
 ## [3.2.0] - 2017-06-21
 
-This release was long overdue and I apologise for the delay. I've been busy with study among other things. This update is smaller than usual but fixes some important bugs.
+This release was long overdue and I apologise for the delay. I've been busy with study among other things. This update is smaller than usual but fixes some important bugs. 
 
 
-Thanks once again to everyone that contributed!
+Thanks once again to everyone that contributed! 
 
 
 ## Contributors
@@ -481,7 +485,7 @@ Thanks once again to everyone that contributed!
 
 - [FreeBSD]: Fix inaccurate free memory calculation.
 
-
+    
 ## [3.1.0] - 2017-04-25
 
 Hi, It's been quite a while since the last release. I've been extremely busy with university and I finally found some time to flag a new release. (I've been meaning to do this for a few weeks now)
@@ -594,7 +598,7 @@ The screenshot feature no longer requires any configuration before working. We n
 
 - [Linux] Hide duplicate GPU lines (Only display 1).
 
-
+    
 ## [3.0.1] - 2017-01-30
 
 This minor release fixes all of the bugs that were found in the 3.0 release.
@@ -663,12 +667,12 @@ Thanks for all of the bug reports and contributions. :)
 ## Scrot
 - Added message to let users know that a screenshot was taken.
 
-
+    
 ## [3.0] - 2017-01-23
 
-This is another large release containing over `550` commits from 7 contributors. Due to the size and large amount of changes made this release expect at least one minor release to fix any bugs that come up.
+This is another large release containing over `550` commits from 7 contributors. Due to the size and large amount of changes made this release expect at least one minor release to fix any bugs that come up. 
 
-The version number has been bumped to `3.0` due to the large amount of breaking changes introduced this update. I've added backwards compatibility for all of the new changes but there may still be some breakage. I highly recommend starting with a new config to avoid any issues that may arise.
+The version number has been bumped to `3.0` due to the large amount of breaking changes introduced this update. I've added backwards compatibility for all of the new changes but there may still be some breakage. I highly recommend starting with a new config to avoid any issues that may arise. 
 
 Neofetch now supports displaying images using `catimg`, `libcaca` and `jp2a`. See this wiki page for screenshots. https://github.com/dylanaraps/neofetch/wiki/Image-Backends
 
@@ -883,7 +887,7 @@ I have given collaborator access to both **[@konimex](https://github.com/konimex
 - Fixed bug where `neofetch --config` sourced the user config twice.
 - Cleaned up config arg handling.
 
-
+    
 ## [2.0.2] - 2016-12-07
 
 This minor release fixes some issues related to new features added in 2.0. These issues weren't picked up in the time between 2.0 and 2.1 and another minor release is needed due to the Packages issue being rather important.
@@ -903,7 +907,7 @@ I also want to apologize to those packaging Neofetch for this unexpected release
 **Theme**<br \>
 - [Cinnamon] Fixed incorrect information.
 
-
+    
 ## [2.0.1] - 2016-12-06
 
 This release of Neofetch fixes some important bugs that were found after 2.0 was release. This includes: Detection issues on CentOS and Linux Mint systems, Incorrect Memory usage on BSD, Linux GPU detection issues and more.
@@ -987,7 +991,7 @@ The config option `scrot_cmd` and the commandline flag `--scrot_cmd` are still t
   - teknik doesn't compress images whereas imgur does.
   - You can change this back to imgur by using `--image_host imgur` or by editing your config file.
 
-
+    
 ## [2.0] - 2016-12-02
 
 This is the biggest release of Neofetch in a long time. 97 files were changed with 2700~ additions to 2900~ deletions. Although the changelog isn't as interesting this time majority of the script has been rewritten, restructered and cleaned up. Every function and variable name follows a proper naming scheme and a large number of bugs were fixed.
@@ -1123,12 +1127,12 @@ Thanks to all of the contributors this time around, you guys are a big help and 
 **Resolution**<br \>
 - [MacOS] If refresh rate is empty don't append Hz.
 
-
+    
 ## [1.9.1] - 2016-11-04
 
 This is a small release which fixes various issues found in 1.9.
 
-Note: Those packaging neofetch can ignore the new file: `config/travis`
+Note: Those packaging neofetch can ignore the new file: `config/travis` 
 
 ## Contributors
 - **[@konimex](https://github.com/konimex)**
@@ -1178,7 +1182,7 @@ Note: Those packaging neofetch can ignore the new file: `config/travis`
 **Memory**<br \>
 - [OpenBSD] Fixed used memory usage. **[@Head-on-a-Stick](https://github.com/Head-on-a-Stick)**
 
-
+    
 ## [1.9] - 2016-11-01
 
 This change log won't cover everything that's changed. Have a look through the commit
@@ -1211,7 +1215,7 @@ Thanks to everyone below who contributed, it's nice to see some new faces too. :
 - Added support for Android.
   - Dependencies:
     - Required: `bash` and `busybox`
-    - Note: I recommend installing `termux` from the Play Store or F-Droid. Termux provides you with a fully
+    - Note: I recommend installing `termux` from the Play Store or F-Droid. Termux provides you with a fully 
       working Linux environment, doesn't require root acess and includes all dependencies.
     - Note2: Neofetch will be packaged in `termux` thanks to **[@konimex](https://github.com/konimex)**
       - PR [#351](https://github.com/termux/termux-packages/pull/531)
@@ -1340,7 +1344,7 @@ Note: `\033[14t` is still supported, if images already work for you then you don
 - Added support for Audacious. **[@ncmprhnsbl](https://github.com/ncmprhnsbl)**
 - Rewrote song function, it's now much faster/cleaner.
 
-
+    
 ## [1.8.1] - 2016-10-04
 
 This release fixes various bugs found in 1.8.
@@ -1385,7 +1389,7 @@ This release fixes various bugs found in 1.8.
 - Added logo mode which only displays the ascii art.
   - Adds two new identical flags `--logo` and `-L`.
 
-
+    
 ## [1.8] - 2016-10-02
 
 This version of neofetch is vastly different from the previous versions and this
@@ -1548,7 +1552,7 @@ now have working image support.
 - Use a pure bash solution to getting ascii size.
 - Updated Solus ascii art to match new logo. **[@undrskr](https://github.com/undrskr)**
 
-
+    
 ## [1.7] - 2016-05-14
 
 Hello, sorry this release took so long. I've been extremely busy with uni and
@@ -1715,7 +1719,7 @@ called `fg` which will set the color to your foreground color.
 [/////     ]
 ```
 
-
+    
 ## [1.6] - 2016-04-01
 
 # Neofetch 1.6
@@ -1862,7 +1866,7 @@ Thanks to the following people for contributing this release.
 ### Scrot
 - Fixed scrot function not using user defined options.
 
-
+    
 ## [1.5] - 2016-03-17
 
 # Neofetch 1.5
@@ -1956,7 +1960,7 @@ me finish up with this PR.
 ### Stdout Mode
 - Fixed issues with functions that use `prin`.
 
-
+    
 ## [1.4] - 2016-03-09
 
 Lots of bugs were fixed and a lot of code was cleaned up, this changelog just lists
@@ -2028,14 +2032,14 @@ Example:
 neofetch --stdout memory battery disk --stdout_separator "  |  "
 ```
 
-
+    
 ## [1.3] - 2016-02-26
 
 # Fetch 1.3
 
 Hey guys,
 
-This update brought some breaking changes, see this wiki page for what you'll
+This update brought some breaking changes, see this wiki page for what you'll 
 need to update in your config file.
 
 https://github.com/dylanaraps/fetch/wiki/Following-HEAD
@@ -2106,7 +2110,7 @@ much faster and cleaner.
 - Removed `--stdout_subtitles`
 - Removed `--stdout_title`
 
-
+    
 ## [1.2] - 2016-02-17
 
 # Fetch 1.2
@@ -2121,7 +2125,7 @@ https://github.com/dylanaraps/fetch/wiki/Following-HEAD
 
 ### OS
 
-We now support almost all the Linux distros Screenfetch supports excluding
+We now support almost all the Linux distros Screenfetch supports excluding 
 the distros that have been discontinued.
 
 Added support for these distros:
@@ -2219,7 +2223,7 @@ info "Font" font
 -  Fix missing ascii art when fetch is installed in /usr/local
 - Update Deepin's ascii art to their new logo
 
-
+    
 ## [1.1] - 2016-02-06
 
 # Fetch 1.1 changelog
@@ -2272,7 +2276,7 @@ the first value of `ascii_colors`. If `ascii_colors` is left empty, color will b
 
 ### Config file
 - Fetch now has a config file that you can share with people and keep between
-  script versions! [1]
+  script versions! [1] 
 - Added `--config` and `$config_file` to specify a custom config location.
 - Added `--config off`, `--config none` and `$config` to enable / disable config files
   at launch or in script.
@@ -2389,7 +2393,7 @@ Battery: 10%
 - **NOTE:** This currently doesn't support BSD systems as we have no one to help us test
   - See **[Issue #46](https://github.com/dylanaraps/fetch/issues/46)**
 
-
+    
 ## [1.0] - 2016-01-27
 
 # Fetch 1.0
@@ -2549,7 +2553,7 @@ to set the program to use to take the screenshot.
 
 ## Wiki:
 
-Added `Customizing Info` page which has info/examples about
+Added `Customizing Info` page which has info/examples about 
 the new printinfo function.
 
 https://github.com/dylanaraps/fetch/wiki/Customizing-Info
@@ -2558,7 +2562,7 @@ Added `Customization` which lists all options and their values.
 
 https://github.com/dylanaraps/fetch/wiki/Customization
 
-
+    
 ## [0.2.1] - 2016-01-04
 
 Here's what's new:
@@ -2570,19 +2574,19 @@ Here's what's new:
 - Fixed bug with multiple colons
 - Fixed underlines not being drawn the full width.
 - Functions now fallback to "Unknown" instead of printing nothing.
-- `getos` now gets os type and `getdistro` gets the distro.
+- `getos` now gets os type and `getdistro` gets the distro. 
   - This makes it even easier to add other os types.
 
 Here's what I'm working on:
-- Finishing OpenBSD support
-- Cygwin support
+- Finishing OpenBSD support 
+- Cygwin support 
 
 Enjoy
 
-
+    
 ## [0.2] - 2016-01-03
 
-I finished my rewrite!
+I finished my rewrite! 
 
 ## Here's what's new:
 - The script is now way faster.
@@ -2637,8 +2641,8 @@ Changelog:
 - The script now aligns the cursor to the bottom of the
   terminal instead of using a hardcoded amount of newlines
 - Image size and padding is now dynamic, the only difference on the user
-  side is that instead of setting a long line of spaces as
-  padding, you set your font width. This means that you set the
+  side is that instead of setting a long line of spaces as 
+  padding, you set your font width. This means that you set the 
   var once and the script will just work at any window size.
 - You can disable dynamic images and go back to the old
   behaviour with by using the `--size` or the in config var.
@@ -2654,7 +2658,8 @@ Changelog:
 Let me know if you're having issues.
 
 
-[Unreleased]: https://github.com/dylanaraps/neofetch/compare/3.4.0...HEAD
+[Unreleased]: https://github.com/dylanaraps/neofetch/compare/4.0.0...HEAD
+[4.0.0]: https://github.com/dylanaraps/neofetch/compare/3.4.0...4.0.0
 [3.4.0]: https://github.com/dylanaraps/neofetch/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/dylanaraps/neofetch/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/dylanaraps/neofetch/compare/3.1.0...3.2.0
