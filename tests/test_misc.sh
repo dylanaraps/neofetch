@@ -25,16 +25,8 @@ test_get_ppid() {
     assert_equals "$result" "0"
 }
 
-test_get_process_name() {
-    result="$(get_process_name "1")"
-    assert_equals "$result" "systemd"
-}
-
 
 printf "%s\\n" "Test MISC functions."
 
 test_convert_time
 test_get_ppid
-test_get_process_name
-
-[[ -f /tmp/err ]] || exit 0 && { rm /tmp/err; exit 1; }
