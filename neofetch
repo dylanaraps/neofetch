@@ -8679,7 +8679,7 @@ main() {
     get_os
 
     # Load default config.
-    source /dev/stdin < <(printf "%s\n" "$config")
+    source /dev/stdin <<< "$config"
 
     get_args "$@"
     [[ "$verbose" != "on" ]] && exec 2>/dev/null
