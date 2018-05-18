@@ -4814,6 +4814,7 @@ SCREENSHOT:
 OTHER:
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
+    --print_config              Print the default config file to stdout.
     --stdout                    Turn off all colors and disables any ASCII/image backend.
     --help                      Print this text and exit
     --version                   Show neofetch version
@@ -5006,6 +5007,7 @@ get_args() {
             ;;
             "--stdout") stdout="on" ;;
             "-v") verbose="on" ;;
+            "--print_config") printf "%s\\n" "$config"; exit ;;
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
             "--version")
