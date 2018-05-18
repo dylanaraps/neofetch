@@ -7,12 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+## [4.0.1] - 2018-05-18
+
+### Note: This release is only required for those running `bash <3.3`.
+
 - [config] Fixed issue with default config in bash3.
 - [packages] Simplified code.
 - [term] Fixed macOS issue.
 - [term] Fixed `tmux` issue.
 
+
 ## [4.0.0] - 2018-05-17
+
+<h1><img src="https://i.imgur.com/JFxwJtU.png" alt="logo" height="100px"></h1>
 
 This release bumps the version number up to `4.0.0` as it contains major
 changes to how Neofetch is packaged and installed.
@@ -2662,7 +2670,8 @@ Changelog:
 Let me know if you're having issues.
 
 
-[Unreleased]: https://github.com/dylanaraps/neofetch/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/dylanaraps/neofetch/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/dylanaraps/neofetch/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/dylanaraps/neofetch/compare/3.4.0...4.0.0
 [3.4.0]: https://github.com/dylanaraps/neofetch/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/dylanaraps/neofetch/compare/3.2.0...3.3.0

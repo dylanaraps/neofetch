@@ -27,7 +27,7 @@
 # SOFTWARE.
 
 # Neofetch version.
-version="4.0.1"
+version="4.0.2"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
@@ -826,12 +826,6 @@ image_host="teknik"
 # Default: 'off'
 # Values: 'on', 'off'
 stdout="off"
-
-# Config version.
-#
-# NOTE: Don't change this value, neofetch reads this to determine
-# how to handle backwards compatibility.
-config_version="4.0.1"
 EOF
 
 # DETECT INFORMATION
@@ -8713,7 +8707,6 @@ main() {
     # Add neofetch info to verbose output.
     err "Neofetch command: $0 $*"
     err "Neofetch version: $version"
-    err "Neofetch config:  $config_version"
 
     # Show error messages.
     [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
