@@ -1303,83 +1303,83 @@ get_packages() {
                 packages="$(pacman -Qq --color never | wc -l)"
 
             type -p dpkg >/dev/null && \
-                packages="$((packages+=$(dpkg --get-selections | grep -cv deinstall$)))"
+                ((packages+=$(dpkg --get-selections | grep -cv deinstall$)))
 
             type -p pkgtool >/dev/null && \
-                packages="$((packages+=$(ls -1 /var/log/packages | wc -l)))"
+                ((packages+=$(ls -1 /var/log/packages | wc -l)))
 
             type -p rpm >/dev/null && \
-                packages="$((packages+=$(rpm -qa | wc -l)))"
+                ((packages+=$(rpm -qa | wc -l)))
 
             type -p xbps-query >/dev/null && \
-                packages="$((packages+=$(xbps-query -l | wc -l)))"
+                ((packages+=$(xbps-query -l | wc -l)))
 
             type -p pkginfo >/dev/null && \
-                packages="$((packages+=$(pkginfo -i | wc -l)))"
+                ((packages+=$(pkginfo -i | wc -l)))
 
             type -p emerge >/dev/null && \
-                packages="$((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))"
+                ((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))
 
             type -p nix-env >/dev/null && \
-                packages="$((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))"
+                ((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))
 
             type -p guix >/dev/null && \
-                packages="$((packages+=$(ls -d -1 /gnu/store/*/ | wc -l)))"
+                ((packages+=$(ls -d -1 /gnu/store/*/ | wc -l)))
 
             type -p apk >/dev/null && \
-                packages="$((packages+=$(apk info | wc -l)))"
+                ((packages+=$(apk info | wc -l)))
 
             type -p opkg >/dev/null && \
-                packages="$((packages+=$(opkg list-installed | wc -l)))"
+                ((packages+=$(opkg list-installed | wc -l)))
 
             type -p pacman-g2 >/dev/null && \
-                packages="$((packages+=$(pacman-g2 -Q | wc -l)))"
+                ((packages+=$(pacman-g2 -Q | wc -l)))
 
             type -p lvu >/dev/null && \
-                packages="$((packages+=$(lvu installed | wc -l)))"
+                ((packages+=$(lvu installed | wc -l)))
 
             type -p tce-status >/dev/null && \
-                packages="$((packages+=$(tce-status -i | wc -l)))"
+                ((packages+=$(tce-status -i | wc -l)))
 
             type -p Compile >/dev/null && \
-                packages="$((packages+=$(ls -d -1 /Programs/*/ | wc -l)))"
+                ((packages+=$(ls -d -1 /Programs/*/ | wc -l)))
 
             type -p eopkg >/dev/null && \
-                packages="$((packages+=$(ls -1 /var/lib/eopkg/package | wc -l)))"
+                ((packages+=$(ls -1 /var/lib/eopkg/package | wc -l)))
 
             type -p pkg_info >/dev/null && \
-                packages="$((packages+=$(pkg_info | wc -l)))"
+                ((packages+=$(pkg_info | wc -l)))
 
             type -p crew >/dev/null && \
-                packages="$((packages+=$(ls -l /usr/local/etc/crew/meta/*.filelist | wc -l)))"
+                ((packages+=$(ls -l /usr/local/etc/crew/meta/*.filelist | wc -l)))
 
             type -p tazpkg >/dev/null && \
-                packages="$((packages+=$(tazpkg list | wc -l) - 6))"
+                ((packages+=$(tazpkg list | wc -l) - 6))
 
             type -p sorcery >/dev/null && \
-                packages="$((packages+=$(gaze installed | wc -l)))"
+                ((packages+=$(gaze installed | wc -l)))
 
             type -p alps >/dev/null && \
-                packages="$((packages+=$(alps showinstalled | wc -l)))"
+                ((packages+=$(alps showinstalled | wc -l)))
 
             type -p kpt >/dev/null && \
             type -p kpm >/dev/null && \
-                packages="$((packages+=$(kpm --get-selections | grep -cv deinstall$)))"
+                ((packages+=$(kpm --get-selections | grep -cv deinstall$)))
 
             if type -p cave >/dev/null; then
                 package_dir=(/var/db/paludis/repositories/{cross-installed/*,installed}/data/*)
-                packages="$((packages+=$(ls -d -1 "${package_dir[@]}" | wc -l)))"
+                ((packages+=$(ls -d -1 "${package_dir[@]}" | wc -l)))
             fi
 
             type -p butch >/dev/null && \
-                packages="$((packages+=$(butch list | wc -l)))"
+                ((packages+=$(butch list | wc -l)))
 
             if type -p pkg >/dev/null; then
                 case "$kernel_name" in
-                    "FreeBSD") packages="$((packages+=$(pkg info | wc -l)))" ;;
+                    "FreeBSD") ((packages+=$(pkg info | wc -l))) ;;
                     *)
-                        packages="$((packages+=$(ls -1 /var/db/pkg | wc -l)))"
-                        ((packages == 0)) && packages="$((packages+=$(pkg list | wc -l)))"
+                        ((packages+=$(ls -1 /var/db/pkg | wc -l)))
+                        ((packages == 0)) && ((packages+=$(pkg list | wc -l)))
                 esac
             fi
         ;;
@@ -1389,13 +1389,13 @@ get_packages() {
                 packages="$(($(ls -l /usr/local/bin/ | grep -cv "\(../Cellar/\|brew\)") - 1))"
 
             type -p port >/dev/null && \
-                packages="$((packages + $(port installed | wc -l) - 1))"
+                ((packages+=$(port installed | wc -l) - 1))
 
             type -p brew >/dev/null && \
-                packages="$((packages + $(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))"
+                ((packages+=$(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))
 
             type -p pkgin >/dev/null && \
-                packages="$((packages + $(pkgin list | wc -l)))"
+                ((packages+=$(pkgin list | wc -l)))
         ;;
 
         "Windows")
@@ -1406,7 +1406,7 @@ get_packages() {
 
             # Count chocolatey packages.
             [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
-                packages="$((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))"
+                ((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))
         ;;
 
         "Haiku")
@@ -1415,7 +1415,7 @@ get_packages() {
 
         "AIX")
             packages="$(lslpp -J -l -q | grep -cv '^#')"
-            packages="$((packages+=$(rpm -qa | wc -l)))"
+            ((packages+=$(rpm -qa | wc -l)))
         ;;
 
         "IRIX")
@@ -1424,7 +1424,7 @@ get_packages() {
 
         "FreeMiNT")
             type -p rpm >/dev/null && \
-                packages="$((packages+=$(rpm -qa | wc -l)))"
+                packages="$(rpm -qa | wc -l)"
         ;;
     esac
 
