@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- [config] Fixed `/dev/stdin` error.
+- [config] Added `--print_config` to display the default config file.
+- [macOS] Fixed xquartz issue.
+
 
 ## [4.0.1] - 2018-05-18
 
