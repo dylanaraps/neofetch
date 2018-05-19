@@ -1594,8 +1594,10 @@ get_wm() {
                                -e "tinywm")"
 
         if [[ "$wm_version" == "on" && "$wm" ]]; then
-            wmv="$("${wm,,}" --version || "${wm,,}" -v 2>&1)"
-            wmv="$wm ${wmv:-$("${wm,,}_x11" -v || "${wm,,}_wayland" -v)}"
+            case "$wm" in
+                "KWin") wmv="$wm $("${wm,,}_x11" -v || "${wm,,}_wayland" -v)" ;;
+                *) wmv="$("${wm,,}" --version || "${wm,,}" -v 2>&1)" ;;
+            esac
             wmv="${wmv/$wm ${wm}?/$wm }"
             wmv="${wmv/$wm $wm/$wm}"
             wmv="${wmv/copyright*}"
