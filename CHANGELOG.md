@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+## [4.0.2] - 2018-05-19
+
 - [config] Fixed `/dev/stdin` error.
 - [config] Added `--print_config` to display the default config file.
 - [macOS] Fixed xquartz issue.
@@ -2674,7 +2677,8 @@ Changelog:
 Let me know if you're having issues.
 
 
-[Unreleased]: https://github.com/dylanaraps/neofetch/compare/4.0.1...HEAD
+[Unreleased]: https://github.com/dylanaraps/neofetch/compare/4.0.2...HEAD
+[4.0.2]: https://github.com/dylanaraps/neofetch/compare/4.0.1...4.0.2
 [4.0.1]: https://github.com/dylanaraps/neofetch/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/dylanaraps/neofetch/compare/3.4.0...4.0.0
 [3.4.0]: https://github.com/dylanaraps/neofetch/compare/3.3.0...3.4.0
