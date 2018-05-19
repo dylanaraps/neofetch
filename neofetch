@@ -27,7 +27,7 @@
 # SOFTWARE.
 
 # Neofetch version.
-version="4.0.2"
+version="4.0.3"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
