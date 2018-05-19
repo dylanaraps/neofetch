@@ -8680,7 +8680,7 @@ main() {
     get_os
 
     # Load default config.
-    source /dev/stdin <<< "$config"
+    eval "$config"
 
     get_args "$@"
     [[ "$verbose" != "on" ]] && exec 2>/dev/null
