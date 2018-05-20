@@ -3688,8 +3688,8 @@ get_term_size() {
 
     # If the sequences above don't work and the user is on a macOS system
     # or a system not running an X server, return early.
-    [[ -z "$DISPLAY" ]] && \
-        { term_width=0; return; }
+    [[ -z "$DISPLAY" || "$os" == "Mac OS X" ]] && \
+        { : "${term_width:=0}"; return; }
 
     # Get terminal width/height if \e[14t is unsupported.
     if [[ -z "$term_width" ]] || (( "$term_width" < 50 )); then
