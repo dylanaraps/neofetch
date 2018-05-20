@@ -747,6 +747,14 @@ crop_offset="center"
 #          --size
 image_size="auto"
 
+# Catimg block size.
+# Control the resolution of catimg.
+#
+# Default: '2'
+# Values:  '1', '2'
+# Flags:   --catimg_size
+catimg_size="2"
+
 # Gap between image and text
 #
 # Default: '3'
@@ -3842,7 +3850,7 @@ display_image() {
         ;;
 
         "catimg")
-            catimg -w "$((width * 2 / font_width))" "$image" ||\
+            catimg -w "$((width * 2 / font_width))" -r "$catimg_size" "$image" ||\
                 to_off "Image: catimg failed to display the image."
         ;;
 
@@ -4778,6 +4786,7 @@ IMAGE:
                                 in some terminals emulators when using image mode.
     --size 00px | --size 00%    How to size the image.
                                 Possible values: auto, 00px, 00%, none
+    --catimg_size 1/2           Change the resolution of catimg.
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
     --crop_offset value         Change the crop offset for normal mode.
@@ -4940,6 +4949,7 @@ get_args() {
             # Image options
             "--loop") image_loop="on" ;;
             "--image_size" | "--size") image_size="$2" ;;
+            "--catimg_size") catimg_size="$2" ;;
             "--crop_mode") crop_mode="$2" ;;
             "--crop_offset") crop_offset="$2" ;;
             "--xoffset") xoffset="$2" ;;
