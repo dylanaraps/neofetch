@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- [ascii] Fixed a bug causing Windows 7 ASCII art to not display.
+- [image] Added new option to configure the resolution of `catimg`.
 
 ## [4.0.2] - 2018-05-19
 
