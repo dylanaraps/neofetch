@@ -1605,6 +1605,8 @@ get_wm() {
             wmv="${wmv/©*}"
             wmv="${wmv/(c)*}"
             wmv="${wmv/ : }"
+            wmv="${wmv/This is ${wm,,}/$wm}"
+            wmv="${wmv/(revision*}"
             wm="$wmv"
         fi
 
