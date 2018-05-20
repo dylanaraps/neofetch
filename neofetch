@@ -3686,14 +3686,14 @@ get_term_size() {
         term_width="${term_size[2]/t*}"
     fi
 
-    # If the sequences above don't work and the user is on a macOS system
-    # or a system not running an X server, return early.
-    [[ -z "$DISPLAY" ]] && \
-        { term_width=0; return; }
-
     # Get terminal width/height if \e[14t is unsupported.
     if [[ -z "$term_width" ]] || (( "$term_width" < 50 )); then
-        if type -p xdotool >/dev/null 2>&1; then
+        if [[ -z "$DISPLAY" || "$os" == "Mac OS X" ]]; then
+          # If the sequences above don't work and the user is on a macOS system
+          # or a system not running an X server, skip to get window size from X.
+          :
+
+        elif type -p xdotool >/dev/null 2>&1; then
             current_window="$(xdotool getactivewindow)"
             source <(xdotool getwindowgeometry --shell "$current_window")
             term_height="$HEIGHT"
@@ -3718,10 +3718,11 @@ get_term_size() {
             else
                 term_width=0
             fi
-        else
-            term_width=0
         fi
     fi
+
+    # term_width=0 means get_term_size failed.
+    : ${term_width:=0}
 }
 
 get_image_size() {
