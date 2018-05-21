@@ -1782,7 +1782,6 @@ get_wm_theme() {
     esac
 
     wm_theme="$(trim_quotes "$wm_theme")"
-    wm_theme="$(uppercase "$wm_theme")"
 }
 
 get_cpu() {
@@ -2614,7 +2613,7 @@ get_style() {
                         kde_font_size="${kde_font_size/,*}"
                         kde_theme="${kde_theme/,*} ${kde_theme/*,} ${kde_font_size}"
                     fi
-                    kde_theme="$(uppercase "$kde_theme") [KDE], "
+                    kde_theme="$kde_theme [KDE], "
                 else
                     err "Theme: KDE config files not found, skipping."
                 fi
@@ -2689,10 +2688,6 @@ get_style() {
         # Remove quotes.
         gtk2_theme="$(trim_quotes "$gtk2_theme")"
         gtk3_theme="$(trim_quotes "$gtk3_theme")"
-
-        # Uppercase the first letter of each GTK theme.
-        gtk2_theme="$(uppercase "$gtk2_theme")"
-        gtk3_theme="$(uppercase "$gtk3_theme")"
 
         # Toggle visibility of GTK themes.
         [[ "$gtk2" == "off" ]] && unset gtk2_theme
@@ -4151,14 +4146,6 @@ strip_sequences() {
     strip="${strip//$'\e['38\;5\;[0-9][0-9][0-9]m}"
 
     printf "%s\n" "$strip"
-}
-
-uppercase() {
-    if ((bash_version >= 4)); then
-        printf "%s" "${1^}"
-    else
-        printf "%s" "$1"
-    fi
 }
 
 # COLORS
