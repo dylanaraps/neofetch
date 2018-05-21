@@ -2252,8 +2252,8 @@ get_memory() {
             # Source: https://github.com/KittyKatt/screenFetch/issues/386#issuecomment-249312716
             while IFS=":" read -r a b; do
                 case "$a" in
-                    "MemTotal") mem_used="$((mem_used+=${b/kB}))"; mem_total="${b/kB}" ;;
-                    "Shmem") mem_used="$((mem_used+=${b/kB}))"  ;;
+                    "MemTotal") ((mem_used+=${b/kB})); mem_total="${b/kB}" ;;
+                    "Shmem") ((mem_used+=${b/kB}))  ;;
                     "MemFree" | "Buffers" | "Cached" | "SReclaimable")
                         mem_used="$((mem_used-=${b/kB}))"
                     ;;
@@ -3408,7 +3408,7 @@ get_cols() {
         cols="${cols//nl/\\n\\e[${text_padding}C${zws}}"
 
         # Add block height to info height.
-        info_height="$((info_height+=block_height+2))"
+        ((info_height+=block_height+2))
 
         printf "%b\n" "\e[${text_padding}C${zws}${cols}"
     fi
