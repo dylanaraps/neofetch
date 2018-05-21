@@ -775,51 +775,6 @@ xoffset=0
 background_color=
 
 
-# Scrot Options
-
-
-# Whether or not to always take a screenshot
-# You can manually take a screenshot with "--scrot" or "-s"
-#
-# Default: 'off'
-# Values:  'on', 'off'
-# Flags:   --scrot
-#          -s
-scrot="off"
-
-# Screenshot Program
-# Neofetch will automatically use whatever screenshot tool
-# is installed on your system.
-#
-# If 'neofetch -v' says that it couldn't find a screenshot
-# tool or you're using a custom tool then you can change
-# the option below to a custom command.
-#
-# Default: 'auto'
-# Values:  'auto' 'cmd -flags'
-# Flag:    --scrot_cmd
-scrot_cmd="auto"
-
-# Screenshot Filename
-# What to name the screenshots
-#
-# Default: 'neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png'
-# Values:  'string'
-# Flag:    --scrot_name
-scrot_name="neofetch-$(date +%F-%I-%M-%S-${RANDOM}).png"
-
-# Image upload host
-# Where to upload the image.
-#
-# Default: 'teknik'
-# Values:  'imgur', 'teknik'
-# Flag:    --image_host
-#
-# NOTE: If you'd like another image host to be added to Neofetch.
-#       Open an issue on github.
-image_host="teknik"
-
-
 # Misc Options
 
 # Stdout mode
@@ -3919,116 +3874,6 @@ to_off() {
     text_padding=
 }
 
-# SCREENSHOT
-
-take_scrot() {
-    scrot_program "${scrot_dir}${scrot_name}"
-
-    err "Scrot: Saved screenshot as: ${scrot_dir}${scrot_name}"
-
-    [[ "$scrot_upload" == "on" ]] && scrot_upload
-}
-
-scrot_upload() {
-    if ! type -p curl >/dev/null 2>&1; then
-        printf "%s\n" "[!] Install curl to upload images"
-        return
-    fi
-
-    image_file="${scrot_dir}${scrot_name}"
-
-    # Print a message letting the user know we're uploading
-    # the screenshot.
-    printf "%s\r" "Uploading scrot"
-    sleep .2
-    printf "%s\r" "Uploading scrot."
-    sleep .2
-    printf "%s\r" "Uploading scrot.."
-    sleep .2
-    printf "%s\r" "Uploading scrot..."
-
-    case "$image_host" in
-        "teknik")
-            image_url="$(curl -sf -F file="@${image_file};type=image/png" \
-                         "https://api.teknik.io/v1/Upload")"
-            image_url="$(awk -F 'url:|,' '{printf $2}' <<< "${image_url//\"}")"
-        ;;
-
-        "imgur")
-            image_url="$(curl -sH "Authorization: Client-ID 0e8b44d15e9fc95" \
-                         -F image="@${image_file}" "https://api.imgur.com/3/upload")"
-            image_url="$(awk -F 'id:|,' '{printf $2}' <<< "${image_url//\"}")"
-            [[ "$image_url" ]] && image_url="https://i.imgur.com/${image_url}.png"
-        ;;
-    esac
-
-    printf "%s\n" "${image_url:-'[!] Image failed to upload'}"
-}
-
-scrot_args() {
-    scrot="on"
-
-    if [[ "$2" =~ \.(png|jpg|jpe|jpeg|gif)$ ]]; then
-        scrot_name="${2##*/}"
-        scrot_dir="${2/$scrot_name}"
-
-    elif [[ -d "$2" ]]; then
-        scrot_dir="$2"
-    else
-        scrot_dir="${PWD:+${PWD}/}"
-    fi
-}
-
-scrot_program() {
-    # Detect screenshot program.
-    #
-    # We first check to see if an X server is running before
-    # falling back to OS specific screenshot tools.
-    if [[ -n "$DISPLAY" ]]; then
-        if [[ "$scrot_cmd" != "auto" ]] && type -p "${scrot_cmd%% *}" >/dev/null; then
-            IFS=" " read -ra scrot_program <<< "$scrot_cmd"
-
-        elif type -p maim >/dev/null; then
-            scrot_program=(maim)
-
-        elif type -p scrot >/dev/null; then
-            scrot_program=(scrot)
-
-        elif type -p import >/dev/null && [[ "$os" != "Mac OS X" ]]; then
-            scrot_program=(import -window root)
-
-        elif type -p imlib2_grab >/dev/null; then
-            scrot_program=(imlib2_grab)
-
-        elif type -p gnome-screenshot >/dev/null; then
-            scrot_program=(gnome-screenshot -f)
-
-        else
-            err "Scrot: No screen capture tool found."
-            return
-        fi
-    else
-        case "$os" in
-            "Mac OS X") scrot_program=(screencapture -S) ;;
-            "Haiku") scrot_program=(screenshot -s) ;;
-        esac
-    fi
-
-    # Print a message letting the user know we're taking
-    # a screenshot.
-    printf "%s\r" "Taking scrot"
-    sleep .2
-    printf "%s\r" "Taking scrot."
-    sleep .2
-    printf "%s\r" "Taking scrot.."
-    sleep .2
-    printf "%s\r" "Taking scrot..."
-
-    # Take the scrot.
-    "${scrot_program[@]}" "$1"
-
-    err "Scrot: Screen captured using ${scrot_program[0]}"
-}
 
 # TEXT FORMATTING
 
@@ -4704,13 +4549,6 @@ IMAGE:
 
     --clean                     Delete cached files and thumbnails.
 
-SCREENSHOT:
-    -s, --scrot /path/to/img    Take a screenshot, if path is left empty the screen-
-                                shot function will use \$scrot_dir and \$scrot_name.
-    -su, --upload /path/to/img  Same as --scrot but uploads the scrot to a website.
-    --image_host imgur/teknik   Website to upload scrots to.
-    --scrot_cmd cmd             Screenshot program to launch
-
 OTHER:
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
@@ -4883,18 +4721,6 @@ get_args() {
                 image_backend="ascii"
                 print_info() { info line_break; }
             ;;
-
-            # Screenshot
-            "--scrot" | "-s")
-                scrot_args "$@"
-            ;;
-            "--upload" | "-su")
-                scrot_upload="on"
-                scrot_args "$@"
-            ;;
-
-            "--image_host") image_host="$2" ;;
-            "--scrot_cmd") scrot_cmd="$2" ;;
 
             # Other
             "--config")
@@ -8607,9 +8433,6 @@ main() {
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
     [[ "$image_backend" == *w3m* ]] && display_image
-
-    # Take a screenshot.
-    [[ "$scrot" == "on" ]] && take_scrot
 
     # Add neofetch info to verbose output.
     err "Neofetch command: $0 $*"
