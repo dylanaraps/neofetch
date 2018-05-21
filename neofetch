@@ -26,27 +26,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Neofetch version.
 version="4.0.3"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
+PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec:${PATH}"
 
 # Speed up script by not using unicode.
-export LC_ALL=C
-export LANG=C
-
-# Add more paths to $PATH.
-export PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec:${PATH}"
+LC_ALL=C
+LANG=C
 
 # Fix issues with gsettings.
-export GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
+GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
 
-# Set no case match.
 shopt -s nocasematch
-
-# Reset colors and bold.
 reset="\e[0m"
 
 # Neofetch default config.
@@ -3495,7 +3489,7 @@ get_ascii() {
     fi
 
     # Set locale to get correct padding.
-    export LC_ALL="$sys_locale"
+    LC_ALL="$sys_locale"
 
     # Turn file into variable.
     while IFS=$'\n' read -r line; do
@@ -3524,7 +3518,7 @@ get_ascii() {
 
     text_padding="$((ascii_length + gap))"
     printf "%b" "$print"
-    export LC_ALL=C
+    LC_ALL=C
 }
 
 get_image_source() {
