@@ -4276,7 +4276,6 @@ get_user_config() {
     if [[ -f "$config_file" ]]; then
         source "$config_file"
         err "Config: Sourced user config. (${config_file})"
-        old_options
         return
     fi
     mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
@@ -4298,7 +4297,6 @@ get_user_config() {
 
     source "$config_file"
     err "Config: Sourced user config.    (${config_file})"
-    old_options
 }
 
 bar() {
@@ -4407,87 +4405,6 @@ dynamic_prompt() {
             *) printf "%b" "\e[${lines}B" ;;
         esac
     fi
-}
-
-old_functions() {
-    # Deprecated functions.
-    # Neofetch 2.0 changed the names of a few variables.
-    # This function adds backwards compatibility for the
-    # old variable names.
-    if type printinfo >/dev/null 2>&1; then
-        print_info() { printinfo ; }
-        get_wmtheme() { get_wm_theme; wmtheme="$wm_theme"; }
-        get_termfont() { get_term_font; termfont="$term_font"; }
-        get_localip() { get_local_ip; localip="$local_ip"; }
-        get_publicip() { get_public_ip; publicip="$public_ip"; }
-        get_linebreak() { get_line_break; linebreak="$line_break"; }
-    fi
-
-    get_birthday() { get_install_date; birthday="$install_date"; }
-}
-
-old_options() {
-    [[ -n "$osx_buildversion" ]] && \
-        err "Config: \$osx_buildversion is deprecated, use \$distro_shorthand instead."
-    [[ -n "$osx_codename" ]] && \
-        err "Config: \$osx_codename is deprecated, use \$distro_shorthand instead."
-    [[ "$cpu_cores" == "on" ]] && \
-        err "Config: cpu_cores='on' is deprecated, use cpu_cores='logical|physical|off' instead."
-    [[ -n "$image" ]] && \
-        { err "Config: \$image is deprecated, use \$image_source instead."; image_source="$image"; }
-
-    # All progress_ variables were changed to bar_.
-    [[ -n "$progress_char" ]] && \
-        err "Config: \$progress_char is deprecated, use \$bar_char_{elapsed,total} instead."
-    [[ -n "$progress_border" ]] && \
-        { err "Config: \$progress_border is deprecated, use \$bar_border instead."; \
-          bar_border="$progress_border"; }
-    [[ -n "$progress_length" ]] && \
-        { err "Config: \$progress_length is deprecated, use \$bar_length instead."; \
-          bar_length="$progress_length"; }
-    [[ -n "$progress_color_elapsed" ]] && \
-        { err "Config: \$progress_color_elapsed is deprecated, use \$bar_color_elapsed instead."; \
-          bar_color_elapsed="$progress_color_elapsed"; }
-    [[ -n "$progress_color_total" ]] && \
-        { err "Config: \$progress_color_total is deprecated, use \$bar_color_total instead."; \
-          bar_color_total="$progress_color_total"; }
-
-    # All cpufreq values were changed in 3.0.
-    [[ "$speed_type" == "current" ]] && \
-        err "Config: speed_type='current' is deprecated, use speed_type='scaling_cur_freq' instead."
-    [[ "$speed_type" == "min" ]] && \
-        err "Config: speed_type='min' is deprecated, use speed_type='scaling_min_freq' instead."
-    [[ "$speed_type" == "max" ]] && \
-        err "Config: speed_type='max' is deprecated, use speed_type='scaling_max_freq' instead."
-    [[ "$speed_type" == "bios" ]] && \
-        err "Config: speed_type='bios' is deprecated, use speed_type='bios_limit' instead."
-
-    # Ascii_logo_size was removed in 3.0.
-    [[ "$ascii_logo_size" ]] && \
-        err "Config: ascii_logo_size is deprecated, use ascii_distro='{distro}_small' instead."
-
-    # $start and $end were replaced with ${block_range[@]} in 3.0.
-    [[ "$start" && "$end" ]] && \
-        { err "Config: \$start and \$end are deprecated, use block_range=(0 7) instead."; \
-          block_range=("$start" "$end"); }
-
-    # Fahrenheit support was added to CPU so the options were changed.
-    [[ "$cpu_temp" == "on" ]] && \
-        { err "Config: cpu_temp='on' is deprecated, use cpu_temp='C' or 'F' instead.";
-          cpu_temp="C"; }
-
-    # Birthday was renamed to Install Date in 3.0
-    [[ -n "$birthday_time" ]] && \
-        { err "Config: \$birthday_time is deprecated, use \3install_time instead."; \
-          install_time="$birthday_time"; }
-
-    # Scrot dir was removed in 3.1.0.
-    [[ -n "$scrot_dir" ]] && scrot_dir=
-
-    # cpu_shorthand was deprecated in 3.3.0
-    [[ -n "$cpu_shorthand" ]] && \
-        { err "Config: \$cpu_shorthand is deprecated, use \$cpu_brand, \$cpu_cores, and
-            \$cpu_speed instead."; }
 }
 
 cache_uname() {
@@ -8696,7 +8613,6 @@ main() {
     fi
 
     image_backend
-    old_functions
     get_cache_dir
     print_info
     dynamic_prompt
