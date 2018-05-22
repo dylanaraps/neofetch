@@ -8442,7 +8442,7 @@ main() {
     [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
 
     # If `--loop` was used, constantly redraw the image.
-    while [[ "$image_loop" == "on" && "$image_backend" == "w3m" ]]; do display_image; sleep 1s; done
+    while [[ "$image_loop" == "on" && "$image_backend" == "w3m" ]]; do display_image; sleep 1; done
 
     return 0
 }
