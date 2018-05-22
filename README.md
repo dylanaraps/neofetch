@@ -1,4 +1,5 @@
-<h1 align="center"><img src="https://i.imgur.com/JFxwJtU.png" alt="logo" height="50px"></h1>
+<h3 align="center"><img src="https://i.imgur.com/JFxwJtU.png" alt="logo" height="50px"></h3>
+<p align="center">A command-line system information tool written in bash 3.2+</p>
 
 <p align="center">
 <a href="https://discord.gg/BtnTPFF"><img src="https://img.shields.io/discord/440354555197128704.svg"></a>
