@@ -3352,9 +3352,9 @@ get_cols() {
         cols="${cols//nl/\\n\\e[${text_padding}C${zws}}"
 
         # Add block height to info height.
-        ((info_height+=block_height+2))
+        ((info_height+=block_height-1))
 
-        printf "%b\n" "\e[${text_padding}C${zws}${cols}"
+        printf "%b" "\e[${text_padding}C${zws}${cols}"
     fi
 
     unset -v blocks blocks2 cols
@@ -3362,7 +3362,7 @@ get_cols() {
     # TosWin2 on FreeMiNT is terrible at this,
     # so we'll reset colors arbitrarily.
     [[ "$term" == "TosWin2" ]] && \
-        printf "%b\n" "\e[30;47m"
+        printf "%b" "\e[30;47m"
 
     # Tell info() that we printed manually.
     prin=1
@@ -3943,6 +3943,8 @@ get_underline() {
                         "${underline// /$underline_char}${reset} "
         unset -v length
     fi
+
+    ((++info_height))
     prin=1
 }
 
@@ -3952,7 +3954,6 @@ get_line_break() {
 
     # Calculate info height.
     ((++info_height))
-    line_breaks+="\n"
 
     # Tell info() that we printed manually.
     prin=1
@@ -4189,49 +4190,19 @@ kde_config_dir() {
     kde_config_dir="${kde_config_dir/$'/:'*}"
 }
 
-get_term_padding() {
-    # Terminal info.
-    #
-    # Parse terminal config files to get
-    # info about padding. Due to how w3m-img
-    # works padding around the terminal throws
-    # off the cursor placement calculation in
-    # specific terminals.
-    #
-    # Note: This issue only seems to affect
-    # URxvt.
-    ((term_run != 1)) && get_term
-
-    case "$term" in
-        "URxvt"*)
-            border="$(xrdb -query | awk -F ':' '/^(URxvt|\*).internalBorder/ {printf $2; exit}')"
-        ;;
-    esac
-}
-
 dynamic_prompt() {
-    case "$image_backend" in
-        "ascii") printf "\n" ;;
-        "off") return ;;
-        *)
-            get_term_padding
-            lines="$(((border + height + yoffset) / font_height))"
-            image_prompt="on"
-        ;;
-    esac
+    [[ "$image_backend" == "off" ]] && { printf "\n"; return; }
+    [[ "$image_backend" != "ascii" ]] && ((lines+=1000))
 
-    # If the info is higher than the ascii/image place the prompt
-    # based on the info height instead of the ascii/image height.
-    if ((lines < info_height)); then
-        [[ "$image_prompt" ]] && printf "\n"
-        return
-    else
-        [[ "$image_prompt" ]] && printf "%b\n" "$line_breaks"
+    # If the ascii art is taller than the info.
+    if ((lines > info_height)); then
         lines="$((lines - info_height + 1))"
+    else
+        lines=1
     fi
 
     # Set the prompt location.
-    if ((lines > 1)); then
+    if ((lines >= 1)); then
         case "$kernel_name" in
             "OpenBSD") tput cud "$lines" ;;
             *) printf "%b" "\e[${lines}B" ;;
