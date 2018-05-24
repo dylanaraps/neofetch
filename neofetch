@@ -3910,10 +3910,7 @@ info() {
 prin() {
     # If $2 doesn't exist we format $1 as info.
     if [[ "$(trim "$1")" && "$2" ]]; then
-        if [[ "$json" ]]; then
-            printf "    %b\n" "\"${1}\": \"${2}\","
-            return
-        fi
+        [[ "$json" ]] && { printf "    %s\n" "\"${1}\": \"${2}\","; return; }
 
         string="${1}${2:+: $2}"
     else
