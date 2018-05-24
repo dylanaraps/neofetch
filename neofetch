@@ -3801,12 +3801,14 @@ display_image() {
         ;;
 
         "catimg")
-            catimg -w "$((width * 2 / font_width))" -r "$catimg_size" "$image" ||\
+            catimg -w "$((width*2 / font_width))" -r "$catimg_size" "$image" ||\
                 to_off "Image: catimg failed to display the image."
         ;;
 
         "jp2a")
-            jp2a --width="$((width / font_width))" --colors "$image" ||\
+            jp2a --width="$((width / font_width))" \
+                 --height="$((height / font_height))" \
+                 --colors "$image" ||\
                 to_off "Image: jp2a failed to display the image."
         ;;
 
@@ -3828,7 +3830,9 @@ display_image() {
         ;;
 
         "termpix")
-            termpix --width "$((width / font_width))" "$image" ||\
+            termpix --width "$((width / font_width))" \
+                    --height "$((height / font_height))" \
+                    "$image" ||\
                 to_off "Image: termpix failed to display the image."
         ;;
 
@@ -4201,7 +4205,8 @@ kde_config_dir() {
 
 dynamic_prompt() {
     [[ "$image_backend" == "off" ]] && { printf "\n"; return; }
-    [[ "$image_backend" != "ascii" ]] && ((lines+=1000))
+    [[ "$image_backend" != "ascii" ]] && lines="$(((height + yoffset) / font_height))"
+    [[ "$image_backend" == "catimg" ]] && { printf "%b" "\e[1000B"; return; }
 
     # If the ascii art is taller than the info.
     if ((lines > info_height)); then
@@ -4210,13 +4215,8 @@ dynamic_prompt() {
         lines=1
     fi
 
-    # Set the prompt location.
-    if ((lines >= 1)); then
-        case "$kernel_name" in
-            "OpenBSD") tput cud "$lines" ;;
-            *) printf "%b" "\e[${lines}B" ;;
-        esac
-    fi
+    printf -v nlines "%${lines}s"
+    printf "%b" "${nlines// /\\n}"
 }
 
 cache_uname() {
