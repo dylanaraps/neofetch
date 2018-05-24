@@ -2328,7 +2328,7 @@ get_song() {
                            -e "exaile" \
                            -e "gnome-music" \
                            -e "guayadeque" \
-                           -e "iTunes$" \
+                           -e "iTunes" \
                            -e "juk" \
                            -e "lollypop" \
                            -e "mocp" \
