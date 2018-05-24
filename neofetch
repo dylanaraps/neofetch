@@ -3909,6 +3909,11 @@ info() {
 prin() {
     # If $2 doesn't exist we format $1 as info.
     if [[ "$(trim "$1")" && "$2" ]]; then
+        if [[ "$json" ]]; then
+            printf "    %b\n" "\"${1}\": \"${2}\","
+            return
+        fi
+
         string="${1}${2:+: $2}"
     else
         string="${2:-$1}"
@@ -4716,6 +4721,17 @@ get_args() {
                 help2man -n "A fast, highly customizable system info script" \
                           -N ./neofetch -o neofetch.1
                 exit 1
+            ;;
+
+            "--json")
+                json="on"
+                unset -f get_title get_cols get_line_break get_underline
+
+                printf "{\n"
+                print_info 2>/dev/null
+                printf "    %s\n" "\"Version\": \"${version}\""
+                printf "}\n"
+                exit
             ;;
 
             "--travis")
