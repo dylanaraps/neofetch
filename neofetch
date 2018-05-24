@@ -4201,20 +4201,20 @@ kde_config_dir() {
 
 dynamic_prompt() {
     [[ "$image_backend" == "off" ]] && { printf "\n"; return; }
-    [[ "$image_backend" != "ascii" ]] && { printf "%b" "\e[1000;0H"; return; }
+    [[ "$image_backend" != "ascii" ]] && ((lines+=1000))
 
     # If the ascii art is taller than the info.
     if ((lines > info_height)); then
-        prompt="$((lines - info_height + 1))"
+        lines="$((lines - info_height + 1))"
     else
-        prompt=1
+        lines=1
     fi
 
     # Set the prompt location.
     if ((lines >= 1)); then
         case "$kernel_name" in
-            "OpenBSD") tput cud "$prompt" ;;
-            *) printf "\n\n%b" "\e[${prompt}D" ;;
+            "OpenBSD") tput cud "$lines" ;;
+            *) printf "%b" "\e[${lines}B" ;;
         esac
     fi
 }
