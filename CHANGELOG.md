@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - [ascii] Fixed a bug causing Windows 7 ASCII art to not display.
 - [image] Added new option to configure the resolution of `catimg`.
+- [font] Fix iTerm2 checking for 2 extra profiles that don't exist. [**@iandrewt**](https://github.com/iandrewt")
 
 ## [4.0.2] - 2018-05-19
 
