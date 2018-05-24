@@ -2800,9 +2800,9 @@ END
             font_file="${HOME}/Library/Preferences/com.googlecode.iterm2.plist"
 
             # Count Guids in "New Bookmarks"; they should be unique
-            profiles_count="$(PlistBuddy -c "Print :New\ Bookmarks:" "$font_file" | grep -c "Guid")"
+            profiles_count="$(PlistBuddy -c "Print :New\ Bookmarks:" "$font_file" | grep -w -c "Guid")"
 
-            for ((i=0; i<=profiles_count; i++)); do
+            for ((i=0; i<profiles_count; i++)); do
                 profile_name="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Name:" "$font_file")"
 
                 if [[ "$profile_name" == "$current_profile_name" ]]; then
