@@ -2317,7 +2317,7 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps -e | grep -m 1 -o \
+    player="$(ps -e | grep -m 1 -F \
                            -e "Google Play" \
                            -e "Spotify" \
                            -e "amarok" \
@@ -2349,6 +2349,8 @@ get_song() {
                            -e "yarock" \
                            -e "sayonara" \
                            -e "vlc")"
+    player="${player/* }"
+    player="${player##*/}"
 
     [[ "$music_player" && "$music_player" != "auto" ]] && \
         player="$music_player"
