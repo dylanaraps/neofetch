@@ -2313,7 +2313,7 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps -e | grep -m 1 \
+    player="$(ps -e | grep -m 1 -F \
                            -e "Google Play" \
                            -e "Spotify" \
                            -e "amarok" \
@@ -2328,7 +2328,7 @@ get_song() {
                            -e "exaile" \
                            -e "gnome-music" \
                            -e "guayadeque" \
-                           -e "iTunes$" \
+                           -e "iTunes" \
                            -e "juk" \
                            -e "lollypop" \
                            -e "mocp" \
