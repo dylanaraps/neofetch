@@ -2317,38 +2317,40 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps -e | grep -m 1 -F \
-                           -e "Google Play" \
-                           -e "Spotify" \
-                           -e "amarok" \
-                           -e "audacious" \
-                           -e "banshee" \
-                           -e "bluemindo" \
-                           -e "clementine" \
-                           -e "cmus" \
-                           -e "deadbeef" \
-                           -e "deepin-music" \
-                           -e "elisa" \
-                           -e "exaile" \
-                           -e "gnome-music" \
-                           -e "guayadeque" \
-                           -e "iTunes" \
-                           -e "juk" \
-                           -e "lollypop" \
-                           -e "mocp" \
-                           -e "mopidy" \
-                           -e "mpd" \
-                           -e "pogo" \
-                           -e "pragha" \
-                           -e "qmmp" \
-                           -e "quodlibet" \
-                           -e "rhythmbox" \
-                           -e "spotify" \
-                           -e "tomahawk" \
-                           -e "xmms2d" \
-                           -e "yarock" \
-                           -e "sayonara" \
-                           -e "vlc")"
+    player="$(ps -e)"
+    player="${player/iTunesHelper}"
+    player="$(grep -m 1 -F \
+                   -e "Google Play" \
+                   -e "Spotify" \
+                   -e "amarok" \
+                   -e "audacious" \
+                   -e "banshee" \
+                   -e "bluemindo" \
+                   -e "clementine" \
+                   -e "cmus" \
+                   -e "deadbeef" \
+                   -e "deepin-music" \
+                   -e "elisa" \
+                   -e "exaile" \
+                   -e "gnome-music" \
+                   -e "guayadeque" \
+                   -e "iTunes" \
+                   -e "juk" \
+                   -e "lollypop" \
+                   -e "mocp" \
+                   -e "mopidy" \
+                   -e "mpd" \
+                   -e "pogo" \
+                   -e "pragha" \
+                   -e "qmmp" \
+                   -e "quodlibet" \
+                   -e "rhythmbox" \
+                   -e "spotify" \
+                   -e "tomahawk" \
+                   -e "xmms2d" \
+                   -e "yarock" \
+                   -e "sayonara" \
+                   -e "vlc" -- <<< "$player")"
     player="${player/* }"
     player="${player##*/}"
 
