@@ -2364,18 +2364,18 @@ get_song() {
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
             awk -F '"' 'BEGIN {RS=" entry"}; /xesam:artist/ {a = $4} /xesam:album/ {b = $4}
-                        /xesam:title/ {t = $4} END {print a " -@- " b " -@- " t}'
+                        /xesam:title/ {t = $4} END {print a " \n " b " \n " t}'
         )"
     }
 
     case "${player/*\/}" in
-        "mpd"* | "mopidy"*) song="$(mpc -f '%artist% -@- %album% -@- %title%' current)" ;;
-        "mocp"*)         song="$(mocp -Q "%artist -@- %album -@- %song")" ;;
+        "mpd"* | "mopidy"*) song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
+        "mocp"*)         song="$(mocp -Q "%artist \n %album \n %song")" ;;
         "google play"*)  song="$(gpmdp-remote current)" ;;
-        "rhythmbox"*)    song="$(rhythmbox-client --print-playing-format '%ta -@- %at -@- %tt')" ;;
-        "deadbeef"*)     song="$(deadbeef --nowplaying-tf '%artist% -@- %album% -@- %title%')" ;;
-        "xmms2d"*)       song="$(xmms2 current -f '${artist} -@- ${album} -@- ${title}')" ;;
-        "qmmp"*)         song="$(qmmp --nowplaying '%p -@- %a -@- %t')" ;;
+        "rhythmbox"*)    song="$(rhythmbox-client --print-playing-format '%ta \n %at \n %tt')" ;;
+        "deadbeef"*)     song="$(deadbeef --nowplaying-tf '%artist% \n %album% \n %title%')" ;;
+        "xmms2d"*)       song="$(xmms2 current -f '${artist} \n ${album} \n ${title}')" ;;
+        "qmmp"*)         song="$(qmmp --nowplaying '%p \n %a \n %t')" ;;
         "gnome-music"*)  get_song_dbus "GnomeMusic" ;;
         "lollypop"*)     get_song_dbus "Lollypop" ;;
         "clementine"*)   get_song_dbus "clementine" ;;
@@ -2395,7 +2395,7 @@ get_song() {
                                           /tag artist/ {$1=$2=""; sub("  ", ""); a=$0}\
                                           /tag album / {$1=$2=""; sub("  ", ""); b=$0}\
                                           /tag title/ {$1=$2=""; sub("  ", ""); t=$0}\
-                                          END { print a " -@- " b " -@- " t }')"
+                                          END { print a " \n " b " \n " t }')"
         ;;
 
         "spotify"*)
@@ -2404,61 +2404,61 @@ get_song() {
 
                 "Mac OS X")
                     song="$(osascript -e 'tell application "Spotify" to artist of current track as¬
-                                          string & " -@- " & album of current track as¬
-                                          string & " -@- " & name of current track as string')"
+                                          string & " \n " & album of current track as¬
+                                          string & " \n " & name of current track as string')"
                 ;;
             esac
         ;;
 
         "itunes"*)
             song="$(osascript -e 'tell application "iTunes" to artist of current track as¬
-                                  string & " -@- " & album of current track as¬
-                                  string & " -@- " & name of current track as string')"
+                                  string & " \n " & album of current track as¬
+                                  string & " \n " & name of current track as string')"
         ;;
 
         "banshee"*)
             song="$(banshee --query-artist --query-album --query-title |\
                     awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
-                    END{print a " -@- " b " -@- "t}')"
+                    END{print a " \n " b " \n "t}')"
         ;;
 
         "amarok"*)
             song="$(qdbus org.kde.amarok /Player GetMetadata |\
                     awk -F':' '/^artist:/ {a=$2} /^album:/ {b=$2} /^title:/ {t=$2}
-                    END{print a " -@- " b " -@- " t}')"
+                    END{print a " \n " b " \n " t}')"
         ;;
 
         "pragha"*)
             song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
-                                END{print a " -@- " b " -@- " t}')"
+                                END{print a " \n " b " \n " t}')"
         ;;
 
         "exaile"*)
             song="$(dbus-send --print-reply --dest=org.exaile.Exaile  /org/exaile/Exaile \
                     org.exaile.Exaile.Query |
-                    awk -F':|,' '{if ($6 && $8 && $4) printf $6 " -@-" $8 " -@-" $4}')"
+                    awk -F':|,' '{if ($6 && $8 && $4) printf $6 " \n" $8 " \n" $4}')"
         ;;
 
         "quodlibet"*)
             song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet \
                     /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
                     awk -F'"' '/artist/ {getline; a=$2} /album/ {getline; b=$2}
-                               /title/ {getline; t=$2} END{print a " -@- " b " -@- " t}')"
+                               /title/ {getline; t=$2} END{print a " \n " b " \n " t}')"
         ;;
 
         "pogo"*)
             song="$(dbus-send --print-reply --dest=org.mpris.pogo /Player \
                     org.freedesktop.MediaPlayer.GetMetadata |
                     awk -F'"' '/string "artist"/ {getline; a=$2} /string "album"/ {getline; b=$2} \
-                               /string "title"/ {getline; t=$2} END{print a " -@- " b " -@- " t}')"
+                               /string "title"/ {getline; t=$2} END{print a " \n " b " \n " t}')"
         ;;
 
-        *) mpc >/dev/null 2>&1 && song="$(mpc -f '%artist% -@- %album% -@- %title%' current)" ;;
+        *) mpc >/dev/null 2>&1 && song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
     esac
 
     [[ "$song" != *[a-z]* ]] && { unset -v song; return; }
 
-    IFS=$'\n' read -d "" -r artist album title <<< "${song//-@-/$'\n'}"
+    IFS=$'\n' read -d "" -r artist album title <<< "$song"
 
     # Display Artist, Album and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
