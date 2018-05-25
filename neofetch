@@ -2317,40 +2317,42 @@ get_memory() {
 }
 
 get_song() {
-    player="$(ps -e | grep -m 1 -F \
-                           -e "Google Play" \
-                           -e "Spotify" \
-                           -e "amarok" \
-                           -e "audacious" \
-                           -e "banshee" \
-                           -e "bluemindo" \
-                           -e "clementine" \
-                           -e "cmus" \
-                           -e "deadbeef" \
-                           -e "deepin-music" \
-                           -e "elisa" \
-                           -e "exaile" \
-                           -e "gnome-music" \
-                           -e "guayadeque" \
-                           -e "iTunes" \
-                           -e "juk" \
-                           -e "lollypop" \
-                           -e "mocp" \
-                           -e "mopidy" \
-                           -e "mpd" \
-                           -e "pogo" \
-                           -e "pragha" \
-                           -e "qmmp" \
-                           -e "quodlibet" \
-                           -e "rhythmbox" \
-                           -e "spotify" \
-                           -e "tomahawk" \
-                           -e "xmms2d" \
-                           -e "yarock" \
-                           -e "sayonara" \
-                           -e "vlc")"
-    player="${player/* }"
-    player="${player##*/}"
+    players=(
+        "amarok"
+        "audacious"
+        "banshee"
+        "bluemindo"
+        "clementine"
+        "cmus"
+        "deadbeef"
+        "deepin-music"
+        "elise"
+        "exaile"
+        "gnome-music"
+        "Google Play"
+        "guayadeque"
+        "iTunes"
+        "juk"
+        "lollypop"
+        "mocp"
+        "mopidy"
+        "mpd"
+        "pogo"
+        "pragha"
+        "qmmp"
+        "quodlibet"
+        "rhythmbox"
+        "sayonara"
+        "spotify"
+        "Spotify"
+        "tomahawk"
+        "vlc"
+        "xmms2d"
+        "yarock"
+    )
+
+    printf -v players "|%s" "${players[@]}"
+    player="$(ps -e | awk -v pattern="(${players:1})$" '$0 ~ pattern {print $NF; exit}')"
 
     [[ "$music_player" && "$music_player" != "auto" ]] && \
         player="$music_player"
