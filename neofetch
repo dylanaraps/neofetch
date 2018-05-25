@@ -2458,7 +2458,7 @@ get_song() {
 
     [[ "$song" != *[a-z]* ]] && { unset -v song; return; }
 
-    LC_ALL="$sys_locale" IFS=$'\n' read -d "" -r artist album title <<< "${song//-@-/$'\n'}"
+    IFS=$'\n' read -d "" -r artist album title <<< "${song//-@-/$'\n'}"
 
     # Display Artist, Album and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
