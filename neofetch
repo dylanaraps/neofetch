@@ -32,6 +32,8 @@ bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec:${PATH}"
+reset="\e[0m"
+shopt -s nocasematch
 
 # Speed up script by not using unicode.
 LC_ALL=C
@@ -39,9 +41,6 @@ LANG=C
 
 # Fix issues with gsettings.
 GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
-
-shopt -s nocasematch
-reset="\e[0m"
 
 # Neofetch default config.
 read -rd '' config <<'EOF'
