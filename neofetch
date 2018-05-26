@@ -399,8 +399,6 @@ disk_subtitle="mount"
 #
 # Available values for 'player-name':
 #
-# Google Play
-# Spotify
 # amarok
 # audacious
 # banshee
@@ -412,8 +410,9 @@ disk_subtitle="mount"
 # elisa
 # exaile
 # gnome-music
+# Google Play
 # guayadeque
-# iTunes$
+# iTunes
 # juk
 # lollypop
 # mocp
@@ -424,12 +423,13 @@ disk_subtitle="mount"
 # qmmp
 # quodlibet
 # rhythmbox
+# sayonara
 # spotify
+# Spotify
 # tomahawk
+# vlc
 # xmms2d
 # yarock
-# sayonara
-# vlc
 music_player="auto"
 
 # Format to display song information.
