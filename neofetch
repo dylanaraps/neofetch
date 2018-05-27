@@ -971,8 +971,6 @@ get_distro() {
 
         "Windows")
             distro="$(wmic os get Caption)"
-
-            # Strip crap from the output of wmic.
             distro="${distro/Caption}"
             distro="${distro/Microsoft }"
         ;;
