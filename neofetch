@@ -4342,7 +4342,9 @@ Options:
 
 INFO:
     --disable infoname          Allows you to disable an info line from appearing
-                                in the output.
+                                in the output. 'infoname' is the function name from the
+                                'print_info()' function inside the config file.
+                                For example: 'info \"Memory\" memory' would be '--disable memory'
 
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 

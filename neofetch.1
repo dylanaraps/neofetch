@@ -16,7 +16,9 @@ NOTE: Every launch flag has a config option.
 .TP
 \fB\-\-disable\fR infoname
 Allows you to disable an info line from appearing
-in the output.
+in the output. 'infoname' is the function name from the
+\&'print_info()' function inside the config file.
+For example: 'info "Memory" memory' would be '\-\-disable memory'
 .IP
 NOTE: You can supply multiple args. eg. 'neofetch \fB\-\-disable\fR cpu gpu'
 .TP
