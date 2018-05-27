@@ -3835,7 +3835,7 @@ display_image() {
         ;;
 
         "tycat")
-            tycat "$image" ||\
+            tycat -g "${width}x${height}" "$image" ||\
                 to_off "Image: tycat failed to display the image."
         ;;
 
@@ -4193,7 +4193,7 @@ kde_config_dir() {
 
 dynamic_prompt() {
     [[ "$image_backend" == "off" ]] && { printf "\n"; return; }
-    [[ "$image_backend" != "ascii" ]] && lines="$(((height + yoffset) / font_height))"
+    [[ "$image_backend" != "ascii" ]] && lines="$(((height + yoffset) / font_height + 1))"
 
     # If the ascii art is taller than the info.
     if ((lines > info_height)); then
