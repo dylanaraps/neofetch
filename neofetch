@@ -3799,7 +3799,11 @@ display_image() {
         ;;
 
         "kitty")
-            kitty icat --align left --place "${width}x${height}@${xoffset}x${yoffset}" "$image" ||\
+            kitty icat \
+                    --align left \
+                    --place "$((width / font_width))x$((height / font_height))\
+                             @${xoffset}x${yoffset}" \
+                    "$image" ||\
                 to_off "Image: kitty failed to display the image."
         ;;
 
