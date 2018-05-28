@@ -3636,6 +3636,9 @@ get_term_size() {
         term_width="${term_size[2]/t*}"
     fi
 
+    [[ "$image_backend" == "kitty" ]] && \
+        IFS=x read -r term_width term_height < <(kitty icat --print-window-size)
+
     # Get terminal width/height if \e[14t is unsupported.
     if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         if type -p xdotool >/dev/null 2>&1; then
