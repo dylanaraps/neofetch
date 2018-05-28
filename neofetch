@@ -3888,7 +3888,7 @@ info() {
     unset -v prin
 
     # Call the function.
-    get_${2:-$1}"
+    "get_${2:-$1}"
 
     # If the get_func function called 'prin' directly, stop here.
     [[ "$prin" ]] && return
