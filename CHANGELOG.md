@@ -7,9 +7,44 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-- [ascii] Fixed a bug causing Windows 7 ASCII art to not display.
-- [image] Added new option to configure the resolution of `catimg`.
+**Contributors**
+
+- [**@mstraube**](https://github.com/mstraube)
+- [**@iandrewt**](https://github.com/iandrewt")
+
+**Operating System**
+
+- Added support for RedCore Linux. [**@mstraube**](https://github.com/mstraube)
+
+**General**
+
+- [output] Added `--json` to output the info in `json`.
+- [cursor] Fixed prompt location issues after Neofetch is run.
+- [macOS] Fixed neofetch launching XQuartz.
+- [misc] Removed `uppercase()`.
+- [misc] Removed all instances of `export`.
+
+**Ascii**
+
+- Fixed a bug causing Windows 7 ASCII art to not display.
+
+**Image**
+
+- Removed `catimg` support (*It didn’t allow us to specify height so we
+  couldn’t accurately place the cursor*).
+- Fixed `tycat`, `sixel` and `kitty icat` image sizes.
+
+**Screenshot**
+
+- Removed screenshot functionality.
+- Removed screenshot upload functionality.
+
+**Info**
+
 - [font] Fix iTerm2 checking for 2 extra profiles that don't exist. [**@iandrewt**](https://github.com/iandrewt")
+- [gpu] Fixed ATI/AMD branding issue.
+- [song] Fixed song detection on macOS.
+- [song] Fixed song output on systems using `C` locale.
 
 ## [4.0.2] - 2018-05-19
 
