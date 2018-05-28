@@ -1002,9 +1002,9 @@ get_distro() {
         *) machine_arch="$(uname -m)" ;;
 
     esac
-    if [[ "$os_arch" == "on" ]]; then
+
+    [[ "$os_arch" == "on" ]] && \
         distro+=" ${machine_arch}"
-    fi
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
@@ -1793,7 +1793,7 @@ get_cpu() {
             # Get CPU cores.
             case "$cpu_cores" in
                 "logical" | "on") cores="$(grep -c "^processor" "$cpu_file")" ;;
-                "physical") cores="$(grep "^core id" "$cpu_file" | sort -u | wc -l)" ;;
+                "physical") cores="$(awk '/^core id/&&!a[$0]++{++i}END{print i}' "$cpu_file")" ;;
             esac
         ;;
 
