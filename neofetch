@@ -1239,7 +1239,7 @@ get_uptime() {
 get_packages() {
     case "$os" in
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
-            type -p paclog-pkglist >/dev/null && \
+            type -p pacman-key >/dev/null && \
                 packages="$(pacman -Qq --color never | wc -l)"
 
             type -p dpkg >/dev/null && \
@@ -1254,7 +1254,7 @@ get_packages() {
             type -p xbps-query >/dev/null && \
                 ((packages+=$(xbps-query -l | wc -l)))
 
-            type -p pkginfo >/dev/null && \
+            [[ "$os" != "Linux" ]] && type -p pkginfo >/dev/null && \
                 ((packages+=$(pkginfo -i | wc -l)))
 
             type -p emerge >/dev/null && \
@@ -3888,7 +3888,7 @@ info() {
     unset -v prin
 
     # Call the function.
-    "get_${2:-$1}"
+    get_${2:-$1}"
 
     # If the get_func function called 'prin' directly, stop here.
     [[ "$prin" ]] && return
