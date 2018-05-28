@@ -2078,9 +2078,6 @@ get_gpu() {
                     ;;
 
                     *"intel"*)
-                        type -p glxinfo >/dev/null && \
-                            gpu="$(glxinfo | grep "Device:.*Intel")"
-
                         gpu="${gpu/*Intel/Intel}"
                         gpu="${gpu/'(R)'}"
                         gpu="${gpu/'Corporation'}"
