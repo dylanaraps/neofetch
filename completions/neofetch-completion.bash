@@ -3,19 +3,19 @@
 # Shell completion for neofetch.
 
 _neofetch_completions() {
-    local flags cur prev
+    local flags cur prev usage
+
+    usage="$(neofetch --help)"
 
     # User input.
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
     # Generate a list of flags.
-    IFS=$'\n' read -d "" -ra flags \
-        < <(neofetch --help | awk '/^    --/{print $1}')
+    IFS=$'\n' read -d "" -ra flags < <(awk '/^    --/{print $1}' <<< "$usage")
 
     # Complete partial matches.
-    IFS=$'\n' read -d "" -ra COMPREPLY \
-        < <(compgen -W "${flags[*]}" -- "$cur")
+    IFS=$'\n' read -d "" -ra COMPREPLY < <(compgen -W "${flags[*]}" -- "$cur")
 
 
     case "$prev" in
@@ -29,7 +29,31 @@ _neofetch_completions() {
 
         "--backend")
             IFS=$'\n' read -d "" -ra COMPREPLY \
-                < <(neofetch --help | awk -F\' '/ Shortcut/ {print $2}')
+                < <(awk -F\' '/ Shortcut/ {print $2}' <<< "$usage")
+        ;;
+
+        "--os_arch"|\
+        "--speed_shorthand"|\
+        "--cpu_brand"|\
+        "--cpu_speed"|\
+        "--distro_shorthand"|\
+        "--kernel_shorthand"|\
+        "--uptime_shorthand"|\
+        "--refresh_rate"|\
+        "--gpu_brand"|\
+        "--gtk_shorthand"|\
+        "--gtk2"|\
+        "--gtk3"|\
+        "--shell_path"|\
+        "--shell_version"|\
+        "--song_shorthand"|\
+        "--install_time"|\
+        "--underline"|\
+        "--bold"|\
+        "--color_blocks"|\
+        "--bar_border"|\
+        "--ascii_bold")
+            COMPREPLY=("on" "off")
         ;;
     esac
 }
