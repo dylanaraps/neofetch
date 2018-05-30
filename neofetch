@@ -4705,7 +4705,7 @@ get_args() {
             "-v") verbose="on" ;;
             "--print_config") printf "%s\\n" "$config"; exit ;;
             "-vv") set -x; verbose="on" ;;
-            "--help") usage ;;
+            "-h"|"--help") usage ;;
             "--version")
                 printf "%s\\n" "Neofetch $version"
                 exit 1

@@ -4,19 +4,15 @@
 shopt -s nullglob
 
 _neofetch_completions() {
-    local flags cur prev
+    local cur prev
 
     # User input.
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-    # Generate a list of flags.
-    IFS=$'\n' read -d "" -ra flags \
-        < <(neofetch --help | awk '/^    --/{print $1}')
-
     # Complete partial matches.
     IFS=$'\n' read -d "" -ra COMPREPLY \
-        < <(compgen -W "${flags[*]}" -- "$cur")
+        < <(compgen -W "$(neofetch -h | awk '/^    --/{printf $1" "}')" -- "$cur")
 
     case "$prev" in
         "--disable")
