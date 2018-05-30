@@ -4494,7 +4494,6 @@ ASCII:
     --ascii_bold on/off         Whether or not to bold the ascii logo.
     -L, --logo                  Hide the info text and only show the ascii logo.
 
-                                Possible values: bar, infobar, barinfo, off
 
 IMAGE:
     --loop                      Redraw the image constantly until Ctrl+C is used. This fixes issues
