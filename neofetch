@@ -996,15 +996,8 @@ get_distro() {
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
 
-    # Get OS architecture.
-    case "$os" in
-        "Solaris" | "AIX" | "Haiku" | "IRIX" | "FreeMiNT") machine_arch="$(uname -p)" ;;
-        *) machine_arch="$(uname -m)" ;;
-
-    esac
-
     [[ "$os_arch" == "on" ]] && \
-        distro+=" ${machine_arch}"
+        distro+=" $HOSTTYPE"
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
@@ -1038,7 +1031,7 @@ get_model() {
         ;;
 
         "iPhone OS")
-            case "$machine_arch" in
+            case "$HOSTTYPE" in
                 "iPad1,1") model="iPad" ;;
                 "iPad2,"[1-4]) model="iPad 2" ;;
                 "iPad3,"[1-3]) model="iPad 3" ;;
@@ -1739,7 +1732,7 @@ get_cpu() {
             # Get CPU name.
             cpu_file="/proc/cpuinfo"
 
-            case "$machine_arch" in
+            case "$HOSTTYPE" in
                 "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
                     cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' "$cpu_file")"
                 ;;
@@ -1808,7 +1801,7 @@ get_cpu() {
         ;;
 
         "iPhone OS")
-            case "$machine_arch" in
+            case "$HOSTTYPE" in
                 "iPhone1,"[1-2] | "iPod1,1") cpu="Samsung S5L8900 (1) @ 412MHz" ;;
                 "iPhone2,1") cpu="Samsung S5PC100 (1) @ 600MHz" ;;
                 "iPhone3,"[1-3] | "iPod4,1") cpu="Apple A4 (1) @ 800MHz" ;;
@@ -2119,7 +2112,7 @@ get_gpu() {
         ;;
 
         "iPhone OS")
-            case "$machine_arch" in
+            case "$HOSTTYPE" in
                 "iPhone1,"[1-2]) gpu="PowerVR MBX Lite 3D" ;;
                 "iPhone5,"[1-4]) gpu="PowerVR SGX543MP3" ;;
                 "iPhone8,"[1-4]) gpu="PowerVR GT7600" ;;
@@ -8441,10 +8434,8 @@ main() {
     err "Neofetch command: $0 $*"
     err "Neofetch version: $version"
 
-    # Show error messages.
     [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
 
-    # If `--loop` was used, constantly redraw the image.
     while [[ "$image_loop" == "on" && "$image_backend" == "w3m" ]]; do display_image; sleep 1; done
 
     return 0
