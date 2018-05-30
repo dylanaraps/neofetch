@@ -3418,17 +3418,8 @@ image_backend() {
 }
 
 get_ascii() {
-    if [[ ! -f "$image_source" ||
-          "$image_source" =~ ^(auto|ascii)$ ||
-          "$image_source" =~ \.(png|jpg|jpe|jpeg|gif)$ ]]; then
-
-        # Fallback to distro ascii mode if custom ascii isn't found.
-        [[ ! "$image_source" =~ ^(auto|ascii)$ ]] && \
-            err "Ascii: Ascii file not found, using distro ascii."
-
-        # Fallback to distro ascii mode if source is an image.
-        [[ "$image_source" =~ \.(png|jpg|jpe|jpeg|gif)$ ]] && \
-            err "Image: Source is image file but ascii backend was selected. Using distro ascii."
+    if [[ ! -f "$image_source" ]]; then
+        err "Ascii: Ascii file not found, using distro ascii."
     else
         ascii_data="$(< "$image_source")"
     fi
@@ -3458,10 +3449,7 @@ get_ascii() {
     print="${print//'${c5}'/$c5}"
     print="${print//'${c6}'/$c6}"
 
-    # Overwrite padding if ascii_length_force is set.
-    [[ "$ascii_length_force" ]] && ascii_length="$ascii_length_force"
-
-    text_padding="$((ascii_length + gap))"
+    ((text_padding=ascii_length+gap))
     printf "%b" "$print"
     LC_ALL=C
 }
