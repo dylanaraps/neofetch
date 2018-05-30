@@ -3571,27 +3571,17 @@ END
 
 get_w3m_img_path() {
     # Find w3m-img path.
-    if [[ -x "/usr/lib/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/lib/w3m/w3mimgdisplay"
+    shopt -s nullglob
+    w3m_paths=(
+        /usr/{local/,}{lib,libexec,lib64,libexec64}/w3m/w3mi*
+        ~/.nix-profile/libexec/w3m/w3mi*
+    )
+    shopt -u nullglob
 
-    elif [[ -x "/usr/libexec/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/libexec/w3m/w3mimgdisplay"
+    [[ -x "${w3m_paths[0]}" ]] && \
+        { w3m_img_path="${w3m_paths[0]}"; return; }
 
-    elif [[ -x "/usr/lib64/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/lib64/w3m/w3mimgdisplay"
-
-    elif [[ -x  "/usr/libexec64/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/libexec64/w3m/w3mimgdisplay"
-
-    elif [[ -x "/usr/local/libexec/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="/usr/local/libexec/w3m/w3mimgdisplay"
-
-    elif [[ -x "$HOME/.nix-profile/libexec/w3m/w3mimgdisplay" ]]; then
-        w3m_img_path="$HOME/.nix-profile/libexec/w3m/w3mimgdisplay"
-
-    else
-        err "Image: w3m-img wasn't found on your system"
-    fi
+    err "Image: w3m-img wasn't found on your system"
 }
 
 get_term_size() {
