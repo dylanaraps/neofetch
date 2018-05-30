@@ -6,13 +6,11 @@ shopt -s nullglob
 _neofetch_completions() {
     local cur prev
 
-    # User input.
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-    # Complete partial matches.
     IFS=$'\n' read -d "" -ra COMPREPLY \
-        < <(compgen -W "$(neofetch -h | awk '/^    --/{printf $1" "}')" -- "$cur")
+        < <(compgen -W "$(neofetch -h | awk '/  --/{printf $1" "}')" -- "$cur")
 
     case "$prev" in
         "--disable")
