@@ -3560,10 +3560,7 @@ END
 get_w3m_img_path() {
     # Find w3m-img path.
     shopt -s nullglob
-    w3m_paths=(
-        /usr/{local/,}{lib,libexec,lib64,libexec64}/w3m/w3mi*
-        ~/.nix-profile/libexec/w3m/w3mi*
-    )
+    w3m_paths=({/usr/{local/,},~/.nix-profile/}{lib,libexec,lib64,libexec64}/w3m/w3mi*)
     shopt -u nullglob
 
     [[ -x "${w3m_paths[0]}" ]] && \
