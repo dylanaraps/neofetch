@@ -3010,16 +3010,15 @@ END
             term_font="${term_font/*"*.font:"}"
             term_font="$(trim "$term_font")"
 
-            if [[ -z "$term_font" && "$term" == "xterm" ]]; then
+            [[ -z "$term_font" && "$term" == "xterm" ]] && \
                 term_font="$(grep -E '^XTerm.vt100.faceName' <<< "$xrdb")"
-                term_font="${term_font/*"faceName:"}"
-            fi
+
+            term_font="$(trim "${term_font/*"faceName:"}")"
 
             # xft: isn't required at the beginning so we prepend it if it's missing
-            if [[ "${term_font:0:1}" != "-" && \
-                  "${term_font:0:4}" != "xft:" ]]; then
+            [[ "${term_font:0:1}" != "-" && \
+               "${term_font:0:4}" != "xft:" ]] && \
                 term_font="xft:$term_font"
-            fi
 
             # Xresources has two different font formats, this checks which
             # one is in use and formats it accordingly.
@@ -3029,7 +3028,9 @@ END
                     term_font="${term_font/:*}"
                 ;;
 
-                "-"*) term_font="$(awk -F '\\-' '{printf $3}' <<< "$term_font")" ;;
+                "-"*)
+                    IFS=- read -r _ _ term_font _ <<< "$term_font"
+                ;;
             esac
         ;;
 
