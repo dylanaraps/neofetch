@@ -3053,15 +3053,17 @@ get_disk() {
     type -p df >/dev/null 2>&1 ||\
         { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
-    # Get "df" version.
     df_version="$(df --version 2>&1)"
+
     case "$df_version" in
+        *"IMitv"*)   df_flags=(-P -g) ;; # AIX
+        *"befhikm"*) df_flags=(-P -k) ;; # IRIX
+
         *"Tracker"*) # Haiku
             err "Your version of df cannot be used due to the non-standard flags"
             return
         ;;
-        *"IMitv"*) df_flags=(-P -g) ;; # AIX
-        *"befhikm"*) df_flags=(-P -k) ;; # IRIX
+
         *) df_flags=(-P -h) ;;
     esac
 
@@ -3071,10 +3073,10 @@ get_disk() {
     unset "disks[0]"
 
     # Stop here if 'df' fails to print disk info.
-    if [[ -z "${disks[*]}" ]]; then
+    [[ -z "${disks[*]}" ]] && {
         err "Disk: df failed to print the disks, make sure the disk_show array is set properly."
         return
-    fi
+    }
 
     for disk in "${disks[@]}"; do
         # Create a second array and make each element split at whitespace this time.
@@ -3085,17 +3087,26 @@ get_disk() {
             *"befhikm"*)
                 disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)"
             ;;
-            *) disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)" ;;
+
+            *)
+                disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+            ;;
         esac
 
         # Subtitle.
         case "$disk_subtitle" in
-            "name") disk_sub="${disk_info[0]}" ;;
+            "name")
+                disk_sub="${disk_info[0]}"
+            ;;
+
             "dir")
                 disk_sub="${disk_info[5]/*\/}"
-                [[ -z "$disk_sub" ]] && disk_sub="${disk_info[5]}"
+                disk_sub="${disk_sub:-${disk_info[5]}}"
             ;;
-            *) disk_sub="${disk_info[5]}" ;;
+
+            *)
+                disk_sub="${disk_info[5]}"
+            ;;
         esac
 
         # Bar.
