@@ -781,19 +781,29 @@ EOF
 get_os() {
     # $kernel_name is set in a function called cache_uname and is
     # just the output of "uname -s".
-    case "$kernel_name" in
-        "Linux" | "GNU"*) os="Linux" ;;
-        "Darwin") os="$(sw_vers -productName)" ;;
-        *"BSD" | "DragonFly" | "Bitrig") os="BSD" ;;
-        "CYGWIN"* | "MSYS"* | "MINGW"*) os="Windows" ;;
-        "SunOS") os="Solaris" ;;
-        "Haiku") os="Haiku" ;;
-        "MINIX") os="MINIX" ;;
-        "AIX") os="AIX" ;;
-        "IRIX"*) os="IRIX" ;;
-        "FreeMiNT") os="FreeMiNT" ;;
+    case "$OSTYPE" in
+        "aix"*)     os="AIX" ;;
+        "darwin"*)  os="$(sw_vers -productName)" ;;
+        "haiku"*)   os="Haiku" ;;
+        "irix"*)    os="IRIX" ;;
+        "minix"*)   os="MINIX" ;;
+        "mint"*)    os="FreeMiNT" ;;
+        "solaris"*) os="Solaris" ;;
+
+        "linux"* | "gnu"*)
+            os="Linux"
+        ;;
+
+        *"bsd"* | "dragonfly"* | "bitrig"*)
+            os="BSD"
+        ;;
+
+        "cygwin"* | "msys"* | "mingw"* | "win32"*)
+            os="Windows"
+        ;;
+
         *)
-            printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
+            printf "%s\n" "Unknown OS detected: '$OSTYPE', aborting..." >&2
             printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
             exit 1
         ;;
