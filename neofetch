@@ -7357,6 +7357,24 @@ ${c1}           `-/osyyyysosyhhhhhyys+-
 EOF
         ;;
 
+        "PureOS"*)
+            set_colors 2 7 7
+            read -rd '' ascii_data <<'EOF'
+${c1}dmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmd
+dNm//////////////////////////////////mNd
+dNd                                  dNd
+dNd                                  dNd
+dNd                                  dNd
+dNd                                  dNd
+dNd                                  dNd
+dNd                                  dNd
+dNd                                  dNd
+dNd                                  dNd
+dNm//////////////////////////////////mNd
+dmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmd
+EOF
+        ;;
+
         "Qubes"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
