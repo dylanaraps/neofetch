@@ -3034,13 +3034,13 @@ END
         ;;
 
         "xfce4-terminal")
-            term_font="$(awk -F '=' '/^FontName/ {a=$2} /^FontUseSystem=TRUE/ {a=$0} END{print a}' \
+            term_font="$(awk -F '=' '/^FontName/{a=$2}/^FontUseSystem=TRUE/{a=$0}END{print a}' \
                          "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
 
-            if [[ "$term_font" == "FontUseSystem=TRUE" ]]; then
+            [[ "$term_font" == "FontUseSystem=TRUE" ]] && \
                 term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
-                term_font="$(trim_quotes "$term_font")"
-            fi
+
+            term_font="$(trim_quotes "$term_font")"
 
             # Default fallback font hardcoded in terminal-preferences.c
             [[ -z "$term_font" ]] && term_font="Monospace 12"
