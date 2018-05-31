@@ -996,8 +996,14 @@ get_distro() {
 
     [[ -z "$distro" ]] && distro="$os (Unknown)"
 
+    # Get OS architecture.
+    case "$os" in
+        "Solaris" | "AIX" | "Haiku" | "IRIX" | "FreeMiNT") machine_arch="$(uname -p)" ;;
+        *) machine_arch="$kernel_machine" ;;
+    esac
+
     [[ "$os_arch" == "on" ]] && \
-        distro+=" $HOSTTYPE"
+        distro+=" $machine_arch"
 
     [[ "${ascii_distro:-auto}" == "auto" ]] && \
         ascii_distro="$(trim "$distro")"
