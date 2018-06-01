@@ -32,7 +32,7 @@ bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
 XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
 PATH="/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec:${PATH}"
-reset="\e[0m"
+reset='\e[0m'
 shopt -s nocasematch
 
 # Speed up script by not using unicode.
@@ -1727,7 +1727,7 @@ get_wm_theme() {
             path="$(wmic process get ExecutablePath | grep -F "blackbox")"
             path="${path//\\/\/}"
 
-            wm_theme="$(grep "^session\.styleFile:" "${path/\.exe/.rc}")"
+            wm_theme="$(grep '^session\.styleFile:' "${path/\.exe/.rc}")"
             wm_theme="${wm_theme/'session.styleFile: '}"
             wm_theme="${wm_theme##*\\}"
             wm_theme="${wm_theme%.*}"
@@ -2790,7 +2790,7 @@ END
             # dow" though, but that does not match to a guid in the plist.
             # So, be warned, collisions may occur!
             # See: https://groups.google.com/forum/#!topic/iterm2-discuss/0tO3xZ4Zlwg
-            local current_profile_name profiles_count profile_name diff_font none_ascii
+            local current_profile_name profiles_count profile_name diff_font
 
             current_profile_name="$(osascript <<END
                                     tell application "iTerm2" to profile name \
