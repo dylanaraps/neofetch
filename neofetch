@@ -1335,7 +1335,7 @@ get_packages() {
 
         "Mac OS X" | "MINIX")
             [[ -d "/usr/local/bin" ]] && \
-                packages="$(($(ls -l /usr/local/bin/ | grep -cv "\(../Cellar/\|brew\)") - 1))"
+                packages="$(($(find /usr/local/bin/ \( -not -ilname "*../Cellar/*" -and -not -ilname "*brew*" \) -maxdepth 1 | wc -l) - 1))"
 
             type -p port >/dev/null && \
                 ((packages+=$(port installed | wc -l) - 1))
