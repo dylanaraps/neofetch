@@ -410,6 +410,7 @@ disk_subtitle="mount"
 # elisa
 # exaile
 # gnome-music
+# gmusicbrowser
 # Google Play
 # guayadeque
 # iTunes
@@ -2324,6 +2325,7 @@ get_song() {
         "elise"
         "exaile"
         "gnome-music"
+        "gmusicbrowser"
         "Google Play"
         "guayadeque"
         "iTunes"
@@ -2385,6 +2387,7 @@ get_song() {
         "sayonara"*)     get_song_dbus "sayonara" ;;
         "audacious"*)    get_song_dbus "audacious" ;;
         "vlc"*)          get_song_dbus "vlc" ;;
+        "gmusicbrowser"*) get_song_dbus "gmusicbrowser" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
