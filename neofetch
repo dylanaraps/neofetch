@@ -3345,16 +3345,18 @@ get_cols() {
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
 
-        # Set variables.
-        start="${block_range[0]}"
-        end="${block_range[1]}"
-
         # Generate the string.
-        for ((start; start<=end; start++)); do
-            case "$start" in
-                [0-6]) blocks+="${reset}\e[3${start}m\e[4${start}m${block_width}" ;;
-                7) blocks+="${reset}\e[3${start}m\e[4${start}m${block_width}" ;;
-                *) blocks2+="\e[38;5;${start}m\e[48;5;${start}m${block_width}" ;;
+        for ((block_range[0]; block_range[0]<=block_range[1]; block_range[0]++)); do
+            case "${block_range[0]}" in
+                [0-7])
+                    printf -v blocks  '%b\e[3%bm\e[4%bm%b' \
+                        "$blocks" "${block_range[0]}" "${block_range[0]}" "$block_width"
+                ;;
+
+                *)
+                    printf -v blocks2 '%b\e[38;5;%bm\e[48;5;%bm%b' \
+                        "$blocks2" "${block_range[0]}" "${block_range[0]}" "$block_width"
+                ;;
             esac
         done
 
@@ -3372,7 +3374,7 @@ get_cols() {
         # Add block height to info height.
         ((info_height+=block_height-1))
 
-        printf "%b" "\e[${text_padding}C${zws}${cols}"
+        printf '\e[%bC%b' "$text_padding" "${zws}${cols}"
     fi
 
     unset -v blocks blocks2 cols
