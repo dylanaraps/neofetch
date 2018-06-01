@@ -2449,7 +2449,7 @@ get_song() {
                                /string "title"/ {getline; t=$2} END{print a " \n " b " \n " t}')"
         ;;
 
-        *) mpc >/dev/null 2>&1 && song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
+        *) mpc &>/dev/null && song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
     esac
 
     [[ "$song" != *[a-z]* ]] && { unset -v song; return; }
@@ -3050,7 +3050,7 @@ END
 }
 
 get_disk() {
-    type -p df >/dev/null 2>&1 ||\
+    type -p df &>/dev/null ||\
         { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
     df_version="$(df --version 2>&1)"
@@ -3389,7 +3389,7 @@ get_cols() {
 # IMAGES
 
 image_backend() {
-    [[ "$image_backend" != "off" ]] && ! type -p convert >/dev/null 2>&1 && \
+    [[ "$image_backend" != "off" ]] && ! type -p convert &>/dev/null && \
         { image_backend="ascii"; err "Image: Imagemagick not found, falling back to ascii mode."; }
 
     case "${image_backend:-off}" in
@@ -3624,22 +3624,22 @@ get_term_size() {
 
     # Get terminal width/height if \e[14t is unsupported.
     if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
-        if type -p xdotool >/dev/null 2>&1; then
+        if type -p xdotool &>/dev/null; then
             IFS=$'\n' read -d "" -ra win < <(xdotool getactivewindow getwindowgeometry --shell %1)
             term_width="${win[3]/WIDTH=}"
             term_height="${win[4]/HEIGHT=}"
 
-        elif type -p xwininfo >/dev/null 2>&1; then
+        elif type -p xwininfo &>/dev/null; then
             # Get the focused window's ID.
-            if type -p xdo >/dev/null 2>&1; then
+            if type -p xdo &>/dev/null; then
                 current_window="$(xdo id)"
 
-            elif type -p xdpyinfo >/dev/null 2>&1; then
+            elif type -p xdpyinfo &>/dev/null; then
                 current_window="$(xdpyinfo | grep -F "focus:")"
                 current_window="${current_window/*window }"
                 current_window="${current_window/,*}"
 
-            elif type -p xprop >/dev/null 2>&1; then
+            elif type -p xprop &>/dev/null; then
                 current_window="$(xprop -root _NET_ACTIVE_WINDOW)"
                 current_window="${current_window##* }"
             fi
@@ -3847,7 +3847,7 @@ display_image() {
             # appearing in specific terminal emulators.
             sleep 0.05
             printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$image\n4;\n3;" |\
-            "${w3m_img_path:-false}" -bg "$background_color" >/dev/null 2>&1 ||\
+            "${w3m_img_path:-false}" -bg "$background_color" &>/dev/null ||\
                 to_off "Image: w3m-img failed to display the image."
         ;;
     esac
@@ -4173,13 +4173,13 @@ kde_config_dir() {
     if [[ "$kde_config_dir" ]]; then
         return
 
-    elif type -p kf5-config >/dev/null 2>&1; then
+    elif type -p kf5-config &>/dev/null; then
         kde_config_dir="$(kf5-config --path config)"
 
-    elif type -p kde4-config >/dev/null 2>&1; then
+    elif type -p kde4-config &>/dev/null; then
         kde_config_dir="$(kde4-config --path config)"
 
-    elif type -p kde-config >/dev/null 2>&1; then
+    elif type -p kde-config &>/dev/null; then
         kde_config_dir="$(kde-config --path config)"
 
     elif [[ -d "${HOME}/.kde4" ]]; then
