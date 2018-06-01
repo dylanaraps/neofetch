@@ -410,6 +410,7 @@ disk_subtitle="mount"
 # elisa
 # exaile
 # gnome-music
+# gmusicbrowser
 # Google Play
 # guayadeque
 # iTunes
@@ -2324,6 +2325,7 @@ get_song() {
         "elise"
         "exaile"
         "gnome-music"
+        "gmusicbrowser"
         "Google Play"
         "guayadeque"
         "iTunes"
@@ -2366,25 +2368,26 @@ get_song() {
 
     case "${player/*\/}" in
         "mpd"* | "mopidy"*) song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
-        "mocp"*)         song="$(mocp -Q '%artist \n %album \n %song')" ;;
-        "google play"*)  song="$(gpmdp-remote current)" ;;
-        "rhythmbox"*)    song="$(rhythmbox-client --print-playing-format '%ta \n %at \n %tt')" ;;
-        "deadbeef"*)     song="$(deadbeef --nowplaying-tf '%artist% \n %album% \n %title%')" ;;
-        "xmms2d"*)       song="$(xmms2 current -f '${artist} \n ${album} \n ${title}')" ;;
-        "qmmp"*)         song="$(qmmp --nowplaying '%p \n %a \n %t')" ;;
-        "gnome-music"*)  get_song_dbus "GnomeMusic" ;;
-        "lollypop"*)     get_song_dbus "Lollypop" ;;
-        "clementine"*)   get_song_dbus "clementine" ;;
-        "juk"*)          get_song_dbus "juk" ;;
-        "bluemindo"*)    get_song_dbus "Bluemindo" ;;
-        "guayadeque"*)   get_song_dbus "guayadeque" ;;
-        "yarock"*)       get_song_dbus "yarock" ;;
-        "deepin-music"*) get_song_dbus "DeepinMusic" ;;
-        "tomahawk"*)     get_song_dbus "tomahawk" ;;
-        "elisa"*)        get_song_dbus "elisa" ;;
-        "sayonara"*)     get_song_dbus "sayonara" ;;
-        "audacious"*)    get_song_dbus "audacious" ;;
-        "vlc"*)          get_song_dbus "vlc" ;;
+        "mocp"*)          song="$(mocp -Q '%artist \n %album \n %song')" ;;
+        "google play"*)   song="$(gpmdp-remote current)" ;;
+        "rhythmbox"*)     song="$(rhythmbox-client --print-playing-format '%ta \n %at \n %tt')" ;;
+        "deadbeef"*)      song="$(deadbeef --nowplaying-tf '%artist% \n %album% \n %title%')" ;;
+        "xmms2d"*)        song="$(xmms2 current -f '${artist} \n ${album} \n ${title}')" ;;
+        "qmmp"*)          song="$(qmmp --nowplaying '%p \n %a \n %t')" ;;
+        "gnome-music"*)   get_song_dbus "GnomeMusic" ;;
+        "lollypop"*)      get_song_dbus "Lollypop" ;;
+        "clementine"*)    get_song_dbus "clementine" ;;
+        "juk"*)           get_song_dbus "juk" ;;
+        "bluemindo"*)     get_song_dbus "Bluemindo" ;;
+        "guayadeque"*)    get_song_dbus "guayadeque" ;;
+        "yarock"*)        get_song_dbus "yarock" ;;
+        "deepin-music"*)  get_song_dbus "DeepinMusic" ;;
+        "tomahawk"*)      get_song_dbus "tomahawk" ;;
+        "elisa"*)         get_song_dbus "elisa" ;;
+        "sayonara"*)      get_song_dbus "sayonara" ;;
+        "audacious"*)     get_song_dbus "audacious" ;;
+        "vlc"*)           get_song_dbus "vlc" ;;
+        "gmusicbrowser"*) get_song_dbus "gmusicbrowser" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
