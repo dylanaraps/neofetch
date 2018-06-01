@@ -6422,6 +6422,32 @@ ${c3}  #####${c2}#######${c3}#####
 EOF
         ;;
 
+        "Linux Lite"*)
+            set_colors 2 7
+            read -rd '' ascii_data <<'EOF'
+${c1}          ,xXc
+      .l0MMMMMO
+   .kNMMMMMWMMMN,
+   KMMMMMMKMMMMMMo
+  'MMMMMMNKMMMMMM:
+  kMMMMMMOMMMMMMO
+ .MMMMMMX0MMMMMW.
+ oMMMMMMxWMMMMM:
+ WMMMMMNkMMMMMO
+:MMMMMMOXMMMMW
+.0MMMMMxMMMMM;
+:;cKMMWxMMMMO
+'MMWMMXOMMMMl
+ kMMMMKOMMMMMX:
+ .WMMMMKOWMMM0c
+  lMMMMMWO0MNd:'
+   oollXMKXoxl;.
+     ':. .: .'
+              ..
+                .
+EOF
+        ;;
+
         "LMDE"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
