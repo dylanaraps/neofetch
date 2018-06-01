@@ -3594,22 +3594,20 @@ get_term_size() {
     # Tmux has a special way of reading escape sequences
     # so we have to use a slightly different sequence to
     # get the terminal size.
-    if [[ -n "$TMUX" ]]; then
-        printf "%b" "\ePtmux;\e\e[14t\e\e[c\e\\"
-        read_flags=(-d c)
-
-    elif [[ "$image_backend" == "tycat" ]]; then
-        printf "%b" "\e}qs\000"
+    if [[ "$image_backend" == "tycat" ]]; then
+        printf '%b' '\e}qs\000'
 
     else
-        printf "%b" "\e[14t\e[c"
-        read_flags=(-d c)
+        case "${TMUX:-null}" in
+            "null") printf '%b' '\e[14t' ;;
+            *)      printf '%b' '\ePtmux;\e\e[14t\e\\ ' ;;
+        esac
     fi
 
     # The escape codes above print the desired output as
     # user input so we have to use read to store the out
     # -put as a variable.
-    IFS=";" read -s -t 1 "${read_flags[@]}" -r -a term_size
+    IFS=';t' read -d t -t 0.05 -sra term_size
 
     # Split the string into height/width.
     if [[ "$image_backend" == "tycat" ]]; then
@@ -3618,7 +3616,7 @@ get_term_size() {
 
     else
         term_height="${term_size[1]}"
-        term_width="${term_size[2]/t*}"
+        term_width="${term_size[2]}"
     fi
 
     [[ "$image_backend" == "kitty" ]] && \
@@ -3627,16 +3625,20 @@ get_term_size() {
     # Get terminal width/height if \e[14t is unsupported.
     if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         if type -p xdotool >/dev/null 2>&1; then
-            current_window="$(xdotool getactivewindow)"
-            source <(xdotool getwindowgeometry --shell "$current_window")
-            term_height="$HEIGHT"
-            term_width="$WIDTH"
+            IFS=$'\n' read -d "" -ra win < <(xdotool getactivewindow getwindowgeometry --shell %1)
+            term_width="${win[3]/WIDTH=}"
+            term_height="${win[4]/HEIGHT=}"
 
         elif type -p xwininfo >/dev/null 2>&1; then
             # Get the focused window's ID.
-            if type -p xdpyinfo >/dev/null 2>&1; then
-                current_window="$(xdpyinfo | grep -E -o "focus:.*0x[0-9a-f]+")"
+            if type -p xdo >/dev/null 2>&1; then
+                current_window="$(xdo id)"
+
+            elif type -p xdpyinfo >/dev/null 2>&1; then
+                current_window="$(xdpyinfo | grep -F "focus:")"
                 current_window="${current_window/*window }"
+                current_window="${current_window/,*}"
+
             elif type -p xprop >/dev/null 2>&1; then
                 current_window="$(xprop -root _NET_ACTIVE_WINDOW)"
                 current_window="${current_window##* }"
@@ -3644,10 +3646,11 @@ get_term_size() {
 
             # If the ID was found get the window size.
             if [[ "$current_window" ]]; then
-                term_size="$(xwininfo -id "$current_window" |\
-                             awk -F ': ' '/Width|Height/ {printf $2 " "}')"
-                term_width="${term_size/ *}"
-                term_height="${term_size/${term_width}}"
+                term_size="$(xwininfo -id "$current_window")"
+                term_width="${term_size#*Width: }"
+                term_width="${term_width/$'\n'*}"
+                term_height="${term_size/*Height: }"
+                term_height="${term_height/$'\n'*}"
             fi
         fi
     fi
@@ -3693,19 +3696,20 @@ get_image_size() {
             done
         ;;
 
-        *) image_size="${image_size/px}" ;;
+        *)
+            image_size="${image_size/px}"
+        ;;
     esac
 
     width="${width:-$image_size}"
     height="${height:-$image_size}"
-
     text_padding="$((width / font_width + gap + xoffset/font_width))"
 }
 
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    image_name="$crop_mode-$crop_offset-$width-$height-${image##*/}"
+    image_name="${crop_mode}-${crop_offset}-${width}-${height}-${image##*/}"
 
     # Handle file extensions.
     case "${image##*.}" in
@@ -3717,13 +3721,12 @@ make_thumbnail() {
     # Create the thumbnail dir if it doesn't exist.
     mkdir -p "$thumbnail_dir"
 
-    # Check to see if the thumbnail exists before we do any cropping.
-    if [[ ! -f "$thumbnail_dir/$image_name" ]]; then
+    if [[ ! -f "${thumbnail_dir}/${image_name}" ]]; then
         # Get image size so that we can do a better crop.
-        if [[ -z "$size" ]]; then
+        [[ -z "$size" ]] && {
             read -r og_width og_height <<< "$(identify -format "%w %h" "$image")"
             ((og_height > og_width)) && size="$og_width" || size="$og_height"
-        fi
+        }
 
         case "$crop_mode" in
             "fit")
@@ -3737,9 +3740,9 @@ make_thumbnail() {
                     -trim +repage \
                     -gravity south \
                     -background "$c" \
-                    -extent "$size"x"$size" \
-                    -scale "$width"x"$height" \
-                    "$thumbnail_dir/$image_name"
+                    -extent "${size}x${size}" \
+                    -scale "${width}x${height}" \
+                    "${thumbnail_dir}/${image_name}"
             ;;
 
             "fill")
@@ -3747,27 +3750,32 @@ make_thumbnail() {
                     -background none \
                     "$image" \
                     -trim +repage \
-                    -scale "$width"x"$height"^ \
-                    -extent "$width"x"$height" \
-                    "$thumbnail_dir/$image_name"
+                    -scale "${width}x${height}^" \
+                    -extent "${width}x${height}" \
+                    "${thumbnail_dir}/${image_name}"
             ;;
 
-            "none") cp "$image" "$thumbnail_dir/$image_name" ;;
+            "none")
+                cp "$image" "${thumbnail_dir}/${image_name}"
+            ;;
+
             *)
-                convert \
+                time convert \
                     -background none \
                     "$image" \
+                    -strip \
+                    -define "jpeg:size=100x100" \
                     -gravity "$crop_offset" \
-                    -crop "$size"x"$size"+0+0 \
-                    -quality 95 \
-                    -scale "$width"x"$height" \
-                    "$thumbnail_dir/$image_name"
+                    -crop "${size}x${size}+0+0" \
+                    -quality 40 \
+                    -sample "${width}x${height}" \
+                    "${thumbnail_dir}/${image_name}"
             ;;
         esac
     fi
 
     # The final image.
-    image="$thumbnail_dir/$image_name"
+    image="${thumbnail_dir}/${image_name}"
 }
 
 display_image() {
