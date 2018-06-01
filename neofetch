@@ -4085,11 +4085,11 @@ get_full_path() {
     # If the file exists in the current directory, stop here.
     [[ -f "${PWD}/${1/*\/}" ]] && { printf "%s\n" "${PWD}/${1/*\/}"; return; }
 
-    if ! cd "${1%/*}"; then
+    ! cd "${1%/*}" && {
         err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
         err "       Check that the directory exists or try another directory."
         exit 1
-    fi
+    }
 
     local full_dir="${1##*/}"
 
@@ -4108,11 +4108,11 @@ get_full_path() {
 
 get_user_config() {
     # Check $config_file.
-    if [[ -f "$config_file" ]]; then
+    [[ -f "$config_file" ]] && {
         source "$config_file"
         err "Config: Sourced user config. (${config_file})"
         return
-    fi
+    }
     mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
 
     # Check ${XDG_CONFIG_HOME}/neofetch and create the
