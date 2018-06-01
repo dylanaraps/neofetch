@@ -7685,6 +7685,27 @@ M-       ,=;;;#:,      ,:#;;:=,       ,@
 EOF
         ;;
 
+        "SharkLinux"*)
+            set_colors 4 7
+            read -rd '' ascii_data <<'EOF'
+${c1}                              `:shd/
+                          `:yNMMMMs
+                       `-smMMMMMMN.
+                     .+dNMMMMMMMMs
+                   .smNNMMMMMMMMm`
+                 .sNNNNNNNMMMMMM/
+               `omNNNNNNNMMMMMMm
+              /dNNNNNNNNMMMMMMM+
+            .yNNNNNNNNNMMMMMMMN`
+           +mNNNNNNNNNMMMMMMMMh
+         .hNNNNNNNNNNMMMMMMMMMs
+        +mMNNNNNNNNMMMMMMMMMMMs
+      .hNMMNNNNMMMMMMMMMMMMMMMd
+    .oNNNNNNNNNNMMMMMMMMMMMMMMMo
+ `:+syyssoo++++ooooossssssssssso:
+EOF
+        ;;
+
         "Siduction"*)
             set_colors 4 4
             read -rd '' ascii_data <<'EOF'
