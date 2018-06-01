@@ -3389,12 +3389,8 @@ get_cols() {
 # IMAGES
 
 image_backend() {
-    if [[ ! "$image_backend" =~ ^(off|ascii)$ ]]; then
-        if ! type -p convert >/dev/null 2>&1; then
-            image_backend="ascii"
-            err "Image: Imagemagick not found, falling back to ascii mode."
-        fi
-    fi
+    [[ "$image_backend" != "off" ]] && ! type -p convert >/dev/null 2>&1 && \
+        { image_backend="ascii"; err "Image: Imagemagick not found, falling back to ascii mode."; }
 
     case "${image_backend:-off}" in
         "ascii") get_ascii ;;
@@ -3404,26 +3400,22 @@ image_backend() {
         "tycat" | "w3m" | "sixel" | "pixterm" | "kitty")
             get_image_source
 
-            if [[ ! -f "$image" ]]; then
+            [[ ! -f "$image" ]] && {
                 to_ascii "Image: '$image_source' doesn't exist, falling back to ascii mode."
                 return
-            fi
+            }
 
             get_term_size
 
-            if [[ "$term_width" ]] && ((term_width >= 1)); then
-                printf "\e[2J\e[H"
-            else
+            ((term_width < 1)) && {
                 to_ascii "Image: Failed to find terminal window size."
                 err "Image: Check the 'Images in the terminal' wiki page for more info,"
                 return
-            fi
+            }
 
+            printf '\e[2J\e[H'
             get_image_size
             make_thumbnail
-
-            [[ "$image_backend" == *"w3m"* ]] && zws="\xE2\x80\x8B\x20"
-
             display_image
         ;;
 
@@ -3514,17 +3506,14 @@ END
         "Windows")
             case "$distro" in
                 "Windows XP")
-                    case "$kernel_name" in
-                        "CYGWIN"*) image="/cygdrive/c/Documents and Settings/${USER}" ;;
-                        "MSYS2"* | "MINGW*")  image="/c/Documents and Settings/${USER}" ;;
-                    esac
-                    image+="/Local Settings/Application Data/Microsoft"
-                    image+="/Wallpaper1.bmp"
+                    image="/c/Documents and Settings/${USER}"
+                    image+="/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
+
+                    [[ "$kernel_name" == *CYGWIN* ]] && image="/cygdrive${image}"
                 ;;
 
                 "Windows"*)
-                    image="$APPDATA/Microsoft/Windows/Themes"
-                    image+="/TranscodedWallpaper.jpg"
+                    image="${APPDATA}/Microsoft/Windows/Themes/TranscodedWallpaper.jpg"
                 ;;
             esac
         ;;
@@ -3533,13 +3522,14 @@ END
             # Get DE if user has disabled the function.
             ((de_run != 1)) && get_de
 
-            if type -p wal >/dev/null && [[ -f "${HOME}/.cache/wal/wal" ]]; then
-               image="$(< "${HOME}/.cache/wal/wal")"
-               return
-            fi
+            type -p wal >/dev/null && [[ -f "${HOME}/.cache/wal/wal" ]] && \
+                { image="$(< "${HOME}/.cache/wal/wal")"; return; }
 
             case "$de" in
-                "MATE"*) image="$(gsettings get org.mate.background picture-filename)" ;;
+                "MATE"*)
+                    image="$(gsettings get org.mate.background picture-filename)"
+                ;;
+
                 "Xfce"*)
                     image="$(xfconf-query -c xfce4-desktop -p \
                              "/backdrop/screen0/monitor0/workspace0/last-image")"
@@ -3843,6 +3833,7 @@ display_image() {
 
         "w3m")
             get_w3m_img_path
+            zws='\xE2\x80\x8B\x20'
 
             # Add a tiny delay to fix issues with images not
             # appearing in specific terminal emulators.
@@ -3964,12 +3955,12 @@ get_line_break() {
 
 get_bold() {
     case "$ascii_bold" in
-        "on") ascii_bold="\e[1m" ;;
+        "on")  ascii_bold="\e[1m" ;;
         "off") ascii_bold="" ;;
     esac
 
     case "$bold" in
-        "on") bold="\e[1m" ;;
+        "on")  bold="\e[1m" ;;
         "off") bold="" ;;
     esac
 }
