@@ -145,6 +145,7 @@ _neofetch_completions() {
                     "elisa"
                     "exaile"
                     "gnome-music"
+                    "gmusicbrowser"
                     "Google Play"
                     "guayadeque"
                     "iTunes"
