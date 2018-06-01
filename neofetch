@@ -803,8 +803,8 @@ get_os() {
         ;;
 
         *)
-            printf "%s\n" "Unknown OS detected: '$kernel_name', aborting..." >&2
-            printf "%s\n" "Open an issue on GitHub to add support for your OS." >&2
+            printf '%s\n' "Unknown OS detected: '$kernel_name', aborting..." >&2
+            printf '%s\n' "Open an issue on GitHub to add support for your OS." >&2
             exit 1
         ;;
     esac
@@ -2366,7 +2366,7 @@ get_song() {
 
     case "${player/*\/}" in
         "mpd"* | "mopidy"*) song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
-        "mocp"*)         song="$(mocp -Q "%artist \n %album \n %song")" ;;
+        "mocp"*)         song="$(mocp -Q '%artist \n %album \n %song')" ;;
         "google play"*)  song="$(gpmdp-remote current)" ;;
         "rhythmbox"*)    song="$(rhythmbox-client --print-playing-format '%ta \n %at \n %tt')" ;;
         "deadbeef"*)     song="$(deadbeef --nowplaying-tf '%artist% \n %album% \n %title%')" ;;
@@ -3909,7 +3909,7 @@ info() {
 prin() {
     # If $2 doesn't exist we format $1 as info.
     if [[ "$(trim "$1")" && "$2" ]]; then
-        [[ "$json" ]] && { printf "    %s\n" "\"${1}\": \"${2}\","; return; }
+        [[ "$json" ]] && { printf '    %s\n' "\"${1}\": \"${2}\","; return; }
 
         string="${1}${2:+: $2}"
     else
@@ -3977,7 +3977,7 @@ trim() {
     set -f
     # shellcheck disable=2048,2086
     set -- $*
-    printf "%s\\n" "${*//[[:space:]]/ }"
+    printf '%s\n' "${*//[[:space:]]/ }"
     set +f
 }
 
@@ -3993,7 +3993,7 @@ strip_sequences() {
     strip="${strip//$'\e['38\;5\;[0-9][0-9]m}"
     strip="${strip//$'\e['38\;5\;[0-9][0-9][0-9]m}"
 
-    printf "%s\n" "$strip"
+    printf '%s\n' "$strip"
 }
 
 # COLORS
@@ -4083,7 +4083,7 @@ get_full_path() {
     # For example "Pictures/Wallpapers" --> "/home/dylan/Pictures/Wallpapers"
 
     # If the file exists in the current directory, stop here.
-    [[ -f "${PWD}/${1/*\/}" ]] && { printf "%s\n" "${PWD}/${1/*\/}"; return; }
+    [[ -f "${PWD}/${1/*\/}" ]] && { printf '%s\n' "${PWD}/${1/*\/}"; return; }
 
     ! cd "${1%/*}" && {
         err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
@@ -4103,7 +4103,7 @@ get_full_path() {
     # Final directory.
     full_dir="$(pwd -P)/${1/*\/}"
 
-    [[ -e "$full_dir" ]] && printf "%s\n" "$full_dir"
+    [[ -e "$full_dir" ]] && printf '%s\n' "$full_dir"
 }
 
 get_user_config() {
@@ -4127,7 +4127,7 @@ get_user_config() {
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
         # The config file doesn't exist, create it.
-        printf "%s\n" "$config" > "$config_file"
+        printf '%s\n' "$config" > "$config_file"
     fi
 
     source "$config_file"
@@ -4702,11 +4702,11 @@ get_args() {
             ;;
             "--stdout") stdout="on" ;;
             "-v") verbose="on" ;;
-            "--print_config") printf "%s\\n" "$config"; exit ;;
+            "--print_config") printf '%s\n' "$config"; exit ;;
             "-vv") set -x; verbose="on" ;;
             "--help") usage ;;
             "--version")
-                printf "%s\\n" "Neofetch $version"
+                printf '%s\n' "Neofetch $version"
                 exit 1
             ;;
             "--gen-man")
@@ -4719,10 +4719,10 @@ get_args() {
                 json="on"
                 unset -f get_title get_cols get_line_break get_underline
 
-                printf "{\n"
+                printf '{\n'
                 print_info 2>/dev/null
-                printf "    %s\n" "\"Version\": \"${version}\""
-                printf "}\n"
+                printf '    %s\n' "\"Version\": \"${version}\""
+                printf '}\n'
                 exit
             ;;
 
