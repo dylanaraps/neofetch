@@ -1682,15 +1682,25 @@ get_wm_theme() {
             kdebugrc="${kde_config_dir}/kdebugrc"
 
             if [[ -f "$kwinrc" ]]; then
-                wm_theme="$(awk '/theme=/{gsub(/theme=.*qml_|theme=.*svg__/,"",$0);\
-                                 print $0; exit}' "$kwinrc")"
+                wm_theme="$(awk '/theme=/ {
+                                    gsub(/theme=.*qml_|theme=.*svg__/,"",$0);
+                                    print $0;
+                                    exit
+                                 }' "$kwinrc")"
 
                 [[ -z "$wm_theme" ]] && \
-                    wm_theme="$(awk '/library=org.kde/{gsub(/library=org.kde./,"",$0);\
-                                     print $0; exit}' "$kwinrc")"
+                    wm_theme="$(awk '/library=org.kde/ {
+                                        gsub(/library=org.kde./,"",$0);
+                                        print $0;
+                                        exit
+                                     }' "$kwinrc")"
+
                 [[ -z "$wm_theme" ]] && \
-                    wm_theme="$(awk '/PluginLib=kwin3_/{gsub(/PluginLib=kwin3_/,"",$0);\
-                                     print $0; exit}' "$kwinrc")"
+                    wm_theme="$(awk '/PluginLib=kwin3_/ {
+                                        gsub(/PluginLib=kwin3_/,"",$0);
+                                        print $0;
+                                        exit
+                                     }' "$kwinrc")"
 
             elif [[ -f "$kdebugrc" ]]; then
                 wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kdebugrc")"
@@ -1764,8 +1774,10 @@ get_cpu() {
                 ;;
 
                 *)
-                    cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/\
-                                           {printf $2; exit}' "$cpu_file")"
+                    cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {
+                                               printf $2;
+                                               exit
+                                           }' "$cpu_file")"
 
                     [[ "$cpu" == *"processor rev"* ]] && \
                         cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
@@ -2391,9 +2403,15 @@ get_song() {
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
-                                          /tag artist/ {$1=$2=""; sub("  ", ""); a=$0}\
-                                          /tag album / {$1=$2=""; sub("  ", ""); b=$0}\
-                                          /tag title/ {$1=$2=""; sub("  ", ""); t=$0}\
+                                          /tag artist/ {
+                                              $1=$2=""; sub("  ", ""); a=$0
+                                          }
+                                          /tag album / {
+                                              $1=$2=""; sub("  ", ""); b=$0
+                                          }
+                                          /tag title/ {
+                                              $1=$2=""; sub("  ", ""); t=$0
+                                          }
                                           END { print a " \n " b " \n " t }')"
         ;;
 
@@ -2448,8 +2466,19 @@ get_song() {
         "pogo"*)
             song="$(dbus-send --print-reply --dest=org.mpris.pogo /Player \
                     org.freedesktop.MediaPlayer.GetMetadata |
-                    awk -F'"' '/string "artist"/ {getline; a=$2} /string "album"/ {getline; b=$2} \
-                               /string "title"/ {getline; t=$2} END{print a " \n " b " \n " t}')"
+                    awk -F'"' '/string "artist"/ {
+                                   getline;
+                                   a=$2
+                               }
+                               /string "album"/ {
+                                   getline;
+                                   b=$2
+                               }
+                               /string "title"/ {
+                                   getline;
+                                   t=$2
+                               }
+                               END{print a " \n " b " \n " t}')"
         ;;
 
         *) mpc &>/dev/null && song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
@@ -2865,12 +2894,15 @@ END
 
             fi
 
-            term_font="$(awk '/^([[:space:]]*|[^#_])font_family[[:space:]]+/ \
-                              { $1 = ""; gsub(/^[[:space:]]/, ""); font = $0 } \
-                              /^([[:space:]]*|[^#_])font_size[[:space:]]+/ \
-                              { size = $2 } \
-                              END { print font " " size}' \
-                              "${kitty_file}")"
+            term_font="$(awk '/^([[:space:]]*|[^#_])font_family[[:space:]]+/ {
+                                  $1 = "";
+                                  gsub(/^[[:space:]]/, "");
+                                  font = $0
+                              }
+                              /^([[:space:]]*|[^#_])font_size[[:space:]]+/ {
+                                  size = $2
+                              }
+                              END { print font " " size}' "${kitty_file}")"
         ;;
 
         "konsole"*)
@@ -2919,9 +2951,13 @@ END
                 role="${role//\"}"
 
                 profile="$(awk -F '=' -v r="$role" \
-                           '$0~r {getline; if(/Maximized/) getline; \
-                            if(/Fullscreen/) getline; id=$2"]"} \
-                            $0~id {if(id) {getline; print $2; exit}}' "$mateterm_config")"
+                                  '$0~r {
+                                            getline;
+                                            if(/Maximized/) getline;
+                                            if(/Fullscreen/) getline;
+                                            id=$2"]"
+                                        } $0~id {if(id) {getline; print $2; exit}}' \
+                          "$mateterm_config")"
 
                 rm -f "$mateterm_config"
 
@@ -3001,8 +3037,14 @@ END
             [[ -f "${XDG_CONFIG_HOME}/termite/config" ]] && \
                 termite_config="${XDG_CONFIG_HOME}/termite/config"
 
-            term_font="$(awk -F '= ' '/\[options\]/ {opt=1} /^\s*font/ {if(opt==1) a=$2; opt=0} \
-                                      END{print a}' "/etc/xdg/termite/config" "$termite_config")"
+            term_font="$(awk -F '= ' '/\[options\]/ {
+                                          opt=1
+                                      }
+                                      /^\s*font/ {
+                                          if(opt==1) a=$2;
+                                          opt=0
+                                      } END{print a}' "/etc/xdg/termite/config" \
+                         "$termite_config")"
         ;;
 
         "urxvt" | "urxvtd" | "rxvt-unicode" | "xterm")
