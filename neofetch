@@ -2529,8 +2529,8 @@ get_resolution() {
                 case "$refresh_rate" in
                     "on")
                         resolution="$(xrandr --nograb --current |\
-                                      awk 'match($0,/[0-9]*\.[0-9]*\*/) {printf $1 " @ "\
-                                           substr($0,RSTART,RLENGTH) "Hz, "}')"
+                                      awk 'match($0,/[0-9]*\.[0-9]*\*/) {
+                                           printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')"
                     ;;
 
                     "off")
