@@ -1283,22 +1283,23 @@ get_packages() {
             pkgs "alps"       "$(alps showinstalled | wc -l)"
             pkgs "butch"      "$(butch list | wc -l)"
             pkgs "kpm-pkg"    "$(kpm --get-selections | grep -cv deinstall$)"
-            pkgs "emerge"     "$(ls -d /var/db/pkg/*/* | wc -l)"
-            pkgs "nix-env"    "$(ls -d -1 /nix/store/*/ | wc -l)"
-            pkgs "guix"       "$(ls -d -1 /gnu/store/*/ | wc -l)"
-            pkgs "Compile"    "$(ls -d -1 /Programs/*/ | wc -l)"
-            pkgs "eopkg"      "$(ls -1 /var/lib/eopkg/package | wc -l)"
-            pkgs "crew"       "$(ls -l /usr/local/etc/crew/meta/*.filelist | wc -l)"
-            pkgs "pkgtool"    "$(ls -1 /var/log/packages | wc -l)"
-            pkgs "cave"       "$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* \
-                                          /var/db/paludis/repositories/installed/data/* | wc -l)"
+            pkgs "emerge"     "$(files=(/var/db/pkg/*/*/) && echo ${#files[@]})"
+            pkgs "nix-env"    "$(files=(/nix/store/*/)    && echo ${#files[@]})"
+            pkgs "guix"       "$(files=(/gnu/store/*/)    && echo ${#files[@]})"
+            pkgs "Compile"    "$(files=(/Programs/*/)     && echo ${#files[@]})"
+            pkgs "eopkg"      "$(files=(/var/lib/eopkg/package/*) && echo ${#files[@]})"
+            pkgs "crew"       "$(files=(/usr/local/etc/crew/meta/*.filelist) && echo ${#files[@]})"
+            pkgs "pkgtool"    "$(files=(/var/log/packages/*) && echo ${#files[@]})"
+            pkgs "cave"       "$(files=(/var/db/paludis/repositories/cross-installed/*/data/*/
+                                        /var/db/paludis/repositories/installed/data/*/) && \
+                                        echo ${#files[@]})"
 
             case "$kernel_name" in
                 "FreeBSD") pkgs "pkg" "$(pkg info | wc -l)" ;;
                 "Solaris") pkgs "pkginfo" "$(pkginfo -i | wc -l)" ;;
 
                 *)
-                    pkgs "pkg" "$(ls -1 /var/db/pkg | wc -l)"
+                    pkgs "pkg" "$(files=(/var/db/pkg/*) && echo ${#files[@]})"
 
                     ((packages == 0)) && \
                         pkgs "pkg" "$(pkg list | wc -l)"
@@ -1325,11 +1326,12 @@ get_packages() {
 
             # Count chocolatey packages.
             [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
-                pkgs ":" "$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)"
+                pkgs ":" "$(files=(/cygdrive/c/ProgramData/chocolatey/lib/*) && echo ${#files[@]})"
         ;;
 
         "Haiku")
-            packages="$(ls -1 /boot/system/package-links | wc -l)"
+            files=(/boot/system/package-links/*)
+            packages="${#files[@]}"
         ;;
 
         "IRIX")
