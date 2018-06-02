@@ -3384,8 +3384,7 @@ get_cols() {
 
     # TosWin2 on FreeMiNT is terrible at this,
     # so we'll reset colors arbitrarily.
-    [[ "$term" == "TosWin2" ]] && \
-        printf "%b" "\e[30;47m"
+    [[ "$term" == "TosWin2" ]] && printf '\e[30;47m'
 
     # Tell info() that we printed manually.
     prin=1
@@ -3434,7 +3433,7 @@ image_backend() {
     esac
 
     # Set cursor position next image/ascii.
-    [[ "$image_backend" != "off" ]] && printf "%b" "\e[${lines:-0}A\e[9999999D"
+    [[ "$image_backend" != "off" ]] && printf '\e[%sA\e[9999999D' "${lines:-0}"
 }
 
 get_ascii() {
@@ -3449,8 +3448,8 @@ get_ascii() {
 
     # Turn file into variable.
     while IFS=$'\n' read -r line; do
-        print+="$line \n"
-
+        print+="$line
+"
         # Calculate size of ascii file in line length / line count.
         line="${line//[??;?;??m}"
         line="${line//[??;?;???m}"
@@ -3831,12 +3830,14 @@ display_image() {
 
         "iterm2")
             image="$(base64 < "$image")"
-            iterm_cmd="\e]1337;File=width=${width}px;height=${height}px;inline=1:${image}"
+
+            printf -v iterm_cmd '\e]1337;File=width=%spx;height=%spx;inline=1:%s' \
+                "$width" "$height" "$image"
 
             # Tmux requires an additional escape sequence for this to work.
-            [[ -n "$TMUX" ]] && iterm_cmd="\ePtmux;\e${iterm_cmd}\e\\"
+            [[ -n "$TMUX" ]] && printf -v iterm_cmd '\ePtmux;\e%b\e'\\ "$iterm_cmd"
 
-            printf "%b\a\n" "$iterm_cmd"
+            printf '%b\a\n' "$iterm_cmd"
         ;;
 
         "tycat")
@@ -3851,7 +3852,7 @@ display_image() {
             # Add a tiny delay to fix issues with images not
             # appearing in specific terminal emulators.
             sleep 0.05
-            printf "%b\n" "0;1;$xoffset;$yoffset;$width;$height;;;;;$image\n4;\n3;" |\
+            printf '%b\n%s;\n%s\n' "0;1;$xoffset;$yoffset;$width;$height;;;;;$image" 3 4 |\
             "${w3m_img_path:-false}" -bg "$background_color" &>/dev/null ||\
                 to_off "Image: w3m-img failed to display the image."
         ;;
@@ -3869,7 +3870,7 @@ to_ascii() {
     get_ascii
 
     # Set cursor position next image/ascii.
-    printf "%b" "\e[${lines:-0}A\e[9999999D"
+    printf '\e[%sA\e[9999999D' "${lines:-0}"
 }
 
 to_off() {
@@ -3934,7 +3935,7 @@ prin() {
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
-    printf "%b\n" "${text_padding:+\e[${text_padding}C}${zws}${string}${reset} "
+    printf '%b\n' "${text_padding:+\e[${text_padding}C}${zws}${string}${reset} "
 
     # Calculate info height.
     ((++info_height))
@@ -3946,7 +3947,7 @@ prin() {
 get_underline() {
     if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
-        printf "%b%b\n" "${text_padding:+\e[${text_padding}C}${zws}${underline_color}" \
+        printf '%b%b\n' "${text_padding:+\e[${text_padding}C}${zws}${underline_color}" \
                         "${underline// /$underline_char}${reset} "
         unset -v length
     fi
@@ -3957,7 +3958,7 @@ get_underline() {
 
 get_line_break() {
     # Print it directly.
-    printf "%b\n" "${zws}"
+    printf '%b\n' "$zws"
 
     # Calculate info height.
     ((++info_height))
@@ -3968,12 +3969,12 @@ get_line_break() {
 
 get_bold() {
     case "$ascii_bold" in
-        "on")  ascii_bold="\e[1m" ;;
+        "on")  ascii_bold='\e[1m' ;;
         "off") ascii_bold="" ;;
     esac
 
     case "$bold" in
-        "on")  bold="\e[1m" ;;
+        "on")  bold='\e[1m' ;;
         "off") bold="" ;;
     esac
 }
@@ -4055,9 +4056,9 @@ set_text_colors() {
 
 color() {
     case "$1" in
-        [0-6]) printf "%b" "${reset}\e[3${1}m" ;;
-        7 | "fg") printf "%b" "\e[37m${reset}" ;;
-        *) printf "%b" "\e[38;5;${1}m" ;;
+        [0-6]) printf '%b\e[3%sm' "$reset" "$1" ;;
+        7 | "fg") printf '\e[37m%b' "$reset" ;;
+        *) printf '\e[38;5;%bm' "$1" ;;
     esac
 }
 
@@ -4080,7 +4081,8 @@ stdout() {
 }
 
 err() {
-    err+="$(color 1)[!]\e[0m $1\n"
+    err+="$(color 1)[!]${reset} $1
+"
 }
 
 get_full_path() {
@@ -4198,7 +4200,7 @@ kde_config_dir() {
 }
 
 dynamic_prompt() {
-    [[ "$image_backend" == "off" ]] && { printf "\n"; return; }
+    [[ "$image_backend" == "off" ]] && { printf '\n'; return; }
     [[ "$image_backend" != "ascii" ]] && lines="$(((height + yoffset) / font_height + 1))"
 
     # If the ascii art is taller than the info.
@@ -8512,7 +8514,7 @@ main() {
         trap 'printf "\e[?25h\e[?7h"' EXIT
 
         # Hide the cursor and disable line wrap.
-        printf "\e[?25l\e[?7l"
+        printf '\e[?25l\e[?7l'
     fi
 
     image_backend
