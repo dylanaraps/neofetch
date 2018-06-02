@@ -1237,6 +1237,9 @@ get_uptime() {
 }
 
 get_packages() {
+    # pkgs: Run package manager if it exists.
+    # tots: Count lines in command output.
+    # dirc: Count files or dirs in a glob.
     pkgs() { type -p "$1" >/dev/null && { ((packages+="$2"));(("$2">0))&&managers+="$_, "; }; }
     tots() { IFS=$'\n' read -d "" -ra files < <($1); echo "${#files[@]}"; }
     dirc() { echo $#; }
