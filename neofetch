@@ -2958,7 +2958,7 @@ END
                                             if(/Maximized/) getline;
                                             if(/Fullscreen/) getline;
                                             id=$2"]"
-                                        } $0~id {if(id) {getline; print $2; exit}}' \
+                                         } $0~id {if(id) {getline; print $2; exit}}' \
                           "$mateterm_config")"
 
                 rm -f "$mateterm_config"
