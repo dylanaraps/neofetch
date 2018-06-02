@@ -1343,7 +1343,7 @@ get_packages() {
     elif [[ "$package_manager" == "on" ]]; then
         managers="${managers/pacman-key/pacman}"
         managers="${managers/kpt-pkg/kpt}"
-        packages+=" (${managers::-2})"
+        packages+=" (${managers%,*})"
     fi
 }
 
