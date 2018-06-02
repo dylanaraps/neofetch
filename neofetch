@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # vim: noai:ts=4:sw=4:expandtab
+# shellcheck source=/dev/null
 #
 # Neofetch: A command-line system information tool written in bash 3.2+.
 # https://github.com/dylanaraps/neofetch
@@ -40,7 +41,7 @@ LC_ALL=C
 LANG=C
 
 # Fix issues with gsettings.
-GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
+export GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
 
 # Neofetch default config.
 read -rd '' config <<'EOF'
@@ -3230,7 +3231,7 @@ get_battery() {
         "Windows")
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining)"
             battery="${battery/EstimatedChargeRemaining}"
-            batttery="$(trim "$battery")%"
+            battery="$(trim "$battery")%"
         ;;
 
         "Haiku")
@@ -3765,7 +3766,7 @@ make_thumbnail() {
     esac
 
     # Create the thumbnail dir if it doesn't exist.
-    mkdir -p "$thumbnail_dir"
+    mkdir -p "${thumbnail_dir:=${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch}"
 
     if [[ ! -f "${thumbnail_dir}/${image_name}" ]]; then
         # Get image size so that we can do a better crop.
@@ -4828,6 +4829,9 @@ get_args() {
                 memory_display="infobar"
                 disk_display="infobar"
                 cpu_temp="C"
+
+                # Known implicit unused variables.
+                printf '%s\n' "$kernel $icons $font $battery $locale"
             ;;
         esac
 
