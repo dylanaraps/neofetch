@@ -1264,7 +1264,7 @@ get_uptime() {
 }
 
 get_packages() {
-    pkgs() { type -p "$1" >/dev/null && { ((packages+="$2")); managers+="$_, "; }; }
+    pkgs() { type -p "$1" >/dev/null && { ((packages+="$2"));(("$2">0))&&managers+="$_, "; }; }
     tots() { IFS=$'\n' read -d "" -ra files < <($1); echo "${#files[@]}"; }
     dirc() { echo $#; }
 
