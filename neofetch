@@ -2837,25 +2837,25 @@ END
             font_file="${HOME}/Library/Preferences/com.googlecode.iterm2.plist"
 
             # Count Guids in "New Bookmarks"; they should be unique
-            profiles_count="$(PlistBuddy -c "Print :New\ Bookmarks:" "$font_file" | \
+            profiles_count="$(PlistBuddy -c "Print ':New Bookmarks:'" "$font_file" | \
                               grep -w -c "Guid")"
 
             for ((i=0; i<profiles_count; i++)); do
-                profile_name="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Name:" "$font_file")"
+                profile_name="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Name:'" "$font_file")"
 
                 if [[ "$profile_name" == "$current_profile_name" ]]; then
                     # "Normal Font"
-                    term_font="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Normal\ Font:" \
+                    term_font="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Normal Font:'" \
                                  "$font_file")"
 
                     # Font for non-ascii characters
                     # Only check for a different non-ascii font, if the user checked
                     # the "use a different font for non-ascii text" switch.
-                    diff_font="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Use\ Non-ASCII\ Font:" \
+                    diff_font="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Use Non-ASCII Font:'" \
                                  "$font_file")"
 
                     if [[ "$diff_font" == "true" ]]; then
-                        non_ascii="$(PlistBuddy -c "Print :New\ Bookmarks:${i}:Non\ Ascii\ Font:" \
+                        non_ascii="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Non Ascii Font:'" \
                                      "$font_file")"
 
                         [[ "$term_font" != "$non_ascii" ]] && \
