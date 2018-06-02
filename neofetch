@@ -79,7 +79,6 @@ print_info() {
     # info "Local IP" local_ip
     # info "Public IP" public_ip
     # info "Users" users
-    # info "Install Date" install_date
     # info "Locale" locale  # This only works on glibc systems.
 
     info line_break
@@ -458,32 +457,6 @@ song_format="%artist% - %album% - %title%"
 #
 # off: 'Song: The Fratellis - Costello Music - Chelsea Dagger'
 song_shorthand="off"
-
-
-# Install Date
-
-
-# Whether to show the time in the output
-#
-# Default:  'on'
-# Values:   'on', 'off'
-# Flag:     --install_time
-#
-# Example:
-# on:  'Thu 14 Apr 2016 11:50 PM'
-# off: 'Thu 14 Apr 2016'
-install_time="on"
-
-# Set time format in the output
-#
-# Default: '24h'
-# Values:  '12h', '24h'
-# Flag:    --install_time_format
-#
-# Example:
-# 12h: 'Thu 14 Apr 2016 11:50 PM'
-# 24h: 'Thu 14 Apr 2016 23:50'
-install_time_format="12h"
 
 
 # Text Colors
@@ -3297,66 +3270,6 @@ get_users() {
     users="${users%\,*}"
 }
 
-get_install_date() {
-    case "$os" in
-        "Linux" | "iPhone OS") install_file="/lost+found" ;;
-        "Mac OS X") install_file="/var/log/install.log" ;;
-        "Solaris") install_file="/var/sadm/system/logs/install_log" ;;
-        "Windows")
-            case "$kernel_name" in
-                "CYGWIN"*) install_file="/cygdrive/c/Windows/explorer.exe" ;;
-                "MSYS"* | "MINGW"*) install_file="/c/Windows/explorer.exe" ;;
-            esac
-        ;;
-        "Haiku") install_file="/boot" ;;
-        "BSD" | "MINIX" | "IRIX")
-            case "$kernel_name" in
-                "FreeBSD") install_file="/etc/hostid" ;;
-                "NetBSD" | "DragonFly"*) install_file="/etc/defaults/rc.conf" ;;
-                *) install_file="/" ;;
-            esac
-        ;;
-        "AIX") install_file="/var/adm/ras/bosinstlog" ;;
-    esac
-
-    ls_prog="$(ls --version 2>&1)"
-    case "$ls_prog" in
-        *"BusyBox"*)
-            install_date="$(ls -tdce "$install_file" | awk '{printf $10 " " $7 " " $8 " " $9}')"
-        ;;
-
-        *"crtime"*) # xpg4 (Solaris)
-            install_date="$(ls -tdcE "$install_file" | awk '{printf $6 " " $7}')"
-        ;;
-
-        *"ACFHLRSZ"*) # Toybox
-            install_date="$(ls -dl "$install_file" | awk '{printf $6 " " $7}')"
-        ;;
-
-        *"GNU coreutils"*)
-            install_date="$(ls -tcd --full-time "$install_file" | awk '{printf $6 " " $7}')"
-        ;;
-
-        *"ACFHLNRS"* | *"RadC1xmnlog"*) # AIX ls / IRIX ls
-            err "Install Date doesn't work because your 'ls' doesn't support full date/time."
-            return
-        ;;
-
-        *"HLOPRSTUWabc"*) # macOS ls
-            install_date="$(ls -dlctUT "$install_file" | awk '{printf $9 " " $6 " "$7 " " $8}')"
-        ;;
-
-        *)
-            install_date="$(ls -dlctT "$install_file" | awk '{printf $9 " " $6 " " $7 " " $8}')"
-        ;;
-    esac
-
-    install_date="${install_date//-/ }"
-    install_date="${install_date%:*}"
-    IFS=" " read -ra install_date <<< "$install_date"
-    install_date="$(convert_time "${install_date[@]}")"
-}
-
 get_locale() {
     locale="$sys_locale"
 }
@@ -4265,71 +4178,6 @@ cache_uname() {
     kernel_machine="${uname[2]}"
 }
 
-convert_time() {
-    # Convert ls timestamp to 'Tue 06 Dec 2016 4:58 PM' format.
-    year="$1"
-    day="${3#0}"
-
-    # Split time into hours/minutes.
-    hour="${4/:*}"
-    min="${4/${hour}}"
-
-    # Get month. (Month code is used for day of week)
-    # Due to different versions of 'ls', the month can be 1, 01 or Jan.
-    case "$2" in
-        1  | 01 | "Jan") month="Jan"; month_code=0 ;;
-        2  | 02 | "Feb") month="Feb"; month_code=3 ;;
-        3  | 03 | "Mar") month="Mar"; month_code=3 ;;
-        4  | 04 | "Apr") month="Apr"; month_code=6 ;;
-        5  | 05 | "May") month="May"; month_code=1 ;;
-        6  | 06 | "Jun") month="Jun"; month_code=4 ;;
-        7  | 07 | "Jul") month="Jul"; month_code=6 ;;
-        8  | 08 | "Aug") month="Aug"; month_code=2 ;;
-        9  | 09 | "Sep") month="Sep"; month_code=5 ;;
-        10      | "Oct") month="Oct"; month_code=0 ;;
-        11      | "Nov") month="Nov"; month_code=3 ;;
-        12      | "Dec") month="Dec"; month_code=5 ;;
-    esac
-
-    # Get leap year.
-    # Source: http://stackoverflow.com/questions/725098/leap-year-calculation
-    [[ "$((year % 4))" == 0 && "$((year % 100))" != 0 || "$((year % 400))" == 0 ]] && \
-    [[ "$month" =~ (Jan|Feb) ]] && \
-        leap_code=1
-
-    # Calculate day of week.
-    # Source: http://blog.artofmemory.com/how-to-calculate-the-day-of-the-week-4203.html
-    year_code="$((${year/??} + (${year/??} / 4) % 7))"
-    week_day="$(((year_code + month_code + 6 + day - leap_code) % 7))"
-
-    case "$week_day" in
-        0) week_day="Sun" ;;
-        1) week_day="Mon" ;;
-        2) week_day="Tue" ;;
-        3) week_day="Wed" ;;
-        4) week_day="Thu" ;;
-        5) week_day="Fri" ;;
-        6) week_day="Sat" ;;
-    esac
-
-    # Convert 24 hour time to 12 hour time + AM/PM.
-    case "$install_time_format" in
-        "12h")
-            case "$hour" in
-                [0-9] | 0[0-9] | 1[0-1]) time="${hour/00/12}${min} AM" ;;
-                *) time="$((hour - 12))${min} PM" ;;
-            esac
-        ;;
-        *) time="$4" ;;
-    esac
-
-    # Toggle showing the time.
-    [[ "$install_time" == "off" ]] && unset time
-
-    # Print the install date.
-    printf "%s" "$week_day $day $month $year $time"
-}
-
 get_ppid() {
     # Get parent process ID of PID.
     case "$os" in
@@ -4464,9 +4312,6 @@ INFO:
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
-    --install_time on/off       Enable/Disable showing the time in Install Date output.
-    --install_time_format 12h/24h
-                                Set time format in Install Date to be 12 hour or 24 hour.
 
 TEXT FORMATTING:
     --colors x x x x x x        Changes the text colors in this order:
@@ -4614,8 +4459,6 @@ get_args() {
             "--song_format") song_format="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
             "--music_player") music_player="$2" ;;
-            "--install_time") install_time="$2" ;;
-            "--install_time_format") install_time_format="$2" ;;
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
@@ -4806,7 +4649,6 @@ get_args() {
                     info "Local IP" local_ip
                     info "Public IP" public_ip
                     info "Users" users
-                    info "Install Date" install_date
 
                     info line_break
                     info cols
