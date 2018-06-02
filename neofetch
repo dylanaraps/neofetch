@@ -144,6 +144,21 @@ os_arch="on"
 uptime_shorthand="on"
 
 
+# Packages
+
+
+# Show/Hide Package Manager names.
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --package_manager
+#
+# Example:
+# on:  '900 (pacman, apt)'
+# off: '900'
+package_manager="on"
+
+
 # Shell
 
 
@@ -1249,135 +1264,86 @@ get_uptime() {
 }
 
 get_packages() {
+    pkgs() { type -p "$1" >/dev/null && { ((packages+="$2")); managers+="$_, "; }; }
+
     case "$os" in
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
-            type -p pacman-key >/dev/null && \
-                packages="$(pacman -Qq --color never | wc -l)"
+            pkgs "pacman-key" "$(pacman -Qq --color never | wc -l)"
+            pkgs "dpkg"       "$(dpkg --get-selections | grep -cv deinstall$)"
+            pkgs "rpm"        "$(rpm -qa | wc -l)"
+            pkgs "xbps-query" "$(xbps-query -l | wc -l)"
+            pkgs "apk"        "$(apk info | wc -l)"
+            pkgs "opkg"       "$(opkg list-installed | wc -l)"
+            pkgs "pacman-g2"  "$(pacman-g2 -Q | wc -l)"
+            pkgs "lvu"        "$(lvu installed | wc -l)"
+            pkgs "tce-status" "$(tce-status -i | wc -l)"
+            pkgs "pkg_info"   "$(pkg_info | wc -l)"
+            pkgs "tazpkg"     "$(tazpkg list | wc -l) - 6"
+            pkgs "sorcery"    "$(gaze installed | wc -l)"
+            pkgs "alps"       "$(alps showinstalled | wc -l)"
+            pkgs "butch"      "$(butch list | wc -l)"
+            pkgs "kpm-pkg"    "$(kpm --get-selections | grep -cv deinstall$)"
+            pkgs "emerge"     "$(ls -d /var/db/pkg/*/* | wc -l)"
+            pkgs "nix-env"    "$(ls -d -1 /nix/store/*/ | wc -l)"
+            pkgs "guix"       "$(ls -d -1 /gnu/store/*/ | wc -l)"
+            pkgs "Compile"    "$(ls -d -1 /Programs/*/ | wc -l)"
+            pkgs "eopkg"      "$(ls -1 /var/lib/eopkg/package | wc -l)"
+            pkgs "crew"       "$(ls -l /usr/local/etc/crew/meta/*.filelist | wc -l)"
+            pkgs "pkgtool"    "$(ls -1 /var/log/packages | wc -l)"
+            pkgs "cave"       "$(ls -d -1 /var/db/paludis/repositories/cross-installed/*/data/* \
+                                          /var/db/paludis/repositories/installed/data/* | wc -l)"
 
-            type -p dpkg >/dev/null && \
-                ((packages+=$(dpkg --get-selections | grep -cv deinstall$)))
+            case "$kernel_name" in
+                "FreeBSD") pkgs "pkg" "$(pkg info | wc -l)" ;;
+                "Solaris") pkgs "pkginfo" "$(pkginfo -i | wc -l)" ;;
 
-            type -p pkgtool >/dev/null && \
-                ((packages+=$(ls -1 /var/log/packages | wc -l)))
+                *)
+                    pkgs "pkg" "$(ls -1 /var/db/pkg | wc -l)"
 
-            type -p rpm >/dev/null && \
-                ((packages+=$(rpm -qa | wc -l)))
-
-            type -p xbps-query >/dev/null && \
-                ((packages+=$(xbps-query -l | wc -l)))
-
-            [[ "$os" != "Linux" ]] && type -p pkginfo >/dev/null && \
-                ((packages+=$(pkginfo -i | wc -l)))
-
-            type -p emerge >/dev/null && \
-                ((packages+=$(ls -d /var/db/pkg/*/* | wc -l)))
-
-            type -p nix-env >/dev/null && \
-                ((packages+=$(ls -d -1 /nix/store/*/ | wc -l)))
-
-            type -p guix >/dev/null && \
-                ((packages+=$(ls -d -1 /gnu/store/*/ | wc -l)))
-
-            type -p apk >/dev/null && \
-                ((packages+=$(apk info | wc -l)))
-
-            type -p opkg >/dev/null && \
-                ((packages+=$(opkg list-installed | wc -l)))
-
-            type -p pacman-g2 >/dev/null && \
-                ((packages+=$(pacman-g2 -Q | wc -l)))
-
-            type -p lvu >/dev/null && \
-                ((packages+=$(lvu installed | wc -l)))
-
-            type -p tce-status >/dev/null && \
-                ((packages+=$(tce-status -i | wc -l)))
-
-            type -p Compile >/dev/null && \
-                ((packages+=$(ls -d -1 /Programs/*/ | wc -l)))
-
-            type -p eopkg >/dev/null && \
-                ((packages+=$(ls -1 /var/lib/eopkg/package | wc -l)))
-
-            type -p pkg_info >/dev/null && \
-                ((packages+=$(pkg_info | wc -l)))
-
-            type -p crew >/dev/null && \
-                ((packages+=$(ls -l /usr/local/etc/crew/meta/*.filelist | wc -l)))
-
-            type -p tazpkg >/dev/null && \
-                ((packages+=$(tazpkg list | wc -l) - 6))
-
-            type -p sorcery >/dev/null && \
-                ((packages+=$(gaze installed | wc -l)))
-
-            type -p alps >/dev/null && \
-                ((packages+=$(alps showinstalled | wc -l)))
-
-            type -p kpt >/dev/null && \
-            type -p kpm >/dev/null && \
-                ((packages+=$(kpm --get-selections | grep -cv deinstall$)))
-
-            if type -p cave >/dev/null; then
-                package_dir=(/var/db/paludis/repositories/{cross-installed/*,installed}/data/*)
-                ((packages+=$(ls -d -1 "${package_dir[@]}" | wc -l)))
-            fi
-
-            type -p butch >/dev/null && \
-                ((packages+=$(butch list | wc -l)))
-
-            if type -p pkg >/dev/null; then
-                case "$kernel_name" in
-                    "FreeBSD") ((packages+=$(pkg info | wc -l))) ;;
-                    *)
-                        ((packages+=$(ls -1 /var/db/pkg | wc -l)))
-                        ((packages == 0)) && ((packages+=$(pkg list | wc -l)))
-                esac
-            fi
+                    ((packages == 0)) && \
+                        pkgs "pkg" "$(pkg list | wc -l)"
+                ;;
+            esac
         ;;
 
         "Mac OS X" | "MINIX")
-            type -p port >/dev/null && \
-                ((packages+=$(port installed | wc -l) - 1))
+            pkgs "port"  "$(port installed | wc -l) - 1)"
+            pkgs "brew"  "$(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1)"
+            pkgs "pkgin" "$(pkgin list | wc -l)"
+        ;;
 
-            type -p brew >/dev/null && \
-                ((packages+=$(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1))
-
-            type -p pkgin >/dev/null && \
-                ((packages+=$(pkgin list | wc -l)))
+        "AIX"| "FreeMiNT")
+            pkgs "lslpp" "$(lslpp -J -l -q | grep -cv '^#')"
+            pkgs "rpm"   "$(rpm -qa | wc -l)"
         ;;
 
         "Windows")
             case "$kernel_name" in
-                "CYGWIN"*) packages="$(cygcheck -cd | wc -l)" ;;
-                "MSYS"*) packages="$(pacman -Qq --color never | wc -l)"
+                "CYGWIN"*) pkgs "cygcheck" "$(cygcheck -cd | wc -l)" ;;
+                "MSYS"*)   pkgs "pacman"   "$(pacman -Qq --color never | wc -l)" ;;
             esac
 
             # Count chocolatey packages.
             [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
-                ((packages+=$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)))
+                pkgs ":" "$(ls -1 /cygdrive/c/ProgramData/chocolatey/lib | wc -l)"
         ;;
 
         "Haiku")
             packages="$(ls -1 /boot/system/package-links | wc -l)"
         ;;
 
-        "AIX")
-            packages="$(lslpp -J -l -q | grep -cv '^#')"
-            ((packages+=$(rpm -qa | wc -l)))
-        ;;
-
         "IRIX")
             packages="$(($(versions -b | wc -l)-3))"
         ;;
-
-        "FreeMiNT")
-            type -p rpm >/dev/null && \
-                packages="$(rpm -qa | wc -l)"
-        ;;
     esac
 
-    ((packages == 0)) && unset packages
+    if ((packages == 0)); then
+        unset packages
+
+    elif [[ "$package_manager" == "on" ]]; then
+        managers="${managers/pacman-key/pacman}"
+        packages+=" (${managers::-2})"
+    fi
 }
 
 get_shell() {
@@ -4398,6 +4364,7 @@ INFO:
 
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 
+    --package_manager on/off    Hide/Show Package Manager names.
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -4593,6 +4560,7 @@ get_args() {
     while [[ "$1" ]]; do
         case "$1" in
             # Info
+            "--package_manager") package_manager="$2" ;;
             "--os_arch") os_arch="$2" ;;
             "--cpu_cores") cpu_cores="$2" ;;
             "--cpu_speed") cpu_speed="$2" ;;
