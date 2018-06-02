@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vim: noai:ts=4:sw=4:expandtab
 # shellcheck source=/dev/null
-# shellcheck disable=2009,2012,2016
+# shellcheck disable=2009
 #
 # Neofetch: A command-line system information tool written in bash 3.2+.
 # https://github.com/dylanaraps/neofetch
@@ -1335,13 +1335,13 @@ get_shell() {
             "sh" | "ash" | "dash") ;;
 
             "mksh" | "ksh")
-                shell+="$("$SHELL" -c 'printf "%s" "$KSH_VERSION"')"
+                shell+="$("$SHELL" -c "printf %s \$KSH_VERSION")"
                 shell="${shell/ * KSH}"
                 shell="${shell/version}"
             ;;
 
             "tcsh")
-                shell+="$("$SHELL" -c 'printf "%s" "$tcsh"')"
+                shell+="$("$SHELL" -c "printf %s \$tcsh")"
             ;;
 
             *)
@@ -2326,7 +2326,7 @@ get_song() {
         "google play"*)   song="$(gpmdp-remote current)" ;;
         "rhythmbox"*)     song="$(rhythmbox-client --print-playing-format '%ta \n %at \n %tt')" ;;
         "deadbeef"*)      song="$(deadbeef --nowplaying-tf '%artist% \n %album% \n %title%')" ;;
-        "xmms2d"*)        song="$(xmms2 current -f '${artist} \n ${album} \n ${title}')" ;;
+        "xmms2d"*)        song="$(xmms2 current -f "\${artist}"$'\n'"\${album}"$'\n'"\${title}")" ;;
         "qmmp"*)          song="$(qmmp --nowplaying '%p \n %a \n %t')" ;;
         "gnome-music"*)   get_song_dbus "GnomeMusic" ;;
         "lollypop"*)      get_song_dbus "Lollypop" ;;
@@ -3385,12 +3385,12 @@ get_ascii() {
     done <<< "$ascii_data"
 
     # Colors.
-    print="${print//'${c1}'/$c1}"
-    print="${print//'${c2}'/$c2}"
-    print="${print//'${c3}'/$c3}"
-    print="${print//'${c4}'/$c4}"
-    print="${print//'${c5}'/$c5}"
-    print="${print//'${c6}'/$c6}"
+    print="${print//\$\{c1\}/$c1}"
+    print="${print//\$\{c2\}/$c2}"
+    print="${print//\$\{c3\}/$c3}"
+    print="${print//\$\{c4\}/$c4}"
+    print="${print//\$\{c5\}/$c5}"
+    print="${print//\$\{c6\}/$c6}"
 
     ((text_padding=ascii_length+gap))
     printf "%b" "$print"
