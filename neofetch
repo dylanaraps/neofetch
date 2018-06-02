@@ -1307,8 +1307,8 @@ get_packages() {
         ;;
 
         "Mac OS X" | "MINIX")
-            pkgs "port"  "$(port installed | wc -l) - 1)"
-            pkgs "brew"  "$(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1)"
+            pkgs "port"  "$(port installed | wc -l) - 1"
+            pkgs "brew"  "$(find /usr/local/Cellar -maxdepth 1 | wc -l) - 1"
             pkgs "pkgin" "$(pkgin list | wc -l)"
         ;;
 
