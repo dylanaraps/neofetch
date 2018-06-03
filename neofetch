@@ -971,7 +971,7 @@ get_distro() {
         "Solaris")
             case "$distro_shorthand" in
                 "on" | "tiny") distro="$(awk 'NR==1{print $1 " " $3;}' /etc/release)" ;;
-                *) distro="$(awk 'NR==1{print $1 " " $2 " " $3;}' /etc/release)" ;;
+                *)             distro="$(awk 'NR==1{print $1 " " $2 " " $3;}' /etc/release)" ;;
             esac
             distro="${distro/\(*}"
         ;;
@@ -1430,11 +1430,15 @@ get_de() {
     # Format strings.
     case "$de" in
         "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
-        *"MUFFIN"* | "Cinnamon") de="$(cinnamon --version)"; de="${de:-Cinnamon}" ;;
         *"xfce4"*) de="Xfce4" ;;
         *"xfce5"*) de="Xfce5" ;;
         *"xfce"*)  de="Xfce" ;;
         *"mate"*)  de="MATE" ;;
+
+        *"MUFFIN"* | "Cinnamon")
+            de="$(cinnamon --version)"; de="${de:-Cinnamon}"
+        ;;
+
         *"GNOME"*)
             de="$(gnome-shell --version)"
             de="${de/Shell }"
@@ -1503,11 +1507,11 @@ get_wm() {
                 ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm')"
 
                 case "$ps_line" in
-                    *"chunkwm"*) wm="chunkwm" ;;
-                    *"kwm"*) wm="Kwm" ;;
-                    *"Amethyst"*) wm="Amethyst" ;;
+                    *"chunkwm"*)   wm="chunkwm" ;;
+                    *"kwm"*)       wm="Kwm" ;;
+                    *"Amethyst"*)  wm="Amethyst" ;;
                     *"Spectacle"*) wm="Spectacle" ;;
-                    *) wm="Quartz Compositor" ;;
+                    *)             wm="Quartz Compositor" ;;
                 esac
             ;;
 
@@ -1524,15 +1528,14 @@ get_wm() {
             ;;
 
             "FreeMiNT")
-                wm="Atari AES"
-                for files in /proc/*; do
-                    case "$files" in
-                        *xaaes*) wm="XaAES" ;;
-                        *myaes*) wm="MyAES" ;;
-                        *naes*) wm="N.AES" ;;
-                        geneva) wm="Geneva" ;;
-                    esac
-                done
+                freemint_wm=(/proc/*)
+                case "${freemint_wm[*]}" in
+                    *xaaes*) wm="XaAES" ;;
+                    *myaes*) wm="MyAES" ;;
+                    *naes*)  wm="N.AES" ;;
+                    geneva)  wm="Geneva" ;;
+                    *)       wm="Atari AES" ;;
+                esac
             ;;
         esac
     fi
@@ -1773,7 +1776,7 @@ get_cpu() {
             # Get CPU cores.
             case "$cpu_cores" in
                 "logical" | "on") cores="$(sysctl -n hw.logicalcpu_max)" ;;
-                "physical") cores="$(sysctl -n hw.physicalcpu_max)" ;;
+                "physical")       cores="$(sysctl -n hw.physicalcpu_max)" ;;
             esac
         ;;
 
@@ -1876,7 +1879,9 @@ get_cpu() {
                     cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')"
                 ;;
 
-                "physical") cores="$(lparstat -i | awk -F':' '/Active Physical CPUs/ {printf $2}')"
+                "physical")
+                    cores="$(lparstat -i | awk -F':' '/Active Physical CPUs/ {printf $2}')"
+                ;;
             esac
         ;;
 
@@ -1934,7 +1939,7 @@ get_cpu() {
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
         case "$os" in
             "Mac OS X") cpu="${cpu/@/(${cores}) @}" ;;
-            *) cpu="$cpu ($cores)" ;;
+            *)          cpu="$cpu ($cores)" ;;
         esac
 
     # Add CPU speed to the output.
@@ -1974,14 +1979,17 @@ get_cpu_usage() {
             if [[ "$cpu_cores" != "logical" ]]; then
                 case "$os" in
                     "Linux" | "MINIX") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
-                    "Mac OS X") cores="$(sysctl -n hw.logicalcpu_max)" ;;
-                    "BSD") cores="$(sysctl -n hw.ncpu)" ;;
-                    "Solaris") cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
-                    "Haiku") cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
-                    "iPhone OS") cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
-                    "AIX") cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')" ;;
-                    "IRIX") cores="$(sysconf NPROC_ONLN)" ;;
-                    "FreeMiNT") cores="$(sysctl -n hw.ncpu)"
+                    "Mac OS X")        cores="$(sysctl -n hw.logicalcpu_max)" ;;
+                    "BSD")             cores="$(sysctl -n hw.ncpu)" ;;
+                    "Solaris")         cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
+                    "Haiku")           cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
+                    "iPhone OS")       cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
+                    "IRIX")            cores="$(sysconf NPROC_ONLN)" ;;
+                    "FreeMiNT")        cores="$(sysctl -n hw.ncpu)" ;;
+
+                    "AIX")
+                        cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')"
+                    ;;
                 esac
             fi
 
@@ -1992,10 +2000,10 @@ get_cpu_usage() {
 
     # Print the bar.
     case "$cpu_display" in
-        "bar") cpu_usage="$(bar "$cpu_usage" 100)" ;;
+        "bar")     cpu_usage="$(bar "$cpu_usage" 100)" ;;
         "infobar") cpu_usage="${cpu_usage}% $(bar "$cpu_usage" 100)" ;;
         "barinfo") cpu_usage="$(bar "$cpu_usage" 100)${info_color} ${cpu_usage}%" ;;
-        *) cpu_usage="${cpu_usage}%" ;;
+        *)         cpu_usage="${cpu_usage}%" ;;
     esac
 }
 
