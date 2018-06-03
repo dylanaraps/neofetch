@@ -977,7 +977,8 @@ get_distro() {
         ;;
 
         "Haiku")
-            distro="$(uname -sv | awk '{print $1 " " $2}')"
+            read -r name version _ < <(uname -sv)
+            distro="$name $version"
         ;;
 
         "AIX")
