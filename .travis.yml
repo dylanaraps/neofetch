@@ -11,7 +11,7 @@ before_install:
 
 install:
   # Install a custom version of shellcheck instead of Travis CI's default
-  - scversion="latest" # or "v0.4.7", or "latest"
+  - scversion="0.5.0" # or "v0.4.7", or "latest"
   - wget "https://storage.googleapis.com/shellcheck/shellcheck-${scversion}.linux.x86_64.tar.xz"
   - tar --xz -xvf "shellcheck-${scversion}.linux.x86_64.tar.xz"
   - shellcheck() { "shellcheck-${scversion}/shellcheck" "$@"; }
