@@ -4015,7 +4015,7 @@ get_full_path() {
     # For example "Pictures/Wallpapers" --> "/home/dylan/Pictures/Wallpapers"
 
     # If the file exists in the current directory, stop here.
-    [[ -f "${PWD}/${1/*\/}" ]] && { printf '%s\n' "${PWD}/${1/*\/}"; return; }
+    [[ -f "${PWD}/${1}" ]] && { printf '%s\n' "${PWD}/${1}"; return; }
 
     ! cd "${1%/*}" && {
         err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
@@ -4039,21 +4039,21 @@ get_full_path() {
 }
 
 get_user_config() {
-    # Check $config_file.
-    [[ -f "$config_file" ]] && {
+    mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
+
+    shopt -s nullglob
+    files=("$XDG_CONFIG_HOME"/neofetch/confi*)
+    shopt -u nullglob
+
+    # --config /path/to/config.conf
+    if [[ -f "$config_file" ]]; then
         source "$config_file"
         err "Config: Sourced user config. (${config_file})"
         return
-    }
-    mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
 
-    # Check ${XDG_CONFIG_HOME}/neofetch and create the
-    # dir/files if they don't exist.
-    if [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
-        config_file="${XDG_CONFIG_HOME}/neofetch/config"
-
-    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
-        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
+    elif [[ -f "${files[0]}" ]]; then
+        source "${files[0]}"
+        err "Config: Sourced user config.    (${config_file})"
 
     else
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
@@ -4061,9 +4061,6 @@ get_user_config() {
         # The config file doesn't exist, create it.
         printf '%s\n' "$config" > "$config_file"
     fi
-
-    source "$config_file"
-    err "Config: Sourced user config.    (${config_file})"
 }
 
 bar() {
@@ -4656,7 +4653,7 @@ get_distro_ascii() {
     # This function gets the distro ascii art and colors.
     #
     # $ascii_distro is the same as $distro.
-    case "$( trim "$ascii_distro")" in
+    case "$(trim "$ascii_distro")" in
         "AIX"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
