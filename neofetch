@@ -1235,82 +1235,88 @@ get_uptime() {
 }
 
 get_packages() {
-    # pkgs: Run package manager if it exists.
-    # tots: Count lines in command output.
-    # dirc: Count files or dirs in a glob.
-    pkgs() { type -p "$1" >/dev/null && { ((packages+="$2"));(("$2">0))&&managers+="$_, "; }; }
-    tots() { IFS=$'\n' read -d "" -ra files < <($1); echo "${#files[@]}"; }
-    dirc() { echo $#; }
+    # has: Check if package manager installed.
+    # dir: Count files or dirs in a glob.
+    # pac: If packages > 0, log package manager name.
+    # tot: Count lines in command output.
+    has() { type -p "$1" >/dev/null && manager="$_"; }
+    dir() { ((packages+=$#)); pac "$#"; }
+    pac() { (($1 > 0)) && managers+="${manager}, "; }
+    tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
 
     case "$os" in
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
-            pkgs "pacman-key" "$(tots "pacman -Qq --color never")"
-            pkgs "rpm"        "$(tots "rpm -qa")"
-            pkgs "xbps-query" "$(tots "xbps-query -l")"
-            pkgs "apk"        "$(tots "apk info")"
-            pkgs "opkg"       "$(tots "opkg list-installed")"
-            pkgs "pacman-g2"  "$(tots "pacman-g2 -Q")"
-            pkgs "lvu"        "$(tots "lvu installed")"
-            pkgs "tce-status" "$(tots "tce-status -i")"
-            pkgs "pkg_info"   "$(tots "pkg_info")"
-            pkgs "tazpkg"     "$(tots "tazpkg list") - 6"
-            pkgs "sorcery"    "$(tots "gaze installed")"
-            pkgs "alps"       "$(tots "alps showinstalled")"
-            pkgs "butch"      "$(tots "butch list")"
-            pkgs "emerge"     "$(dirc /var/db/pkg/*/*/)"
-            pkgs "nix-env"    "$(dirc /nix/store/*/)"
-            pkgs "guix"       "$(dirc /gnu/store/*/)"
-            pkgs "Compile"    "$(dirc /Programs/*/)"
-            pkgs "eopkg"      "$(dirc /var/lib/eopkg/package/*)"
-            pkgs "crew"       "$(dirc /usr/local/etc/crew/meta/*.filelist)"
-            pkgs "pkgtool"    "$(dirc /var/log/packages/*)"
-            pkgs "cave"       "$(dirc /var/db/paludis/repositories/cross-installed/*/data/*/ \
-                                      /var/db/paludis/repositories/installed/data/*/)"
-            pkgs "kpm-pkg"    "$(kpm  --get-selections | grep -cv deinstall$)"
-            pkgs "dpkg"       "$(dpkg --get-selections | grep -cv deinstall$)"
+            # Package Manager Programs.
+            has "pacman-key" && tot pacman -Qq --color never
+            has "dpkg"       && tot dpkg-query -f '\n' -W
+            has "rpm"        && tot rpm -qa
+            has "xbps-query" && tot xbps-query -l
+            has "apk"        && tot apk info
+            has "opkg"       && tot opkg list-installed
+            has "pacman-g2"  && tot pacman-g2 -Q
+            has "lvu"        && tot lvu installed
+            has "tce-status" && tot tce-status -i
+            has "pkg_info"   && tot pkg_info
+            has "tazpkg"     && tot tazpkg list && ((packages-=6))
+            has "sorcery"    && tot gaze installed
+            has "alps"       && tot alps showinstalled
+            has "butch"      && tot butch list
+
+            # Counting files/dirs.
+            has "emerge"     && dir /var/db/pkg/*/*/
+            has "nix-env"    && dir /nix/store/*/
+            has "guix"       && dir /gnu/store/*/
+            has "Compile"    && dir /Programs/*/
+            has "eopkg"      && dir /var/lib/eopkg/package/*
+            has "crew"       && dir /usr/local/etc/crew/meta/*.filelist
+            has "pkgtool"    && dir /var/log/packages/*
+            has "cave"       && dir /var/db/paludis/repositories/cross-installed/*/data/*/ \
+                                    /var/db/paludis/repositories/installed/data/*/
+
+            # Other (Needs complex command)
+            has "kpm-pkg"    && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
 
             case "$kernel_name" in
-                "FreeBSD") pkgs "pkg"     "$(tots "pkg info")" ;;
-                "SunOS")   pkgs "pkginfo" "$(tots "pkginfo -i")" ;;
-
+                "FreeBSD") has "pkg"     && tot pkg info ;;
+                "SunOS")   has "pkginfo" && tot pkginfo -i ;;
                 *)
-                    pkgs "pkg" "$(dirc /var/db/pkg/*)"
+                    has "pkg" && dir /var/db/pkg/*
 
                     ((packages == 0)) && \
-                        pkgs "pkg" "$(tots "pkg list")"
+                        has "pkg" && tot pkg list
                 ;;
             esac
         ;;
 
         "Mac OS X" | "MINIX")
-            pkgs "port"  "$(tots "port installed") - 1"
-            pkgs "brew"  "$(dirc /usr/local/Cellar/*) - 1"
-            pkgs "pkgin" "$(tots "pkgin list")"
+            has "port"  && tot port installed && ((packages-=1))
+            has "brew"  && dir /usr/local/Cellar/*
+            has "pkgin" && tot pkgin list
         ;;
 
         "AIX"| "FreeMiNT")
-            pkgs "lslpp" "$(lslpp -J -l -q | grep -cv '^#')"
-            pkgs "rpm"   "$(tots "rpm -qa")"
+            has "lslpp" && ((packages+="$(lslpp -J -l -q | grep -cv '^#')"))
+            has "rpm"   && tot rpm -qa
         ;;
 
         "Windows")
             case "$kernel_name" in
-                "CYGWIN"*) pkgs "cygcheck" "$(tots "cygcheck -cd")" ;;
-                "MSYS"*)   pkgs "pacman"   "$(tots "pacman -Qq --color never")" ;;
+                "CYGWIN"*) has "cygcheck" && tot cygcheck -cd ;;
+                "MSYS"*)   has "pacman"   && tot pacman -Qq --color never ;;
             esac
 
             # Count chocolatey packages.
             [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
-                pkgs ":" "$(dirc /cygdrive/c/ProgramData/chocolatey/lib/*)"
+                dir /cygdrive/c/ProgramData/chocolatey/lib/*
         ;;
 
         "Haiku")
-            files=(/boot/system/package-links/*)
-            packages="${#files[@]}"
+            dir /boot/system/package-links/*
         ;;
 
         "IRIX")
-            packages="$(($(tots "versions -b")-3))"
+            tot versions -b
+            ((packages-=3))
         ;;
     esac
 
@@ -1319,7 +1325,7 @@ get_packages() {
 
     elif [[ "$package_managers" == "on" && "${managers//,}" ]]; then
         managers="${managers/pacman-key/pacman}"
-        managers="${managers/kpt-pkg/kpt}"
+        managers="${managers/nix-env/nix}"
         packages+=" (${managers%,*})"
     fi
 }
