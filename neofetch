@@ -1261,6 +1261,7 @@ get_packages() {
             has "sorcery"    && tot gaze installed
             has "alps"       && tot alps showinstalled
             has "butch"      && tot butch list
+            has "flatpak"    && tot flatpak list
 
             # Counting files/dirs.
             has "emerge"     && dir /var/db/pkg/*/*/
