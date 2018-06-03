@@ -2435,7 +2435,7 @@ get_song() {
                                    getline;
                                    t=$2
                                }
-                               END{print a " \n " b " \n " t}')"
+                               END {print a " \n " b " \n " t}')"
         ;;
 
         *) mpc &>/dev/null && song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
@@ -2996,7 +2996,7 @@ END
                                       /^\s*font/ {
                                           if(opt==1) a=$2;
                                           opt=0
-                                      } END{print a}' "/etc/xdg/termite/config" \
+                                      } END {print a}' "/etc/xdg/termite/config" \
                          "$termite_config")"
         ;;
 
