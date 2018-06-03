@@ -946,9 +946,9 @@ get_distro() {
                 "on") distro="${distro/ ${osx_build}}" ;;
                 "tiny")
                     case "$osx_version" in
-                        "10."[4-7]*) distro="${distro/${codename}/Mac OS X}" ;;
+                        "10."[4-7]*)                distro="${distro/${codename}/Mac OS X}" ;;
                         "10."[8-9]* | "10.1"[0-1]*) distro="${distro/${codename}/OS X}" ;;
-                        "10.1"[2-3]*) distro="${distro/${codename}/macOS}" ;;
+                        "10.1"[2-3]*)               distro="${distro/${codename}/macOS}" ;;
                     esac
                     distro="${distro/ ${osx_build}}"
                 ;;
@@ -1146,7 +1146,7 @@ get_kernel() {
     if [[ "$os" =~ (BSD|MINIX) && "$distro" == *"$kernel_name"* ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
-            *) unset kernel ;;
+            *)             unset kernel ;;
         esac
     fi
 }
@@ -1415,7 +1415,7 @@ get_de() {
             # the desktop variables are sometimes also set to the
             # window manager name. This checks to see if WM == DE
             # and dicards the DE value.
-            [[ "$wm" && "$de" =~ ^$wm$ ]] && { unset -v de; return; }
+            [[ "$de" == "$wm" ]] && { unset -v de; return; }
         ;;
     esac
 
@@ -3302,7 +3302,7 @@ get_cols() {
         printf -v block_spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
-        [[ "$blocks" ]] &&  cols+="${block_spaces// /${blocks}${reset}nl}"
+        [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}${reset}nl}"
         [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}${reset}nl}"
 
         # Add newlines to the string.
@@ -3620,10 +3620,9 @@ get_image_size() {
             read -r width height <<< "$(identify -format "%w %h" "$image")"
             crop_mode="none"
 
-            while (( "$width" >= ("$term_width" / 2) ||
-                     "$height" >= "$term_height" )); do
-                width="$((width / 2))"
-                height="$((height / 2))"
+            while ((width >= (term_width / 2) || height >= term_height)); do
+                ((width=width/2))
+                ((height=height/2))
             done
         ;;
 
@@ -3785,13 +3784,8 @@ display_image() {
 }
 
 to_ascii() {
-    # Log the error.
     err "$1"
-
-    # This function makes neofetch fallback to ascii mode.
     image_backend="ascii"
-
-    # Print the ascii art.
     get_ascii
 
     # Set cursor position next image/ascii.
@@ -3799,7 +3793,6 @@ to_ascii() {
 }
 
 to_off() {
-    # This function makes neofetch fallback to off mode.
     err "$1"
     image_backend="off"
     text_padding=
