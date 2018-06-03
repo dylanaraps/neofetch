@@ -150,12 +150,12 @@ uptime_shorthand="on"
 #
 # Default: 'on'
 # Values:  'on', 'off'
-# Flag:    --package_manager
+# Flag:    --package_managers
 #
 # Example:
 # on:  '900 (pacman, apt)'
 # off: '900'
-package_manager="on"
+package_managers="on"
 
 
 # Shell
@@ -1319,7 +1319,7 @@ get_packages() {
     if ((packages == 0)); then
         unset packages
 
-    elif [[ "$package_manager" == "on" && "${managers//,}" ]]; then
+    elif [[ "$package_managers" == "on" && "${managers//,}" ]]; then
         managers="${managers/pacman-key/pacman}"
         managers="${managers/kpt-pkg/kpt}"
         packages+=" (${managers%,*})"
@@ -4211,7 +4211,7 @@ INFO:
 
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 
-    --package_manager on/off    Hide/Show Package Manager names.
+    --package_managers on/off   Hide/Show Package Manager names.
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -4404,7 +4404,7 @@ get_args() {
     while [[ "$1" ]]; do
         case "$1" in
             # Info
-            "--package_manager") package_manager="$2" ;;
+            "--package_managers") package_managers="$2" ;;
             "--os_arch") os_arch="$2" ;;
             "--cpu_cores") cpu_cores="$2" ;;
             "--cpu_speed") cpu_speed="$2" ;;
