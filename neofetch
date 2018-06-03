@@ -1197,18 +1197,15 @@ get_uptime() {
             hours="$((seconds / 60 / 60 % 24)) hours"
             mins="$((seconds / 60 % 60)) minutes"
 
-            # Format the days, hours and minutes.
-            strip_date() {
-                case "$1" in
-                    "0 "*) unset "${1/* }" ;;
-                    "1 "*) printf "%s" "${1/s}" ;;
-                    *)     printf "%s" "$1" ;;
-                esac
-            }
+            # Remove plural if < 2.
+            ((${days/ *} == 1))  && days="${days/s}"
+            ((${hours/ *} == 1)) && hours="${hours/s}"
+            ((${mins/ *} == 1))  && mins="${mins/s}"
 
-            days="$(strip_date "$days")"
-            hours="$(strip_date "$hours")"
-            mins="$(strip_date "$mins")"
+            # Hide empty fields.
+            ((${days/ *} == 0))  && unset days
+            ((${hours/ *} == 0)) && unset hours
+            ((${mins/ *} == 0))  && unset mins
 
             uptime="${days:+$days, }${hours:+$hours, }${mins}"
             uptime="${uptime%', '}"
