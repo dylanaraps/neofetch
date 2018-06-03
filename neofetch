@@ -5849,17 +5849,16 @@ EOF
         "Funtoo"*)
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
-${c2}     _______               ____
-    /MMMMMMM/             /MMMM| _____  _____
- __/M${c1}.MMM.${c2}M/_____________|M${c1}.M${c2}MM|/MMMMM\/MMMMM\\
-|MMMM${c1}MM'${c2}MMMMMMMMMMMMMMMMMMM${c1}MM${c2}MMMM${c1}.MMMM..MMMM.${c2}MM\\
-|MM${c1}MMMMMMM${c2}/m${c1}MMMMMMMMMMMMMMMMMMMMMM${c2}MMMM${c1}MM${c2}MMMM${c1}MM${c2}MM|
-|MMMM${c1}MM${c2}MMM${c1}MM${c2}MM${c1}MM${c2}MM${c1}MM${c2}MMMMM${c1}\MMM${c2}MMM${c1}MM${c2}MMMM${c1}MM${c2}MMMM${c1}MM${c2}MM|
-  |MM${c1}MM${c2}MMM${c1}MM${c2}MM${c1}MM${c2}MM${c1}MM${c2}MM${c1}MM${c2}MM${c1}MMM${c2}MMMM${c1}'MMMM''MMMM'${c2}MM/
-  |MM${c1}MM${c2}MMM${c1}MM${c2}MM${c1}MM${c2}MM${c1}MM${c2}MM${c1}MM${c2}MM${c1}MMM${c2}MMM\MMMMM/\MMMMM/
-  |MM${c1}MM${c2}MMM${c1}MM${c2}MMMMMM${c1}MM${c2}MM${c1}MM${c2}MM${c1}MMMMM'${c2}M|
-  |MM${c1}MM${c2}MMM${c1}MMMMMMMMMMMMMMMMM MM'${c2}M/
-  |MMMMMMMMMMMMMMMMMMMMMMMMMMMM/
+${c1}   .dKXXd                         .
+  :XXl;:.                      .OXo
+.'OXO''  .''''''''''''''''''''':XNd..'oco.lco,
+xXXXXXX, cXXXNNNXXXXNNXXXXXXXXNNNNKOOK; d0O .k
+  kXX  xXo  KNNN0  KNN.       'xXNo   :c; 'cc.
+  kXX  xNo  KNNN0  KNN. :xxxx. 'NNo
+  kXX  xNo  loooc  KNN. oNNNN. 'NNo
+  kXX  xN0:.       KNN' oNNNX' ,XNk
+  kXX  xNNXNNNNNNNNXNNNNNNNNXNNOxXNX0Xl
+  ...  ......................... .;cc;.
 EOF
         ;;
 
