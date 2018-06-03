@@ -3364,39 +3364,31 @@ image_backend() {
 }
 
 get_ascii() {
-    if [[ ! -f "$image_source" ]]; then
-        err "Ascii: Ascii file not found, using distro ascii."
-    else
+    if [[ -f "$image_source" ]]; then
         ascii_data="$(< "$image_source")"
+    else
+        err "Ascii: Ascii file not found, using distro ascii."
     fi
 
     # Set locale to get correct padding.
     LC_ALL="$sys_locale"
 
-    # Turn file into variable.
+    # Calculate size of ascii file in line length / line count.
     while IFS=$'\n' read -r line; do
-        print+="$line
-"
-        # Calculate size of ascii file in line length / line count.
-        line="${line//[??;?;??m}"
-        line="${line//[??;?;???m}"
-        line="${line//[0m}"
-        line="${line//\$\{??\}}"
-        line="${line//\\\\/\\}"
         ((${#line} > ascii_length)) && ascii_length="${#line}"
         ((++lines))
-    done <<< "$ascii_data"
+    done <<< "${ascii_data//\$\{??\}}"
 
     # Colors.
-    print="${print//\$\{c1\}/$c1}"
-    print="${print//\$\{c2\}/$c2}"
-    print="${print//\$\{c3\}/$c3}"
-    print="${print//\$\{c4\}/$c4}"
-    print="${print//\$\{c5\}/$c5}"
-    print="${print//\$\{c6\}/$c6}"
+    ascii_data="${ascii_data//\$\{c1\}/$c1}"
+    ascii_data="${ascii_data//\$\{c2\}/$c2}"
+    ascii_data="${ascii_data//\$\{c3\}/$c3}"
+    ascii_data="${ascii_data//\$\{c4\}/$c4}"
+    ascii_data="${ascii_data//\$\{c5\}/$c5}"
+    ascii_data="${ascii_data//\$\{c6\}/$c6}"
 
     ((text_padding=ascii_length+gap))
-    printf "%b" "$print"
+    printf '%b\n' "$ascii_data"
     LC_ALL=C
 }
 
@@ -6694,7 +6686,7 @@ EOF
         "nixos_small")
             set_colors 4 6
             read -rd '' ascii_data <<'EOF'
-  ${c1}\\\\  \\\\ //
+  ${c1}  \\\\  \\\\ //
  ==\\\\__\\\\/ //
    //   \\\\//
 ==//     //==
@@ -6823,7 +6815,7 @@ EOF
         "OpenBSD"*)
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
-                                    ${c3} _
+${c3}                                     _
                                     (_)
 ${c1}              |    .
 ${c1}          .   |L  /|   .         ${c3} _
