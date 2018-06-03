@@ -1379,18 +1379,15 @@ get_de() {
         ;;
 
         "FreeMiNT")
-            get_wm
-
-            for files in /proc/*; do
-                case "$files" in
-                    *thing*) de="Thing" ;;
-                    *jinnee*) de="Jinnee" ;;
-                    *tera*) de="Teradesk" ;;
-                    *neod*) de="NeoDesk" ;;
-                    *zdesk*) de="zDesk" ;;
-                    *mdesk*) de="mDesk" ;;
-                esac
-            done
+            freemint_wm=(/proc/*)
+            case "${freemint_wm[*]}" in
+                *thing*)  de="Thing" ;;
+                *jinnee*) de="Jinnee" ;;
+                *tera*)   de="Teradesk" ;;
+                *neod*)   de="NeoDesk" ;;
+                *zdesk*)  de="zDesk" ;;
+                *mdesk*)  de="mDesk" ;;
+            esac
         ;;
 
         *)
@@ -1663,15 +1660,13 @@ get_wm_theme() {
             wm_theme="$(PlistBuddy -c "Print AppleInterfaceStyle" "$global_preferences")"
             wm_theme_color="$(PlistBuddy -c "Print AppleAquaColorVariant" "$global_preferences")"
 
-            [[ -z "$wm_theme" ]] && wm_theme="Light"
+            [[ -z "$wm_theme" ]] && \
+                wm_theme="Light"
 
-            if [[ -z "$wm_theme_color" ]] || ((wm_theme_color == 1)); then
+            [[ -z "$wm_theme_color" ]] || ((wm_theme_color == 1)) && \
                 wm_theme_color="Blue"
-            else
-                wm_theme_color="Graphite"
-            fi
 
-            wm_theme="$wm_theme_color ($wm_theme)"
+            wm_theme="${wm_theme_color:-Graphite} ($wm_theme)"
         ;;
 
         *"Explorer")
