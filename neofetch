@@ -2698,38 +2698,42 @@ get_term() {
     # Workaround for macOS systems that
     # don't support the block below.
     case "$TERM_PROGRAM" in
-        "iTerm.app") term="iTerm2" ;;
+        "iTerm.app")    term="iTerm2" ;;
         "Terminal.app") term="Apple Terminal" ;;
-        "Hyper") term="HyperTerm" ;;
-        *) term="${TERM_PROGRAM/\.app}" ;;
+        "Hyper")        term="HyperTerm" ;;
+        *)              term="${TERM_PROGRAM/\.app}" ;;
     esac
 
     # Most likely TosWin2 on FreeMiNT - quick check
     [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && \
         term="TosWin2"
 
+    [[ "$SSH_CONNECTION" ]] && \
+        term="$SSH_TTY"
+
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
-        if [[ "$SSH_CONNECTION" ]]; then
-            term="$SSH_TTY"; break
-        else
-            parent="$(get_ppid "$parent")"
-            [[ -z "$parent" ]] && break
-            name="$(get_process_name "$parent")"
-            case "${name// }" in
-                "${SHELL/*\/}" | *"sh" | "screen" | "su"*) ;;
-                "login"* | *"Login"* | "init" | "(init)") term="$(tty)" ;;
-                "ruby" | "1" | "systemd" | "sshd"* | "python"* |\
-                "USER"*"PID"* | "kdeinit"* | "launchd"*)
-                    break
-                ;;
-                "gnome-terminal-") term="gnome-terminal" ;;
-                *"nvim") term="Neovim Terminal" ;;
-                *"NeoVimServer"*) term="VimR Terminal" ;;
-                *"tmux"*) term="tmux" ;;
-                *) term="${name##*/}" ;;
-            esac
-        fi
+        parent="$(get_ppid "$parent")"
+        [[ -z "$parent" ]] && break
+        name="$(get_process_name "$parent")"
+
+        case "${name// }" in
+            "${SHELL/*\/}"|*"sh"|"screen"|"su"*) ;;
+
+            "login"*|*"Login"*|"init"|"(init)")
+                term="$(tty)"
+            ;;
+
+            "ruby"|"1"|"systemd"|"sshd"*|"python"*|"USER"*"PID"*|"kdeinit"*|"launchd"*)
+                break
+            ;;
+
+            "gnome-terminal-") term="gnome-terminal" ;;
+            *"nvim")           term="Neovim Terminal" ;;
+            *"NeoVimServer"*)  term="VimR Terminal" ;;
+            *"tmux"*)          term="tmux" ;;
+            *)                 term="${name##*/}" ;;
+        esac
     done
 
     # Log that the function was run.
@@ -3351,7 +3355,7 @@ image_backend() {
             printf '\e[2J\e[H'
             get_image_size
             make_thumbnail
-            display_image
+            display_image || to_off "Image: $image_backend failed to display the image."
         ;;
 
         *)
@@ -3708,54 +3712,52 @@ make_thumbnail() {
 display_image() {
     case "$image_backend" in
         "caca")
-            img2txt -W "$((width / font_width)))" \
-                    -H "$((height / font_height))" \
-                    --gamma=0.6 "$image" ||\
-                to_off "Image: libcaca failed to display the image."
+            img2txt \
+                -W "$((width / font_width)))" \
+                -H "$((height / font_height))" \
+                --gamma=0.6 \
+            "$image"
         ;;
 
         "jp2a")
-            jp2a --width="$((width / font_width))" \
-                 --height="$((height / font_height))" \
-                 --colors "$image" ||\
-                to_off "Image: jp2a failed to display the image."
+            jp2a \
+                --width="$((width / font_width))" \
+                --height="$((height / font_height))" \
+                --colors \
+            "$image"
         ;;
 
         "kitty")
             kitty icat \
-                    --align left \
-                    --place "$((width / font_width))x$((height / font_height))\
-                             @${xoffset}x${yoffset}" \
-                    "$image" ||\
-                to_off "Image: kitty failed to display the image."
+                --align left \
+                --place "$((width/font_width))x$((height/font_height))@${xoffset}x${yoffset}" \
+            "$image"
         ;;
 
         "pixterm")
-            pixterm -tc "$((width / font_width))" \
-                    -tr "$((height / font_height))" \
-                    "$image" ||\
-                to_off "Image: pixterm failed to display the image."
+            pixterm \
+                -tc "$((width / font_width))" \
+                -tr "$((height / font_height))" \
+            "$image"
         ;;
 
         "sixel")
-            img2sixel -w "$width" \
-                      -h "$height" \
-                      "$image" ||\
-                to_off "Image: libsixel failed to display the image."
+            img2sixel \
+                -w "$width" \
+                -h "$height" \
+            "$image"
         ;;
 
         "termpix")
-            termpix --width "$((width / font_width))" \
-                    --height "$((height / font_height))" \
-                    "$image" ||\
-                to_off "Image: termpix failed to display the image."
+            termpix \
+                --width "$((width / font_width))" \
+                --height "$((height / font_height))" \
+            "$image"
         ;;
 
         "iterm2")
-            image="$(base64 < "$image")"
-
             printf -v iterm_cmd '\e]1337;File=width=%spx;height=%spx;inline=1:%s' \
-                "$width" "$height" "$image"
+                "$width" "$height" "$(base64 < "$image")"
 
             # Tmux requires an additional escape sequence for this to work.
             [[ -n "$TMUX" ]] && printf -v iterm_cmd '\ePtmux;\e%b\e'\\ "$iterm_cmd"
@@ -3764,8 +3766,9 @@ display_image() {
         ;;
 
         "tycat")
-            tycat -g "${width}x${height}" "$image" ||\
-                to_off "Image: tycat failed to display the image."
+            tycat \
+                -g "${width}x${height}" \
+            "$image"
         ;;
 
         "w3m")
@@ -3776,8 +3779,7 @@ display_image() {
             # appearing in specific terminal emulators.
             sleep 0.05
             printf '%b\n%s;\n%s\n' "0;1;$xoffset;$yoffset;$width;$height;;;;;$image" 3 4 |\
-            "${w3m_img_path:-false}" -bg "$background_color" &>/dev/null ||\
-                to_off "Image: w3m-img failed to display the image."
+            "${w3m_img_path:-false}" -bg "$background_color" &>/dev/null
         ;;
     esac
 }
