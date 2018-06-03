@@ -2758,18 +2758,13 @@ get_term_font() {
 
     case "$term" in
         "alacritty"*)
-            if [[ -f "${XDG_CONFIG_HOME}/alacritty.yml" ]]; then
-                alacritty_file="${XDG_CONFIG_HOME}/alacritty.yml"
+            shopt -s nullglob
+            confs=({$XDG_CONFIG_HOME,$HOME}/{alacritty,}/{.,}alacritty.ym?)
+            shopt -u nullglob
 
-            elif [[ -f "${XDG_CONFIG_HOME}/alacritty/alacritty.yml" ]]; then
-                alacritty_file="${XDG_CONFIG_HOME}/alacritty/alacritty.yml"
+            [[ -f "${confs[0]}" ]] || return
 
-            elif [[ -f "${HOME}/.alacritty.yml" ]]; then
-                alacritty_file="${HOME}/.alacritty.yml"
-            fi
-
-            term_font="$(awk -F ':|#' '/normal:/ {getline; print}' \
-                         "$alacritty_file")"
+            term_font="$(awk -F ':|#' '/normal:/ {getline; print}' "${confs[0]}")"
             term_font="${term_font/*family:}"
             term_font="${term_font/$'\n'*}"
             term_font="${term_font/\#*}"
@@ -2846,19 +2841,11 @@ END
         ;;
 
         "kitty"*)
-            if [[ -f "${KITTY_CONFIG_DIRECTORY}/kitty/kitty.conf" ]]; then
-                kitty_file="${KITTY_CONFIG_DIRECTORY}/kitty/kitty.conf"
+            shopt -s nullglob
+            confs=({$KITTY_CONFIG_DIRECTORY,$XDG_CONFIG_HOME,~/Library/Preferences}/kitty/kitty.con?)
+            shopt -u nullglob
 
-            elif [[ -f "${XDG_CONFIG_HOME}/kitty/kitty.conf" ]]; then
-                kitty_file="${XDG_CONFIG_HOME}/kitty/kitty.conf"
-
-            elif [[ -f "${HOME}/.config/kitty/kitty.conf" ]]; then
-                kitty_file="${HOME}/.config/kitty/kitty.conf"
-
-            elif [[ -f "${HOME}/Library/Preferences/kitty/kitty.conf" ]]; then
-                kitty_file="${HOME}/Library/Preferences/kitty/kitty.conf"
-
-            fi
+            [[ -f "${confs[0]}" ]] || return
 
             term_font="$(awk '/^([[:space:]]*|[^#_])font_family[[:space:]]+/ {
                                   $1 = "";
@@ -2868,7 +2855,7 @@ END
                               /^([[:space:]]*|[^#_])font_size[[:space:]]+/ {
                                   size = $2
                               }
-                              END { print font " " size}' "${kitty_file}")"
+                              END { print font " " size}' "${confs[0]}")"
         ;;
 
         "konsole"*)
