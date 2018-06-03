@@ -773,24 +773,24 @@ get_os() {
     # $kernel_name is set in a function called cache_uname and is
     # just the output of "uname -s".
     case "$kernel_name" in
-        "Darwin")   os="$(sw_vers -productName)" ;;
-        "SunOS")    os="Solaris" ;;
-        "Haiku")    os="Haiku" ;;
-        "MINIX")    os="MINIX" ;;
-        "AIX")      os="AIX" ;;
-        "IRIX"*)    os="IRIX" ;;
-        "FreeMiNT") os="FreeMiNT" ;;
+        "Darwin")   : "$(sw_vers -productName)" ;;
+        "SunOS")    : "Solaris" ;;
+        "Haiku")    : "Haiku" ;;
+        "MINIX")    : "MINIX" ;;
+        "AIX")      : "AIX" ;;
+        "IRIX"*)    : "IRIX" ;;
+        "FreeMiNT") : "FreeMiNT" ;;
 
         "Linux" | "GNU"*)
-            os="Linux"
+            : "Linux"
         ;;
 
         *"BSD" | "DragonFly" | "Bitrig")
-            os="BSD"
+            : "BSD"
         ;;
 
         "CYGWIN"* | "MSYS"* | "MINGW"*)
-            os="Windows"
+            : "Windows"
         ;;
 
         *)
@@ -799,6 +799,7 @@ get_os() {
             exit 1
         ;;
     esac
+    os="$_"
 }
 
 get_distro() {
@@ -1000,8 +1001,9 @@ get_distro() {
 
     # Get OS architecture.
     case "$os" in
-        "Solaris" | "AIX" | "Haiku" | "IRIX" | "FreeMiNT") machine_arch="$(uname -p)" ;;
-        *) machine_arch="$kernel_machine" ;;
+        "Solaris" | "AIX" | "Haiku" | "IRIX" | "FreeMiNT")
+            machine_arch="$(uname -p)" ;;
+        *)  machine_arch="$kernel_machine" ;;
     esac
 
     [[ "$os_arch" == "on" ]] && \
@@ -1288,8 +1290,8 @@ get_packages() {
             esac
 
             # List these last as they accompany regular package managers.
-            has "flatpak"    && tot flatpak list
-            has "snap"       && tot snap list && ((packages-=1))
+            has "flatpak" && tot flatpak list
+            has "snap"    && tot snap list && ((packages-=1))
         ;;
 
         "Mac OS X" | "MINIX")
@@ -1319,8 +1321,7 @@ get_packages() {
         ;;
 
         "IRIX")
-            tot versions -b
-            ((packages-=3))
+            tot versions -b && ((packages-=3))
         ;;
     esac
 
@@ -3980,15 +3981,15 @@ set_text_colors() {
     case "$bar_color_total $1" in
         "distro "[736]) bar_color_total="$(color "$1")" ;;
         "distro "[0-9]) bar_color_total="$(color "$2")" ;;
-        *) bar_color_total="$(color "$bar_color_total")" ;;
+        *)              bar_color_total="$(color "$bar_color_total")" ;;
     esac
 }
 
 color() {
     case "$1" in
-        [0-6]) printf '%b\e[3%sm' "$reset" "$1" ;;
-        7 | "fg") printf '\e[37m%b' "$reset" ;;
-        *) printf '\e[38;5;%bm' "$1" ;;
+        [0-6])    printf '%b\e[3%sm'   "$reset" "$1" ;;
+        7 | "fg") printf '\e[37m%b'    "$reset" ;;
+        *)        printf '\e[38;5;%bm' "$1" ;;
     esac
 }
 
@@ -4100,7 +4101,7 @@ cache() {
 get_cache_dir() {
     case "$os" in
         "Mac OS X") cache_dir="/Library/Caches" ;;
-        *) cache_dir="/tmp" ;;
+        *)          cache_dir="/tmp" ;;
     esac
 }
 
