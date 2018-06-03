@@ -2520,6 +2520,11 @@ get_resolution() {
                 esac
                 resolution="${resolution//\*}"
 
+            elif type -p xwininfo >/dev/null; then
+                read -r w h \
+                    < <(xwininfo -root | awk -F':' '/Width|Height/ {printf $2}')
+                resolution="${w}x${h}"
+
             elif type -p xdpyinfo >/dev/null; then
                 resolution="$(xdpyinfo | awk '/dimensions:/ {printf $2}')"
             fi
@@ -3687,7 +3692,7 @@ make_thumbnail() {
             ;;
 
             *)
-                time convert \
+                convert \
                     -background none \
                     "$image" \
                     -strip \
