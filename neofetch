@@ -940,6 +940,7 @@ get_distro() {
                 "10.11"*) codename="OS X El Capitan" ;;
                 "10.12"*) codename="macOS Sierra" ;;
                 "10.13"*) codename="macOS High Sierra" ;;
+                "10.14"*) codename="macOS Mojave" ;;
                 *)        codename="macOS" ;;
             esac
             distro="$codename $osx_version $osx_build"
@@ -950,7 +951,7 @@ get_distro() {
                     case "$osx_version" in
                         "10."[4-7]*)                distro="${distro/${codename}/Mac OS X}" ;;
                         "10."[8-9]* | "10.1"[0-1]*) distro="${distro/${codename}/OS X}" ;;
-                        "10.1"[2-3]*)               distro="${distro/${codename}/macOS}" ;;
+                        "10.1"[2-4]*)               distro="${distro/${codename}/macOS}" ;;
                     esac
                     distro="${distro/ ${osx_build}}"
                 ;;
