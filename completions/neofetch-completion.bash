@@ -45,9 +45,7 @@ _neofetch_completions() {
             "--speed_shorthand"|\
             "--cpu_brand"|\
             "--cpu_speed"|\
-            "--distro_shorthand"|\
             "--kernel_shorthand"|\
-            "--uptime_shorthand"|\
             "--refresh_rate"|\
             "--gpu_brand"|\
             "--gtk_shorthand"|\
@@ -56,7 +54,6 @@ _neofetch_completions() {
             "--shell_path"|\
             "--shell_version"|\
             "--song_shorthand"|\
-            "--install_time"|\
             "--underline"|\
             "--bold"|\
             "--color_blocks"|\
@@ -64,6 +61,16 @@ _neofetch_completions() {
             "--ascii_bold")
                 values=(
                     "on"
+                    "off"
+                )
+            ;;
+
+            "--uptime_shorthand"|\
+            "--package_managers"|\
+            "--distro_shorthand")
+                values=(
+                    "on"
+                    "tiny"
                     "off"
                 )
             ;;
@@ -144,6 +151,7 @@ _neofetch_completions() {
                     "deepin-music"
                     "elisa"
                     "exaile"
+                    "gmusicbrowser"
                     "gnome-music"
                     "Google Play"
                     "guayadeque"
@@ -260,6 +268,7 @@ _neofetch_completions() {
                     "chapeau"
                     "chrom"
                     "clover"
+                    "condres"
                     "crux"
                     "crux_small"
                     "darwin"
@@ -295,13 +304,15 @@ _neofetch_completions() {
                     "kali"
                     "kaos"
                     "kde"
+                    "kibojoe"
                     "kogaion"
                     "korora"
                     "kslinux"
                     "kubuntu"
                     "lede"
-                    "linux"
+                    "linux lite"
                     "linux mint"
+                    "linux"
                     "lmde"
                     "lubuntu"
                     "lunar"
@@ -340,17 +351,21 @@ _neofetch_completions() {
                     "porteus"
                     "postmarketos"
                     "puppy"
+                    "pureos"
                     "qubes"
                     "raspbian"
                     "red star"
                     "redcore"
+                    "redcore"
                     "redhat"
+                    "regata"
                     "rosa"
                     "sabayon"
                     "sabotage"
                     "sailfishos"
                     "salentos"
                     "scientific"
+                    "sharklinux"
                     "siduction"
                     "slackware"
                     "slitaz"
@@ -366,8 +381,8 @@ _neofetch_completions() {
                     "ubuntu_old"
                     "void"
                     "void_small"
-                    "windows"
                     "windows 10"
+                    "windows"
                     "xferience"
                     "xubuntu"
                     "zorin"
