@@ -27,13 +27,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 **General**
 
-- [output] Added `--json` to output the info in `json`.
-- [cursor] Fixed prompt location issues after Neofetch is run.
-- [macOS] Fixed neofetch launching XQuartz.
-- [misc] Removed `uppercase()`.
-- [misc] Removed all instances of `export`.
-- [misc] Removed all deprecated options and functions.
-- [info] Removed `get_install_date()`.
+- **output**: Added `--json` to output the info in `json`.
+- **cursor**: Fixed prompt location issues after Neofetch is run.
+- **macOS**: Fixed neofetch launching XQuartz.
+- **misc**: Removed `uppercase()`.
+- **misc**: Removed all instances of `export`.
+- **misc**: Removed all deprecated options and functions.
+- **info**: Removed `get_install_date()`.
 
 **Ascii**
 
@@ -58,25 +58,29 @@ See: https://github.com/dylanaraps/neofetch/issues/1001
 
 **Info**
 
-- [cpu] Remove extra call to `uname`.
-- [cpu] Simplify core calculation.
-- [disk] Clean up.
-- [font] Fix iTerm2 checking for 2 extra profiles that don't exist. [**@iandrewt**](https://github.com/iandrewt")
-- [gpu] Fixed ATI/AMD branding issue.
-- [gpu] Removed `glxinfo` usage (*too slow*).
-- [packages] Added support for `flatpak`. [**@konimex**](https://github.com/konimex)
-- [packages] Added support for `snap`. [**@konimex**](https://github.com/konimex)
-- [packages] Added used package managers to output (`Packages: 900
+- **cpu**: Remove extra call to `uname`.
+- **cpu**: Simplify core calculation.
+- **disk**: Clean up.
+- **font**: Fix iTerm2 checking for 2 extra profiles that don't exist.
+  [**@iandrewt**](https://github.com/iandrewt")
+- **gpu**: Fixed ATI/AMD branding issue.
+- **gpu**: Removed `glxinfo` usage (*too slow*).
+- **packages**: Added support for `flatpak`.
+  [**@konimex**](https://github.com/konimex)
+- **packages**: Added support for `snap`.
+  [**@konimex**](https://github.com/konimex)
+- **packages**: Added used package managers to output (`Packages: 900
   (pacman, snap)`).
-- [packages] Fixed issues with `pacman` 5.1.
-- [packages] Removed `find` usage.
-- [packages] Removed `ls` usage.
-- [packages] Removed `wc -l` usage.
-- [song] Added support for `gmusicbrowser`. [**@mstraube**](https://github.com/mstraube)
-- [song] Fixed song detection on macOS.
-- [song] Fixed song output on systems using `C` locale.
-- [term_font] Clean up of config file handling.
-- [resolution] Added support for `xwininfo`.
+- **packages**: Fixed issues with `pacman` 5.1.
+- **packages**: Removed `find` usage.
+- **packages**: Removed `ls` usage.
+- **packages**: Removed `wc -l` usage.
+- **song**: Added support for `gmusicbrowser`.
+  [**@mstraube**](https://github.com/mstraube)
+- **song**: Fixed song detection on macOS.
+- **song**: Fixed song output on systems using `C` locale.
+- **term\_font**: Clean up of config file handling.
+- **resolution**: Added support for `xwininfo`.
 
 ## [4.0.2] - 2018-05-19
 
