@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added support for Kibojoe Linux.
 - Added support for SharkLinux.
 - Added support for Linux Lite.
+- Added support for macOS 10.14 Mojave. [**@iandrewt**](https://github.com/iandrewt)
 
 **General**
 
