@@ -1297,7 +1297,10 @@ get_packages() {
 
             # List these last as they accompany regular package managers.
             has "flatpak" && tot flatpak list
-            has "snap"    && tot snap list && ((packages-=1))
+
+            # Snap hangs if the command is run without the daemon running.
+            # Only run snap if the daemon is also running.
+            has "snap" && ps -e | grep -Fm 1 "snapd" && tot snap list && ((packages-=1))
         ;;
 
         "Mac OS X" | "MINIX")
