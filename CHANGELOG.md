@@ -7,14 +7,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+<img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px">
+
 **Contributors**
 
 - [**@mstraube**](https://github.com/mstraube)
-- [**@iandrewt**](https://github.com/iandrewt")
+- [**@iandrewt**](https://github.com/iandrewt)
+- [@konimex](https://github.com/konimex)
 
 **Operating System**
 
+- Added support for Condres OS. [**@mstraube**](https://github.com/mstraube)
 - Added support for RedCore Linux. [**@mstraube**](https://github.com/mstraube)
+- Added support for Regata OS. [**@mstraube**](https://github.com/mstraube)
+- Added support for PureOS.
+- Added support for Kibojoe Linux.
+- Added support for SharkLinux.
+- Added support for Linux Lite.
 
 **General**
 
@@ -23,28 +32,51 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [macOS] Fixed neofetch launching XQuartz.
 - [misc] Removed `uppercase()`.
 - [misc] Removed all instances of `export`.
+- [misc] Removed all deprecated options and functions.
+- [info] Removed `get_install_date()`.
 
 **Ascii**
 
 - Fixed a bug causing Windows 7 ASCII art to not display.
+- Simplified ASCII art handling.
+- Updated Funtoo ASCII art.
 
 **Image**
 
+- Improved performance of image handling.
 - Removed `catimg` support (*It didn’t allow us to specify height so we
   couldn’t accurately place the cursor*).
 - Fixed `tycat`, `sixel` and `kitty icat` image sizes.
+- Simplified `w3m-img` code.
 
 **Screenshot**
+
+See: https://github.com/dylanaraps/neofetch/issues/1001
 
 - Removed screenshot functionality.
 - Removed screenshot upload functionality.
 
 **Info**
 
+- [cpu] Remove extra call to `uname`.
+- [cpu] Simplify core calculation.
+- [disk] Clean up.
 - [font] Fix iTerm2 checking for 2 extra profiles that don't exist. [**@iandrewt**](https://github.com/iandrewt")
 - [gpu] Fixed ATI/AMD branding issue.
+- [gpu] Removed `glxinfo` usage (*too slow*).
+- [packages] Added support for `flatpak`.
+- [packages] Added support for `snap`.
+- [packages] Added used package managers to output (`Packages: 900
+  (pacman, snap)`).
+- [packages] Fixed issues with `pacman` 5.1.
+- [packages] Removed `find` usage.
+- [packages] Removed `ls` usage.
+- [packages] Removed `wc -l` usage.
+- [song] Added support for `gmusicbrowser`.
 - [song] Fixed song detection on macOS.
 - [song] Fixed song output on systems using `C` locale.
+- [term_font] Clean up of config file handling.
+- [resolution] Added support for `xwininfo`.
 
 ## [4.0.2] - 2018-05-19
 
