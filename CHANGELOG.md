@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - [**@mstraube**](https://github.com/mstraube)
 - [**@iandrewt**](https://github.com/iandrewt)
-- [@konimex](https://github.com/konimex)
+- [**@konimex**](https://github.com/konimex)
 
 **Operating System**
 
