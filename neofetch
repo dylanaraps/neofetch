@@ -2291,7 +2291,7 @@ get_memory() {
 
     # Bars.
     case "$memory_display" in
-        "bar") memory="$(bar "${mem_used}" "${mem_total}")" ;;
+        "bar")     memory="$(bar "${mem_used}" "${mem_total}")" ;;
         "infobar") memory="${memory} $(bar "${mem_used}" "${mem_total}")" ;;
         "barinfo") memory="$(bar "${mem_used}" "${mem_total}")${info_color} ${memory}" ;;
     esac
@@ -3125,10 +3125,10 @@ get_disk() {
 
         # Bar.
         case "$disk_display" in
-            "bar") disk="$(bar "$disk_perc" "100")" ;;
+            "bar")     disk="$(bar "$disk_perc" "100")" ;;
             "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
             "barinfo") disk="$(bar "$disk_perc" "100")${info_color} $disk" ;;
-            "perc") disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
+            "perc")    disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
         esac
 
         # Append '(disk mount point)' to the subtitle.
@@ -3153,7 +3153,7 @@ get_battery() {
                     battery="${capacity}% [${status}]"
 
                     case "$battery_display" in
-                        "bar") battery="$(bar "$capacity" 100)" ;;
+                        "bar")     battery="$(bar "$capacity" 100)" ;;
                         "infobar") battery+=" $(bar "$capacity" 100)" ;;
                         "barinfo") battery="$(bar "$capacity" 100)${info_color} ${battery}" ;;
                     esac
@@ -3212,7 +3212,7 @@ get_battery() {
     [[ "$battery_state" ]] && battery+=" Charging"
 
     case "$battery_display" in
-        "bar") battery="$(bar "${battery/'%'*}" 100)" ;;
+        "bar")     battery="$(bar "${battery/'%'*}" 100)" ;;
         "infobar") battery="${battery} $(bar "${battery/'%'*}" 100)" ;;
         "barinfo") battery="$(bar "${battery/'%'*}" 100)${info_color} ${battery}" ;;
     esac
@@ -4358,8 +4358,6 @@ ASCII:
 
     --ascii_bold on/off         Whether or not to bold the ascii logo.
     -L, --logo                  Hide the info text and only show the ascii logo.
-
-                                Possible values: bar, infobar, barinfo, off
 
 IMAGE:
     --loop                      Redraw the image constantly until Ctrl+C is used. This fixes issues
