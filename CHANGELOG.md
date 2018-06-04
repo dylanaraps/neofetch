@@ -64,15 +64,15 @@ See: https://github.com/dylanaraps/neofetch/issues/1001
 - [font] Fix iTerm2 checking for 2 extra profiles that don't exist. [**@iandrewt**](https://github.com/iandrewt")
 - [gpu] Fixed ATI/AMD branding issue.
 - [gpu] Removed `glxinfo` usage (*too slow*).
-- [packages] Added support for `flatpak`.
-- [packages] Added support for `snap`.
+- [packages] Added support for `flatpak`. [**@konimex**](https://github.com/konimex)
+- [packages] Added support for `snap`. [**@konimex**](https://github.com/konimex)
 - [packages] Added used package managers to output (`Packages: 900
   (pacman, snap)`).
 - [packages] Fixed issues with `pacman` 5.1.
 - [packages] Removed `find` usage.
 - [packages] Removed `ls` usage.
 - [packages] Removed `wc -l` usage.
-- [song] Added support for `gmusicbrowser`.
+- [song] Added support for `gmusicbrowser`. [**@mstraube**](https://github.com/mstraube)
 - [song] Fixed song detection on macOS.
 - [song] Fixed song output on systems using `C` locale.
 - [term_font] Clean up of config file handling.
