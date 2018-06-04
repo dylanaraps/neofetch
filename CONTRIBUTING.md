@@ -23,20 +23,15 @@
   and variable names.
 - Keep lines below `100` characters long.
 - Use `[[ ]]` for tests.
-- Double Quote **EVERYTHING**.
-- Don’t use single quotes, except for special cases.
+- Quote **EVERYTHING**.
 
 ### ShellCheck
 
 For your contribution to be accepted, your changes need to pass
 ShellCheck.
 
-Run ShellCheck with the following command:
-
 ```sh
-# Why do we exclude numerous tests?
-# See: https://github.com/dylanaraps/neofetch/wiki/Shellcheck-Exclusions
-shellcheck neofetch -e SC1090,SC2009,SC2012,SC2016,SC2034,SC2128,SC2153,SC2154,SC2178,SC2010,SC1004,SC1091,SC1117
+shellcheck neofetch
 ```
 
 **Note**: If you have trouble installing ShellCheck. You can open a pull
@@ -58,6 +53,8 @@ request on the repo and our Travis.ci hook will run ShellCheck for you.
     - Use `bash`'s built-in syntax (`file="$(< /path/to/file.txt)")`).
 - Don’t use `grep "pattern" | awk '{ printf }'`.
     - Use `awk '/pattern/ { printf }'`
+- Don’t use `wc`.
+    - Use `${#var}` or `${#arr[@]}`.
 
 
 ### If Statements
