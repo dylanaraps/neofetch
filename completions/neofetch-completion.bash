@@ -153,6 +153,7 @@ _neofetch_completions() {
                     "exaile"
                     "gmusicbrowser"
                     "gnome-music"
+                    "gmusicbrowser"
                     "Google Play"
                     "guayadeque"
                     "iTunes"
