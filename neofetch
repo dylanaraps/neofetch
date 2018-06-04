@@ -148,14 +148,15 @@ uptime_shorthand="on"
 
 # Show/Hide Package Manager names.
 #
-# Default: 'on'
-# Values:  'on', 'off'
+# Default: 'tiny'
+# Values:  'on', 'tiny' 'off'
 # Flag:    --package_managers
 #
 # Example:
-# on:  '900 (pacman, apt)'
-# off: '900'
-package_managers="on"
+# on:   '998 (pacman), 8 (flatpak), 4 (snap)'
+# tiny: '908 (pacman, flatpak, snap)'
+# off:  '908'
+package_managers="tiny"
 
 
 # Shell
@@ -1248,7 +1249,7 @@ get_packages() {
     # tot: Count lines in command output.
     has() { type -p "$1" >/dev/null && manager="$_"; }
     dir() { ((packages+=$#)); pac "$#"; }
-    pac() { (($1 > 0)) && managers+="${manager}, "; }
+    pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
 
     case "$os" in
@@ -1333,11 +1334,16 @@ get_packages() {
     if ((packages == 0)); then
         unset packages
 
-    elif [[ "$package_managers" == "on" && "${managers//,}" ]]; then
-        managers="${managers/pacman-key/pacman}"
-        managers="${managers/nix-env/nix}"
-        packages+=" (${managers%,*})"
+    elif [[ "$package_managers" == "on" ]]; then
+        printf -v packages '%s, ' "${managers[@]}"
+        packages="${packages%,*}"
+
+    elif [[ "$package_managers" == "tiny" ]]; then
+        packages+=" (${manager_string%,*})"
     fi
+
+    packages="${packages/pacman-key/pacman}"
+    packages="${packages/nix-env/nix}"
 }
 
 get_shell() {
@@ -4210,7 +4216,7 @@ INFO:
 
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 
-    --package_managers on/off   Hide/Show Package Manager names.
+    --package_managers on/off   Hide/Show Package Manager names . (tiny, on, off)
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
