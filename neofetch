@@ -4122,15 +4122,11 @@ kde_config_dir() {
 }
 
 dynamic_prompt() {
-    [[ "$image_backend" == "off" ]] && { printf '\n'; return; }
+    [[ "$image_backend" == "off" ]]   && { printf '\n'; return; }
     [[ "$image_backend" != "ascii" ]] && lines="$(((height + yoffset) / font_height + 1))"
 
     # If the ascii art is taller than the info.
-    if ((lines > info_height)); then
-        lines="$((lines - info_height + 1))"
-    else
-        lines=1
-    fi
+    ((lines=lines>info_height?lines-info_height+1:1))
 
     printf -v nlines "%${lines}s"
     printf "%b" "${nlines// /\\n}"
