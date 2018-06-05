@@ -1777,7 +1777,7 @@ get_cpu() {
             # Get CPU cores.
             case "$cpu_cores" in
                 "logical" | "on") cores="$(grep -c "^processor" "$cpu_file")" ;;
-                "physical") cores="$(awk '/^core id/&&!a[$0]++{++i}END{print i}' "$cpu_file")" ;;
+                "physical") cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")" ;;
             esac
         ;;
 
@@ -2024,7 +2024,7 @@ get_gpu() {
         "Linux")
             # Read GPUs into array.
             gpu_cmd="$(lspci -mm | awk -F '\\"|\\" \\"|\\(' \
-                                          '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END{for(i in a)
+                                          '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END {for(i in a)
                                            {if(!seen[a[i]]++) print a[i]}}')"
             IFS=$'\n' read -d "" -ra gpus <<< "$gpu_cmd"
 
@@ -2229,13 +2229,13 @@ get_memory() {
                 ;;
 
                 "OpenBSD"*) ;;
-                *) mem_free="$(($(vmstat | awk 'END{printf $5}') / 1024))" ;;
+                *) mem_free="$(($(vmstat | awk 'END {printf $5}') / 1024))" ;;
             esac
 
             # Mem used.
             case "$kernel_name" in
                 "OpenBSD"*)
-                    mem_used="$(vmstat | awk 'END{printf $3}')"
+                    mem_used="$(vmstat | awk 'END {printf $3}')"
                     mem_used="${mem_used/M}"
                 ;;
 
@@ -2405,18 +2405,18 @@ get_song() {
         "banshee"*)
             song="$(banshee --query-artist --query-album --query-title |\
                     awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
-                    END{print a " \n " b " \n "t}')"
+                    END {print a " \n " b " \n "t}')"
         ;;
 
         "amarok"*)
             song="$(qdbus org.kde.amarok /Player GetMetadata |\
                     awk -F':' '/^artist:/ {a=$2} /^album:/ {b=$2} /^title:/ {t=$2}
-                    END{print a " \n " b " \n " t}')"
+                    END {print a " \n " b " \n " t}')"
         ;;
 
         "pragha"*)
             song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
-                                END{print a " \n " b " \n " t}')"
+                                END {print a " \n " b " \n " t}')"
         ;;
 
         "exaile"*)
@@ -2429,7 +2429,7 @@ get_song() {
             song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet \
                     /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
                     awk -F'"' '/artist/ {getline; a=$2} /album/ {getline; b=$2}
-                               /title/ {getline; t=$2} END{print a " \n " b " \n " t}')"
+                               /title/ {getline; t=$2} END {print a " \n " b " \n " t}')"
         ;;
 
         "pogo"*)
@@ -2837,13 +2837,13 @@ END
         ;;
 
         "deepin-terminal"*)
-            term_font="$(awk -F '=' '/font=/ {a=$2} /font_size/ {b=$2} END{print a " " b}' \
+            term_font="$(awk -F '=' '/font=/ {a=$2} /font_size/ {b=$2} END {print a " " b}' \
                          "${XDG_CONFIG_HOME}/deepin/deepin-terminal/config.conf")"
         ;;
 
         "GNUstep_Terminal")
              term_font="$(awk -F '>|<' '/>TerminalFont</ {getline; f=$3}
-                          />TerminalFontSize</ {getline; s=$3} END{print f " " s}' \
+                          />TerminalFontSize</ {getline; s=$3} END {print f " " s}' \
                           "${HOME}/GNUstep/Defaults/Terminal.plist")"
         ;;
 
@@ -2953,7 +2953,7 @@ END
         ;;
 
         "qterminal")
-            term_font="$(awk -F '=' '/fontFamily=/ {a=$2} /fontSize=/ {b=$2} END{print a " " b}' \
+            term_font="$(awk -F '=' '/fontFamily=/ {a=$2} /fontSize=/ {b=$2} END {print a " " b}' \
                          "${XDG_CONFIG_HOME}/qterminal.org/qterminal.ini")"
         ;;
 
@@ -3045,7 +3045,7 @@ END
         ;;
 
         "xfce4-terminal")
-            term_font="$(awk -F '=' '/^FontName/{a=$2}/^FontUseSystem=TRUE/{a=$0}END{print a}' \
+            term_font="$(awk -F '=' '/^FontName/{a=$2}/^FontUseSystem=TRUE/{a=$0} END {print a}' \
                          "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
 
             [[ "$term_font" == "FontUseSystem=TRUE" ]] && \
