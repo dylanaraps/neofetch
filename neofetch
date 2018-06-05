@@ -774,13 +774,13 @@ get_os() {
     # $kernel_name is set in a function called cache_uname and is
     # just the output of "uname -s".
     case "$kernel_name" in
-        "Darwin")   : "$(sw_vers -productName)" ;;
-        "SunOS")    : "Solaris" ;;
-        "Haiku")    : "Haiku" ;;
-        "MINIX")    : "MINIX" ;;
-        "AIX")      : "AIX" ;;
-        "IRIX"*)    : "IRIX" ;;
-        "FreeMiNT") : "FreeMiNT" ;;
+        "Darwin"):   "$(sw_vers -productName)" ;;
+        "SunOS"):    "Solaris" ;;
+        "Haiku"):    "Haiku" ;;
+        "MINIX"):    "MINIX" ;;
+        "AIX"):      "AIX" ;;
+        "IRIX"*):    "IRIX" ;;
+        "FreeMiNT"): "FreeMiNT" ;;
 
         "Linux" | "GNU"*)
             : "Linux"
@@ -1283,7 +1283,7 @@ get_packages() {
                                     /var/db/paludis/repositories/installed/data/*/
 
             # Other (Needs complex command)
-            has "kpm-pkg"    && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
+            has "kpm-pkg" && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
 
             case "$kernel_name" in
                 "FreeBSD") has "pkg"     && tot pkg info ;;
@@ -1774,10 +1774,8 @@ get_cpu() {
             fi
 
             # Get CPU temp.
-            if [[ -f "$temp_dir" ]]; then
-                deg="$(< "$temp_dir")"
-                deg="$((deg * 100 / 10000))"
-            fi
+            [[ -f "$temp_dir" ]] && \
+                deg="$(($(< "$temp_dir") * 100 / 10000))"
 
             # Get CPU cores.
             case "$cpu_cores" in
