@@ -774,7 +774,7 @@ get_os() {
     # $kernel_name is set in a function called cache_uname and is
     # just the output of "uname -s".
     case "$kernel_name" in
-        "Darwin"):   "$(sw_vers -productName)" ;;
+        "Darwin"):   "$darwin_name" ;;
         "SunOS"):    "Solaris" ;;
         "Haiku"):    "Haiku" ;;
         "MINIX"):    "MINIX" ;;
@@ -926,9 +926,6 @@ get_distro() {
         ;;
 
         "Mac OS X")
-            osx_version="$(sw_vers -productVersion)"
-            osx_build="$(sw_vers -buildVersion)"
-
             case "$osx_version" in
                 "10.4"*)  codename="Mac OS X Tiger" ;;
                 "10.5"*)  codename="Mac OS X Leopard" ;;
@@ -959,7 +956,7 @@ get_distro() {
         ;;
 
         "iPhone OS")
-            distro="iOS $(sw_vers -productVersion)"
+            distro="iOS $osx_version"
 
             # "uname -m" doesn't print architecture on iOS so we force it off.
             os_arch="off"
@@ -4161,6 +4158,14 @@ cache_uname() {
     kernel_name="${uname[0]}"
     kernel_version="${uname[1]}"
     kernel_machine="${uname[2]}"
+
+    if [[ "$kernel_name" == "Darwin" ]]; then
+        IFS=$'\n' read -d "" -ra sw_vers < <(awk -F'<|>' '/string/ {print $3}' \
+                            "/System/Library/CoreServices/SystemVersion.plist")
+        darwin_name="${sw_vers[2]}"
+        osx_version="${sw_vers[3]}"
+        osx_build="${sw_vers[0]}"
+    fi
 }
 
 get_ppid() {
