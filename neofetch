@@ -3361,7 +3361,7 @@ image_backend() {
                 return
             }
 
-            get_term_size
+            get_window_size
 
             ((term_width < 1)) && {
                 to_ascii "Image: Failed to find terminal window size."
@@ -3530,11 +3530,11 @@ get_w3m_img_path() {
     err "Image: w3m-img wasn't found on your system"
 }
 
-get_term_size() {
+get_window_size() {
     # This functions gets the current window size in
     # pixels.
     #
-    # We first try to use the escape sequence "\044[14t"
+    # We first try to use the escape sequence "\033[14t"
     # to get the terminal window size in pixels. If this
     # fails we then fallback to using "xdotool" or other
     # programs.
@@ -3606,14 +3606,27 @@ get_term_size() {
     term_width="${term_width:-0}"
 }
 
-get_image_size() {
-    # This functions determines the size to make
-    # the thumbnail image.
-    read -r lines columns <<< "$(stty size)"
+
+get_term_size() {
+    # Get the terminal size in cells.
+    printf '%b' '\e[18t'
+    IFS=';t' read -d t -t 0.05 -sra term_cells
+
+    lines="${term_cells[1]}"
+    columns="${term_cells[2]}"
+
+    # Fallback to stty if above sequence isn't supported.
+    [[ -z "$lines" || -z "$columns" ]] && \
+        read -r lines columns <<< "$(stty size)"
 
     # Calculate font size.
     font_width="$((term_width / columns))"
     font_height="$((term_height / lines))"
+}
+
+get_image_size() {
+    # This functions determines the size to make the thumbnail image.
+    get_term_size
 
     case "$image_size" in
         "auto")
