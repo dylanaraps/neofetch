@@ -4076,7 +4076,7 @@ get_user_config() {
 
     elif [[ -f "${files[0]}" ]]; then
         source "${files[0]}"
-        err "Config: Sourced user config.    (${config_file})"
+        err "Config: Sourced user config.    (${files[0]})"
 
     else
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
