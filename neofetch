@@ -1568,7 +1568,7 @@ get_wm_theme() {
 
         "Sawfish")
             wm_theme="$(awk -F '\\(quote|\\)' '/default-frame-style/ {print $(NF-4)}' \
-                      "${HOME}/.sawfish/custom")"
+                        "${HOME}/.sawfish/custom")"
         ;;
 
         "Cinnamon" | "Muffin" | "Mutter (Muffin)")
@@ -2405,13 +2405,13 @@ get_song() {
         "banshee"*)
             song="$(banshee --query-artist --query-album --query-title |\
                     awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
-                    END {print a " \n " b " \n "t}')"
+                               END {print a " \n " b " \n "t}')"
         ;;
 
         "amarok"*)
             song="$(qdbus org.kde.amarok /Player GetMetadata |\
                     awk -F':' '/^artist:/ {a=$2} /^album:/ {b=$2} /^title:/ {t=$2}
-                    END {print a " \n " b " \n " t}')"
+                               END {print a " \n " b " \n " t}')"
         ;;
 
         "pragha"*)
@@ -2922,7 +2922,7 @@ END
                                             if(/Fullscreen/) getline;
                                             id=$2"]"
                                          } $0~id {if(id) {getline; print $2; exit}}' \
-                          "$mateterm_config")"
+                           "$mateterm_config")"
 
                 rm -f "$mateterm_config"
 
