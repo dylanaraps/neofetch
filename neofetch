@@ -2369,6 +2369,7 @@ get_song() {
         "audacious"*)     get_song_dbus "audacious" ;;
         "vlc"*)           get_song_dbus "vlc" ;;
         "gmusicbrowser"*) get_song_dbus "gmusicbrowser" ;;
+        "pragha"*)        get_song_dbus "pragha" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
@@ -2412,11 +2413,6 @@ get_song() {
             song="$(qdbus org.kde.amarok /Player GetMetadata |\
                     awk -F':' '/^artist:/ {a=$2} /^album:/ {b=$2} /^title:/ {t=$2}
                                END {print a " \n " b " \n " t}')"
-        ;;
-
-        "pragha"*)
-            song="$(pragha -c | awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
-                                END {print a " \n " b " \n " t}')"
         ;;
 
         "exaile"*)
