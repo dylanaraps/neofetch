@@ -2370,6 +2370,7 @@ get_song() {
         "vlc"*)           get_song_dbus "vlc" ;;
         "gmusicbrowser"*) get_song_dbus "gmusicbrowser" ;;
         "pragha"*)        get_song_dbus "pragha" ;;
+        "amarok"*)        get_song_dbus "amarok" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
@@ -2409,13 +2410,8 @@ get_song() {
                                END {print a " \n " b " \n "t}')"
         ;;
 
-        "amarok"*)
-            song="$(qdbus org.kde.amarok /Player GetMetadata |\
-                    awk -F':' '/^artist:/ {a=$2} /^album:/ {b=$2} /^title:/ {t=$2}
-                               END {print a " \n " b " \n " t}')"
-        ;;
-
         "exaile"*)
+            # NOTE: Exaile >= 4.0.0 will support mpris2.
             song="$(dbus-send --print-reply --dest=org.exaile.Exaile  /org/exaile/Exaile \
                     org.exaile.Exaile.Query |
                     awk -F':|,' '{if ($6 && $8 && $4) printf $6 " \n" $8 " \n" $4}')"
