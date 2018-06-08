@@ -2411,6 +2411,7 @@ get_song() {
         ;;
 
         "exaile"*)
+            # NOTE: Exaile >= 4.0.0 will support mpris2.
             song="$(dbus-send --print-reply --dest=org.exaile.Exaile  /org/exaile/Exaile \
                     org.exaile.Exaile.Query |
                     awk -F':|,' '{if ($6 && $8 && $4) printf $6 " \n" $8 " \n" $4}')"
