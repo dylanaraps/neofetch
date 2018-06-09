@@ -1254,7 +1254,7 @@ get_packages() {
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
             # Package Manager Programs.
             has "pacman-key" && tot pacman -Qq --color never
-            has "dpkg"       && tot dpkg-query -f '\n' -W
+            has "dpkg"       && tot dpkg-query -f . -W
             has "rpm"        && tot rpm -qa
             has "xbps-query" && tot xbps-query -l
             has "apk"        && tot apk info
