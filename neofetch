@@ -3604,7 +3604,7 @@ get_term_size() {
 
     # Fallback to stty if above sequence isn't supported.
     [[ -z "$lines" || -z "$columns" ]] && \
-        read -r lines columns <<< "$(stty size)"
+        read -r lines columns < <(stty size)
 
     # Calculate font size.
     font_width="$((term_width / columns))"
