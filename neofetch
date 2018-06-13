@@ -424,6 +424,7 @@ disk_subtitle="mount"
 # cmus
 # deadbeef
 # deepin-music
+# dragon
 # elisa
 # exaile
 # gnome-music
@@ -2303,6 +2304,7 @@ get_song() {
         "cmus"
         "deadbeef"
         "deepin-music"
+        "dragon"
         "elise"
         "exaile"
         "gnome-music"
@@ -2371,6 +2373,7 @@ get_song() {
         "gmusicbrowser"*) get_song_dbus "gmusicbrowser" ;;
         "pragha"*)        get_song_dbus "pragha" ;;
         "amarok"*)        get_song_dbus "amarok" ;;
+        "dragon"*)        get_song_dbus "dragonplayer" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
