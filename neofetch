@@ -2021,6 +2021,16 @@ get_cpu_usage() {
     esac
 }
 
+prin_gpu() {
+    if [[ "$gpu_brand" == "off" ]]; then
+        gpu="${gpu/AMD }"
+        gpu="${gpu/NVIDIA }"
+        gpu="${gpu/Intel }"
+    fi
+
+    prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
+}
+
 get_gpu() {
     case "$os" in
         "Linux")
@@ -2040,6 +2050,17 @@ get_gpu() {
             [[ "${gpus[0]}" == *Intel* && \
                "${gpus[1]}" == *Intel* ]] && \
                unset -v "gpus[0]"
+
+            # If nvidia-smi is installed, use that for NVIDIA GPUs
+            nv_smi_cmd="$(command -v nvidia-smi)"
+            if [[ -x "$nv_smi_cmd" ]]; then
+                nv_gpu_cmd="$nv_smi_cmd --query-gpu=name --format=csv,noheader"
+                IFS=$'\n' read -d "" -ra nv_gpus <<< "$($nv_gpu_cmd)"
+                for nv_gpu in "${nv_gpus[@]}"; do
+                    gpu="NVIDIA $nv_gpu"
+                    prin_gpu
+                done
+            fi
 
             for gpu in "${gpus[@]}"; do
                 # GPU shorthand tests.
@@ -2064,6 +2085,7 @@ get_gpu() {
                     ;;
 
                     *"nvidia"*)
+                        [[ -x "$nv_smi_cmd" ]] && continue
                         gpu="${gpu/*\[}"
                         gpu="${gpu/\]*}"
                         gpu="NVIDIA $gpu"
@@ -2084,13 +2106,7 @@ get_gpu() {
                     ;;
                 esac
 
-                if [[ "$gpu_brand" == "off" ]]; then
-                    gpu="${gpu/AMD }"
-                    gpu="${gpu/NVIDIA }"
-                    gpu="${gpu/Intel }"
-                fi
-
-                prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
+                prin_gpu
             done
 
             return
