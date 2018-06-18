@@ -2340,7 +2340,8 @@ get_song() {
     )
 
     printf -v players "|%s" "${players[@]}"
-    player="$(ps -e | awk -v pattern="(${players:1})$" '$0 ~ pattern {print $NF; exit}')"
+    player="$(ps aux | awk -v pattern="(${players:1})" \
+                '!/ awk / && match($0,pattern){print substr($0,RSTART,RLENGTH); exit}')"
 
     [[ "$music_player" && "$music_player" != "auto" ]] && \
         player="$music_player"
