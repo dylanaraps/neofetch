@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [**@arisinfenix**](https://github.com/arisinfenix)
 - [**@iandrewt**](https://github.com/iandrewt)
 - [**@konimex**](https://github.com/konimex)
+- [**@MindTooth**](https://github.com/MindTooth)
 
 **Operating System**
 
