@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 <img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px">
 
+A lot of the script has been rewritten and all lint errors have been resolved. There's probably a few bugs so the version number has been bumped to `5.0`. Thanks to everyone who contributed to this release.
+
 **Contributors**
 
 - [**@arisinfenix**](https://github.com/arisinfenix)
