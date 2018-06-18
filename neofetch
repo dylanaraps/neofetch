@@ -424,6 +424,7 @@ disk_subtitle="mount"
 # cmus
 # deadbeef
 # deepin-music
+# dragon
 # elisa
 # exaile
 # gnome-music
@@ -442,6 +443,7 @@ disk_subtitle="mount"
 # quodlibet
 # rhythmbox
 # sayonara
+# smplayer
 # spotify
 # Spotify
 # tomahawk
@@ -2309,6 +2311,7 @@ get_song() {
         "cmus"
         "deadbeef"
         "deepin-music"
+        "dragon"
         "elise"
         "exaile"
         "gnome-music"
@@ -2327,6 +2330,7 @@ get_song() {
         "quodlibet"
         "rhythmbox"
         "sayonara"
+        "smplayer"
         "spotify"
         "Spotify"
         "tomahawk"
@@ -2377,6 +2381,8 @@ get_song() {
         "gmusicbrowser"*) get_song_dbus "gmusicbrowser" ;;
         "pragha"*)        get_song_dbus "pragha" ;;
         "amarok"*)        get_song_dbus "amarok" ;;
+        "dragon"*)        get_song_dbus "dragonplayer" ;;
+        "smplayer"*)      get_song_dbus "smplayer" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
@@ -5414,6 +5420,32 @@ ${c1}    ,:ccccccccclllcd${c3}0000OOOOOOl.
 ${c1}      '::ccccccccc${c3}dOOOOOOOkx:.
 ${c1}        ..,::cccc${c3}xOOOkkko;.
 ${c1}            ..,:${c3}dOkxl:.
+EOF
+        ;;
+
+        "ClearOS"*)
+            set_colors 2
+            read -rd '' ascii_data <<'EOF'
+${c1}             `.--::::::--.`
+         .-:////////////////:-.
+      `-////////////////////////-`
+     -////////////////////////////-
+   `//////////////-..-//////////////`
+  ./////////////:      ://///////////.
+ `//////:..-////:      :////-..-//////`
+ ://////`    -///:.``.:///-`    ://///:
+`///////:.     -////////-`    `:///////`
+.//:--////:.     -////-`    `:////--://.
+./:    .////:.     --`    `:////-    :/.
+`//-`    .////:.        `:////-    `-//`
+ :///-`    .////:.    `:////-    `-///:
+ `/////-`    -///:    :///-    `-/////`
+  `//////-   `///:    :///`   .//////`
+   `:////:   `///:    :///`   -////:`
+     .://:   `///:    :///`   -//:.
+       .::   `///:    :///`   -:.
+             `///:    :///`
+              `...    ...`
 EOF
         ;;
 
