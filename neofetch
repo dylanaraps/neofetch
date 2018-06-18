@@ -2358,7 +2358,7 @@ get_song() {
     }
 
     case "${player/*\/}" in
-        "mpd"*|"mopidy"*) song="$(mpc -f '%artist%\n%album%\n%title%' current "${mpc_args[@]:?}")" ;;
+        "mpd"*|"mopidy"*) song="$(mpc -f '%artist%\n%album%\n%title%' current "${mpc_args[@]}")" ;;
         "mocp"*)          song="$(mocp -Q '%artist \n %album \n %song')" ;;
         "google play"*)   song="$(gpmdp-remote current)" ;;
         "rhythmbox"*)     song="$(rhythmbox-client --print-playing-format '%ta \n %at \n %tt')" ;;
@@ -4665,6 +4665,7 @@ get_args() {
                 cpu_temp="C"
 
                 # Known implicit unused variables.
+                mpc_args=()
                 printf '%s\n' "$kernel $icons $font $battery $locale ${mpc_args[*]}"
             ;;
         esac
