@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+## [5.0.0] - 2018-06-18
+
 <img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px">
 
-A lot of the script has been rewritten and all lint errors have been resolved. There's probably a few bugs so the version number has been bumped to `5.0`. Thanks to everyone who contributed to this release.
+A lot of the script has been rewritten and all lint errors have been resolved. There's probably a few bugs so the version number has been bumped to `5.0`. Expect a minor release in the coming days to fix any bugs that come up. Thanks to everyone who contributed to this release.
 
 **Contributors**
 
@@ -89,10 +92,11 @@ See: https://github.com/dylanaraps/neofetch/issues/1001
 
 ## [4.0.2] - 2018-05-19
 
+### This fixes default config issues on Android, AIX, HP-UX and possibly others.
+
 - [config] Fixed `/dev/stdin` error.
 - [config] Added `--print_config` to display the default config file.
 - [macOS] Fixed xquartz issue.
-
 
 ## [4.0.1] - 2018-05-18
 
@@ -2756,7 +2760,8 @@ Changelog:
 Let me know if you're having issues.
 
 
-[Unreleased]: https://github.com/dylanaraps/neofetch/compare/4.0.2...HEAD
+[Unreleased]: https://github.com/dylanaraps/neofetch/compare/5.0.0...HEAD
+[5.0.0]: https://github.com/dylanaraps/neofetch/compare/4.0.2...5.0.0
 [4.0.2]: https://github.com/dylanaraps/neofetch/compare/4.0.1...4.0.2
 [4.0.1]: https://github.com/dylanaraps/neofetch/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/dylanaraps/neofetch/compare/3.4.0...4.0.0
