@@ -4665,7 +4665,7 @@ get_args() {
                 cpu_temp="C"
 
                 # Known implicit unused variables.
-                printf '%s\n' "$kernel $icons $font $battery $locale"
+                printf '%s\n' "$kernel $icons $font $battery $locale ${mpc_args[@]}"
             ;;
         esac
 
