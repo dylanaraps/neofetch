@@ -3608,15 +3608,7 @@ get_window_size() {
 
 get_term_size() {
     # Get the terminal size in cells.
-    printf '%b' '\e[18t'
-    IFS=';t' read -d t -t 0.05 -sra term_cells
-
-    lines="${term_cells[1]}"
-    columns="${term_cells[2]}"
-
-    # Fallback to stty if above sequence isn't supported.
-    [[ -z "$lines" || -z "$columns" ]] && \
-        read -r lines columns < <(stty size)
+    read -r lines columns < <(stty size)
 
     # Calculate font size.
     font_width="$((term_width / columns))"

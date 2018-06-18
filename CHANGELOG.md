@@ -11,15 +11,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 **Contributors**
 
-- [**@mstraube**](https://github.com/mstraube)
+- [**@arisinfenix**](https://github.com/arisinfenix)
 - [**@iandrewt**](https://github.com/iandrewt)
 - [**@konimex**](https://github.com/konimex)
 
 **Operating System**
 
-- Added support for Condres OS. [**@mstraube**](https://github.com/mstraube)
-- Added support for RedCore Linux. [**@mstraube**](https://github.com/mstraube)
-- Added support for Regata OS. [**@mstraube**](https://github.com/mstraube)
+- Added support for Condres OS. [**@arisinfenix**](https://github.com/arisinfenix)
+- Added support for RedCore Linux. [**@arisinfenix**](https://github.com/arisinfenix)
+- Added support for Regata OS. [**@arisinfenix**](https://github.com/arisinfenix)
+- Added support for ClearOS. [**@arisinfenix**](https://github.com/arisinfenix)
 - Added support for PureOS.
 - Added support for Kibojoe Linux.
 - Added support for SharkLinux.
@@ -62,24 +63,24 @@ See: https://github.com/dylanaraps/neofetch/issues/1001
 - **cpu**: Remove extra call to `uname`.
 - **cpu**: Simplify core calculation.
 - **disk**: Clean up.
-- **font**: Fix iTerm2 checking for 2 extra profiles that don't exist.
-  [**@iandrewt**](https://github.com/iandrewt")
+- **font**: Fix iTerm2 checking for 2 extra profiles that don't exist. [**@iandrewt**](https://github.com/iandrewt")
 - **gpu**: Fixed ATI/AMD branding issue.
 - **gpu**: Removed `glxinfo` usage (*too slow*).
-- **packages**: Added support for `flatpak`.
-  [**@konimex**](https://github.com/konimex)
-- **packages**: Added support for `snap`.
-  [**@konimex**](https://github.com/konimex)
+- **packages**: Added support for `flatpak`. [**@konimex**](https://github.com/konimex)
+- **packages**: Added support for `snap`. [**@konimex**](https://github.com/konimex)
 - **packages**: Added used package managers to output (`Packages: 900
   (pacman, snap)`).
 - **packages**: Fixed issues with `pacman` 5.1.
+- **packages**: Fixed issues with `dpkg`.
 - **packages**: Removed `find` usage.
 - **packages**: Removed `ls` usage.
 - **packages**: Removed `wc -l` usage.
-- **song**: Added support for `gmusicbrowser`.
-  [**@mstraube**](https://github.com/mstraube)
+- **song**: Added support for `gmusicbrowser`. [**@arisinfenix**](https://github.com/arisinfenix)
+- **song**: Added support for `SMPlayer`. [**@arisinfenix**](https://github.com/arisinfenix)
+- **song**: Added support for `Dragon Player`. [**@arisinfenix**](https://github.com/arisinfenix)
 - **song**: Fixed song detection on macOS.
 - **song**: Fixed song output on systems using `C` locale.
+- **song**: Added `mpc_args` to send additional arguments to `mpc`.
 - **term\_font**: Clean up of config file handling.
 - **resolution**: Added support for `xwininfo`.
 
