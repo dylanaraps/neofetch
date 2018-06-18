@@ -474,6 +474,12 @@ song_format="%artist% - %album% - %title%"
 # off: 'Song: The Fratellis - Costello Music - Chelsea Dagger'
 song_shorthand="off"
 
+# 'mpc' arguments (specify a host, password etc).
+#
+# Default:  ''
+# Example: mpc_args=(-h HOST -P PASSWORD)
+mpc_args=()
+
 
 # Text Colors
 
@@ -2348,7 +2354,7 @@ get_song() {
     }
 
     case "${player/*\/}" in
-        "mpd"* | "mopidy"*) song="$(mpc -f '%artist% \n %album% \n %title%' current)" ;;
+        "mpd"* | "mopidy"*) song="$(mpc -f '%artist%\n%album%\n%title%' current "${mpc_args[@]}")" ;;
         "mocp"*)          song="$(mocp -Q '%artist \n %album \n %song')" ;;
         "google play"*)   song="$(gpmdp-remote current)" ;;
         "rhythmbox"*)     song="$(rhythmbox-client --print-playing-format '%ta \n %at \n %tt')" ;;
