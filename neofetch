@@ -1445,7 +1445,7 @@ get_de() {
     esac
 
     # Fallback to using xprop.
-    [[ "$DISPLAY" && -z "$de" ]] && \
+    [[ "$DISPLAY" && -z "$de" ]] && type -p xprop &>/dev/null && \
         de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
     # Format strings.
@@ -1503,12 +1503,14 @@ get_wm() {
                            -e "weston")"
 
     elif [[ "$DISPLAY" && "$os" != "Mac OS X" && "$os" != "FreeMiNT" ]]; then
-        id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
-        id="${id##* }"
-        wm="$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)"
-        wm="${wm/*WM_NAME = }"
-        wm="${wm/\"}"
-        wm="${wm/\"*}"
+        if type -p xprop &>/dev/null; then
+            id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
+            id="${id##* }"
+            wm="$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)"
+            wm="${wm/*WM_NAME = }"
+            wm="${wm/\"}"
+            wm="${wm/\"*}"
+        fi
 
         # Window Maker does not set _NET_WM_NAME
         [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
@@ -2754,14 +2756,13 @@ get_term() {
                 term="$(tty)"
             ;;
 
-            "ruby"|"1"|"systemd"|"sshd"*|"python"*|"USER"*"PID"*|"kdeinit"*|"launchd"*)
+            "ruby"|"1"|"tmux"*|"systemd"|"sshd"*|"python"*|"USER"*"PID"*|"kdeinit"*|"launchd"*)
                 break
             ;;
 
             "gnome-terminal-") term="gnome-terminal" ;;
             *"nvim")           term="Neovim Terminal" ;;
             *"NeoVimServer"*)  term="VimR Terminal" ;;
-            *"tmux"*)          term="tmux" ;;
             *)                 term="${name##*/}" ;;
         esac
     done
