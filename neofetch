@@ -3021,7 +3021,7 @@ END
 
         "urxvt" | "urxvtd" | "rxvt-unicode" | "xterm")
             xrdb="$(xrdb -query)"
-            term_font="$(grep -i "${term/d}"'\**\.*font' <<< "$xrdb")"
+            term_font="$(grep -im 1 -e "^${term/d}"'\**\.*font' -e "^\\*font" <<< "$xrdb")"
             term_font="${term_font/*"*font:"}"
             term_font="${term_font/*".font:"}"
             term_font="${term_font/*"*.font:"}"
