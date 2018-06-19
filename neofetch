@@ -6135,6 +6135,24 @@ WW                           W
 EOF
         ;;
 
+        "januslinux"*)
+            set_colors 7
+            read -rd '' ascii_data <<'EOF'
+${c1} ________________
+|\               \
+| \               \
+|  \               \
+|   \ ______________\
+|    |              |
+|    |              |
+|    |              |
+ \   |  januslinux  |
+  \  |              |
+   \ |              |
+    \|______________|
+EOF
+        ;;
+
         "Kali"*)
             set_colors 4 8
             read -rd '' ascii_data <<'EOF'
