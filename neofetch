@@ -2761,6 +2761,7 @@ get_term() {
             ;;
 
             "gnome-terminal-") term="gnome-terminal" ;;
+            "urxvtd")          term="urxvt" ;;
             *"nvim")           term="Neovim Terminal" ;;
             *"NeoVimServer"*)  term="VimR Terminal" ;;
             *)                 term="${name##*/}" ;;
