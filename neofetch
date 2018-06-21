@@ -3403,8 +3403,7 @@ get_ascii() {
 
     # Calculate size of ascii file in line length / line count.
     while IFS=$'\n' read -r line; do
-        ((${#line} > ascii_length)) && ascii_length="${#line}"
-        ((++lines))
+        ((++lines,${#line}>ascii_length)) && ascii_length="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
     # Colors.
@@ -3648,17 +3647,15 @@ get_image_size() {
         "none")
             # Get image size so that we can do a better crop.
             read -r width height <<< "$(identify -format "%w %h" "$image")"
-            crop_mode="none"
 
             while ((width >= (term_width / 2) || height >= term_height)); do
-                ((width=width/2))
-                ((height=height/2))
+                ((width=width/2,height=height/2))
             done
+
+            crop_mode="none"
         ;;
 
-        *)
-            image_size="${image_size/px}"
-        ;;
+        *)  image_size="${image_size/px}" ;;
     esac
 
     width="${width:-$image_size}"
