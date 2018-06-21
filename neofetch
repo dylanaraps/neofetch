@@ -3491,6 +3491,11 @@ END
                     image="$(decode_url "$image")"
                 ;;
 
+                "GNOME"*)
+                    image="$(gsettings get org.gnome.desktop.background picture-uri)"
+                    image="$(decode_url "$image")"
+                ;;
+
                 *)
                     if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
                         image="$(awk -F\' '/feh/ {printf $(NF-1)}' "${HOME}/.fehbg")"
