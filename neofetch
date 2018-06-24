@@ -930,7 +930,7 @@ get_distro() {
             fi
 
             distro="$(trim_quotes "$distro")"
-            distro="${distro/'NAME='}"
+            distro="${distro/NAME=}"
         ;;
 
         "Mac OS X")
@@ -1184,7 +1184,7 @@ get_uptime() {
 
                 "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
                     boot="$(sysctl -n kern.boottime)"
-                    boot="${boot/'{ sec = '}"
+                    boot="${boot/\{ sec = }"
                     boot="${boot/,*}"
 
                     # Get current date in seconds.
@@ -1419,7 +1419,7 @@ get_de() {
             ((wm_run != 1)) && get_wm
 
             if [[ "$XDG_CURRENT_DESKTOP" ]]; then
-                de="${XDG_CURRENT_DESKTOP/'X-'}"
+                de="${XDG_CURRENT_DESKTOP/X\-}"
                 de="${de/Budgie:GNOME/Budgie}"
                 de="${de/:Unity7:ubuntu}"
 
@@ -1682,7 +1682,7 @@ get_wm_theme() {
                 wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kdebugrc")"
             fi
 
-            wm_theme="${wm_theme/'theme='}"
+            wm_theme="${wm_theme/theme=}"
         ;;
 
         "Quartz Compositor")
@@ -1713,7 +1713,7 @@ get_wm_theme() {
             path="${path//\\/\/}"
 
             wm_theme="$(grep '^session\.styleFile:' "${path/\.exe/.rc}")"
-            wm_theme="${wm_theme/'session.styleFile: '}"
+            wm_theme="${wm_theme/session\.styleFile: }"
             wm_theme="${wm_theme##*\\}"
             wm_theme="${wm_theme%.*}"
         ;;
@@ -2061,8 +2061,8 @@ get_gpu() {
                         brand="${brand:-${gpu/*AMD*/AMD}}"
                         brand="${brand:-${gpu/*ATI*/ATi}}"
 
-                        gpu="${gpu/'[AMD/ATI]' }"
-                        gpu="${gpu/'[AMD]' }"
+                        gpu="${gpu/\[AMD\/ATI\] }"
+                        gpu="${gpu/\[AMD\] }"
                         gpu="${gpu/OEM }"
                         gpu="${gpu/Advanced Micro Devices, Inc.}"
                         gpu="${gpu/ \/ *}"
@@ -2079,8 +2079,8 @@ get_gpu() {
 
                     *"intel"*)
                         gpu="${gpu/*Intel/Intel}"
-                        gpu="${gpu/'(R)'}"
-                        gpu="${gpu/'Corporation'}"
+                        gpu="${gpu/\(R\)}"
+                        gpu="${gpu/Corporation}"
                         gpu="${gpu/ \(*}"
                         gpu="${gpu/Integrated Graphics Controller}"
                         gpu="${gpu/*Xeon*/Intel HD Graphics}"
@@ -2112,7 +2112,7 @@ get_gpu() {
             else
                 gpu="$(system_profiler SPDisplaysDataType |\
                        awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
-                gpu="${gpu//'/ $'}"
+                gpu="${gpu//\/ \$}"
                 gpu="${gpu%,*}"
 
                 cache "gpu" "$gpu"
@@ -2172,7 +2172,7 @@ get_gpu() {
 
                 *)
                     gpu="$(glxinfo | grep -F 'OpenGL renderer string')"
-                    gpu="${gpu/'OpenGL renderer string: '}"
+                    gpu="${gpu/OpenGL renderer string: }"
                 ;;
             esac
         ;;
@@ -3099,7 +3099,7 @@ get_disk() {
     for disk in "${disks[@]}"; do
         # Create a second array and make each element split at whitespace this time.
         IFS=" " read -ra disk_info <<< "$disk"
-        disk_perc="${disk_info[4]/'%'}"
+        disk_perc="${disk_info[4]/\%}"
 
         case "$df_version" in
             *"befhikm"*)
@@ -3216,9 +3216,9 @@ get_battery() {
     [[ "$battery_state" ]] && battery+=" Charging"
 
     case "$battery_display" in
-        "bar")     battery="$(bar "${battery/'%'*}" 100)" ;;
-        "infobar") battery="${battery} $(bar "${battery/'%'*}" 100)" ;;
-        "barinfo") battery="$(bar "${battery/'%'*}" 100)${info_color} ${battery}" ;;
+        "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
+        "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
+        "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
     esac
 }
 
@@ -3246,7 +3246,7 @@ get_local_ip() {
 
         "Haiku")
             local_ip="$(ifconfig | awk -F ': ' '/Bcast/ {print $2}')"
-            local_ip="${local_ip/', Bcast'}"
+            local_ip="${local_ip/, Bcast}"
         ;;
     esac
 }
@@ -3516,7 +3516,7 @@ END
             esac
 
             # Strip un-needed info from the path.
-            image="${image/'file://'}"
+            image="${image/file:\/\/}"
             image="$(trim_quotes "$image")"
         ;;
     esac
@@ -4175,7 +4175,7 @@ get_ppid() {
     case "$os" in
         "Windows")
             ppid="$(ps -p "${1:-$PPID}" | awk '{printf $2}')"
-            ppid="${ppid/'PPID'}"
+            ppid="${ppid/PPID}"
         ;;
 
         "Linux")
@@ -4196,7 +4196,7 @@ get_process_name() {
     case "$os" in
         "Windows")
             name="$(ps -p "${1:-$PPID}" | awk '{printf $8}')"
-            name="${name/'COMMAND'}"
+            name="${name/COMMAND}"
             name="${name/*\/}"
         ;;
 
