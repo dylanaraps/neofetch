@@ -201,7 +201,7 @@ speed_type="bios_limit"
 #
 # Default: 'off'
 # Values: 'on', 'off'.
-# Flag:    --speed_shorthand.
+# Flag:    --speed_shorthand
 # NOTE: This flag is not supported in systems with CPU speed less than 1 GHz
 #
 # Example:
@@ -445,7 +445,6 @@ disk_subtitle="mount"
 # sayonara
 # smplayer
 # spotify
-# Spotify
 # tomahawk
 # vlc
 # xmms2d
