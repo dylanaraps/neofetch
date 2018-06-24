@@ -1722,11 +1722,6 @@ get_wm_theme() {
 }
 
 get_cpu() {
-    # NetBSD emulates the Linux /proc filesystem instead of using sysctl for hw
-    # information so we have to use this block below which temporarily sets the
-    # OS to "Linux" for the duration of this function.
-    [[ "$distro" == "NetBSD"* ]] && local os="Linux"
-
     case "$os" in
         "Linux" | "MINIX" | "Windows")
             # Get CPU name.
