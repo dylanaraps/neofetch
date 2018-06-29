@@ -3557,6 +3557,7 @@ get_window_size() {
     # user input so we have to use read to store the out
     # -put as a variable.
     IFS=';t' read -d t -t 0.05 -sra term_size
+    unset IFS
 
     # Split the string into height/width.
     if [[ "$image_backend" == "tycat" ]]; then
