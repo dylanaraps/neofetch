@@ -296,6 +296,14 @@ on\t Turn on
 "
 end
 
+function __neofetch_on_off_tiny
+  echo -en "
+off\t Turn off
+on\t Turn on
+tiny\t Tiny view
+"
+end
+
 function __neofetch_speed_type
   echo -en "bios
 current
@@ -311,7 +319,7 @@ end
 
 # Info {{{
 complete -x -c neofetch -l 'disable' -d 'Disable a line from the output'
-complete -x -c neofetch -l 'package_managers' -a '(__neofetch_on_off)' -d 'Hide/Show package manager'
+complete -x -c neofetch -l 'package_managers' -a '(__neofetch_on_off_tiny)' -d 'Hide/Show package manager'
 complete -x -c neofetch -l 'os_arch' -a '(__neofetch_on_off)' -d 'Hide/Show OS architecture'
 complete -x -c neofetch -l 'speed_type' -a '(__neofetch_speed_type)' -d 'Change the type of CPU speed to display'
 complete -x -c neofetch -l 'speed_shorthand' -a '(__neofetch_on_off)' -d 'Show decimals in CPU speed'
@@ -319,9 +327,9 @@ complete -x -c neofetch -l 'cpu_brand' -a '(__neofetch_on_off)' -d 'Enable/disab
 complete -x -c neofetch -l 'cpu_cores' -a '(__neofetch_cpu_cores)' -d 'Display CPU cores'
 complete -x -c neofetch -l 'cpu_speed' -a '(__neofetch_on_off)' -d 'Hide/Show CPU speed'
 complete -x -c neofetch -l 'cpu_temp' -a '(__neofetch_cpu_temperature)' -d 'Hide/Show CPU temperature'
-complete -x -c neofetch -l 'distro_shorthand' -a '(__neofetch_on_off)' -d 'Shorten the output of distro'
+complete -x -c neofetch -l 'distro_shorthand' -a '(__neofetch_on_off_tiny)' -d 'Shorten the output of distro'
 complete -x -c neofetch -l 'kernel_shorthand' -a '(__neofetch_on_off)' -d 'Shorten the output of kernel'
-complete -x -c neofetch -l 'uptime_shorthand' -a '(__neofetch_on_off)' -d 'Shorten the output of uptime'
+complete -x -c neofetch -l 'uptime_shorthand' -a '(__neofetch_on_off_tiny)' -d 'Shorten the output of uptime'
 complete -x -c neofetch -l 'refresh_rate' -a '(__neofetch_on_off)' -d 'Hide/Show refresh rate of each monitor'
 complete -x -c neofetch -l 'gpu_brand' -a '(__neofetch_on_off)' -d 'Hide/Show GPU brand'
 complete -x -c neofetch -l 'gpu_type' -a '(__neofetch_gpu_type)' -d 'Select which GPU to show'
