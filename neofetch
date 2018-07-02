@@ -2526,21 +2526,26 @@ get_resolution() {
 
         *)
             if type -p xrandr >/dev/null; then
+                resolution="$(xrandr --nograb --current |\
+                                awk -F'current' -F',' 'NR==1 {gsub(" |current","");print $2}')"
                 case "$refresh_rate" in
                     "on")
-                        resolution="$(xrandr --nograb --current |\
+                        monitors="$(xrandr --nograb --current |\
                                       awk 'match($0,/[0-9]*\.[0-9]*\*/) {
                                            printf $1 " @ " substr($0,RSTART,RLENGTH) "Hz, "}')"
                     ;;
 
                     "off")
-                        resolution="$(xrandr --nograb --current |\
+                        monitors="$(xrandr --nograb --current |\
                                       awk -F 'connected |\\+|\\(' \
                                              '/ connected/ && $2 {printf $2 ", "}')"
-                        resolution="${resolution/primary }"
+                        monitors="${monitors/primary }"
                     ;;
                 esac
-                resolution="${resolution//\*}"
+                if [ -n "$monitors" ]; then
+                    monitors="${monitors%,*}"
+                    resolution="$resolution (${monitors//\*}), "
+                fi
 
             elif type -p xwininfo >/dev/null; then
                 read -r w h \
