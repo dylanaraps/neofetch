@@ -3176,12 +3176,19 @@ get_battery() {
                 ;;
 
                 "OpenBSD"* | "Bitrig"*)
-                    battery0full="$(sysctl -n hw.sensors.acpibat0.watthour0)"
-                    battery0full="${battery0full/ Wh*}"
+                    battery0full="$(sysctl -n   hw.sensors.acpibat0.watthour0\
+                                                hw.sensors.acpibat0.amphour0)"
+                    battery0full="${battery0full%% *}"
 
-                    battery0now="$(sysctl -n hw.sensors.acpibat0.watthour3)"
-                    battery0now="${battery0now/ Wh*}"
+                    battery0now="$(sysctl -n    hw.sensors.acpibat0.watthour3\
+                                                hw.sensors.acpibat0.amphour3)"
+                    battery0now="${battery0now%% *}"
 
+                    state="$(sysctl -n hw.sensors.acpibat0.raw0)"
+                    state="${state##? (battery }"
+                    state="${state%)*}"
+
+                    [[ "${state}" == "charging" ]] && battery_state="charging"
                     [[ "$battery0full" ]] && \
                     battery="$((100 * ${battery0now/\.} / ${battery0full/\.}))%"
                 ;;
