@@ -1136,6 +1136,7 @@ get_model() {
 
     case "$model" in
         "Standard PC"*) model="KVM/QEMU (${model})" ;;
+        "OpenBSD"*)     model="vmm (${model})" ;;
     esac
 }
 
@@ -1473,8 +1474,13 @@ get_wm() {
     # If function was run, stop here.
     ((wm_run == 1)) && return
 
+    case "$uname" in
+        *"OpenBSD"*)    ps_flags=(x -c) ;;
+        *)              ps_flags=(-e) ;;
+    esac
+
     if [[ "$WAYLAND_DISPLAY" ]]; then
-        wm="$(ps -e | grep -m 1 -o -F \
+        wm="$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
                            -e "arcan" \
                            -e "asc" \
                            -e "clayland" \
@@ -1513,11 +1519,11 @@ get_wm() {
 
         # Window Maker does not set _NET_WM_NAME
         [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
-
         # Fallback for non-EWMH WMs.
         [[ -z "$wm" ]] && \
-            wm="$(ps -e | grep -m 1 -o -F \
+            wm="$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
                                -e "catwm" \
+                               -e "fvwm" \
                                -e "dwm" \
                                -e "2bwm" \
                                -e "monsterwm" \
@@ -3081,9 +3087,20 @@ get_disk() {
 
     # Create an array called 'disks' where each element is a separate line from
     # df's output. We then unset the first element which removes the column titles.
-    IFS=$'\n' read -d "" -ra disks <<< "$(df "${df_flags[@]}" "${disk_show[@]:-/}")"
-    unset "disks[0]"
-
+    if [[ "$uname" == "OpenBSD" ]]; then
+        # On OpenBSD you can't use df against a /dev/... unless being root or
+        # in the 'operator' group. Making a separate disks array creation.
+        df_flags=(-h)
+        # building an AWK regexp
+        disk_re="${disk_show[*]:-/}"
+        disk_re="${disk_re// /\|}"
+        disk_re="^(${disk_re//\//\\\/})\$"
+        IFS=$'\n' read -d "" -ra disks <<< "$(df "${df_flags[@]}" | \
+            awk -v disk_re="$disk_re" '(NR > 1) && ($1 ~ disk_re || $6 ~ disk_re)')"
+    else
+        IFS=$'\n' read -d "" -ra disks <<< "$(df "${df_flags[@]}" "${disk_show[@]:-/}")"
+        unset "disks[0]"
+    fi
     # Stop here if 'df' fails to print disk info.
     [[ -z "${disks[*]}" ]] && {
         err "Disk: df failed to print the disks, make sure the disk_show array is set properly."
