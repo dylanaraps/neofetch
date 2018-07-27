@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+**Contributors**
+
+- [**@nero**](https://github.com/nero)
+- [**@alyssais**](https://github.com/alyssais)
+
+**Info**
+
+- **Shell**: Fixed output for mksh
+- **Packages** [macOS]: Added detection of Nix
 
 ## [5.0.0] - 2018-06-18
 
