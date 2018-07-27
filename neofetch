@@ -1366,7 +1366,7 @@ get_shell() {
             "sh" | "ash" | "dash") ;;
 
             "mksh" | "ksh")
-                shell+="$("$SHELL" -c "printf %s \$KSH_VERSION")"
+                shell+="$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")"
                 shell="${shell/ * KSH}"
                 shell="${shell/version}"
             ;;
