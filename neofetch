@@ -3876,8 +3876,18 @@ prin() {
         length="${#length}"
     fi
 
+    # Make sure $sep is unset
+    unset -v sep
+
+    # Check if $seperator is set
+    if [[ $seperator ]]; then
+        sep=$seperator
+    else
+        sep=":"
+    fi
+
     # Format the output.
-    string="${string/:/${reset}${colon_color}:${info_color}}"
+    string="${string/:/${reset}${colon_color}${sep}${info_color}}"
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
@@ -4498,6 +4508,7 @@ get_args() {
             "--underline") underline_enabled="$2" ;;
             "--underline_char") underline_char="$2" ;;
             "--bold") bold="$2" ;;
+            "--seperator") seperator="$2" ;;
 
             # Color Blocks
             "--color_blocks") color_blocks="$2" ;;
