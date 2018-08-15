@@ -3416,7 +3416,7 @@ get_ascii() {
     ascii_data="${ascii_data//\$\{c6\}/$c6}"
 
     ((text_padding=ascii_length+gap))
-    printf '%b\n' "$ascii_data"
+    printf '%b\n' "$ascii_data${reset}"
     LC_ALL=C
 }
 
