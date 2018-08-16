@@ -1274,6 +1274,7 @@ get_packages() {
             has "sorcery"    && tot gaze installed
             has "alps"       && tot alps showinstalled
             has "butch"      && tot butch list
+            has "pkginfo"    && tot pkginfo -i
 
             # Counting files/dirs.
             has "emerge"     && dir /var/db/pkg/*/*/
@@ -1290,8 +1291,7 @@ get_packages() {
             has "kpm-pkg" && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
 
             case "$kernel_name" in
-                "FreeBSD") has "pkg"     && tot pkg info ;;
-                "SunOS")   has "pkginfo" && tot pkginfo -i ;;
+                "FreeBSD") has "pkg" && tot pkg info ;;
                 *)
                     has "pkg" && dir /var/db/pkg/*
 
