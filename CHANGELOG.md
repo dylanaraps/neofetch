@@ -11,11 +11,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - [**@nero**](https://github.com/nero)
 - [**@alyssais**](https://github.com/alyssais)
+- [**@plgruener**](https://github.com/plgruener)
 
 **Info**
 
-- **Shell**: Fixed output for mksh
-- **Packages** [macOS]: Added detection of Nix
+- **Shell**: Fixed output for mksh [**@nero**](https://github.com/nero)
+- **Packages** [macOS]: Added detection of Nix [**@alyssais**](https://github.com/alyssais)
+- **Terminal Font**: Added support for Yakuake [**@plgruener**](https://github.com/plgruener)
+
+**ASCII**
+
+- Fixed a bug where ASCII logo changes the terminal foreground color. [**@plgruener**](https://github.com/plgruener)
 
 ## [5.0.0] - 2018-06-18
 
