@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - **Shell**: Fixed output for mksh [**@nero**](https://github.com/nero)
 - **Packages** [macOS]: Added detection of Nix [**@alyssais**](https://github.com/alyssais)
+- **Packages**: Fixed packages from pkginfo (pkgutils) not appearing in CRUX/Janus Linux.
 - **Terminal Font**: Added support for Yakuake [**@plgruener**](https://github.com/plgruener)
 
 **ASCII**
