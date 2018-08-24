@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [**@nero**](https://github.com/nero)
 - [**@alyssais**](https://github.com/alyssais)
 - [**@plgruener**](https://github.com/plgruener)
+- [**@StarryTony**](https://github.com/StarryTony)
 
 **Info**
 
@@ -23,6 +24,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 **ASCII**
 
 - Fixed a bug where ASCII logo changes the terminal foreground color. [**@plgruener**](https://github.com/plgruener)
+
+**Image**
+
+- **macOS**: Unset IFS to get window size. [**@StarryTony**](https://github.com/StarryTony)
 
 ## [5.0.0] - 2018-06-18
 
