@@ -3563,7 +3563,8 @@ get_window_size() {
     # The escape codes above print the desired output as
     # user input so we have to use read to store the out
     # -put as a variable.
-    IFS=';t' read -d t -t 0.05 -sra term_size
+    # The 1 second timeout is required for older bash
+    IFS=';t' read -d t -t 1 -sra term_size
     unset IFS
 
     # Split the string into height/width.
