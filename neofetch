@@ -3393,7 +3393,7 @@ image_backend() {
 }
 
 get_ascii() {
-    if [[ -f "$image_source" ]]; then
+    if [[ -f "$image_source" && ! "$image_source" =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
         ascii_data="$(< "$image_source")"
     else
         err "Ascii: Ascii file not found, using distro ascii."
