@@ -3595,7 +3595,7 @@ get_window_size() {
     fi
 
     [[ "$image_backend" == "kitty" ]] && \
-        IFS=x read -r term_width term_height < <(kitty icat --print-window-size)
+        IFS=x read -r term_width term_height < <(kitty +kitten icat --print-window-size)
 
     # Get terminal width/height if \e[14t is unsupported.
     if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
@@ -3774,7 +3774,7 @@ display_image() {
         ;;
 
         "kitty")
-            kitty icat \
+            kitty +kitten icat \
                 --align left \
                 --place "$((width/font_width))x$((height/font_height))@${xoffset}x${yoffset}" \
             "$image"
