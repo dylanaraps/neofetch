@@ -3076,6 +3076,7 @@ get_disk() {
     case "$df_version" in
         *"IMitv"*)   df_flags=(-P -g) ;; # AIX
         *"befhikm"*) df_flags=(-P -k) ;; # IRIX
+        *"hiklnP"*) df_flags=(-h) ;; # OpenBSD
 
         *"Tracker"*) # Haiku
             err "Your version of df cannot be used due to the non-standard flags"
@@ -3090,7 +3091,6 @@ get_disk() {
     if [[ "$uname" == "OpenBSD" ]]; then
         # On OpenBSD you can't use df against a /dev/... unless being root or
         # in the 'operator' group. Making a separate disks array creation.
-        df_flags=(-h)
         # building an AWK regexp
         disk_re="${disk_show[*]:-/}"
         disk_re="${disk_re// /\|}"
