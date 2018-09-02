@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [**@StarryTony**](https://github.com/StarryTony)
 - [**@julianaito**](https://github.com/julianaito)
 - [**@HolyStephano**](https://github.com/HolyStephano)
+- [**@nikitenich**](https://github.com/nikitenich)
 
 **Info**
 
@@ -23,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Packages**: Fixed packages from pkginfo (pkgutils) not appearing in CRUX/Janus Linux.
 - **Terminal Font**: Added support for Yakuake [**@plgruener**](https://github.com/plgruener)
 - **Model** [OpenBSD]: Added vmm (OpenBSD hypervisor) support [**@julianaito**](https://github.com/julianaito)
+- **Model** [macOS]: Added VirtualSMC as a new FakeSMC alternative for Hackintosh. [**@nikitenich**](https://github.com/nikitenich)
 - **WM**: Added detection for FVWM. [**@julianaito**](https://github.com/julianaito)
 - **WM** [OpenBSD]: Added a new `ps_flags` to correctly detect non-EWMH WMs. [**@julianaito**](https://github.com/julianaito)
 - **Disk** [OpenBSD]: Added a separate disk array creation using `awk` since one cannot directly use `/dev/...` unless being root or in the `operator` group. [**@julianaito**](https://github.com/julianaito)
