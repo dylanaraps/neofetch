@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [**@alyssais**](https://github.com/alyssais)
 - [**@plgruener**](https://github.com/plgruener)
 - [**@StarryTony**](https://github.com/StarryTony)
+- [**@julianaito**](https://github.com/julianaito)
+- [**@HolyStephano**](https://github.com/HolyStephano)
 
 **Info**
 
@@ -20,6 +22,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Packages** [macOS]: Added detection of Nix [**@alyssais**](https://github.com/alyssais)
 - **Packages**: Fixed packages from pkginfo (pkgutils) not appearing in CRUX/Janus Linux.
 - **Terminal Font**: Added support for Yakuake [**@plgruener**](https://github.com/plgruener)
+- **Model** [OpenBSD]: Added vmm (OpenBSD hypervisor) support [**@julianaito**](https://github.com/julianaito)
+- **WM**: Added detection for FVWM. [**@julianaito**](https://github.com/julianaito)
+- **WM** [OpenBSD]: Added a new `ps_flags` to correctly detect non-EWMH WMs. [**@julianaito**](https://github.com/julianaito)
+- **Disk** [OpenBSD]: Added a separate disk array creation using `awk` since one cannot directly use `/dev/...` unless being root or in the `operator` group. [**@julianaito**](https://github.com/julianaito)
 
 **ASCII**
 
@@ -28,6 +34,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 **Image**
 
 - **macOS**: Unset IFS to get window size. [**@StarryTony**](https://github.com/StarryTony)
+- **Kitty**: Use `kitty +kitten icat` instead of the deprecated `kitty icat`. [**@HolyStephano**](https://github.com/HolyStephano)
 
 ## [5.0.0] - 2018-06-18
 
