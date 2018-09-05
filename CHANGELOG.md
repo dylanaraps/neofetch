@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 **ASCII**
 
 - Fixed a bug where ASCII logo changes the terminal foreground color. [**@plgruener**](https://github.com/plgruener)
+- Do not parse file as ASCII if the source is an image file.
 
 **Image**
 
