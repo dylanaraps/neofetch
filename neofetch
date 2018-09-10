@@ -2356,7 +2356,7 @@ get_song() {
             dbus-send --print-reply --dest=org.mpris.MediaPlayer2."${1}" /org/mpris/MediaPlayer2 \
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
-            awk -F '"' 'BEGIN {RS=" entry"}; /xesam:artist/ {a = $4} /xesam:album/ {b = $4}
+            awk -F '"' 'BEGIN {RS=" entry"}; /"xesam:artist"/ {a = $4} /"xesam:album"/ {b = $4}
                         /xesam:title/ {t = $4} END {print a "\n" b "\n" t}'
         )"
     }
@@ -2436,26 +2436,15 @@ get_song() {
         "quodlibet"*)
             song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet \
                     /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
-                    awk -F'"' '/artist/ {getline; a=$2} /album/ {getline; b=$2}
-                               /title/ {getline; t=$2} END {print a "\n" b "\n" t}')"
+                    awk -F'"' 'BEGIN {RS=" entry"}; /"artist"/ {a=$4} /"album"/ {b=$4}
+                    /"title"/ {t=$4} END {print a "\n" b "\n" t}')"
         ;;
 
         "pogo"*)
             song="$(dbus-send --print-reply --dest=org.mpris.pogo /Player \
                     org.freedesktop.MediaPlayer.GetMetadata |
-                    awk -F'"' '/string "artist"/ {
-                                   getline;
-                                   a=$2
-                               }
-                               /string "album"/ {
-                                   getline;
-                                   b=$2
-                               }
-                               /string "title"/ {
-                                   getline;
-                                   t=$2
-                               }
-                               END {print a "\n" b "\n" t}')"
+                    awk -F'"' 'BEGIN {RS=" entry"}; /"artist"/ {a=$4} /"album"/ {b=$4}
+                    /"title"/ {t=$4} END {print a "\n" b "\n" t}')"
         ;;
 
         *) mpc &>/dev/null && song="$(mpc -f '%artist%\n%album%\n%title%' current)" ;;
