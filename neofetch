@@ -68,6 +68,7 @@ print_info() {
     info "Terminal Font" term_font
     info "CPU" cpu
     info "GPU" gpu
+    info "VRAM" vram
     info "Memory" memory
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
