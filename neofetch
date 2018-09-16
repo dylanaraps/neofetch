@@ -6722,6 +6722,32 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 EOF
         ;;
 
+        "Namib"*)
+            set_colors 1
+            read -rd '' ascii_data <<'EOF'
+${c1}          .:+shysyhhhhysyhs+:.
+       -/yyys              syyy/-
+     -shy                      yhs-
+   -yhs                          shy-
+  +hy                              yh+
+ +ds                                sd+
+/ys                  so              sy/
+sh                 smMMNdyo           hs
+yo               ymMMMMNNMMNho        oy
+N             ydMMMNNMMMMMMMMMmy       N
+N         shmMMMMNNMMMMMMMMMMMMMNy     N
+yo  ooshmNMMMNNNNMMMMMMMMMMMMMMMMMms  oy
+sd yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy ds
+/ys                                  sy/
+ +ds                                sd+
+  +hy                              yh+
+   -yhs                          shy-
+     -shy                      yhs-
+       -/yyys              syyy/-
+          .:+shysyhyhhysyhs+:.
+EOF
+        ;;
+
         "NetBSD"*)
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
