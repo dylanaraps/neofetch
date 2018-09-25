@@ -657,6 +657,15 @@ image_source="auto"
 
 # Ascii Options
 
+# Lolcat
+#
+# Apply lolcat filter to the ascii image_backend
+# Default: 'off'
+# Values: 'off', 'on'
+#
+# NOTE: lolcat should be installed
+#       see https://github.com/busyloop/lolcat or https://github.com/jaseg/lolcat or https://github.com/tehmaze/lolcat/
+lolcat='off'
 
 # Ascii distro
 # Which distro's ascii art to display.
@@ -3412,6 +3421,11 @@ image_backend() {
 get_ascii() {
     if [[ -f "$image_source" && ! "$image_source" =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
         ascii_data="$(< "$image_source")"
+        if [[ "$lolcat" == "on" ]]; then
+	        ascii_data_print="$(cat "$image_source" | lolcat)"
+    	else
+    		ascii_data_print="${ascii_data}"
+		fi        
     else
         err "Ascii: Ascii file not found, using distro ascii."
     fi
@@ -3433,7 +3447,7 @@ get_ascii() {
     ascii_data="${ascii_data//\$\{c6\}/$c6}"
 
     ((text_padding=ascii_length+gap))
-    printf '%b\n' "$ascii_data${reset}"
+    printf '%b\n' "$ascii_data_print${reset}"
     LC_ALL=C
 }
 
