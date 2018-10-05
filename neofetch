@@ -1303,6 +1303,8 @@ get_packages() {
 
             # List these last as they accompany regular package managers.
             has "flatpak" && tot flatpak list
+            has "spm"     && tot spm list -i
+            has "puyo"    && dir ~/.puyo/installed
 
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
