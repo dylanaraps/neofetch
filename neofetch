@@ -637,7 +637,7 @@ disk_display="off"
 # Image backend.
 #
 # Default:  'ascii'
-# Values:   'ascii', 'caca', 'jp2a', 'iterm2', 'off', 'termpix', 'pixterm', 'tycat', 'w3m'
+# Values:   'ascii', 'caca', 'jp2a', 'iterm2', 'off', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
 # Flag:     --backend
 image_backend="ascii"
 
