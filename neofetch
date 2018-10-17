@@ -1421,13 +1421,13 @@ get_de() {
         *)
             ((wm_run != 1)) && get_wm
 
-            if [[ "$XDG_CURRENT_DESKTOP" ]]; then
+            if [[ "$DESKTOP_SESSION" ]]; then
+                de="${DESKTOP_SESSION##*/}"
+
+            elif [[ "$XDG_CURRENT_DESKTOP" ]]; then
                 de="${XDG_CURRENT_DESKTOP/X\-}"
                 de="${de/Budgie:GNOME/Budgie}"
                 de="${de/:Unity7:ubuntu}"
-
-            elif [[ "$DESKTOP_SESSION" ]]; then
-                de="${DESKTOP_SESSION##*/}"
 
             elif [[ "$GNOME_DESKTOP_SESSION_ID" ]]; then
                 de="GNOME"
