@@ -1136,7 +1136,7 @@ get_model() {
 
     case "$model" in
         "Standard PC"*) model="KVM/QEMU (${model})" ;;
-        "OpenBSD"*)     model="vmm (${model})" ;;
+        "OpenBSD"*)     model="vmm ($model)" ;;
     esac
 }
 
@@ -1476,8 +1476,8 @@ get_wm() {
     ((wm_run == 1)) && return
 
     case "$uname" in
-        *"OpenBSD"*)    ps_flags=(x -c) ;;
-        *)              ps_flags=(-e) ;;
+        *"OpenBSD"*) ps_flags=(x -c) ;;
+        *)           ps_flags=(-e) ;;
     esac
 
     if [[ "$WAYLAND_DISPLAY" ]]; then
@@ -3088,19 +3088,9 @@ get_disk() {
 
     # Create an array called 'disks' where each element is a separate line from
     # df's output. We then unset the first element which removes the column titles.
-    if [[ "$uname" == "OpenBSD" ]]; then
-        # On OpenBSD you can't use df against a /dev/... unless being root or
-        # in the 'operator' group. Making a separate disks array creation.
-        # building an AWK regexp
-        disk_re="${disk_show[*]:-/}"
-        disk_re="${disk_re// /\|}"
-        disk_re="^(${disk_re//\//\\\/})\$"
-        IFS=$'\n' read -d "" -ra disks <<< "$(df "${df_flags[@]}" | \
-            awk -v disk_re="$disk_re" '(NR > 1) && ($1 ~ disk_re || $6 ~ disk_re)')"
-    else
-        IFS=$'\n' read -d "" -ra disks <<< "$(df "${df_flags[@]}" "${disk_show[@]:-/}")"
-        unset "disks[0]"
-    fi
+    IFS=$'\n' read -d "" -ra disks <<< "$(df "${df_flags[@]}" "${disk_show[@]:-/}")"
+    unset "disks[0]"
+
     # Stop here if 'df' fails to print disk info.
     [[ -z "${disks[*]}" ]] && {
         err "Disk: df failed to print the disks, make sure the disk_show array is set properly."
