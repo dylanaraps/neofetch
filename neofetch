@@ -67,8 +67,13 @@ print_info() {
     info "Terminal" term
     info "Terminal Font" term_font
     info "CPU" cpu
+    info "CPU Usage" cpu_usage
     info "GPU" gpu
+    info "VRAM" vram
     info "Memory" memory
+    info "Font" font
+    info "Battery" battery
+    info "Disk" disk
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "CPU Usage" cpu_usage
@@ -112,7 +117,7 @@ kernel_shorthand="on"
 # Values:   'on', 'off', 'tiny'
 # Flag:     --distro_shorthand
 # Supports: Everything except Windows and Haiku
-distro_shorthand="off"
+distro_shorthand="on"
 
 # Show/Hide OS Architecture.
 # Show 'x86_64', 'x86' and etc in 'Distro:' output.
@@ -124,7 +129,7 @@ distro_shorthand="off"
 # Example:
 # on:  'Arch Linux x86_64'
 # off: 'Arch Linux'
-os_arch="on"
+os_arch="off"
 
 
 # Uptime
@@ -156,7 +161,7 @@ uptime_shorthand="on"
 # on:   '998 (pacman), 8 (flatpak), 4 (snap)'
 # tiny: '908 (pacman, flatpak, snap)'
 # off:  '908'
-package_managers="on"
+package_managers="tiny"
 
 
 # Shell
@@ -171,7 +176,7 @@ package_managers="on"
 # Example:
 # on:  '/bin/bash'
 # off: 'bash'
-shell_path="off"
+shell_path="on"
 
 # Show $SHELL version
 #
