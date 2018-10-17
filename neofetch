@@ -4081,19 +4081,19 @@ get_full_path() {
 get_user_config() {
     mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
 
-    shopt -s nullglob
-    files=("$XDG_CONFIG_HOME"/neofetch/confi*)
-    shopt -u nullglob
-
     # --config /path/to/config.conf
     if [[ -f "$config_file" ]]; then
         source "$config_file"
         err "Config: Sourced user config. (${config_file})"
         return
 
-    elif [[ -f "${files[0]}" ]]; then
-        source "${files[0]}"
-        err "Config: Sourced user config.    (${files[0]})"
+    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
+        source "${XDG_CONFIG_HOME}/neofetch/config.conf"
+        err "Config: Sourced user config.    (${XDG_CONFIG_HOME}/neofetch/config.conf)"
+
+    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
+        source "${XDG_CONFIG_HOME}/neofetch/config"
+        err "Config: Sourced user config.    (${XDG_CONFIG_HOME}/neofetch/config)"
 
     else
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
