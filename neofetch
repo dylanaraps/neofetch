@@ -482,6 +482,22 @@ song_shorthand="off"
 mpc_args=()
 
 
+# Separator
+
+
+# Modify separator
+#
+# Default:  ':'
+# Flag:     --separator
+#
+# Replace the default separator with the specified string.
+#
+# Example:
+# separator="->":   'Shell-> bash'
+# separator=" =":   'WM = dwm'
+separator=":"
+
+
 # Text Colors
 
 
@@ -3891,7 +3907,7 @@ prin() {
     fi
 
     # Format the output.
-    string="${string/:/${reset}${colon_color}:${info_color}}"
+    string="${string/:/${reset}${colon_color}${separator:=:}${info_color}}"
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
@@ -4321,6 +4337,8 @@ INFO:
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
 
+    --separator string          Changes the default ':' separator to the specified string.
+
 TEXT FORMATTING:
     --colors x x x x x x        Changes the text colors in this order:
                                 title, @, underline, subtitle, colon, info
@@ -4512,6 +4530,7 @@ get_args() {
             "--underline") underline_enabled="$2" ;;
             "--underline_char") underline_char="$2" ;;
             "--bold") bold="$2" ;;
+            "--separator") separator="$2" ;;
 
             # Color Blocks
             "--color_blocks") color_blocks="$2" ;;
