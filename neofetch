@@ -494,7 +494,7 @@ mpc_args=()
 #
 # Example:
 # separator="->":   'Shell-> bash'
-# separator=" =":   `WM = dwm`
+# separator=" =":   'WM = dwm'
 separator=":"
 
 
