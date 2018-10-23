@@ -6454,26 +6454,26 @@ EOF
         "Lubuntu"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}           `-/+oyyhhhhyyo+/-`
-        ./shhhhhhhhhhhhhhhhhhs/.
-     `:shhhhhhhhhhhhhhhhhhhhhhhhs:`
-    :yhhhhhhhhhhhhhhhs++yhhhhhhhhhy:
-  `ohhhhhhhhhhhhhs+:. .yhhhhhhhhhhhho`
- `shhhhhhhhhhy+:`     /yhhhhhhhhhhhhhs`
- shhhhhhhhy+.          .ohhhhhhhhhhhhhs
-:hhhhhhy/.               /hhhhhhhhhhhhh:
-shhhy/.                   :hhhhhhhhhhhhs
-hy+.   `        `+yhs/`    +hhhhhhhhhhhh
--.:/oshy-  `   :yhhhhhy/    shhhhhhhhhhh
-shhhhhy-`/s. .shhhhhhhhho`  .hhhhhhhhhhs
-:hhhho`:ys` /yhhhhhhhhhhhs`  +hhhhhhhhh:
- shh/.sh+ `ohhhhhhhhhhhhhhs` .hhhhhhhhs
- `o-+hh: :yhhhhhhhhhhhhhhhho  ohhhhhhs`
-   +hy-`ohhhhhhhhhhhhhhhhhhh+ -hhhhho`
-    :.-yhhhhhhhhhhhhhhhhhhhhh: yhhy:
-      :shhhhhhhhhhhhhhhhhhhhhy`+s:`
-        .+shhhhhhhhhhhhhhhhhhs:`
-           `-/+oyyhhhhyys+/-`
+${c1}           `-mddhhhhhhhhhddmss`
+        ./mdhhhhhhhhhhhhhhhhhhhhhh.
+     :mdhhhhhhhhhhhhhhhhhhhhhhhhhhhm`
+   :ymhhhhhhhhhhhhhhhyyyyyyhhhhhhhhhy:
+  `odhyyyhhhhhhhhhy+-````./syhhhhhhhho`
+ `hhy..:oyhhhhhhhy-`:osso/..:/++oosyyyh`
+ dhhs   .-/syhhhhs`shhhhhhyyyyyyyyyyyyhs
+:hhhy`  yso/:+syhy/yhhhhhshhhhhhhhhhhhhh:
+hhhhho. +hhhys++oyyyhhhhh-yhhhhhhhhhhhhhs
+hhhhhhs-`/syhhhhyssyyhhhh:-yhhhhhhhhhhhhh
+hhhhhhs  `:/+ossyyhyyhhhhs -yhhhhhhhhhhhh
+hhhhhhy/ `syyyssyyyyhhhhhh: :yhhhhhhhhhhs
+:hhhhhhyo:-/osyhhhhhhhhhhho  ohhhhhhhhhh:
+ sdhhhhhhhyyssyyhhhhhhhhhhh+  +hhhhhhhhs
+ `shhhhhhhhhhhhhhhhhhhhhhy+` .yhhhhhhhh`
+  +sdhhhhhhhhhhhhhhhhhyo/. `/yhhhhhhhd`
+   `:shhhhhhhhhh+---..``.:+yyhhhhhhh:
+     `:mdhhhhhh/.syssyyyyhhhhhhhd:`
+        `+smdhhh+shhhhhhhhhhhhdm`
+           `sNmdddhhhhhhhddm-`
 EOF
         ;;
 
