@@ -2778,6 +2778,10 @@ get_term() {
                 break
             ;;
 
+            "."*"-wrap"*)
+                [[ $name =~ \.(.*)-wrap.* ]] && term=${BASH_REMATCH[1]}
+            ;;
+
             "gnome-terminal-") term="gnome-terminal" ;;
             "urxvtd")          term="urxvt" ;;
             *"nvim")           term="Neovim Terminal" ;;
