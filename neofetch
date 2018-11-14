@@ -2269,8 +2269,9 @@ get_memory() {
         ;;
 
         "Solaris")
-            mem_total="$(prtconf | awk '/Memory/ {print $3}')"
-            mem_free="$(($(vmstat | awk 'NR==3{printf $5}') / 1024))"
+            hw_pagesize="$(pagesize)"
+            mem_total="$(($(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}') * hw_pagesize / 1024 / 1024))"
+            mem_free="$(($(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}') * hw_pagesize / 1024 / 1024))"
             mem_used="$((mem_total - mem_free))"
         ;;
 
