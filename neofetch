@@ -799,6 +799,7 @@ get_os() {
         "MINIX"):    "MINIX" ;;
         "AIX"):      "AIX" ;;
         "IRIX"*):    "IRIX" ;;
+        "HP-UX"):    "HP-UX" ;;
         "FreeMiNT"): "FreeMiNT" ;;
 
         "Linux" | "GNU"*)
@@ -1000,6 +1001,11 @@ get_distro() {
             distro="$name $version"
         ;;
 
+        "HP-UX")
+            os_arch="off"
+            distro="HP-UX ${kernel_version//B.}"
+        ;;
+
         "AIX")
             distro="AIX $(oslevel)"
         ;;
@@ -1127,6 +1133,24 @@ get_model() {
             model="$(/usr/bin/uname -M)"
         ;;
 
+        "HP-UX")
+            machine_type="$(model | awk -F'/' '{print $1}')"
+            if [[ "$machine_type" == "9000" ]]; then
+                machine_family="$(model | awk -F'/' '{print $2}')"
+                machine_model="$(model | awk -F'/' '{print $3}')"
+                if [[ "$machine_model" =~ [a-z] ]]; then
+                    model="HP $machine_type/$machine_model"
+                else
+                    model="HP $machine_type/$machine_family"
+                fi
+            elif [[ "$machine_type" == "ia64" ]]; then
+                # Need more information on IA-64 model ouptut
+                model="$(model)"
+            else
+                model="$(model)"
+            fi
+        ;;
+
         "FreeMiNT")
             model="$(sysctl -n hw.model)"
         ;;
@@ -1161,7 +1185,7 @@ get_title() {
 
 get_kernel() {
     # Since these OS are integrated systems, it's better to skip this function altogether
-    [[ "$os" =~ (AIX|IRIX) ]] && return
+    [[ "$os" =~ (AIX|IRIX|HP-UX) ]] && return
 
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
@@ -1209,8 +1233,8 @@ get_uptime() {
                     seconds="${seconds/.*}"
                 ;;
 
-                "AIX" | "IRIX")
-                    t="$(LC_ALL=POSIX ps -o etime= -p 1)"
+                "AIX" | "IRIX" | "HP-UX")
+                    t="$(LC_ALL=POSIX UNIX95=1 ps -o etime= -p 1)"
                     d="0" h="0"
                     case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
                     case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
@@ -1522,7 +1546,7 @@ get_wm() {
                            -e "westford" \
                            -e "weston")"
 
-    elif [[ "$DISPLAY" && "$os" != "Mac OS X" && "$os" != "FreeMiNT" ]]; then
+    elif [[ "$DISPLAY" && "$os" != "Mac OS X" && "$os" != "FreeMiNT" && "$os" != "HP-UX" ]]; then
         if type -p xprop &>/dev/null; then
             id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
             id="${id##* }"
@@ -1902,6 +1926,114 @@ get_cpu() {
             cores="$(sysinfo -cpu | grep -c -F 'CPU #')"
         ;;
 
+        "HP-UX")
+            # Determine basic machine and CPU type
+            if [ "$machine_type" == "9000" ]; then
+                cpu="HP PA-RISC"
+            elif [ "$machine_type" == "ia64" ]; then
+                cpu="Intel Itanium"
+            fi
+
+            # Get more detailed information for PA-RISC systems
+            if [ "$machine_type" == "9000" ]; then
+                # PA-RISC systems generally have a single fixed
+                # CPU configuration, with the exception of the
+                # C8000 which ships with multiple speed grades
+                # of the PA-8800 and PA-8900 microprocessors.
+                # Given this, we can confidently assume the CPU
+                # type of most pre-C8000 systems with the output
+                # of the built-in "model" command.
+                case "$machine_family" in
+                    705) cpu="HP PA-7000"; speed=35 ;;
+                    710|720) cpu="HP PA-7000"; speed=50 ;;
+                    712) cpu="HP PA-7100LC"; speed=$machine_model ;;
+                    715) speed=$machine_model
+                         case "$machine_model" in
+                            33|50|75) cpu="HP PA-7100" ;;
+                            100XC) cpu="HP PA-7100LC"; speed=100 ;;
+                            *) cpu="HP PA-7100LC" ;;
+                         esac ;;
+                    725) speed=$machine_model
+                         case "$machine_model" in
+                            100) cpu="HP PA-7100LC" ;;
+                            *) cpu="HP PA-7100" ;;
+                         esac ;;
+                    730|750) cpu="HP PA-7000"; speed=66 ;;
+                    735|755) speed=$machine_model
+                             case "$machine_model" in
+                                99) cpu="HP PA-7100" ;;
+                                125) cpu="HP PA-7150" ;;
+                             esac ;;
+                    770) cpu="HP PA-7200"
+                         case "$machine_model" in
+                            J200) speed=100 ;;
+                            J210|J210XC) speed=120 ;;
+                         esac ;;
+                    777) cpu="HP PA-7200"
+                         case "$machine_model" in
+                            C100) speed=100 ;;
+                            C110) speed=120 ;;
+                         esac ;;
+                    778) cpu="HP PA-7300LC"
+                         case "$machine_model" in
+                            B132L|B132L+) speed=132 ;;
+                            B160L|B160L+) speed=160 ;;
+                         esac ;;
+                    779) cpu="HP PA-7300LC"
+                         case "$machine_model" in
+                            C132L) speed=132 ;;
+                            C160L) speed=160 ;;
+                         esac ;;
+                    780) cpu="HP PA-8000"
+                         case "$machine_model" in
+                            C160) speed=160 ;;
+                            C180|J280|J282) speed=180 ;;
+                         esac ;;
+                    782) cpu="HP PA-8200"
+                         case "$machine_model" in
+                            C200) speed=200 ;;
+                            C240|J2240) speed=236 ;;
+                         esac ;;
+                    785) cpu="HP PA-8x00"
+                         case "$machine_model" in
+                            B1000|B2000|C360|C3000|J5000|J7000) cpu="HP PA-8500" ;;
+                            B2600|C3600|J5600|J6000|J7600) cpu="HP PA-8600" ;;
+                            C3650|C3700|J6700) cpu="HP PA-8700" ;;
+                            C3750|J6750) cpu="HP PA-8700+" ;;
+                         esac
+                         case "$machine_model" in
+                            B1000) speed=300 ;;
+                            B2000|C3000) speed=400 ;;
+                            B2600) speed=500 ;;
+                            C360) speed=367 ;;
+                            C3600|J5600|J6000|J7600) speed=552 ;;
+                            C3650) speed=625 ;;
+                            C3700|J6700) speed=750 ;;
+                            C3750|J6750) speed=875 ;;
+                            J5000|J7000) speed=440 ;;
+                         esac ;;
+                    800) case "$machine_model" in
+                            D390|R390|K380|K580) cpu="HP PA-8200"; speed=240 ;;
+                            R380) cpu="HP PA-8000"; speed=180 ;;
+                         esac ;;
+                    801) cpu="HP PA-7100LC"; speed=75 ;;
+                    802|804|861|871) cpu="HP PA-8000"; speed=160 ;;
+                    809|819|829|821|831) cpu="HP PA-7200"; speed=100 ;;
+                    803|813) cpu="HP PA-7300LC"; speed=132 ;;
+                    810|820|879|889) cpu="HP PA-8000"; speed=180 ;;
+                    811) cpu="HP PA-7100LC"; speed=100 ;;
+                    823|833) cpu="HP PA-7300LC"; speed=160 ;;
+                    839|841|849|851|859|869) cpu="HP PA-7200"; speed=120 ;;
+                    898|899) cpu="HP PA-8200"; speed=200 ;;
+                esac
+            fi
+
+            # TODO: Detailed processor configuration for Itanium systems 
+
+            # Get CPU cores.
+            cores="$(ioscan -k | grep -F -c "processor")" 
+        ;;
+
         "AIX")
             # Get CPU name.
             cpu="$(lsattr -El proc0 -a type | awk '{printf $2}')"
@@ -1967,6 +2099,7 @@ get_cpu() {
     # Remove CPU brand from the output.
     if [[ "$cpu_brand" == "off" ]]; then
         cpu="${cpu/AMD }"
+        cpu="${cpu/HP }"
         cpu="${cpu/Intel }"
         cpu="${cpu/Core? Duo }"
         cpu="${cpu/Qualcomm }"
@@ -2109,8 +2242,9 @@ get_gpu() {
 
                 if [[ "$gpu_brand" == "off" ]]; then
                     gpu="${gpu/AMD }"
-                    gpu="${gpu/NVIDIA }"
+                    gpu="${gpu/HP }"
                     gpu="${gpu/Intel }"
+                    gpu="${gpu/NVIDIA }"
                 fi
 
                 prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
@@ -2176,6 +2310,12 @@ get_gpu() {
                    awk -F':' '/device beef/ {print $2}')"
         ;;
 
+        "HP-UX")
+           [[ ! -f /opt/graphics/common/bin/graphinfo ]] && return
+           gpu=$(/opt/graphics/common/bin/graphinfo | grep -F 'graphics product')
+           gpu="${gpu//graphics product:}" 
+        ;;
+
         *)
             case "$kernel_name" in
                 "FreeBSD"* | "DragonFly"*)
@@ -2196,6 +2336,7 @@ get_gpu() {
         gpu="${gpu/AMD}"
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
+        gpu="${gpu/HP}"
     fi
 }
 
@@ -2220,9 +2361,9 @@ get_memory() {
 
         "Mac OS X" | "iPhone OS")
             mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
-            mem_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
-            mem_active="$(vm_stat | awk '/ active/ { printf $3 }')"
-            mem_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
+            mem_wired="$(vm_stat | awk '/wired/ { print $4 }')"
+            mem_active="$(vm_stat | awk '/active / { printf $3 }')"
+            mem_compressed="$(vm_stat | awk '/occupied/ { printf $5 }')"
             mem_compressed="${mem_compressed:-0}"
             mem_used="$(((${mem_wired//.} + ${mem_active//.} + ${mem_compressed//.}) * 4 / 1024))"
         ;;
@@ -2281,6 +2422,13 @@ get_memory() {
             mem_used="$((${mem_used/max} / 1024 / 1024))"
         ;;
 
+        "HP-UX")
+            mem_total="$(awk '/Physical/ {print $7}' /var/adm/syslog/syslog.log)"
+            mem_total="$((mem_total / 1024))"
+            mem_free="$(($(vmstat | awk 'NR==3{printf $5}') / 1024))"  
+            mem_used="$((mem_total - mem_free))"
+        ;;
+
         "AIX")
             IFS=$'\n'"| " read -d "" -ra mem_stat <<< "$(svmon -G -O unit=MB)"
 
@@ -2310,6 +2458,8 @@ get_memory() {
 
     esac
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB}"
+    # We currently can't get accurate memory usage data on all HP-UX systems
+    #[[ "$os" == "HP-UX" ]] && memory="${mem_total}${mem_label:-MiB}" 
 
     # Bars.
     case "$memory_display" in
@@ -2359,7 +2509,7 @@ get_song() {
 
     printf -v players "|%s" "${players[@]}"
     player="$(ps aux | awk -v pattern="(${players:1})" \
-                '!/ awk / && !/iTunesHelper/ && match($0,pattern){print substr($0,RSTART,RLENGTH); exit}')"
+                '!/ awk / && match($0,pattern){print substr($0,RSTART,RLENGTH); exit}')"
 
     [[ "$music_player" && "$music_player" != "auto" ]] && \
         player="$music_player"
@@ -2566,6 +2716,7 @@ get_resolution() {
             elif type -p xwininfo >/dev/null; then
                 read -r w h \
                     < <(xwininfo -root | awk -F':' '/Width|Height/ {printf $2}')
+                [[ -z "$w" ]] || [[ -z "$h" ]]  && return
                 resolution="${w}x${h}"
 
             elif type -p xdpyinfo >/dev/null; then
@@ -2573,6 +2724,8 @@ get_resolution() {
             fi
         ;;
     esac
+
+    [[ -z "${w}" ]] || [[ -z "${h}" ]] && return
 
     resolution="${resolution%,*}"
 }
@@ -2776,6 +2929,7 @@ get_term() {
                 break
             ;;
 
+            "dtterm")          term="dtterm" ;;
             "gnome-terminal-") term="gnome-terminal" ;;
             "urxvtd")          term="urxvt" ;;
             *"nvim")           term="Neovim Terminal" ;;
@@ -6146,6 +6300,26 @@ ${c2}          :dc'
 EOF
         ;;
 
+        "HP-UX"*)
+            set_colors 4 7
+            set_text_colors 7 7
+            read -rd '' ascii_data <<'EOF'
+${c2}
+        ${c2}HP
+       ${c2}HP
+      ${c2}HP
+     ${c2}HP              ${c1}UU    UU  XX  XX
+    ${c2}HPHPHP  HPHPHP  ${c1}UU    UU   XXXX
+   ${c2}HP  HP  HP  HP  ${c1}UU    UU    XX
+  ${c2}HP  HP  HP  HP  ${c1}UU    UU   XXXX
+ ${c2}HP  HP  HPHPHP   ${c1}UUUUUU   XX  XX
+        ${c2}HP
+       ${c2}HP
+      ${c2}HP
+     ${c2}HP
+EOF
+        ;;
+
         "Hyperbola"*)
             set_colors 8
             read -rd '' ascii_data <<'EOF'
@@ -7509,30 +7683,6 @@ ${c1}  `.::///+:/-.        --///+//-:``
       `...`  `...--..`  `...`
             .::::::::::
              `.-::::-`
-EOF
-        ;;
-
-        "Reborn OS"* | "Reborn"*)
-            set_colors 2 2 8
-            read -rd '' ascii_data <<'EOF'
-${c3}
-        mMMMMMMMMM  MMMMMMMMMm
-       NM                    MN
-      MM  ${c1}dddddddd  dddddddd  ${c3}MN
-     mM  ${c1}dd                dd  ${c3}MM
-        ${c1}dd  hhhhhh   hhhhh  dd
-   ${c3}mM      ${c1}hh            hh      ${c3}Mm
-  NM  ${c1}hd       ${c3}mMMMMMMd       ${c1}dh  ${c3}MN
- NM  ${c1}dd  hh   ${c3}mMMMMMMMMm   ${c1}hh  dd  ${c3}MN
-NM  ${c1}dd  hh   ${c3}mMMMMMMMMMMm   ${c1}hh  dd  ${c3}MN
- NM  ${c1}dd  hh   ${c3}mMMMMMMMMm   ${c1}hh  dd  ${c3}MN
-  NM  ${c1}hd       ${c3}mMMMMMMm       ${c1}dh  ${c3}MN
-   mM      ${c1}hh            hh      ${c3}Mm
-        ${c1}dd  hhhhhh  hhhhhh  dd
-     ${c3}MM  ${c1}dd                dd  ${c3}MM
-      MM  ${c1}dddddddd  dddddddd  ${c3}MN
-       NM                    MN
-        mMMMMMMMMM  MMMMMMMMMm
 EOF
         ;;
 
