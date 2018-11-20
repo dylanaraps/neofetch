@@ -827,7 +827,12 @@ get_distro() {
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
-            if [[ -f "/etc/redstar-release" ]]; then
+            if [[ -f "/bedrock/etc/bedrock-release" ]] && [[ $PATH == */bedrock/cross/* ]]; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="Bedrock Linux" ;;
+                    *) distro="$(< /bedrock/etc/bedrock-release)"
+                esac
+            elif [[ -f "/etc/redstar-release" ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Red Star OS" ;;
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
@@ -1268,7 +1273,21 @@ get_packages() {
     has() { type -p "$1" >/dev/null && manager="$_"; }
     dir() { ((packages+=$#)); pac "$#"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
-    tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
+    if [[ -f "/bedrock/etc/bedrock-release" ]] && [[ "$PATH" == */bedrock/cross/* ]]; then
+        tot() {
+            IFS=$'\n' read -d "" -ra pkgs < <(for s in $(brl list); do strat -r "${s}" "$@"; done)
+            ((packages+="${#pkgs[@]}"))
+            pac "${#pkgs[@]}"
+        }
+        prefix="/bedrock/strata/*"
+    else
+        tot() {
+            IFS=$'\n' read -d "" -ra pkgs < <("$@")
+            ((packages+="${#pkgs[@]}"))
+            pac "${#pkgs[@]}";
+        }
+        prefix=""
+    fi
 
     case "$os" in
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
@@ -1290,15 +1309,15 @@ get_packages() {
             has "pkginfo"    && tot pkginfo -i
 
             # Counting files/dirs.
-            has "emerge"     && dir /var/db/pkg/*/*/
-            has "nix-env"    && dir /nix/store/*/
-            has "guix"       && dir /gnu/store/*/
-            has "Compile"    && dir /Programs/*/
-            has "eopkg"      && dir /var/lib/eopkg/package/*
-            has "crew"       && dir /usr/local/etc/crew/meta/*.filelist
-            has "pkgtool"    && dir /var/log/packages/*
-            has "cave"       && dir /var/db/paludis/repositories/cross-installed/*/data/*/ \
-                                    /var/db/paludis/repositories/installed/data/*/
+            has "emerge"     && dir ${prefix}/var/db/pkg/*/*/
+            has "nix-env"    && dir ${prefix}/nix/store/*/
+            has "guix"       && dir ${prefix}/gnu/store/*/
+            has "Compile"    && dir ${prefix}/Programs/*/
+            has "eopkg"      && dir ${prefix}/var/lib/eopkg/package/*
+            has "crew"       && dir ${prefix}/usr/local/etc/crew/meta/*.filelist
+            has "pkgtool"    && dir ${prefix}/var/log/packages/*
+            has "cave"       && dir ${prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
+                                    ${prefix}/var/db/paludis/repositories/installed/data/*/
 
             # Other (Needs complex command)
             has "kpm-pkg" && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
@@ -3426,6 +3445,7 @@ get_ascii() {
 
     # Calculate size of ascii file in line length / line count.
     while IFS=$'\n' read -r line; do
+        line="${line//\\\\/\\}"
         ((++lines,${#line}>ascii_length)) && ascii_length="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
@@ -5180,6 +5200,29 @@ ${c1}   .oyyyyyyo. :yyyyyy/${c2}-yyyyyy+ ---------
 ${c1}  .syyyyyy+`  :yyyyyy/${c2}-yyyyy+-+syyyyyyyy
 ${c1} -syyyyyy/    :yyyyyy/${c2}-yyys:.syyyyyyyyyy
 ${c1}:syyyyyy/     :yyyyyy/${c2}-yyo.:syyyyyyyyyyy
+EOF
+        ;;
+
+        "Bedrock"*)
+            set_colors 0 7
+            read -rd '' ascii_data <<'EOF'
+${c1}--------------------------------------
+${c1}--------------------------------------
+${c1}--------------------------------------
+${c1}---${c2}\\\\\\\\\\\\\\\\\\\\\\\\${c1}-----------------------
+${c1}----${c2}\\\\\\      \\\\\\${c1}----------------------
+${c1}-----${c2}\\\\\\      \\\\\\${c1}---------------------
+${c1}------${c2}\\\\\\      \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\${c1}------
+${c1}-------${c2}\\\\\\                    \\\\\\${c1}-----
+${c1}--------${c2}\\\\\\                    \\\\\\${c1}----
+${c1}---------${c2}\\\\\\        ______      \\\\\\${c1}---
+${c1}----------${c2}\\\\\\                   ///${c1}---
+${c1}-----------${c2}\\\\\\                 ///${c1}----
+${c1}------------${c2}\\\\\\               ///${c1}-----
+${c1}-------------${c2}\\\\\\////////////////${c1}------
+${c1}--------------------------------------
+${c1}--------------------------------------
+${c1}--------------------------------------
 EOF
         ;;
 
