@@ -4954,17 +4954,17 @@ EOF
         "ArcoLinux_small"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
-${c2}                  A
-                 ooo
-                ooooo
-               ooooooo
-              ooooooooo
-             ooooo ooooo
-            ooooo   ooooo
-           ooooo     ooooo
-          ooooo  ${c1}<oooooooo>${c2}
-         ooooo      ${c1}<oooooo>${c2}
-        ooooo          ${c1}<oooo>${c2}
+${c2}          A
+         ooo
+        ooooo
+       ooooooo
+      ooooooooo
+     ooooo ooooo
+    ooooo   ooooo
+   ooooo     ooooo
+  ooooo  ${c1}<oooooooo>${c2}
+ ooooo      ${c1}<oooooo>${c2}
+ooooo          ${c1}<oooo>${c2}
 EOF
 
         ;;
@@ -4972,17 +4972,17 @@ EOF
         "ArcoLinux_slim"*)
                             set_colors 7 4
                             read -rd '' ascii_data <<'EOF'
-${c2}                          A
-                         /@\
-                        /@@@\
-                       /@@@@@\
-                      /@@@^@@@\
-                     /@@@/ @@@\
-                    /@@@/   @@@\
-                   /@@@/     @@@\
-                  /@@@/  ${c1}@@@@@@@@${c2}
-                 /@@@/      ${c1}@@@@@@${c2}
-                /@@@/          ${c1}@@@@${c2}
+${c2}          A
+         /@\
+        /@@@\
+       /@@@@@\
+      /@@@^@@@\
+     /@@@/  @@@\
+    /@@@/    @@@\
+   /@@@/      @@@\
+  /@@@/   ${c1}@@@@@@@@${c2}
+ /@@@/       ${c1}@@@@@@${c2}
+/@@@/           ${c1}@@@@${c2}
 EOF
 
                 ;;
