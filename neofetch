@@ -4994,6 +4994,24 @@ ooooo          ${c1}*ooooo${c2}
 EOF
         ;;
 
+        "ArcoLinux_slim")
+                    set_colors 7 4
+                    read -rd '' ascii_data <<'EOF'
+${c2}                  A
+                 /@\
+                /@@@\
+               /@@@@@\
+              /@@@^@@@\
+             /@@@/ @@@\
+            /@@@/   @@@\
+           /@@@/     @@@\
+          /@@@/  ${c1}@@@@@@@@${c2}
+         /@@@/      ${c1}@@@@@@${c2}
+        /@@@/          ${c1}*@@@@${c2}
+EOF
+
+        ;;
+
 
         "arch_small")
             set_colors 6 7 1
