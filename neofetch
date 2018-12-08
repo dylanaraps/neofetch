@@ -4950,7 +4950,7 @@ dhhyys+/-`
 EOF
         ;;
 
-        "ArcoLinux"*)
+        "ArcoLinux")
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
 ${c2}                    /-
@@ -4975,6 +4975,25 @@ ${c2}                    /-
 ooooooooo.                     ${c1}-ooooooooo${c2}
 EOF
         ;;
+
+
+        "ArcoLinux_small")
+            set_colors 7 4
+            read -rd '' ascii_data <<'EOF'
+${c2}          A
+         ooo
+        ooooo
+       ooooooo
+      ooooooooo
+     ooooo ooooo
+    ooooo   ooooo
+   ooooo     ooooo
+  ooooo  ${c1}<ooooooooo${c2}
+ ooooo      ${c1}*ooooooo${c2}
+ooooo          ${c1}*ooooo${c2}
+EOF
+        ;;
+
 
         "arch_small")
             set_colors 6 7 1
