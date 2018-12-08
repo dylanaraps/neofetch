@@ -4708,6 +4708,8 @@ get_distro_ascii() {
     # This function gets the distro ascii art and colors.
     #
     # $ascii_distro is the same as $distro.
+
+    echo $ascii_distro
     case "$(trim "$ascii_distro")" in
         "AIX"*)
             set_colors 2 7
@@ -4950,7 +4952,43 @@ dhhyys+/-`
 EOF
         ;;
 
-        "ArcoLinux")
+        "ArcoLinux_small"*)
+            set_colors 7 4
+            read -rd '' ascii_data <<'EOF'
+${c2}                  A
+                 ooo
+                ooooo
+               ooooooo
+              ooooooooo
+             ooooo ooooo
+            ooooo   ooooo
+           ooooo     ooooo
+          ooooo  ${c1}<oooooooo>${c2}
+         ooooo      ${c1}<oooooo>${c2}
+        ooooo          ${c1}<oooo>${c2}
+EOF
+
+        ;;
+
+        "ArcoLinux_slim"*)
+                            set_colors 7 4
+                            read -rd '' ascii_data <<'EOF'
+${c2}                          A
+                         /@\
+                        /@@@\
+                       /@@@@@\
+                      /@@@^@@@\
+                     /@@@/ @@@\
+                    /@@@/   @@@\
+                   /@@@/     @@@\
+                  /@@@/  ${c1}@@@@@@@@${c2}
+                 /@@@/      ${c1}@@@@@@${c2}
+                /@@@/          ${c1}@@@@${c2}
+EOF
+
+                ;;
+
+        "ArcoLinux"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
 ${c2}                    /-
@@ -4975,43 +5013,6 @@ ${c2}                    /-
 ooooooooo.                     ${c1}-ooooooooo${c2}
 EOF
         ;;
-
-
-        "ArcoLinux_small")
-            set_colors 7 4
-            read -rd '' ascii_data <<'EOF'
-${c2}          A
-         ooo
-        ooooo
-       ooooooo
-      ooooooooo
-     ooooo ooooo
-    ooooo   ooooo
-   ooooo     ooooo
-  ooooo  ${c1}<ooooooooo${c2}
- ooooo      ${c1}*ooooooo${c2}
-ooooo          ${c1}*ooooo${c2}
-EOF
-        ;;
-
-        "ArcoLinux_slim")
-                    set_colors 7 4
-                    read -rd '' ascii_data <<'EOF'
-${c2}                  A
-                 /@\
-                /@@@\
-               /@@@@@\
-              /@@@^@@@\
-             /@@@/ @@@\
-            /@@@/   @@@\
-           /@@@/     @@@\
-          /@@@/  ${c1}@@@@@@@@${c2}
-         /@@@/      ${c1}@@@@@@${c2}
-        /@@@/          ${c1}*@@@@${c2}
-EOF
-
-        ;;
-
 
         "arch_small")
             set_colors 6 7 1
