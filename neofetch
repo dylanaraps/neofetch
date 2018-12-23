@@ -7999,6 +7999,31 @@ ${c1}
 EOF
         ;;
 
+        "Star"*)
+            set_colors 7
+            read -rd '' ascii_data <<'EOF'
+${c1}                   ./
+                  `yy-
+                 `y.`y`
+    ``           s-  .y            `
+    +h//:..`    +/    /o    ``..:/so
+     /o``.-::/:/+      o/://::-.`+o`
+      :s`     `.        .`     `s/
+       .y.                    .s-
+        `y-                  :s`
+      .-//.                  /+:.
+   .:/:.                       .:/:.
+-+o:.                             .:+:.
+-///++///:::`              .-::::///+so-
+       ``..o/              d-....```
+           s.     `/.      d
+           h    .+o-+o-    h.
+           h  -o/`   `/o:  s:
+          -s/o:`       `:o/+/
+          /s-             -yo
+EOF
+        ;;
+
         "SteamOS"*)
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
