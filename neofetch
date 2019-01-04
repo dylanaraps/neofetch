@@ -1270,6 +1270,12 @@ get_packages() {
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
 
+    [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]] && \
+        tot() {
+            IFS=$'\n' read -d "" -ra pkgs < <(for s in $(brl list); do strat -r "${s}" "$@"; done)
+            ((packages+="${#pkgs[@]}")); pac "${#pkgs[@]}"
+        }
+
     case "$os" in
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
             # Package Manager Programs.
