@@ -1341,6 +1341,9 @@ get_packages() {
                 "MSYS"*)   has "pacman"   && tot pacman -Qq --color never ;;
             esac
 
+            # Scoop environment throws errors if `tot scoop list` is used
+            has "scoop" && dir ~/scoop/apps/* && ((packages-=1))
+
             # Count chocolatey packages.
             [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
                 dir /cygdrive/c/ProgramData/chocolatey/lib/*
