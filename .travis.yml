@@ -18,6 +18,6 @@ install:
 
 script:
     - time ./neofetch --travis -v
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then shellcheck neofetch; fi
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then shellcheck -e SC2244 neofetch; fi
     # Check for lines longer than 100 chars.
     - if grep '.\{102\}' neofetch; then (exit 1); else (exit 0); fi
