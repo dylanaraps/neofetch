@@ -2599,13 +2599,12 @@ get_style() {
                     if [[ "$kde" == "cursorTheme" ]]; then
                         if [[ -f "${kde_config_dir}/kcminputrc" ]]; then
                             kde_config_file="${kde_config_dir}/kcminputrc"
-                            kde_theme="$(grep "cursorTheme" "$kde_config_file")"
-                            kde_theme="${kde_theme/*=}"
                         elif [[ -f "${kde_config_dir}/startupconfig" ]]; then
+                            kde="cursortheme"
                             kde_config_file="${kde_config_dir}/startupconfig"
-                            kde_theme="$(grep "cursortheme" "$kde_config_file")"
-                            kde_theme="${kde_theme/*=}"
                         fi
+                        kde_theme="$(grep "${kde}" "$kde_config_file")"
+                        kde_theme="${kde_theme/*=}"
                     fi
                     kde_theme="$kde_theme [KDE], "
                 else
