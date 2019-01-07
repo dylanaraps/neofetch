@@ -829,7 +829,12 @@ get_distro() {
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
-            if [[ -f "/etc/redstar-release" ]]; then
+            if [[ -f "/bedrock/etc/bedrock-release" ]] && [[ $PATH == */bedrock/cross/* ]]; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="Bedrock Linux" ;;
+                    *) distro="$(< /bedrock/etc/bedrock-release)"
+                esac
+            elif [[ -f "/etc/redstar-release" ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Red Star OS" ;;
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
@@ -3431,6 +3436,7 @@ get_ascii() {
 
     # Calculate size of ascii file in line length / line count.
     while IFS=$'\n' read -r line; do
+        line="${line//\\\\/\\}"
         ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
@@ -5229,6 +5235,29 @@ ${c1}   .oyyyyyyo. :yyyyyy/${c2}-yyyyyy+ ---------
 ${c1}  .syyyyyy+`  :yyyyyy/${c2}-yyyyy+-+syyyyyyyy
 ${c1} -syyyyyy/    :yyyyyy/${c2}-yyys:.syyyyyyyyyy
 ${c1}:syyyyyy/     :yyyyyy/${c2}-yyo.:syyyyyyyyyyy
+EOF
+        ;;
+
+        "Bedrock"*)
+            set_colors 0 7
+            read -rd '' ascii_data <<'EOF'
+${c1}--------------------------------------
+--------------------------------------
+--------------------------------------
+---${c2}\\\\\\\\\\\\\\\\\\\\\\\\${c1}-----------------------
+----${c2}\\\\\\      \\\\\\${c1}----------------------
+-----${c2}\\\\\\      \\\\\\${c1}---------------------
+------${c2}\\\\\\      \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\${c1}------
+-------${c2}\\\\\\                    \\\\\\${c1}-----
+--------${c2}\\\\\\                    \\\\\\${c1}----
+---------${c2}\\\\\\        ______      \\\\\\${c1}---
+----------${c2}\\\\\\                   ///${c1}---
+-----------${c2}\\\\\\                 ///${c1}----
+------------${c2}\\\\\\               ///${c1}-----
+-------------${c2}\\\\\\////////////////${c1}------
+--------------------------------------
+--------------------------------------
+--------------------------------------
 EOF
         ;;
 
