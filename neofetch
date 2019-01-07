@@ -2467,22 +2467,28 @@ get_song() {
                     /"title"/ {t=$4} END {print a "\n" b "\n" t}')"
         ;;
 
-        *) mpc &>/dev/null && song="$(mpc -f '%artist%\n%album%\n%title%' current)" ;;
+        *) mpc &>/dev/null && song="$(mpc -f '%artist%\n%album%\n%title%' current)" || return ;;
     esac
-
-    [[ "$song" != *[a-z]* ]] && { unset -v song; return; }
 
     IFS=$'\n' read -d "" -r artist album title <<< "$song"
 
+    # Make sure empty tags are truly empty.
+    artist="$(trim "$artist")"
+    album="$(trim "$album")"
+    title="$(trim "$title")"
+
+    # Set default values if no tags were found.
+    : "${artist:=Unknown Artist}" "${album:=Unknown Album}" "${title:=Unknown Song}"
+
     # Display Artist, Album and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
-        [[ "$(trim "$artist")" ]] && prin "Artist" "$artist"
-        [[ "$(trim "$album")" ]]  && prin "Album" "$album"
-        [[ "$(trim "$song")" ]]   && prin "Song" "$title"
+        prin "Artist" "$artist"
+        prin "Album"  "$album"
+        prin "Song"   "$title"
     else
-        song="${song_format/\%artist\%/${artist}}"
-        song="${song/\%album\%/${album}}"
-        song="${song/\%title\%/${title}}"
+        song="${song_format/\%artist\%/$artist}"
+        song="${song/\%album\%/$album}"
+        song="${song/\%title\%/$title}"
     fi
 }
 
