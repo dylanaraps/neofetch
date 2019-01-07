@@ -4033,18 +4033,8 @@ color() {
 
 stdout() {
     image_backend="off"
-    unset subtitle_color
-    unset colon_color
-    unset info_color
-    unset underline_color
-    unset bold
-    unset title_color
-    unset at_color
-    unset text_padding
-    unset zws
-    unset reset
-    unset color_blocks
-    unset get_line_break
+    unset subtitle_color colon_color info_color underline_color bold title_color at_color \
+          text_padding zws reset color_blocks get_line_break bar_color_elapsed bar_color_total
 }
 
 err() {
@@ -4242,7 +4232,7 @@ decode_url() {
 # FINISH UP
 
 usage() { printf "%s" "\
-Usage: neofetch --option \"value\" --option \"value\"
+Usage: neofetch func_name --option \"value\" --option \"value\"
 
 Neofetch is a CLI system information tool written in BASH. Neofetch
 displays information about your system next to an image, your OS logo,
@@ -4253,6 +4243,22 @@ NOTE: Every launch flag has a config option.
 Options:
 
 INFO:
+    func_name                   Specify a function name (second part of info() from config) to
+                                quickly display only that function's information.
+
+                                Example: neofetch uptime --uptime_shorthand tiny
+
+                                Example: neofetch uptime disk wm memory
+
+                                This can be used in bars and scripts like so:
+
+                                memory=\"\$(neofetch memory)\"; memory=\"\${memory##*: }\"
+
+                                For multiple outputs at once (each line of info in an array):
+
+                                IFS=\$'\\n' read -d \"\" -ra info < <(neofetch memory uptime wm)
+                                info=(\"\${info[@]##*: }\")
+
     --disable infoname          Allows you to disable an info line from appearing
                                 in the output. 'infoname' is the function name from the
                                 'print_info()' function inside the config file.
@@ -4694,6 +4700,19 @@ get_args() {
 
         shift
     done
+}
+
+get_simple() {
+    while [[ "$1" ]]; do
+        [[ $(type -t "get_$1") == function ]] && {
+            get_distro
+            stdout
+            simple=1
+            info "$1" "$1"
+        }
+        shift
+    done
+    ((simple)) && exit
 }
 
 get_distro_ascii() {
@@ -8666,6 +8685,7 @@ main() {
     eval "$config"
 
     get_args "$@"
+    get_simple "$@"
     [[ "$verbose" != "on" ]] && exec 2>/dev/null
     get_distro
     get_bold
