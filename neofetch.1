@@ -21,6 +21,15 @@ quickly display only that function's information.
 Example: neofetch uptime \fB\-\-uptime_shorthand\fR tiny
 .IP
 Example: neofetch uptime disk wm memory
+.IP
+This can be used in bars and scripts like so:
+.IP
+memory="$(neofetch memory)"; memory="${memory##*: }"
+.IP
+For multiple outputs at once (each line of info in an array):
+.TP
+IFS=$'\en' read \fB\-d\fR "" \fB\-ra\fR info < <(neofetch memory uptime wm)
+info=("${info[@]##*: }")
 .TP
 \fB\-\-disable\fR infoname
 Allows you to disable an info line from appearing
