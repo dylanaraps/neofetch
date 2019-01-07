@@ -3702,7 +3702,7 @@ get_image_size() {
 make_thumbnail() {
     # Name the thumbnail using variables so we can
     # use it later.
-    image_name="${crop_mode}-${crop_offset}-${width}-${height}-${image##*/}"
+    image_name="${crop_mode}-${crop_offset}-${width}-${height}-${image//\/}"
 
     # Handle file extensions.
     case "${image##*.}" in
