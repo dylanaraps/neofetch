@@ -2470,7 +2470,7 @@ get_song() {
         *) mpc &>/dev/null && song="$(mpc -f '%artist%\n%album%\n%title%' current)" || return ;;
     esac
 
-    IFS=$'\n' read -d "" -r artist album title <<< "$song"
+    IFS=$'\n' read -d "" -r artist album title <<< "${song//'\n'/$'\n'}"
 
     # Make sure empty tags are truly empty.
     artist="$(trim "$artist")"
