@@ -829,7 +829,7 @@ get_distro() {
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
-            if [[ -f "/bedrock/etc/bedrock-release" ]] && [[ $PATH == */bedrock/cross/* ]]; then
+            if [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Bedrock Linux" ;;
                     *) distro="$(< /bedrock/etc/bedrock-release)"
@@ -1277,6 +1277,16 @@ get_packages() {
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
 
+    # Redefine tot() for Bedrock Linux.
+    [[ -f /bedrock/etc/bedrock-release && "$PATH" == */bedrock/cross/* ]] && {
+        tot() {
+            IFS=$'\n' read -d "" -ra pkgs < <(for s in $(brl list); do strat -r "$s" "$@"; done)
+            ((packages+="${#pkgs[@]}"))
+            pac "${#pkgs[@]}"
+        }
+        br_prefix="/bedrock/strata/*"
+    }
+
     case "$os" in
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
             # Package Manager Programs.
@@ -1296,15 +1306,20 @@ get_packages() {
             has "butch"      && tot butch list
 
             # Counting files/dirs.
-            has "emerge"     && dir /var/db/pkg/*/*/
-            has "nix-env"    && dir /nix/store/*/
-            has "guix"       && dir /gnu/store/*/
-            has "Compile"    && dir /Programs/*/
-            has "eopkg"      && dir /var/lib/eopkg/package/*
-            has "crew"       && dir /usr/local/etc/crew/meta/*.filelist
-            has "pkgtool"    && dir /var/log/packages/*
-            has "cave"       && dir /var/db/paludis/repositories/cross-installed/*/data/*/ \
-                                    /var/db/paludis/repositories/installed/data/*/
+            # Variables need to be unquoted here. Only Bedrock Linux is affected.
+            # $br_prefix is fixed and won't change based on user input so this is safe either way.
+            # shellcheck disable=SC2086
+            {
+            has "emerge"  && dir ${br_prefix}/var/db/pkg/*/*/
+            has "nix-env" && dir ${br_prefix}/nix/store/*/
+            has "guix"    && dir ${br_prefix}/gnu/store/*/
+            has "Compile" && dir ${br_prefix}/Programs/*/
+            has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
+            has "crew"    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
+            has "pkgtool" && dir ${br_prefix}/var/log/packages/*
+            has "cave"    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
+                                 ${br_prefix}/var/db/paludis/repositories/installed/data/*/
+            }
 
             # Other (Needs complex command)
             has "kpm-pkg" && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
