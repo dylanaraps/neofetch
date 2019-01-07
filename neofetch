@@ -2347,6 +2347,7 @@ get_song() {
         "mocp"
         "mopidy"
         "mpd"
+        "netease-cloud-music"
         "pogo"
         "pragha"
         "qmmp"
@@ -2407,6 +2408,7 @@ get_song() {
         "dragon"*)        get_song_dbus "dragonplayer" ;;
         "smplayer"*)      get_song_dbus "smplayer" ;;
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
+        "netease-cloud-music"*) get_song_dbus "netease-cloud-music" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
