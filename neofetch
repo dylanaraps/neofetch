@@ -76,6 +76,7 @@ print_info() {
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
+    # [[ $player ]] && prin "Music Player" "$player"
     # info "Local IP" local_ip
     # info "Public IP" public_ip
     # info "Users" users
