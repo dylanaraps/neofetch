@@ -4,7 +4,7 @@
 Neofetch \- A fast, highly customizable system info script
 .SH SYNOPSIS
 .B neofetch
-\fI\,--option "value" --option "value"\/\fR
+\fI\,func_name --option "value" --option "value"\/\fR
 .SH DESCRIPTION
 Neofetch is a CLI system information tool written in BASH. Neofetch
 displays information about your system next to an image, your OS logo,
@@ -13,6 +13,24 @@ or any ASCII file of your choice.
 NOTE: Every launch flag has a config option.
 .SH OPTIONS
 .SS "INFO:"
+.TP
+func_name
+Specify a function name (second part of info() from config) to
+quickly display only that function's information.
+.IP
+Example: neofetch uptime \fB\-\-uptime_shorthand\fR tiny
+.IP
+Example: neofetch uptime disk wm memory
+.IP
+This can be used in bars and scripts like so:
+.IP
+memory="$(neofetch memory)"; memory="${memory##*: }"
+.IP
+For multiple outputs at once (each line of info in an array):
+.IP
+IFS=$'\en' read \fB\-d\fR "" \fB\-ra\fR info < <(neofetch memory uptime wm)
+.IP
+info=("${info[@]##*: }")
 .TP
 \fB\-\-disable\fR infoname
 Allows you to disable an info line from appearing
