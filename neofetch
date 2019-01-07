@@ -6182,6 +6182,29 @@ ${c2}          :dc'
 EOF
         ;;
 
+        "Huayra"*)
+            set_colors 4 7
+            read -rd '' ascii_data <<'EOF'
+${c2}                     `
+            .       .       `
+       ``    -      .      .
+        `.`   -` `. -  `` .`
+          ..`-`-` + -  / .`     ```
+          .--.+--`+:- :/.` .-``.`
+            -+/so::h:.d-`./:`.`
+              :hNhyMomy:os-...-.  ````
+               .dhsshNmNhoo+:-``.```
+                ${c1}`ohy:-${c2}NMds+::-.``
+            ````${c1}.hNN+`${c2}mMNho/:-....````
+       `````     ${c1}`..${c2}/dmNhoo+/:..``
+    ````            .dh++o/:....`
+.+s/`                `/s-.-.:.`` ````
+::`                    `::`..`
+                          .` `..
+                                ``
+EOF
+        ;;
+
         "Hyperbola"*)
             set_colors 8
             read -rd '' ascii_data <<'EOF'
