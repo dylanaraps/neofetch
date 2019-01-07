@@ -3429,11 +3429,11 @@ get_ascii() {
 
     # Calculate size of ascii file in line length / line count.
     while IFS=$'\n' read -r line; do
-        ((++lines,${#line}>ascii_length)) && ascii_length="${#line}"
+        ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
     # Fallback if file not found.
-    ((lines==1)) && { image_source="auto"; get_distro_ascii; get_ascii; return; }
+    ((lines==1)) && { lines=; ascii_len=; image_source="auto"; get_distro_ascii; get_ascii; return; }
 
     # Colors.
     ascii_data="${ascii_data//\$\{c1\}/$c1}"
@@ -3443,7 +3443,7 @@ get_ascii() {
     ascii_data="${ascii_data//\$\{c5\}/$c5}"
     ascii_data="${ascii_data//\$\{c6\}/$c6}"
 
-    ((text_padding=ascii_length+gap))
+    ((text_padding=ascii_len+gap))
     printf '%b\n' "$ascii_data${reset}"
     LC_ALL=C
 }
