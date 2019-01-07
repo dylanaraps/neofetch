@@ -3581,19 +3581,19 @@ get_window_size() {
     # -put as a variable.
     # The 1 second timeout is required for older bash
     case "${BASH_VERSINFO[0]}" in
-        4|5) IFS=';t' read -d t -t 0.05 -sra term_size ;;
-        *)   IFS=';t' read -d t -t 1 -sra term_size ;;
+        4|5) IFS=';t' read -d t -t 0.05 -sra win_size ;;
+        *)   IFS=';t' read -d t -t 1 -sra win_size ;;
     esac
     unset IFS
 
     # Split the string into height/width.
     if [[ "$image_backend" == "tycat" ]]; then
-        term_width="$((term_size[2] * term_size[0]))"
-        term_height="$((term_size[3] * term_size[1]))"
+        term_width="$((win_size[2] * win_size[0]))"
+        term_height="$((win_size[3] * win_size[1]))"
 
     else
-        term_height="${term_size[1]}"
-        term_width="${term_size[2]}"
+        term_height="${win_size[1]}"
+        term_width="${win_size[2]}"
     fi
 
     [[ "$image_backend" == "kitty" ]] && \
@@ -3623,16 +3623,16 @@ get_window_size() {
 
             # If the ID was found get the window size.
             if [[ "$current_window" ]]; then
-                term_size="$(xwininfo -id "$current_window")"
-                term_width="${term_size#*Width: }"
+                win_size="$(xwininfo -id "$current_window")"
+                term_width="${win_size#*Width: }"
                 term_width="${term_width/$'\n'*}"
-                term_height="${term_size/*Height: }"
+                term_height="${win_size/*Height: }"
                 term_height="${term_height/$'\n'*}"
             fi
         fi
     fi
 
-    term_width="${term_width:-0}"
+    window_size="${term_width:=0}x${term_height:=0}"
 }
 
 
@@ -3643,6 +3643,7 @@ get_term_size() {
     # Calculate font size.
     font_width="$((term_width / columns))"
     font_height="$((term_height / lines))"
+    term_size="${lines}x${columns}"
 }
 
 get_image_size() {
@@ -4696,7 +4697,7 @@ get_args() {
 
                 # Known implicit unused variables.
                 mpc_args=()
-                printf '%s\n' "$kernel $icons $font $battery $locale ${mpc_args[*]}"
+                : "$term_size $window_size $kernel $icons $font $battery $locale ${mpc_args[*]}"
             ;;
         esac
 
