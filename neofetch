@@ -429,7 +429,6 @@ disk_subtitle="mount"
 # exaile
 # gnome-music
 # gmusicbrowser
-# Google Play
 # guayadeque
 # iTunes
 # juk
@@ -2339,7 +2338,6 @@ get_song() {
         "exaile"
         "gnome-music"
         "gmusicbrowser"
-        "Google Play"
         "guayadeque"
         "iTunes"
         "juk"
