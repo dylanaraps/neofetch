@@ -1278,7 +1278,7 @@ get_packages() {
     tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
 
     # Redefine tot() for Bedrock Linux.
-    [[ -f /bedrock/etc/bedrock-release && "$PATH" == */bedrock/cross/* ]] && {
+    [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
         tot() {
             IFS=$'\n' read -d "" -ra pkgs < <(for s in $(brl list); do strat -r "$s" "$@"; done)
             ((packages+="${#pkgs[@]}"))
