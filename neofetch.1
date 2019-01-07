@@ -27,8 +27,9 @@ This can be used in bars and scripts like so:
 memory="$(neofetch memory)"; memory="${memory##*: }"
 .IP
 For multiple outputs at once (each line of info in an array):
-.TP
+.IP
 IFS=$'\en' read \fB\-d\fR "" \fB\-ra\fR info < <(neofetch memory uptime wm)
+.IP
 info=("${info[@]##*: }")
 .TP
 \fB\-\-disable\fR infoname

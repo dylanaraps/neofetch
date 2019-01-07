@@ -4257,6 +4257,7 @@ INFO:
                                 For multiple outputs at once (each line of info in an array):
 
                                 IFS=\$'\\n' read -d \"\" -ra info < <(neofetch memory uptime wm)
+
                                 info=(\"\${info[@]##*: }\")
 
     --disable infoname          Allows you to disable an info line from appearing
