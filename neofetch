@@ -76,6 +76,7 @@ print_info() {
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
+    # [[ $player ]] && prin "Music Player" "$player"
     # info "Local IP" local_ip
     # info "Public IP" public_ip
     # info "Users" users
@@ -429,7 +430,6 @@ disk_subtitle="mount"
 # exaile
 # gnome-music
 # gmusicbrowser
-# Google Play
 # guayadeque
 # iTunes
 # juk
@@ -437,6 +437,7 @@ disk_subtitle="mount"
 # mocp
 # mopidy
 # mpd
+# netease-cloud-music
 # pogo
 # pragha
 # qmmp
@@ -2339,7 +2340,6 @@ get_song() {
         "exaile"
         "gnome-music"
         "gmusicbrowser"
-        "Google Play"
         "guayadeque"
         "iTunes"
         "juk"
@@ -2347,6 +2347,7 @@ get_song() {
         "mocp"
         "mopidy"
         "mpd"
+        "netease-cloud-music"
         "pogo"
         "pragha"
         "qmmp"
@@ -2384,10 +2385,9 @@ get_song() {
     case "${player/*\/}" in
         "mpd"*|"mopidy"*) song="$(mpc -f '%artist%\n%album%\n%title%' current "${mpc_args[@]}")" ;;
         "mocp"*)          song="$(mocp -Q '%artist\n%album\n%song')" ;;
-        "google play"*)   song="$(gpmdp-remote current)" ;;
-        "deadbeef"*)      song="$(deadbeef --nowplaying-tf '%artist%\n%album%\n%title%')" ;;
+        "deadbeef"*)      song="$(deadbeef --nowplaying-tf '%artist%\\n%album%\\n%title%')" ;;
         "xmms2d"*)        song="$(xmms2 current -f "\${artist}"$'\n'"\${album}"$'\n'"\${title}")" ;;
-        "qmmp"*)          song="$(qmmp --nowplaying '%p\n%a\n%t')" ;;
+        "qmmp"*)          song="$(qmmp --nowplaying '%p\\n%a\\n%t')" ;;
         "gnome-music"*)   get_song_dbus "GnomeMusic" ;;
         "lollypop"*)      get_song_dbus "Lollypop" ;;
         "clementine"*)    get_song_dbus "clementine" ;;
@@ -2407,6 +2407,7 @@ get_song() {
         "dragon"*)        get_song_dbus "dragonplayer" ;;
         "smplayer"*)      get_song_dbus "smplayer" ;;
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
+        "netease-cloud-music"*) get_song_dbus "netease-cloud-music" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
@@ -2467,22 +2468,28 @@ get_song() {
                     /"title"/ {t=$4} END {print a "\n" b "\n" t}')"
         ;;
 
-        *) mpc &>/dev/null && song="$(mpc -f '%artist%\n%album%\n%title%' current)" ;;
+        *) mpc &>/dev/null && song="$(mpc -f '%artist%\n%album%\n%title%' current)" || return ;;
     esac
 
-    [[ "$song" != *[a-z]* ]] && { unset -v song; return; }
+    IFS=$'\n' read -d "" -r artist album title <<< "${song//'\n'/$'\n'}"
 
-    IFS=$'\n' read -d "" -r artist album title <<< "$song"
+    # Make sure empty tags are truly empty.
+    artist="$(trim "$artist")"
+    album="$(trim "$album")"
+    title="$(trim "$title")"
+
+    # Set default values if no tags were found.
+    : "${artist:=Unknown Artist}" "${album:=Unknown Album}" "${title:=Unknown Song}"
 
     # Display Artist, Album and Title on separate lines.
     if [[ "$song_shorthand" == "on" ]]; then
-        [[ "$(trim "$artist")" ]] && prin "Artist" "$artist"
-        [[ "$(trim "$album")" ]]  && prin "Album" "$album"
-        [[ "$(trim "$song")" ]]   && prin "Song" "$title"
+        prin "Artist" "$artist"
+        prin "Album"  "$album"
+        prin "Song"   "$title"
     else
-        song="${song_format/\%artist\%/${artist}}"
-        song="${song/\%album\%/${album}}"
-        song="${song/\%title\%/${title}}"
+        song="${song_format/\%artist\%/$artist}"
+        song="${song/\%album\%/$album}"
+        song="${song/\%title\%/$title}"
     fi
 }
 
