@@ -2277,8 +2277,8 @@ get_memory() {
 
         "Solaris")
             hw_pagesize="$(pagesize)"
-            pages_total=$(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}')
-            pages_free=$(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}')
+            pages_total="$(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}')"
+            pages_free="$(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}')"
             mem_total="$((pages_total * hw_pagesize / 1024 / 1024))"
             mem_free="$((pages_free * hw_pagesize / 1024 / 1024))"
             mem_used="$((mem_total - mem_free))"
