@@ -28,12 +28,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 **OS**
 
+- Added support for Bedrock Linux. [**@paradigm**](https://github.com/paradigm)
 - Added support for Namib GNU/Linux. [**@arisinfenix**](https://github.com/arisinfenix)
 - Added support for Reborn OS. [**@iandrewt**](https://github.com/iandrewt)
 - Added support for OpenMandriva Lx. [**@konimex**](https://github.com/konimex)
 - Added support for Star. [**@arisinfenix**](https://github.com/arisinfenix)
 - Added support for BlueLight OS.
 - Added support for Huayra Linux.
+- Added support for Pentoo.
 
 **General**
 
@@ -62,10 +64,16 @@ info=("${info[@]##*: }")
 
 **Info**
 
+- **Song**: Added snippet to display music player.
+    - `[[ $player ]] && prin "Music Player" "$player"`
+    - NOTE: Must have `info "Song" song` enabled.
 - **Song**: Added support for Netease Cloud.
 - **Song**: Fixed issues in various players. [**@arisinfenix**](https://github.com/arisinfenix) [**@xPMo**](https://github.com/xPMo)
 - **Song**: Fixed issues with non-English tags.
 - **Song**: Fixed issues with broken newlines.
+- **Song**: Fixed issues with Deadbeef.
+- **Song**: Fixed issues with `qmmp`.
+- **Song**: Removed `gpmdp-remote` support (unmaintained/no longer works).
 - **Shell**: Fixed output for mksh [**@nero**](https://github.com/nero)
 - **Packages**: Added support for `scoop`. [**@Phuurl**](https://github.com/Phuurl)
 - **Packages**: Added support for `puyo`. [**@Appadeia**](https://github.com/Appadeia)
@@ -73,6 +81,7 @@ info=("${info[@]##*: }")
 - **Packages** [macOS]: Added detection of Nix [**@alyssais**](https://github.com/alyssais)
 - **Packages**: Fixed packages from pkginfo (pkgutils) not appearing in CRUX/Janus Linux.
 - **Terminal Font**: Added support for Yakuake [**@plgruener**](https://github.com/plgruener)
+- **Terminal Font** [Kitty]: Use `kitty --debug-config` to get font information.
 - **Memory** [Solaris]: Updated memory detection to use pages. [**@konimex**](https://github.com/konimex)
 - **Model** [OpenBSD]: Added vmm (OpenBSD hypervisor) support [**@julianaito**](https://github.com/julianaito)
 - **Model** [macOS]: Added VirtualSMC as a new FakeSMC alternative for Hackintosh. [**@nikitenich**](https://github.com/nikitenich)
@@ -84,9 +93,13 @@ info=("${info[@]##*: }")
 
 **ASCII**
 
+- Added support for command output.
+    - `neofetch --ascii "$(fortune|cowsay -W 30)"`
+    - `neofetch --ascii "$(figlet -w 30 hello world)"`
 - Added small ArcoLinux logo. [**@erikdubois**](https://github.com/erikdubois)
 - Added new Lubuntu logo. [**@marlonn**](https://github.com/marlonn)
 - Fixed a bug where ASCII logo changes the terminal foreground color. [**@plgruener**](https://github.com/plgruener)
+- Fixed a bug when files named `auto` or `ascii` exist.
 - Do not parse file as ASCII if the source is an image file.
 
 **Image**
@@ -94,6 +107,7 @@ info=("${info[@]##*: }")
 - **macOS**: Unset IFS to get window size. [**@StarryTony**](https://github.com/StarryTony)
 - **Kitty**: Use `kitty +kitten icat` instead of the deprecated `kitty icat`. [**@HolyStephano**](https://github.com/HolyStephano)
 - **Kitty**: Update docs. [**@Snuggle**](https://github.com/dylanaraps/neofetch/commits?author=Snuggle)
+- Cached thumbnails are now stored with PATH to prevent collision issues.
 
 ## [5.0.0] - 2018-06-18
 
