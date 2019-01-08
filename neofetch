@@ -5738,7 +5738,7 @@ EOF
         "debian_small")
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-  ${c1}_____
+${c1}  _____
  /  __ \\
 |  /    |
 |  \\___-
