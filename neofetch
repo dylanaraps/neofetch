@@ -375,6 +375,12 @@ gtk3="on"
 # Flag:    --ip_host
 public_ip_host="http://ident.me"
 
+# Public IP timeout.
+#
+# Default: '2'
+# Values:  'int'
+# Flag:    --ip_timeout
+public_ip_timeout=2
 
 
 # Disk
@@ -3312,11 +3318,11 @@ get_public_ip() {
     fi
 
     if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
-        public_ip="$(curl --max-time 10 -w '\n' "$public_ip_host")"
+        public_ip="$(curl --max-time "$public_ip_timeout" -w '\n' "$public_ip_host")"
     fi
 
     if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
-        public_ip="$(wget -T 10 -qO- "$public_ip_host")"
+        public_ip="$(wget -T "$public_ip_timeout" -qO- "$public_ip_host")"
     fi
 }
 
@@ -4375,6 +4381,7 @@ INFO:
                                 'dir' shows the basename of the disks's path. (/, Local Disk, etc)
 
     --ip_host url               URL to query for public IP
+    --ip_timeout int            Public IP timeout (in seconds).
     --song_format format        Print the song data in a specific format (see config file).
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --memory_percent on/off     Display memory percentage.
@@ -4528,6 +4535,7 @@ get_args() {
             "--shell_path") shell_path="$2" ;;
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
+            "--ip_timeout") public_ip_timeout="$2" ;;
             "--song_format") song_format="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
             "--music_player") music_player="$2" ;;
