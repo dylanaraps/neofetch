@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+<img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px">
+
 **Contributors**
 
 - [**@konimex**](https://github.com/konimex)
@@ -37,7 +39,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added support for Huayra Linux.
 - Added support for Pentoo.
 
-**General**
+**Highlights**
+
+- [ASCII] Added support for command output. You can now use whatever terminal commands you like as the ASCII art.
+
+```sh
+# Use fortune and cowsay as ascii art.
+neofetch --ascii "$(fortune|cowsay -W 30)"
+
+# use figlet as ascii art.
+neofetch --ascii "$(figlet -w 30 hello world)"
+```
+
+<img src="https://i.imgur.com/ozoXAvz.jpg" alt="scrot" height="400px">
 
 - Added a new "simple" mode. You can now use neofetch for scripting by getting it to output individual info functions in plain text.
 
