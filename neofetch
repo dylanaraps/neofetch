@@ -3367,7 +3367,7 @@ get_cols() {
         cols="${cols//nl/\\n\\e[${text_padding}C${zws}}"
 
         # Add block height to info height.
-        ((info_height+=block_height+2))
+        ((info_height+=block_height+1))
 
         printf '\n\e[%bC%b\n' "$text_padding" "${zws}${cols}"
     fi
@@ -4166,9 +4166,23 @@ kde_config_dir() {
     kde_config_dir="${kde_config_dir/$'/:'*}"
 }
 
+term_padding() {
+    # Get terminal padding to properly align cursor.
+    [[ -z $term ]] && get_term
+
+    case "$term" in
+        urxvt*|"rxvt-unicode")
+            [[ -z "$xrdb" ]] && xrdb="$(xrdb -query)"
+            padding="${xrdb/*.internalBorder:}"
+            ((padding=${padding/$'\n'*}*2))
+        ;;
+    esac
+}
+
 dynamic_prompt() {
     [[ "$image_backend" == "off" ]]   && { printf '\n'; return; }
-    [[ "$image_backend" != "ascii" ]] && lines="$(((height + yoffset) / font_height + 1))"
+    [[ "$image_backend" != "ascii" ]] && {
+        term_padding; lines="$(((height + yoffset + padding) / font_height + 1))"; }
 
     # If the ascii art is taller than the info.
     ((lines=lines>info_height?lines-info_height+1:1))
