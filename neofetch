@@ -82,9 +82,7 @@ print_info() {
     # info "Users" users
     # info "Locale" locale  # This only works on glibc systems.
 
-    info line_break
     info cols
-    info line_break
 }
 
 
@@ -3326,6 +3324,7 @@ get_gpu_driver() {
                 gpu_driver="NVIDIA ${gpu_driver/  *}"
             fi
         ;;
+
         "Mac OS X")
             if [[ "$(kextstat | grep "GeForceWeb")" != "" ]]; then
                 gpu_driver="NVIDIA Web Driver"
@@ -3368,9 +3367,9 @@ get_cols() {
         cols="${cols//nl/\\n\\e[${text_padding}C${zws}}"
 
         # Add block height to info height.
-        ((info_height+=block_height-1))
+        ((info_height+=block_height+2))
 
-        printf '\e[%bC%b' "$text_padding" "${zws}${cols}"
+        printf '\n\e[%bC%b\n' "$text_padding" "${zws}${cols}"
     fi
 
     unset -v blocks blocks2 cols
@@ -3947,17 +3946,6 @@ get_underline() {
     prin=1
 }
 
-get_line_break() {
-    # Print it directly.
-    printf '%b\n' "$zws"
-
-    # Calculate info height.
-    ((++info_height))
-
-    # Tell info() that we printed manually.
-    prin=1
-}
-
 get_bold() {
     case "$ascii_bold" in
         "on")  ascii_bold='\e[1m' ;;
@@ -4058,7 +4046,7 @@ color() {
 stdout() {
     image_backend="off"
     unset subtitle_color colon_color info_color underline_color bold title_color at_color \
-          text_padding zws reset color_blocks get_line_break bar_color_elapsed bar_color_total \
+          text_padding zws reset color_blocks bar_color_elapsed bar_color_total \
           c1 c2 c3 c4 c5 c6 c7 c8
 }
 
@@ -4629,7 +4617,7 @@ get_args() {
             "--ascii_bold") ascii_bold="$2" ;;
             "--logo" | "-L")
                 image_backend="ascii"
-                print_info() { info line_break; }
+                print_info() { printf '\n'; }
             ;;
 
             # Other
@@ -4659,7 +4647,7 @@ get_args() {
 
             "--json")
                 json="on"
-                unset -f get_title get_cols get_line_break get_underline
+                unset -f get_title get_cols get_underline
 
                 printf '{\n'
                 print_info 2>/dev/null
@@ -4701,9 +4689,7 @@ get_args() {
                     info "Public IP" public_ip
                     info "Users" users
 
-                    info line_break
                     info cols
-                    info line_break
 
                     # Testing.
                     prin "prin"
@@ -4742,6 +4728,11 @@ get_simple() {
         shift
     done
     ((simple)) && exit
+}
+
+old_functions() {
+    # Removed functions for backwards compatability.
+    get_line_break() { :; }
 }
 
 get_distro_ascii() {
@@ -8782,6 +8773,7 @@ main() {
 
     image_backend
     get_cache_dir
+    old_functions
     print_info
     dynamic_prompt
 
