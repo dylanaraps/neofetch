@@ -3729,9 +3729,12 @@ get_image_size() {
         *)  image_size="${image_size/px}" ;;
     esac
 
+    # Check for terminal padding.
+    [[ $image_backend == w3m ]] && term_padding
+
     width="${width:-$image_size}"
     height="${height:-$image_size}"
-    text_padding="$((width / font_width + gap + xoffset/font_width))"
+    text_padding="$(((width + padding + xoffset) / font_width + gap))"
 }
 
 make_thumbnail() {
@@ -3816,9 +3819,9 @@ display_image() {
 
         "jp2a")
             jp2a \
+                --colors \
                 --width="$((width / font_width))" \
                 --height="$((height / font_height))" \
-                --colors \
             "$image"
         ;;
 
@@ -3872,7 +3875,7 @@ display_image() {
 
             # Add a tiny delay to fix issues with images not
             # appearing in specific terminal emulators.
-            sleep 0.05
+            ((BASH_VERSINFO[0]>3)) && sleep 0.05
             printf '%b\n%s;\n%s\n' "0;1;$xoffset;$yoffset;$width;$height;;;;;$image" 3 4 |\
             "${w3m_img_path:-false}" -bg "$background_color" &>/dev/null
         ;;
@@ -4198,15 +4201,15 @@ term_padding() {
         urxvt*|"rxvt-unicode")
             [[ -z "$xrdb" ]] && xrdb="$(xrdb -query)"
             padding="${xrdb/*.internalBorder:}"
-            ((padding=${padding/$'\n'*}*2))
+            ((padding=${padding/$'\n'*}))
         ;;
     esac
 }
 
 dynamic_prompt() {
-    [[ "$image_backend" == "off" ]]   && { printf '\n'; return; }
-    [[ "$image_backend" != "ascii" ]] && {
-        term_padding; lines="$(((height + yoffset + padding) / font_height + 1))"; }
+    [[ $image_backend == off ]]   && { printf '\n'; return; }
+    [[ $image_backend != ascii ]] && ((lines=(height + yoffset) / font_height + 1))
+    [[ $image_backend == w3m ]] && ((lines=lines + padding / font_height + 1))
 
     # If the ascii art is taller than the info.
     ((lines=lines>info_height?lines-info_height+1:1))
