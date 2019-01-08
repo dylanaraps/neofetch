@@ -3769,11 +3769,9 @@ make_thumbnail() {
                     -background none \
                     "$image" \
                     -strip \
-                    -define "jpeg:size=100x100" \
                     -gravity "$crop_offset" \
                     -crop "${size}x${size}+0+0" \
-                    -quality 40 \
-                    -sample "${width}x${height}" \
+                    -scale "${width}x${height}" \
                     "${thumbnail_dir}/${image_name}"
             ;;
         esac
