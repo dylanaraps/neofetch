@@ -3388,9 +3388,9 @@ get_cols() {
         cols="${cols//nl/\\n\\e[${text_padding}C${zws}}"
 
         # Add block height to info height.
-        ((info_height+=block_range[1]>7?block_height+2:block_height+1))
+        ((info_height+=block_range[1]>7?block_height+3:block_height+2))
 
-        printf '\n\e[%bC%b\n' "$text_padding" "${zws}${cols}"
+        printf '\n\e[%bC%b\n\n' "$text_padding" "${zws}${cols}"
     fi
 
     unset -v blocks blocks2 cols
@@ -3953,7 +3953,7 @@ prin() {
     string="${subtitle_color}${bold}${string}"
 
     # Print the info.
-    printf '%b\n' "${text_padding:+\e[${text_padding}C}${zws}${string}${reset} "
+    printf '%b\n' "${text_padding:+\e[${text_padding}C}${zws}${string//\\n}${reset} "
 
     # Calculate info height.
     ((++info_height))
