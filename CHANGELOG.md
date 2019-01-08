@@ -17,9 +17,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [**@HolyStephano**](https://github.com/HolyStephano)
 - [**@nikitenich**](https://github.com/nikitenich)
 
+**OS**
+
+- Added support for Namib GNU/Linux. [*@arisinfenix*](https://github.com/arisinfenix)
+- Added support for Reborn OS. [*@iandrewt*](https://github.com/iandrewt)
+- Added support for OpenMandriva Lx. [*@konimex*](https://github.com/konimex)
+
 **Info**
 
 - **Shell**: Fixed output for mksh [**@nero**](https://github.com/nero)
+- **Packages**: Added support for `puyo`. [*@Appadeia*](https://github.com/Appadeia)
+- **Packages**: Added support for `spm`. [*@Appadeia*](https://github.com/author=Appadeia)
 - **Packages** [macOS]: Added detection of Nix [**@alyssais**](https://github.com/alyssais)
 - **Packages**: Fixed packages from pkginfo (pkgutils) not appearing in CRUX/Janus Linux.
 - **Terminal Font**: Added support for Yakuake [**@plgruener**](https://github.com/plgruener)
@@ -28,9 +36,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **WM**: Added detection for FVWM. [**@julianaito**](https://github.com/julianaito)
 - **WM** [OpenBSD]: Added a new `ps_flags` to correctly detect non-EWMH WMs. [**@julianaito**](https://github.com/julianaito)
 - **Disk** [OpenBSD]: Added a separate disk array creation using `awk` since one cannot directly use `/dev/...` unless being root or in the `operator` group. [**@julianaito**](https://github.com/julianaito)
+- **Battery** [OpenBSD]: Improve charge `%` and add status. **Charlène**
+- **GPU** [AMD]: Remove unnecessary check.
 
 **ASCII**
 
+- Added new Lubuntu logo. [*@marlonn*](https://github.com/marlonn)
 - Fixed a bug where ASCII logo changes the terminal foreground color. [**@plgruener**](https://github.com/plgruener)
 - Do not parse file as ASCII if the source is an image file.
 
@@ -38,6 +49,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - **macOS**: Unset IFS to get window size. [**@StarryTony**](https://github.com/StarryTony)
 - **Kitty**: Use `kitty +kitten icat` instead of the deprecated `kitty icat`. [**@HolyStephano**](https://github.com/HolyStephano)
+- **Kitty**: Update docs. [*@Snuggle*](https://github.com/dylanaraps/neofetch/commits?author=Snuggle)
 
 ## [5.0.0] - 2018-06-18
 
