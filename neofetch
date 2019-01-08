@@ -2617,6 +2617,7 @@ get_resolution() {
     esac
 
     resolution="${resolution%,*}"
+    [[ -z ${resolution/x} ]] && resolution=
 }
 
 get_style() {
