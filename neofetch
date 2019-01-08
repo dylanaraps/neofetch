@@ -3391,7 +3391,7 @@ get_cols() {
         cols="${cols//nl/\\n\\e[${text_padding}C${zws}}"
 
         # Add block height to info height.
-        ((info_height+=block_height+1))
+        ((info_height+=block_range[1]>7?block_height+2:block_height+1))
 
         printf '\n\e[%bC%b\n' "$text_padding" "${zws}${cols}"
     fi
