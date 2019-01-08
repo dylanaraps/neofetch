@@ -1304,8 +1304,9 @@ get_packages() {
             # Other (Needs complex command)
             has "kpm-pkg" && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
 
-            # pkginfo is also the name of a python package manager.
-            [[ $os != "Linux" ]] && has "pkginfo" && tot pkginfo -i
+            # pkginfo is also the name of a python package manager which is painfully slow.
+            # TODO: Fix this somehow.
+            has pkginfo && tot pkginfo -i
 
             case "$kernel_name" in
                 "FreeBSD") has "pkg" && tot pkg info ;;
