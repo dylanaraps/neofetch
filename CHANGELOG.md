@@ -11,22 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 **Contributors**
 
-- [**@konimex**](https://github.com/konimex)
-- [**@iandrewt**](https://github.com/iandrewt)
-- [**@arisinfenix**](https://github.com/arisinfenix)
-- [**@xPMo**](https://github.com/xPMo)
-- [**@nero**](https://github.com/nero)
-- [**@alyssais**](https://github.com/alyssais)
-- [**@plgruener**](https://github.com/plgruener)
-- [**@StarryTony**](https://github.com/StarryTony)
-- [**@julianaito**](https://github.com/julianaito)
-- [**@HolyStephano**](https://github.com/HolyStephano)
-- [**@nikitenich**](https://github.com/nikitenich)
-- [**@Appadeia**](https://github.com/Appadeia)
-- [**@marlonn**](https://github.com/marlonn)
-- [**@Snuggle**](https://github.com/dylanaraps/neofetch/commits?author=Snuggle)
-- [**@Phuurl**](https://github.com/Phuurl)
-- [**@erikdubois**](https://github.com/erikdubois)
+[**@konimex**](https://github.com/konimex), [**@iandrewt**](https://github.com/iandrewt), [**@arisinfenix**](https://github.com/arisinfenix), [**@xPMo**](https://github.com/xPMo), [**@nero**](https://github.com/nero), [**@alyssais**](https://github.com/alyssais), [**@plgruener**](https://github.com/plgruener), [**@StarryTony**](https://github.com/StarryTony), [**@julianaito**](https://github.com/julianaito), [**@HolyStephano**](https://github.com/HolyStephano), [**@nikitenich**](https://github.com/nikitenich), [**@Appadeia**](https://github.com/Appadeia), [**@marlonn**](https://github.com/marlonn), [**@Snuggle**](https://github.com/dylanaraps/neofetch/commits?author=Snuggle), [**@Phuurl**](https://github.com/Phuurl), [**@erikdubois**](https://github.com/erikdubois)
 
 **OS**
 
