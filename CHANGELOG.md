@@ -5,13 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [6.0.0] - 2019-01-08
 
 <img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px">
 
+This release fixes a wide range of bugs and adds some neat new features.
+Scroll down to "highlights" to see the bigger changes from this release.
+A big thank you to @konimex, @iandrewt and the contributors below who
+kept development going during my absence.
+
+Expect a minor bug fix release sometime this week as I'm sure new bugs
+will come up. I've done extensive testing but things always slip through.
+
 **Contributors**
 
-[**@konimex**](https://github.com/konimex), [**@iandrewt**](https://github.com/iandrewt), [**@arisinfenix**](https://github.com/arisinfenix), [**@xPMo**](https://github.com/xPMo), [**@nero**](https://github.com/nero), [**@alyssais**](https://github.com/alyssais), [**@plgruener**](https://github.com/plgruener), [**@StarryTony**](https://github.com/StarryTony), [**@julianaito**](https://github.com/julianaito), [**@HolyStephano**](https://github.com/HolyStephano), [**@nikitenich**](https://github.com/nikitenich), [**@Appadeia**](https://github.com/Appadeia), [**@marlonn**](https://github.com/marlonn), [**@Snuggle**](https://github.com/dylanaraps/neofetch/commits?author=Snuggle), [**@Phuurl**](https://github.com/Phuurl), [**@erikdubois**](https://github.com/erikdubois)
+[**@konimex**](https://github.com/konimex), [**@iandrewt**](https://github.com/iandrewt), [**@arisinfenix**](https://github.com/arisinfenix), [**@xPMo**](https://github.com/xPMo), [**@nero**](https://github.com/nero), [**@alyssais**](https://github.com/alyssais),
+[**@plgruener**](https://github.com/plgruener), [**@StarryTony**](https://github.com/StarryTony), [**@julianaito**](https://github.com/julianaito), [**@HolyStephano**](https://github.com/HolyStephano),
+[**@nikitenich**](https://github.com/nikitenich), [**@Appadeia**](https://github.com/Appadeia), [**@marlonn**](https://github.com/marlonn), [**@Snuggle**](https://github.com/dylanaraps/neofetch/commits?author=Snuggle), [**@Phuurl**](https://github.com/Phuurl), [**@erikdubois**](https://github.com/erikdubois)
+
+
+**Breaking Changes**
+
+- **Config**: Removed `get_line_break()`.
+    - Alternative: `prin '\n'`
+    - Rationale: fix a bug that's been lingering for a couple of years now.
 
 **OS**
 
@@ -26,7 +43,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 **Highlights**
 
-- [ASCII] Added support for command output. You can now use whatever terminal commands you like as the ASCII art.
+[ASCII] Added support for command output. You can now use whatever
+terminal commands you like as the ASCII art.
 
 ```sh
 # Use fortune and cowsay as ascii art.
@@ -38,7 +56,8 @@ neofetch --ascii "$(figlet -w 30 hello world)"
 
 <img src="https://i.imgur.com/ozoXAvz.jpg" alt="scrot" height="400px">
 
-- Added a new "simple" mode. You can now use neofetch for scripting by getting it to output individual info functions in plain text.
+Added a new "simple" mode. You can now use neofetch for scripting
+by getting it to output individual info functions in plain text.
 
 ```sh
 # Example:
@@ -61,8 +80,20 @@ IFS=$'\n' read -d "" -ra info < <(neofetch memory uptime wm)
 info=("${info[@]##*: }")
 ```
 
+Added new image backend [chafa](https://hpjansson.org/chafa/) (`--chafa`)
+which displays images in the terminal using unicode characters.
+
+```sh
+neofetch --chafa ~/Pictures/meow.jpg
+```
+
+<img src="https://i.imgur.com/fCOoWlA.jpg" alt="scrot" height="400px">
+
+
 **Info**
 
+- **Color Blocks**: Fixed issue where disabling blocks caused an extra newline to appear.
+- **Color Blocks**: Color blocks now have their padding built in. No more need for `get_line_break()`.
 - **Song**: Added snippet to display music player.
     - `[[ $player ]] && prin "Music Player" "$player"`
     - NOTE: Must have `info "Song" song` enabled.
@@ -82,6 +113,7 @@ info=("${info[@]##*: }")
 - **Terminal Font**: Added support for Yakuake [**@plgruener**](https://github.com/plgruener)
 - **Terminal Font** [Kitty]: Use `kitty --debug-config` to get font information.
 - **Memory** [Solaris]: Updated memory detection to use pages. [**@konimex**](https://github.com/konimex)
+- **Memory**: Added option to show memory percentage (`--memory_percent`).
 - **Model** [OpenBSD]: Added vmm (OpenBSD hypervisor) support [**@julianaito**](https://github.com/julianaito)
 - **Model** [macOS]: Added VirtualSMC as a new FakeSMC alternative for Hackintosh. [**@nikitenich**](https://github.com/nikitenich)
 - **WM**: Added detection for FVWM. [**@julianaito**](https://github.com/julianaito)
@@ -89,9 +121,12 @@ info=("${info[@]##*: }")
 - **Disk** [OpenBSD]: Added a separate disk array creation using `awk` since one cannot directly use `/dev/...` unless being root or in the `operator` group. [**@julianaito**](https://github.com/julianaito)
 - **Battery** [OpenBSD]: Improve charge `%` and add status. **Charlène**
 - **GPU** [AMD]: Remove unnecessary check.
+- **Public IP**: Added configurable timeout to requests.
+- **Resolution**: If resolution is not found, don't print anything.
 
 **ASCII**
 
+- Fixed issues with various ASCII arts (namely the `_small` ones).
 - Added support for command output.
     - `neofetch --ascii "$(fortune|cowsay -W 30)"`
     - `neofetch --ascii "$(figlet -w 30 hello world)"`
@@ -103,9 +138,14 @@ info=("${info[@]##*: }")
 
 **Image**
 
+- Added new image backend [chafa](https://hpjansson.org/chafa/) (`--chafa`).
+- **w3m**: Fixed issues with URxvt and internal borders.
+- **w3m**: Fixed issues with URxvt and cursor position.
+- **w3m**: Fixed issue with `bash 3`.
 - **macOS**: Unset IFS to get window size. [**@StarryTony**](https://github.com/StarryTony)
 - **Kitty**: Use `kitty +kitten icat` instead of the deprecated `kitty icat`. [**@HolyStephano**](https://github.com/HolyStephano)
 - **Kitty**: Update docs. [**@Snuggle**](https://github.com/dylanaraps/neofetch/commits?author=Snuggle)
+- Thumbnails are high quality again.
 - Cached thumbnails are now stored with PATH to prevent collision issues.
 
 ## [5.0.0] - 2018-06-18
