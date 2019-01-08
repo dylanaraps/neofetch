@@ -2921,6 +2921,8 @@ END
 
         "kitty"*)
             kitty_config="$(kitty --debug-config)"
+            [[ $kitty_config != *font_family* ]] && return
+
             term_font_size="${kitty_config/*font_size}"
             term_font_size="${term_font_size/$'\n'*}"
             term_font="${kitty_config/*font_family}"
