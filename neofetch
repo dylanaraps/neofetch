@@ -142,6 +142,21 @@ os_arch="on"
 uptime_shorthand="on"
 
 
+# Memory
+
+
+# Show memory pecentage in output.
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --memory_percent
+#
+# Example:
+# on:   '1801MiB / 7881MiB (22%)'
+# off:  '1801MiB / 7881MiB'
+memory_percent="off"
+
+
 # Packages
 
 
@@ -2337,7 +2352,10 @@ get_memory() {
         ;;
 
     esac
-    memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB}"
+
+    [[ $memory_percent == on ]] && ((mem_perc=mem_used * 100 / mem_total))
+
+    memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
 
     # Bars.
     case "$memory_display" in
@@ -4359,6 +4377,7 @@ INFO:
     --ip_host url               URL to query for public IP
     --song_format format        Print the song data in a specific format (see config file).
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
+    --memory_percent on/off     Display memory percentage.
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
 
@@ -4512,6 +4531,7 @@ get_args() {
             "--song_format") song_format="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
             "--music_player") music_player="$2" ;;
+            "--memory_percent") memory_percent="$2" ;;
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
