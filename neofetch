@@ -4435,7 +4435,7 @@ IMAGE BACKEND:
                                 NEW: neofetch --ascii \"\$(fortune | cowsay -W 30)\"
 
     --caca source               Shortcut to use 'caca' backend.
-    --chafa source               Shortcut to use 'chafa' backend.
+    --chafa source              Shortcut to use 'chafa' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
     --kitty source              Shortcut to use 'kitty' backend.
