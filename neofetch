@@ -924,11 +924,6 @@ get_distro() {
                     "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
                     "off")  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
-
-                # Workarounds for distros that go against the os-release standard.
-                [[ -z "${distro// }" ]] && distro="$(awk '/BLAG/ {print $1; exit}')" "${files[@]}"
-                [[ -z "${distro// }" ]] && distro="$(awk -F'=' '{print $2; exit}')"  "${files[@]}"
-
             else
                 for release_file in /etc/*-release; do
                     distro+="$(< "$release_file")"
