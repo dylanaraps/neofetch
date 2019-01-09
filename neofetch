@@ -3472,7 +3472,7 @@ print_ascii() {
     done <<< "${ascii_data//\$\{??\}}"
 
     # Fallback if file not found.
-    ((lines==1)) && { lines=; ascii_len=; image_source="auto"; get_distro_ascii; print_ascii; return; }
+    ((lines==1)) && { lines=; ascii_len=; image_source=auto; get_distro_ascii; print_ascii; return; }
 
     # Colors.
     ascii_data="${ascii_data//\$\{c1\}/$c1}"
