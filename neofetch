@@ -1488,8 +1488,7 @@ get_editor() {
     if [[ "$editor_version" == "on" ]]; then
         case "${editor_name:=${editor##*/}}" in
             *)
-                editor+="$("$editor_full_path" --version 2>&1 | head -n1)"
-                editor="${editor/ "${editor_name}"}"
+                editor="$("$editor_full_path" --version 2>&1 | head -n1)"
             ;;
         esac
     fi
