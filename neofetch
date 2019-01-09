@@ -2715,7 +2715,7 @@ get_style() {
         [[ $gtk3 == off ]] && unset gtk3_theme
 
         # Format the string based on which themes exist.
-        if [[ $gtk2_theme && $gtk2_theme == $gtk3_theme ]]; then
+        if [[ $gtk2_theme && $gtk2_theme == "$gtk3_theme" ]]; then
             gtk3_theme+=" [GTK2/3]"
             unset gtk2_theme
 
@@ -2868,7 +2868,7 @@ END
             for ((i=0; i<profiles_count; i++)); do
                 profile_name="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Name:'" "$font_file")"
 
-                if [[ $profile_name == $current_profile_name ]]; then
+                if [[ $profile_name == "$current_profile_name" ]]; then
                     # "Normal Font"
                     term_font="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Normal Font:'" \
                                  "$font_file")"
@@ -2883,7 +2883,7 @@ END
                         non_ascii="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Non Ascii Font:'" \
                                      "$font_file")"
 
-                        [[ $term_font != $non_ascii ]] && \
+                        [[ $term_font != "$non_ascii" ]] && \
                             term_font="$term_font (normal) / $non_ascii (non-ascii)"
                     fi
                 fi
