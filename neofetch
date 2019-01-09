@@ -4219,7 +4219,7 @@ cache_uname() {
     kernel_version="${uname[1]}"
     kernel_machine="${uname[2]}"
 
-    if [[ "$kernel_name" == "Darwin" ]]; then
+    if [[ $kernel_name == Darwin ]]; then
         IFS=$'\n' read -d "" -ra sw_vers < <(awk -F'<|>' '/string/ {print $3}' \
                             "/System/Library/CoreServices/SystemVersion.plist")
         darwin_name="${sw_vers[2]}"
@@ -4507,9 +4507,9 @@ exit 1
 
 get_args() {
     # Check the commandline flags early for '--config'.
-    [[ "$*" != *--config* ]] && get_user_config
+    [[ $* != *--config* ]] && get_user_config
 
-    while [[ "$1" ]]; do
+    while [[ $1 ]]; do
         case "$1" in
             # Info
             "--package_managers") package_managers="$2" ;;
@@ -4538,7 +4538,7 @@ get_args() {
             "--memory_percent") memory_percent="$2" ;;
             "--cpu_temp")
                 cpu_temp="$2"
-                [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
+                [[ $cpu_temp == on ]] && cpu_temp="C"
             ;;
 
             "--disk_subtitle") disk_subtitle="$2" ;;
@@ -4630,7 +4630,7 @@ get_args() {
             "--background_color" | "--bg_color") background_color="$2" ;;
             "--gap") gap="$2" ;;
             "--clean")
-                [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
+                [[ -d $thumbnail_dir ]] && rm -rf "$thumbnail_dir"
                 rm -rf "/Library/Caches/neofetch/"
                 rm -rf "/tmp/neofetch/"
                 exit
@@ -4756,7 +4756,7 @@ get_args() {
 }
 
 get_simple() {
-    while [[ "$1" ]]; do
+    while [[ $1 ]]; do
         [[ $(type -t "get_$1") == function ]] && {
             get_distro
             stdout
@@ -8779,7 +8779,7 @@ EOF
 
     # Overwrite distro colors if '$ascii_colors' doesn't
     # equal 'distro'.
-    if [[ "${ascii_colors[0]}" != "distro" ]]; then
+    if [[ ${ascii_colors[0]} != distro ]]; then
         color_text="off"
         set_colors "${ascii_colors[@]}"
     fi
@@ -8794,14 +8794,14 @@ main() {
 
     get_args "$@"
     get_simple "$@"
-    [[ "$verbose" != "on" ]] && exec 2>/dev/null
+    [[ $verbose != on ]] && exec 2>/dev/null
     get_distro
     get_bold
     get_distro_ascii
-    [[ "$stdout" == "on" ]] && stdout
+    [[ $stdout == on ]] && stdout
 
     # Minix doesn't support these sequences.
-    if [[ "$TERM" != "minix" && "$stdout" != "on" ]]; then
+    if [[ $TERM != minix && $stdout != on ]]; then
         # If the script exits for any reason, unhide the cursor.
         trap 'printf "\e[?25h\e[?7h"' EXIT
 
@@ -8817,17 +8817,17 @@ main() {
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_backend" == *w3m* ]] && display_image
+    [[ $image_backend == *w3m* ]] && display_image
 
     # Add neofetch info to verbose output.
     err "Neofetch command: $0 $*"
     err "Neofetch version: $version"
 
     # Show error messages.
-    [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
+    [[ $verbose == on ]] && printf "%b" "$err" >&2
 
     # If `--loop` was used, constantly redraw the image.
-    while [[ "$image_loop" == "on" && "$image_backend" == "w3m" ]]; do display_image; sleep 1; done
+    while [[ $image_loop == on && $image_backend == w3m ]]; do display_image; sleep 1; done
 
     return 0
 }
