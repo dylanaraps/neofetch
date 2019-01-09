@@ -108,7 +108,7 @@ kernel_shorthand="on"
 # Shorten the output of the distro function
 #
 # Default:  'off'
-# Values:   'on', 'off', 'tiny'
+# Values:   'on', 'tiny', 'off'
 # Flag:     --distro_shorthand
 # Supports: Everything except Windows and Haiku
 distro_shorthand="off"
@@ -132,13 +132,13 @@ os_arch="on"
 # Shorten the output of the uptime function
 #
 # Default: 'on'
-# Values:  'on', 'off', 'tiny'
+# Values:  'on', 'tiny', 'off'
 # Flag:    --uptime_shorthand
 #
 # Example:
 # on:   '2 days, 10 hours, 3 mins'
-# off:  '2 days, 10 hours, 3 minutes'
 # tiny: '2d 10h 3m'
+# off:  '2 days, 10 hours, 3 minutes'
 uptime_shorthand="on"
 
 
@@ -4324,7 +4324,7 @@ INFO:
 
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 
-    --package_managers on/off   Hide/Show Package Manager names . (tiny, on, off)
+    --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -4351,7 +4351,7 @@ INFO:
                                 NOTE: For FreeBSD and NetBSD-based systems, you need to enable
                                 coretemp kernel module. This only supports newer Intel processors.
 
-    --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
+    --distro_shorthand on/off   Shorten the output of distro (on, tiny, off)
 
                                 NOTE: This option won't work in Windows (Cygwin)
 
@@ -4359,7 +4359,7 @@ INFO:
 
                                 NOTE: This option won't work in BSDs (except PacBSD and PC-BSD)
 
-    --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
+    --uptime_shorthand on/off   Shorten the output of uptime (on, tiny, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
