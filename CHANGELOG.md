@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [6.0.1] - N/A
 
+- **ascii**: Fixed bug causing files to not work.
+- **ascii**: Fixed bug causing files named `ascii` to not load.
 - **term_font** [kitty]: Fixed bug with empty config.
 - **get_cols**: Variables are now local. [**@asantam**](https://github.com/asantam)
 - **man_page**: More consistent arg documentation. [**@xPMo**](https://github.com/xPMo)
