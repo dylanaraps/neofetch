@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
+## [6.0.1] - N/A
+
+- **term_font** [kitty]: Fixed bug with empty config.
+- **get_cols**: Variables are now local. [**@asantam**](https://github.com/asantam)
+- **man_page**: More consistent arg documentation. [**@xPMo**](https://github.com/xPMo)
+
+
 ## [6.0.0] - 2019-01-08
 
 <img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px">
