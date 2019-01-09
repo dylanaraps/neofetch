@@ -845,7 +845,7 @@ get_os() {
 }
 
 get_distro() {
-    [[ "$distro" ]] && return
+    [[ $distro ]] && return
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
@@ -854,13 +854,13 @@ get_distro() {
                     "on" | "tiny") distro="Bedrock Linux" ;;
                     *) distro="$(< /bedrock/etc/bedrock-release)"
                 esac
-            elif [[ -f "/etc/redstar-release" ]]; then
+            elif [[ -f /etc/redstar-release ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Red Star OS" ;;
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
 
-            elif [[ -f "/etc/siduction-version" ]]; then
+            elif [[ -f /etc/siduction-version ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Siduction" ;;
                     *) distro="Siduction ($(lsb_release -sic))"
@@ -874,7 +874,7 @@ get_distro() {
                 esac
                 distro="$(lsb_release "$lsb_flags")"
 
-            elif [[ -f "/etc/GoboLinuxVersion" ]]; then
+            elif [[ -f /etc/GoboLinuxVersion ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="GoboLinux" ;;
                     *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
@@ -900,7 +900,7 @@ get_distro() {
                  type -p kpm >/dev/null; then
                 distro="KSLinux"
 
-            elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
+            elif [[ -d /system/app/ && -d /system/priv-app ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
             # Chrome OS doesn't conform to the /etc/*-release standard.
@@ -909,10 +909,8 @@ get_distro() {
             elif [[ -f /etc/lsb-release && "$(< /etc/lsb-release)" == *CHROMEOS* ]]; then
                 distro="$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)"
 
-            elif [[ -f "/etc/os-release" || \
-                    -f "/usr/lib/os-release" || \
-                    -f "/etc/openwrt_release" ]]; then
-                files=("/etc/os-release" "/usr/lib/os-release" "/etc/openwrt_release")
+            elif [[ -f /etc/os-release || -f /usr/lib/os-release || -f /etc/openwrt_release ]]; then
+                files=(/etc/os-release /usr/lib/os-release /etc/openwrt_release)
 
                 # Source the os-release file
                 for file in "${files[@]}"; do
@@ -930,7 +928,7 @@ get_distro() {
                     distro+="$(< "$release_file")"
                 done
 
-                if [[ -z "$distro" ]]; then
+                if [[ -z $distro ]]; then
                     case "$distro_shorthand" in
                         "on" | "tiny") distro="$kernel_name" ;;
                         *) distro="$kernel_name $kernel_version" ;;
@@ -938,23 +936,22 @@ get_distro() {
                     distro="${distro/DragonFly/DragonFlyBSD}"
 
                     # Workarounds for FreeBSD based distros.
-                    [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
-                    [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
+                    [[ -f /etc/pcbsd-lang ]] && distro="PCBSD"
+                    [[ -f /etc/trueos-lang ]] && distro="TrueOS"
 
                     # /etc/pacbsd-release is an empty file
-                    [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
+                    [[ -f /etc/pacbsd-release ]] && distro="PacBSD"
                 fi
             fi
 
-            if [[ "$(< /proc/version)" == *"Microsoft"* ||
-                  "$kernel_version" == *"Microsoft"* ]]; then
+            if [[ "$(< /proc/version)" == *Microsoft* || $kernel_version == *Microsoft* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro+=" [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
                     *)      distro+=" on Windows 10" ;;
                 esac
 
-            elif [[ "$(< /proc/version)" == *"chrome-bot"* || -f "/dev/cros_ec" ]]; then
+            elif [[ "$(< /proc/version)" == *chrome-bot* || -f /dev/cros_ec ]]; then
                 case "$distro_shorthand" in
                     "on")   distro+=" [Chrome OS]" ;;
                     "tiny") distro="Chrome OS" ;;
@@ -1037,7 +1034,7 @@ get_distro() {
 
     distro="${distro//Enterprise Server}"
 
-    [[ -z "$distro" ]] && distro="$os (Unknown)"
+    [[ -z $distro ]] && distro="$os (Unknown)"
 
     # Get OS architecture.
     case "$os" in
@@ -1046,17 +1043,17 @@ get_distro() {
         *)  machine_arch="$kernel_machine" ;;
     esac
 
-    [[ "$os_arch" == "on" ]] && \
+    [[ $os_arch == on ]] && \
         distro+=" $machine_arch"
 
-    [[ "${ascii_distro:-auto}" == "auto" ]] && \
+    [[ ${ascii_distro:-auto} == auto ]] && \
         ascii_distro="$(trim "$distro")"
 }
 
 get_model() {
     case "$os" in
         "Linux")
-            if [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
+            if [[ -d /system/app/ && -d /system/priv-app ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
             elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
