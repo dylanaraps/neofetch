@@ -3360,6 +3360,7 @@ get_gpu_driver() {
 
 get_cols() {
     local blocks blocks2 cols
+
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
