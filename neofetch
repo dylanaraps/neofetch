@@ -3454,12 +3454,13 @@ image_backend() {
 }
 
 get_ascii() {
-    [[ ! "$image_source" =~ (ascii|auto) ]] &&
-        if [[ -f "$image_source" && ! "$image_source" =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
-            ascii_data="$(< "$image_source")"
-        else
-            ascii_data="$image_source"
-        fi
+    if [[ -f $image_source && ! $image_source =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
+        ascii_data="$(< "$image_source")"
+    elif [[ $image_source == ascii || $image_source == auto ]]; then
+        :
+    else
+        ascii_data="$image_source"
+    fi
 
     # Set locale to get correct padding.
     LC_ALL="$sys_locale"
