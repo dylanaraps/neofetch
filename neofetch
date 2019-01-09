@@ -1180,7 +1180,7 @@ get_title() {
 
 get_kernel() {
     # Since these OS are integrated systems, it's better to skip this function altogether
-    [[ "$os" =~ (AIX|IRIX) ]] && return
+    [[ $os =~ (AIX|IRIX) ]] && return
 
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
@@ -1188,7 +1188,7 @@ get_kernel() {
     esac
 
     # Hide kernel info if it's identical to the distro info.
-    if [[ "$os" =~ (BSD|MINIX) && "$distro" == *"$kernel_name"* ]]; then
+    if [[ $os =~ (BSD|MINIX) && $distro == *"$kernel_name"* ]]; then
         case "$distro_shorthand" in
             "on" | "tiny") kernel="$kernel_version" ;;
             *)             unset kernel ;;
@@ -1382,7 +1382,7 @@ get_packages() {
             has "scoop" && dir ~/scoop/apps/* && ((packages-=1))
 
             # Count chocolatey packages.
-            [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
+            [[ -d /cygdrive/c/ProgramData/chocolatey/lib ]] && \
                 dir /cygdrive/c/ProgramData/chocolatey/lib/*
         ;;
 
@@ -1398,11 +1398,11 @@ get_packages() {
     if ((packages == 0)); then
         unset packages
 
-    elif [[ "$package_managers" == "on" ]]; then
+    elif [[ $package_managers == on ]]; then
         printf -v packages '%s, ' "${managers[@]}"
         packages="${packages%,*}"
 
-    elif [[ "$package_managers" == "tiny" ]]; then
+    elif [[ $package_managers == tiny ]]; then
         packages+=" (${manager_string%,*})"
     fi
 
@@ -1416,7 +1416,7 @@ get_shell() {
         "off") shell="${SHELL##*/} " ;;
     esac
 
-    if [[ "$shell_version" == "on" ]]; then
+    if [[ $shell_version == on ]]; then
         case "${shell_name:=${SHELL##*/}}" in
             "bash") shell+="${BASH_VERSION/-*}" ;;
             "sh" | "ash" | "dash") ;;
@@ -1473,21 +1473,21 @@ get_de() {
         *)
             ((wm_run != 1)) && get_wm
 
-            if [[ "$XDG_CURRENT_DESKTOP" ]]; then
+            if [[ $XDG_CURRENT_DESKTOP ]]; then
                 de="${XDG_CURRENT_DESKTOP/X\-}"
                 de="${de/Budgie:GNOME/Budgie}"
                 de="${de/:Unity7:ubuntu}"
 
-            elif [[ "$DESKTOP_SESSION" ]]; then
+            elif [[ $DESKTOP_SESSION ]]; then
                 de="${DESKTOP_SESSION##*/}"
 
-            elif [[ "$GNOME_DESKTOP_SESSION_ID" ]]; then
+            elif [[ $GNOME_DESKTOP_SESSION_ID ]]; then
                 de="GNOME"
 
-            elif [[ "$MATE_DESKTOP_SESSION_ID" ]]; then
+            elif [[ $MATE_DESKTOP_SESSION_ID ]]; then
                 de="MATE"
 
-            elif [[ "$TDE_FULL_SESSION" ]]; then
+            elif [[ $TDE_FULL_SESSION ]]; then
                 de="Trinity"
             fi
 
@@ -1495,12 +1495,12 @@ get_de() {
             # the desktop variables are sometimes also set to the
             # window manager name. This checks to see if WM == DE
             # and dicards the DE value.
-            [[ "$de" == "$wm" ]] && { unset -v de; return; }
+            [[ $de == "$wm" ]] && { unset -v de; return; }
         ;;
     esac
 
     # Fallback to using xprop.
-    [[ "$DISPLAY" && -z "$de" ]] && type -p xprop &>/dev/null && \
+    [[ $DISPLAY && -z $de ]] && type -p xprop &>/dev/null && \
         de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
 
     # Format strings.
@@ -1534,7 +1534,7 @@ get_wm() {
         *)           ps_flags=(-e) ;;
     esac
 
-    if [[ "$WAYLAND_DISPLAY" ]]; then
+    if [[ $WAYLAND_DISPLAY ]]; then
         wm="$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
                            -e "arcan" \
                            -e "asc" \
@@ -1562,7 +1562,7 @@ get_wm() {
                            -e "westford" \
                            -e "weston")"
 
-    elif [[ "$DISPLAY" && "$os" != "Mac OS X" && "$os" != "FreeMiNT" ]]; then
+    elif [[ $DISPLAY && $os != "Mac OS X" && $os != FreeMiNT ]]; then
         if type -p xprop &>/dev/null; then
             id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
             id="${id##* }"
@@ -1573,9 +1573,9 @@ get_wm() {
         fi
 
         # Window Maker does not set _NET_WM_NAME
-        [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
+        [[ $wm =~ WINDOWMAKER ]] && wm="wmaker"
         # Fallback for non-EWMH WMs.
-        [[ -z "$wm" ]] && \
+        [[ -z $wm ]] && \
             wm="$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
                                -e "catwm" \
                                -e "fvwm" \
@@ -1606,7 +1606,7 @@ get_wm() {
                                       -e "emerge" \
                                       -e "litestep")"
 
-                [[ "$wm" == "blackbox" ]] && wm="bbLean (Blackbox)"
+                [[ $wm == blackbox ]] && wm="bbLean (Blackbox)"
                 wm="${wm:+$wm, }Explorer"
             ;;
 
@@ -1651,7 +1651,7 @@ get_wm_theme() {
             if type -p gsettings >/dev/null; then
                 wm_theme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
 
-                [[ -z "${wm_theme//\'}" ]] && \
+                [[ -z ${wm_theme//\'} ]] && \
                     wm_theme="$(gsettings get org.gnome.desktop.wm.preferences theme)"
 
             elif type -p gconftool-2 >/dev/null; then
@@ -1660,10 +1660,10 @@ get_wm_theme() {
         ;;
 
         "Metacity"*)
-            if [[ "$de" == "Deepin" ]]; then
+            if [[ $de == Deepin ]]; then
                 wm_theme="$(gsettings get com.deepin.wrap.gnome.desktop.wm.preferences theme)"
 
-            elif [[ "$de" == "MATE" ]]; then
+            elif [[ $de == MATE ]]; then
                 wm_theme="$(gsettings get org.mate.Marco.general theme)"
 
             else
@@ -1681,20 +1681,20 @@ get_wm_theme() {
         ;;
 
         "Fluxbox")
-            [[ -f "${HOME}/.fluxbox/init" ]] && \
+            [[ -f ~/.fluxbox/init ]] && \
                 wm_theme="$(awk -F "/" '/styleFile/ {print $NF}' "${HOME}/.fluxbox/init")"
         ;;
 
         "IceWM"*)
-            [[ -f "${HOME}/.icewm/theme" ]] && \
+            [[ -f ~/.icewm/theme ]] && \
                 wm_theme="$(awk -F "[\",/]" '!/#/ {print $2}' "${HOME}/.icewm/theme")"
         ;;
 
         "Openbox")
-            if [[ "$de" == "LXDE" && -f "${HOME}/.config/openbox/lxde-rc.xml" ]]; then
+            if [[ $de == LXDE && -f ~/.config/openbox/lxde-rc.xml ]]; then
                 ob_file="lxde-rc"
 
-            elif [[ -f "${HOME}/.config/openbox/rc.xml" ]]; then
+            elif [[ -f ~/.config/openbox/rc.xml ]]; then
                 ob_file="rc"
             fi
 
@@ -1703,12 +1703,12 @@ get_wm_theme() {
         ;;
 
         "PekWM")
-            [[ -f "${HOME}/.pekwm/config" ]] && \
+            [[ -f ~/.pekwm/config ]] && \
                 wm_theme="$(awk -F "/" '/Theme/{gsub(/\"/,""); print $NF}' "${HOME}/.pekwm/config")"
         ;;
 
         "Xfwm4")
-            [[ -f "${HOME}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml" ]] && \
+            [[ -f ~}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml ]] && \
                 wm_theme="$(xfconf-query -c xfwm4 -p /general/theme)"
         ;;
 
@@ -1717,28 +1717,28 @@ get_wm_theme() {
             kwinrc="${kde_config_dir}/kwinrc"
             kdebugrc="${kde_config_dir}/kdebugrc"
 
-            if [[ -f "$kwinrc" ]]; then
+            if [[ -f $kwinrc ]]; then
                 wm_theme="$(awk '/theme=/ {
                                     gsub(/theme=.*qml_|theme=.*svg__/,"",$0);
                                     print $0;
                                     exit
                                  }' "$kwinrc")"
 
-                [[ -z "$wm_theme" ]] && \
+                [[ -z $wm_theme ]] && \
                     wm_theme="$(awk '/library=org.kde/ {
                                         gsub(/library=org.kde./,"",$0);
                                         print $0;
                                         exit
                                      }' "$kwinrc")"
 
-                [[ -z "$wm_theme" ]] && \
+                [[ -z $wm_theme ]] && \
                     wm_theme="$(awk '/PluginLib=kwin3_/ {
                                         gsub(/PluginLib=kwin3_/,"",$0);
                                         print $0;
                                         exit
                                      }' "$kwinrc")"
 
-            elif [[ -f "$kdebugrc" ]]; then
+            elif [[ -f $kdebugrc ]]; then
                 wm_theme="$(awk '/(decoration)/ {gsub(/\[/,"",$1); print $1; exit}' "$kdebugrc")"
             fi
 
@@ -1750,10 +1750,10 @@ get_wm_theme() {
             wm_theme="$(PlistBuddy -c "Print AppleInterfaceStyle" "$global_preferences")"
             wm_theme_color="$(PlistBuddy -c "Print AppleAquaColorVariant" "$global_preferences")"
 
-            [[ -z "$wm_theme" ]] && \
+            [[ -z $wm_theme ]] && \
                 wm_theme="Light"
 
-            [[ -z "$wm_theme_color" ]] || ((wm_theme_color == 1)) && \
+            [[ -z $wm_theme_color ]] || ((wm_theme_color == 1)) && \
                 wm_theme_color="Blue"
 
             wm_theme="${wm_theme_color:-Graphite} ($wm_theme)"
@@ -1799,7 +1799,7 @@ get_cpu() {
 
                 "ia64" | "m32r")
                     cpu="$(awk -F':' '/model/ {print $2; exit}' "$cpu_file")"
-                    [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
+                    [[ -z $cpu ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
                 ;;
 
                 *)
@@ -1808,7 +1808,7 @@ get_cpu() {
                                                exit
                                            }' "$cpu_file")"
 
-                    [[ "$cpu" == *"processor rev"* ]] && \
+                    [[ $cpu == *"processor rev"* ]] && \
                         cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
                 ;;
             esac
@@ -1822,7 +1822,7 @@ get_cpu() {
             done
 
             # Get CPU speed.
-            if [[ -d "$speed_dir" ]]; then
+            if [[ -d $speed_dir ]]; then
                 # Fallback to bios_limit if $speed_type fails.
                 speed="$(< "${speed_dir}/${speed_type}")" ||\
                 speed="$(< "${speed_dir}/bios_limit")" ||\
@@ -1836,8 +1836,7 @@ get_cpu() {
             fi
 
             # Get CPU temp.
-            [[ -f "$temp_dir" ]] && \
-                deg="$(($(< "$temp_dir") * 100 / 10000))"
+            [[ -f $temp_dir ]] && deg="$(($(< "$temp_dir") * 100 / 10000))"
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -1892,7 +1891,7 @@ get_cpu() {
 
             # Get CPU speed.
             speed="$(sysctl -n hw.cpuspeed)"
-            [[ -z "$speed" ]] && speed="$(sysctl -n  hw.clockrate)"
+            [[ -z $speed ]] && speed="$(sysctl -n  hw.clockrate)"
 
             # Get CPU cores.
             cores="$(sysctl -n hw.ncpu)"
@@ -2005,7 +2004,7 @@ get_cpu() {
     speed="${speed//[[:space:]]}"
 
     # Remove CPU brand from the output.
-    if [[ "$cpu_brand" == "off" ]]; then
+    if [[ $cpu_brand == off ]]; then
         cpu="${cpu/AMD }"
         cpu="${cpu/Intel }"
         cpu="${cpu/Core? Duo }"
@@ -2013,29 +2012,29 @@ get_cpu() {
     fi
 
     # Add CPU cores to the output.
-    [[ "$cpu_cores" != "off" && "$cores" ]] && \
+    [[ $cpu_cores != off && $cores ]] && \
         case "$os" in
             "Mac OS X") cpu="${cpu/@/(${cores}) @}" ;;
             *)          cpu="$cpu ($cores)" ;;
         esac
 
     # Add CPU speed to the output.
-    if [[ "$cpu_speed" != "off" && "$speed" ]]; then
+    if [[ $cpu_speed != off && $speed ]]; then
         if (( speed < 1000 )); then
             cpu="$cpu @ ${speed}MHz"
         else
-            [[ "$speed_shorthand" == "on" ]] && speed="$((speed / 100))"
+            [[ $speed_shorthand == on ]] && speed="$((speed / 100))"
             speed="${speed:0:1}.${speed:1}"
             cpu="$cpu @ ${speed}GHz"
         fi
     fi
 
     # Add CPU temp to the output.
-    if [[ "$cpu_temp" != "off" && "$deg" ]]; then
+    if [[ $cpu_temp != off && $deg ]]; then
         deg="${deg//.}"
 
         # Convert to Fahrenheit if enabled
-        [[ "$cpu_temp" == "F" ]] && deg="$((deg * 90 / 50 + 320))"
+        [[ $cpu_temp == F ]] && deg="$((deg * 90 / 50 + 320))"
 
         # Format the output
         deg="[${deg/${deg: -1}}.${deg: -1}°${cpu_temp:-C}]"
