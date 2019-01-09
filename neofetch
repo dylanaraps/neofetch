@@ -28,7 +28,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version="6.0.1"
+version=6.0.1
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
@@ -852,7 +852,7 @@ get_distro() {
             if [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Bedrock Linux" ;;
-                    *) distro="$(< /bedrock/etc/bedrock-release)"
+                    *) distro=$(< /bedrock/etc/bedrock-release)
                 esac
             elif [[ -f /etc/redstar-release ]]; then
                 case "$distro_shorthand" in
@@ -872,7 +872,7 @@ get_distro() {
                     "tiny") lsb_flags="-si" ;;
                     *)      lsb_flags="-sd" ;;
                 esac
-                distro="$(lsb_release "$lsb_flags")"
+                distro=$(lsb_release "$lsb_flags")
 
             elif [[ -f /etc/GoboLinuxVersion ]]; then
                 case "$distro_shorthand" in
@@ -887,7 +887,7 @@ get_distro() {
                 esac
 
             elif type -p crux >/dev/null; then
-                distro="$(crux)"
+                distro=$(crux)
                 case "$distro_shorthand" in
                     "on")   distro="${distro//version}" ;;
                     "tiny") distro="${distro//version*}" ;;
@@ -907,7 +907,7 @@ get_distro() {
             # While the file is a series of variables they can't be sourced
             # by the shell since the values aren't quoted.
             elif [[ -f /etc/lsb-release && "$(< /etc/lsb-release)" == *CHROMEOS* ]]; then
-                distro="$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)"
+                distro=$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)
 
             elif [[ -f /etc/os-release || -f /usr/lib/os-release || -f /etc/openwrt_release ]]; then
                 files=(/etc/os-release /usr/lib/os-release /etc/openwrt_release)
@@ -925,7 +925,7 @@ get_distro() {
                 esac
             else
                 for release_file in /etc/*-release; do
-                    distro+="$(< "$release_file")"
+                    distro+=$(< "$release_file")
                 done
 
                 if [[ -z $distro ]]; then
@@ -959,7 +959,7 @@ get_distro() {
                 esac
             fi
 
-            distro="$(trim_quotes "$distro")"
+            distro=$(trim_quotes "$distro")
             distro="${distro/NAME=}"
         ;;
 
@@ -1001,15 +1001,15 @@ get_distro() {
         ;;
 
         "Windows")
-            distro="$(wmic os get Caption)"
+            distro=$(wmic os get Caption)
             distro="${distro/Caption}"
             distro="${distro/Microsoft }"
         ;;
 
         "Solaris")
             case "$distro_shorthand" in
-                "on" | "tiny") distro="$(awk 'NR==1 {print $1,$3}' /etc/release)" ;;
-                *)             distro="$(awk 'NR==1 {print $1,$2,$3}' /etc/release)" ;;
+                "on" | "tiny") distro=$(awk 'NR==1 {print $1,$3}' /etc/release) ;;
+                *)             distro=$(awk 'NR==1 {print $1,$2,$3}' /etc/release) ;;
             esac
             distro="${distro/\(*}"
         ;;
@@ -1039,7 +1039,7 @@ get_distro() {
     # Get OS architecture.
     case "$os" in
         "Solaris" | "AIX" | "Haiku" | "IRIX" | "FreeMiNT")
-            machine_arch="$(uname -p)" ;;
+            machine_arch=$(uname -p) ;;
         *)  machine_arch="$kernel_machine" ;;
     esac
 
@@ -1047,25 +1047,25 @@ get_distro() {
         distro+=" $machine_arch"
 
     [[ ${ascii_distro:-auto} == auto ]] && \
-        ascii_distro="$(trim "$distro")"
+        ascii_distro=$(trim "$distro")
 }
 
 get_model() {
     case "$os" in
         "Linux")
             if [[ -d /system/app/ && -d /system/priv-app ]]; then
-                model="$(getprop ro.product.brand) $(getprop ro.product.model)"
+                model=$(getprop ro.product.brand) $(getprop ro.product.model)
 
             elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
                     -f /sys/devices/virtual/dmi/id/product_version ]]; then
-                model="$(< /sys/devices/virtual/dmi/id/product_name)"
+                model=$(< /sys/devices/virtual/dmi/id/product_name)
                 model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
 
             elif [[ -f /sys/firmware/devicetree/base/model ]]; then
-                model="$(< /sys/firmware/devicetree/base/model)"
+                model=$(< /sys/firmware/devicetree/base/model)
 
             elif [[ -f /tmp/sysinfo/model ]]; then
-                model="$(< /tmp/sysinfo/model)"
+                model=$(< /tmp/sysinfo/model)
             fi
         ;;
 
@@ -1073,7 +1073,7 @@ get_model() {
             if [[ "$(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC")" != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
-                model="$(sysctl -n hw.model)"
+                model=$(sysctl -n hw.model)
             fi
         ;;
 
@@ -1129,25 +1129,25 @@ get_model() {
         ;;
 
         "BSD" | "MINIX")
-            model="$(sysctl -n hw.vendor hw.product)"
+            model=$(sysctl -n hw.vendor hw.product)
         ;;
 
         "Windows")
-            model="$(wmic computersystem get manufacturer,model)"
+            model=$(wmic computersystem get manufacturer,model)
             model="${model/Manufacturer}"
             model="${model/Model}"
         ;;
 
         "Solaris")
-            model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
+            model=$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')
         ;;
 
         "AIX")
-            model="$(/usr/bin/uname -M)"
+            model=$(/usr/bin/uname -M)
         ;;
 
         "FreeMiNT")
-            model="$(sysctl -n hw.model)"
+            model=$(sysctl -n hw.model)
         ;;
     esac
 
@@ -1201,7 +1201,7 @@ get_uptime() {
     # the usual case is needed.
     case "$os" in
         "Haiku")
-            uptime="$(uptime -u)"
+            uptime=$(uptime -u)
             uptime="${uptime/up }"
         ;;
 
@@ -1209,12 +1209,12 @@ get_uptime() {
             # Get uptime in seconds.
             case "$os" in
                 "Linux" | "Windows" | "MINIX")
-                    seconds="$(< /proc/uptime)"
+                    seconds=$(< /proc/uptime)
                     seconds="${seconds/.*}"
                 ;;
 
                 "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
-                    boot="$(sysctl -n kern.boottime)"
+                    boot=$(sysctl -n kern.boottime)
                     boot="${boot/\{ sec = }"
                     boot="${boot/,*}"
 
@@ -1223,17 +1223,17 @@ get_uptime() {
                 ;;
 
                 "Solaris")
-                    seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
+                    seconds=$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')
                     seconds="${seconds/.*}"
                 ;;
 
                 "AIX" | "IRIX")
-                    t="$(LC_ALL=POSIX ps -o etime= -p 1)"
+                    t=$(LC_ALL=POSIX ps -o etime= -p 1)
                     d="0" h="0"
                     case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
                     case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
                     h="${h#0}" t="${t#0}"
-                    seconds="$((d*86400 + h*3600 + ${t%%:*}*60 + ${t#*:}))"
+                    seconds=$((d*86400 + h*3600 + ${t%%:*}*60 + ${t#*:}))
                 ;;
             esac
 
