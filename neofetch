@@ -1293,7 +1293,7 @@ get_packages() {
     [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
         tot() {
             IFS=$'\n' read -d "" -ra pkgs < <(for s in $(brl list); do strat -r "$s" "$@"; done)
-            ((packages+="${#pkgs[@]}"))
+            ((packages+=${#pkgs[@]}))
             pac "${#pkgs[@]}"
         }
         br_prefix="/bedrock/strata/*"
@@ -2020,7 +2020,7 @@ get_cpu() {
 
     # Add CPU speed to the output.
     if [[ $cpu_speed != off && $speed ]]; then
-        if (( speed < 1000 )); then
+        if ((speed < 1000)); then
             cpu="$cpu @ ${speed}MHz"
         else
             [[ $speed_shorthand == on ]] && speed="$((speed / 100))"
@@ -3638,7 +3638,7 @@ get_window_size() {
         IFS=x read -r term_width term_height < <(kitty +kitten icat --print-window-size)
 
     # Get terminal width/height if \e[14t is unsupported.
-    if (( "${term_width:-0}" < 50 )) && [[ $DISPLAY && $os != "Mac OS X" ]]; then
+    if ((${term_width:-0} < 50)) && [[ $DISPLAY && $os != "Mac OS X" ]]; then
         if type -p xdotool &>/dev/null; then
             IFS=$'\n' read -d "" -ra win < <(xdotool getactivewindow getwindowgeometry --shell %1)
             term_width="${win[3]/WIDTH=}"
