@@ -2052,7 +2052,7 @@ get_cpu_usage() {
 
         *)
             # Get CPU cores if unset.
-            if [[ "$cpu_cores" != "logical" ]]; then
+            if [[ $cpu_cores != logical ]]; then
                 case "$os" in
                     "Linux" | "MINIX") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
                     "Mac OS X")        cores="$(sysctl -n hw.logicalcpu_max)" ;;
@@ -2099,14 +2099,12 @@ get_gpu() {
             # Checking the first two array elements should
             # be safe since there won't be 2 intel outputs if
             # there's a dedicated GPU in play.
-            [[ "${gpus[0]}" == *Intel* && \
-               "${gpus[1]}" == *Intel* ]] && \
-               unset -v "gpus[0]"
+            [[ ${gpus[0]} == *Intel* && ${gpus[1]} == *Intel* ]] && unset -v "gpus[0]"
 
             for gpu in "${gpus[@]}"; do
                 # GPU shorthand tests.
-                [[ "$gpu_type" == "dedicated" && "$gpu" == *Intel* ]] || \
-                [[ "$gpu_type" == "integrated" && ! "$gpu" == *Intel* ]] && \
+                [[ $gpu_type == dedicated && $gpu == *Intel* ]] || \
+                [[ $gpu_type == integrated && ! $gpu == *Intel* ]] && \
                     { unset -v gpu; continue; }
 
                 case "$gpu" in
@@ -2146,7 +2144,7 @@ get_gpu() {
                     ;;
                 esac
 
-                if [[ "$gpu_brand" == "off" ]]; then
+                if [[ $gpu_brand == off ]]; then
                     gpu="${gpu/AMD }"
                     gpu="${gpu/NVIDIA }"
                     gpu="${gpu/Intel }"
@@ -2159,7 +2157,7 @@ get_gpu() {
         ;;
 
         "Mac OS X")
-            if [[ -f "${cache_dir}/neofetch/gpu" ]]; then
+            if [[ -f ${cache_dir}/neofetch/gpu ]]; then
                 source "${cache_dir}/neofetch/gpu"
 
             else
@@ -2231,7 +2229,7 @@ get_gpu() {
         ;;
     esac
 
-    if [[ "$gpu_brand" == "off" ]]; then
+    if [[ $gpu_brand == off ]]; then
         gpu="${gpu/AMD}"
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
@@ -2405,8 +2403,7 @@ get_song() {
     player="$(ps aux | awk -v pattern="(${players:1})" \
         '!/ awk / && !/iTunesHelper/ && match($0,pattern){print substr($0,RSTART,RLENGTH); exit}')"
 
-    [[ "$music_player" && "$music_player" != "auto" ]] && \
-        player="$music_player"
+    [[ $music_player && $music_player != auto ]] && player="$music_player"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -2520,7 +2517,7 @@ get_song() {
     : "${artist:=Unknown Artist}" "${album:=Unknown Album}" "${title:=Unknown Song}"
 
     # Display Artist, Album and Title on separate lines.
-    if [[ "$song_shorthand" == "on" ]]; then
+    if [[ $song_shorthand == on ]]; then
         prin "Artist" "$artist"
         prin "Album"  "$album"
         prin "Song"   "$title"
@@ -2543,7 +2540,7 @@ get_resolution() {
                               awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
             fi
 
-            if [[ -e "/Library/Preferences/com.apple.windowserver.plist" ]]; then
+            if [[ -e /Library/Preferences/com.apple.windowserver.plist ]]; then
                 scale_factor="$(PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" \
                                 /Library/Preferences/com.apple.windowserver.plist)"
             else
@@ -2551,18 +2548,18 @@ get_resolution() {
             fi
 
             # If no refresh rate is empty.
-            [[ "$resolution" == *"@ Hz"* ]] && \
+            [[ $resolution == *"@ Hz"* ]] && \
                 resolution="${resolution//@ Hz}"
 
-            [[ "${scale_factor%.*}" == 2 ]] && \
+            [[ ${scale_factor%.*} == 2 ]] && \
                 resolution="${resolution// @/@2x @}"
 
-            if [[ "$refresh_rate" == "off" ]]; then
+            if [[ $refresh_rate == off ]]; then
                 resolution="${resolution// @ [0-9][0-9]Hz}"
                 resolution="${resolution// @ [0-9][0-9][0-9]Hz}"
             fi
 
-            [[ "$resolution" == *"0Hz"* ]] && \
+            [[ $resolution == *"0Hz"* ]] && \
                 resolution="${resolution// @ 0Hz}"
         ;;
 
@@ -2581,7 +2578,7 @@ get_resolution() {
         "Haiku")
             resolution="$(screenmode | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
 
-            [[ "$refresh_rate" == "off" ]] && resolution="${resolution/ @*}"
+            [[ $refresh_rate == off ]] && resolution="${resolution/ @*}"
         ;;
 
         *)
@@ -2621,7 +2618,7 @@ get_style() {
     # Fix weird output when the function is run multiple times.
     unset gtk2_theme gtk3_theme theme path
 
-    if [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    if [[ $DISPLAY && $os != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
         ((de_run != 1)) && get_de
 
@@ -2630,12 +2627,12 @@ get_style() {
             "KDE"*)
                 kde_config_dir
 
-                if [[ -f "${kde_config_dir}/kdeglobals" ]]; then
+                if [[ -f ${kde_config_dir}/kdeglobals ]]; then
                     kde_config_file="${kde_config_dir}/kdeglobals"
 
                     kde_theme="$(grep "^${kde}" "$kde_config_file")"
                     kde_theme="${kde_theme/*=}"
-                    if [[ "$kde" == "font" ]]; then
+                    if [[ $kde == font ]]; then
                         kde_font_size="${kde_theme#*,}"
                         kde_font_size="${kde_font_size/,*}"
                         kde_theme="${kde_theme/,*} ${kde_theme/*,} ${kde_font_size}"
@@ -2675,33 +2672,32 @@ get_style() {
         esac
 
         # Check for general GTK2 Theme.
-        if [[ -z "$gtk2_theme" ]]; then
-            if [[ -f "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}" ]]; then
+        if [[ -z $gtk2_theme ]]; then
+            if [[ -f ${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0} ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}")"
 
-            elif [[ -f "/etc/gtk-2.0/gtkrc" ]]; then
+            elif [[ -f /etc/gtk-2.0/gtkrc ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" /etc/gtk-2.0/gtkrc)"
 
-            elif [[ -f "/usr/share/gtk-2.0/gtkrc" ]]; then
+            elif [[ -f /usr/share/gtk-2.0/gtkrc ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" /usr/share/gtk-2.0/gtkrc)"
-
             fi
 
             gtk2_theme="${gtk2_theme/${name}*=}"
         fi
 
         # Check for general GTK3 Theme.
-        if [[ -z "$gtk3_theme" ]]; then
-            if [[ -f "${XDG_CONFIG_HOME}/gtk-3.0/settings.ini" ]]; then
+        if [[ -z $gtk3_theme ]]; then
+            if [[ -f ${XDG_CONFIG_HOME}/gtk-3.0/settings.ini ]]; then
                 gtk3_theme="$(grep "^[^#]*$name" "${XDG_CONFIG_HOME}/gtk-3.0/settings.ini")"
 
             elif type -p gsettings >/dev/null; then
                 gtk3_theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
 
-            elif [[ -f "/usr/share/gtk-3.0/settings.ini" ]]; then
+            elif [[ -f /usr/share/gtk-3.0/settings.ini ]]; then
                 gtk3_theme="$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)"
 
-            elif [[ -f "/etc/gtk-3.0/settings.ini" ]]; then
+            elif [[ -f /etc/gtk-3.0/settings.ini ]]; then
                 gtk3_theme="$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)"
             fi
 
@@ -2717,21 +2713,21 @@ get_style() {
         gtk3_theme="$(trim_quotes "$gtk3_theme")"
 
         # Toggle visibility of GTK themes.
-        [[ "$gtk2" == "off" ]] && unset gtk2_theme
-        [[ "$gtk3" == "off" ]] && unset gtk3_theme
+        [[ $gtk2 == off ]] && unset gtk2_theme
+        [[ $gtk3 == off ]] && unset gtk3_theme
 
         # Format the string based on which themes exist.
-        if [[ "$gtk2_theme" && "$gtk2_theme" == "$gtk3_theme" ]]; then
+        if [[ $gtk2_theme && $gtk2_theme == $gtk3_theme ]]; then
             gtk3_theme+=" [GTK2/3]"
             unset gtk2_theme
 
-        elif [[ "$gtk2_theme" && "$gtk3_theme" ]]; then
+        elif [[ $gtk2_theme && $gtk3_theme ]]; then
             gtk2_theme+=" [GTK2], "
             gtk3_theme+=" [GTK3] "
 
         else
-            [[ "$gtk2_theme" ]] && gtk2_theme+=" [GTK2] "
-            [[ "$gtk3_theme" ]] && gtk3_theme+=" [GTK3] "
+            [[ $gtk2_theme ]] && gtk2_theme+=" [GTK2] "
+            [[ $gtk3_theme ]] && gtk3_theme+=" [GTK3] "
         fi
 
         # Final string.
@@ -2739,7 +2735,7 @@ get_style() {
         theme="${theme%, }"
 
         # Make the output shorter by removing "[GTKX]" from the string.
-        if [[ "$gtk_shorthand" == "on" ]]; then
+        if [[ $gtk_shorthand == on ]]; then
             theme="${theme// '[GTK'[0-9]']'}"
             theme="${theme/ '[GTK2/3]'}"
             theme="${theme/ '[KDE]'}"
@@ -2793,16 +2789,13 @@ get_term() {
     esac
 
     # Most likely TosWin2 on FreeMiNT - quick check
-    [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && \
-        term="TosWin2"
-
-    [[ "$SSH_CONNECTION" ]] && \
-        term="$SSH_TTY"
+    [[ $TERM == tw52 || $TERM == tw100 ]] && term="TosWin2"
+    [[ $SSH_CONNECTION ]] && term="$SSH_TTY"
 
     # Check $PPID for terminal emulator.
-    while [[ -z "$term" ]]; do
+    while [[ -z $term ]]; do
         parent="$(get_ppid "$parent")"
-        [[ -z "$parent" ]] && break
+        [[ -z $parent ]] && break
         name="$(get_process_name "$parent")"
 
         case "${name// }" in
@@ -2837,7 +2830,7 @@ get_term_font() {
             confs=({$XDG_CONFIG_HOME,$HOME}/{alacritty,}/{.,}alacritty.ym?)
             shopt -u nullglob
 
-            [[ -f "${confs[0]}" ]] || return
+            [[ -f ${confs[0]} ]] || return
 
             term_font="$(awk -F ':|#' '/normal:/ {getline; print}' "${confs[0]}")"
             term_font="${term_font/*family:}"
@@ -2877,7 +2870,7 @@ END
             for ((i=0; i<profiles_count; i++)); do
                 profile_name="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Name:'" "$font_file")"
 
-                if [[ "$profile_name" == "$current_profile_name" ]]; then
+                if [[ $profile_name == $current_profile_name ]]; then
                     # "Normal Font"
                     term_font="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Normal Font:'" \
                                  "$font_file")"
@@ -2888,11 +2881,11 @@ END
                     diff_font="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Use Non-ASCII Font:'" \
                                  "$font_file")"
 
-                    if [[ "$diff_font" == "true" ]]; then
+                    if [[ $diff_font == true ]]; then
                         non_ascii="$(PlistBuddy -c "Print ':New Bookmarks:${i}:Non Ascii Font:'" \
                                      "$font_file")"
 
-                        [[ "$term_font" != "$non_ascii" ]] && \
+                        [[ $term_font != $non_ascii ]] && \
                             term_font="$term_font (normal) / $non_ascii (non-ascii)"
                     fi
                 fi
@@ -2941,14 +2934,14 @@ END
                         break
                     fi
                 done
-                [[ "$profile" ]] && break
+                [[ $profile ]] && break
             done
 
             # We could have two profile files for the same profile name, take first match
             profile_filename="$(grep -l "Name=${profile}" "$HOME"/.local/share/konsole/*.profile)"
             profile_filename="${profile_filename/$'\n'*}"
 
-            [[ "$profile_filename" ]] && \
+            [[ $profile_filename ]] && \
                 term_font="$(awk -F '=|,' '/Font=/ {print $2,$3}' "$profile_filename")"
         ;;
 
@@ -2963,7 +2956,7 @@ END
             mateterm_config="/tmp/mateterm.cfg"
 
             # Ensure /tmp exists and we do not overwrite anything.
-            if [[ -d /tmp && ! -f "$mateterm_config" ]]; then
+            if [[ -d /tmp && ! -f $mateterm_config ]]; then
                 mate-terminal --save-config="$mateterm_config"
 
                 role="$(xprop -id "${WINDOWID}" WM_WINDOW_ROLE)"
@@ -2985,7 +2978,7 @@ END
                    gsettings get org.mate.terminal.profile:/org/mate/terminal/profiles/"$1"/ "$2"
                 }
 
-                if [[ "$(mate_get "$profile" "use-system-font")" == "true" ]]; then
+                if [[ "$(mate_get "$profile" "use-system-font")" == true ]]; then
                     term_font="$(gsettings get org.mate.interface monospace-font-name)"
                 else
                     term_font="$(mate_get "$profile" "font")"
@@ -3001,7 +2994,7 @@ END
         "pantheon"*)
             term_font="$(gsettings get org.pantheon.terminal.settings font)"
 
-            [[ -z "${term_font//\'}" ]] && \
+            [[ -z ${term_font//\'} ]] && \
                 term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
 
             term_font="$(trim_quotes "$term_font")"
@@ -3020,7 +3013,7 @@ END
         "st")
             term_font="$(ps -o command= -p "$parent" | grep -F -- "-f")"
 
-            if [[ "$term_font" ]]; then
+            if [[ $term_font ]]; then
                 term_font="${term_font/*-f/}"
                 term_font="${term_font/ -*/}"
 
@@ -3034,7 +3027,7 @@ END
                 # like a font definition. NOTE: There is a slight limitation in this approach.
                 # Technically "Font Name" is a valid font. As it doesn't specify any font options
                 # though it is hard to match it correctly amongst the rest of the noise.
-                [[ -n "$binary" ]] && \
+                [[ -n $binary ]] && \
                     term_font="$(strings "$binary" | grep -F -m 1 \
                                                           -e "pixelsize=" \
                                                           -e "size=" \
@@ -3054,7 +3047,7 @@ END
         ;;
 
         "termite")
-            [[ -f "${XDG_CONFIG_HOME}/termite/config" ]] && \
+            [[ -f ${XDG_CONFIG_HOME}/termite/config ]] && \
                 termite_config="${XDG_CONFIG_HOME}/termite/config"
 
             term_font="$(awk -F '= ' '/\[options\]/ {
@@ -3075,14 +3068,13 @@ END
             term_font="${term_font/*"*.font:"}"
             term_font="$(trim "$term_font")"
 
-            [[ -z "$term_font" && "$term" == "xterm" ]] && \
+            [[ -z $term_font && $term == xterm ]] && \
                 term_font="$(grep '^XTerm.vt100.faceName' <<< "$xrdb")"
 
             term_font="$(trim "${term_font/*"faceName:"}")"
 
             # xft: isn't required at the beginning so we prepend it if it's missing
-            [[ "${term_font:0:1}" != "-" && \
-               "${term_font:0:4}" != "xft:" ]] && \
+            [[ ${term_font:0:1} != "-" && ${term_font:0:4} != "xft:" ]] && \
                 term_font="xft:$term_font"
 
             # Xresources has two different font formats, this checks which
@@ -3103,13 +3095,13 @@ END
             term_font="$(awk -F '=' '/^FontName/{a=$2}/^FontUseSystem=TRUE/{a=$0} END {print a}' \
                          "${XDG_CONFIG_HOME}/xfce4/terminal/terminalrc")"
 
-            [[ "$term_font" == "FontUseSystem=TRUE" ]] && \
+            [[ $term_font == "FontUseSystem=TRUE" ]] && \
                 term_font="$(gsettings get org.gnome.desktop.interface monospace-font-name)"
 
             term_font="$(trim_quotes "$term_font")"
 
             # Default fallback font hardcoded in terminal-preferences.c
-            [[ -z "$term_font" ]] && term_font="Monospace 12"
+            [[ -z $term_font ]] && term_font="Monospace 12"
         ;;
     esac
 }
@@ -3139,7 +3131,7 @@ get_disk() {
     unset "disks[0]"
 
     # Stop here if 'df' fails to print disk info.
-    [[ -z "${disks[*]}" ]] && {
+    [[ -z ${disks[*]} ]] && {
         err "Disk: df failed to print the disks, make sure the disk_show array is set properly."
         return
     }
@@ -3184,8 +3176,8 @@ get_disk() {
         esac
 
         # Append '(disk mount point)' to the subtitle.
-        if [[ -z "$subtitle" ]]; then
-            prin "${disk_sub}" "$disk"
+        if [[ -z $subtitle ]]; then
+            prin "$disk_sub" "$disk"
         else
             prin "${subtitle} (${disk_sub})" "$disk"
         fi
@@ -3201,7 +3193,7 @@ get_battery() {
                 capacity="$(< "${bat}/capacity")"
                 status="$(< "${bat}/status")"
 
-                if [[ "$capacity" ]]; then
+                if [[ $capacity ]]; then
                     battery="${capacity}% [${status}]"
 
                     case "$battery_display" in
@@ -3242,9 +3234,9 @@ get_battery() {
                     state="${state##? (battery }"
                     state="${state%)*}"
 
-                    [[ "${state}" == "charging" ]] && battery_state="charging"
-                    [[ "$battery0full" ]] && \
-                    battery="$((100 * ${battery0now/\.} / ${battery0full/\.}))%"
+                    [[ $state == charging ]] && battery_state="charging"
+                    [[ $battery0full ]] && \
+                        battery="$((100 * ${battery0now/\.} / ${battery0full/\.}))%"
                 ;;
             esac
         ;;
@@ -3252,7 +3244,7 @@ get_battery() {
         "Mac OS X")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
             state="$(pmset -g batt | awk '/;/ {print $4}')"
-            [[ "$state" == "charging;" ]] && battery_state="charging"
+            [[ $state == "charging;" ]] && battery_state="charging"
         ;;
 
         "Windows")
@@ -3268,7 +3260,7 @@ get_battery() {
         ;;
     esac
 
-    [[ "$battery_state" ]] && battery+=" Charging"
+    [[ $battery_state ]] && battery+=" Charging"
 
     case "$battery_display" in
         "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
@@ -3282,7 +3274,7 @@ get_local_ip() {
         "Linux" | "BSD" | "Solaris" | "AIX" | "IRIX")
             local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
             local_ip="${local_ip/uid*}"
-            [[ -z "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
+            [[ -z $local_ip ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
         ;;
 
         "MINIX")
@@ -3291,7 +3283,7 @@ get_local_ip() {
 
         "Mac OS X" | "iPhone OS")
             local_ip="$(ipconfig getifaddr en0)"
-            [[ -z "$local_ip" ]] && local_ip="$(ipconfig getifaddr en1)"
+            [[ -z $local_ip ]] && local_ip="$(ipconfig getifaddr en1)"
         ;;
 
         "Windows")
@@ -3309,14 +3301,14 @@ get_local_ip() {
 get_public_ip() {
     if type -p dig >/dev/null; then
         public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
-       [[ "$public_ip" =~ ^\; ]] && unset public_ip
+       [[ $public_ip =~ ^\; ]] && unset public_ip
     fi
 
-    if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
+    if [[ -z $public_ip ]] && type -p curl >/dev/null; then
         public_ip="$(curl --max-time "$public_ip_timeout" -w '\n' "$public_ip_host")"
     fi
 
-    if [[ -z "$public_ip" ]] && type -p wget >/dev/null; then
+    if [[ -z $public_ip ]] && type -p wget >/dev/null; then
         public_ip="$(wget -T "$public_ip_timeout" -qO- "$public_ip_host")"
     fi
 }
@@ -3337,7 +3329,7 @@ get_gpu_driver() {
                           '/Display|3D|VGA/{nr[NR+2]}; NR in nr {printf $2 ", "}')"
             gpu_driver="${gpu_driver%, }"
 
-            if [[ "$gpu_driver" == *"nvidia"* ]]; then
+            if [[ $gpu_driver == *nvidia* ]]; then
                 gpu_driver="$(< /proc/driver/nvidia/version)"
                 gpu_driver="${gpu_driver/*Module  }"
                 gpu_driver="NVIDIA ${gpu_driver/  *}"
@@ -3357,7 +3349,7 @@ get_gpu_driver() {
 get_cols() {
     local blocks blocks2 cols
 
-    if [[ "$color_blocks" == "on" ]]; then
+    if [[ $color_blocks == on ]]; then
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
 
@@ -3380,8 +3372,8 @@ get_cols() {
         printf -v block_spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
-        [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}${reset}nl}"
-        [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}${reset}nl}"
+        [[ $blocks  ]] && cols+="${block_spaces// /${blocks}${reset}nl}"
+        [[ $blocks2 ]] && cols+="${block_spaces// /${blocks2}${reset}nl}"
 
         # Add newlines to the string.
         cols="${cols%%'nl'}"
@@ -3397,7 +3389,7 @@ get_cols() {
 
     # TosWin2 on FreeMiNT is terrible at this,
     # so we'll reset colors arbitrarily.
-    [[ "$term" == "TosWin2" ]] && printf '\e[30;47m'
+    [[ $term == TosWin2 ]] && printf '\e[30;47m'
 
     # Tell info() that we printed manually.
     prin=1
@@ -3406,7 +3398,7 @@ get_cols() {
 # IMAGES
 
 image_backend() {
-    [[ "$image_backend" != "off" ]] && ! type -p convert &>/dev/null && \
+    [[ $image_backend != off ]] && ! type -p convert &>/dev/null && \
         { image_backend="ascii"; err "Image: Imagemagick not found, falling back to ascii mode."; }
 
     case "${image_backend:-off}" in
@@ -3417,7 +3409,7 @@ image_backend() {
         "tycat" | "w3m" | "sixel" | "pixterm" | "kitty")
             get_image_source
 
-            [[ ! -f "$image" ]] && {
+            [[ ! -f $image ]] && {
                 to_ascii "Image: '$image_source' doesn't exist, falling back to ascii mode."
                 return
             }
@@ -3446,7 +3438,7 @@ image_backend() {
     esac
 
     # Set cursor position next image/ascii.
-    [[ "$image_backend" != "off" ]] && printf '\e[%sA\e[9999999D' "${lines:-0}"
+    [[ $image_backend != off ]] && printf '\e[%sA\e[9999999D' "${lines:-0}"
 }
 
 print_ascii() {
@@ -3493,7 +3485,7 @@ get_image_source() {
             # Get the absolute path.
             image_source="$(get_full_path "$image_source")"
 
-            if [[ -d "$image_source" ]]; then
+            if [[ -d $image_source ]]; then
                 shopt -s nullglob
                 files=("${image_source%/}"/*.{png,jpg,jpeg,jpe,gif,svg})
                 shopt -u nullglob
@@ -3523,7 +3515,7 @@ END
                     image="/c/Documents and Settings/${USER}"
                     image+="/Local Settings/Application Data/Microsoft/Wallpaper1.bmp"
 
-                    [[ "$kernel_name" == *CYGWIN* ]] && image="/cygdrive${image}"
+                    [[ $kernel_name == *CYGWIN* ]] && image="/cygdrive${image}"
                 ;;
 
                 "Windows"*)
@@ -3536,7 +3528,7 @@ END
             # Get DE if user has disabled the function.
             ((de_run != 1)) && get_de
 
-            type -p wal >/dev/null && [[ -f "${HOME}/.cache/wal/wal" ]] && \
+            type -p wal >/dev/null && [[ -f ~/.cache/wal/wal ]] && \
                 { image="$(< "${HOME}/.cache/wal/wal")"; return; }
 
             case "$de" in
@@ -3560,11 +3552,11 @@ END
                 ;;
 
                 *)
-                    if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
+                    if type -p feh >/dev/null && [[ -f ~/.fehbg ]]; then
                         image="$(awk -F\' '/feh/ {printf $(NF-1)}' "${HOME}/.fehbg")"
 
                     elif type -p setroot >/dev/null && \
-                         [[ -f "${XDG_CONFIG_HOME}/setroot/.setroot-restore" ]]; then
+                         [[ -f ${XDG_CONFIG_HOME}/setroot/.setroot-restore ]]; then
                         image="$(awk -F\' '/setroot/ {printf $(NF-1)}' \
                                  "${XDG_CONFIG_HOME}/setroot/.setroot-restore")"
 
@@ -3586,7 +3578,7 @@ END
     esac
 
     # If image is an xml file, don't use it.
-    [[ "${image/*\./}" == "xml" ]] && image=""
+    [[ ${image/*\./} == xml ]] && image=
 }
 
 get_w3m_img_path() {
@@ -3595,8 +3587,7 @@ get_w3m_img_path() {
     w3m_paths=({/usr/{local/,},~/.nix-profile/}{lib,libexec,lib64,libexec64}/w3m/w3mi*)
     shopt -u nullglob
 
-    [[ -x "${w3m_paths[0]}" ]] && \
-        { w3m_img_path="${w3m_paths[0]}"; return; }
+    [[ -x ${w3m_paths[0]} ]] && { w3m_img_path="${w3m_paths[0]}"; return; }
 
     err "Image: w3m-img wasn't found on your system"
 }
@@ -3613,7 +3604,7 @@ get_window_size() {
     # Tmux has a special way of reading escape sequences
     # so we have to use a slightly different sequence to
     # get the terminal size.
-    if [[ "$image_backend" == "tycat" ]]; then
+    if [[ $image_backend == tycat ]]; then
         printf '%b' '\e}qs\000'
 
     else
@@ -3634,7 +3625,7 @@ get_window_size() {
     unset IFS
 
     # Split the string into height/width.
-    if [[ "$image_backend" == "tycat" ]]; then
+    if [[ $image_backend == tycat ]]; then
         term_width="$((term_size[2] * term_size[0]))"
         term_height="$((term_size[3] * term_size[1]))"
 
@@ -3643,11 +3634,11 @@ get_window_size() {
         term_width="${term_size[2]}"
     fi
 
-    [[ "$image_backend" == "kitty" ]] && \
+    [[ $image_backend == kitty ]] && \
         IFS=x read -r term_width term_height < <(kitty +kitten icat --print-window-size)
 
     # Get terminal width/height if \e[14t is unsupported.
-    if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    if (( "${term_width:-0}" < 50 )) && [[ $DISPLAY && $os != "Mac OS X" ]]; then
         if type -p xdotool &>/dev/null; then
             IFS=$'\n' read -d "" -ra win < <(xdotool getactivewindow getwindowgeometry --shell %1)
             term_width="${win[3]/WIDTH=}"
@@ -3669,7 +3660,7 @@ get_window_size() {
             fi
 
             # If the ID was found get the window size.
-            if [[ "$current_window" ]]; then
+            if [[ $current_window ]]; then
                 term_size="$(xwininfo -id "$current_window")"
                 term_width="${term_size#*Width: }"
                 term_width="${term_width/$'\n'*}"
@@ -3750,9 +3741,9 @@ make_thumbnail() {
     # Create the thumbnail dir if it doesn't exist.
     mkdir -p "${thumbnail_dir:=${XDG_CACHE_HOME:-${HOME}/.cache}/thumbnails/neofetch}"
 
-    if [[ ! -f "${thumbnail_dir}/${image_name}" ]]; then
+    if [[ ! -f ${thumbnail_dir}/${image_name} ]]; then
         # Get image size so that we can do a better crop.
-        [[ -z "$size" ]] && {
+        [[ -z $size ]] && {
             read -r og_width og_height <<< "$(identify -format "%w %h" "$image")"
             ((og_height > og_width)) && size="$og_width" || size="$og_height"
         }
@@ -3860,7 +3851,7 @@ display_image() {
                 "$width" "$height" "$(base64 < "$image")"
 
             # Tmux requires an additional escape sequence for this to work.
-            [[ -n "$TMUX" ]] && printf -v iterm_cmd '\ePtmux;\e%b\e'\\ "$iterm_cmd"
+            [[ -n $TMUX ]] && printf -v iterm_cmd '\ePtmux;\e%b\e'\\ "$iterm_cmd"
 
             printf '%b\a\n' "$iterm_cmd"
         ;;
@@ -3904,7 +3895,7 @@ to_off() {
 
 info() {
     # Save subtitle value.
-    [[ "$2" ]] && subtitle="$1"
+    [[ $2 ]] && subtitle="$1"
 
     # Make sure that $prin is unset.
     unset -v prin
@@ -3913,15 +3904,15 @@ info() {
     "get_${2:-$1}"
 
     # If the get_func function called 'prin' directly, stop here.
-    [[ "$prin" ]] && return
+    [[ $prin ]] && return
 
     # Update the variable.
     output="$(trim "${!2:-${!1}}")"
 
-    if [[ "$2" && "${output// }" ]]; then
+    if [[ $2 && ${output// } ]]; then
         prin "$1" "$output"
 
-    elif [[ "${output// }" ]]; then
+    elif [[ ${output// } ]]; then
         prin "$output"
 
     else
@@ -3933,8 +3924,8 @@ info() {
 
 prin() {
     # If $2 doesn't exist we format $1 as info.
-    if [[ "$(trim "$1")" && "$2" ]]; then
-        [[ "$json" ]] && { printf '    %s\n' "\"${1}\": \"${2}\","; return; }
+    if [[ "$(trim "$1")" && $2 ]]; then
+        [[ $json ]] && { printf '    %s\n' "\"${1}\": \"${2}\","; return; }
 
         string="${1}${2:+: $2}"
     else
@@ -3944,7 +3935,7 @@ prin() {
     string="$(trim "${string//$'\e[0m'}")"
 
     # Log length if it doesn't exist.
-    if [[ -z "$length" ]]; then
+    if [[ -z $length ]]; then
         length="$(strip_sequences "$string")"
         length="${#length}"
     fi
@@ -3964,7 +3955,7 @@ prin() {
 }
 
 get_underline() {
-    if [[ "$underline_enabled" == "on" ]]; then
+    if [[ $underline_enabled == on ]]; then
         printf -v underline "%${length}s"
         printf '%b%b\n' "${text_padding:+\e[${text_padding}C}${zws}${underline_color}" \
                         "${underline// /$underline_char}${reset} "
@@ -4020,11 +4011,11 @@ set_colors() {
     c5="$(color "$5")${ascii_bold}"
     c6="$(color "$6")${ascii_bold}"
 
-    [[ "$color_text" != "off" ]] && set_text_colors "$@"
+    [[ $color_text != off ]] && set_text_colors "$@"
 }
 
 set_text_colors() {
-    if [[ "${colors[0]}" == "distro" ]]; then
+    if [[ ${colors[0]} == distro ]]; then
         title_color="$(color "$1")"
         at_color="$reset"
         underline_color="$reset"
@@ -4049,7 +4040,7 @@ set_text_colors() {
     fi
 
     # Bar colors.
-    if [[ "$bar_color_elapsed" == "distro" ]]; then
+    if [[ $bar_color_elapsed == distro ]]; then
         bar_color_elapsed="$(color fg)"
     else
         bar_color_elapsed="$(color "$bar_color_elapsed")"
@@ -4089,7 +4080,7 @@ get_full_path() {
     # For example "Pictures/Wallpapers" --> "/home/dylan/Pictures/Wallpapers"
 
     # If the file exists in the current directory, stop here.
-    [[ -f "${PWD}/${1}" ]] && { printf '%s\n' "${PWD}/${1}"; return; }
+    [[ -f ${PWD}/${1} ]] && { printf '%s\n' "${PWD}/${1}"; return; }
 
     ! cd "${1%/*}" && {
         err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
@@ -4100,7 +4091,7 @@ get_full_path() {
     local full_dir="${1##*/}"
 
     # Iterate down a (possible) chain of symlinks.
-    while [[ -L "$full_dir" ]]; do
+    while [[ -L $full_dir ]]; do
         full_dir="$(readlink "$full_dir")"
         cd "${full_dir%/*}" || exit
         full_dir="${full_dir##*/}"
@@ -4109,23 +4100,23 @@ get_full_path() {
     # Final directory.
     full_dir="$(pwd -P)/${1/*\/}"
 
-    [[ -e "$full_dir" ]] && printf '%s\n' "$full_dir"
+    [[ -e $full_dir ]] && printf '%s\n' "$full_dir"
 }
 
 get_user_config() {
     mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
 
     # --config /path/to/config.conf
-    if [[ -f "$config_file" ]]; then
+    if [[ -f $config_file ]]; then
         source "$config_file"
         err "Config: Sourced user config. (${config_file})"
         return
 
-    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
+    elif [[ -f ${XDG_CONFIG_HOME}/neofetch/config.conf ]]; then
         source "${XDG_CONFIG_HOME}/neofetch/config.conf"
         err "Config: Sourced user config.    (${XDG_CONFIG_HOME}/neofetch/config.conf)"
 
-    elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
+    elif [[ -f ${XDG_CONFIG_HOME}/neofetch/config ]]; then
         source "${XDG_CONFIG_HOME}/neofetch/config"
         err "Config: Sourced user config.    (${XDG_CONFIG_HOME}/neofetch/config)"
 
@@ -4150,14 +4141,13 @@ bar() {
     bar+="${bar_color_total}${total// /${bar_char_total}}"
 
     # Borders.
-    [[ "$bar_border" == "on" ]] && \
-        bar="$(color fg)[${bar}$(color fg)]"
+    [[ $bar_border == on ]] && bar="$(color fg)[${bar}$(color fg)]"
 
     printf "%b" "${bar}${info_color}"
 }
 
 cache() {
-    if [[ "$2" ]]; then
+    if [[ $2 ]]; then
         mkdir -p "${cache_dir}/neofetch"
         printf "%s" "${1/*-}=\"$2\"" > "${cache_dir}/neofetch/${1/*-}"
     fi
@@ -4173,7 +4163,7 @@ get_cache_dir() {
 kde_config_dir() {
     # If the user is using KDE get the KDE
     # configuration directory.
-    if [[ "$kde_config_dir" ]]; then
+    if [[ $kde_config_dir ]]; then
         return
 
     elif type -p kf5-config &>/dev/null; then
@@ -4185,10 +4175,10 @@ kde_config_dir() {
     elif type -p kde-config &>/dev/null; then
         kde_config_dir="$(kde-config --path config)"
 
-    elif [[ -d "${HOME}/.kde4" ]]; then
+    elif [[ -d ~/.kde4 ]]; then
         kde_config_dir="${HOME}/.kde4/share/config"
 
-    elif [[ -d "${HOME}/.kde3" ]]; then
+    elif [[ -d ~/.kde3 ]]; then
         kde_config_dir="${HOME}/.kde3/share/config"
     fi
 
@@ -4201,7 +4191,7 @@ term_padding() {
 
     case "$term" in
         urxvt*|"rxvt-unicode")
-            [[ -z "$xrdb" ]] && xrdb="$(xrdb -query)"
+            [[ -z $xrdb ]] && xrdb="$(xrdb -query)"
             padding="${xrdb/*.internalBorder:}"
             ((padding=${padding/$'\n'*}))
         ;;
