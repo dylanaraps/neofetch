@@ -3414,7 +3414,7 @@ image_backend() {
         { image_backend="ascii"; err "Image: Imagemagick not found, falling back to ascii mode."; }
 
     case "${image_backend:-off}" in
-        "ascii") get_ascii ;;
+        "ascii") print_ascii ;;
         "off") image_backend="off" ;;
 
         "caca" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
@@ -3445,7 +3445,7 @@ image_backend() {
             err "Image: Valid backends are: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'kitty',
                                             'off', 'sixel', 'pixterm', 'termpix', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
-            get_ascii
+            print_ascii
         ;;
     esac
 
@@ -3453,7 +3453,7 @@ image_backend() {
     [[ "$image_backend" != "off" ]] && printf '\e[%sA\e[9999999D' "${lines:-0}"
 }
 
-get_ascii() {
+print_ascii() {
     if [[ -f $image_source && ! $image_source =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
         ascii_data="$(< "$image_source")"
     elif [[ $image_source == ascii || $image_source == auto ]]; then
@@ -3472,7 +3472,7 @@ get_ascii() {
     done <<< "${ascii_data//\$\{??\}}"
 
     # Fallback if file not found.
-    ((lines==1)) && { lines=; ascii_len=; image_source="auto"; get_distro_ascii; get_ascii; return; }
+    ((lines==1)) && { lines=; ascii_len=; image_source="auto"; get_distro_ascii; print_ascii; return; }
 
     # Colors.
     ascii_data="${ascii_data//\$\{c1\}/$c1}"
@@ -3891,7 +3891,7 @@ display_image() {
 to_ascii() {
     err "$1"
     image_backend="ascii"
-    get_ascii
+    print_ascii
 
     # Set cursor position next image/ascii.
     printf '\e[%sA\e[9999999D' "${lines:-0}"
