@@ -76,7 +76,7 @@ print_info() {
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
-    # [[ $player ]] && prin "Music Player" "$player"
+    # [[ "$player" ]] && prin "Music Player" "$player"
     # info "Local IP" local_ip
     # info "Public IP" public_ip
     # info "Users" users
@@ -849,7 +849,7 @@ get_distro() {
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
-            if [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]]; then
+            if [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Bedrock Linux" ;;
                     *) distro="$(< /bedrock/etc/bedrock-release)"
@@ -906,7 +906,7 @@ get_distro() {
             # Chrome OS doesn't conform to the /etc/*-release standard.
             # While the file is a series of variables they can't be sourced
             # by the shell since the values aren't quoted.
-            elif [[ -f /etc/lsb-release && "$(< /etc/lsb-release)" == *CHROMEOS* ]]; then
+            elif [[ -f "/etc/lsb-release" && "$(< /etc/lsb-release)" == *CHROMEOS* ]]; then
                 distro="$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)"
 
             elif [[ -f "/etc/os-release" || \
@@ -938,7 +938,7 @@ get_distro() {
                     distro="${distro/DragonFly/DragonFlyBSD}"
 
                     # Workarounds for FreeBSD based distros.
-                    [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
+                    [[ -f "/etc/pcbsd-lang" ]] &&  distro="PCBSD"
                     [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
 
                     # /etc/pacbsd-release is an empty file
@@ -946,15 +946,14 @@ get_distro() {
                 fi
             fi
 
-            if [[ "$(< /proc/version)" == *"Microsoft"* ||
-                  "$kernel_version" == *"Microsoft"* ]]; then
+            if [[ "$(< /proc/version)" == *Microsoft* || "$kernel_version" == *Microsoft* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro+=" [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
                     *)      distro+=" on Windows 10" ;;
                 esac
 
-            elif [[ "$(< /proc/version)" == *"chrome-bot"* || -f "/dev/cros_ec" ]]; then
+            elif [[ "$(< /proc/version)" == *chrome-bot* || -f "/dev/cros_ec" ]]; then
                 case "$distro_shorthand" in
                     "on")   distro+=" [Chrome OS]" ;;
                     "tiny") distro="Chrome OS" ;;
@@ -1059,15 +1058,15 @@ get_model() {
             if [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
-            elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
-                    -f /sys/devices/virtual/dmi/id/product_version ]]; then
+            elif [[ -f "/sys/devices/virtual/dmi/id/product_name" ||
+                    -f "/sys/devices/virtual/dmi/id/product_version" ]]; then
                 model="$(< /sys/devices/virtual/dmi/id/product_name)"
                 model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
 
-            elif [[ -f /sys/firmware/devicetree/base/model ]]; then
+            elif [[ -f "/sys/firmware/devicetree/base/model" ]]; then
                 model="$(< /sys/firmware/devicetree/base/model)"
 
-            elif [[ -f /tmp/sysinfo/model ]]; then
+            elif [[ -f "/tmp/sysinfo/model" ]]; then
                 model="$(< /tmp/sysinfo/model)"
             fi
         ;;
@@ -1293,7 +1292,7 @@ get_packages() {
     tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
 
     # Redefine tot() for Bedrock Linux.
-    [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
+    [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]] && {
         tot() {
             IFS=$'\n' read -d "" -ra pkgs < <(for s in $(brl list); do strat -r "$s" "$@"; done)
             ((packages+="${#pkgs[@]}"))
@@ -1839,8 +1838,7 @@ get_cpu() {
             fi
 
             # Get CPU temp.
-            [[ -f "$temp_dir" ]] && \
-                deg="$(($(< "$temp_dir") * 100 / 10000))"
+            [[ -f "$temp_dir" ]] && deg="$(($(< "$temp_dir") * 100 / 10000))"
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -2103,9 +2101,7 @@ get_gpu() {
             # Checking the first two array elements should
             # be safe since there won't be 2 intel outputs if
             # there's a dedicated GPU in play.
-            [[ "${gpus[0]}" == *Intel* && \
-               "${gpus[1]}" == *Intel* ]] && \
-               unset -v "gpus[0]"
+            [[ "${gpus[0]}" == *Intel* && "${gpus[1]}" == *Intel* ]] && unset -v "gpus[0]"
 
             for gpu in "${gpus[@]}"; do
                 # GPU shorthand tests.
@@ -2355,7 +2351,7 @@ get_memory() {
 
     esac
 
-    [[ $memory_percent == on ]] && ((mem_perc=mem_used * 100 / mem_total))
+    [[ "$memory_percent" == "on" ]] && ((mem_perc=mem_used * 100 / mem_total))
 
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
 
@@ -2409,8 +2405,7 @@ get_song() {
     player="$(ps aux | awk -v pattern="(${players:1})" \
         '!/ awk / && !/iTunesHelper/ && match($0,pattern){print substr($0,RSTART,RLENGTH); exit}')"
 
-    [[ "$music_player" && "$music_player" != "auto" ]] && \
-        player="$music_player"
+    [[ "$music_player" && "$music_player" != "auto" ]] && player="$music_player"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -2618,7 +2613,7 @@ get_resolution() {
     esac
 
     resolution="${resolution%,*}"
-    [[ -z ${resolution/x} ]] && resolution=
+    [[ -z "${resolution/x}" ]] && resolution=
 }
 
 get_style() {
@@ -2797,11 +2792,8 @@ get_term() {
     esac
 
     # Most likely TosWin2 on FreeMiNT - quick check
-    [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && \
-        term="TosWin2"
-
-    [[ "$SSH_CONNECTION" ]] && \
-        term="$SSH_TTY"
+    [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && term="TosWin2"
+    [[ "$SSH_CONNECTION" ]] && term="$SSH_TTY"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -2921,7 +2913,7 @@ END
 
         "kitty"*)
             kitty_config="$(kitty --debug-config)"
-            [[ $kitty_config != *font_family* ]] && return
+            [[ "$kitty_config" != *font_family* ]] && return
 
             term_font_size="${kitty_config/*font_size}"
             term_font_size="${term_font_size/$'\n'*}"
@@ -2967,7 +2959,7 @@ END
             mateterm_config="/tmp/mateterm.cfg"
 
             # Ensure /tmp exists and we do not overwrite anything.
-            if [[ -d /tmp && ! -f "$mateterm_config" ]]; then
+            if [[ -d "/tmp" && ! -f "$mateterm_config" ]]; then
                 mate-terminal --save-config="$mateterm_config"
 
                 role="$(xprop -id "${WINDOWID}" WM_WINDOW_ROLE)"
@@ -3032,7 +3024,7 @@ END
                 # On Linux we can get the exact path to the running binary through the procfs
                 # (in case `st` is launched from outside of $PATH) on other systems we just
                 # have to guess and assume `st` is invoked from somewhere in the users $PATH
-                [[ -L /proc/$parent/exe ]] && binary="/proc/$parent/exe" || binary="$(type -p st)"
+                [[ -L "/proc/$parent/exe" ]] && binary="/proc/$parent/exe" || binary="$(type -p st)"
 
                 # Grep the output of strings on the `st` binary for anything that looks vaguely
                 # like a font definition. NOTE: There is a slight limitation in this approach.
@@ -3085,8 +3077,7 @@ END
             term_font="$(trim "${term_font/*"faceName:"}")"
 
             # xft: isn't required at the beginning so we prepend it if it's missing
-            [[ "${term_font:0:1}" != "-" && \
-               "${term_font:0:4}" != "xft:" ]] && \
+            [[ "${term_font:0:1}" != "-" && "${term_font:0:4}" != "xft:" ]] && \
                 term_font="xft:$term_font"
 
             # Xresources has two different font formats, this checks which
@@ -3454,9 +3445,9 @@ image_backend() {
 }
 
 print_ascii() {
-    if [[ -f $image_source && ! $image_source =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
+    if [[ -f "$image_source" && ! "$image_source" =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
         ascii_data="$(< "$image_source")"
-    elif [[ $image_source == ascii || $image_source == auto ]]; then
+    elif [[ "$image_source" == "ascii" || $image_source == auto ]]; then
         :
     else
         ascii_data="$image_source"
@@ -3732,7 +3723,7 @@ get_image_size() {
     esac
 
     # Check for terminal padding.
-    [[ $image_backend == w3m ]] && term_padding
+    [[ "$image_backend" == "w3m" ]] && term_padding
 
     width="${width:-$image_size}"
     height="${height:-$image_size}"
@@ -4201,7 +4192,7 @@ kde_config_dir() {
 
 term_padding() {
     # Get terminal padding to properly align cursor.
-    [[ -z $term ]] && get_term
+    [[ -z "$term" ]] && get_term
 
     case "$term" in
         urxvt*|"rxvt-unicode")
@@ -4213,9 +4204,9 @@ term_padding() {
 }
 
 dynamic_prompt() {
-    [[ $image_backend == off ]]   && { printf '\n'; return; }
-    [[ $image_backend != ascii ]] && ((lines=(height + yoffset) / font_height + 1))
-    [[ $image_backend == w3m ]] && ((lines=lines + padding / font_height + 1))
+    [[ "$image_backend" == "off" ]]   && { printf '\n'; return; }
+    [[ "$image_backend" != "ascii" ]] && ((lines=(height + yoffset) / font_height + 1))
+    [[ "$image_backend" == "w3m" ]]   && ((lines=lines + padding / font_height + 1))
 
     # If the ascii art is taller than the info.
     ((lines=lines>info_height?lines-info_height+1:1))
@@ -4771,7 +4762,7 @@ get_args() {
 
 get_simple() {
     while [[ "$1" ]]; do
-        [[ $(type -t "get_$1") == function ]] && {
+        [[ "$(type -t "get_$1")" == "function" ]] && {
             get_distro
             stdout
             simple=1
