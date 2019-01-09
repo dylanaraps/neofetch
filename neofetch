@@ -70,6 +70,7 @@ print_info() {
     info "GPU" gpu
     info "Memory" memory
 
+    # info "Editor" editor
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "CPU Usage" cpu_usage
     # info "Disk" disk
@@ -197,6 +198,32 @@ shell_path="off"
 # on:  'bash 4.4.5'
 # off: 'bash'
 shell_version="on"
+
+
+# Editor
+
+
+# Show the path to $VISUAL or $EDITOR
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --editor_path
+#
+# Example:
+# on:  '/usr/bin/vim'
+# off: 'vim'
+editor_path="off"
+
+# Show version
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --editor_version
+#
+# Example:
+# on:  'VIM - Vi IMproved 8.1'
+# off: 'vim'
+editor_version="on"
 
 
 # CPU
@@ -1446,6 +1473,31 @@ get_shell() {
         shell="${shell/options*}"
         shell="${shell/\(*\)}"
     fi
+}
+
+get_editor() {
+    local editor_full_path
+    # disable SC2153: EDITOR vs editor
+    # shellcheck disable=2153
+    editor_full_path="${VISUAL:-$EDITOR}"
+    case "$editor_path" in
+        "on")  editor="$editor_full_path " ;;
+        "off") editor="${editor_full_path##*/} " ;;
+    esac
+
+    if [[ "$editor_version" == "on" ]]; then
+        case "${editor_name:=${editor##*/}}" in
+            *)
+                editor+="$("$editor_full_path" --version 2>&1 | head -n1)"
+                editor="${editor/ "${editor_name}"}"
+            ;;
+        esac
+    fi
+
+    # Remove unwanted info.
+    editor="${editor/, version}"
+    editor="${editor/options*}"
+    editor="${editor/\(*\)}"
 }
 
 get_de() {
@@ -4541,6 +4593,8 @@ get_args() {
             "--gtk3") gtk3="$2" ;;
             "--shell_path") shell_path="$2" ;;
             "--shell_version") shell_version="$2" ;;
+            "--editor_path") editor_path="$2" ;;
+            "--editor_version") editor_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
             "--ip_timeout") public_ip_timeout="$2" ;;
             "--song_format") song_format="$2" ;;
