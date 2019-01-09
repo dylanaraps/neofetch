@@ -1476,6 +1476,8 @@ get_shell() {
 }
 
 get_editor() {
+    [[ "$editor" ]] && return
+
     local editor_full_path
     # disable SC2153: EDITOR vs editor
     # shellcheck disable=2153
