@@ -1175,7 +1175,7 @@ get_title() {
     user="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}"
     hostname="${HOSTNAME:-$(hostname)}"
     title="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
-    length="$((${#user} + ${#hostname} + 1))"
+    ((length=${#user} + ${#hostname} + 1))
 }
 
 get_kernel() {
@@ -1219,8 +1219,7 @@ get_uptime() {
                     boot="${boot/,*}"
 
                     # Get current date in seconds.
-                    now="$(date +%s)"
-                    seconds="$((now - boot))"
+                    ((seconds=$(date +%s) - boot))
                 ;;
 
                 "Solaris")
@@ -1828,7 +1827,7 @@ get_cpu() {
                 speed="$(< "${speed_dir}/bios_limit")" ||\
                 speed="$(< "${speed_dir}/scaling_max_freq")" ||\
                 speed="$(< "${speed_dir}/cpuinfo_max_freq")"
-                speed="$((speed / 1000))"
+                ((speed=speed / 100))
 
             else
                 speed="$(awk -F ': |\\.' '/cpu MHz|^clock/ {printf $2; exit}' "$cpu_file")"
@@ -1836,7 +1835,7 @@ get_cpu() {
             fi
 
             # Get CPU temp.
-            [[ -f $temp_dir ]] && deg="$(($(< "$temp_dir") * 100 / 10000))"
+            [[ -f $temp_dir ]] && ((deg=$(< "$temp_dir") * 100 / 10000))
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -2023,7 +2022,7 @@ get_cpu() {
         if ((speed < 1000)); then
             cpu="$cpu @ ${speed}MHz"
         else
-            [[ $speed_shorthand == on ]] && speed="$((speed / 100))"
+            [[ $speed_shorthand == on ]] && ((speed=speed / 100))
             speed="${speed:0:1}.${speed:1}"
             cpu="$cpu @ ${speed}GHz"
         fi
@@ -2034,7 +2033,7 @@ get_cpu() {
         deg="${deg//.}"
 
         # Convert to Fahrenheit if enabled
-        [[ $cpu_temp == F ]] && deg="$((deg * 90 / 50 + 320))"
+        [[ $cpu_temp == F ]] && ((deg=deg * 90 / 50 + 320))
 
         # Format the output
         deg="[${deg/${deg: -1}}.${deg: -1}°${cpu_temp:-C}]"
@@ -2070,7 +2069,7 @@ get_cpu_usage() {
             fi
 
             cpu_usage="$(ps aux | awk 'BEGIN {sum=0} {sum+=$3}; END {print sum}')"
-            cpu_usage="$((${cpu_usage/\.*} / ${cores:-1}))"
+            ((cpu_usage=${cpu_usage/\.*} / ${cores:-1}))
         ;;
     esac
 
@@ -2244,15 +2243,14 @@ get_memory() {
             while IFS=":" read -r a b; do
                 case "$a" in
                     "MemTotal") ((mem_used+=${b/kB})); mem_total="${b/kB}" ;;
-                    "Shmem") ((mem_used+=${b/kB}))  ;;
+                    "Shmem")    ((mem_used+=${b/kB}))  ;;
                     "MemFree" | "Buffers" | "Cached" | "SReclaimable")
-                        mem_used="$((mem_used-=${b/kB}))"
+                        ((mem_used-=${b/kB}))
                     ;;
                 esac
             done < /proc/meminfo
 
-            mem_used="$((mem_used / 1024))"
-            mem_total="$((mem_total / 1024))"
+            ((mem_used=mem_used / 1024, mem_total=mem_total / 1024))
         ;;
 
         "Mac OS X" | "iPhone OS")
@@ -3626,8 +3624,7 @@ get_window_size() {
 
     # Split the string into height/width.
     if [[ $image_backend == tycat ]]; then
-        term_width="$((term_size[2] * term_size[0]))"
-        term_height="$((term_size[3] * term_size[1]))"
+        ((term_width=term_size[2] * term_size[0], term_height=term_size[3] * term_size[1]))
 
     else
         term_height="${term_size[1]}"
@@ -3679,8 +3676,7 @@ get_term_size() {
     read -r lines columns < <(stty size)
 
     # Calculate font size.
-    font_width="$((term_width / columns))"
-    font_height="$((term_height / lines))"
+    ((font_width=term_width / columns, font_height=term_height / lines))
 }
 
 get_image_size() {
@@ -3689,19 +3685,17 @@ get_image_size() {
 
     case "$image_size" in
         "auto")
-            image_size="$((columns * font_width / 2))"
-            term_height="$((term_height - term_height / 4))"
-
-            ((term_height < image_size)) && \
-                image_size="$term_height"
+            ((image_size=columns * font_width / 2, term_height=term_height - term_height / 4))
+            ((term_height < image_size)) && image_size="$term_height"
         ;;
 
         *"%")
             percent="${image_size/\%}"
-            image_size="$((percent * term_width / 100))"
+
+            ((image_size=percent * term_width / 100))
 
             (((percent * term_height / 50) < image_size)) && \
-                image_size="$((percent * term_height / 100))"
+                ((image_size=percent * term_height / 100))
         ;;
 
         "none")
@@ -3721,9 +3715,8 @@ get_image_size() {
     # Check for terminal padding.
     [[ $image_backend == w3m ]] && term_padding
 
-    width="${width:-$image_size}"
-    height="${height:-$image_size}"
-    text_padding="$(((width + padding + xoffset) / font_width + gap))"
+    ((width=${width:-$image_size}, height=${height:-$image_size}))
+    ((text_padding=(width + padding + xoffset) / font_width + gap))
 }
 
 make_thumbnail() {
@@ -4130,7 +4123,7 @@ get_user_config() {
 
 bar() {
     # Get the values.
-    elapsed="$(($1 * bar_length / $2))"
+    ((elapsed=$1 * bar_length / $2))
 
     # Create the bar with spaces.
     printf -v prog  "%${elapsed}s"
