@@ -1708,7 +1708,7 @@ get_wm_theme() {
         ;;
 
         "Xfwm4")
-            [[ -f ~}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml ]] && \
+            [[ -f ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml ]] && \
                 wm_theme="$(xfconf-query -c xfwm4 -p /general/theme)"
         ;;
 
