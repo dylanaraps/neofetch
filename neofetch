@@ -1489,6 +1489,9 @@ get_editor() {
 
     if [[ "$editor_version" == "on" ]]; then
         case "${editor_name:=${editor##*/}}" in
+            "pico"*)
+                editor="$("$editor_full_path" -version 2>&1 | head -n1)"
+            ;;
             *)
                 editor="$("$editor_full_path" --version 2>&1 | head -n1)"
             ;;
