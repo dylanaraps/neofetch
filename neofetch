@@ -1483,7 +1483,7 @@ get_editor() {
     # shellcheck disable=2153
     editor_full_path="${VISUAL:-$EDITOR}"
     # remove arguments
-    editor_full_path="${editor_full_path%% *}"
+    editor_full_path="$(type -p "${editor_full_path%% *}")"
     case "$editor_path" in
         "on")  editor="$editor_full_path " ;;
         "off") editor="${editor_full_path##*/} " ;;
@@ -1491,7 +1491,7 @@ get_editor() {
 
     if [[ "$editor_version" == "on" ]]; then
         # resolve symlink (for busybox vi case)
-        case "$(realpath "$(command -v "$editor")")" in
+        case "$(realpath "$editor_full_path")" in
             *"/pico"*)
                 editor="$("$editor_full_path" -version 2>&1 | head -n1)"
             ;;
