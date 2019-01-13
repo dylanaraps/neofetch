@@ -1492,14 +1492,14 @@ get_editor() {
     if [[ "$editor_version" == "on" ]]; then
         # resolve symlink (for busybox vi case)
         case "$(realpath "$editor_full_path")" in
-            *"/pico"*)
+            *"/pico")
                 editor="$("$editor_full_path" -version 2>&1 | head -n1)"
             ;;
-            *"/busybox"*)
+            *"/busybox")
                 editor="$editor$("$editor_full_path" --help 2>&1 | head -n1)"
                 editor="${editor/ \(*}"
             ;;
-            *"/vi"*|*"/ex"*)
+            *"/ex" | *"/vi")
                 editor="$editor$(printf ':version\n:q\n' | "$editor_full_path" -s | tail -n1)"
             ;;
             *)
