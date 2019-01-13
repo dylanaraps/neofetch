@@ -1502,7 +1502,7 @@ get_editor() {
                 editor="${editor/ \(*}"
             ;;
             *"/ex" | *"/vi")
-                editor="$editor$(printf ':version\n:q\n' | "$editor_full_path" -s)"
+                editor="$(printf ':version\n:q\n' | "$editor_full_path" -s)"
                 editor="${editor/*$'\n'}"
             ;;
             *)
