@@ -1490,33 +1490,39 @@ get_editor() {
     esac
 
     if [[ "$editor_version" == "on" ]]; then
-        # resolve symlink (for vi case)
-        case "$(realpath "$editor_full_path")" in
-            *"/amp")
-                # no flag provided
-                editor="$editor_full_path"
-            ;;
-            *"/pico")
-                editor="$("$editor_full_path" -version 2>&1)"
-            ;;
-            *"/micro")
-                editor="$editor$("$editor_full_path" -version 2>&1)"
-                editor="${editor/$'\n'*}"
-            ;;
-            *"/busybox")
-                editor="$editor$("$editor_full_path" --help 2>&1)"
-                editor="${editor/$'\n'*}"
-                editor="${editor/ \(*}"
-            ;;
-            *"/ex" | *"/vi")
-                editor="$(printf ':version\n:q\n' | "$editor_full_path" -s)"
-                editor="${editor/*$'\n'}"
-            ;;
-            *)
-                editor="$("$editor_full_path" --version 2>&1)"
-                editor="${editor/$'\n'*}"
-            ;;
-        esac
+        while
+            case "$editor_full_path" in
+                *"/amp")
+                    # no flag provided
+                    editor="$editor_full_path"
+                ;;
+                *"/pico")
+                    editor="$("$editor_full_path" -version 2>&1)"
+                ;;
+                *"/micro")
+                    editor="$editor$("$editor_full_path" -version 2>&1)"
+                    editor="${editor/$'\n'*}"
+                ;;
+                *"/busybox")
+                    editor="$editor$("$editor_full_path" --help 2>&1)"
+                    editor="${editor/$'\n'*}"
+                    editor="${editor/ \(*}"
+                ;;
+                *"/ex" | *"/vi")
+                    if [[ -h "$editor_full_path" ]]; then
+                        editor_full_path="$(realpath "$editor_full_path")"
+                        continue
+                    fi
+                    editor="$(printf ':version\n:q\n' | "$editor_full_path" -s)"
+                    editor="${editor/*$'\n'}"
+                ;;
+                *)
+                    editor="$("$editor_full_path" --version 2>&1)"
+                    editor="${editor/$'\n'*}"
+                ;;
+            esac
+            false
+        do :; done
     fi
 
     # Remove unwanted info.
