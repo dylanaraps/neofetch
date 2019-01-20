@@ -2307,10 +2307,20 @@ get_memory() {
             esac
         ;;
 
-        "Solaris")
+        "Solaris" | "AIX")
             hw_pagesize="$(pagesize)"
-            pages_total="$(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}')"
-            pages_free="$(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}')"
+            case "$os" in
+                "Solaris")
+                    pages_total="$(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}')"
+                    pages_free="$(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}')"
+                ;;
+
+                "AIX")
+                    IFS=$'\n'"| " read -d "" -ra mem_stat <<< "$(svmon -G -O unit=page)"
+                    pages_total="${mem_stat[11]}"
+                    pages_free="${mem_stat[16]}"
+                ;;
+            esac
             mem_total="$((pages_total * hw_pagesize / 1024 / 1024))"
             mem_free="$((pages_free * hw_pagesize / 1024 / 1024))"
             mem_used="$((mem_total - mem_free))"
@@ -2320,15 +2330,6 @@ get_memory() {
             mem_total="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))"
             mem_used="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
             mem_used="$((${mem_used/max} / 1024 / 1024))"
-        ;;
-
-        "AIX")
-            IFS=$'\n'"| " read -d "" -ra mem_stat <<< "$(svmon -G -O unit=MB)"
-
-            mem_total="${mem_stat[11]/.*}"
-            mem_free="${mem_stat[16]/.*}"
-            mem_used="$((mem_total - mem_free))"
-            mem_label="MB"
         ;;
 
         "IRIX")
