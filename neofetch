@@ -4461,7 +4461,7 @@ ASCII:
                                 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
 
                                 NOTE: Alpine, Arch, CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS,
-                                OpenBSD, and Void have a smaller logo variant.
+                                OpenBSD, postmarketOS, and Void have a smaller logo variant.
 
                                 NOTE: Use '{distro name}_small' to use the small variants.
 
@@ -7581,6 +7581,21 @@ s:  yNm+`   .smNd+.
            .sy`
              .+:
                 `
+EOF
+        ;;
+
+        "postmarketos_small")
+            set_colors 2 7
+            read -rd '' ascii_data <<'EOF'
+${c1}        /\\
+       /  \\
+      /    \\
+      \\__   \\
+    /\\__ \\  _\\
+   /   /  \\/ __
+  /   / ____/  \\
+ /    \\ \\       \\
+/_____/ /________\\
 EOF
         ;;
 
