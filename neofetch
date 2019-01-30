@@ -3064,6 +3064,28 @@ END
                          "$termite_config")"
         ;;
 
+        "tilda")
+            # -g, --config-file
+            tilda_config="$(ps -o command= -p "$parent" |
+                            awk '{for (i=1; i<=NF; i++)
+                                 if ($i == "--config-file" || $i == "-g")
+                                 print $(i+1) }')"
+
+            # default config file location and names
+            if [[ -z "$tilda_config" ]]; then
+                tilda_locks=("$HOME/.cache/tilda/locks/"*)
+                for f in "${tilda_locks[@]}"; do
+                    if [[ "$f" =~ $parent ]]; then
+                        tilda_config="${XDG_CONFIG_HOME}/tilda/config_${f/*_}"
+                        break
+                    fi
+                done
+            fi
+
+            [[ -f "$tilda_config" ]] && \
+                term_font="$(awk -F'"' '/^font=/ {print $2}' "$tilda_config")"
+        ;;
+
         "urxvt" | "urxvtd" | "rxvt-unicode" | "xterm")
             xrdb="$(xrdb -query)"
             term_font="$(grep -im 1 -e "^${term/d}"'\**\.*font' -e '^\*font' <<< "$xrdb")"
