@@ -2926,7 +2926,8 @@ END
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
-            IFS=$'\n' read -d "" -ra konsole_instances < <(qdbus | grep -F 'org.kde.konsole')
+            IFS=$'\n' read -d "" -ra konsole_instances \
+                < <(qdbus | awk '/org.kde.konsole/ {print $1}')
 
             for i in "${konsole_instances[@]}"; do
                 IFS=$'\n' read -d "" -ra konsole_sessions < <(qdbus "$i" | grep -F '/Sessions/')
