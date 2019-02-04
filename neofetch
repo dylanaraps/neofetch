@@ -7689,6 +7689,30 @@ ${c1}               `..--..`
 EOF
         ;;
 
+        "Radix"*)
+            set_colors 1 2
+            read -rd '' ascii_data <<'EOF'
+${c2}                .:oyhdmNo
+             `/yhyoosdms`
+            -o+/ohmmho-
+           ..`.:/:-`
+     `.--:::-.``${c1}
+  .+ydNMMMMMMNmhs:`
+`omMMMMMMMMMMMMMMNh-
+oNMMMNmddhhyyhhhddmy.
+mMMMMNmmddhhysoo+/:-`
+yMMMMMMMMMMMMMMMMNNh.
+-dmmmmmNNMMMMMMMMMMs`
+ -+oossyhmMMMMMMMMd-
+ `sNMMMMMMMMMMMMMm:
+  `yMMMMMMNmdhhhh:
+   `sNMMMMMNmmho.
+    `+mMMMMMMMy.
+      .yNMMMm+`
+       `:yd+.
+EOF
+        ;;
+
         "Raspbian"*)
             set_colors 2 1
             read -rd '' ascii_data <<'EOF'
