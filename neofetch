@@ -1389,7 +1389,7 @@ get_packages() {
         ;;
 
         "Haiku")
-            dir /boot/system/package-links/*
+            has "pkgman" && dir /boot/system/package-links/*
         ;;
 
         "IRIX")
