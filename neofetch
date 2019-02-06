@@ -3639,35 +3639,46 @@ get_window_size() {
     [[ "$image_backend" == "kitty" ]] && \
         IFS=x read -r term_width term_height < <(kitty +kitten icat --print-window-size)
 
+    [[ -z "$term" ]] && get_term
+
     # Get terminal width/height if \e[14t is unsupported.
-    if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
-        if type -p xdotool &>/dev/null; then
-            IFS=$'\n' read -d "" -ra win < <(xdotool getactivewindow getwindowgeometry --shell %1)
-            term_width="${win[3]/WIDTH=}"
-            term_height="${win[4]/HEIGHT=}"
+    if (( "${term_width:-0}" < 50 )); then
+        if [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+            if type -p xdotool &>/dev/null; then
+                IFS=$'\n' read -d "" -ra win < \
+                    <(xdotool getactivewindow getwindowgeometry --shell %1)
+                term_width="${win[3]/WIDTH=}"
+                term_height="${win[4]/HEIGHT=}"
 
-        elif type -p xwininfo &>/dev/null; then
-            # Get the focused window's ID.
-            if type -p xdo &>/dev/null; then
-                current_window="$(xdo id)"
+            elif type -p xwininfo &>/dev/null; then
+                # Get the focused window's ID.
+                if type -p xdo &>/dev/null; then
+                    current_window="$(xdo id)"
 
-            elif type -p xdpyinfo &>/dev/null; then
-                current_window="$(xdpyinfo | grep -F "focus:")"
-                current_window="${current_window/*window }"
-                current_window="${current_window/,*}"
+                elif type -p xdpyinfo &>/dev/null; then
+                    current_window="$(xdpyinfo | grep -F "focus:")"
+                    current_window="${current_window/*window }"
+                    current_window="${current_window/,*}"
 
-            elif type -p xprop &>/dev/null; then
-                current_window="$(xprop -root _NET_ACTIVE_WINDOW)"
-                current_window="${current_window##* }"
+                elif type -p xprop &>/dev/null; then
+                    current_window="$(xprop -root _NET_ACTIVE_WINDOW)"
+                    current_window="${current_window##* }"
+                fi
+
+                # If the ID was found get the window size.
+                if [[ "$current_window" ]]; then
+                    term_size="$(xwininfo -id "$current_window")"
+                    term_width="${term_size#*Width: }"
+                    term_width="${term_width/$'\n'*}"
+                    term_height="${term_size/*Height: }"
+                    term_height="${term_height/$'\n'*}"
+                fi
             fi
 
-            # If the ID was found get the window size.
-            if [[ "$current_window" ]]; then
-                term_size="$(xwininfo -id "$current_window")"
-                term_width="${term_size#*Width: }"
-                term_width="${term_width/$'\n'*}"
-                term_height="${term_size/*Height: }"
-                term_height="${term_height/$'\n'*}"
+        elif [[ "$term" == /dev/tty[0-9]* && -w "/dev/fb0" ]]; then
+            if type -p fbset &>/dev/null; then
+                [[ "$(fbset --show)" =~ .*\"([0-9]+x[0-9]+)\".* ]]
+                IFS=x read -r term_width term_height <<< "${BASH_REMATCH[1]}"
             fi
         fi
     fi
@@ -4190,7 +4201,6 @@ kde_config_dir() {
 
 term_padding() {
     # Get terminal padding to properly align cursor.
-    [[ -z "$term" ]] && get_term
 
     case "$term" in
         urxvt*|"rxvt-unicode")
