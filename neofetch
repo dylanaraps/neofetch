@@ -4194,10 +4194,17 @@ term_padding() {
 
     case "$term" in
         urxvt*|"rxvt-unicode")
-            [[ -z "$xrdb" ]] && xrdb="$(xrdb -query)"
-            [[ $xrdb != *.internalBorder:* ]] && return
+            [[ -z "$xrdb" ]] &&
+                xrdb="$(xrdb -query)"
+
+            [[ $xrdb != *".internalBorder:"* ]] &&
+                return
+
             padding="${xrdb/*.internalBorder:}"
-            ((padding=${padding/$'\n'*}))
+            padding="${padding/$'\n'*}"
+
+            [[ $padding =~ ^[0-9]+$ ]] ||
+                padding=
         ;;
     esac
 }
