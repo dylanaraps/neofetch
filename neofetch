@@ -1389,7 +1389,7 @@ get_packages() {
         ;;
 
         "Haiku")
-            dir /boot/system/package-links/*
+            has "pkgman" && dir /boot/system/package-links/*
         ;;
 
         "IRIX")
@@ -2912,10 +2912,7 @@ END
             kitty_config="$(kitty --debug-config)"
             [[ "$kitty_config" != *font_family* ]] && return
 
-            term_font_size="${kitty_config/*font_size}"
-            term_font_size="${term_font_size/$'\n'*}"
-            term_font="${kitty_config/*font_family}"
-            term_font="${term_font/$'\n'*} $term_font_size"
+            term_font="$(awk '/^font_family|^font_size/ {printf $2 " "}' <<< "$kitty_config")"
         ;;
 
         "konsole" | "yakuake")
@@ -3597,49 +3594,10 @@ get_w3m_img_path() {
 get_window_size() {
     # This functions gets the current window size in
     # pixels.
-    #
-    # We first try to use the escape sequence "\033[14t"
-    # to get the terminal window size in pixels. If this
-    # fails we then fallback to using "xdotool" or other
-    # programs.
-
-    # Tmux has a special way of reading escape sequences
-    # so we have to use a slightly different sequence to
-    # get the terminal size.
-    if [[ "$image_backend" == "tycat" ]]; then
-        printf '%b' '\e}qs\000'
-
-    else
-        case "${TMUX:-null}" in
-            "null") printf '%b' '\e[14t' ;;
-            *)      printf '%b' '\ePtmux;\e\e[14t\e\\ ' ;;
-        esac
-    fi
-
-    # The escape codes above print the desired output as
-    # user input so we have to use read to store the out
-    # -put as a variable.
-    # The 1 second timeout is required for older bash
-    case "${BASH_VERSINFO[0]}" in
-        4|5) IFS=';t' read -d t -t 0.05 -sra term_size ;;
-        *)   IFS=';t' read -d t -t 1 -sra term_size ;;
-    esac
-    unset IFS
-
-    # Split the string into height/width.
-    if [[ "$image_backend" == "tycat" ]]; then
-        term_width="$((term_size[2] * term_size[0]))"
-        term_height="$((term_size[3] * term_size[1]))"
-
-    else
-        term_height="${term_size[1]}"
-        term_width="${term_size[2]}"
-    fi
-
-    [[ "$image_backend" == "kitty" ]] && \
+    [[ "$image_backend" == "kitty" ]] &&
         IFS=x read -r term_width term_height < <(kitty +kitten icat --print-window-size)
 
-    # Get terminal width/height if \e[14t is unsupported.
+    # Get terminal width/height.
     if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         if type -p xdotool &>/dev/null; then
             IFS=$'\n' read -d "" -ra win < <(xdotool getactivewindow getwindowgeometry --shell %1)
