@@ -1574,8 +1574,10 @@ get_wm() {
             wm="${wm/\"*}"
         fi
 
-        # Window Maker does not set _NET_WM_NAME
+        # Rename window managers to their proper values.
         [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
+        [[ "$wm" =~ "GNOME Shell" ]] && wm="Mutter"
+
         # Fallback for non-EWMH WMs.
         [[ -z "$wm" ]] && \
             wm="$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
