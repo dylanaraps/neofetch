@@ -6348,21 +6348,25 @@ WW                           W
 EOF
         ;;
 
-        "januslinux"*)
-            set_colors 7
+        "januslinux"*|"janus"*)
+            set_colors 4 7 4
             read -rd '' ascii_data <<'EOF'
-${c1} ________________
-|\               \
-| \               \
-|  \               \
-|   \ ______________\
-|    |              |
-|    |              |
-|    |              |
- \   |  januslinux  |
-  \  |              |
-   \ |              |
-    \|______________|
+${c1}oooooooooooooooooooooooooooooooo
+oooooooooooooooooooooooooooooooo
+oooooooooooooooooooooooooooooooo
+ooooooooooooo${c2}dOWWOd${c1}ooooooooooooo
+oooooooooood${c2}0WMMMMWkd${c1}ooooooooooo
+oooooooood${c2}0WMMMMMX0KN0d${c1}oooolllll
+ooooooo${c2}xKWMMMMWKxKWMMMWKx${c3}lllllll
+ooooo${c2}xXMMMMMW0doooOWMMMMMXx${c3}lllll
+ooooo${c2}xXMMMMMW0doloONMMMMMXx${c3}lllll
+ooooooo${c2}xKWMMMWXO0WMMMMMKx${c3}lllllll
+ooooooooo${c2}d0NX0KWMMMMW0d${c3}lllllllll
+oooooooooooo${c2}xWMMMMW0o${c3}llllllccccc
+oooooooooooll${c2}o0WW0o${c3}lllllcccccccc
+ooooooooooollll${c2}oo${c3}llllllccccccccc
+oooooooooollllllllllllcccccccccc
+oooooooooollllllllllllcccccccccc
 EOF
         ;;
 
