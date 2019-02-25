@@ -8878,7 +8878,8 @@ ssh_mode(){
     ssh_err="$?"
     if [[ "$ssh_err" -ne "0" ]]
     then
-        printf "%s\n" "SSH connection from $HOSTNAME to $ssh_host failed with exit code: $ssh_err" > /dev/stderr
+        printf > /dev/stderr "%s\n" \
+            "SSH connection from $HOSTNAME to $ssh_host failed with exit code: $ssh_err" 
         exit "$ssh_err"
     fi
 
