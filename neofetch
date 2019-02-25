@@ -4660,11 +4660,7 @@ get_args() {
 
             "--ssh")
                 ssh_mode="yes"
-                if [ "x$ssh_host" == "x" ]
-                then
-                    ssh_host="$2"
-                fi
-                shift
+                [[ "x$ssh_host" == "x" ]] && ssh_host="$2"
                 shift
             ;;
 
@@ -8844,15 +8840,14 @@ ssh_mode(){
     newargs=""
     while [[ "$1" ]]
     do
-        if [ "$ssh_arg" == "no" -a "$1" == "--ssh" ]
+        if [[ "$ssh_arg" == "no" ]] && [[ "$1" == "--ssh" ]]
         then
             shift
             shift
             ssh_arg=yes
             continue
         fi
-        newarg="$( echo "$1" | base64 -w 0 )"
-        # FIXME this will fail when echo consumes an option (-n,-e,-E) not intented for it
+        newarg="$( printf "%s" "$1" | base64 -w 0 )"
 
         newargs="$newargs $newarg"
         shift
@@ -8863,27 +8858,27 @@ ssh_mode(){
     REMOTE_SCRIPT=/tmp/neofetch-$( head -c 14 /dev/urandom | xxd -ps ).sh
     BOUNDARY="_THE_END_OF_FILE_"
     (
-        echo "base64 -d > $REMOTE_SCRIPT <<$BOUNDARY"
-        base64 < "$BASH_SOURCE"
-        echo "$BOUNDARY"
-        echo -n "bash $REMOTE_SCRIPT "
+        printf "%s\n" "base64 -d > $REMOTE_SCRIPT <<$BOUNDARY"
+        base64 < "${BASH_SOURCE[0]}"
+        printf "%s\n" "$BOUNDARY"
+        printf "%s" "bash $REMOTE_SCRIPT "
 
         # safely decode base64 and encode quotes
 
         for newarg in $newargs
         do
-            echo -n "'""$( echo "$newarg" | base64 -d | sed -e "sx'x'\"'\"'xg" )""' "
+            printf "%s" "'""$( printf "%s" "$newarg" | base64 -d | sed -e "sx'x'\"'\"'xg" )""' "
         done
-        echo ""
+        printf "\n"
 
-        echo "rm -f $REMOTE_SCRIPT"
+        printf "%s" "rm -f $REMOTE_SCRIPT"
 
     ) | ssh -t "$ssh_host" "sh" 2> /dev/null
 
     ssh_err="$?"
-    if [ "$ssh_err" -ne "0" ]
+    if [[ "$ssh_err" -ne "0" ]]
     then
-        echo "SSH from $HOSTNAME to $ssh_host failed with exit code: $ssh_err"
+        printf "%s" "SSH from $HOSTNAME to $ssh_host failed with exit code: $ssh_err" > /dev/stderr
         exit "$ssh_err"
     fi
 
@@ -8901,7 +8896,7 @@ main() {
     get_args "$@"
     get_simple "$@"
 
-    [ "$ssh_mode" == "yes" ] && ssh_mode "$@"
+    [[ "$ssh_mode" == "yes" ]] && ssh_mode "$@"
 
     [[ "$verbose" != "on" ]] && exec 2>/dev/null
     get_distro
