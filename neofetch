@@ -8834,8 +8834,8 @@ EOF
 }
 
 ssh_mode(){
-    # safely pass arguments to remote system
 
+    # prepare arguments for passing to remote system
     ssh_arg=no
     newargs=""
     while [[ "$1" ]]
@@ -8847,30 +8847,30 @@ ssh_mode(){
             ssh_arg=yes
             continue
         fi
-        newarg="$( printf "%s" "$1" | base64 -w 0 )"
-
-        newargs="$newargs $newarg"
+        newargs="$newargs $( printf "%q" "$1" )"
         shift
     done
 
-    # generate random filename and payload and pipe it to ssh
-
-    REMOTE_SCRIPT=/tmp/neofetch-$( head -c 14 /dev/urandom | xxd -ps ).sh
+    # generate random filename and payload then pipe it to ssh
+    REMOTE_SCRIPT=/tmp/neofetch-$( uuidgen ).sh
     BOUNDARY="_THE_END_OF_FILE_"
     (
+        # deploy script
         printf "%s\n" "base64 -d > $REMOTE_SCRIPT <<$BOUNDARY"
         base64 < "${BASH_SOURCE[0]}"
         printf "%s\n" "$BOUNDARY"
+
+        # launch it...
         printf "%s" "bash $REMOTE_SCRIPT "
 
-        # safely decode base64 and encode quotes
-
+        # ...append arguments
         for newarg in $newargs
         do
-            printf "%s" "'""$( printf "%s" "$newarg" | base64 -d | sed -e "sx'x'\"'\"'xg" )""' "
+            printf "%s " "$newarg"
         done
         printf "\n"
 
+        # remove it
         printf "%s" "rm -f $REMOTE_SCRIPT"
 
     ) | ssh -t "$ssh_host" "sh" 2> /dev/null
@@ -8878,7 +8878,7 @@ ssh_mode(){
     ssh_err="$?"
     if [[ "$ssh_err" -ne "0" ]]
     then
-        printf "%s" "SSH from $HOSTNAME to $ssh_host failed with exit code: $ssh_err" > /dev/stderr
+        printf "%s" "SSH connection from $HOSTNAME to $ssh_host failed with exit code: $ssh_err" > /dev/stderr
         exit "$ssh_err"
     fi
 
