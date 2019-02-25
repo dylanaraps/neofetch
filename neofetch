@@ -8860,17 +8860,10 @@ ssh_mode(){
         base64 < "${BASH_SOURCE[0]}"
         printf "%s\n" "$BOUNDARY"
 
-        # launch it...
-        printf "%s" "bash $REMOTE_SCRIPT "
+        # launch it with arguments
+        printf "%s %s %s\n" "bash" "$REMOTE_SCRIPT" "$newargs"
 
-        # ...append arguments
-        for newarg in $newargs
-        do
-            printf "%s " "$newarg"
-        done
-        printf "\n"
-
-        # remove it
+        # remove the file afterwards
         printf "%s" "rm -f $REMOTE_SCRIPT"
 
     ) | ssh -t "$ssh_host" "sh" 2> /dev/null
