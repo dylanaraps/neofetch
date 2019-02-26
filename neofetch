@@ -4466,6 +4466,10 @@ OTHER:
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
 
+SSH:
+    --ssh HOST                  Run neofetch on remote host using SSH. All arguments except
+                                --ssh are passed to remote system. Can be chained to jump.
+
 DEVELOPER:
     --gen-man                   Generate a manpage for Neofetch in your PWD. (Requires GNU help2man)
 
@@ -4652,6 +4656,12 @@ get_args() {
                 help2man -n "A fast, highly customizable system info script" \
                           -N ./neofetch -o neofetch.1
                 exit 1
+            ;;
+
+            "--ssh")
+                ssh_probe="yes"
+                [[ "$ssh_host" == "" ]] && ssh_host="$2"
+                shift
             ;;
 
             "--json")
@@ -8823,6 +8833,54 @@ EOF
     fi
 }
 
+ssh_connect(){
+    ssh_command="ssh"
+    ssh_opts="-t"
+
+    # prepare argument list for passing to remote system
+    ssh_arg=no
+    newargs=""
+    while [[ "$1" ]]
+    do
+        if [[ "$ssh_arg" == "no" ]] && [[ "$1" == "--ssh" ]]
+        then
+            shift 2
+            ssh_arg=yes
+            continue
+        fi
+        newargs="$newargs $( printf "%q" "$1" )"
+        shift
+    done
+
+    # generate random filename and payload then pipe it to ssh
+    REMOTE_SCRIPT=/tmp/neofetch-$( uuidgen ).sh
+    BOUNDARY="_THE_END_OF_FILE_"
+    (
+        # deploy script
+        printf "%s\n" "base64 -d > $REMOTE_SCRIPT <<$BOUNDARY"
+        base64 < "${BASH_SOURCE[0]}"
+        printf "%s\n" "$BOUNDARY"
+
+        # launch it with arguments
+        printf "%s %s %s\n" "bash" "$REMOTE_SCRIPT" "$newargs"
+
+        # remove the file afterwards
+        printf "%s" "rm -f $REMOTE_SCRIPT"
+
+    ) | "$ssh_command" "$ssh_opts" "$ssh_host" "sh" 2> /dev/null
+
+    ssh_err="$?"
+    if [[ "$ssh_err" -ne "0" ]]
+    then
+        printf > /dev/stderr "%s\n" \
+            "SSH connection from $HOSTNAME to $ssh_host failed with exit code: $ssh_err" 
+        exit "$ssh_err"
+    fi
+
+    exit
+
+}
+
 main() {
     cache_uname
     get_os
@@ -8832,6 +8890,9 @@ main() {
 
     get_args "$@"
     get_simple "$@"
+
+    [[ "$ssh_probe" == "yes" ]] && ssh_connect "$@"
+
     [[ "$verbose" != "on" ]] && exec 2>/dev/null
     get_distro
     get_bold
