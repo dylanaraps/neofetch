@@ -8837,7 +8837,7 @@ ssh_connect(){
     ssh_command="ssh"
     ssh_opts="-t"
 
-    # prepare argument list for passing to remote system
+    # filter out first --ssh HOST argument before passing to remote host
     ssh_arg=no
     newargs=""
     while [[ "$1" ]]
@@ -8852,7 +8852,7 @@ ssh_connect(){
         shift
     done
 
-    # generate random filename
+    # generate random filename (with fallbacks)
     if type -p uuidgen > /dev/null; then
         randname=$( uuidgen )
     elif type -p xxd > /dev/null; then
@@ -8864,18 +8864,34 @@ ssh_connect(){
     fi
     REMOTE_SCRIPT="/tmp/neofetch-$randname.sh"
 
-    # generate payload and pipe it to ssh
-    BOUNDARY="_THE_END_OF_FILE_"
+    # pipe commands to ssh
     (
-        # deploy script
-        printf "%s\n" "base64 -d -i > $REMOTE_SCRIPT <<$BOUNDARY"
-        base64 < "${BASH_SOURCE[0]}"
+        # workaround for old systems not providing base64 command directly
+        base64enc(){
+            if type -p base64 > /dev/null
+            then base64
+            else openssl base64
+            fi
+        }
+
+        printf "base64dec(){\n"
+        printf " if type -p base64 > /dev/null\n"
+        printf " then base64 -d -i\n"
+        printf " else openssl base64 -d\n"
+        printf " fi\n"
+        printf "}\n"
+
+        BOUNDARY="_THE_END_OF_FILE_"
+
+        # deploy payload
+        printf "%s\n" "base64dec > $REMOTE_SCRIPT <<$BOUNDARY"
+        base64enc < "${BASH_SOURCE[0]}"
         printf "%s\n" "$BOUNDARY"
 
-        # launch it with arguments
+        # execute
         printf "%s %s %s\n" "bash" "$REMOTE_SCRIPT" "$newargs"
 
-        # remove the file afterwards
+        # cleanup
         printf "%s" "rm -f $REMOTE_SCRIPT"
 
     ) | "$ssh_command" "$ssh_opts" "$ssh_host" "sh" 2> /dev/null
@@ -8891,6 +8907,7 @@ ssh_connect(){
     exit
 
 }
+
 
 main() {
     cache_uname
