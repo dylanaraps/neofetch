@@ -5199,22 +5199,26 @@ EOF
         "Artix"*)
             set_colors 6 6 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}              .'
-             .cc'
-            .cccc.
-            cccccc.
-           :ccccccc.
-          ;ccccccccc
-            .;cccccc:
-        ..     .;cccc;
-       'cccc;..   .,cc;
-      'ccccccccc:'.   ''
-     .cccccccccccccc:;.
-    .cccccccccccccc:,.   .
-   ccccccccccc;'.    .;cc.
-  cccccccc,..     ':cccccc.
- :ccc:'.           .';ccccc
-;;..                    .';:
+${c1}                   '
+                  'o'
+                 'ooo'
+                'ooxoo'
+               'ooxxxoo'
+              'oookkxxoo'
+             'oiioxkkxxoo'
+            ':;:iiiioxxxoo'
+               `'.;::ioxxoo'
+          '-.      `':;jiooo'
+         'oooio-..     `'i:io'
+        'ooooxxxxoio:,.   `'-;'
+       'ooooxxxxxkkxoooIi:-.  `'
+      'ooooxxxxxkkkkxoiiiiiji'
+     'ooooxxxxxkxxoiiii:'`     .i'
+    'ooooxxxxxoi:::'`       .;ioxo'
+   'ooooxooi::'`         .:iiixkxxo'
+  'ooooi:'`                `'';ioxxo'
+ 'i:'`                          '':io'
+'`                                   `'
 EOF
         ;;
 
