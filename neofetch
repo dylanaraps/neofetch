@@ -8852,12 +8852,23 @@ ssh_connect(){
         shift
     done
 
-    # generate random filename and payload then pipe it to ssh
-    REMOTE_SCRIPT=/tmp/neofetch-$( uuidgen ).sh
+    # generate random filename
+    if type -p uuidgen > /dev/null; then
+        randname=$( uuidgen )
+    elif type -p xxd > /dev/null; then
+        randname=$( head -c 20 /dev/urandom | xxd -ps )
+    elif type -p openssl > /dev/null; then
+        randname=$( openssl rand -hex 20 )
+    else
+        randname="$RANDOM-$RANDOM-$RANDOM-$RANDOM-$RANDOM-$RANDOM"
+    fi
+    REMOTE_SCRIPT="/tmp/neofetch-$randname.sh"
+
+    # generate payload and pipe it to ssh
     BOUNDARY="_THE_END_OF_FILE_"
     (
         # deploy script
-        printf "%s\n" "base64 -d > $REMOTE_SCRIPT <<$BOUNDARY"
+        printf "%s\n" "base64 -d -i > $REMOTE_SCRIPT <<$BOUNDARY"
         base64 < "${BASH_SOURCE[0]}"
         printf "%s\n" "$BOUNDARY"
 
