@@ -8834,11 +8834,11 @@ EOF
 }
 
 ssh_connect(){
+    local new_args next_arg ssh_arg temp_id boundary ssh_err
+
     ssh_command="ssh"
     ssh_opts=(-t)
 
-    new_args=""
-    ssh_arg=""
     # filter out first --ssh HOST argument before passing to remote host
     while [[ "$1" ]]; do
         if [[ "$ssh_arg" != "yes" && "$1" == "--ssh" ]]; then
