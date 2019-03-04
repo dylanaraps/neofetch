@@ -812,27 +812,26 @@ EOF
 # DETECT INFORMATION
 
 get_os() {
-    # $kernel_name is set in a function called cache_uname and is
-    # just the output of "uname -s".
-    case "$kernel_name" in
-        "Darwin"):   "$darwin_name" ;;
-        "SunOS"):    "Solaris" ;;
-        "Haiku"):    "Haiku" ;;
-        "MINIX"):    "MINIX" ;;
-        "AIX"):      "AIX" ;;
-        "IRIX"*):    "IRIX" ;;
-        "FreeMiNT"): "FreeMiNT" ;;
+    # $kernel_name is the output of 'uname -s'.
+    case $kernel_name in
+        Darwin):   "$darwin_name" ;;
+        SunOS):    Solaris ;;
+        Haiku):    Haiku ;;
+        MINIX):    MINIX ;;
+        AIX):      AIX ;;
+        IRIX*):    IRIX ;;
+        FreeMiNT): FreeMiNT ;;
 
-        "Linux" | "GNU"*)
-            : "Linux"
+        Linux|GNU*)
+            : Linux
         ;;
 
-        *"BSD" | "DragonFly" | "Bitrig")
-            : "BSD"
+        *BSD|DragonFly|Bitrig)
+            : BSD
         ;;
 
-        "CYGWIN"* | "MSYS"* | "MINGW"*)
-            : "Windows"
+        CYGWIN*|MSYS*|MINGW*)
+            : Windows
         ;;
 
         *)
@@ -841,6 +840,7 @@ get_os() {
             exit 1
         ;;
     esac
+
     os="$_"
 }
 
