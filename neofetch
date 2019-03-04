@@ -8832,14 +8832,14 @@ main() {
 
     get_args "$@"
     get_simple "$@"
-    [[ "$verbose" != "on" ]] && exec 2>/dev/null
+    [[ $verbose != on ]] && exec 2>/dev/null
     get_distro
     get_bold
     get_distro_ascii
-    [[ "$stdout" == "on" ]] && stdout
+    [[ $stdout == on ]] && stdout
 
     # Minix doesn't support these sequences.
-    if [[ "$TERM" != "minix" && "$stdout" != "on" ]]; then
+    if [[ $TERM != minix && $stdout != on ]]; then
         # If the script exits for any reason, unhide the cursor.
         trap 'printf "\e[?25h\e[?7h"' EXIT
 
@@ -8855,17 +8855,17 @@ main() {
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_backend" == *w3m* ]] && display_image
+    [[ $image_backend == *w3m* ]] && display_image
 
     # Add neofetch info to verbose output.
     err "Neofetch command: $0 $*"
     err "Neofetch version: $version"
 
     # Show error messages.
-    [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
+    [[ $verbose == on ]] && printf '%b' "$err" >&2
 
     # If `--loop` was used, constantly redraw the image.
-    while [[ "$image_loop" == "on" && "$image_backend" == "w3m" ]]; do display_image; sleep 1; done
+    while [[ $image_loop == on && $image_backend == w3m ]]; do display_image; sleep 1; done
 
     return 0
 }
