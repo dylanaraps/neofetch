@@ -8815,10 +8815,9 @@ EOF
         ;;
     esac
 
-    # Overwrite distro colors if '$ascii_colors' doesn't
-    # equal 'distro'.
-    if [[ "${ascii_colors[0]}" != "distro" ]]; then
-        color_text="off"
+    # Overwrite distro colors if '$ascii_colors' doesn't equal 'distro'.
+    if [[ ${ascii_colors[0]} != distro ]]; then
+        color_text=off
         set_colors "${ascii_colors[@]}"
     fi
 }
