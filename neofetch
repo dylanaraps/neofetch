@@ -69,6 +69,7 @@ print_info() {
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
+    info "Swap" swapspace
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "CPU Usage" cpu_usage
@@ -155,6 +156,21 @@ uptime_shorthand="on"
 # on:   '1801MiB / 7881MiB (22%)'
 # off:  '1801MiB / 7881MiB'
 memory_percent="off"
+
+
+# Swap space
+
+
+# Show swap space usage pecentage in output.
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --swapspace_percent
+#
+# Example:
+# on:   '1801MiB / 7881MiB (22%)'
+# off:  '1801MiB / 7881MiB'
+swapspace_percent="off"
 
 
 # Packages
@@ -649,6 +665,7 @@ bar_color_total="distro"
 # Values:  'bar', 'infobar', 'barinfo', 'off'
 # Flags:   --cpu_display
 #          --memory_display
+#          --swapspace_display
 #          --battery_display
 #          --disk_display
 #
@@ -2234,6 +2251,39 @@ get_gpu() {
         gpu="${gpu/NVIDIA}"
         gpu="${gpu/Intel}"
     fi
+}
+
+get_swapspace() {
+    local dev typ size used prio
+
+    case "$os" in
+        Linux | Windows)
+        while read -r dev typ size used prio; do
+            [[ "$dev" == Filename ]] && [[ "$typ" == Type ]] && [[ "$size" == Size ]] && continue
+            swapspace_total=$(( $swapspace_total + $size / 1024 ))
+            swapspace_used=$(( $swapspace_used + $used / 1024 ))
+        done < /proc/swaps
+    ;;
+    esac
+
+    [[ "$swapspace_percent" == "on" ]] && ((swapspace_perc=swapspace_used * 100 / swapspace_total))
+
+    swapspace="${swapspace_used}${swapspace_label:-MiB} "
+    swapspace+="/ ${swapspace_total}${swapspace_label:-MiB} "
+    swapspace+="${swapspace_perc:+(${swapspace_perc}%)}"
+
+    # Bars.
+    case "$swapspace_display" in
+        "bar")
+        swapspace="$(bar "${swapspace_used}" "${swapspace_total}")"
+        ;;
+        "infobar")
+        swapspace="${swapspace} $(bar "${swapspace_used}" "${swapspace_total}")"
+        ;;
+        "barinfo")
+        swapspace="$(bar "${swapspace_used}" "${swapspace_total}")${info_color} ${swapspace}"
+        ;;
+    esac
 }
 
 get_memory() {
@@ -4507,6 +4557,7 @@ get_args() {
             "--song_shorthand") song_shorthand="$2" ;;
             "--music_player") music_player="$2" ;;
             "--memory_percent") memory_percent="$2" ;;
+            "--swapspace_percent") swapspace_percent="$2" ;;
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
@@ -4576,6 +4627,7 @@ get_args() {
 
             "--cpu_display") cpu_display="$2" ;;
             "--memory_display") memory_display="$2" ;;
+            "--swapspace_display") swapspace_display="$2" ;;
             "--battery_display") battery_display="$2" ;;
             "--disk_display") disk_display="$2" ;;
 
@@ -4688,6 +4740,7 @@ get_args() {
                     info "GPU" gpu
                     info "GPU Driver" gpu_driver
                     info "Memory" memory
+                    info "Swap" swapspace
 
                     info "CPU Usage" cpu_usage
                     info "Disk" disk
@@ -4713,6 +4766,7 @@ get_args() {
                 shell_version="on"
                 cpu_display="infobar"
                 memory_display="infobar"
+                swapspace_display="infobar"
                 disk_display="infobar"
                 cpu_temp="C"
 
