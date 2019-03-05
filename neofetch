@@ -2259,12 +2259,15 @@ get_swapspace() {
     case "$os" in
         Linux | Windows)
         while read -r dev typ size used prio; do
-            [[ "$dev" == Filename ]] && [[ "$typ" == Type ]] && [[ "$size" == Size ]] && continue
-            swapspace_total=$(( $swapspace_total + $size / 1024 ))
-            swapspace_used=$(( $swapspace_used + $used / 1024 ))
+            [[ "$dev $typ $size $used $prio" == "Filename Type Size Used Priority" ]] && continue
+            swapspace_total=$(( swapspace_total + size ))
+            swapspace_used=$(( swapspace_used + used  ))
         done < /proc/swaps
     ;;
     esac
+
+    swapspace_total=$(( swapspace_total / 1024 ))
+    swapspace_used=$(( swapspace_used / 1024 ))
 
     [[ "$swapspace_percent" == "on" ]] && ((swapspace_perc=swapspace_used * 100 / swapspace_total))
 
