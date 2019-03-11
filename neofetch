@@ -1393,6 +1393,7 @@ get_packages() {
         ;;
 
         "IRIX")
+            manager="swpkg"
             tot versions -b && ((packages-=3))
         ;;
     esac
