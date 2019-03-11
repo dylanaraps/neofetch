@@ -4067,8 +4067,6 @@ get_full_path() {
 }
 
 get_user_config() {
-    mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
-
     # --config /path/to/config.conf
     if [[ -f "$config_file" ]]; then
         source "$config_file"
@@ -4083,10 +4081,11 @@ get_user_config() {
         source "${XDG_CONFIG_HOME}/neofetch/config"
         err "Config: Sourced user config.    (${XDG_CONFIG_HOME}/neofetch/config)"
 
-    else
+    elif [[ -z "$no_config" ]]; then
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
         # The config file doesn't exist, create it.
+        mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
         printf '%s\n' "$config" > "$config_file"
     fi
 }
@@ -4460,6 +4459,7 @@ IMAGE:
 OTHER:
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
+    --no_config                 Don't create the user config file.
     --print_config              Print the default config file to stdout.
     --stdout                    Turn off all colors and disables any ASCII/image backend.
     --help                      Print this text and exit
@@ -4479,7 +4479,7 @@ exit 1
 
 get_args() {
     # Check the commandline flags early for '--config'.
-    [[ "$*" != *--config* ]] && get_user_config
+    [[ "$*" != *--config* && "$*" != *--no_config* ]] && get_user_config
 
     while [[ "$1" ]]; do
         case "$1" in
@@ -4640,6 +4640,7 @@ get_args() {
                     ;;
                 esac
             ;;
+            "--no_config") no_config="on" ;;
             "--stdout") stdout="on" ;;
             "-v") verbose="on" ;;
             "--print_config") printf '%s\n' "$config"; exit ;;
