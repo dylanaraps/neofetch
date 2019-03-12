@@ -1753,15 +1753,23 @@ get_wm_theme() {
         "Quartz Compositor")
             global_preferences="${HOME}/Library/Preferences/.GlobalPreferences.plist"
             wm_theme="$(PlistBuddy -c "Print AppleInterfaceStyle" "$global_preferences")"
-            wm_theme_color="$(PlistBuddy -c "Print AppleAquaColorVariant" "$global_preferences")"
+            wm_theme_color="$(PlistBuddy -c "Print AppleAccentColor" "$global_preferences")"
 
             [[ -z "$wm_theme" ]] && \
                 wm_theme="Light"
 
-            [[ -z "$wm_theme_color" ]] || ((wm_theme_color == 1)) && \
-                wm_theme_color="Blue"
+            case "$wm_theme_color" in
+                "-1") wm_theme_color="Graphite" ;;
+                "0") wm_theme_color="Red" ;;
+                "1") wm_theme_color="Orange" ;;
+                "2") wm_theme_color="Yellow" ;;
+                "3") wm_theme_color="Green" ;;
+                "5") wm_theme_color="Purple" ;;
+                "6") wm_theme_color="Pink" ;;
+                *) wm_theme_color="Blue" ;;
+            esac
 
-            wm_theme="${wm_theme_color:-Graphite} ($wm_theme)"
+            wm_theme="${wm_theme_color} ($wm_theme)"
         ;;
 
         *"Explorer")
