@@ -4199,11 +4199,16 @@ cache_uname() {
     kernel_machine="${uname[2]}"
 
     if [[ "$kernel_name" == "Darwin" ]]; then
-        IFS=$'\n' read -d "" -ra sw_vers < <(awk -F'<|>' '/string/ {print $3}' \
+        IFS=$'\n' read -d "" -ra sw_vers < <(awk -F'<|>' '/key|string/ {print $3}' \
                             "/System/Library/CoreServices/SystemVersion.plist")
-        darwin_name="${sw_vers[2]}"
-        osx_version="${sw_vers[3]}"
-        osx_build="${sw_vers[0]}"
+        for i in "${!sw_vers[@]}"; do
+            local value="${sw_vers[(( $i + 1 ))]}"
+            case "${sw_vers[$i]}" in
+                "ProductName")          darwin_name="$value" ;;
+                "ProductVersion")       osx_version="$value" ;;
+                "ProductBuildVersion")  osx_build="$value"   ;;
+            esac
+        done
     fi
 }
 
