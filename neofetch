@@ -319,7 +319,6 @@ gpu_type="all"
 # Default: 'off'
 # Values:  'on', 'off'
 # Flag:    --refresh_rate
-# Supports: Doesn't work on Windows.
 #
 # Example:
 # on:  '1920x1080 @ 60Hz'
@@ -2583,6 +2582,13 @@ get_resolution() {
             height="${height//CurrentVerticalResolution/}"
 
             [[ "$(trim "$width")" ]] && resolution="${width//[[:space:]]}x${height//[[:space:]]}"
+
+            if [[ "$refresh_rate" == "on" && "$resolution" ]]; then
+                local hz=""
+                hz="$(wmic path Win32_VideoController get CurrentRefreshRate)"
+                hz="${hz//CurrentRefreshRate/}"
+                [[ "$(trim "$hz")" ]] && resolution="$resolution @ ${hz//[[:space:]]}Hz"
+            fi
         ;;
 
         "Haiku")
@@ -4329,7 +4335,6 @@ INFO:
 
     --uptime_shorthand on/off   Shorten the output of uptime (on, tiny, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
-                                Unsupported on Windows
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
     --gpu_type type             Which GPU to display. (all, dedicated, integrated)
 
