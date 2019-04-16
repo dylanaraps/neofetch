@@ -1884,7 +1884,11 @@ get_cpu() {
                 "iPhone8,"[1-4] | "iPad6,11" | "iPad6,12"): "Apple A9 (2) @ 1.85GHz" ;;
                 "iPhone9,"[1-4] | "iPad7,"[5-6]): "Apple A10 Fusion (4) @ 2.34GHz" ;;
                 "iPhone10,"[1-6]): "Apple A11 (6) @ 2.39GHz" ;;
-                "iPhone11,2" | "iPhone11,4" | "iPhone11,6" | "iPhone11,8" | "iPad11,"[1-4]): "Apple A12 (6) @ 2.49GHz" ;;
+
+                "iPhone11,2" | "iPhone11,4" | "iPhone11,6" | "iPhone11,8" | "iPad11,"[1-4])
+                    : "Apple A12 (6) @ 2.49GHz"
+                ;;
+
                 "iPod2,1"): "Samsung S5L8720 (1) @ 533MHz" ;;
                 "iPod3,1"): "Samsung S5L8922 (1) @ 600MHz" ;;
                 "iPod7,1"): "Apple A8 (2) @ 1.1GHz" ;;
