@@ -1883,10 +1883,10 @@ get_cpu() {
                 "iPhone7,"[1-2]): "Apple A8 (2) @ 1.4GHz" ;;
                 "iPhone8,"[1-4] | "iPad6,11" | "iPad6,12"): "Apple A9 (2) @ 1.85GHz" ;;
                 "iPhone9,"[1-4] | "iPad7,"[5-6]): "Apple A10 Fusion (4) @ 2.34GHz" ;;
-                "iPhone10,"[1-6]): "Apple A11 (6) @ 2.39GHz" ;;
+                "iPhone10,"[1-6]): "Apple A11 Bionic (6) @ 2.39GHz" ;;
 
                 "iPhone11,2" | "iPhone11,4" | "iPhone11,6" | "iPhone11,8" | "iPad11,"[1-4])
-                    : "Apple A12 (6) @ 2.49GHz"
+                    : "Apple A12 Bionic (6) @ 2.49GHz"
                 ;;
 
                 "iPod2,1"): "Samsung S5L8720 (1) @ 533MHz" ;;
@@ -1902,8 +1902,8 @@ get_cpu() {
                 "iPad5,"[3-4]): "Apple A8X (3) @ 1.5GHz" ;;
                 "iPad6,"[3-4]): "Apple A9X (2) @ 2.16GHz" ;;
                 "iPad6,"[7-8]): "Apple A9X (2) @ 2.26GHz" ;;
-                "iPad7,"[1-4]): "Apple A10X (6) @ 2.39GHz" ;;
-                "iPad8,"[1-8]): "Apple A12X (8) @ 2.49GHz" ;;
+                "iPad7,"[1-4]): "Apple A10X Fusion (6) @ 2.39GHz" ;;
+                "iPad8,"[1-8]): "Apple A12X Bionic (8) @ 2.49GHz" ;;
             esac
             cpu="$_"
         ;;
