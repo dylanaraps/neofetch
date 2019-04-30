@@ -8549,7 +8549,7 @@ ${c1}              ..-::::::-.`
 EOF
         ;;
 
-        "Ubuntu"*)
+        "Ubuntu"* | "i3buntu"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}            .-/+oossssoo+/-.
