@@ -465,6 +465,7 @@ disk_subtitle="mount"
 # sayonara
 # smplayer
 # spotify
+# strawberry
 # tomahawk
 # vlc
 # xmms2d
@@ -2423,6 +2424,7 @@ get_song() {
         "smplayer"
         "spotify"
         "Spotify"
+        "strawberry"
         "tomahawk"
         "vlc"
         "xmms2d"
@@ -2472,6 +2474,7 @@ get_song() {
         "dragon"*)        get_song_dbus "dragonplayer" ;;
         "smplayer"*)      get_song_dbus "smplayer" ;;
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
+        "strawberry"*)    get_song_dbus "strawberry" ;;
         "netease-cloud-music"*) get_song_dbus "netease-cloud-music" ;;
 
         "cmus"*)
