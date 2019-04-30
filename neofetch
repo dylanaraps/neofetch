@@ -1081,24 +1081,26 @@ get_model() {
 
         "iPhone OS")
             case "$kernel_machine" in
-                "iPad1,1"):     "iPad" ;;
-                "iPad2,"[1-4]): "iPad 2" ;;
-                "iPad3,"[1-3]): "iPad 3" ;;
-                "iPad3,"[4-6]): "iPad 4" ;;
-                "iPad4,"[1-3]): "iPad Air" ;;
-                "iPad5,"[3-4]): "iPad Air 2" ;;
-                "iPad6,"[7-8]): "iPad Pro (12.9 Inch)" ;;
-                "iPad6,"[3-4]): "iPad Pro (9.7 Inch)" ;;
-                "iPad7,"[1-2]): "iPad Pro 2 (12.9 Inch)" ;;
-                "iPad7,"[3-4]): "iPad Pro (10.5 Inch)" ;;
-                "iPad2,"[5-7]): "iPad mini" ;;
-                "iPad4,"[4-6]): "iPad mini 2" ;;
-                "iPad4,"[7-9]): "iPad mini 3" ;;
-                "iPad5,"[1-2]): "iPad mini 4" ;;
-
-                "iPad6,11" | "iPad 6,12")
-                    : "iPad 5"
-                ;;
+                "iPad1,1"):      "iPad" ;;
+                "iPad2,"[1-4]):  "iPad 2" ;;
+                "iPad3,"[1-3]):  "iPad 3" ;;
+                "iPad3,"[4-6]):  "iPad 4" ;;
+                "iPad6,1"[12]):  "iPad 5" ;;
+                "iPad7,"[5-6]):  "iPad 6" ;;
+                "iPad4,"[1-3]):  "iPad Air" ;;
+                "iPad5,"[3-4]):  "iPad Air 2" ;;
+                "iPad11,"[3-4]): "iPad Air 3" ;;
+                "iPad6,"[7-8]):  "iPad Pro (12.9 Inch)" ;;
+                "iPad6,"[3-4]):  "iPad Pro (9.7 Inch)" ;;
+                "iPad7,"[1-2]):  "iPad Pro 2 (12.9 Inch)" ;;
+                "iPad7,"[3-4]):  "iPad Pro (10.5 Inch)" ;;
+                "iPad8,"[1-4]):  "iPad Pro (11 Inch)" ;;
+                "iPad8,"[5-8]):  "iPad Pro 3 (12.9 Inch)" ;;
+                "iPad2,"[5-7]):  "iPad mini" ;;
+                "iPad4,"[4-6]):  "iPad mini 2" ;;
+                "iPad4,"[7-9]):  "iPad mini 3" ;;
+                "iPad5,"[1-2]):  "iPad mini 4" ;;
+                "iPad11,"[1-2]): "iPad mini 5" ;;
 
                 "iPhone1,1"):     "iPhone" ;;
                 "iPhone1,2"):     "iPhone 3G" ;;
@@ -1113,12 +1115,14 @@ get_model() {
                 "iPhone8,1"):     "iPhone 6s" ;;
                 "iPhone8,2"):     "iPhone 6s Plus" ;;
                 "iPhone8,4"):     "iPhone SE" ;;
-
-                "iPhone9,1"  | "iPhone9,3"):  "iPhone 7" ;;
-                "iPhone9,2"  | "iPhone9,4"):  "iPhone 7 Plus" ;;
-                "iPhone10,1" | "iPhone10,4"): "iPhone 8" ;;
-                "iPhone10,2" | "iPhone10,5"): "iPhone 8 Plus" ;;
-                "iPhone10,3" | "iPhone10,6"): "iPhone X" ;;
+                "iPhone9,"[13]):  "iPhone 7" ;;
+                "iPhone9,"[24]):  "iPhone 7 Plus" ;;
+                "iPhone10,"[14]): "iPhone 8" ;;
+                "iPhone10,"[25]): "iPhone 8 Plus" ;;
+                "iPhone10,"[36]): "iPhone X" ;;
+                "iPhone11,2"):    "iPhone XS" ;;
+                "iPhone11,"[46]): "iPhone XS Max" ;;
+                "iPhone11,8"):    "iPhone XR" ;;
 
                 "iPod1,1"): "iPod touch" ;;
                 "ipod2,1"): "iPod touch 2G" ;;
@@ -1873,8 +1877,14 @@ get_cpu() {
                 "iPhone5,"[1-4]): "Apple A6 (2) @ 1.3GHz" ;;
                 "iPhone6,"[1-2]): "Apple A7 (2) @ 1.3GHz" ;;
                 "iPhone7,"[1-2]): "Apple A8 (2) @ 1.4GHz" ;;
-                "iPhone8,"[1-4]): "Apple A9 (2) @ 1.85GHz" ;;
-                "iPhone9,"[1-4]): "Apple A10 Fusion (4) @ 2.34GHz" ;;
+                "iPhone8,"[1-4] | "iPad6,1"[12]): "Apple A9 (2) @ 1.85GHz" ;;
+                "iPhone9,"[1-4] | "iPad7,"[5-6]): "Apple A10 Fusion (4) @ 2.34GHz" ;;
+                "iPhone10,"[1-6]): "Apple A11 Bionic (6) @ 2.39GHz" ;;
+
+                "iPhone11,"[2468] | "iPad11,"[1-4])
+                    : "Apple A12 Bionic (6) @ 2.49GHz"
+                ;;
+
                 "iPod2,1"): "Samsung S5L8720 (1) @ 533MHz" ;;
                 "iPod3,1"): "Samsung S5L8922 (1) @ 600MHz" ;;
                 "iPod7,1"): "Apple A8 (2) @ 1.1GHz" ;;
@@ -1888,6 +1898,8 @@ get_cpu() {
                 "iPad5,"[3-4]): "Apple A8X (3) @ 1.5GHz" ;;
                 "iPad6,"[3-4]): "Apple A9X (2) @ 2.16GHz" ;;
                 "iPad6,"[7-8]): "Apple A9X (2) @ 2.26GHz" ;;
+                "iPad7,"[1-4]): "Apple A10X Fusion (6) @ 2.39GHz" ;;
+                "iPad8,"[1-8]): "Apple A12X Bionic (8) @ 2.49GHz" ;;
             esac
             cpu="$_"
         ;;
@@ -2181,13 +2193,13 @@ get_gpu() {
 
         "iPhone OS")
             case "$kernel_machine" in
-                "iPhone1,"[1-2]): "PowerVR MBX Lite 3D" ;;
-                "iPhone5,"[1-4]): "PowerVR SGX543MP3" ;;
-                "iPhone8,"[1-4]): "PowerVR GT7600" ;;
-                "iPad3,"[1-3]):   "PowerVR SGX534MP4" ;;
-                "iPad3,"[4-6]):   "PowerVR SGX554MP4" ;;
-                "iPad5,"[3-4]):   "PowerVR GXA6850" ;;
-                "iPad6,"[3-8]):   "PowerVR 7XT" ;;
+                "iPhone1,"[1-2]):   "PowerVR MBX Lite 3D" ;;
+                "iPhone5,"[1-4]):   "PowerVR SGX543MP3" ;;
+                "iPhone11,"[2468]): "G11P" ;;
+                "iPad3,"[1-3]):     "PowerVR SGX534MP4" ;;
+                "iPad3,"[4-6]):     "PowerVR SGX554MP4" ;;
+                "iPad5,"[3-4]):     "PowerVR GXA6850" ;;
+                "iPad6,"[3-8]):     "PowerVR 7XT" ;;
 
                 "iPhone2,1" | "iPhone3,"[1-3] | "iPod3,1" | "iPod4,1" | "iPad1,1")
                     : "PowerVR SGX535"
@@ -2203,6 +2215,14 @@ get_gpu() {
 
                 "iPhone7,"[1-2] | "iPod7,1" | "iPad5,"[1-2])
                     : "PowerVR GX6450"
+                ;;
+
+                "iPhone8,"[1-4] | "iPad6,1"[12])
+                    : "PowerVR GT7600"
+                ;;
+
+                "iPhone9,"[1-4] | "iPad7,"[5-6])
+                    : "PowerVR GT7600 Plus"
                 ;;
 
                 "iPod1,1" | "iPod2,1")
@@ -4199,11 +4219,15 @@ cache_uname() {
     kernel_machine="${uname[2]}"
 
     if [[ "$kernel_name" == "Darwin" ]]; then
-        IFS=$'\n' read -d "" -ra sw_vers < <(awk -F'<|>' '/string/ {print $3}' \
+        IFS=$'\n' read -d "" -ra sw_vers < <(awk -F'<|>' '/key|string/ {print $3}' \
                             "/System/Library/CoreServices/SystemVersion.plist")
-        darwin_name="${sw_vers[2]}"
-        osx_version="${sw_vers[3]}"
-        osx_build="${sw_vers[0]}"
+        for ((i=0;i<${#sw_vers[@]};i+=2)) {
+            case ${sw_vers[i]} in
+                ProductName)          darwin_name=${sw_vers[i+1]} ;;
+                ProductVersion)       osx_version=${sw_vers[i+1]} ;;
+                ProductBuildVersion)  osx_build=${sw_vers[i+1]}   ;;
+            esac
+        }
     fi
 }
 
