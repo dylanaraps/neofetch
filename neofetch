@@ -1330,7 +1330,6 @@ get_packages() {
             # shellcheck disable=SC2086
             {
             has "emerge"  && dir ${br_prefix}/var/db/pkg/*/*/
-            has "nix-env" && dir ${br_prefix}/nix/store/*/
             has "Compile" && dir ${br_prefix}/Programs/*/
             has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
             has "crew"    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
@@ -1341,7 +1340,16 @@ get_packages() {
 
             # Other (Needs complex command)
             has "kpm-pkg" && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
-            has "guix"    && ( manager="guix-system" && tot guix package -p /run/current-system/profile -I ; manager="guix-user" && tot guix package -I )
+
+            if has "guix"; then
+                manager="guix-system" && tot guix package -p "/run/current-system/profile" -I
+                manager="guix-user" && tot guix package -I
+            fi
+
+            if has "nix-store"; then
+                manager="nix-system" && tot nix-store -q --requisites "/run/current-system/sw"
+                manager="nix-user" && tot nix-store -q --requisites "$HOME/.nix-profile"
+            fi
 
             # pkginfo is also the name of a python package manager which is painfully slow.
             # TODO: Fix this somehow.
@@ -1371,7 +1379,11 @@ get_packages() {
             has "port"    && tot port installed && ((packages-=1))
             has "brew"    && dir /usr/local/Cellar/*
             has "pkgin"   && tot pkgin list
-            has "nix-env" && dir /nix/store/*/
+
+            if has "nix-store"; then
+                manager="nix-system" && tot nix-store -q --requisites "/run/current-system/sw"
+                manager="nix-user" && tot nix-store -q --requisites "$HOME/.nix-profile"
+            fi
         ;;
 
         "AIX"| "FreeMiNT")
@@ -1415,7 +1427,6 @@ get_packages() {
     fi
 
     packages="${packages/pacman-key/pacman}"
-    packages="${packages/nix-env/nix}"
 }
 
 get_shell() {
