@@ -2426,6 +2426,7 @@ get_song() {
         "mopidy"
         "mpd"
         "netease-cloud-music"
+        "plasma-browser-integration"
         "pogo"
         "pragha"
         "qmmp"
@@ -2486,7 +2487,8 @@ get_song() {
         "smplayer"*)      get_song_dbus "smplayer" ;;
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
         "strawberry"*)    get_song_dbus "strawberry" ;;
-        "netease-cloud-music"*) get_song_dbus "netease-cloud-music" ;;
+        "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
+        "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
