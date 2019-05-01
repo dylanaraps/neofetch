@@ -564,7 +564,7 @@ separator=":"
 # Color block range
 # The range of colors to print.
 #
-# Default:  '0', '7'
+# Default:  '0', '15'
 # Values:   'num'
 # Flag:     --block_range
 #
@@ -575,7 +575,7 @@ separator=":"
 #
 # Display colors 0-15 in the blocks. (16 colors)
 # neofetch --block_range 0 15
-block_range=(0 7)
+block_range=(0 15)
 
 # Toggle color blocks
 #
