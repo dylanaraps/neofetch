@@ -3939,13 +3939,10 @@ prin() {
         string="${2:-$1}"
         local subtitle_color="$info_color"
     fi
-    string="$(trim "${string//$'\e[0m'}")"
 
-    # Log length if it doesn't exist.
-    if [[ -z "$length" ]]; then
-        length="$(strip_sequences "$string")"
-        length="${#length}"
-    fi
+    string="$(trim "${string//$'\e[0m'}")"
+    length="$(strip_sequences "$string")"
+    length="${#length}"
 
     # Format the output.
     string="${string/:/${reset}${colon_color}${separator:=:}${info_color}}"
@@ -3962,14 +3959,14 @@ prin() {
 }
 
 get_underline() {
-    if [[ "$underline_enabled" == "on" ]]; then
+    [[ "$underline_enabled" == "on" ]] && {
         printf -v underline "%${length}s"
         printf '%b%b\n' "${text_padding:+\e[${text_padding}C}${zws}${underline_color}" \
                         "${underline// /$underline_char}${reset} "
-        unset -v length
-    fi
+    }
 
     ((++info_height))
+    length=
     prin=1
 }
 
@@ -4001,6 +3998,8 @@ trim_quotes() {
 
 strip_sequences() {
     strip="${1//$'\e['3[0-9]m}"
+    strip="${strip//$'\e['[0-9]m}"
+    strip="${strip//\\e\[[0-9]m}"
     strip="${strip//$'\e['38\;5\;[0-9]m}"
     strip="${strip//$'\e['38\;5\;[0-9][0-9]m}"
     strip="${strip//$'\e['38\;5\;[0-9][0-9][0-9]m}"
