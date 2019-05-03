@@ -2683,7 +2683,7 @@ get_style() {
 
         # Check for general GTK2 Theme.
         if [[ -z "$gtk2_theme" ]]; then
-            if [[ -n "${GTK2_RC_FILES}" ]]; then
+            if [[ -n "$GTK2_RC_FILES" ]]; then
                 IFS=: read -ra rc_files <<< "$GTK2_RC_FILES"
                 gtk2_theme="$(grep "^[^#]*${name}" "${rc_files[@]}")"
             elif [[ -f "${HOME}/.gtkrc-2.0"  ]]; then
