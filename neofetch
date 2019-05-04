@@ -449,6 +449,7 @@ disk_subtitle="mount"
 # exaile
 # gnome-music
 # gmusicbrowser
+# gogglesmm
 # guayadeque
 # iTunes
 # juk
@@ -2424,6 +2425,7 @@ get_song() {
         "exaile"
         "gnome-music"
         "gmusicbrowser"
+        "gogglesmm"
         "guayadeque"
         "iTunes"
         "juk"
@@ -2493,6 +2495,7 @@ get_song() {
         "smplayer"*)      get_song_dbus "smplayer" ;;
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
         "strawberry"*)    get_song_dbus "strawberry" ;;
+        "gogglesmm"*)     get_song_dbus "gogglesmm" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
 
