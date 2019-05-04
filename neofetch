@@ -470,6 +470,7 @@ disk_subtitle="mount"
 # tomahawk
 # vlc
 # xmms2d
+# xnoise
 # yarock
 music_player="auto"
 
@@ -2448,6 +2449,7 @@ get_song() {
         "tomahawk"
         "vlc"
         "xmms2d"
+        "xnoise"
         "yarock"
     )
 
@@ -2496,6 +2498,7 @@ get_song() {
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
         "strawberry"*)    get_song_dbus "strawberry" ;;
         "gogglesmm"*)     get_song_dbus "gogglesmm" ;;
+        "xnoise"*)        get_song_dbus "xnoise" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
 
