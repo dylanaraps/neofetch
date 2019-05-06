@@ -1189,6 +1189,12 @@ get_kernel() {
     # Since these OS are integrated systems, it's better to skip this function altogether
     [[ "$os" =~ (AIX|IRIX) ]] && return
 
+    # Haiku uses 'uname -v' and not - 'uname -r'.
+    [[ "$os" == HAIKU ]] && {
+        kernel=$(uname -v)
+        return
+    }
+
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
         "off") kernel="$kernel_name $kernel_version" ;;
@@ -1413,6 +1419,7 @@ get_packages() {
 
         "Haiku")
             has "pkgman" && dir /boot/system/package-links/*
+            packages=${packages/pkgman/depot}
         ;;
 
         "IRIX")
