@@ -1190,7 +1190,7 @@ get_kernel() {
     [[ "$os" =~ (AIX|IRIX) ]] && return
 
     # Haiku uses 'uname -v' and not - 'uname -r'.
-    [[ "$os" == HAIKU ]] && {
+    [[ "$os" == Haiku ]] && {
         kernel=$(uname -v)
         return
     }
