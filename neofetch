@@ -449,6 +449,7 @@ disk_subtitle="mount"
 # exaile
 # gnome-music
 # gmusicbrowser
+# gogglesmm
 # guayadeque
 # iTunes
 # juk
@@ -469,6 +470,7 @@ disk_subtitle="mount"
 # tomahawk
 # vlc
 # xmms2d
+# xnoise
 # yarock
 music_player="auto"
 
@@ -2431,6 +2433,7 @@ get_song() {
         "exaile"
         "gnome-music"
         "gmusicbrowser"
+        "gogglesmm"
         "guayadeque"
         "iTunes"
         "juk"
@@ -2453,6 +2456,7 @@ get_song() {
         "tomahawk"
         "vlc"
         "xmms2d"
+        "xnoise"
         "yarock"
     )
 
@@ -2500,6 +2504,8 @@ get_song() {
         "smplayer"*)      get_song_dbus "smplayer" ;;
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
         "strawberry"*)    get_song_dbus "strawberry" ;;
+        "gogglesmm"*)     get_song_dbus "gogglesmm" ;;
+        "xnoise"*)        get_song_dbus "xnoise" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
 
@@ -2732,8 +2738,11 @@ get_style() {
 
         # Check for general GTK2 Theme.
         if [[ -z "$gtk2_theme" ]]; then
-            if [[ -f "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}" ]]; then
-                gtk2_theme="$(grep "^[^#]*${name}" "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}")"
+            if [[ -n "$GTK2_RC_FILES" ]]; then
+                IFS=: read -ra rc_files <<< "$GTK2_RC_FILES"
+                gtk2_theme="$(grep "^[^#]*${name}" "${rc_files[@]}")"
+            elif [[ -f "${HOME}/.gtkrc-2.0"  ]]; then
+                gtk2_theme="$(grep "^[^#]*${name}" "${HOME}/.gtkrc-2.0")"
 
             elif [[ -f "/etc/gtk-2.0/gtkrc" ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" /etc/gtk-2.0/gtkrc)"
@@ -2743,7 +2752,7 @@ get_style() {
 
             fi
 
-            gtk2_theme="${gtk2_theme/${name}*=}"
+            gtk2_theme="${gtk2_theme/*${name}*=}"
         fi
 
         # Check for general GTK3 Theme.
