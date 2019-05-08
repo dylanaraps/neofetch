@@ -7898,24 +7898,26 @@ EOF
         ;;
 
         "Redhat"* | "Red Hat"* | "rhel"*)
-            set_colors 1 7 3
+            set_colors 1
             read -rd '' ascii_data <<'EOF'
-${c1}             `.-..........`
-            `////////::.`-/.
-            -: ....-////////.
-            //:-::///////////`
-     `--::: `-://////////////:
-     //////-    ``.-:///////// .`
-     `://////:-.`    :///////::///:`
-       .-/////////:---/////////////:
-          .-://////////////////////.
-${c2}         yMN+`.-${c1}::///////////////-`
-${c2}      .-`:NMMNMs`  `..-------..`
-       MN+/mMMMMMhoooyysshsss
-MMM    MMMMMMMMMMMMMMyyddMMM+
- MMMM   MMMMMMMMMMMMMNdyNMMh`     hyhMMM
-  MMMMMMMMMMMMMMMMyoNNNMMM+.   MMMMMMMM
-   MMNMMMNNMMMMMNM+ mhsMNyyyyMNMMMMsMM
+${c1}           .MMM..:MMMMMMM
+          MMMMMMMMMMMMMMMMMM
+          MMMMMMMMMMMMMMMMMMMM.
+         MMMMMMMMMMMMMMMMMMMMMM
+        ,MMMMMMMMMMMMMMMMMMMMMM:
+        MMMMMMMMMMMMMMMMMMMMMMMM
+  .MMMM'  MMMMMMMMMMMMMMMMMMMMMM
+ MMMMMM    `MMMMMMMMMMMMMMMMMMMM.
+MMMMMMMM      MMMMMMMMMMMMMMMMMM .
+MMMMMMMMM.       `MMMMMMMMMMMMM' MM.
+MMMMMMMMMMM.                     MMMM
+`MMMMMMMMMMMMM.                 ,MMMMM.
+ `MMMMMMMMMMMMMMMMM.          ,MMMMMMMM.
+    MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM:
+         MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+            `MMMMMMMMMMMMMMMMMMMMMMMM:
+                ``MMMMMMMMMMMMMMMMM'
 EOF
         ;;
 
