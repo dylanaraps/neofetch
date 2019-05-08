@@ -7897,6 +7897,28 @@ RRRR     RRRRRRRRRRRRRRRRRRR  R   RRRR
 EOF
         ;;
 
+        "redhat_old")
+            set_colors 1 7 3
+            read -rd '' ascii_data <<'EOF'
+${c1}             `.-..........`
+            `////////::.`-/.
+            -: ....-////////.
+            //:-::///////////`
+     `--::: `-://////////////:
+     //////-    ``.-:///////// .`
+     `://////:-.`    :///////::///:`
+       .-/////////:---/////////////:
+          .-://////////////////////.
+${c2}         yMN+`.-${c1}::///////////////-`
+${c2}      .-`:NMMNMs`  `..-------..`
+       MN+/mMMMMMhoooyysshsss
+MMM    MMMMMMMMMMMMMMyyddMMM+
+ MMMM   MMMMMMMMMMMMMNdyNMMh`     hyhMMM
+  MMMMMMMMMMMMMMMMyoNNNMMM+.   MMMMMMMM
+   MMNMMMNNMMMMMNM+ mhsMNyyyyMNMMMMsMM
+EOF
+        ;;
+
         "Redhat"* | "Red Hat"* | "rhel"*)
             set_colors 1
             read -rd '' ascii_data <<'EOF'
