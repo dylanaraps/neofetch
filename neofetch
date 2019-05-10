@@ -6437,25 +6437,33 @@ WW                           W
 EOF
         ;;
 
-        "januslinux"*|"janus"*)
-            set_colors 4 7 4
+        "januslinux"*|"janus"*|"Ataraxia Linux"*|"Ataraxia"*)
+            set_colors 4 5 6 2
             read -rd '' ascii_data <<'EOF'
-${c1}oooooooooooooooooooooooooooooooo
-oooooooooooooooooooooooooooooooo
-oooooooooooooooooooooooooooooooo
-ooooooooooooo${c2}dOWWOd${c1}ooooooooooooo
-oooooooooood${c2}0WMMMMWkd${c1}ooooooooooo
-oooooooood${c2}0WMMMMMX0KN0d${c1}oooolllll
-ooooooo${c2}xKWMMMMWKxKWMMMWKx${c3}lllllll
-ooooo${c2}xXMMMMMW0doooOWMMMMMXx${c3}lllll
-ooooo${c2}xXMMMMMW0doloONMMMMMXx${c3}lllll
-ooooooo${c2}xKWMMMWXO0WMMMMMKx${c3}lllllll
-ooooooooo${c2}d0NX0KWMMMMW0d${c3}lllllllll
-oooooooooooo${c2}xWMMMMW0o${c3}llllllccccc
-oooooooooooll${c2}o0WW0o${c3}lllllcccccccc
-ooooooooooollll${c2}oo${c3}llllllccccccccc
-oooooooooollllllllllllcccccccccc
-oooooooooollllllllllllcccccccccc
+${c1}               'l:
+        loooooo
+          loooo coooool
+ looooooooooooooooooool
+  looooooooooooooooo
+         lool   cooo
+        coooooooloooooooo
+     clooooo  ;lood  cloooo
+  :loooocooo cloo      loooo
+ loooo  :ooooool       loooo
+looo    cooooo        cooooo
+looooooooooooo      ;loooooo ${c2}looooooc
+${c1}looooooooo loo   cloooooool    ${c2}looooc
+${c1} cooo       cooooooooooo       ${c2}looolooooool
+${c1}            cooo:     ${c2}coooooooooooooooooool
+                       loooooooooooolc:   loooc;
+                             cooo:    loooooooooooc
+                            ;oool         looooooo:
+                           coool          olc,
+                          looooc   ,,
+                        coooooc    loc
+                       :oooool,    coool:, looool:,
+                       looool:      ooooooooooooooo:
+                       cooolc        .ooooooooooool
 EOF
         ;;
 
