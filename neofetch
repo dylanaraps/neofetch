@@ -1337,6 +1337,7 @@ get_packages() {
             has "sorcery"    && tot gaze installed
             has "alps"       && tot alps showinstalled
             has "butch"      && tot butch list
+			has "shoppe"     && tot shoppe query list +rq
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
