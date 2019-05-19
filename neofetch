@@ -4850,6 +4850,8 @@ ${c1}              .,-:;//;:=,
                =++%%%%+/:-.
 
 EOF
+        ;;
+
         "AIX"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
