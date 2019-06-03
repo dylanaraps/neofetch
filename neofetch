@@ -2135,9 +2135,9 @@ get_gpu() {
     case "$os" in
         "Linux")
             # Read GPUs into array.
-            gpu_cmd="$(lspci -mm | awk -F '\\"|\\" \\"|\\(' \
-                                          '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END {for(i in a)
-                                           {if(!seen[a[i]]++) print a[i]}}')"
+            gpu_cmd="$(lspci -mm | awk -F '\"|\" \"|\\(' \
+                                          '/"Display|"3D|"VGA/ {a[$0] = $1 " " $3 " " $4}
+                                           END {for(i in a) {if(!seen[a[i]]++) print a[i]}}')"
             IFS=$'\n' read -d "" -ra gpus <<< "$gpu_cmd"
 
             # Remove duplicate Intel Graphics outputs.
