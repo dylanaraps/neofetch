@@ -2981,7 +2981,7 @@ END
             kitty_config="$(kitty --debug-config)"
             [[ "$kitty_config" != *font_family* ]] && return
 
-            term_font="$(awk '/^font_family|^font_size/ {printf $2 " "}' <<< "$kitty_config")"
+            term_font="$(awk '/^font_family|^font_size/ {$1="";gsub("^ *","",$0);print $0}' <<< "$kitty_config")"
         ;;
 
         "konsole" | "yakuake")
