@@ -1370,7 +1370,7 @@ get_packages() {
             has pkginfo && tot pkginfo -i
 
             case "$kernel_name" in
-                "FreeBSD") has "pkg" && tot pkg info ;;
+                "FreeBSD"|"DragonFly") has "pkg" && tot pkg info ;;
                 *)
                     has "pkg" && dir /var/db/pkg/*
 
