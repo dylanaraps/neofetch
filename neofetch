@@ -2135,9 +2135,9 @@ get_gpu() {
     case "$os" in
         "Linux")
             # Read GPUs into array.
-            gpu_cmd="$(lspci -mm | awk -F '\\"|\\" \\"|\\(' \
-                                          '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END {for(i in a)
-                                           {if(!seen[a[i]]++) print a[i]}}')"
+            gpu_cmd="$(lspci -mm | awk -F '\"|\" \"|\\(' \
+                                          '/"Display|"3D|"VGA/ {a[$0] = $1 " " $3 " " $4}
+                                           END {for(i in a) {if(!seen[a[i]]++) print a[i]}}')"
             IFS=$'\n' read -d "" -ra gpus <<< "$gpu_cmd"
 
             # Remove duplicate Intel Graphics outputs.
@@ -2981,7 +2981,8 @@ END
             kitty_config="$(kitty --debug-config)"
             [[ "$kitty_config" != *font_family* ]] && return
 
-            term_font="$(awk '/^font_family|^font_size/ {printf $2 " "}' <<< "$kitty_config")"
+            term_font="$(awk '/^font_family|^font_size/ {$1="";gsub("^ *","",$0);print $0}' \
+                         <<< "$kitty_config")"
         ;;
 
         "konsole" | "yakuake")
@@ -3369,6 +3370,11 @@ get_public_ip() {
     if type -p dig >/dev/null; then
         public_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com)"
        [[ "$public_ip" =~ ^\; ]] && unset public_ip
+    fi
+
+    if [[ -z "$public_ip" ]] && type -p drill >/dev/null; then
+        public_ip="$(drill myip.opendns.com @resolver1.opendns.com | \
+                     awk '/^myip\./ && $3 == "IN" {print $5}')"
     fi
 
     if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
@@ -6437,25 +6443,33 @@ WW                           W
 EOF
         ;;
 
-        "januslinux"*|"janus"*)
-            set_colors 4 7 4
+        "januslinux"*|"janus"*|"Ataraxia Linux"*|"Ataraxia"*)
+            set_colors 4 5 6 2
             read -rd '' ascii_data <<'EOF'
-${c1}oooooooooooooooooooooooooooooooo
-oooooooooooooooooooooooooooooooo
-oooooooooooooooooooooooooooooooo
-ooooooooooooo${c2}dOWWOd${c1}ooooooooooooo
-oooooooooood${c2}0WMMMMWkd${c1}ooooooooooo
-oooooooood${c2}0WMMMMMX0KN0d${c1}oooolllll
-ooooooo${c2}xKWMMMMWKxKWMMMWKx${c3}lllllll
-ooooo${c2}xXMMMMMW0doooOWMMMMMXx${c3}lllll
-ooooo${c2}xXMMMMMW0doloONMMMMMXx${c3}lllll
-ooooooo${c2}xKWMMMWXO0WMMMMMKx${c3}lllllll
-ooooooooo${c2}d0NX0KWMMMMW0d${c3}lllllllll
-oooooooooooo${c2}xWMMMMW0o${c3}llllllccccc
-oooooooooooll${c2}o0WW0o${c3}lllllcccccccc
-ooooooooooollll${c2}oo${c3}llllllccccccccc
-oooooooooollllllllllllcccccccccc
-oooooooooollllllllllllcccccccccc
+${c1}               'l:
+        loooooo
+          loooo coooool
+ looooooooooooooooooool
+  looooooooooooooooo
+         lool   cooo
+        coooooooloooooooo
+     clooooo  ;lood  cloooo
+  :loooocooo cloo      loooo
+ loooo  :ooooool       loooo
+looo    cooooo        cooooo
+looooooooooooo      ;loooooo ${c2}looooooc
+${c1}looooooooo loo   cloooooool    ${c2}looooc
+${c1} cooo       cooooooooooo       ${c2}looolooooool
+${c1}            cooo:     ${c2}coooooooooooooooooool
+                       loooooooooooolc:   loooc;
+                             cooo:    loooooooooooc
+                            ;oool         looooooo:
+                           coool          olc,
+                          looooc   ,,
+                        coooooc    loc
+                       :oooool,    coool:, looool:,
+                       looool:      ooooooooooooooo:
+                       cooolc        .ooooooooooool
 EOF
         ;;
 
