@@ -2887,9 +2887,9 @@ get_term() {
                 term="${name##*/}"
 
                 # Fix wrapper names in NixOS.
-                [[ "$term" == .*-wrap* ]] && {
+                [[ "$distro" == NixOS* && $term == .*-* ]] && {
                    term="${term#.}"
-                   term="${term%-wrap*}"
+                   term="${term%-*}"
                 }
             ;;
         esac
