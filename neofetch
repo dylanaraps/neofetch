@@ -2882,7 +2882,16 @@ get_term() {
             "urxvtd")          term="urxvt" ;;
             *"nvim")           term="Neovim Terminal" ;;
             *"NeoVimServer"*)  term="VimR Terminal" ;;
-            *)                 term="${name##*/}" ;;
+
+            *)
+                term="${name##*/}"
+
+                # Fix wrapper names in NixOS.
+                [[ "$term" == .*-wrapped ]] && {
+                   term="${term#.}"
+                   term="${term%-wrapped}"
+                }
+            ;;
         esac
     done
 
