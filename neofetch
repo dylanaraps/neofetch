@@ -2884,12 +2884,15 @@ get_term() {
             *"NeoVimServer"*)  term="VimR Terminal" ;;
 
             *)
+                # Fix issues with long process names on Linux.
+                [[ $os == Linux ]] && term=$(realpath "/proc/$parent/exe")
+
                 term="${name##*/}"
 
                 # Fix wrapper names in NixOS.
-                [[ "$distro" == NixOS* && $term == .*-* ]] && {
+                [[ $term == .*-wrapped ]] && {
                    term="${term#.}"
-                   term="${term%-*}"
+                   term="${term%-wrapped}"
                 }
             ;;
         esac
