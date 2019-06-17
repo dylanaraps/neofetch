@@ -1392,6 +1392,7 @@ get_packages() {
 
         "Mac OS X" | "MINIX")
             has "port"    && tot port installed && ((packages-=1))
+            has "nvs"    && tot dpkg-query -f '.\n' -W
             has "brew"    && dir /usr/local/Cellar/*
             has "pkgin"   && tot pkgin list
 
