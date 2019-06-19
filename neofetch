@@ -1343,6 +1343,7 @@ get_packages() {
             # $br_prefix is fixed and won't change based on user input so this is safe either way.
             # shellcheck disable=SC2086
             {
+            shopt -s nullglob
             has "emerge"  && dir ${br_prefix}/var/db/pkg/*/*/
             has "Compile" && dir ${br_prefix}/Programs/*/
             has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
@@ -1350,6 +1351,7 @@ get_packages() {
             has "pkgtool" && dir ${br_prefix}/var/log/packages/*
             has "cave"    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
                                  ${br_prefix}/var/db/paludis/repositories/installed/data/*/
+            shopt -u nullglob
             }
 
             # Other (Needs complex command)
