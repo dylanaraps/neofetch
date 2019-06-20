@@ -883,12 +883,6 @@ get_distro() {
                     *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
                 esac
 
-            elif type -p guix >/dev/null; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="GuixSD" ;;
-                    *) distro="GuixSD $(guix system -V | awk 'NR==1{printf $5}')"
-                esac
-
             elif type -p crux >/dev/null; then
                 distro="$(crux)"
                 case "$distro_shorthand" in
@@ -928,6 +922,13 @@ get_distro() {
                     "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
                     "off")  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
+
+            elif type -p guix >/dev/null; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="GuixSD" ;;
+                    *) distro="GuixSD $(guix system -V | awk 'NR==1{printf $5}')"
+                esac
+
             else
                 for release_file in /etc/*-release; do
                     distro+="$(< "$release_file")"
