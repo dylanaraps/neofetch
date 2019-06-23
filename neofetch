@@ -559,6 +559,12 @@ underline_char="-"
 # separator=" =":   'WM = dwm'
 separator=":"
 
+# Align Text
+#
+# Default: 'off'
+# Values: 'on', 'off'
+# Flag: --align-output
+align_output="off"
 
 # Color Blocks
 
@@ -1626,11 +1632,12 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm')"
+                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm\|[y]abai')"
 
                 case "$ps_line" in
                     *"chunkwm"*)   wm="chunkwm" ;;
                     *"kwm"*)       wm="Kwm" ;;
+                    *"yabai"*)     wm="yabai" ;;
                     *"Amethyst"*)  wm="Amethyst" ;;
                     *"Spectacle"*) wm="Spectacle" ;;
                     *)             wm="Quartz Compositor" ;;
@@ -3977,27 +3984,31 @@ prin() {
     if [[ "$(trim "$1")" && "$2" ]]; then
         [[ "$json" ]] && { printf '    %s\n' "\"${1}\": \"${2}\","; return; }
 
-        string="${1}${2:+: $2}"
+        string="${1}"
     else
-        string="${2:-$1}"
+	    string="${2:-$1}"
         local subtitle_color="$info_color"
     fi
-
     string="$(trim "${string//$'\e[0m'}")"
     length="$(strip_sequences "$string")"
     length="${#length}"
 
-    # Format the output.
+    # # Format the output.
     string="${string/:/${reset}${colon_color}${separator:=:}${info_color}}"
-    string="${subtitle_color}${bold}${string}"
+	string="${subtitle_color}${bold}${string}"
 
-    # Print the info.
-    printf '%b\n' "${text_padding:+\e[${text_padding}C}${zws}${string//\\n}${reset} "
+	printf '%b' "${text_padding:+\e[${text_padding}C}${zws}"
+	case "$align_output" in
+		"left")  printf '%-0*b' $((text_padding-((2*gap))+1)) "${string}${separator} " ;;
+		"right") printf '%+0*b' $((text_padding-((2*gap))+1)) "${string}${separator} " ;;
+		"off") printf '%b' "${string}${separator} " ;;
+	esac
+	printf '%b\n' "${reset}${2}"
 
-    # Calculate info height.
+    # # Calculate info height.
     ((++info_height))
 
-    # Log that prin was used.
+    # # Log that prin was used.
     prin=1
 }
 
@@ -4451,6 +4462,7 @@ TEXT FORMATTING:
     --underline_char char       Character to use when underlining title
     --bold on/off               Enable/Disable bold text
     --separator string          Changes the default ':' separator to the specified string.
+	--align_output              Aligns the text output to the separator string
 
 COLOR BLOCKS:
     --color_blocks on/off       Enable/Disable the color blocks
@@ -4644,7 +4656,8 @@ get_args() {
             "--underline") underline_enabled="$2" ;;
             "--underline_char") underline_char="$2" ;;
             "--bold") bold="$2" ;;
-            "--separator") separator="$2" ;;
+            "--separator") separator="$2";;
+			"--align_output") align_output="$2";;
 
             # Color Blocks
             "--color_blocks") color_blocks="$2" ;;
