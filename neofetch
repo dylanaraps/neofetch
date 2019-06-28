@@ -8972,8 +8972,8 @@ main() {
     eval "$config"
 
     get_args "$@"
-    get_simple "$@"
     [[ "$verbose" != "on" ]] && exec 2>/dev/null
+    get_simple "$@"
     get_distro
     get_bold
     get_distro_ascii
