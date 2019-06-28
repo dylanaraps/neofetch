@@ -883,12 +883,6 @@ get_distro() {
                     *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
                 esac
 
-            elif type -p guix >/dev/null; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="GuixSD" ;;
-                    *) distro="GuixSD $(guix system -V | awk 'NR==1{printf $5}')"
-                esac
-
             elif type -p crux >/dev/null; then
                 distro="$(crux)"
                 case "$distro_shorthand" in
@@ -928,6 +922,13 @@ get_distro() {
                     "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
                     "off")  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
+
+            elif type -p guix >/dev/null; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="GuixSD" ;;
+                    *) distro="GuixSD $(guix system -V | awk 'NR==1{printf $5}')"
+                esac
+
             else
                 for release_file in /etc/*-release; do
                     distro+="$(< "$release_file")"
@@ -1343,6 +1344,7 @@ get_packages() {
             # $br_prefix is fixed and won't change based on user input so this is safe either way.
             # shellcheck disable=SC2086
             {
+            shopt -s nullglob
             has "emerge"  && dir ${br_prefix}/var/db/pkg/*/*/
             has "Compile" && dir ${br_prefix}/Programs/*/
             has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
@@ -1350,6 +1352,7 @@ get_packages() {
             has "pkgtool" && dir ${br_prefix}/var/log/packages/*
             has "cave"    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
                                  ${br_prefix}/var/db/paludis/repositories/installed/data/*/
+            shopt -u nullglob
             }
 
             # Other (Needs complex command)
@@ -1623,11 +1626,12 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm')"
+                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm\|[y]abai')"
 
                 case "$ps_line" in
                     *"chunkwm"*)   wm="chunkwm" ;;
                     *"kwm"*)       wm="Kwm" ;;
+                    *"yabai"*)     wm="yabai" ;;
                     *"Amethyst"*)  wm="Amethyst" ;;
                     *"Spectacle"*) wm="Spectacle" ;;
                     *)             wm="Quartz Compositor" ;;
