@@ -3999,11 +3999,11 @@ prin() {
 
 	printf '%b' "${text_padding:+\e[${text_padding}C}${zws}"
 	case "$align_output" in
-		"left")  printf '%-0*b' $((text_padding-((2*gap))+1)) "${string}${separator} " ;;
-		"right") printf '%+0*b' $((text_padding-((2*gap))+1)) "${string}${separator} " ;;
+		"left")  printf '%-0*b' $((text_padding-16)) "${string}${separator} " ;;
+		"right") printf '%+0*b' $((text_padding-16)) "${string}${separator} " ;;
 		"off") printf '%b' "${string}${separator} " ;;
 	esac
-	printf '%b\n' "${reset}${2}"
+	printf '%b\n' "${reset}${2}${text_padding}"
 
     # # Calculate info height.
     ((++info_height))
