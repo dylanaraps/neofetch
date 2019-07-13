@@ -3996,11 +3996,16 @@ prin() {
     # # Format the output.
     string="${string/:/${reset}${colon_color}${separator:=:}${info_color}}"
 	string="${subtitle_color}${bold}${string}"
+	separator_length="${#separator}"
+	separator_offset=$((separator_length-1))
+	longest_string_offset=$((28+separator_offset))
+	offset=$((term_padding-longest_string_offset))
+	offset=$((term_padding-offset))
 
 	printf '%b' "${text_padding:+\e[${text_padding}C}${zws}"
 	case "$align_output" in
-		"left")  printf '%-0*b' $((25)) "${string}${separator} " ;;
-		"right") printf '%+0*b' $((25)) "${string}${separator} " ;;
+		"left")  printf '%-0*b' $offset "${string}${separator} " ;;
+		"right") printf '%+0*b' $offset "${string}${separator} " ;;
 		"off") printf '%b' "${string}${separator} " ;;
 	esac
 	printf '%b\n' "${reset}${2}"
