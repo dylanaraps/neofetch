@@ -3999,8 +3999,8 @@ prin() {
 
 	printf '%b' "${text_padding:+\e[${text_padding}C}${zws}"
 	case "$align_output" in
-		"left")  printf '%-0*b' $offset "${string}${separator} " ;;
-		"right") printf '%+0*b' $offset "${string}${separator} " ;;
+		"left")  printf '%-0*b' "$offset" "${string}${separator} " ;;
+		"right") printf '%+0*b' "$offset" "${string}${separator} " ;;
 		"off") printf '%b' "${string}${separator} " ;;
 	esac
 	printf '%b\n' "${reset}${2}"
@@ -8984,8 +8984,8 @@ get_offset() {
 	separator_length="${#separator}"
 	separator_offset=$((separator_length-1))
 	longest_string_offset=$((28+separator_offset))
-	offset=$((term_padding-longest_string_offset))
-	offset=$((term_padding-offset))
+	offset=$((text_padding-longest_string_offset))
+	offset=$((text_padding-offset))
 	echo $offset
 }
 
