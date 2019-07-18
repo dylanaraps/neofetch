@@ -1351,6 +1351,7 @@ get_packages() {
             has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
             has "crew"    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
             has "pkgtool" && dir ${br_prefix}/var/log/packages/*
+            has "kagami"  && dir ${br_prefix}/var/lib/kagami/pkgs/*
             has "cave"    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
                                  ${br_prefix}/var/db/paludis/repositories/installed/data/*/
             shopt -u nullglob
