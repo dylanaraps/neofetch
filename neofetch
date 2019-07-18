@@ -8116,24 +8116,19 @@ EOF
         "SailfishOS"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
-${c1}              .+eWWW
-          .+ee+++eee      e.
-       .ee++eeeeeeee    +e.
-     .e++ee++eeeeeee+eee+e+
-    ee.e+.ee+eee++eeeeee+
-   W.+e.e+.e++ee+eee
-  W.+e.W.ee.W++ee'
- +e.W W.e+.W.W+
- W.e.+e.W W W.
- e e e +e.W.W
-       .W W W.
-        W.+e.W.
-         W++e.ee+.
-          ++ +ee++eeeee++.
-          '     '+++e   'ee.
-                           ee
-                            ee
-                             e
+                 _a@b
+              _#b (b
+            _@@   @_         _,
+          _#^@ _#*^^*gg,aa@^^
+          #- @@^  _a@^^
+          @_  *g#b
+          ^@_   ^@_
+            ^@_   @
+             @(b (b
+            #b(b#^
+          _@_#@^
+       _a@a*^
+   ,a@*^
 EOF
         ;;
 
