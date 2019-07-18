@@ -6110,7 +6110,7 @@ EOF
         ;;
 
         "Feren"*)
-            set_colors 6 6 7 1
+            set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1} `----------`
  :+ooooooooo+.
