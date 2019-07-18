@@ -8114,7 +8114,7 @@ ${c1}            ...........
 EOF
         ;;
 
-        "SailfishOS"*)
+        "Sailfish"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
                  _a@b
