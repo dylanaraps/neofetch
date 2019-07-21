@@ -1516,6 +1516,7 @@ get_de() {
                 de="${XDG_CURRENT_DESKTOP/X\-}"
                 de="${de/Budgie:GNOME/Budgie}"
                 de="${de/:Unity7:ubuntu}"
+                de="${de/KDE/Plasma}"
 
             elif [[ "$DESKTOP_SESSION" ]]; then
                 de="${DESKTOP_SESSION##*/}"
@@ -1544,7 +1545,7 @@ get_de() {
 
     # Format strings.
     case "$de" in
-        "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
+        "KDE_SESSION_VERSION"*) de="Plasma${de/* = }" ;;
         *"xfce4"*) de="Xfce4" ;;
         *"xfce5"*) de="Xfce5" ;;
         *"xfce"*)  de="Xfce" ;;
