@@ -1516,7 +1516,6 @@ get_de() {
                 de="${XDG_CURRENT_DESKTOP/X\-}"
                 de="${de/Budgie:GNOME/Budgie}"
                 de="${de/:Unity7:ubuntu}"
-                de="${de/KDE/Plasma}"
 
             elif [[ "$DESKTOP_SESSION" ]]; then
                 de="${DESKTOP_SESSION##*/}"
@@ -1529,6 +1528,10 @@ get_de() {
 
             elif [[ "$TDE_FULL_SESSION" ]]; then
                 de="Trinity"
+            fi
+
+            if [ "$KDE_SESSION_VERSION" -ge "4" ]; then
+                de="${de/KDE/Plasma}"
             fi
 
             # When a window manager is started from a display manager
