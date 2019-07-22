@@ -1530,10 +1530,6 @@ get_de() {
                 de="Trinity"
             fi
 
-            if [ "$KDE_SESSION_VERSION" -ge "4" ]; then
-                de="${de/KDE/Plasma}"
-            fi
-
             # When a window manager is started from a display manager
             # the desktop variables are sometimes also set to the
             # window manager name. This checks to see if WM == DE
@@ -1548,7 +1544,7 @@ get_de() {
 
     # Format strings.
     case "$de" in
-        "KDE_SESSION_VERSION"*) de="Plasma${de/* = }" ;;
+        "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
         *"xfce4"*) de="Xfce4" ;;
         *"xfce5"*) de="Xfce5" ;;
         *"xfce"*)  de="Xfce" ;;
@@ -1564,6 +1560,9 @@ get_de() {
         ;;
     esac
 
+    if [ "$KDE_SESSION_VERSION" -ge "4" ]; then
+        de="${de/KDE/Plasma}"
+    fi
     # Log that the function was run.
     de_run=1
 }
