@@ -1560,9 +1560,7 @@ get_de() {
         ;;
     esac
 
-    if (( "$KDE_SESSION_VERSION" >= "4" )); then
-        de="${de/KDE/Plasma}"
-    fi
+    (( "$KDE_SESSION_VERSION" >= "4" )) && de="${de/KDE/Plasma}"
 
     # Log that the function was run.
     de_run=1
