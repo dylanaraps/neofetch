@@ -1460,7 +1460,7 @@ get_shell() {
             "bash") shell+="${BASH_VERSION/-*}" ;;
             "sh" | "ash" | "dash") ;;
 
-            "mksh" | "ksh")
+            *"ksh")
                 shell+="$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")"
                 shell="${shell/ * KSH}"
                 shell="${shell/version}"
