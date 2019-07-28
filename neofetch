@@ -1021,7 +1021,7 @@ get_distro() {
         ;;
 
         "Haiku")
-            read -r name version _ < <(uname -sv)
+            read -r name version _ <<< "$(uname -sv)"
             distro="$name $version"
         ;;
 
@@ -1309,12 +1309,12 @@ get_packages() {
     has() { type -p "$1" >/dev/null && manager="$_"; }
     dir() { ((packages+=$#)); pac "$#"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
-    tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
+    tot() { IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
 
     # Redefine tot() for Bedrock Linux.
     [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]] && {
         tot() {
-            IFS=$'\n' read -d "" -ra pkgs < <(for s in $(brl list); do strat -r "$s" "$@"; done)
+            IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in $(brl list); do strat -r "$s" "$@"; done)"
             ((packages+="${#pkgs[@]}"))
             pac "${#pkgs[@]}"
         }
@@ -2674,7 +2674,7 @@ get_resolution() {
 
             elif type -p xwininfo >/dev/null; then
                 read -r w h \
-                    < <(xwininfo -root | awk -F':' '/Width|Height/ {printf $2}')
+                    <<< "$(xwininfo -root | awk -F':' '/Width|Height/ {printf $2}')"
                 resolution="${w}x${h}"
 
             elif type -p xdpyinfo >/dev/null; then
@@ -3010,10 +3010,10 @@ END
             child="$(get_ppid "$$")"
 
             IFS=$'\n' read -d "" -ra konsole_instances \
-                < <(qdbus | awk '/org.kde.konsole/ {print $1}')
+                <<< "$(qdbus | awk '/org.kde.konsole/ {print $1}')"
 
             for i in "${konsole_instances[@]}"; do
-                IFS=$'\n' read -d "" -ra konsole_sessions < <(qdbus "$i" | grep -F '/Sessions/')
+                IFS=$'\n' read -d "" -ra konsole_sessions <<< "$(qdbus "$i" | grep -F '/Sessions/')"
 
                 for session in "${konsole_sessions[@]}"; do
                     if ((child == "$(qdbus "$i" "$session" processId)")); then
@@ -3690,12 +3690,13 @@ get_window_size() {
     # This functions gets the current window size in
     # pixels.
     [[ "$image_backend" == "kitty" ]] &&
-        IFS=x read -r term_width term_height < <(kitty +kitten icat --print-window-size)
+        IFS=x read -r term_width term_height <<< "$(kitty +kitten icat --print-window-size)"
 
     # Get terminal width/height.
     if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         if type -p xdotool &>/dev/null; then
-            IFS=$'\n' read -d "" -ra win < <(xdotool getactivewindow getwindowgeometry --shell %1)
+            IFS=$'\n' read -d "" -ra win \
+                <<< "$(xdotool getactivewindow getwindowgeometry --shell %1)"
             term_width="${win[3]/WIDTH=}"
             term_height="${win[4]/HEIGHT=}"
 
@@ -3731,7 +3732,7 @@ get_window_size() {
 
 get_term_size() {
     # Get the terminal size in cells.
-    read -r lines columns < <(stty size)
+    read -r lines columns <<< "$(stty size)"
 
     # Calculate font size.
     font_width="$((term_width / columns))"
@@ -4282,8 +4283,8 @@ cache_uname() {
     kernel_machine="${uname[2]}"
 
     if [[ "$kernel_name" == "Darwin" ]]; then
-        IFS=$'\n' read -d "" -ra sw_vers < <(awk -F'<|>' '/key|string/ {print $3}' \
-                            "/System/Library/CoreServices/SystemVersion.plist")
+        IFS=$'\n' read -d "" -ra sw_vers <<< "$(awk -F'<|>' '/key|string/ {print $3}' \
+                            "/System/Library/CoreServices/SystemVersion.plist")"
         for ((i=0;i<${#sw_vers[@]};i+=2)) {
             case ${sw_vers[i]} in
                 ProductName)          darwin_name=${sw_vers[i+1]} ;;
