@@ -1339,6 +1339,7 @@ get_packages() {
             has "sorcery"    && tot gaze installed
             has "alps"       && tot alps showinstalled
             has "butch"      && tot butch list
+            has "bonsai"     && tot bonsai list
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
@@ -5457,6 +5458,28 @@ ${c1}              oMMNMMMMMMMMMMMMMMMMMMMMMM
               oNNNNNNm${c2}dso${c1}mMMMMMMMMMMMMMM
 EOF
         ;;
+
+       "bonsai"*)
+           set_colors 6 2 3
+           read -rd '' ascii_data <<'EOF'
+${c2}   ,####,    
+   ${c2}#######,  ${c2},#####,
+   ${c2}#####',#  ${c2}'######
+    ${c2}''###'${c3}';,,,'${c2}###'
+   ${c3}       ,;  ''''
+   ${c3}      ;;;   ${c2},#####,
+   ${c3}     ;;;'  ,,;${c2};;###
+   ${c3}     ';;;;''${c2}'####'
+   ${c3}      ;;;     
+   ${c3}   ,.;;';'',,,
+   ${c3}  '     '
+${c1} #                        
+ #                        O
+ ##, ,##,',##, ,##  ,#,   ,
+ # # #  # #''# #,,  # #   #
+ '#' '##' #  #  ,,# '##;, #
+EOF
+       ;;
 
        "BSD")
             set_colors 1 7 4 3 6
