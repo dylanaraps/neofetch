@@ -1309,7 +1309,7 @@ get_packages() {
     has() { type -p "$1" >/dev/null && manager="$_"; }
     dir() { ((packages+=$#)); pac "$#"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
-    tot() { IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
+    tot() { IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";((packages+=${#pkgs[@]}));pac "${#pkgs[@]}";}
 
     # Redefine tot() for Bedrock Linux.
     [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]] && {
