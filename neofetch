@@ -3864,7 +3864,7 @@ display_image() {
         ;;
 
         "chafa")
-            chafa --size="$((width / font_width))x$((height / font_height))" "$image"
+            chafa --stretch --size="$((width / font_width))x$((height / font_height))" "$image"
         ;;
 
         "jp2a")
