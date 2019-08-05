@@ -1347,6 +1347,7 @@ get_packages() {
             # shellcheck disable=SC2086
             {
             shopt -s nullglob
+            has "brew"    && dir $(brew --cellar)/*
             has "emerge"  && dir ${br_prefix}/var/db/pkg/*/*/
             has "Compile" && dir ${br_prefix}/Programs/*/
             has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
