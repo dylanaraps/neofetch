@@ -1631,7 +1631,7 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm\|[y]abai')"
+                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm\|[y]abai\|[R]ectangle')"
 
                 case "$ps_line" in
                     *"chunkwm"*)   wm="chunkwm" ;;
@@ -1639,6 +1639,7 @@ get_wm() {
                     *"yabai"*)     wm="yabai" ;;
                     *"Amethyst"*)  wm="Amethyst" ;;
                     *"Spectacle"*) wm="Spectacle" ;;
+                    *"Rectangle"*) wm="Rectangle" ;;
                     *)             wm="Quartz Compositor" ;;
                 esac
             ;;
