@@ -1642,7 +1642,7 @@ get_wm() {
 
                 regex_part=$( IFS='|'; echo "${wm_names[*]}" )
 
-                ps_line=$(ps -e | grep -Eio "$regex_part")
+                ps_line=$(ps -e | grep -Eo "$regex_part")
 
                 case "$ps_line" in
                     *"chunkwm"*)   wm="chunkwm" ;;
