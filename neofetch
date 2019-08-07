@@ -1631,7 +1631,18 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm\|[y]abai\|[R]ectangle')"
+                wm_names=(
+                    "[S]pectacle"
+                    "[A]methyst"
+                    "[k]wm"
+                    "[c]chun[k]wm"
+                    "[y]abai"
+                    "[R]ectangle"
+                )
+
+                regex_part=$( IFS='|'; echo "${wm_names[*]}" )
+
+                ps_line=$(ps -e | grep -Eio "$regex_part")
 
                 case "$ps_line" in
                     *"chunkwm"*)   wm="chunkwm" ;;
