@@ -5785,7 +5785,7 @@ ${c1}                .....
 EOF
         ;;
 
-        "crux_small"|"KISS"*)
+        "crux_small"|KISS*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
 ${c1}    ___
