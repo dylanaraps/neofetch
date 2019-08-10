@@ -1631,18 +1631,13 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                wm_names=(
-                    "[S]pectacle"
-                    "[A]methyst"
-                    "[k]wm"
-                    "[c]hun[k]wm"
-                    "[y]abai"
-                    "[R]ectangle"
-                )
-
-                regex_part=$( IFS='|'; echo "${wm_names[*]}" )
-
-                ps_line=$(ps -e | grep -Eo "$regex_part")
+                ps_line="$(ps -e | grep -o \
+                    -e "[S]pectacle" \
+                    -e "[A]methyst" \
+                    -e "[k]wm" \
+                    -e "[c]hun[k]wm" \
+                    -e "[y]abai" \
+                    -e "[R]ectangle")"
 
                 case "$ps_line" in
                     *"chunkwm"*)   wm="chunkwm" ;;
