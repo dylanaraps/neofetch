@@ -2691,7 +2691,7 @@ get_resolution() {
         ;;
 
         *)
-            if type -p xrandr >/dev/null && [ -n "$DISPLAY" ]; then
+            if type -p xrandr >/dev/null && [ -n "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
                 case "$refresh_rate" in
                     "on")
                         resolution="$(xrandr --nograb --current |\
@@ -2708,12 +2708,12 @@ get_resolution() {
                 esac
                 resolution="${resolution//\*}"
 
-            elif type -p xwininfo >/dev/null && [ -n "$DISPLAY" ]; then
+            elif type -p xwininfo >/dev/null && [ -n "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
                 read -r w h \
                     <<< "$(xwininfo -root | awk -F':' '/Width|Height/ {printf $2}')"
                 resolution="${w}x${h}"
 
-            elif type -p xdpyinfo >/dev/null && [ -n "$DISPLAY" ]; then
+            elif type -p xdpyinfo >/dev/null && [ -n "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
                 resolution="$(xdpyinfo | awk '/dimensions:/ {printf $2}')"
             elif [ "$os" == "Linux" ]; then
                 for dev in /sys/class/drm/*/modes; do
