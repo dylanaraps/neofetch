@@ -2198,6 +2198,8 @@ get_gpu() {
                     *"virtualbox"*)
                         gpu="VirtualBox Graphics Adapter"
                     ;;
+
+                    *) continue ;;
                 esac
 
                 if [[ "$gpu_brand" == "off" ]]; then
