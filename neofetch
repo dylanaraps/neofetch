@@ -925,8 +925,8 @@ get_distro() {
 
             elif type -p guix >/dev/null; then
                 case "$distro_shorthand" in
-                    "on" | "tiny") distro="GuixSD" ;;
-                    *) distro="GuixSD $(guix system -V | awk 'NR==1{printf $5}')"
+                    "on" | "tiny") distro="Guix System" ;;
+                    *) distro="Guix System $(guix system -V | awk 'NR==1{printf $5}')"
                 esac
 
             else
@@ -1339,6 +1339,7 @@ get_packages() {
             has "sorcery"    && tot gaze installed
             has "alps"       && tot alps showinstalled
             has "butch"      && tot butch list
+            has "bonsai"     && tot bonsai list
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
@@ -1346,6 +1347,7 @@ get_packages() {
             # shellcheck disable=SC2086
             {
             shopt -s nullglob
+            has "brew"    && dir "$(brew --cellar)"/*
             has "emerge"  && dir ${br_prefix}/var/db/pkg/*/*/
             has "Compile" && dir ${br_prefix}/Programs/*/
             has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
@@ -1630,7 +1632,13 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm\|[y]abai')"
+                ps_line="$(ps -e | grep -o \
+                    -e "[S]pectacle" \
+                    -e "[A]methyst" \
+                    -e "[k]wm" \
+                    -e "[c]hun[k]wm" \
+                    -e "[y]abai" \
+                    -e "[R]ectangle")"
 
                 case "$ps_line" in
                     *"chunkwm"*)   wm="chunkwm" ;;
@@ -1638,6 +1646,7 @@ get_wm() {
                     *"yabai"*)     wm="yabai" ;;
                     *"Amethyst"*)  wm="Amethyst" ;;
                     *"Spectacle"*) wm="Spectacle" ;;
+                    *"Rectangle"*) wm="Rectangle" ;;
                     *)             wm="Quartz Compositor" ;;
                 esac
             ;;
@@ -3865,7 +3874,7 @@ display_image() {
         ;;
 
         "chafa")
-            chafa --size="$((width / font_width))x$((height / font_height))" "$image"
+            chafa --stretch --size="$((width / font_width))x$((height / font_height))" "$image"
         ;;
 
         "jp2a")
@@ -5459,6 +5468,28 @@ ${c1}              oMMNMMMMMMMMMMMMMMMMMMMMMM
               oNNNNNNm${c2}dso${c1}mMMMMMMMMMMMMMM
 EOF
         ;;
+
+       "bonsai"*)
+           set_colors 6 2 3
+           read -rd '' ascii_data <<'EOF'
+${c2}   ,####,    
+   ${c2}#######,  ${c2},#####,
+   ${c2}#####',#  ${c2}'######
+    ${c2}''###'${c3}';,,,'${c2}###'
+   ${c3}       ,;  ''''
+   ${c3}      ;;;   ${c2},#####,
+   ${c3}     ;;;'  ,,;${c2};;###
+   ${c3}     ';;;;''${c2}'####'
+   ${c3}      ;;;     
+   ${c3}   ,.;;';'',,,
+   ${c3}  '     '
+${c1} #                        
+ #                        O
+ ##, ,##,',##, ,##  ,#,   ,
+ # # #  # #''# #,,  # #   #
+ '#' '##' #  #  ,,# '##;, #
+EOF
+       ;;
 
        "BSD")
             set_colors 1 7 4 3 6
