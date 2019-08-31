@@ -28,7 +28,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version="6.0.1"
+version="6.1.0"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
@@ -5472,7 +5472,7 @@ EOF
        "bonsai"*)
            set_colors 6 2 3
            read -rd '' ascii_data <<'EOF'
-${c2}   ,####,    
+${c2}   ,####,
    ${c2}#######,  ${c2},#####,
    ${c2}#####',#  ${c2}'######
     ${c2}''###'${c3}';,,,'${c2}###'
@@ -5480,10 +5480,10 @@ ${c2}   ,####,
    ${c3}      ;;;   ${c2},#####,
    ${c3}     ;;;'  ,,;${c2};;###
    ${c3}     ';;;;''${c2}'####'
-   ${c3}      ;;;     
+   ${c3}      ;;;
    ${c3}   ,.;;';'',,,
    ${c3}  '     '
-${c1} #                        
+${c1} #
  #                        O
  ##, ,##,',##, ,##  ,#,   ,
  # # #  # #''# #,,  # #   #
