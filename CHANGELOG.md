@@ -6,13 +6,129 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## [6.0.1] - N/A
+## [6.1.0] - 2019-31-08
 
-- **ascii**: Fixed bug causing files to not work.
-- **ascii**: Fixed bug causing files named `ascii` to not load.
-- **term_font** [kitty]: Fixed bug with empty config.
-- **get_cols**: Variables are now local. [**@asantam**](https://github.com/asantam)
-- **man_page**: More consistent arg documentation. [**@xPMo**](https://github.com/xPMo)
+<img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px">
+
+**Contributors**:
+
+**Charlène**, **Michael Straube**, @14mRh4X0r, @Crestwave, @GrantM11235, @Mark-Peppermint, @Michal-Szczepaniak, @Renzix, @SibrenVasse, @asantam, @chrissxYT, @chrisweeksnz, @dawidd6, @edward-p, @feren, @fjallarefur, @hpjansson, @iandrewt, @infinitewarp, @jkhsjdhjs, @konimex, @lebensterben, @lightful, @mitchweaver, @ognarb, @protonesso, @rxhanson, @spacelike, @vaygr, @weslly, @xPMo, @zyg812
+
+
+**OS**:
+
+- Added support for [KISS Linux](https://getkiss.org).
+- Added support for [Bonsai Linux](bonsai-linux.org). @mitchweaver
+- Added support for [Radix Linux](http://www.radixsystems.com/software.php).
+- os: Fix HAIKU issues
+
+**ASCII**:
+
+- ascii: Fixed bug causing ascii files to not work.
+- postmarketOS: Replace ASCII logo. @GrantM11235
+- postmarketOS: Add small ASCII logo. @GrantM11235
+- Fix big Puffy ascii logo. **Charlène**
+- ASCII: Updated Artix ASCII with new logo. @konimex
+- Add ascii art for Clear Linux. @chrisweeksnz
+- new logo for Ataraxia Linux. @protonesso
+- ASCII: Add fedora_small. @zyg812
+- Added a case for displaying the Ubuntu logo for i3buntu. @chrissxYT
+- New Peppermint Logo. @Mark-Peppermint
+- ascii: Fix void.
+- update Red Hat with new 2019 logo. @infinitewarp
+-  ascii: Add back old redhat logo (--ascii_distro redhat_old).
+-  ASCII: Added Feren OS. @konimex
+-  Linux: Update ASCII for Sailfish OS. @konimex
+-  Linux: Fix ASCII for Sailfish OS. @Michal-Szczepaniak
+-  Small tweak to the colours used for the Feren OS Logo. @feren
+
+**Images**:
+
+-  general: fix image sizing in VTE terminals.
+-  general: Fix issue with URxvt and no internal border.
+-  display_image: Allow Chafa backend to stretch image to desired size. @hpjansson
+
+**Terminal**:
+
+-  term_font [kitty]: Fix bug with empty config.
+-  term_font: fix issue with konsole font detection. **Michael Straube**
+-  Robuster kitty font parsing. @SibrenVasse
+-  term_font: Fix crash when parsing Xresources.
+-  kitty font parsing where font name has whitespaces. @lebensterben
+-  term: Fix wrapper scripts in NixOS. Thanks Tdeo.
+
+**Memory**:
+
+-  Memory [AIX]: Detect memory based on pages (like Solaris) for more accuracy. @konimex
+
+**CPU**:
+
+-  CPU [Linux/ARM]: Use Hardware field directly. @konimex
+
+**GPU**:
+
+- Properly work with multiple GPUs. @lebensterben
+- Fix GPU parsing.
+
+**Packages**:
+
+-  packages: Specify Haiku's pkgman. @Crestwave
+-  packages: Show IRIX package manager name.
+-  Use guix directly to report package count instead of counting directories. @spacelike
+-  Packages [Guix/Nix]: Use if for detecting system and user packages. @konimex
+-  packages: Fix DragonFlyBSD. Thanks pornguy.
+-  Set nullglob for package counting. @14mRh4X0r
+-  packages: Check brew on Linux. @dawidd6
+
+**Theme**:
+
+-  WM Theme: update for Mojave. @iandrewt
+-  Handle ${GTK2_RC_FILES} with multiple values. @edward-p
+-  use "$GTK2_RC_FILES". @edward-p
+
+**Song**:
+
+-  song: add strawberry player. **Michael Straube**
+-  song: Added support for plasma-browser-integration.
+-  song: add gogglesmm. **Michael Straube**
+-  song: add xnoise.  **Michael Straube**
+
+**Uptime**:
+
+-  support uptime from Android 9+. @lightful
+
+**IP**:
+
+- Retrieve public IP info via drill. @vaygr
+
+**WM**:
+
+-  WM: Add support for yabai on macOS. @weslly
+-  WM: Add support for Rectangle on macOS. @rxhanson
+-  Removed subshell from ps grep for macOS wm. @rxhanson
+
+**Shell**:
+
+-  support other versions of ksh. @mitchweaver
+
+**Misc**:
+
+- Make neofetch compatible with `libedit`.
+- general: Added `--no_config` to disable config file creation.
+- Made variables local in get_cols function. @asantam
+- Fixed option documentation. @xPMo
+- Fixed gnome shell mutter issues.
+- cache_uname: improve reading from 'SystemVersion.plist' on macOS and iOS. @jkhsjdhjs
+- add device information for latest ios devices. @jkhsjdhjs
+- include Fusion/Bionic in iDevice processor names. @jkhsjdhjs
+- give precedence to "Hardware" entry in /proc/cpuinfo. @lightful
+- config: Show 15 color blocks by default.
+- underline: Fix bugs with incorrect lengths.
+- Moved guix check below /etc/os-release check. @Renzix
+- simple mode: Hide stderr by default.
+- Linux: Move /etc/os-release directly below lsb_release. @konimex
+- The K Desktop Environment was renamed to Plasma. @ognarb
+- Rename GuixSD to Guix System. @fjallarefur
 
 
 ## [6.0.0] - 2019-01-08
