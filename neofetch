@@ -1021,7 +1021,7 @@ get_distro() {
         ;;
 
         "Haiku")
-            read -r name version _ <<< "$(uname -sv)"
+            read -r name version _ <<< "$(uname -s)"
             distro="$name $version"
         ;;
 
@@ -2660,7 +2660,7 @@ get_resolution() {
         ;;
 
         "Haiku")
-            resolution="$(screenmode | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
+            resolution="$(screenmode | tail -1 | awk -F ' |, ' '{printf $2 "x" $3 " @ " $6 $7}')"
 
             [[ "$refresh_rate" == "off" ]] && resolution="${resolution/ @*}"
         ;;
