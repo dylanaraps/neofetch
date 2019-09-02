@@ -949,6 +949,15 @@ get_distro() {
                     [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
                 fi
             fi
+            
+            #mx-linux
+             if [[ -f "/etc/mx-version" ]]; then
+			 case "$distro_shorthand" in
+				"on" | "tiny") distro="MX" ;;
+				*) distro="MX"
+			 esac
+			 fi
+			 #mx-linux
 
             if [[ "$(< /proc/version)" == *Microsoft* || "$kernel_version" == *Microsoft* ]]; then
                 case "$distro_shorthand" in
