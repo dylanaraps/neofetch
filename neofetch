@@ -8,7 +8,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2015-2019 Dylan Araps
+# Copyright (c) 2016-2018 Dylan Araps
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version="6.1.0"
+version="6.0.0"
 
 bash_version="${BASH_VERSION/.*}"
 sys_locale="${LANG:-C}"
@@ -76,7 +76,7 @@ print_info() {
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
-    # [[ "$player" ]] && prin "Music Player" "$player"
+    # [[ $player ]] && prin "Music Player" "$player"
     # info "Local IP" local_ip
     # info "Public IP" public_ip
     # info "Users" users
@@ -108,7 +108,7 @@ kernel_shorthand="on"
 # Shorten the output of the distro function
 #
 # Default:  'off'
-# Values:   'on', 'tiny', 'off'
+# Values:   'on', 'off', 'tiny'
 # Flag:     --distro_shorthand
 # Supports: Everything except Windows and Haiku
 distro_shorthand="off"
@@ -132,13 +132,13 @@ os_arch="on"
 # Shorten the output of the uptime function
 #
 # Default: 'on'
-# Values:  'on', 'tiny', 'off'
+# Values:  'on', 'off', 'tiny'
 # Flag:    --uptime_shorthand
 #
 # Example:
 # on:   '2 days, 10 hours, 3 mins'
-# tiny: '2d 10h 3m'
 # off:  '2 days, 10 hours, 3 minutes'
+# tiny: '2d 10h 3m'
 uptime_shorthand="on"
 
 
@@ -449,7 +449,6 @@ disk_subtitle="mount"
 # exaile
 # gnome-music
 # gmusicbrowser
-# gogglesmm
 # guayadeque
 # iTunes
 # juk
@@ -466,11 +465,9 @@ disk_subtitle="mount"
 # sayonara
 # smplayer
 # spotify
-# strawberry
 # tomahawk
 # vlc
 # xmms2d
-# xnoise
 # yarock
 music_player="auto"
 
@@ -566,7 +563,7 @@ separator=":"
 # Color block range
 # The range of colors to print.
 #
-# Default:  '0', '15'
+# Default:  '0', '7'
 # Values:   'num'
 # Flag:     --block_range
 #
@@ -577,7 +574,7 @@ separator=":"
 #
 # Display colors 0-15 in the blocks. (16 colors)
 # neofetch --block_range 0 15
-block_range=(0 15)
+block_range=(0 7)
 
 # Toggle color blocks
 #
@@ -852,7 +849,7 @@ get_distro() {
 
     case "$os" in
         "Linux" | "BSD" | "MINIX")
-            if [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]]; then
+            if [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Bedrock Linux" ;;
                     *) distro="$(< /bedrock/etc/bedrock-release)"
@@ -863,10 +860,10 @@ get_distro() {
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
 
-            elif [[ -f "/etc/siduction-version" ]]; then
+            elif [[ -f "/etc/os-release" ]]; then
                 case "$distro_shorthand" in
-                    "on" | "tiny") distro="Siduction" ;;
-                    *) distro="Siduction ($(lsb_release -sic))"
+                    "on" | "tiny") distro="EndeavourOS" ;;
+                    *) distro="EndeavourOS"
                 esac
 
             elif type -p lsb_release >/dev/null; then
@@ -877,27 +874,16 @@ get_distro() {
                 esac
                 distro="$(lsb_release "$lsb_flags")"
 
-            elif [[ -f "/etc/os-release" || \
-                    -f "/usr/lib/os-release" || \
-                    -f "/etc/openwrt_release" ]]; then
-                files=("/etc/os-release" "/usr/lib/os-release" "/etc/openwrt_release")
-
-                # Source the os-release file
-                for file in "${files[@]}"; do
-                    source "$file" && break
-                done
-
-                # Format the distro name.
-                case "$distro_shorthand" in
-                    "on")   distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
-                    "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
-                    "off")  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
-                esac
-
             elif [[ -f "/etc/GoboLinuxVersion" ]]; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="GoboLinux" ;;
                     *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
+                esac
+
+            elif type -p guix >/dev/null; then
+                case "$distro_shorthand" in
+                    "on" | "tiny") distro="GuixSD" ;;
+                    *) distro="GuixSD $(guix system -V | awk 'NR==1{printf $5}')"
                 esac
 
             elif type -p crux >/dev/null; then
@@ -920,15 +906,25 @@ get_distro() {
             # Chrome OS doesn't conform to the /etc/*-release standard.
             # While the file is a series of variables they can't be sourced
             # by the shell since the values aren't quoted.
-            elif [[ -f "/etc/lsb-release" && "$(< /etc/lsb-release)" == *CHROMEOS* ]]; then
+            elif [[ -f /etc/lsb-release && "$(< /etc/lsb-release)" == *CHROMEOS* ]]; then
                 distro="$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)"
 
-            elif type -p guix >/dev/null; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="Guix System" ;;
-                    *) distro="Guix System $(guix system -V | awk 'NR==1{printf $5}')"
-                esac
+            elif [[ -f "/etc/os-release" || \
+                    -f "/usr/lib/os-release" || \
+                    -f "/etc/openwrt_release" ]]; then
+                files=("/etc/os-release" "/usr/lib/os-release" "/etc/openwrt_release")
 
+                # Source the os-release file
+                for file in "${files[@]}"; do
+                    source "$file" && break
+                done
+
+                # Format the distro name.
+                case "$distro_shorthand" in
+                    "on")   distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
+                    "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
+                    "off")  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
+                esac
             else
                 for release_file in /etc/*-release; do
                     distro+="$(< "$release_file")"
@@ -942,7 +938,7 @@ get_distro() {
                     distro="${distro/DragonFly/DragonFlyBSD}"
 
                     # Workarounds for FreeBSD based distros.
-                    [[ -f "/etc/pcbsd-lang" ]] &&  distro="PCBSD"
+                    [[ -f "/etc/pcbsd-lang" ]] && distro="PCBSD"
                     [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
 
                     # /etc/pacbsd-release is an empty file
@@ -950,14 +946,15 @@ get_distro() {
                 fi
             fi
 
-            if [[ "$(< /proc/version)" == *Microsoft* || "$kernel_version" == *Microsoft* ]]; then
+            if [[ "$(< /proc/version)" == *"Microsoft"* ||
+                  "$kernel_version" == *"Microsoft"* ]]; then
                 case "$distro_shorthand" in
                     "on")   distro+=" [Windows 10]" ;;
                     "tiny") distro="Windows 10" ;;
                     *)      distro+=" on Windows 10" ;;
                 esac
 
-            elif [[ "$(< /proc/version)" == *chrome-bot* || -f "/dev/cros_ec" ]]; then
+            elif [[ "$(< /proc/version)" == *"chrome-bot"* || -f "/dev/cros_ec" ]]; then
                 case "$distro_shorthand" in
                     "on")   distro+=" [Chrome OS]" ;;
                     "tiny") distro="Chrome OS" ;;
@@ -1021,7 +1018,7 @@ get_distro() {
         ;;
 
         "Haiku")
-            read -r name version _ <<< "$(uname -sv)"
+            read -r name version _ < <(uname -sv)
             distro="$name $version"
         ;;
 
@@ -1062,15 +1059,15 @@ get_model() {
             if [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
-            elif [[ -f "/sys/devices/virtual/dmi/id/product_name" ||
-                    -f "/sys/devices/virtual/dmi/id/product_version" ]]; then
+            elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
+                    -f /sys/devices/virtual/dmi/id/product_version ]]; then
                 model="$(< /sys/devices/virtual/dmi/id/product_name)"
                 model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
 
-            elif [[ -f "/sys/firmware/devicetree/base/model" ]]; then
+            elif [[ -f /sys/firmware/devicetree/base/model ]]; then
                 model="$(< /sys/firmware/devicetree/base/model)"
 
-            elif [[ -f "/tmp/sysinfo/model" ]]; then
+            elif [[ -f /tmp/sysinfo/model ]]; then
                 model="$(< /tmp/sysinfo/model)"
             fi
         ;;
@@ -1085,26 +1082,24 @@ get_model() {
 
         "iPhone OS")
             case "$kernel_machine" in
-                "iPad1,1"):      "iPad" ;;
-                "iPad2,"[1-4]):  "iPad 2" ;;
-                "iPad3,"[1-3]):  "iPad 3" ;;
-                "iPad3,"[4-6]):  "iPad 4" ;;
-                "iPad6,1"[12]):  "iPad 5" ;;
-                "iPad7,"[5-6]):  "iPad 6" ;;
-                "iPad4,"[1-3]):  "iPad Air" ;;
-                "iPad5,"[3-4]):  "iPad Air 2" ;;
-                "iPad11,"[3-4]): "iPad Air 3" ;;
-                "iPad6,"[7-8]):  "iPad Pro (12.9 Inch)" ;;
-                "iPad6,"[3-4]):  "iPad Pro (9.7 Inch)" ;;
-                "iPad7,"[1-2]):  "iPad Pro 2 (12.9 Inch)" ;;
-                "iPad7,"[3-4]):  "iPad Pro (10.5 Inch)" ;;
-                "iPad8,"[1-4]):  "iPad Pro (11 Inch)" ;;
-                "iPad8,"[5-8]):  "iPad Pro 3 (12.9 Inch)" ;;
-                "iPad2,"[5-7]):  "iPad mini" ;;
-                "iPad4,"[4-6]):  "iPad mini 2" ;;
-                "iPad4,"[7-9]):  "iPad mini 3" ;;
-                "iPad5,"[1-2]):  "iPad mini 4" ;;
-                "iPad11,"[1-2]): "iPad mini 5" ;;
+                "iPad1,1"):     "iPad" ;;
+                "iPad2,"[1-4]): "iPad 2" ;;
+                "iPad3,"[1-3]): "iPad 3" ;;
+                "iPad3,"[4-6]): "iPad 4" ;;
+                "iPad4,"[1-3]): "iPad Air" ;;
+                "iPad5,"[3-4]): "iPad Air 2" ;;
+                "iPad6,"[7-8]): "iPad Pro (12.9 Inch)" ;;
+                "iPad6,"[3-4]): "iPad Pro (9.7 Inch)" ;;
+                "iPad7,"[1-2]): "iPad Pro 2 (12.9 Inch)" ;;
+                "iPad7,"[3-4]): "iPad Pro (10.5 Inch)" ;;
+                "iPad2,"[5-7]): "iPad mini" ;;
+                "iPad4,"[4-6]): "iPad mini 2" ;;
+                "iPad4,"[7-9]): "iPad mini 3" ;;
+                "iPad5,"[1-2]): "iPad mini 4" ;;
+
+                "iPad6,11" | "iPad 6,12")
+                    : "iPad 5"
+                ;;
 
                 "iPhone1,1"):     "iPhone" ;;
                 "iPhone1,2"):     "iPhone 3G" ;;
@@ -1119,14 +1114,12 @@ get_model() {
                 "iPhone8,1"):     "iPhone 6s" ;;
                 "iPhone8,2"):     "iPhone 6s Plus" ;;
                 "iPhone8,4"):     "iPhone SE" ;;
-                "iPhone9,"[13]):  "iPhone 7" ;;
-                "iPhone9,"[24]):  "iPhone 7 Plus" ;;
-                "iPhone10,"[14]): "iPhone 8" ;;
-                "iPhone10,"[25]): "iPhone 8 Plus" ;;
-                "iPhone10,"[36]): "iPhone X" ;;
-                "iPhone11,2"):    "iPhone XS" ;;
-                "iPhone11,"[46]): "iPhone XS Max" ;;
-                "iPhone11,8"):    "iPhone XR" ;;
+
+                "iPhone9,1"  | "iPhone9,3"):  "iPhone 7" ;;
+                "iPhone9,2"  | "iPhone9,4"):  "iPhone 7 Plus" ;;
+                "iPhone10,1" | "iPhone10,4"): "iPhone 8" ;;
+                "iPhone10,2" | "iPhone10,5"): "iPhone 8 Plus" ;;
+                "iPhone10,3" | "iPhone10,6"): "iPhone X" ;;
 
                 "iPod1,1"): "iPod touch" ;;
                 "ipod2,1"): "iPod touch 2G" ;;
@@ -1192,12 +1185,6 @@ get_kernel() {
     # Since these OS are integrated systems, it's better to skip this function altogether
     [[ "$os" =~ (AIX|IRIX) ]] && return
 
-    # Haiku uses 'uname -v' and not - 'uname -r'.
-    [[ "$os" == Haiku ]] && {
-        kernel=$(uname -v)
-        return
-    }
-
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
         "off") kernel="$kernel_name $kernel_version" ;;
@@ -1225,14 +1212,8 @@ get_uptime() {
             # Get uptime in seconds.
             case "$os" in
                 "Linux" | "Windows" | "MINIX")
-                    if [[ -r /proc/uptime ]]; then
-                        seconds="$(< /proc/uptime)"
-                        seconds="${seconds/.*}"
-                    else
-                        boot="$(date -d"$(uptime -s)" +%s)"
-                        now="$(date +%s)"
-                        seconds="$((now - boot))"
-                    fi
+                    seconds="$(< /proc/uptime)"
+                    seconds="${seconds/.*}"
                 ;;
 
                 "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
@@ -1309,12 +1290,12 @@ get_packages() {
     has() { type -p "$1" >/dev/null && manager="$_"; }
     dir() { ((packages+=$#)); pac "$#"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
-    tot() { IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";((packages+=${#pkgs[@]}));pac "${#pkgs[@]}";}
+    tot() { IFS=$'\n' read -d "" -ra pkgs < <("$@");((packages+="${#pkgs[@]}"));pac "${#pkgs[@]}"; }
 
     # Redefine tot() for Bedrock Linux.
-    [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]] && {
+    [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
         tot() {
-            IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in $(brl list); do strat -r "$s" "$@"; done)"
+            IFS=$'\n' read -d "" -ra pkgs < <(for s in $(brl list); do strat -r "$s" "$@"; done)
             ((packages+="${#pkgs[@]}"))
             pac "${#pkgs[@]}"
         }
@@ -1324,7 +1305,6 @@ get_packages() {
     case "$os" in
         "Linux" | "BSD" | "iPhone OS" | "Solaris")
             # Package Manager Programs.
-            has "kiss"       && tot kiss l
             has "pacman-key" && tot pacman -Qq --color never
             has "dpkg"       && tot dpkg-query -f '.\n' -W
             has "rpm"        && tot rpm -qa
@@ -1339,45 +1319,32 @@ get_packages() {
             has "sorcery"    && tot gaze installed
             has "alps"       && tot alps showinstalled
             has "butch"      && tot butch list
-            has "bonsai"     && tot bonsai list
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
             # $br_prefix is fixed and won't change based on user input so this is safe either way.
             # shellcheck disable=SC2086
             {
-            shopt -s nullglob
-            has "brew"    && dir "$(brew --cellar)"/*
             has "emerge"  && dir ${br_prefix}/var/db/pkg/*/*/
+            has "nix-env" && dir ${br_prefix}/nix/store/*/
+            has "guix"    && dir ${br_prefix}/gnu/store/*/
             has "Compile" && dir ${br_prefix}/Programs/*/
             has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
             has "crew"    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
             has "pkgtool" && dir ${br_prefix}/var/log/packages/*
-            has "kagami"  && dir ${br_prefix}/var/lib/kagami/pkgs/*
             has "cave"    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
                                  ${br_prefix}/var/db/paludis/repositories/installed/data/*/
-            shopt -u nullglob
             }
 
             # Other (Needs complex command)
             has "kpm-pkg" && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
-
-            if has "guix"; then
-                manager="guix-system" && tot guix package -p "/run/current-system/profile" -I
-                manager="guix-user" && tot guix package -I
-            fi
-
-            if has "nix-store"; then
-                manager="nix-system" && tot nix-store -q --requisites "/run/current-system/sw"
-                manager="nix-user" && tot nix-store -q --requisites "$HOME/.nix-profile"
-            fi
 
             # pkginfo is also the name of a python package manager which is painfully slow.
             # TODO: Fix this somehow.
             has pkginfo && tot pkginfo -i
 
             case "$kernel_name" in
-                "FreeBSD"|"DragonFly") has "pkg" && tot pkg info ;;
+                "FreeBSD") has "pkg" && tot pkg info ;;
                 *)
                     has "pkg" && dir /var/db/pkg/*
 
@@ -1400,11 +1367,7 @@ get_packages() {
             has "port"    && tot port installed && ((packages-=1))
             has "brew"    && dir /usr/local/Cellar/*
             has "pkgin"   && tot pkgin list
-
-            if has "nix-store"; then
-                manager="nix-system" && tot nix-store -q --requisites "/run/current-system/sw"
-                manager="nix-user" && tot nix-store -q --requisites "$HOME/.nix-profile"
-            fi
+            has "nix-env" && dir /nix/store/*/
         ;;
 
         "AIX"| "FreeMiNT")
@@ -1427,12 +1390,10 @@ get_packages() {
         ;;
 
         "Haiku")
-            has "pkgman" && dir /boot/system/package-links/*
-            packages=${packages/pkgman/depot}
+            dir /boot/system/package-links/*
         ;;
 
         "IRIX")
-            manager="swpkg"
             tot versions -b && ((packages-=3))
         ;;
     esac
@@ -1449,6 +1410,7 @@ get_packages() {
     fi
 
     packages="${packages/pacman-key/pacman}"
+    packages="${packages/nix-env/nix}"
 }
 
 get_shell() {
@@ -1462,7 +1424,7 @@ get_shell() {
             "bash") shell+="${BASH_VERSION/-*}" ;;
             "sh" | "ash" | "dash") ;;
 
-            *"ksh")
+            "mksh" | "ksh")
                 shell+="$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")"
                 shell="${shell/ * KSH}"
                 shell="${shell/version}"
@@ -1562,8 +1524,6 @@ get_de() {
         ;;
     esac
 
-    (( "$KDE_SESSION_VERSION" >= "4" )) && de="${de/KDE/Plasma}"
-
     # Log that the function was run.
     de_run=1
 }
@@ -1615,10 +1575,8 @@ get_wm() {
             wm="${wm/\"*}"
         fi
 
-        # Rename window managers to their proper values.
+        # Window Maker does not set _NET_WM_NAME
         [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
-        [[ "$wm" =~ "GNOME Shell" ]] && wm="Mutter"
-
         # Fallback for non-EWMH WMs.
         [[ -z "$wm" ]] && \
             wm="$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
@@ -1632,21 +1590,13 @@ get_wm() {
     else
         case "$os" in
             "Mac OS X")
-                ps_line="$(ps -e | grep -o \
-                    -e "[S]pectacle" \
-                    -e "[A]methyst" \
-                    -e "[k]wm" \
-                    -e "[c]hun[k]wm" \
-                    -e "[y]abai" \
-                    -e "[R]ectangle")"
+                ps_line="$(ps -e | grep -o '[S]pectacle\|[A]methyst\|[k]wm\|[c]hun[k]wm')"
 
                 case "$ps_line" in
                     *"chunkwm"*)   wm="chunkwm" ;;
                     *"kwm"*)       wm="Kwm" ;;
-                    *"yabai"*)     wm="yabai" ;;
                     *"Amethyst"*)  wm="Amethyst" ;;
                     *"Spectacle"*) wm="Spectacle" ;;
-                    *"Rectangle"*) wm="Rectangle" ;;
                     *)             wm="Quartz Compositor" ;;
                 esac
             ;;
@@ -1801,23 +1751,15 @@ get_wm_theme() {
         "Quartz Compositor")
             global_preferences="${HOME}/Library/Preferences/.GlobalPreferences.plist"
             wm_theme="$(PlistBuddy -c "Print AppleInterfaceStyle" "$global_preferences")"
-            wm_theme_color="$(PlistBuddy -c "Print AppleAccentColor" "$global_preferences")"
+            wm_theme_color="$(PlistBuddy -c "Print AppleAquaColorVariant" "$global_preferences")"
 
             [[ -z "$wm_theme" ]] && \
                 wm_theme="Light"
 
-            case "$wm_theme_color" in
-                "-1") wm_theme_color="Graphite" ;;
-                "0") wm_theme_color="Red" ;;
-                "1") wm_theme_color="Orange" ;;
-                "2") wm_theme_color="Yellow" ;;
-                "3") wm_theme_color="Green" ;;
-                "5") wm_theme_color="Purple" ;;
-                "6") wm_theme_color="Pink" ;;
-                *) wm_theme_color="Blue" ;;
-            esac
+            [[ -z "$wm_theme_color" ]] || ((wm_theme_color == 1)) && \
+                wm_theme_color="Blue"
 
-            wm_theme="${wm_theme_color} ($wm_theme)"
+            wm_theme="${wm_theme_color:-Graphite} ($wm_theme)"
         ;;
 
         *"Explorer")
@@ -1864,9 +1806,13 @@ get_cpu() {
                 ;;
 
                 *)
-                    cpu="$(awk -F '\\s*: | @' \
-                            '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
-                            cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
+                    cpu="$(awk -F ': | @' '/model name|Processor|^cpu model|chip type|^cpu type/ {
+                                               printf $2;
+                                               exit
+                                           }' "$cpu_file")"
+
+                    [[ "$cpu" == *"processor rev"* ]] && \
+                        cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
                 ;;
             esac
 
@@ -1893,7 +1839,8 @@ get_cpu() {
             fi
 
             # Get CPU temp.
-            [[ -f "$temp_dir" ]] && deg="$(($(< "$temp_dir") * 100 / 10000))"
+            [[ -f "$temp_dir" ]] && \
+                deg="$(($(< "$temp_dir") * 100 / 10000))"
 
             # Get CPU cores.
             case "$cpu_cores" in
@@ -1921,14 +1868,8 @@ get_cpu() {
                 "iPhone5,"[1-4]): "Apple A6 (2) @ 1.3GHz" ;;
                 "iPhone6,"[1-2]): "Apple A7 (2) @ 1.3GHz" ;;
                 "iPhone7,"[1-2]): "Apple A8 (2) @ 1.4GHz" ;;
-                "iPhone8,"[1-4] | "iPad6,1"[12]): "Apple A9 (2) @ 1.85GHz" ;;
-                "iPhone9,"[1-4] | "iPad7,"[5-6]): "Apple A10 Fusion (4) @ 2.34GHz" ;;
-                "iPhone10,"[1-6]): "Apple A11 Bionic (6) @ 2.39GHz" ;;
-
-                "iPhone11,"[2468] | "iPad11,"[1-4])
-                    : "Apple A12 Bionic (6) @ 2.49GHz"
-                ;;
-
+                "iPhone8,"[1-4]): "Apple A9 (2) @ 1.85GHz" ;;
+                "iPhone9,"[1-4]): "Apple A10 Fusion (4) @ 2.34GHz" ;;
                 "iPod2,1"): "Samsung S5L8720 (1) @ 533MHz" ;;
                 "iPod3,1"): "Samsung S5L8922 (1) @ 600MHz" ;;
                 "iPod7,1"): "Apple A8 (2) @ 1.1GHz" ;;
@@ -1942,8 +1883,6 @@ get_cpu() {
                 "iPad5,"[3-4]): "Apple A8X (3) @ 1.5GHz" ;;
                 "iPad6,"[3-4]): "Apple A9X (2) @ 2.16GHz" ;;
                 "iPad6,"[7-8]): "Apple A9X (2) @ 2.26GHz" ;;
-                "iPad7,"[1-4]): "Apple A10X Fusion (6) @ 2.39GHz" ;;
-                "iPad8,"[1-8]): "Apple A12X Bionic (8) @ 2.49GHz" ;;
             esac
             cpu="$_"
         ;;
@@ -2152,9 +2091,9 @@ get_gpu() {
     case "$os" in
         "Linux")
             # Read GPUs into array.
-            gpu_cmd="$(lspci -mm | awk -F '\"|\" \"|\\(' \
-                                          '/"Display|"3D|"VGA/ {a[$0] = $1 " " $3 " " $4}
-                                           END {for(i in a) {if(!seen[a[i]]++) print a[i]}}')"
+            gpu_cmd="$(lspci -mm | awk -F '\\"|\\" \\"|\\(' \
+                                          '/"Display|"3D|"VGA/ {a[$0] = $3 " " $4} END {for(i in a)
+                                           {if(!seen[a[i]]++) print a[i]}}')"
             IFS=$'\n' read -d "" -ra gpus <<< "$gpu_cmd"
 
             # Remove duplicate Intel Graphics outputs.
@@ -2164,7 +2103,9 @@ get_gpu() {
             # Checking the first two array elements should
             # be safe since there won't be 2 intel outputs if
             # there's a dedicated GPU in play.
-            [[ "${gpus[0]}" == *Intel* && "${gpus[1]}" == *Intel* ]] && unset -v "gpus[0]"
+            [[ "${gpus[0]}" == *Intel* && \
+               "${gpus[1]}" == *Intel* ]] && \
+               unset -v "gpus[0]"
 
             for gpu in "${gpus[@]}"; do
                 # GPU shorthand tests.
@@ -2207,8 +2148,6 @@ get_gpu() {
                     *"virtualbox"*)
                         gpu="VirtualBox Graphics Adapter"
                     ;;
-
-                    *) continue ;;
                 esac
 
                 if [[ "$gpu_brand" == "off" ]]; then
@@ -2239,13 +2178,13 @@ get_gpu() {
 
         "iPhone OS")
             case "$kernel_machine" in
-                "iPhone1,"[1-2]):   "PowerVR MBX Lite 3D" ;;
-                "iPhone5,"[1-4]):   "PowerVR SGX543MP3" ;;
-                "iPhone11,"[2468]): "G11P" ;;
-                "iPad3,"[1-3]):     "PowerVR SGX534MP4" ;;
-                "iPad3,"[4-6]):     "PowerVR SGX554MP4" ;;
-                "iPad5,"[3-4]):     "PowerVR GXA6850" ;;
-                "iPad6,"[3-8]):     "PowerVR 7XT" ;;
+                "iPhone1,"[1-2]): "PowerVR MBX Lite 3D" ;;
+                "iPhone5,"[1-4]): "PowerVR SGX543MP3" ;;
+                "iPhone8,"[1-4]): "PowerVR GT7600" ;;
+                "iPad3,"[1-3]):   "PowerVR SGX534MP4" ;;
+                "iPad3,"[4-6]):   "PowerVR SGX554MP4" ;;
+                "iPad5,"[3-4]):   "PowerVR GXA6850" ;;
+                "iPad6,"[3-8]):   "PowerVR 7XT" ;;
 
                 "iPhone2,1" | "iPhone3,"[1-3] | "iPod3,1" | "iPod4,1" | "iPad1,1")
                     : "PowerVR SGX535"
@@ -2261,14 +2200,6 @@ get_gpu() {
 
                 "iPhone7,"[1-2] | "iPod7,1" | "iPad5,"[1-2])
                     : "PowerVR GX6450"
-                ;;
-
-                "iPhone8,"[1-4] | "iPad6,1"[12])
-                    : "PowerVR GT7600"
-                ;;
-
-                "iPhone9,"[1-4] | "iPad7,"[5-6])
-                    : "PowerVR GT7600 Plus"
                 ;;
 
                 "iPod1,1" | "iPod2,1")
@@ -2380,20 +2311,10 @@ get_memory() {
             esac
         ;;
 
-        "Solaris" | "AIX")
+        "Solaris")
             hw_pagesize="$(pagesize)"
-            case "$os" in
-                "Solaris")
-                    pages_total="$(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}')"
-                    pages_free="$(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}')"
-                ;;
-
-                "AIX")
-                    IFS=$'\n'"| " read -d "" -ra mem_stat <<< "$(svmon -G -O unit=page)"
-                    pages_total="${mem_stat[11]}"
-                    pages_free="${mem_stat[16]}"
-                ;;
-            esac
+            pages_total="$(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}')"
+            pages_free="$(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}')"
             mem_total="$((pages_total * hw_pagesize / 1024 / 1024))"
             mem_free="$((pages_free * hw_pagesize / 1024 / 1024))"
             mem_used="$((mem_total - mem_free))"
@@ -2403,6 +2324,15 @@ get_memory() {
             mem_total="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))"
             mem_used="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
             mem_used="$((${mem_used/max} / 1024 / 1024))"
+        ;;
+
+        "AIX")
+            IFS=$'\n'"| " read -d "" -ra mem_stat <<< "$(svmon -G -O unit=MB)"
+
+            mem_total="${mem_stat[11]/.*}"
+            mem_free="${mem_stat[16]/.*}"
+            mem_used="$((mem_total - mem_free))"
+            mem_label="MB"
         ;;
 
         "IRIX")
@@ -2425,7 +2355,7 @@ get_memory() {
 
     esac
 
-    [[ "$memory_percent" == "on" ]] && ((mem_perc=mem_used * 100 / mem_total))
+    [[ $memory_percent == on ]] && ((mem_perc=mem_used * 100 / mem_total))
 
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
 
@@ -2452,7 +2382,6 @@ get_song() {
         "exaile"
         "gnome-music"
         "gmusicbrowser"
-        "gogglesmm"
         "guayadeque"
         "iTunes"
         "juk"
@@ -2461,7 +2390,6 @@ get_song() {
         "mopidy"
         "mpd"
         "netease-cloud-music"
-        "plasma-browser-integration"
         "pogo"
         "pragha"
         "qmmp"
@@ -2471,11 +2399,9 @@ get_song() {
         "smplayer"
         "spotify"
         "Spotify"
-        "strawberry"
         "tomahawk"
         "vlc"
         "xmms2d"
-        "xnoise"
         "yarock"
     )
 
@@ -2483,7 +2409,8 @@ get_song() {
     player="$(ps aux | awk -v pattern="(${players:1})" \
         '!/ awk / && !/iTunesHelper/ && match($0,pattern){print substr($0,RSTART,RLENGTH); exit}')"
 
-    [[ "$music_player" && "$music_player" != "auto" ]] && player="$music_player"
+    [[ "$music_player" && "$music_player" != "auto" ]] && \
+        player="$music_player"
 
     get_song_dbus() {
         # Multiple players use an almost identical dbus command to get the information.
@@ -2522,11 +2449,7 @@ get_song() {
         "dragon"*)        get_song_dbus "dragonplayer" ;;
         "smplayer"*)      get_song_dbus "smplayer" ;;
         "rhythmbox"*)     get_song_dbus "rhythmbox" ;;
-        "strawberry"*)    get_song_dbus "strawberry" ;;
-        "gogglesmm"*)     get_song_dbus "gogglesmm" ;;
-        "xnoise"*)        get_song_dbus "xnoise" ;;
-        "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
-        "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
+        "netease-cloud-music"*) get_song_dbus "netease-cloud-music" ;;
 
         "cmus"*)
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
@@ -2685,7 +2608,7 @@ get_resolution() {
 
             elif type -p xwininfo >/dev/null; then
                 read -r w h \
-                    <<< "$(xwininfo -root | awk -F':' '/Width|Height/ {printf $2}')"
+                    < <(xwininfo -root | awk -F':' '/Width|Height/ {printf $2}')
                 resolution="${w}x${h}"
 
             elif type -p xdpyinfo >/dev/null; then
@@ -2695,7 +2618,7 @@ get_resolution() {
     esac
 
     resolution="${resolution%,*}"
-    [[ -z "${resolution/x}" ]] && resolution=
+    [[ -z ${resolution/x} ]] && resolution=
 }
 
 get_style() {
@@ -2757,11 +2680,8 @@ get_style() {
 
         # Check for general GTK2 Theme.
         if [[ -z "$gtk2_theme" ]]; then
-            if [[ -n "$GTK2_RC_FILES" ]]; then
-                IFS=: read -ra rc_files <<< "$GTK2_RC_FILES"
-                gtk2_theme="$(grep "^[^#]*${name}" "${rc_files[@]}")"
-            elif [[ -f "${HOME}/.gtkrc-2.0"  ]]; then
-                gtk2_theme="$(grep "^[^#]*${name}" "${HOME}/.gtkrc-2.0")"
+            if [[ -f "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}" ]]; then
+                gtk2_theme="$(grep "^[^#]*${name}" "${GTK2_RC_FILES:-${HOME}/.gtkrc-2.0}")"
 
             elif [[ -f "/etc/gtk-2.0/gtkrc" ]]; then
                 gtk2_theme="$(grep "^[^#]*${name}" /etc/gtk-2.0/gtkrc)"
@@ -2771,7 +2691,7 @@ get_style() {
 
             fi
 
-            gtk2_theme="${gtk2_theme/*${name}*=}"
+            gtk2_theme="${gtk2_theme/${name}*=}"
         fi
 
         # Check for general GTK3 Theme.
@@ -2877,8 +2797,11 @@ get_term() {
     esac
 
     # Most likely TosWin2 on FreeMiNT - quick check
-    [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && term="TosWin2"
-    [[ "$SSH_CONNECTION" ]] && term="$SSH_TTY"
+    [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && \
+        term="TosWin2"
+
+    [[ "$SSH_CONNECTION" ]] && \
+        term="$SSH_TTY"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -2901,19 +2824,7 @@ get_term() {
             "urxvtd")          term="urxvt" ;;
             *"nvim")           term="Neovim Terminal" ;;
             *"NeoVimServer"*)  term="VimR Terminal" ;;
-
-            *)
-                # Fix issues with long process names on Linux.
-                [[ $os == Linux ]] && term=$(realpath "/proc/$parent/exe")
-
-                term="${name##*/}"
-
-                # Fix wrapper names in Nix.
-                [[ $term == .*-wrapped ]] && {
-                   term="${term#.}"
-                   term="${term%-wrapped}"
-                }
-            ;;
+            *)                 term="${name##*/}" ;;
         esac
     done
 
@@ -3010,21 +2921,20 @@ END
 
         "kitty"*)
             kitty_config="$(kitty --debug-config)"
-            [[ "$kitty_config" != *font_family* ]] && return
-
-            term_font="$(awk '/^font_family|^font_size/ {$1="";gsub("^ *","",$0);print $0}' \
-                         <<< "$kitty_config")"
+            term_font_size="${kitty_config/*font_size}"
+            term_font_size="${term_font_size/$'\n'*}"
+            term_font="${kitty_config/*font_family}"
+            term_font="${term_font/$'\n'*} $term_font_size"
         ;;
 
         "konsole" | "yakuake")
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
-            IFS=$'\n' read -d "" -ra konsole_instances \
-                <<< "$(qdbus | awk '/org.kde.konsole/ {print $1}')"
+            IFS=$'\n' read -d "" -ra konsole_instances < <(qdbus | grep -F 'org.kde.konsole')
 
             for i in "${konsole_instances[@]}"; do
-                IFS=$'\n' read -d "" -ra konsole_sessions <<< "$(qdbus "$i" | grep -F '/Sessions/')"
+                IFS=$'\n' read -d "" -ra konsole_sessions < <(qdbus "$i" | grep -F '/Sessions/')
 
                 for session in "${konsole_sessions[@]}"; do
                     if ((child == "$(qdbus "$i" "$session" processId)")); then
@@ -3055,7 +2965,7 @@ END
             mateterm_config="/tmp/mateterm.cfg"
 
             # Ensure /tmp exists and we do not overwrite anything.
-            if [[ -d "/tmp" && ! -f "$mateterm_config" ]]; then
+            if [[ -d /tmp && ! -f "$mateterm_config" ]]; then
                 mate-terminal --save-config="$mateterm_config"
 
                 role="$(xprop -id "${WINDOWID}" WM_WINDOW_ROLE)"
@@ -3120,7 +3030,7 @@ END
                 # On Linux we can get the exact path to the running binary through the procfs
                 # (in case `st` is launched from outside of $PATH) on other systems we just
                 # have to guess and assume `st` is invoked from somewhere in the users $PATH
-                [[ -L "/proc/$parent/exe" ]] && binary="/proc/$parent/exe" || binary="$(type -p st)"
+                [[ -L /proc/$parent/exe ]] && binary="/proc/$parent/exe" || binary="$(type -p st)"
 
                 # Grep the output of strings on the `st` binary for anything that looks vaguely
                 # like a font definition. NOTE: There is a slight limitation in this approach.
@@ -3173,7 +3083,8 @@ END
             term_font="$(trim "${term_font/*"faceName:"}")"
 
             # xft: isn't required at the beginning so we prepend it if it's missing
-            [[ "${term_font:0:1}" != "-" && "${term_font:0:4}" != "xft:" ]] && \
+            [[ "${term_font:0:1}" != "-" && \
+               "${term_font:0:4}" != "xft:" ]] && \
                 term_font="xft:$term_font"
 
             # Xresources has two different font formats, this checks which
@@ -3403,11 +3314,6 @@ get_public_ip() {
        [[ "$public_ip" =~ ^\; ]] && unset public_ip
     fi
 
-    if [[ -z "$public_ip" ]] && type -p drill >/dev/null; then
-        public_ip="$(drill myip.opendns.com @resolver1.opendns.com | \
-                     awk '/^myip\./ && $3 == "IN" {print $5}')"
-    fi
-
     if [[ -z "$public_ip" ]] && type -p curl >/dev/null; then
         public_ip="$(curl --max-time "$public_ip_timeout" -w '\n' "$public_ip_host")"
     fi
@@ -3451,8 +3357,6 @@ get_gpu_driver() {
 }
 
 get_cols() {
-    local blocks blocks2 cols
-
     if [[ "$color_blocks" == "on" ]]; then
         # Convert the width to space chars.
         printf -v block_width "%${block_width}s"
@@ -3506,7 +3410,7 @@ image_backend() {
         { image_backend="ascii"; err "Image: Imagemagick not found, falling back to ascii mode."; }
 
     case "${image_backend:-off}" in
-        "ascii") print_ascii ;;
+        "ascii") get_ascii ;;
         "off") image_backend="off" ;;
 
         "caca" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
@@ -3537,7 +3441,7 @@ image_backend() {
             err "Image: Valid backends are: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'kitty',
                                             'off', 'sixel', 'pixterm', 'termpix', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
-            print_ascii
+            get_ascii
         ;;
     esac
 
@@ -3545,14 +3449,13 @@ image_backend() {
     [[ "$image_backend" != "off" ]] && printf '\e[%sA\e[9999999D' "${lines:-0}"
 }
 
-print_ascii() {
-    if [[ -f "$image_source" && ! "$image_source" =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
-        ascii_data="$(< "$image_source")"
-    elif [[ "$image_source" == "ascii" || $image_source == auto ]]; then
-        :
-    else
-        ascii_data="$image_source"
-    fi
+get_ascii() {
+    [[ ! "$image_source" =~ (ascii|auto) ]] &&
+        if [[ -f "$image_source" && ! "$image_source" =~ (png|jpg|jpeg|jpe|svg|gif) ]]; then
+            ascii_data="$(< "$image_source")"
+        else
+            ascii_data="$image_source"
+        fi
 
     # Set locale to get correct padding.
     LC_ALL="$sys_locale"
@@ -3564,7 +3467,7 @@ print_ascii() {
     done <<< "${ascii_data//\$\{??\}}"
 
     # Fallback if file not found.
-    ((lines==1)) && { lines=; ascii_len=; image_source=auto; get_distro_ascii; print_ascii; return; }
+    ((lines==1)) && { lines=; ascii_len=; image_source="auto"; get_distro_ascii; get_ascii; return; }
 
     # Colors.
     ascii_data="${ascii_data//\$\{c1\}/$c1}"
@@ -3700,14 +3603,52 @@ get_w3m_img_path() {
 get_window_size() {
     # This functions gets the current window size in
     # pixels.
-    [[ "$image_backend" == "kitty" ]] &&
-        IFS=x read -r term_width term_height <<< "$(kitty +kitten icat --print-window-size)"
+    #
+    # We first try to use the escape sequence "\033[14t"
+    # to get the terminal window size in pixels. If this
+    # fails we then fallback to using "xdotool" or other
+    # programs.
 
-    # Get terminal width/height.
+    # Tmux has a special way of reading escape sequences
+    # so we have to use a slightly different sequence to
+    # get the terminal size.
+    if [[ "$image_backend" == "tycat" ]]; then
+        printf '%b' '\e}qs\000'
+
+    else
+        case "${TMUX:-null}" in
+            "null") printf '%b' '\e[14t' ;;
+            *)      printf '%b' '\ePtmux;\e\e[14t\e\\ ' ;;
+        esac
+    fi
+
+    # The escape codes above print the desired output as
+    # user input so we have to use read to store the out
+    # -put as a variable.
+    # The 1 second timeout is required for older bash
+    case "${BASH_VERSINFO[0]}" in
+        4|5) IFS=';t' read -d t -t 0.05 -sra term_size ;;
+        *)   IFS=';t' read -d t -t 1 -sra term_size ;;
+    esac
+    unset IFS
+
+    # Split the string into height/width.
+    if [[ "$image_backend" == "tycat" ]]; then
+        term_width="$((term_size[2] * term_size[0]))"
+        term_height="$((term_size[3] * term_size[1]))"
+
+    else
+        term_height="${term_size[1]}"
+        term_width="${term_size[2]}"
+    fi
+
+    [[ "$image_backend" == "kitty" ]] && \
+        IFS=x read -r term_width term_height < <(kitty +kitten icat --print-window-size)
+
+    # Get terminal width/height if \e[14t is unsupported.
     if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         if type -p xdotool &>/dev/null; then
-            IFS=$'\n' read -d "" -ra win \
-                <<< "$(xdotool getactivewindow getwindowgeometry --shell %1)"
+            IFS=$'\n' read -d "" -ra win < <(xdotool getactivewindow getwindowgeometry --shell %1)
             term_width="${win[3]/WIDTH=}"
             term_height="${win[4]/HEIGHT=}"
 
@@ -3743,7 +3684,7 @@ get_window_size() {
 
 get_term_size() {
     # Get the terminal size in cells.
-    read -r lines columns <<< "$(stty size)"
+    read -r lines columns < <(stty size)
 
     # Calculate font size.
     font_width="$((term_width / columns))"
@@ -3786,7 +3727,7 @@ get_image_size() {
     esac
 
     # Check for terminal padding.
-    [[ "$image_backend" == "w3m" ]] && term_padding
+    [[ $image_backend == w3m ]] && term_padding
 
     width="${width:-$image_size}"
     height="${height:-$image_size}"
@@ -3874,7 +3815,7 @@ display_image() {
         ;;
 
         "chafa")
-            chafa --stretch --size="$((width / font_width))x$((height / font_height))" "$image"
+            chafa --size="$((width / font_width))x$((height / font_height))" "$image"
         ;;
 
         "jp2a")
@@ -3945,7 +3886,7 @@ display_image() {
 to_ascii() {
     err "$1"
     image_backend="ascii"
-    print_ascii
+    get_ascii
 
     # Set cursor position next image/ascii.
     printf '\e[%sA\e[9999999D' "${lines:-0}"
@@ -3999,10 +3940,13 @@ prin() {
         string="${2:-$1}"
         local subtitle_color="$info_color"
     fi
-
     string="$(trim "${string//$'\e[0m'}")"
-    length="$(strip_sequences "$string")"
-    length="${#length}"
+
+    # Log length if it doesn't exist.
+    if [[ -z "$length" ]]; then
+        length="$(strip_sequences "$string")"
+        length="${#length}"
+    fi
 
     # Format the output.
     string="${string/:/${reset}${colon_color}${separator:=:}${info_color}}"
@@ -4019,14 +3963,14 @@ prin() {
 }
 
 get_underline() {
-    [[ "$underline_enabled" == "on" ]] && {
+    if [[ "$underline_enabled" == "on" ]]; then
         printf -v underline "%${length}s"
         printf '%b%b\n' "${text_padding:+\e[${text_padding}C}${zws}${underline_color}" \
                         "${underline// /$underline_char}${reset} "
-    }
+        unset -v length
+    fi
 
     ((++info_height))
-    length=
     prin=1
 }
 
@@ -4058,8 +4002,6 @@ trim_quotes() {
 
 strip_sequences() {
     strip="${1//$'\e['3[0-9]m}"
-    strip="${strip//$'\e['[0-9]m}"
-    strip="${strip//\\e\[[0-9]m}"
     strip="${strip//$'\e['38\;5\;[0-9]m}"
     strip="${strip//$'\e['38\;5\;[0-9][0-9]m}"
     strip="${strip//$'\e['38\;5\;[0-9][0-9][0-9]m}"
@@ -4170,6 +4112,8 @@ get_full_path() {
 }
 
 get_user_config() {
+    mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
+
     # --config /path/to/config.conf
     if [[ -f "$config_file" ]]; then
         source "$config_file"
@@ -4184,11 +4128,10 @@ get_user_config() {
         source "${XDG_CONFIG_HOME}/neofetch/config"
         err "Config: Sourced user config.    (${XDG_CONFIG_HOME}/neofetch/config)"
 
-    elif [[ -z "$no_config" ]]; then
+    else
         config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
 
         # The config file doesn't exist, create it.
-        mkdir -p "${XDG_CONFIG_HOME}/neofetch/"
         printf '%s\n' "$config" > "$config_file"
     fi
 }
@@ -4253,29 +4196,21 @@ kde_config_dir() {
 
 term_padding() {
     # Get terminal padding to properly align cursor.
-    [[ -z "$term" ]] && get_term
+    [[ -z $term ]] && get_term
 
     case "$term" in
         urxvt*|"rxvt-unicode")
-            [[ -z "$xrdb" ]] &&
-                xrdb="$(xrdb -query)"
-
-            [[ $xrdb != *".internalBorder:"* ]] &&
-                return
-
+            [[ -z "$xrdb" ]] && xrdb="$(xrdb -query)"
             padding="${xrdb/*.internalBorder:}"
-            padding="${padding/$'\n'*}"
-
-            [[ $padding =~ ^[0-9]+$ ]] ||
-                padding=
+            ((padding=${padding/$'\n'*}))
         ;;
     esac
 }
 
 dynamic_prompt() {
-    [[ "$image_backend" == "off" ]]   && { printf '\n'; return; }
-    [[ "$image_backend" != "ascii" ]] && ((lines=(height + yoffset) / font_height + 1))
-    [[ "$image_backend" == "w3m" ]]   && ((lines=lines + padding / font_height + 1))
+    [[ $image_backend == off ]]   && { printf '\n'; return; }
+    [[ $image_backend != ascii ]] && ((lines=(height + yoffset) / font_height + 1))
+    [[ $image_backend == w3m ]] && ((lines=lines + padding / font_height + 1))
 
     # If the ascii art is taller than the info.
     ((lines=lines>info_height?lines-info_height+1:1))
@@ -4294,15 +4229,11 @@ cache_uname() {
     kernel_machine="${uname[2]}"
 
     if [[ "$kernel_name" == "Darwin" ]]; then
-        IFS=$'\n' read -d "" -ra sw_vers <<< "$(awk -F'<|>' '/key|string/ {print $3}' \
-                            "/System/Library/CoreServices/SystemVersion.plist")"
-        for ((i=0;i<${#sw_vers[@]};i+=2)) {
-            case ${sw_vers[i]} in
-                ProductName)          darwin_name=${sw_vers[i+1]} ;;
-                ProductVersion)       osx_version=${sw_vers[i+1]} ;;
-                ProductBuildVersion)  osx_build=${sw_vers[i+1]}   ;;
-            esac
-        }
+        IFS=$'\n' read -d "" -ra sw_vers < <(awk -F'<|>' '/string/ {print $3}' \
+                            "/System/Library/CoreServices/SystemVersion.plist")
+        darwin_name="${sw_vers[2]}"
+        osx_version="${sw_vers[3]}"
+        osx_build="${sw_vers[0]}"
     fi
 }
 
@@ -4391,7 +4322,7 @@ INFO:
 
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 
-    --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
+    --package_managers on/off   Hide/Show Package Manager names . (tiny, on, off)
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
@@ -4418,7 +4349,7 @@ INFO:
                                 NOTE: For FreeBSD and NetBSD-based systems, you need to enable
                                 coretemp kernel module. This only supports newer Intel processors.
 
-    --distro_shorthand on/off   Shorten the output of distro (on, tiny, off)
+    --distro_shorthand on/off   Shorten the output of distro (tiny, on, off)
 
                                 NOTE: This option won't work in Windows (Cygwin)
 
@@ -4426,7 +4357,7 @@ INFO:
 
                                 NOTE: This option won't work in BSDs (except PacBSD and PC-BSD)
 
-    --uptime_shorthand on/off   Shorten the output of uptime (on, tiny, off)
+    --uptime_shorthand on/off   Shorten the output of uptime (tiny, on, off)
     --refresh_rate on/off       Whether to display the refresh rate of each monitor
                                 Unsupported on Windows
     --gpu_brand on/off          Enable/Disable GPU brand in output. (AMD/NVIDIA/Intel)
@@ -4532,7 +4463,7 @@ ASCII:
                                 'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
 
                                 NOTE: Alpine, Arch, CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS,
-                                OpenBSD, postmarketOS, and Void have a smaller logo variant.
+                                OpenBSD, and Void have a smaller logo variant.
 
                                 NOTE: Use '{distro name}_small' to use the small variants.
 
@@ -4566,7 +4497,6 @@ IMAGE:
 OTHER:
     --config /path/to/config    Specify a path to a custom config file
     --config none               Launch the script without a config file
-    --no_config                 Don't create the user config file.
     --print_config              Print the default config file to stdout.
     --stdout                    Turn off all colors and disables any ASCII/image backend.
     --help                      Print this text and exit
@@ -4586,7 +4516,7 @@ exit 1
 
 get_args() {
     # Check the commandline flags early for '--config'.
-    [[ "$*" != *--config* && "$*" != *--no_config* ]] && get_user_config
+    [[ "$*" != *--config* ]] && get_user_config
 
     while [[ "$1" ]]; do
         case "$1" in
@@ -4747,7 +4677,6 @@ get_args() {
                     ;;
                 esac
             ;;
-            "--no_config") no_config="on" ;;
             "--stdout") stdout="on" ;;
             "-v") verbose="on" ;;
             "--print_config") printf '%s\n' "$config"; exit ;;
@@ -4837,7 +4766,7 @@ get_args() {
 
 get_simple() {
     while [[ "$1" ]]; do
-        [[ "$(type -t "get_$1")" == "function" ]] && {
+        [[ $(type -t "get_$1") == function ]] && {
             get_distro
             stdout
             simple=1
@@ -5306,28 +5235,27 @@ EOF
         ;;
 
         "Artix"*)
-            set_colors 6 6 7 1
+            set_colors 6 4 2 7
             read -rd '' ascii_data <<'EOF'
-${c1}                   '
-                  'o'
-                 'ooo'
-                'ooxoo'
-               'ooxxxoo'
-              'oookkxxoo'
-             'oiioxkkxxoo'
-            ':;:iiiioxxxoo'
-               `'.;::ioxxoo'
-          '-.      `':;jiooo'
-         'oooio-..     `'i:io'
-        'ooooxxxxoio:,.   `'-;'
-       'ooooxxxxxkkxoooIi:-.  `'
-      'ooooxxxxxkkkkxoiiiiiji'
-     'ooooxxxxxkxxoiiii:'`     .i'
-    'ooooxxxxxoi:::'`       .;ioxo'
-   'ooooxooi::'`         .:iiixkxxo'
-  'ooooi:'`                `'';ioxxo'
- 'i:'`                          '':io'
-'`                                   `'
+${c1}                        d${c2}c.
+${c1}                       x${c2}dc.
+${c1}                  '.${c4}.${c1} d${c2}dlc.
+${c1}                 c${c2}0d:${c1}o${c2}xllc;
+${c1}                :${c2}0ddlolc,lc,
+${c1}           :${c1}ko${c4}.${c1}:${c2}0ddollc..dlc.
+${c1}          ;${c1}K${c2}kxoOddollc'  cllc.
+${c1}         ,${c1}K${c2}kkkxdddllc,   ${c4}.${c2}lll:
+${c1}        ,${c1}X${c2}kkkddddlll;${c3}...';${c1}d${c2}llll${c3}dxk:
+${c1}       ,${c1}X${c2}kkkddddllll${c3}oxxxddo${c2}lll${c3}oooo,
+${c3}    xxk${c1}0${c2}kkkdddd${c1}o${c2}lll${c1}o${c3}ooooooolooooc;${c1}.
+${c3}    ddd${c2}kkk${c1}d${c2}ddd${c1}ol${c2}lc:${c3}:;,'.${c3}... .${c2}lll;
+${c1}   .${c3}xd${c1}x${c2}kk${c1}xd${c2}dl${c1}'cl:${c4}.           ${c2}.llc,
+${c1}   .${c1}0${c2}kkkxddl${c4}. ${c2};'${c4}.             ${c2};llc.
+${c1}  .${c1}K${c2}Okdcddl${c4}.                   ${c2}cllc${c4}.
+${c1}  0${c2}Okd''dc.                    .cll;
+${c1} k${c2}Okd'                          .llc,
+${c1} d${c2}Od,                            'lc.
+${c1} :,${c4}.                              ${c2}...
 EOF
         ;;
 
@@ -5468,28 +5396,6 @@ ${c1}              oMMNMMMMMMMMMMMMMMMMMMMMMM
               oNNNNNNm${c2}dso${c1}mMMMMMMMMMMMMMM
 EOF
         ;;
-
-       "bonsai"*)
-           set_colors 6 2 3
-           read -rd '' ascii_data <<'EOF'
-${c2}   ,####,
-   ${c2}#######,  ${c2},#####,
-   ${c2}#####',#  ${c2}'######
-    ${c2}''###'${c3}';,,,'${c2}###'
-   ${c3}       ,;  ''''
-   ${c3}      ;;;   ${c2},#####,
-   ${c3}     ;;;'  ,,;${c2};;###
-   ${c3}     ';;;;''${c2}'####'
-   ${c3}      ;;;
-   ${c3}   ,.;;';'',,,
-   ${c3}  '     '
-${c1} #
- #                        O
- ##, ,##,',##, ,##  ,#,   ,
- # # #  # #''# #,,  # #   #
- '#' '##' #  #  ,,# '##;, #
-EOF
-       ;;
 
        "BSD")
             set_colors 1 7 4 3 6
@@ -5717,32 +5623,6 @@ ${c1}             `.--::::::--.`
 EOF
         ;;
 
-        "Clear Linux OS"*)
-            set_colors 4 3 7 6
-            read -rd '' ascii_data <<'EOF'
-${c1}          BBB
-       BBBBBBBBB
-     BBBBBBBBBBBBBBB
-   BBBBBBBBBBBBBBBBBBBB
-   BBBBBBBBBBB         BBB
-  BBBBBBBB${c2}YYYYY
-${c1}  BBBBBBBB${c2}YYYYYY
-${c1}  BBBBBBBB${c2}YYYYYYY
-${c1}  BBBBBBBBB${c2}YYYYY${c3}W
-${c4} GG${c1}BBBBBBBY${c2}YYYY${c3}WWW
-${c4} GGG${c1}BBBBBBB${c2}YY${c3}WWWWWWWW
-${c4} GGGGGG${c1}BBBBBB${c3}WWWWWWWW
-${c4} GGGGGGGG${c1}BBBB${c3}WWWWWWWW
-${c4}GGGGGGGGGGG${c1}BBB${c3}WWWWWWW
-${c4}GGGGGGGGGGGGG${c1}B${c3}WWWWWW
-${c4}GGGGGGGG${c3}WWWWWWWWWWW
-${c4}GG${c3}WWWWWWWWWWWWWWWW
- WWWWWWWWWWWWWWWW
-      WWWWWWWWWW
-          WWW
-EOF
-        ;;
-
         "Clover"*)
             set_colors 2 6
             read -rd '' ascii_data <<'EOF'
@@ -5818,7 +5698,7 @@ ${c1}                .....
 EOF
         ;;
 
-        "crux_small"|KISS*)
+        "crux_small")
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
 ${c1}    ___
@@ -6054,6 +5934,29 @@ eee    eeeeeeeeee     eeeeee    eee
 EOF
         ;;
 
+        "EndeavourOS"*)
+            set_colors 1 2 3 4 5 6
+            read -rd '' ascii_data <<'EOF'
+${c1}                                                          
+${c1}                          +${c3}I${c5}+		        
+${c1}                         +${c3}777${c5}+                  
+${c1}	                +${c3}77777${c5}++		
+${c1}		       +${c3}7777777${c5}++		
+${c1}		      +${c3}7777777777${c5}++		
+${c1}		    ++${c3}7777777777777${c5}++		
+${c1}		   ++${c3}777777777777777${c5}+++       	
+${c1}		  ++${c3}77777777777777777${c5}++++	
+${c1}	         ++${c3}7777777777777777777${c5}++++      
+${c1}	       +++${c3}777777777777777777777${c5}++++	
+${c1}             ++++${c3}7777777777777777777777${c5}+++++  	
+${c1}            ++++${c3}77777777777777777777777${c5}+++++  	
+${c1}          +++++${c3}777777777777777777777777${c5}+++++	
+${c5}              +++++++${c3}7777777777777777${c5}++++++	
+${c5}             +++++++++++++++++++++++++++++	
+${c5}            +++++++++++++++++++++++++++
+EOF
+        ;;
+
         "Endless"*)
             set_colors 1 7
             read -rd '' ascii_data <<'EOF'
@@ -6108,20 +6011,6 @@ KX  '0XdKMMK;.xMMMk, .0MMMMMXx;  ...
 EOF
         ;;
 
-        "fedora_small")
-            set_colors 4 7 1
-            read -rd '' ascii_data <<'EOF'
-${c2}      _____
-     /   __)${c1}\\${c2}
-     |  /  ${c1}\\ \\${c2}
-  ${c1}__${c2}_|  |_${c1}_/ /${c2}
- ${c1}/ ${c2}(_    _)${c1}_/${c2}
-${c1}/ /${c2}  |  |
-${c1}\\ \\${c2}__/  |
- ${c1}\\${c2}(_____/
-EOF
-        ;;
-
         "Fedora"* | "RFRemix"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
@@ -6142,28 +6031,6 @@ ${c1}          /:-------------:\\
 :---${c2}:sdNMMMMNds:${c1}------------:
 :------${c2}:://:${c1}-------------::
 :---------------------://
-EOF
-        ;;
-
-        "Feren"*)
-            set_colors 4 7 1
-            read -rd '' ascii_data <<'EOF'
-${c1} `----------`
- :+ooooooooo+.
--o+oooooooooo+-
-..`/+++++++++++/...`````````````````
-   .++++++++++++++++++++++++++/////-
-    ++++++++++++++++++++++++++++++++//:`
-    -++++++++++++++++++++++++++++++/-`
-     ++++++++++++++++++++++++++++:.
-     -++++++++++++++++++++++++/.
-      +++++++++++++++++++++/-`
-      -++++++++++++++++++//-`
-        .:+++++++++++++//////-
-           .:++++++++//////////-
-             `-++++++---:::://///.
-           `.:///+++.             `
-          `.........
 EOF
         ;;
 
@@ -6519,33 +6386,21 @@ WW                           W
 EOF
         ;;
 
-        "januslinux"*|"janus"*|"Ataraxia Linux"*|"Ataraxia"*)
-            set_colors 4 5 6 2
+        "januslinux"*)
+            set_colors 7
             read -rd '' ascii_data <<'EOF'
-${c1}               'l:
-        loooooo
-          loooo coooool
- looooooooooooooooooool
-  looooooooooooooooo
-         lool   cooo
-        coooooooloooooooo
-     clooooo  ;lood  cloooo
-  :loooocooo cloo      loooo
- loooo  :ooooool       loooo
-looo    cooooo        cooooo
-looooooooooooo      ;loooooo ${c2}looooooc
-${c1}looooooooo loo   cloooooool    ${c2}looooc
-${c1} cooo       cooooooooooo       ${c2}looolooooool
-${c1}            cooo:     ${c2}coooooooooooooooooool
-                       loooooooooooolc:   loooc;
-                             cooo:    loooooooooooc
-                            ;oool         looooooo:
-                           coool          olc,
-                          looooc   ,,
-                        coooooc    loc
-                       :oooool,    coool:, looool:,
-                       looool:      ooooooooooooooo:
-                       cooolc        .ooooooooooool
+${c1} ________________
+|\               \
+| \               \
+|  \               \
+|   \ ______________\
+|    |              |
+|    |              |
+|    |              |
+ \   |  januslinux  |
+  \  |              |
+   \ |              |
+    \|______________|
 EOF
         ;;
 
@@ -7369,7 +7224,7 @@ ${c1} `-|.'   /_.          ${c4}\_|  ${c1} F
    |/`. `-.     `._)
       / .-.\\
       \\ (  `\\
-       `.\\
+       `.\
 EOF
         ;;
 
@@ -7675,29 +7530,27 @@ EOF
         ;;
 
         "Peppermint"*)
-            set_colors 1 15 3
+            set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-${c1}               PPPPPPPPPPPPPP
-${c1}           PPPP${c2}MMMMMMM${c1}PPPPPPPPPPP
-${c1}         PPPP${c2}MMMMMMMMMM${c1}PPPPPPPP${c2}MM${c1}PP
-${c1}       PPPPPPPP${c2}MMMMMMM${c1}PPPPPPPP${c2}MMMMM${c1}PP
-${c1}     PPPPPPPPPPPP${c2}MMMMMM${c1}PPPPPPP${c2}MMMMMMM${c1}PP
-${c1}    PPPPPPPPPPPP${c2}MMMMMMM${c1}PPPP${c2}M${c1}P${c2}MMMMMMMMM${c1}PP
-${c1}   PP${c2}MMMM${c1}PPPPPPPPPP${c2}MMM${c1}PPPPP${c2}MMMMMMM${c1}P${c2}MM${c1}PPPP
-${c1}   P${c2}MMMMMMMMMM${c1}PPPPPP${c2}MM${c1}PPPPP${c2}MMMMMM${c1}PPPPPPPP
-${c1}  P${c2}MMMMMMMMMMMM${c1}PPPPP${c2}MM${c1}PP${c2}M${c1}P${c2}MM${c1}P${c2}MM${c1}PPPPPPPPPPP
-${c1}  P${c2}MMMMMMMMMMMMMMMM${c1}PP${c2}M${c1}P${c2}MMM${c1}PPPPPPPPPPPPPPPP
-${c1}  P${c2}MMM${c1}PPPPPPPPPPPPPPPPPPPPPPPPPPPPPP${c2}MMMMM${c1}P
-${c1}  PPPPPPPPPPPPPPPP${c2}MMM${c1}P${c2}M${c1}P${c2}MMMMMMMMMMMMMMMM${c1}PP
-${c1}  PPPPPPPPPPP${c2}MM${c1}P${c2}MM${c1}PPPP${c2}MM${c1}PPPPP${c2}MMMMMMMMMMM${c1}PP
-${c1}   PPPPPPPP${c2}MMMMMM${c1}PPPPP${c2}MM${c1}PPPPPP${c2}MMMMMMMMM${c1}PP
-${c1}   PPPP${c2}MM${c1}P${c2}MMMMMMM${c1}PPPPPP${c2}MM${c1}PPPPPPPPPP${c2}MMMM${c1}PP
-${c1}    PP${c2}MMMMMMMMM${c1}P${c2}M${c1}PPPP${c2}MMMMMM${c1}PPPPPPPPPPPPP
-${c1}     PP${c2}MMMMMMM${c1}PPPPPPP${c2}MMMMMM${c1}PPPPPPPPPPPP
-${c1}       PP${c2}MMMM${c1}PPPPPPPPP${c2}MMMMMMM${c1}PPPPPPPP
-${c1}         PP${c2}MM${c1}PPPPPPPP${c2}MMMMMMMMMM${c1}PPPP
-${c1}           PPPPPPPPPP${c2}MMMMMMMM${c1}PPPP
-${c1}               PPPPPPPPPPPPPP
+${c1}          8ZZZZZZ${c2}MMMMM
+${c1}       .ZZZZZZZZZ${c2}MMMMMMM.
+${c2}     MM${c1}ZZZZZZZZZ${c2}MMMMMMM${c1}ZZZZ
+${c2}   MMMMM${c1}ZZZZZZZZ${c2}MMMMM${c1}ZZZZZZZM
+${c2}  MMMMMMM${c1}ZZZZZZZ${c2}MMMM${c1}ZZZZZZZZZ.
+${c2} MMMMMMMMM${c1}ZZZZZZ${c2}MMM${c1}ZZZZZZZZZZZI
+${c2}MMMMMMMMMMM${c1}ZZZZZZ${c2}MM${c1}ZZZZZZZZZZ${c2}MMM
+${c1}.ZZZ${c2}MMMMMMMMMM${c1}IZZ${c2}MM${c1}ZZZZZ${c2}MMMMMMMMM
+${c1}ZZZZZZZ${c2}MMMMMMMM${c1}ZZ${c2}M${c1}ZZZZ${c2}MMMMMMMMMMM
+${c1}ZZZZZZZZZZZZZZZZ${c2}M${c1}Z${c2}MMMMMMMMMMMMMMM
+${c1}.ZZZZZZZZZZZZZ${c2}MMM${c1}Z${c2}M${c1}ZZZZZZZZZZ${c2}MMMM
+${c1}.ZZZZZZZZZZZ${c2}MMM${c1}7ZZ${c2}MM${c1}ZZZZZZZZZZ7${c2}M
+${c1} ZZZZZZZZZ${c2}MMMM${c1}ZZZZ${c2}MMMM${c1}ZZZZZZZ77
+${c2}  MMMMMMMMMMMM${c1}ZZZZZ${c2}MMMM${c1}ZZZZZ77
+${c2}   MMMMMMMMMM${c1}7ZZZZZZ${c2}MMMMM${c1}ZZ77
+${c2}    .MMMMMMM${c1}ZZZZZZZZ${c2}MMMMM${c1}Z7Z
+${c2}      MMMMM${c1}ZZZZZZZZZ${c2}MMMMMMM
+${c1}        NZZZZZZZZZZZ${c2}MMMMM
+${c1}           ZZZZZZZZZ${c2}MM)
 EOF
         ;;
 
@@ -7756,42 +7609,26 @@ s:  yNm+`   .smNd+.
 EOF
         ;;
 
-        "postmarketos_small")
-            set_colors 2 7
-            read -rd '' ascii_data <<'EOF'
-${c1}        /\\
-       /  \\
-      /    \\
-      \\__   \\
-    /\\__ \\  _\\
-   /   /  \\/ __
-  /   / ____/  \\
- /    \\ \\       \\
-/_____/ /________\\
-EOF
-        ;;
-
         "PostMarketOS"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
-${c1}                 /\\
-                /  \\
-               /    \\
-              /      \\
-             /        \\
-            /          \\
-            \\           \\
-          /\\ \\____       \\
-         /  \\____ \\       \\
-        /       /  \\       \\
-       /       /    \\    ___\\
-      /       /      \\  / ____
-     /       /        \\/ /    \\
-    /       / __________/      \\
-   /        \\ \\                 \\
-  /          \\ \\                 \\
- /           / /                  \\
-/___________/ /____________________\\
+${c1}                    ss
+                 `hMMh`
+                .dMMMMd.
+               -NMMMMMMN-
+              /MMMMMMMMMN/
+              hMMMMMMMMMMMo
+            y+`mMMmdNMMMMMMy
+          `dMM-.-:- .mMMMMMMh`
+         .mMMMMMMd`  `dMMMMMMm.
+        :NMMMMMMy      yMMMMMMN:
+       /MMMMMMMo        oMMMmdmN/
+      oMMMMMMM/          /MN.-/:-.
+    `yMMMMMMN-            -:.NMMMMy`
+   `dMMMMMMM- -/////////////dMMMMMMd`
+  -mMMMMMMMMN+`sMMMMMMMMMMMMMMMMMMMMm-
+ :NMMMMMMMMMMM/ yMMMMMMMMMMMMMMMMMMMMN:
++MMMMMMMMMMMh.:mMMMMMMMMMMMMMMMMMMMMMMM+
 EOF
         ;;
 
@@ -7861,30 +7698,6 @@ ${c1}               `..--..`
          .-:///////ssssssssssssssssss/`
             `.:////ssss+/+ssssssssssss.
                 `--//-    `-/osssso/.
-EOF
-        ;;
-
-        "Radix"*)
-            set_colors 1 2
-            read -rd '' ascii_data <<'EOF'
-${c2}                .:oyhdmNo
-             `/yhyoosdms`
-            -o+/ohmmho-
-           ..`.:/:-`
-     `.--:::-.``${c1}
-  .+ydNMMMMMMNmhs:`
-`omMMMMMMMMMMMMMMNh-
-oNMMMNmddhhyyhhhddmy.
-mMMMMNmmddhhysoo+/:-`
-yMMMMMMMMMMMMMMMMNNh.
--dmmmmmNNMMMMMMMMMMs`
- -+oossyhmMMMMMMMMd-
- `sNMMMMMMMMMMMMMm:
-  `yMMMMMMNmdhhhh:
-   `sNMMMMMNmmho.
-    `+mMMMMMMMy.
-      .yNMMMm+`
-       `:yd+.
 EOF
         ;;
 
@@ -7987,7 +7800,7 @@ RRRR     RRRRRRRRRRRRRRRRRRR  R   RRRR
 EOF
         ;;
 
-        "redhat_old")
+        "Redhat"* | "Red Hat"* | "rhel"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}             `.-..........`
@@ -8006,30 +7819,6 @@ MMM    MMMMMMMMMMMMMMyyddMMM+
  MMMM   MMMMMMMMMMMMMNdyNMMh`     hyhMMM
   MMMMMMMMMMMMMMMMyoNNNMMM+.   MMMMMMMM
    MMNMMMNNMMMMMNM+ mhsMNyyyyMNMMMMsMM
-EOF
-        ;;
-
-        "Redhat"* | "Red Hat"* | "rhel"*)
-            set_colors 1
-            read -rd '' ascii_data <<'EOF'
-${c1}           .MMM..:MMMMMMM
-          MMMMMMMMMMMMMMMMMM
-          MMMMMMMMMMMMMMMMMMMM.
-         MMMMMMMMMMMMMMMMMMMMMM
-        ,MMMMMMMMMMMMMMMMMMMMMM:
-        MMMMMMMMMMMMMMMMMMMMMMMM
-  .MMMM'  MMMMMMMMMMMMMMMMMMMMMM
- MMMMMM    `MMMMMMMMMMMMMMMMMMMM.
-MMMMMMMM      MMMMMMMMMMMMMMMMMM .
-MMMMMMMMM.       `MMMMMMMMMMMMM' MM.
-MMMMMMMMMMM.                     MMMM
-`MMMMMMMMMMMMM.                 ,MMMMM.
- `MMMMMMMMMMMMMMMMM.          ,MMMMMMMM.
-    MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-      MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM:
-         MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-            `MMMMMMMMMMMMMMMMMMMMMMMM:
-                ``MMMMMMMMMMMMMMMMM'
 EOF
         ;;
 
@@ -8150,22 +7939,27 @@ ${c1}            ...........
 EOF
         ;;
 
-        "Sailfish"*)
+        "SailfishOS"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
-${c1}                 _a@b
-              _#b (b
-            _@@   @_         _,
-          _#^@ _#*^^*gg,aa@^^
-          #- @@^  _a@^^
-          @_  *g#b
-          ^@_   ^@_
-            ^@_   @
-             @(b (b
-            #b(b#^
-          _@_#@^
-       _a@a*^
-   ,a@*^
+${c1}              .+eWWW
+          .+ee+++eee      e.
+       .ee++eeeeeeee    +e.
+     .e++ee++eeeeeee+eee+e+
+    ee.e+.ee+eee++eeeeee+
+   W.+e.e+.e++ee+eee
+  W.+e.W.ee.W++ee'
+ +e.W W.e+.W.W+
+ W.e.+e.W W W.
+ e e e +e.W.W
+       .W W W.
+        W.+e.W.
+         W++e.ee+.
+          ++ +ee++eeeee++.
+          '     '+++e   'ee.
+                           ee
+                            ee
+                             e
 EOF
         ;;
 
@@ -8721,7 +8515,7 @@ ${c1}              ..-::::::-.`
 EOF
         ;;
 
-        "Ubuntu"* | "i3buntu"*)
+        "Ubuntu"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}            .-/+oossssoo+/-.
@@ -8770,7 +8564,7 @@ ${c1}                __.;=====;.__
        _vi,    `            --+=++++:
       .uvnvi.       _._       -==+==+.
      .vvnvnI`    .;==|==;.     :|=||=|.
-${c2}+QmQQm${c1}pvvnv; ${c2}_yYsyQQWUUQQQm #QmQ#${c1}:${c2}QQQWUV$QQm.
+${c2}+QmQQm${c1}pvvnv; ${c2}_yYsyQQWUUQQQm #QmQ#${c1}:${c2}QQQWUV$QQmL
 ${c2} -QQWQW${c1}pvvo${c2}wZ?.wQQQE${c1}==<${c2}QWWQ/QWQW.QQWW${c1}(: ${c2}jQWQE
 ${c2}  -$QQQQmmU'  jQQQ@${c1}+=<${c2}QWQQ)mQQQ.mQQQC${c1}+;${c2}jWQQ@'
 ${c2}   -$WQ8Y${c1}nI:   ${c2}QWQQwgQQWV${c1}`${c2}mWQQ.jQWQQgyyWW@!
@@ -9031,8 +8825,8 @@ main() {
     eval "$config"
 
     get_args "$@"
-    [[ "$verbose" != "on" ]] && exec 2>/dev/null
     get_simple "$@"
+    [[ "$verbose" != "on" ]] && exec 2>/dev/null
     get_distro
     get_bold
     get_distro_ascii
