@@ -1621,13 +1621,13 @@ get_wm() {
 
         # Fallback for non-EWMH WMs.
         [[ -z "$wm" ]] && \
-            wm="$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
-                               -e "catwm" \
-                               -e "fvwm" \
-                               -e "dwm" \
-                               -e "2bwm" \
-                               -e "monsterwm" \
-                               -e "tinywm")"
+            wm="$(ps "${ps_flags[@]}" | grep -m 1 -o \
+                               -e "[c]atwm" \
+                               -e "[f]vwm" \
+                               -e "[d]wm" \
+                               -e "[2]bwm" \
+                               -e "[m]onsterwm" \
+                               -e "[t]inywm")"
 
     else
         case "$os" in
