@@ -3767,10 +3767,10 @@ get_window_size() {
 
             # If the ID was found get the window size.
             if [[ "$current_window" ]]; then
-                term_size="$(xwininfo -id "$current_window")"
-                term_width="${term_size#*Width: }"
+                term_size=("$(xwininfo -id "$current_window")")
+                term_width="${term_size[0]#*Width: }"
                 term_width="${term_width/$'\n'*}"
-                term_height="${term_size/*Height: }"
+                term_height="${term_size[0]/*Height: }"
                 term_height="${term_height/$'\n'*}"
             fi
         fi
