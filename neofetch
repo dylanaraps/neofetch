@@ -4103,7 +4103,8 @@ strip_sequences() {
 }
 
 wmic_query() {
-    local wmic="$(wmic "$@")"
+    local wmic
+    wmic="$(wmic "$@")"
     wmic=${wmic//$'\r'}
     trim "$wmic"
 }
