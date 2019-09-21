@@ -1007,9 +1007,8 @@ get_distro() {
         ;;
 
         "Windows")
-            distro="$(wmic os get Caption)"
-            distro="${distro/Caption}"
-            distro="${distro/Microsoft }"
+            distro="$(wmic_query os get Caption)"
+            distro="${distro/Caption Microsoft }"
         ;;
 
         "Solaris")
@@ -1143,9 +1142,8 @@ get_model() {
         ;;
 
         "Windows")
-            model="$(wmic computersystem get manufacturer,model)"
-            model="${model/Manufacturer}"
-            model="${model/Model}"
+            model="$(wmic_query computersystem get manufacturer,model)"
+            model="${model/Manufacturer Model }"
         ;;
 
         "Solaris")
@@ -2110,9 +2108,8 @@ get_cpu() {
 get_cpu_usage() {
     case "$os" in
         "Windows")
-            cpu_usage="$(wmic cpu get loadpercentage)"
-            cpu_usage="${cpu_usage/LoadPercentage}"
-            cpu_usage="${cpu_usage//[[:space:]]}"
+            cpu_usage="$(wmic_query cpu get loadpercentage)"
+            cpu_usage="${cpu_usage/LoadPercentage }"
         ;;
 
         *)
@@ -2279,8 +2276,8 @@ get_gpu() {
         ;;
 
         "Windows")
-            gpu="$(wmic path Win32_VideoController get caption)"
-            gpu="${gpu//Caption}"
+            gpu="$(wmic_query path Win32_VideoController get caption)"
+            gpu="${gpu//Caption }"
         ;;
 
         "Haiku")
@@ -2649,12 +2646,12 @@ get_resolution() {
 
         "Windows")
             local width=""
-            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution)"
-            width="${width//CurrentHorizontalResolution/}"
+            width="$(wmic_query path Win32_VideoController get CurrentHorizontalResolution)"
+            width="${width//CurrentHorizontalResolution }"
 
             local height=""
-            height="$(wmic path Win32_VideoController get CurrentVerticalResolution)"
-            height="${height//CurrentVerticalResolution/}"
+            height="$(wmic_query path Win32_VideoController get CurrentVerticalResolution)"
+            height="${height//CurrentVerticalResolution }"
 
             [[ "$(trim "$width")" ]] && resolution="${width//[[:space:]]}x${height//[[:space:]]}"
         ;;
@@ -3347,9 +3344,8 @@ get_battery() {
         ;;
 
         "Windows")
-            battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining)"
-            battery="${battery/EstimatedChargeRemaining}"
-            battery="$(trim "$battery")%"
+            battery="$(wmic_query Path Win32_Battery get EstimatedChargeRemaining)"
+            battery="${battery/EstimatedChargeRemaining }"
         ;;
 
         "Haiku")
@@ -4104,6 +4100,12 @@ strip_sequences() {
     strip="${strip//$'\e['38\;5\;[0-9][0-9][0-9]m}"
 
     printf '%s\n' "$strip"
+}
+
+wmic_query() {
+    local wmic="$(wmic "$@")"
+    wmic=${wmic//$'\r'}
+    trim "$wmic"
 }
 
 # COLORS
