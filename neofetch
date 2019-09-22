@@ -3208,7 +3208,7 @@ END
             local ce_arg_idx
             local ce_conf
 
-            # Could have used `eval set -- "$ConEmuArgs"` instead for arg parsing but eval is evil...
+            # Could have used `eval set -- "$ConEmuArgs"` instead for arg parsing
             readarray -t ce_arg_list < <(xargs -n1 printf "%s\n" <<< "${ConEmuArgs-}")
 
             for ce_arg_idx in "${!ce_arg_list[@]}"; do
@@ -3237,13 +3237,14 @@ END
                 [[ ! -f "$ce_conf" ]] && continue
 
                 # Very basic XML parsing
-                term_font="$(awk '/name="FontName"/ && match($0, /data="([^"]*)"/) {print substr($0, RSTART+6, RLENGTH-7)}' "$ce_conf")"
+                term_font="$(awk '/name="FontName"/ && match($0, /data="([^"]*)"/) \
+                    {print substr($0, RSTART+6, RLENGTH-7)}' "$ce_conf")"
                 break
             done
 
-            # Null-terminated contents in /proc/registry files triggers a Bash warning. Use read instead
-            [[ -z "$term_font" ]] && \
-                read -r term_font < /proc/registry/HKEY_CURRENT_USER/Software/ConEmu/.Vanilla/FontName
+            # Null-terminated contents in /proc/registry files triggers a Bash warning
+            [[ -z "$term_font" ]] && read -r term_font < \
+                /proc/registry/HKEY_CURRENT_USER/Software/ConEmu/.Vanilla/FontName
         ;;
     esac
 }
