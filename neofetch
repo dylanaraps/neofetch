@@ -3203,7 +3203,7 @@ END
             [[ -z "$term_font" ]] && term_font="Monospace 12"
         ;;
 
-        "conemu-"*)
+        conemu-*)
             local ce_arg_list
             local ce_arg_idx
             local ce_conf
@@ -3213,37 +3213,28 @@ END
 
             for ce_arg_idx in "${!ce_arg_list[@]}"; do
                 # Search for "-LoadCfgFile" arg
-                [[ "${ce_arg_list[$ce_arg_idx]}" != -LoadCfgFile ]] && continue
-
-                # Conf path is the next arg
-                ((++ce_arg_idx))
-                ce_conf="${ce_arg_list[$ce_arg_idx]}"
-                break
+                [[ "${ce_arg_list[$ce_arg_idx]}" == -LoadCfgFile ]] && {
+                    # Conf path is the next arg
+                    ce_conf=${ce_arg_list[++ce_arg_idx]}
+                    break
+                }
             done
 
             # https://conemu.github.io/en/ConEmuXml.html#search-sequence
-            local ce_seq=(
-                "$ce_conf"
-                "$ConEmuDir\ConEmu.xml"
-                "$ConEmuDir\.ConEmu.xml"
-                "$ConEmuBaseDir\ConEmu.xml"
-                "$ConEmuBaseDir\.ConEmu.xml"
-                "$APPDATA\ConEmu.xml"
-                "$APPDATA\.ConEmu.xml"
-            )
-
-            for ce_conf in "${ce_seq[@]}"; do
+            for ce_conf in "$ce_conf" "${ConEmuDir-}\ConEmu.xml" "${ConEmuDir-}\.ConEmu.xml" \
+                           "${ConEmuBaseDir-}\ConEmu.xml" "${ConEmuBaseDir-}\.ConEmu.xml" \
+                           "$APPDATA\ConEmu.xml" "$APPDATA\.ConEmu.xml"; do
                 # Search for first conf file available
-                [[ ! -f "$ce_conf" ]] && continue
-
-                # Very basic XML parsing
-                term_font="$(awk '/name="FontName"/ && match($0, /data="([^"]*)"/) \
-                    {print substr($0, RSTART+6, RLENGTH-7)}' "$ce_conf")"
-                break
+                [[ -f "$ce_conf" ]] && {
+                    # Very basic XML parsing
+                    term_font="$(awk '/name="FontName"/ && match($0, /data="([^"]*)"/) {
+                        print substr($0, RSTART+6, RLENGTH-7)}' "$ce_conf")"
+                    break
+                }
             done
 
             # Null-terminated contents in /proc/registry files triggers a Bash warning
-            [[ -z "$term_font" ]] && read -r term_font < \
+            [[ "$term_font" ]] || read -r term_font < \
                 /proc/registry/HKEY_CURRENT_USER/Software/ConEmu/.Vanilla/FontName
         ;;
     esac
