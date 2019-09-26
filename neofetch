@@ -1213,72 +1213,65 @@ get_kernel() {
 }
 
 get_uptime() {
-    # Since Haiku's uptime cannot be fetched in seconds, a case outside
-    # the usual case is needed.
+    # Get uptime in seconds.
     case "$os" in
-        "Haiku")
-            uptime="$(uptime -u)"
-            uptime="${uptime/up }"
+        "Linux" | "Windows" | "MINIX")
+            if [[ -r /proc/uptime ]]; then
+                seconds="$(< /proc/uptime)"
+                seconds="${seconds/.*}"
+            else
+                boot="$(date -d"$(uptime -s)" +%s)"
+                now="$(date +%s)"
+                seconds="$((now - boot))"
+            fi
         ;;
 
-        *)
-            # Get uptime in seconds.
-            case "$os" in
-                "Linux" | "Windows" | "MINIX")
-                    if [[ -r /proc/uptime ]]; then
-                        seconds="$(< /proc/uptime)"
-                        seconds="${seconds/.*}"
-                    else
-                        boot="$(date -d"$(uptime -s)" +%s)"
-                        now="$(date +%s)"
-                        seconds="$((now - boot))"
-                    fi
-                ;;
+        "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
+            boot="$(sysctl -n kern.boottime)"
+            boot="${boot/\{ sec = }"
+            boot="${boot/,*}"
 
-                "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
-                    boot="$(sysctl -n kern.boottime)"
-                    boot="${boot/\{ sec = }"
-                    boot="${boot/,*}"
+            # Get current date in seconds.
+            now="$(date +%s)"
+            seconds="$((now - boot))"
+        ;;
 
-                    # Get current date in seconds.
-                    now="$(date +%s)"
-                    seconds="$((now - boot))"
-                ;;
+        "Solaris")
+            seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
+            seconds="${seconds/.*}"
+        ;;
 
-                "Solaris")
-                    seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
-                    seconds="${seconds/.*}"
-                ;;
+        "AIX" | "IRIX")
+            t="$(LC_ALL=POSIX ps -o etime= -p 1)"
+            d="0" h="0"
+            case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
+            case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
+            h="${h#0}" t="${t#0}"
+            seconds="$((d*86400 + h*3600 + ${t%%:*}*60 + ${t#*:}))"
+        ;;
 
-                "AIX" | "IRIX")
-                    t="$(LC_ALL=POSIX ps -o etime= -p 1)"
-                    d="0" h="0"
-                    case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
-                    case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
-                    h="${h#0}" t="${t#0}"
-                    seconds="$((d*86400 + h*3600 + ${t%%:*}*60 + ${t#*:}))"
-                ;;
-            esac
-
-            days="$((seconds / 60 / 60 / 24)) days"
-            hours="$((seconds / 60 / 60 % 24)) hours"
-            mins="$((seconds / 60 % 60)) minutes"
-
-            # Remove plural if < 2.
-            ((${days/ *} == 1))  && days="${days/s}"
-            ((${hours/ *} == 1)) && hours="${hours/s}"
-            ((${mins/ *} == 1))  && mins="${mins/s}"
-
-            # Hide empty fields.
-            ((${days/ *} == 0))  && unset days
-            ((${hours/ *} == 0)) && unset hours
-            ((${mins/ *} == 0))  && unset mins
-
-            uptime="${days:+$days, }${hours:+$hours, }${mins}"
-            uptime="${uptime%', '}"
-            uptime="${uptime:-${seconds} seconds}"
+        "Haiku")
+            seconds=$(($(system_time) / 1000000))
         ;;
     esac
+
+    days="$((seconds / 60 / 60 / 24)) days"
+    hours="$((seconds / 60 / 60 % 24)) hours"
+    mins="$((seconds / 60 % 60)) minutes"
+
+    # Remove plural if < 2.
+    ((${days/ *} == 1))  && days="${days/s}"
+    ((${hours/ *} == 1)) && hours="${hours/s}"
+    ((${mins/ *} == 1))  && mins="${mins/s}"
+
+    # Hide empty fields.
+    ((${days/ *} == 0))  && unset days
+    ((${hours/ *} == 0)) && unset hours
+    ((${mins/ *} == 0))  && unset mins
+
+    uptime="${days:+$days, }${hours:+$hours, }${mins}"
+    uptime="${uptime%', '}"
+    uptime="${uptime:-${seconds} seconds}"
 
     # Make the output of uptime smaller.
     case "$uptime_shorthand" in
