@@ -8843,6 +8843,31 @@ ${c1}     -1vvnvv.     `~+++`        ++|+++
 EOF
         ;;
 
+        "Obarun"*)
+            set_colors 6 6 7 1
+            read -rd '' ascii_data <<'EOF'
+${c1}                    ,;::::;
+                ;cooolc;,
+             ,coool;
+           ,loool,
+          loooo;
+        :ooool
+       cooooc            ,:ccc;
+      looooc           :oooooool
+     cooooo          ;oooooooooo,
+    :ooooo;         :ooooooooooo
+    oooooo          oooooooooooc
+   :oooooo         :ooooooooool
+   loooooo         ;oooooooool
+   looooooc        .coooooooc
+   cooooooo:           ,;co;
+   ,ooooooool;       ,:loc
+    cooooooooooooloooooc
+     ;ooooooooooooool;
+       ;looooooolc;
+EOF
+        ;;
+
         *"[Windows 10]"*|*"on Windows 10"*|"Windows 8"*|\
         "Windows 10"* |"windows10"|"windows8")
             set_colors 6 7
