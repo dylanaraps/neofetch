@@ -1021,8 +1021,7 @@ get_distro() {
         ;;
 
         "Haiku")
-            read -r name version _ <<< "$(uname -s)"
-            distro="$name $version"
+            distro=Haiku
         ;;
 
         "AIX")
