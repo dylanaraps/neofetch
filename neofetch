@@ -7222,6 +7222,29 @@ sd yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy ds
 EOF
         ;;
 
+        "Neptune"*)
+            set_colors 7
+            read -rd '' ascii_data <<'EOF'
+${c1}            ./+sydddddddys/-.
+        .+ymNNdyooo/:+oooymNNmy/`
+     `/hNNh/.`             `-+dNNy:`
+    /mMd/.          .++.:oy/   .+mMd-
+  `sMN/             oMMmdy+.     `oNNo
+ `hMd.           `/ymy/.           :NMo
+ oMN-          `/dMd:               /MM-
+`mMy          -dMN+`                 mMs
+.MMo         -NMM/                   yMs
+ dMh         mMMMo:`                `NMo
+ /MM/        /ymMMMm-               sMN.
+  +Mm:         .hMMd`              oMN/
+   +mNs.      `yNd/`             -dMm-
+    .yMNs:    `/.`            `/yNNo`
+      .odNNy+-`           .:ohNNd/.
+         -+ymNNmdyyyyyyydmNNmy+.
+             `-//sssssss//.
+EOF
+        ;;
+
         "NetBSD"*)
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
