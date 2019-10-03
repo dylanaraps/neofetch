@@ -2521,6 +2521,7 @@ get_song() {
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
 
         "cmus"*)
+            # NOTE: cmus >= 2.8.0 supports mpris2
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
                                           /tag artist/ {
                                               $1=$2=""; sub("  ", ""); a=$0
