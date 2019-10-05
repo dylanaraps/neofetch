@@ -5013,6 +5013,18 @@ EOF
 EOF
         ;;
 
+        "android_small"*)
+            set_colors 2 7
+            read -rd '' ascii_data <<'EOF'
+${c1}  ;,           ,;
+   ';,.-----.,;'
+  ,'           ',
+ /    O     O    \\
+|                 |
+'-----------------'
+EOF
+        ;;
+
         "Android"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
@@ -5177,13 +5189,13 @@ EOF
         "arch_small")
             set_colors 6 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}      /\
-     /^^\
-    /\   \
-   /${c2}  __  \
-  /  (  )  \
- / __|  |__\\\
-///        \\\\\\
+${c1}      /\\
+     /  \\
+    /\\   \\
+${c2}   /      \\
+  /   ,,   \\
+ /   |  |  -\\
+/_-''    ''-_\\
 EOF
         ;;
 
@@ -5334,6 +5346,19 @@ ${c2}        .oossssso-````/ossssss+`
   `+sso+:-`                 `.-/+oso:
  `++:.                           `-/+/
  .`                                 `/
+EOF
+        ;;
+
+        "artix_small"*)
+            set_colors 6 6 7 1
+            read -rd '' ascii_data <<'EOF'
+${c1}      /\\
+     /  \\
+    /`'.,\\
+   /     ',
+  /      ,`\\
+ /   ,.'`.  \\
+/.,'`     `'.\\
 EOF
         ;;
 
@@ -5624,6 +5649,19 @@ ${c1}                              ......
      ${c2}.,++*****+++${c1}*****************${c2}+++++,.${c1}
       ${c2},++++++**+++++${c1}***********${c2}+++++++++,${c1}
      ${c2}.,,,,++++,..  .,,,,,.....,+++,.,,${c1}
+EOF
+        ;;
+
+        "centos_small"*)
+            set_colors 3 2 4 5 7
+            read -rd '' ascii_data <<'EOF'
+${c2} ____${c1}^${c4}____
+${c2} |\\  ${c1}|${c4}  /|
+${c2} | \\ ${c1}|${c4} / |
+${c4}<---- ${c3}---->
+${c3} | / ${c2}|${c1} \\ |
+${c3} |/__${c2}|${c1}__\\|
+${c2}     v
 EOF
         ;;
 
@@ -6062,10 +6100,13 @@ EOF
         "dragonfly_small"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-${c2}(\${c3}"${c2}/)
-${c2}(/${c1}|${c2}\)
-${c1}  |
-  |
+${c2}   ,${c1}_${c2},
+('-_${c1}|${c2}_-')
+ >--${c1}|${c2}--<
+(_-'${c1}|${c2}'-_)
+    ${c1}|
+    |
+    |
 EOF
         ;;
 
@@ -6109,6 +6150,18 @@ ${c1}                  -``-
  `/++-                            -++/`
 .:-.`..............................`.-:.
 `.-/++++++++++++++++++++++++++++++++/-.`
+EOF
+        ;;
+
+        "elementary_small"*)
+            set_colors 4 7 1
+            read -rd '' ascii_data <<'EOF'
+${c2}  _______
+ / ____  \\
+/  |  /  /\\
+|__\\ /  / |
+\\   /__/  /
+ \\_______/
 EOF
         ;;
 
@@ -6251,13 +6304,12 @@ EOF
         "freebsd_small")
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-${c1} /\\ _____ /\\
- \\_)     (_/
- /         \
+${c1}/\\,-'''''-,/\\
+\\_)       (_/
 |           |
 |           |
- \         /
-  --_____--
+ ;         ;
+  '-_____-'
 EOF
         ;;
 
@@ -6516,6 +6568,19 @@ eee        ${c2}//  \\ooo/  \\\        ${c1}eee
 EOF
         ;;
 
+        "guixsd_small"*)
+            set_colors 3 7 6 1 8
+            read -rd '' ascii_data <<'EOF'
+${c1}|.__          __.|
+|__ \\        / __|
+   \\ \\      / /
+    \\ \\    / /
+     \\ \\  / /
+      \\ \\/ /
+       \\__/
+EOF
+        ;;
+
         "GuixSD"*)
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
@@ -6529,6 +6594,20 @@ ${c1} ..                             `.
              -+++-:::.
               :+/:::-
               `-....`
+EOF
+        ;;
+
+        "haiku_small"*)
+            set_colors 2 8
+            read -rd '' ascii_data <<'EOF'
+${c1}       ,^,
+      /   \\
+*--_ ;     ; _--*
+\\   '"     "'   /
+ '.           .'
+.-'"         "'-.
+ '-.__.   .__.-'
+       |_|
 EOF
         ;;
 
@@ -6575,6 +6654,19 @@ ${c2}                     `
 ::`                    `::`..`
                           .` `..
                                 ``
+EOF
+        ;;
+
+        "hyperbola_small"*)
+            set_colors 8
+            read -rd '' ascii_data <<'EOF'
+${c1}    |`__.`/
+    \____/
+    .--.
+   /    \\
+  /  ___ \\
+ / .`   `.\\
+/.`      `.\\
 EOF
         ;;
 
@@ -6847,8 +6939,21 @@ ${c3}  #####${c2}#######${c3}#####
 EOF
         ;;
 
+        "linuxlite_small"*)
+            set_colors 3 7
+            read -rd '' ascii_data <<'EOF'
+${c1}   /\\
+  /  \\
+ / ${c2}/ ${c1}/
+> ${c2}/ ${c1}/
+\\ ${c2}\\ ${c1}\\
+ \\_${c2}\\${c1}_\\
+${c2}    \\
+EOF
+        ;;
+
         "Linux Lite"*)
-            set_colors 2 7
+            set_colors 3 7
             read -rd '' ascii_data <<'EOF'
 ${c1}          ,xXc
       .l0MMMMMO
@@ -6978,6 +7083,19 @@ ${c4}.MMMMMMMMMMMMMMMMMMMMMMMMX.
 EOF
         ;;
 
+        "mageia_small"*)
+            set_colors 6 7
+            read -rd '' ascii_data <<'EOF'
+${c1}   *
+    *
+   **
+${c2} /\\__/\\
+/      \\
+\\      /
+ \\____/
+EOF
+        ;;
+
         "Mageia"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
@@ -7047,6 +7165,19 @@ ${c1}.sss/       ${c2}-:::-.`   .:::::
 ${c1} /sss+.    ${c2}..`${c1}  `--`    ${c2}.:::
 ${c1}  -ossso+/:://+/-`        ${c2}.:`
 ${c1}    -/+ooo+/-.              ${c2}`
+EOF
+        ;;
+
+        "manjaro_small"*)
+            set_colors 2 7
+            read -rd '' ascii_data <<'EOF'
+${c1}||||||||| ||||
+||||||||| ||||
+||||      ||||
+|||| |||| ||||
+|||| |||| ||||
+|||| |||| ||||
+|||| |||| ||||
 EOF
         ;;
 
@@ -7152,6 +7283,19 @@ ${c2}   -sdhyo+:-`                -/syymm:
 EOF
         ;;
 
+        "linuxmint_small"*)
+            set_colors 2 7
+            read -rd '' ascii_data <<'EOF'
+${c1} ___________
+|_          \\
+  | ${c2}| _____ ${c1}|
+  | ${c2}| | | | ${c1}|
+  | ${c2}| | | | ${c1}|
+  | ${c2}\\__${c2}___/ ${c1}|
+  \\_________/
+EOF
+        ;;
+
         "Linux Mint"* | "LinuxMint"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
@@ -7171,6 +7315,19 @@ ddddMMh  ${c2}dMM   :hNMNMNhNMNMNh: ${c1}`NMm
       `/dMNmy+/:-------------:/yMMM
          ./ydNMMMMMMMMMMMMMMMMMMMMM
             .MMMMMMMMMMMMMMMMMMM
+EOF
+        ;;
+
+        "mx_small"*)
+            set_colors 4 6 7
+            read -rd '' ascii_data <<'EOF'
+${c3}    \\\\  /
+     \\\\/
+      \\\\
+   /\\/ \\\\
+  /  \\  /\\
+ /    \\/  \\
+/__________\\
 EOF
         ;;
 
@@ -7243,6 +7400,19 @@ ${c1}            ./+sydddddddys/-.
       .odNNy+-`           .:ohNNd/.
          -+ymNNmdyyyyyyydmNNmy+.
              `-//sssssss//.
+EOF
+        ;;
+
+        "netbsd_small"*)
+            set_colors 5 7
+            read -rd '' ascii_data <<'EOF'
+${c2}\\\\${c1}\`-______,----__
+${c2} \\\\        ${c1}__,---\`_
+${c2}  \\\\       ${c1}\`.____
+${c2}   \\\\${c1}-______,----\`-
+${c2}    \\\\
+     \\\\
+      \\\\
 EOF
         ;;
 
@@ -7617,6 +7787,18 @@ ${c1}      :+sMs.
 EOF
         ;;
 
+        "parabola_small"*)
+            set_colors 5 7
+            read -rd '' ascii_data <<'EOF'
+${c1}  __ __ __  _
+.`_//_//_/ / `.
+          /  .`
+         / .`
+        /.`
+       /`
+EOF
+        ;;
+
         "Parabola"*)
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
@@ -7805,6 +7987,20 @@ ${c1}               PPPPPPPPPPPPPP
 EOF
         ;;
 
+        "popos_small"*)
+            set_colors 6 7
+            read -rd '' ascii_data <<'EOF'
+${c1}______
+\\   _ \\        __
+ \\ \\ \\ \\      / /
+  \\ \\_\\ \\    / /
+   \\  ___\\  /_/
+    \\ \\    _
+   __\\_\\__(_)_
+  (___________)`
+EOF
+        ;;
+
         "Pop!_OS"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
@@ -7920,6 +8116,18 @@ ${c1}           `-/osyyyysosyhhhhhyys+-
       /dMMMMMMMMMMMMMMMMMMNdy/`
         .+hNMMMMMMMMMNmdhs/.
             .:/+ooo+/:-.
+EOF
+        ;;
+
+        "pureos_small"*)
+            set_colors 2 7 7
+            read -rd '' ascii_data <<'EOF'
+${c1} _____________
+|  _________  |
+| |         | |
+| |         | |
+| |_________| |
+|_____________|
 EOF
         ;;
 
@@ -8372,6 +8580,19 @@ _Qh;.nm       .QWc. {QL      ]QQp;..vmQ/
 EOF
         ;;
 
+        "slackware_small"*)
+            set_colors 4 7 1
+            read -rd '' ascii_data <<'EOF'
+${c1}   ________
+  /  ______|
+  | |______
+  \\______  \\
+   ______| |
+| |________/
+|____________
+EOF
+        ;;
+
         "Slackware"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
@@ -8574,6 +8795,17 @@ ${c2},',.         ';  ,+##############'
 EOF
         ;;
 
+        "sunos_small" | "solaris_small")
+            set_colors 3 7
+            read -rd '' ascii_data <<'EOF'
+${c1}       .   .;   .
+   .   :;  ::  ;:   .
+   .;. ..      .. .;.
+..  ..             ..  ..
+ .;,                 ,;.
+EOF
+        ;;
+
         "SunOS" | "Solaris")
             set_colors 3 7
             read -rd '' ascii_data <<'EOF'
@@ -8604,6 +8836,19 @@ ${c2}                                     ......
    oWMO:.    .;xNMMk,       NNNMKl.          .xWMx
      :ONMMNXMMMKx;          .  ,xNMWKkxllox0NMWk,
          .....                    .:dOOXXKOxl,
+EOF
+        ;;
+
+        "opensuse_small" | "suse_small"*)
+            set_colors 2 7
+            read -rd '' ascii_data <<'EOF'
+${c1}  _______
+__|   __ \\
+     / .\\ \\
+     \\__/ |
+   _______|
+   \\_______
+__________/
 EOF
         ;;
 
@@ -8822,6 +9067,18 @@ ${c1}              ..-::::::-.`
        ./+++++++++++++${c2}hMMMNdyo${c1}+/.
          `.:+++++++++++${c2}sso${c1}++:.
               ..-::::::-..
+EOF
+        ;;
+
+        "ubuntu_small")
+            set_colors 1 7 3
+            read -rd '' ascii_data <<'EOF'
+${c1}         _
+     ---(_)
+ _/  ---  \\
+(_) |   |
+  \\  --- _/
+     ---(_)
 EOF
         ;;
 
