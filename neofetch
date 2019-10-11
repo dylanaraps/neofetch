@@ -2615,22 +2615,20 @@ get_resolution() {
 
             else
                 resolution="$(system_profiler SPDisplaysDataType |\
-                              awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
+                              awk '/Resolution:/ {printf $2" "$4} ; /UI Looks like:/ {print " "$4" "$6" "$8}' |\
+                              while read phys_x phys_y res_x res_y refresh; do \
+                                  scale_factor="$(expr $phys_x / $res_x)"; \
+                                  echo -n $res_x"x"$res_y"@"$scale_factor"x @ "$refresh"Hz, "; \
+                              done)"
             fi
 
-            if [[ -e "/Library/Preferences/com.apple.windowserver.plist" ]]; then
-                scale_factor="$(PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" \
-                                /Library/Preferences/com.apple.windowserver.plist)"
-            else
-                scale_factor=""
-            fi
+            # If scale factor is redundant info
+            [[ "$resolution" == *"@1x"* ]] && \
+                resolution="${resolution//@1x}"
 
             # If no refresh rate is empty.
             [[ "$resolution" == *"@ Hz"* ]] && \
                 resolution="${resolution//@ Hz}"
-
-            [[ "${scale_factor%.*}" == 2 ]] && \
-                resolution="${resolution// @/@2x @}"
 
             if [[ "$refresh_rate" == "off" ]]; then
                 resolution="${resolution// @ [0-9][0-9]Hz}"
