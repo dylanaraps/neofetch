@@ -2618,11 +2618,11 @@ get_resolution() {
                               awk '/Resolution:/ {printf $2" "$4} ; /UI Looks like:/ {print " "$4" "$6" "$8}' |\
                               while read phys_x phys_y res_x res_y refresh; do \
                                   scale_factor="$(expr $phys_x / $res_x)"; \
-                                  echo -n $res_x"x"$res_y"@"$scale_factor"x @ "$refresh"Hz, "; \
+                                  printf %s "${res_x}x${res_y}@${scale_factor}x @ ${refresh}Hz, "
                               done)"
             fi
 
-            # If scale factor is redundant info
+            # Scale factor @1x is redundant.
             [[ "$resolution" == *"@1x"* ]] && \
                 resolution="${resolution//@1x}"
 
