@@ -3377,10 +3377,12 @@ get_local_ip() {
                 [[ "$local_ip" ]] || local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
             else
                 for interface in "${local_ip_interface[@]}"; do
-                    local_ip="$(ip addr show "$interface" | awk '/inet / {print $2; exit}')"
+                    local_ip="$(ip addr show "$interface" 2> /dev/null |
+                        awk '/inet / {print $2; exit}')"
                     local_ip="${local_ip/\/*}"
                     [[ "$local_ip" ]] ||
-                        local_ip="$(ifconfig "$interface" | awk '/broadcast/ {print $2; exit}')"
+                        local_ip="$(ifconfig "$interface" 2> /dev/null |
+                        awk '/broadcast/ {print $2; exit}')"
                     if [[ -n "$local_ip" ]]; then
                         prin "$interface" "$local_ip"
                     else
