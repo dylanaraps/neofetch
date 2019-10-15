@@ -5275,7 +5275,7 @@ EOF
         ;;
 
         "ArchStrike"*)
-            set_colors 0 6
+            set_colors 8 6
             read -rd '' ascii_data <<'EOF'
 ${c1}                   *   
                   **.
