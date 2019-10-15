@@ -5274,6 +5274,42 @@ ${c1}                     'c'
 EOF
         ;;
 
+                "ArchStrike"*)
+                set_colors 6
+                read -rd '' ascii_data <<'EOF'
+${c1}                                 ,#b
+                                ,#  b
+                               #     b
+                              #       b
+                             #         b
+                            #           p
+                           #             p
+                          "@              b
+                         m  `@             b
+                        #  #W, "#           b
+                      ,#      @###@          Q
+                     ,#                       # ,
+                    ]      #M"^##tommy##^"7@@`   /
+                   {   @#` ,#          #mQ '"  ,##
+                  @  #b ,##            #"     "@  #p
+                 #  b ;#           #b`    ,###Q 7@ #p
+                #  b @         #M^      ;#     #p^#  b
+              ,#  b @      @#"        "@ \      # !   N
+             ]#  # j@   #"             .7  \     b @   #
+            {    # @     ##pG             "%#    # @    #
+           #     # j        | `*G            ,#  b @     #p
+          #       pt@      |    ,#      Chak#    bj##Q" #--p
+        ,#        #p^#    |   ;#     *^     |  b @   @#m
+       ,#          #p@    |.#    I^         |#b #       !##m
+      @              ##__"   I^              \-;#           #w
+     #           #W"` .##I^                #O^   ""W#         #
+    #       #"^     sl"  #$#y#mot#-#@@sw##*'           `"%#     #p
+  ,#   #M"       ."                                       "%#     b
+ ;##W^                                                         `"@ N
+*`                                                                 `*
+EOF
+        ;;
+
         *"XFerience"*)
             set_colors 6 6 7 1
             read -rd '' ascii_data <<'EOF'
