@@ -3374,14 +3374,14 @@ get_local_ip() {
             if [[ "${local_ip_interface[0]}" == "auto" ]]; then
                 local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
                 local_ip="${local_ip/uid*}"
-                [[ "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
+                [[ "$local_ip" ]] || local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
             else
                 for interface in "${local_ip_interface[@]}"; do
                     local_ip="$(ip addr show "$interface" | awk '/inet / {print $2; exit}')"
-                    if [[ -n "$local_ip" ]]; then
-                        prin "$interface" "$local_ip"
-                    elif [[ -z "$local_ip" ]]; then
+                    local_ip="${local_ip/\/*}"
+                    [[ "$local_ip" ]] || \
                         local_ip="$(ifconfig "$interface" | awk '/broadcast/ {print $2; exit}')"
+                    if [[ -n "$local_ip" ]]; then
                         prin "$interface" "$local_ip"
                     else
                         err "Local IP: Could not detect local ip for $interface"
