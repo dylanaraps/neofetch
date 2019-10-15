@@ -384,10 +384,10 @@ public_ip_timeout=2
 
 # Local IP interface
 #
-# Default: 'default' (interface of default route)
-# Values:  'default', 'en0', 'en1'
+# Default: 'auto' (interface of default route)
+# Values:  'auto', 'en0', 'en1'
 # Flag:    --ip_interface
-local_ip_interface=('default')
+local_ip_interface=('auto')
 
 
 # Disk
@@ -3371,12 +3371,10 @@ get_battery() {
 get_local_ip() {
     case "$os" in
         "Linux" | "BSD" | "Solaris" | "AIX" | "IRIX")
-            if [[ "${local_ip_interface[0]}" == "default" ]]; then
+            if [[ "${local_ip_interface[0]}" == "auto" ]]; then
                 local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
                 local_ip="${local_ip/uid*}"
-                if [[ -z "$local_ip" ]]; then
-                    local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
-                fi
+                [[ "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
             else
                 for interface in "${local_ip_interface[@]}"; do
                     local_ip="$(ip addr show "$interface" | awk '/inet / {print $2; exit}')"
@@ -3397,7 +3395,7 @@ get_local_ip() {
         ;;
 
         "Mac OS X" | "iPhone OS")
-            if [[ "${local_ip_interface[0]}" == "default" ]]; then
+            if [[ "${local_ip_interface[0]}" == "auto" ]]; then
                 interface="$(route get 1 | awk -F': ' '/interface/ {printf $2; exit}')"
                 local_ip="$(ipconfig getifaddr "$interface")"
             else
