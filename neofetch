@@ -6271,9 +6271,7 @@ EOF
         "EuroLinux"*)
             set_colors 4 7
             read -rd '' ascii_data <<'EOF'
-
-${c1}
-                __
+${c1}                __
          -wwwWWWWWWWWWwww-
         -WWWWWWWWWWWWWWWWWWw-
           \WWWWWWWWWWWWWWWWWWW-
