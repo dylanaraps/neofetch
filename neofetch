@@ -959,6 +959,16 @@ get_distro() {
 
                     # /etc/pacbsd-release is an empty file
                     [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
+
+                    # For OPNsense
+                    if [[ -f "/usr/local/opnsense/version/opnsense" ]]; then
+                        case "$distro_shorthand" in
+                            "on" | "tiny") distro="OPNsense" ;;
+                            *)
+                                distro=$(<"/usr/local/opnsense/version/opnsense")
+                                distro="OPNsense ${distro%-*}"
+                        esac
+                    fi
                 fi
             fi
 
@@ -7822,6 +7832,32 @@ yM+         dM/+NNo`     :Md         +My
       :hMdo.                .odMh:
         .+hMNho/:..``..:/ohNMh+.
             -+shdmNNNNmdhs+-
+EOF
+        ;;
+
+        "OPNsense"*)
+            set_colors 7 202
+            read -rd '' ascii_data <<'EOF'
+${c1}    .'''''''''''''''''''''''''''''''''''
+  oocc:::::::::::::::::::::::::::::::cox
+ ;00;                                o0O
+ .,:'  .;;;;;;;;;;;;;;;;;;;;;;;;;;   ;:,
+  .',;;cxOOOOOOOOOOOOOOOOOOOOOOOkd:;;,..
+     .,cll:'                 ':llc,.
+    ,;;:okxdxd:           :dxdxko:;;,
+   .xxxx0XNNK0O.         .O0KNNX0xxxx.
+       ,${c2}cc:${c1},.               .,${c2}:cc${c1},
+ ........;${c2}ccc:${c1};.         .;${c2}:ccc${c1};........
+ ${c2}ccccccccccccccc         ccccccccccccccc${c1}
+ ........;${c2}ccc:${c1};.         .;${c2}:ccc${c1};........
+       ,${c2}cc:${c1},.               .,${c2}:cc${c1},
+   .xxxx0XNNK0O.         .O0KNNX0xxxx.
+    ,;;:okxdxd:           :dxdxko:;;,
+     .,cll:'                 ':llc,.
+  .,,;,ckOOOOOOOOOOOOOOOOOOOOOOOOx;,;,'.
+ .:l'  ...........................   ;:;
+ lOk'                                cdd
+ ;lccccccccccccccccccccccccccccccccccc:.
 EOF
         ;;
 
