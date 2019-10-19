@@ -1210,10 +1210,11 @@ get_kernel() {
         return
     }
 
-    # In Windows 'uname -r' under MSYS returns version of MSYS, so use wmic
+    # In Windows 'uname' may return the info of GNUenv thus use wmic for OS kernel
     [[ "$os" == Windows ]] && {
-        kernel_version=$(wmic os get Version)
-        kernel_version="${kernel_version/Version}"
+        kernel=$(wmic os get Version)
+        kernel="${kernel/Version}"
+        return
     }
 
     case "$kernel_shorthand" in
