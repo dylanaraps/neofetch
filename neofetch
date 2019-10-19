@@ -1210,6 +1210,12 @@ get_kernel() {
         return
     }
 
+    # In Windows 'uname -r' under MSYS returns a "virtual" kernel version, so use wmic
+    [[ "$os" == Windows ]] && {
+        kernel_version=$(wmic os get Version)
+        kernel_version="${kernel_version/Version}"
+    }
+
     case "$kernel_shorthand" in
         "on")  kernel="$kernel_version" ;;
         "off") kernel="$kernel_name $kernel_version" ;;
