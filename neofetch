@@ -457,6 +457,7 @@ disk_subtitle="mount"
 # mocp
 # mopidy
 # mpd
+# muine
 # netease-cloud-music
 # pogo
 # pragha
@@ -2465,6 +2466,7 @@ get_song() {
         "mocp"
         "mopidy"
         "mpd"
+        "muine"
         "netease-cloud-music"
         "plasma-browser-integration"
         "pogo"
@@ -2577,6 +2579,13 @@ get_song() {
             song="$(dbus-send --print-reply --dest=org.exaile.Exaile  /org/exaile/Exaile \
                     org.exaile.Exaile.Query |
                     awk -F':|,' '{if ($6 && $8 && $4) printf $6 "\n" $8 "\n" $4}')"
+        ;;
+
+        "muine"*)
+            song="$(dbus-send --print-reply --dest=org.gnome.Muine /org/gnome/Muine/Player \
+                    org.gnome.Muine.Player.GetCurrentSong |
+                    awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
+                               END {print a "\n" b "\n" t}')"
         ;;
 
         "quodlibet"*)
