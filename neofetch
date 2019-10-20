@@ -451,6 +451,7 @@ disk_subtitle="mount"
 # gmusicbrowser
 # gogglesmm
 # guayadeque
+# io.elementary.music
 # iTunes
 # juk
 # lollypop
@@ -2460,6 +2461,7 @@ get_song() {
         "gmusicbrowser"
         "gogglesmm"
         "guayadeque"
+        "io.elementary.music"
         "iTunes"
         "juk"
         "lollypop"
@@ -2534,6 +2536,7 @@ get_song() {
         "xnoise"*)        get_song_dbus "xnoise" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
+        "io.elementary.music"*)        get_song_dbus "Music" ;;
 
         "cmus"*)
             # NOTE: cmus >= 2.8.0 supports mpris2
