@@ -1881,8 +1881,12 @@ get_cpu() {
 
             # Select the right temperature file.
             for temp_dir in /sys/class/hwmon/*; do
-                [[ "$(< "${temp_dir}/name")" =~ (coretemp|fam15h_power|k10temp) ]] && \
-                    { temp_dir="${temp_dir}/temp1_input"; break; }
+                if [[ "$(< "${temp_dir}/name")" =~ (coretemp|fam15h_power|k10temp) ]]; then
+                    for temp_file in ${temp_dir}/temp*_input; do
+                        temp_dir="${temp_file}"; break;
+                    done
+                    break
+                fi
             done
 
             # Get CPU speed.
