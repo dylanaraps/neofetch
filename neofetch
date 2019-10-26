@@ -6666,7 +6666,7 @@ eee        ${c2}//  \\ooo/  \\\        ${c1}eee
 EOF
         ;;
 
-        "guixsd_small"*)
+        "guix_small"*)
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
 ${c1}|.__          __.|
