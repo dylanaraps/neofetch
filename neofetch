@@ -6679,7 +6679,7 @@ ${c1}|.__          __.|
 EOF
         ;;
 
-        "GuixSD"*)
+        "Guix"*)
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
 ${c1} ..                             `.
