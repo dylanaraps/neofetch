@@ -2739,7 +2739,7 @@ get_style() {
                         kde_font_size="${kde_font_size/,*}"
                         kde_theme="${kde_theme/,*} ${kde_theme/*,} ${kde_font_size}"
                     fi
-                    kde_theme="$kde_theme ["$de"], "
+                    kde_theme="$kde_theme [$de], "
                 else
                     err "Theme: KDE config files not found, skipping."
                 fi
