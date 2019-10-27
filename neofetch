@@ -2726,7 +2726,7 @@ get_style() {
 
         # Check for DE Theme.
         case "$de" in
-            "KDE"*)
+            "KDE"* | "Plasma"*)
                 kde_config_dir
 
                 if [[ -f "${kde_config_dir}/kdeglobals" ]]; then
@@ -2739,7 +2739,7 @@ get_style() {
                         kde_font_size="${kde_font_size/,*}"
                         kde_theme="${kde_theme/,*} ${kde_theme/*,} ${kde_font_size}"
                     fi
-                    kde_theme="$kde_theme [KDE], "
+                    kde_theme="$kde_theme [$de], "
                 else
                     err "Theme: KDE config files not found, skipping."
                 fi
@@ -2845,6 +2845,7 @@ get_style() {
             theme="${theme// '[GTK'[0-9]']'}"
             theme="${theme/ '[GTK2/3]'}"
             theme="${theme/ '[KDE]'}"
+            theme="${theme/ '[Plasma]'}"
         fi
     fi
 }
