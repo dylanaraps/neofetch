@@ -1585,111 +1585,112 @@ get_wm() {
     # If function was run, stop here.
     ((wm_run == 1)) && return
 
-    case "$uname" in
-        *"OpenBSD"*) ps_flags=(x -c) ;;
-        *)           ps_flags=(-e) ;;
+    case $uname in
+        *OpenBSD*) ps_flags=(x -c) ;;
+        *)         ps_flags=(-e) ;;
     esac
 
-    if [[ "$WAYLAND_DISPLAY" ]]; then
-        wm="$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
-                           -e "arcan" \
-                           -e "asc" \
-                           -e "clayland" \
-                           -e "dwc" \
-                           -e "fireplace" \
-                           -e "greenfield" \
-                           -e "grefsen" \
-                           -e "lipstick" \
-                           -e "maynard" \
-                           -e "mazecompositor" \
-                           -e "motorcar" \
-                           -e "orbital" \
-                           -e "orbment" \
-                           -e "perceptia" \
-                           -e "rustland" \
-                           -e "sway" \
-                           -e "ulubis" \
-                           -e "velox" \
-                           -e "wavy" \
-                           -e "way-cooler" \
-                           -e "wayfire" \
-                           -e "wayhouse" \
-                           -e "westeros" \
-                           -e "westford" \
-                           -e "weston")"
+    if [[ $WAYLAND_DISPLAY ]]; then
+        wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
+                           -e arcan \
+                           -e asc \
+                           -e clayland \
+                           -e dwc \
+                           -e fireplace \
+                           -e greenfield \
+                           -e grefsen \
+                           -e lipstick \
+                           -e maynard \
+                           -e mazecompositor \
+                           -e motorcar \
+                           -e orbital \
+                           -e orbment \
+                           -e perceptia \
+                           -e rustland \
+                           -e sway \
+                           -e ulubis \
+                           -e velox \
+                           -e wavy \
+                           -e way-cooler \
+                           -e wayfire \
+                           -e wayhouse \
+                           -e westeros \
+                           -e westford \
+                           -e weston)
 
-    elif [[ "$DISPLAY" && "$os" != "Mac OS X" && "$os" != "FreeMiNT" ]]; then
-        if type -p xprop &>/dev/null; then
-            id="$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)"
-            id="${id##* }"
-            wm="$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)"
-            wm="${wm/*WM_NAME = }"
-            wm="${wm/\"}"
-            wm="${wm/\"*}"
-        fi
+    elif [[ $DISPLAY && $os != "Mac OS X" && $os != FreeMiNT ]]; then
+        type -p xprop &>/dev/null && {
+            id=$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)
+            id=${id##* }
+            wm=$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)
+            wm=${wm/*WM_NAME = }
+            wm=${wm/\"}
+            wm=${wm/\"*}
+        }
 
         # Rename window managers to their proper values.
-        [[ "$wm" =~ "WINDOWMAKER" ]] && wm="wmaker"
-        [[ "$wm" =~ "GNOME Shell" ]] && wm="Mutter"
+        [[ $wm == *WINDOWMAKER* ]]   && wm=wmaker
+        [[ $wm == *"GNOME Shell"* ]] && wm=Mutter
 
         # Fallback for non-EWMH WMs.
-        [[ -z "$wm" ]] && \
-            wm="$(ps "${ps_flags[@]}" | grep -m 1 -o \
+        [[ $wm ]] ||
+            wm=$(ps "${ps_flags[@]}" | grep -m 1 -o \
+                               -e "[s]owm" \
                                -e "[c]atwm" \
                                -e "[f]vwm" \
                                -e "[d]wm" \
                                -e "[2]bwm" \
                                -e "[m]onsterwm" \
-                               -e "[t]inywm")"
+                               -e "[t]inywm")
 
     else
-        case "$os" in
+        case $os in
             "Mac OS X")
-                ps_line="$(ps -e | grep -o \
+                ps_line=$(ps -e | grep -o \
                     -e "[S]pectacle" \
                     -e "[A]methyst" \
                     -e "[k]wm" \
                     -e "[c]hun[k]wm" \
                     -e "[y]abai" \
-                    -e "[R]ectangle")"
+                    -e "[R]ectangle")
 
-                case "$ps_line" in
-                    *"chunkwm"*)   wm="chunkwm" ;;
-                    *"kwm"*)       wm="Kwm" ;;
-                    *"yabai"*)     wm="yabai" ;;
-                    *"Amethyst"*)  wm="Amethyst" ;;
-                    *"Spectacle"*) wm="Spectacle" ;;
-                    *"Rectangle"*) wm="Rectangle" ;;
-                    *)             wm="Quartz Compositor" ;;
+                case $ps_line in
+                    *chunkwm*)   wm=chunkwm ;;
+                    *kwm*)       wm=Kwm ;;
+                    *yabai*)     wm=yabai ;;
+                    *Amethyst*)  wm=Amethyst ;;
+                    *Spectacle*) wm=Spectacle ;;
+                    *Rectangle*) wm=Rectangle ;;
+                    *)           wm="Quartz Compositor" ;;
                 esac
             ;;
 
-            "Windows")
-                wm="$(tasklist | grep -m 1 -o -F \
-                                      -e "bugn" \
-                                      -e "Windawesome" \
-                                      -e "blackbox" \
-                                      -e "emerge" \
-                                      -e "litestep")"
+            Windows)
+                wm=$(tasklist | grep -m 1 -o -F \
+                                     -e bugn \
+                                     -e Windawesome \
+                                     -e blackbox \
+                                     -e emerge \
+                                     -e litestep)
 
-                [[ "$wm" == "blackbox" ]] && wm="bbLean (Blackbox)"
-                wm="${wm:+$wm, }Explorer"
+                [[ $wm == blackbox ]] && wm="bbLean (Blackbox)"
+                wm=${wm:+$wm, }Explorer
             ;;
 
-            "FreeMiNT")
+            FreeMiNT)
                 freemint_wm=(/proc/*)
-                case "${freemint_wm[*]}" in
-                    *xaaes*) wm="XaAES" ;;
-                    *myaes*) wm="MyAES" ;;
-                    *naes*)  wm="N.AES" ;;
-                    geneva)  wm="Geneva" ;;
+
+                case ${freemint_wm[*]} in
+                    *xaaes*) wm=XaAES ;;
+                    *myaes*) wm=MyAES ;;
+                    *naes*)  wm=N.AES ;;
+                    geneva)  wm=Geneva ;;
                     *)       wm="Atari AES" ;;
                 esac
             ;;
         esac
     fi
 
-    # Log that the function was run.
     wm_run=1
 }
 
