@@ -28,12 +28,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version="6.1.0"
+version=6.1.0
 
-bash_version="${BASH_VERSION/.*}"
-sys_locale="${LANG:-C}"
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-${HOME}/.config}"
-PATH="${PATH}:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec"
+bash_version=${BASH_VERSION/.*}
+sys_locale=${LANG:-C}
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
+PATH=$PATH:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec
 reset='\e[0m'
 shopt -s nocasematch
 
@@ -42,7 +42,7 @@ LC_ALL=C
 LANG=C
 
 # Fix issues with gsettings.
-export GIO_EXTRA_MODULES="/usr/lib/x86_64-linux-gnu/gio/modules/"
+export GIO_EXTRA_MODULES=/usr/lib/x86_64-linux-gnu/gio/modules/
 
 # Neofetch default config.
 read -rd '' config <<'EOF'
@@ -819,25 +819,25 @@ EOF
 get_os() {
     # $kernel_name is set in a function called cache_uname and is
     # just the output of "uname -s".
-    case "$kernel_name" in
-        "Darwin"):   "$darwin_name" ;;
-        "SunOS"):    "Solaris" ;;
-        "Haiku"):    "Haiku" ;;
-        "MINIX"):    "MINIX" ;;
-        "AIX"):      "AIX" ;;
-        "IRIX"*):    "IRIX" ;;
-        "FreeMiNT"): "FreeMiNT" ;;
+    case $kernel_name in
+        Darwin):   "$darwin_name" ;;
+        SunOS):    Solaris ;;
+        Haiku):    Haiku ;;
+        MINIX):    MINIX ;;
+        AIX):      AIX ;;
+        IRIX*):    IRIX ;;
+        FreeMiNT): FreeMiNT ;;
 
-        "Linux" | "GNU"*)
-            : "Linux"
+        Linux|GNU*)
+            : Linux
         ;;
 
-        *"BSD" | "DragonFly" | "Bitrig")
-            : "BSD"
+        *BSD|DragonFly|Bitrig)
+            : BSD
         ;;
 
-        "CYGWIN"* | "MSYS"* | "MINGW"*)
-            : "Windows"
+        CYGWIN*|MSYS*|MINGW*)
+            : Windows
         ;;
 
         *)
@@ -846,7 +846,8 @@ get_os() {
             exit 1
         ;;
     esac
-    os="$_"
+
+    os=$_
 }
 
 get_distro() {
