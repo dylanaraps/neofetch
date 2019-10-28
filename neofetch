@@ -1285,9 +1285,9 @@ get_uptime() {
     ((${m/ *} == 1)) && m=${m/s}
 
     # Hide empty fields.
-    ((${d/ *} == 0)) && unset days
-    ((${h/ *} == 0)) && unset hours
-    ((${m/ *} == 0)) && unset mins
+    ((${d/ *} == 0)) && unset d
+    ((${h/ *} == 0)) && unset h
+    ((${m/ *} == 0)) && unset m
 
     uptime=${d:+$d, }${h:+$h, }$m
     uptime=${uptime%', '}
