@@ -1315,13 +1315,13 @@ get_packages() {
     # dir: Count files or dirs in a glob.
     # pac: If packages > 0, log package manager name.
     # tot: Count lines in command output.
-    has() { type -p "$1" >/dev/null && manager="$_"; }
+    has() { type -p "$1" >/dev/null && manager=$_; }
     dir() { ((packages+=$#)); pac "$#"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() { IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";((packages+=${#pkgs[@]}));pac "${#pkgs[@]}";}
 
     # Redefine tot() for Bedrock Linux.
-    [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]] && {
+    [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
         tot() {
             IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in $(brl list); do strat -r "$s" "$@"; done)"
             ((packages+="${#pkgs[@]}"))
@@ -1330,25 +1330,25 @@ get_packages() {
         br_prefix="/bedrock/strata/*"
     }
 
-    case "$os" in
-        "Linux" | "BSD" | "iPhone OS" | "Solaris")
+    case $os in
+        Linux|BSD|"iPhone OS"|Solaris)
             # Package Manager Programs.
-            has "kiss"       && tot kiss l
-            has "pacman-key" && tot pacman -Qq --color never
-            has "dpkg"       && tot dpkg-query -f '.\n' -W
-            has "rpm"        && tot rpm -qa
-            has "xbps-query" && tot xbps-query -l
-            has "apk"        && tot apk info
-            has "opkg"       && tot opkg list-installed
-            has "pacman-g2"  && tot pacman-g2 -Q
-            has "lvu"        && tot lvu installed
-            has "tce-status" && tot tce-status -i
-            has "pkg_info"   && tot pkg_info
-            has "tazpkg"     && tot tazpkg list && ((packages-=6))
-            has "sorcery"    && tot gaze installed
-            has "alps"       && tot alps showinstalled
-            has "butch"      && tot butch list
-            has "bonsai"     && tot bonsai list
+            has kiss       && tot kiss l
+            has pacman-key && tot pacman -Qq --color never
+            has dpkg       && tot dpkg-query -f '.\n' -W
+            has rpm        && tot rpm -qa
+            has xbps-query && tot xbps-query -l
+            has apk        && tot apk info
+            has opkg       && tot opkg list-installed
+            has pacman-g2  && tot pacman-g2 -Q
+            has lvu        && tot lvu installed
+            has tce-status && tot tce-status -i
+            has pkg_info   && tot pkg_info
+            has tazpkg     && tot tazpkg list && ((packages-=6))
+            has sorcery    && tot gaze installed
+            has alps       && tot alps showinstalled
+            has butch      && tot butch list
+            has bonsai     && tot bonsai list
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
@@ -1356,92 +1356,93 @@ get_packages() {
             # shellcheck disable=SC2086
             {
             shopt -s nullglob
-            has "brew"    && dir "$(brew --cellar)"/*
-            has "emerge"  && dir ${br_prefix}/var/db/pkg/*/*/
-            has "Compile" && dir ${br_prefix}/Programs/*/
-            has "eopkg"   && dir ${br_prefix}/var/lib/eopkg/package/*
-            has "crew"    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
-            has "pkgtool" && dir ${br_prefix}/var/log/packages/*
-            has "kagami"  && dir ${br_prefix}/var/lib/kagami/pkgs/*
-            has "cave"    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
-                                 ${br_prefix}/var/db/paludis/repositories/installed/data/*/
+            has brew    && dir "$(brew --cellar)"/*
+            has emerge  && dir ${br_prefix}/var/db/pkg/*/*/
+            has Compile && dir ${br_prefix}/Programs/*/
+            has eopkg   && dir ${br_prefix}/var/lib/eopkg/package/*
+            has crew    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
+            has pkgtool && dir ${br_prefix}/var/log/packages/*
+            has kagami  && dir ${br_prefix}/var/lib/kagami/pkgs/*
+            has cave    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
+                               ${br_prefix}/var/db/paludis/repositories/installed/data/*/
             shopt -u nullglob
             }
 
             # Other (Needs complex command)
-            has "kpm-pkg" && ((packages+="$(kpm  --get-selections | grep -cv deinstall$)"))
+            has kpm-pkg && ((packages+=$(kpm  --get-selections | grep -cv deinstall$)))
 
-            if has "guix"; then
-                manager="guix-system" && tot guix package -p "/run/current-system/profile" -I
-                manager="guix-user" && tot guix package -I
-            fi
+            has guix && {
+                manager=guix-system && tot guix package -p "/run/current-system/profile" -I
+                manager=guix-user   && tot guix package -I
+            }
 
-            if has "nix-store"; then
-                manager="nix-system" && tot nix-store -q --requisites "/run/current-system/sw"
-                manager="nix-user" && tot nix-store -q --requisites "$HOME/.nix-profile"
-            fi
+            has nix-store && {
+                manager=nix-system && tot nix-store -q --requisites "/run/current-system/sw"
+                manager=nix-user   && tot nix-store -q --requisites "$HOME/.nix-profile"
+            }
 
             # pkginfo is also the name of a python package manager which is painfully slow.
             # TODO: Fix this somehow.
             has pkginfo && tot pkginfo -i
 
-            case "$kernel_name" in
-                "FreeBSD"|"DragonFly") has "pkg" && tot pkg info ;;
+            case $kernel_name in
+                FreeBSD|DragonFly) has pkg && tot pkg info ;;
+
                 *)
-                    has "pkg" && dir /var/db/pkg/*
+                    has pkg && dir /var/db/pkg/*
 
                     ((packages == 0)) && \
-                        has "pkg" && tot pkg list
+                        has pkg && tot pkg list
                 ;;
             esac
 
             # List these last as they accompany regular package managers.
-            has "flatpak" && tot flatpak list
-            has "spm"     && tot spm list -i
-            has "puyo"    && dir ~/.puyo/installed
+            has flatpak && tot flatpak list
+            has spm     && tot spm list -i
+            has puyo    && dir ~/.puyo/installed
 
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
-            has "snap" && ps -e | grep -qFm 1 "snapd" >/dev/null && tot snap list && ((packages-=1))
+            has snap && ps -e | grep -qFm 1 snapd >/dev/null && tot snap list && ((packages-=1))
         ;;
 
-        "Mac OS X" | "MINIX")
-            has "port"    && tot port installed && ((packages-=1))
-            has "brew"    && dir /usr/local/Cellar/*
-            has "pkgin"   && tot pkgin list
+        "Mac OS X"|MINIX)
+            has port  && tot port installed && ((packages-=1))
+            has brew  && dir /usr/local/Cellar/*
+            has pkgin && tot pkgin list
 
-            if has "nix-store"; then
-                manager="nix-system" && tot nix-store -q --requisites "/run/current-system/sw"
-                manager="nix-user" && tot nix-store -q --requisites "$HOME/.nix-profile"
-            fi
+            has nix-store && {
+                manager=nix-system && tot nix-store -q --requisites "/run/current-system/sw"
+                manager=nix-user   && tot nix-store -q --requisites "$HOME/.nix-profile"
+            }
         ;;
 
-        "AIX"| "FreeMiNT")
-            has "lslpp" && ((packages+="$(lslpp -J -l -q | grep -cv '^#')"))
-            has "rpm"   && tot rpm -qa
+        AIX|FreeMiNT)
+            has lslpp && ((packages+=$(lslpp -J -l -q | grep -cv '^#')))
+            has rpm   && tot rpm -qa
         ;;
 
-        "Windows")
-            case "$kernel_name" in
-                "CYGWIN"*) has "cygcheck" && tot cygcheck -cd ;;
-                "MSYS"*)   has "pacman"   && tot pacman -Qq --color never ;;
+        Windows)
+            case $kernel_name in
+                CYGWIN*) has cygcheck && tot cygcheck -cd ;;
+                MSYS*)   has pacman   && tot pacman -Qq --color never ;;
             esac
 
             # Scoop environment throws errors if `tot scoop list` is used
-            has "scoop" && dir ~/scoop/apps/* && ((packages-=1))
+            has scoop && dir ~/scoop/apps/* && ((packages-=1))
 
             # Count chocolatey packages.
-            [[ -d "/cygdrive/c/ProgramData/chocolatey/lib" ]] && \
+            [[ -d /cygdrive/c/ProgramData/chocolatey/lib ]] && \
                 dir /cygdrive/c/ProgramData/chocolatey/lib/*
         ;;
 
-        "Haiku")
-            has "pkgman" && dir /boot/system/package-links/*
+        Haiku)
+            has pkgman && dir /boot/system/package-links/*
             packages=${packages/pkgman/depot}
         ;;
 
-        "IRIX")
-            manager="swpkg"
+        IRIX)
+            manager=swpkg
             tot versions -b && ((packages-=3))
         ;;
     esac
@@ -1449,131 +1450,134 @@ get_packages() {
     if ((packages == 0)); then
         unset packages
 
-    elif [[ "$package_managers" == "on" ]]; then
+    elif [[ $package_managers == on ]]; then
         printf -v packages '%s, ' "${managers[@]}"
-        packages="${packages%,*}"
+        packages=${packages%,*}
 
-    elif [[ "$package_managers" == "tiny" ]]; then
+    elif [[ $package_managers == tiny ]]; then
         packages+=" (${manager_string%,*})"
     fi
 
-    packages="${packages/pacman-key/pacman}"
+    packages=${packages/pacman-key/pacman}
 }
 
 get_shell() {
-    case "$shell_path" in
-        "on")  shell="$SHELL " ;;
-        "off") shell="${SHELL##*/} " ;;
+    case $shell_path in
+        on)  shell="$SHELL " ;;
+        off) shell="${SHELL##*/} " ;;
     esac
 
-    if [[ "$shell_version" == "on" ]]; then
-        case "${shell_name:=${SHELL##*/}}" in
-            "bash") shell+="${BASH_VERSION/-*}" ;;
-            "sh" | "ash" | "dash") ;;
+    [[ $shell_version != on ]] && return
 
-            *"ksh")
-                shell+="$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")"
-                shell="${shell/ * KSH}"
-                shell="${shell/version}"
-            ;;
+    case ${shell_name:=${SHELL##*/}} in
+        bash) shell+=${BASH_VERSION/-*} ;;
 
-            "tcsh")
-                shell+="$("$SHELL" -c "printf %s \$tcsh")"
-            ;;
+        sh|ash|dash) ;;
 
-            *)
-                shell+="$("$SHELL" --version 2>&1)"
-                shell="${shell/ "${shell_name}"}"
-            ;;
-        esac
+        *ksh)
+            shell+=$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")
+            shell=${shell/ * KSH}
+            shell=${shell/version}
+        ;;
 
-        # Remove unwanted info.
-        shell="${shell/, version}"
-        shell="${shell/xonsh\//xonsh }"
-        shell="${shell/options*}"
-        shell="${shell/\(*\)}"
-    fi
+        tcsh)
+            shell+=$("$SHELL" -c "printf %s \$tcsh")
+        ;;
+
+        *)
+            shell+=$("$SHELL" --version 2>&1)
+            shell=${shell/ $shell_name}
+        ;;
+    esac
+
+    # Remove unwanted info.
+    shell=${shell/, version}
+    shell=${shell/xonsh\//xonsh }
+    shell=${shell/options*}
+    shell=${shell/\(*\)}
 }
 
 get_de() {
     # If function was run, stop here.
     ((de_run == 1)) && return
 
-    case "$os" in
-        "Mac OS X") de="Aqua" ;;
-        "Windows")
-            case "$distro" in
-                "Windows 8"* | "Windows 10"*) de="Modern UI/Metro" ;;
-                *) de="Aero" ;;
+    case $os in
+        "Mac OS X") de=Aqua ;;
+
+        Windows)
+            case $distro in
+                "Windows 8"*|"Windows 10"*) de="Modern UI/Metro" ;;
+                *) de=Aero
             esac
         ;;
 
-        "FreeMiNT")
+        FreeMiNT)
             freemint_wm=(/proc/*)
-            case "${freemint_wm[*]}" in
-                *thing*)  de="Thing" ;;
-                *jinnee*) de="Jinnee" ;;
-                *tera*)   de="Teradesk" ;;
-                *neod*)   de="NeoDesk" ;;
-                *zdesk*)  de="zDesk" ;;
-                *mdesk*)  de="mDesk" ;;
+
+            case ${freemint_wm[*]} in
+                *thing*)  de=Thing ;;
+                *jinnee*) de=Jinnee ;;
+                *tera*)   de=Teradesk ;;
+                *neod*)   de=NeoDesk ;;
+                *zdesk*)  de=zDesk ;;
+                *mdesk*)  de=mDesk ;;
             esac
         ;;
 
         *)
             ((wm_run != 1)) && get_wm
 
-            if [[ "$XDG_CURRENT_DESKTOP" ]]; then
-                de="${XDG_CURRENT_DESKTOP/X\-}"
-                de="${de/Budgie:GNOME/Budgie}"
-                de="${de/:Unity7:ubuntu}"
+            if [[ $XDG_CURRENT_DESKTOP ]]; then
+                de=${XDG_CURRENT_DESKTOP/X\-}
+                de=${de/Budgie:GNOME/Budgie}
+                de=${de/:Unity7:ubuntu}
 
-            elif [[ "$DESKTOP_SESSION" ]]; then
-                de="${DESKTOP_SESSION##*/}"
+            elif [[ $DESKTOP_SESSION ]]; then
+                de=${DESKTOP_SESSION##*/}
 
-            elif [[ "$GNOME_DESKTOP_SESSION_ID" ]]; then
-                de="GNOME"
+            elif [[ $GNOME_DESKTOP_SESSION_ID ]]; then
+                de=GNOME
 
-            elif [[ "$MATE_DESKTOP_SESSION_ID" ]]; then
-                de="MATE"
+            elif [[ $MATE_DESKTOP_SESSION_ID ]]; then
+                de=MATE
 
-            elif [[ "$TDE_FULL_SESSION" ]]; then
-                de="Trinity"
+            elif [[ $TDE_FULL_SESSION ]]; then
+                de=Trinity
             fi
 
             # When a window manager is started from a display manager
             # the desktop variables are sometimes also set to the
             # window manager name. This checks to see if WM == DE
             # and dicards the DE value.
-            [[ "$de" == "$wm" ]] && { unset -v de; return; }
+            [[ $de == "$wm" ]] && { unset -v de; return; }
         ;;
     esac
 
     # Fallback to using xprop.
-    [[ "$DISPLAY" && -z "$de" ]] && type -p xprop &>/dev/null && \
-        de="$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')"
+    [[ $DISPLAY && -z $de ]] && type -p xprop &>/dev/null && \
+        de=$(xprop -root | awk '/KDE_SESSION_VERSION|^_MUFFIN|xfce4|xfce5/')
 
     # Format strings.
-    case "$de" in
-        "KDE_SESSION_VERSION"*) de="KDE${de/* = }" ;;
-        *"xfce4"*) de="Xfce4" ;;
-        *"xfce5"*) de="Xfce5" ;;
-        *"xfce"*)  de="Xfce" ;;
-        *"mate"*)  de="MATE" ;;
+    case $de in
+        KDE_SESSION_VERSION*) de=KDE${de/* = } ;;
+        *xfce4*) de=Xfce4 ;;
+        *xfce5*) de=Xfce5 ;;
+        *xfce*)  de=Xfce ;;
+        *mate*)  de=MATE ;;
 
-        *"MUFFIN"* | "Cinnamon")
-            de="$(cinnamon --version)"; de="${de:-Cinnamon}"
+        *MUFFIN*|Cinnamon)
+            de=$(cinnamon --version)
+            de=${de:-Cinnamon}
         ;;
 
-        *"GNOME"*)
-            de="$(gnome-shell --version)"
-            de="${de/Shell }"
+        *GNOME*)
+            de=$(gnome-shell --version)
+            de=${de/Shell }
         ;;
     esac
 
-    (( "$KDE_SESSION_VERSION" >= "4" )) && de="${de/KDE/Plasma}"
+    ((KDE_SESSION_VERSION >= 4)) && de=${de/KDE/Plasma}
 
-    # Log that the function was run.
     de_run=1
 }
 
