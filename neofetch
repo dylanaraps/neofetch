@@ -851,75 +851,74 @@ get_os() {
 }
 
 get_distro() {
-    [[ "$distro" ]] && return
+    [[ $distro ]] && return
 
-    case "$os" in
-        "Linux" | "BSD" | "MINIX")
-            if [[ -f "/bedrock/etc/bedrock-release" && "$PATH" == */bedrock/cross/* ]]; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="Bedrock Linux" ;;
-                    *) distro="$(< /bedrock/etc/bedrock-release)"
+    case $os in
+        Linux|BSD|MINIX)
+            if [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="Bedrock Linux" ;;
+                    *) distro=$(< /bedrock/etc/bedrock-release)
                 esac
-            elif [[ -f "/etc/redstar-release" ]]; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="Red Star OS" ;;
+
+            elif [[ -f /etc/redstar-release ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="Red Star OS" ;;
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
 
-            elif [[ -f "/etc/siduction-version" ]]; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="Siduction" ;;
+            elif [[ -f /etc/siduction-version ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro=Siduction ;;
                     *) distro="Siduction ($(lsb_release -sic))"
                 esac
+
             elif type -p pveversion >/dev/null; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="Proxmox VE" ;;
+                case $distro_shorthand in
+                    on|tiny) distro="Proxmox VE" ;;
                     *)
-                        distro="$(pveversion)"
-                        distro="${distro#pve-manager/}"
+                        distro=$(pveversion)
+                        distro=${distro#pve-manager/}
                         distro="Proxmox VE ${distro%/*}"
                 esac
 
             elif type -p lsb_release >/dev/null; then
-                case "$distro_shorthand" in
-                    "on")   lsb_flags="-sir" ;;
-                    "tiny") lsb_flags="-si" ;;
-                    *)      lsb_flags="-sd" ;;
+                case $distro_shorthand in
+                    on)   lsb_flags=-si ;;
+                    tiny) lsb_flags=-si ;;
+                    *)    lsb_flags=-sd ;;
                 esac
-                distro="$(lsb_release "$lsb_flags")"
+                distro=$(lsb_release "$lsb_flags")
 
-            elif [[ -f "/etc/os-release" || \
-                    -f "/usr/lib/os-release" || \
-                    -f "/etc/openwrt_release" || \
-                    -f "/etc/lsb-release" ]]; then
-                files=("/etc/os-release"
-                       "/usr/lib/os-release"
-                       "/etc/openwrt_release"
-                       "/etc/lsb-release")
+            elif [[ -f /etc/os-release || \
+                    -f /usr/lib/os-release || \
+                    -f /etc/openwrt_release || \
+                    -f /etc/lsb-release ]]; then
 
                 # Source the os-release file
-                for file in "${files[@]}"; do
+                for file in /usr/lib/os-release  /etc/os-release \
+                            /etc/openwrt_release /etc/lsb-release; do
                     source "$file" && break
                 done
 
                 # Format the distro name.
-                case "$distro_shorthand" in
-                    "on")   distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
-                    "tiny") distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
-                    "off")  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
+                case $distro_shorthand in
+                    on)   distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
+                    tiny) distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
+                    off)  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
 
-            elif [[ -f "/etc/GoboLinuxVersion" ]]; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="GoboLinux" ;;
+            elif [[ -f /etc/GoboLinuxVersion ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro=GoboLinux ;;
                     *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
                 esac
 
             elif type -p crux >/dev/null; then
-                distro="$(crux)"
-                case "$distro_shorthand" in
-                    "on")   distro="${distro//version}" ;;
-                    "tiny") distro="${distro//version*}" ;;
+                distro=$(crux)
+                case $distro_shorthand in
+                    on)   distro=${distro//version} ;;
+                    tiny) distro=${distro//version*}
                 esac
 
             elif type -p tazpkg >/dev/null; then
@@ -927,90 +926,91 @@ get_distro() {
 
             elif type -p kpt >/dev/null && \
                  type -p kpm >/dev/null; then
-                distro="KSLinux"
+                distro=KSLinux
 
-            elif [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
+            elif [[ -d /system/app/ && -d /system/priv-app ]]; then
                 distro="Android $(getprop ro.build.version.release)"
 
             # Chrome OS doesn't conform to the /etc/*-release standard.
             # While the file is a series of variables they can't be sourced
             # by the shell since the values aren't quoted.
-            elif [[ -f "/etc/lsb-release" && "$(< /etc/lsb-release)" == *CHROMEOS* ]]; then
-                distro="$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)"
+            elif [[ -f /etc/lsb-release && $(< /etc/lsb-release) == *CHROMEOS* ]]; then
+                distro=$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)
 
             elif type -p guix >/dev/null; then
-                case "$distro_shorthand" in
-                    "on" | "tiny") distro="Guix System" ;;
+                case $distro_shorthand in
+                    on|tiny) distro="Guix System" ;;
                     *) distro="Guix System $(guix system -V | awk 'NR==1{printf $5}')"
                 esac
 
             else
                 for release_file in /etc/*-release; do
-                    distro+="$(< "$release_file")"
+                    distro+=$(< "$release_file")
                 done
 
-                if [[ -z "$distro" ]]; then
-                    case "$distro_shorthand" in
-                        "on" | "tiny") distro="$kernel_name" ;;
+                if [[ -z $distro ]]; then
+                    case $distro_shorthand in
+                        on|tiny) distro=$kernel_name ;;
                         *) distro="$kernel_name $kernel_version" ;;
                     esac
-                    distro="${distro/DragonFly/DragonFlyBSD}"
 
-                    # Workarounds for FreeBSD based distros.
-                    [[ -f "/etc/pcbsd-lang" ]] &&  distro="PCBSD"
-                    [[ -f "/etc/trueos-lang" ]] && distro="TrueOS"
+                    distro=${distro/DragonFly/DragonFlyBSD}
 
-                    # /etc/pacbsd-release is an empty file
-                    [[ -f "/etc/pacbsd-release" ]] && distro="PacBSD"
+                    # Workarounds for some BSD based distros.
+                    [[ -f /etc/pcbsd-lang ]]     && distro=PCBSD
+                    [[ -f /etc/trueos-lang ]]    && distro=TrueOS
+                    [[ -f /etc/pacbsd-release ]] && distro=PacBSD
                 fi
             fi
 
-            if [[ "$(< /proc/version)" == *Microsoft* || "$kernel_version" == *Microsoft* ]]; then
-                case "$distro_shorthand" in
-                    "on")   distro+=" [Windows 10]" ;;
-                    "tiny") distro="Windows 10" ;;
-                    *)      distro+=" on Windows 10" ;;
+            if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
+                case $distro_shorthand in
+                    on)   distro+=" [Windows 10]" ;;
+                    tiny) distro="Windows 10" ;;
+                    *)    distro+=" on Windows 10" ;;
                 esac
 
-            elif [[ "$(< /proc/version)" == *chrome-bot* || -f "/dev/cros_ec" ]]; then
-                case "$distro_shorthand" in
-                    "on")   distro+=" [Chrome OS]" ;;
-                    "tiny") distro="Chrome OS" ;;
-                    *)      distro+=" on Chrome OS" ;;
+            elif [[ $(< /proc/version) == *chrome-bot* || -f /dev/cros_ec ]]; then
+                case $distro_shorthand in
+                    on)   distro+=" [Chrome OS]" ;;
+                    tiny) distro="Chrome OS" ;;
+                    *)    distro+=" on Chrome OS" ;;
                 esac
             fi
 
-            distro="$(trim_quotes "$distro")"
-            distro="${distro/NAME=}"
+            distro=$(trim_quotes "$distro")
+            distro=${distro/NAME=}
         ;;
 
         "Mac OS X")
-            case "$osx_version" in
-                "10.4"*)  codename="Mac OS X Tiger" ;;
-                "10.5"*)  codename="Mac OS X Leopard" ;;
-                "10.6"*)  codename="Mac OS X Snow Leopard" ;;
-                "10.7"*)  codename="Mac OS X Lion" ;;
-                "10.8"*)  codename="OS X Mountain Lion" ;;
-                "10.9"*)  codename="OS X Mavericks" ;;
-                "10.10"*) codename="OS X Yosemite" ;;
-                "10.11"*) codename="OS X El Capitan" ;;
-                "10.12"*) codename="macOS Sierra" ;;
-                "10.13"*) codename="macOS High Sierra" ;;
-                "10.14"*) codename="macOS Mojave" ;;
-                "10.15"*) codename="macOS Catalina" ;;
-                *)        codename="macOS" ;;
+            case $osx_version in
+                10.4*)  codename="Mac OS X Tiger" ;;
+                10.5*)  codename="Mac OS X Leopard" ;;
+                10.6*)  codename="Mac OS X Snow Leopard" ;;
+                10.7*)  codename="Mac OS X Lion" ;;
+                10.8*)  codename="OS X Mountain Lion" ;;
+                10.9*)  codename="OS X Mavericks" ;;
+                10.10*) codename="OS X Yosemite" ;;
+                10.11*) codename="OS X El Capitan" ;;
+                10.12*) codename="macOS Sierra" ;;
+                10.13*) codename="macOS High Sierra" ;;
+                10.14*) codename="macOS Mojave" ;;
+                10.15*) codename="macOS Catalina" ;;
+                *)      codename=macOS ;;
             esac
+
             distro="$codename $osx_version $osx_build"
 
-            case "$distro_shorthand" in
-                "on") distro="${distro/ ${osx_build}}" ;;
-                "tiny")
-                    case "$osx_version" in
-                        "10."[4-7]*)                distro="${distro/${codename}/Mac OS X}" ;;
-                        "10."[8-9]* | "10.1"[0-1]*) distro="${distro/${codename}/OS X}" ;;
-                        "10.1"[2-4]*)               distro="${distro/${codename}/macOS}" ;;
+            case $distro_shorthand in
+                on) distro=${distro/ ${osx_build}} ;;
+
+                tiny)
+                    case $osx_version in
+                        10.[4-7]*)            distro=${distro/${codename}/Mac OS X} ;;
+                        10.[8-9]*|10.1[0-1]*) distro=${distro/${codename}/OS X} ;;
+                        10.1[2-4]*)           distro=${distro/${codename}/macOS} ;;
                     esac
-                    distro="${distro/ ${osx_build}}"
+                    distro=${distro/ ${osx_build}}
                 ;;
             esac
         ;;
@@ -1018,57 +1018,59 @@ get_distro() {
         "iPhone OS")
             distro="iOS $osx_version"
 
-            # "uname -m" doesn't print architecture on iOS so we force it off.
-            os_arch="off"
+            # "uname -m" doesn't print architecture on iOS.
+            os_arch=off
         ;;
 
-        "Windows")
-            distro="$(wmic os get Caption)"
-            distro="${distro/Caption}"
-            distro="${distro/Microsoft }"
+        Windows)
+            distro=$(wmic os get Caption)
+            distro=${distro/Caption}
+            distro=${distro/Microsoft }
         ;;
 
-        "Solaris")
-            case "$distro_shorthand" in
-                "on" | "tiny") distro="$(awk 'NR==1 {print $1,$3}' /etc/release)" ;;
-                *)             distro="$(awk 'NR==1 {print $1,$2,$3}' /etc/release)" ;;
+        Solaris)
+            case $distro_shorthand in
+                on|tiny) distro=$(awk 'NR==1 {print $1,$3}' /etc/release) ;;
+                *)       distro=$(awk 'NR==1 {print $1,$2,$3}' /etc/release) ;;
             esac
-            distro="${distro/\(*}"
+            distro=${distro/\(*}
         ;;
 
-        "Haiku")
+        Haiku)
             distro=Haiku
         ;;
 
-        "AIX")
+        AIX)
             distro="AIX $(oslevel)"
         ;;
 
-        "IRIX")
+        IRIX)
             distro="IRIX ${kernel_version}"
         ;;
 
-        "FreeMiNT")
-            distro="FreeMiNT"
+        FreeMiNT)
+            distro=FreeMiNT
         ;;
     esac
 
-    distro="${distro//Enterprise Server}"
+    distro=${distro//Enterprise Server}
 
-    [[ -z "$distro" ]] && distro="$os (Unknown)"
+    [[ $distro ]] || distro="$os (Unknown)"
 
     # Get OS architecture.
-    case "$os" in
-        "Solaris" | "AIX" | "Haiku" | "IRIX" | "FreeMiNT")
-            machine_arch="$(uname -p)" ;;
-        *)  machine_arch="$kernel_machine" ;;
+    case $os in
+        Solaris|AIX|Haiku|IRIX|FreeMiNT)
+            machine_arch=$(uname -p) 
+        ;;
+
+        *)  machine_arch=$kernel_machine ;;
     esac
 
-    [[ "$os_arch" == "on" ]] && \
+    [[ $os_arch == on ]] && \
         distro+=" $machine_arch"
 
-    [[ "${ascii_distro:-auto}" == "auto" ]] && \
-        ascii_distro="$(trim "$distro")"
+    [[ ${ascii_distro:-auto} == auto ]] && \
+        ascii_distro=$(trim "$distro")
 }
 
 get_model() {
