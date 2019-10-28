@@ -1074,239 +1074,238 @@ get_distro() {
 }
 
 get_model() {
-    case "$os" in
-        "Linux")
-            if [[ -d "/system/app/" && -d "/system/priv-app" ]]; then
+    case $os in
+        Linux)
+            if [[ -d /system/app/ && -d /system/priv-app ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
-            elif [[ -f "/sys/devices/virtual/dmi/id/product_name" ||
-                    -f "/sys/devices/virtual/dmi/id/product_version" ]]; then
-                model="$(< /sys/devices/virtual/dmi/id/product_name)"
+            elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
+                    -f /sys/devices/virtual/dmi/id/product_version ]]; then
+                model=$(< /sys/devices/virtual/dmi/id/product_name)
                 model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
 
-            elif [[ -f "/sys/firmware/devicetree/base/model" ]]; then
-                model="$(< /sys/firmware/devicetree/base/model)"
+            elif [[ -f /sys/firmware/devicetree/base/model ]]; then
+                model=$(< /sys/firmware/devicetree/base/model)
 
-            elif [[ -f "/tmp/sysinfo/model" ]]; then
-                model="$(< /tmp/sysinfo/model)"
+            elif [[ -f /tmp/sysinfo/model ]]; then
+                model=$(< /tmp/sysinfo/model)
             fi
         ;;
 
         "Mac OS X")
-            if [[ "$(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC")" != "" ]]; then
+            if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC") != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
-                model="$(sysctl -n hw.model)"
+                model=$(sysctl -n hw.model)
             fi
         ;;
 
         "iPhone OS")
-            case "$kernel_machine" in
-                "iPad1,1"):      "iPad" ;;
-                "iPad2,"[1-4]):  "iPad 2" ;;
-                "iPad3,"[1-3]):  "iPad 3" ;;
-                "iPad3,"[4-6]):  "iPad 4" ;;
-                "iPad6,1"[12]):  "iPad 5" ;;
-                "iPad7,"[5-6]):  "iPad 6" ;;
-                "iPad4,"[1-3]):  "iPad Air" ;;
-                "iPad5,"[3-4]):  "iPad Air 2" ;;
-                "iPad11,"[3-4]): "iPad Air 3" ;;
-                "iPad6,"[7-8]):  "iPad Pro (12.9 Inch)" ;;
-                "iPad6,"[3-4]):  "iPad Pro (9.7 Inch)" ;;
-                "iPad7,"[1-2]):  "iPad Pro 2 (12.9 Inch)" ;;
-                "iPad7,"[3-4]):  "iPad Pro (10.5 Inch)" ;;
-                "iPad8,"[1-4]):  "iPad Pro (11 Inch)" ;;
-                "iPad8,"[5-8]):  "iPad Pro 3 (12.9 Inch)" ;;
-                "iPad2,"[5-7]):  "iPad mini" ;;
-                "iPad4,"[4-6]):  "iPad mini 2" ;;
-                "iPad4,"[7-9]):  "iPad mini 3" ;;
-                "iPad5,"[1-2]):  "iPad mini 4" ;;
-                "iPad11,"[1-2]): "iPad mini 5" ;;
+            case $kernel_machine in
+                iPad1,1):      "iPad" ;;
+                iPad2,[1-4]):  "iPad 2" ;;
+                iPad3,[1-3]):  "iPad 3" ;;
+                iPad3,[4-6]):  "iPad 4" ;;
+                iPad6,1[12]):  "iPad 5" ;;
+                iPad7,[5-6]):  "iPad 6" ;;
+                iPad4,[1-3]):  "iPad Air" ;;
+                iPad5,[3-4]):  "iPad Air 2" ;;
+                iPad11,[3-4]): "iPad Air 3" ;;
+                iPad6,[7-8]):  "iPad Pro (12.9 Inch)" ;;
+                iPad6,[3-4]):  "iPad Pro (9.7 Inch)" ;;
+                iPad7,[1-2]):  "iPad Pro 2 (12.9 Inch)" ;;
+                iPad7,[3-4]):  "iPad Pro (10.5 Inch)" ;;
+                iPad8,[1-4]):  "iPad Pro (11 Inch)" ;;
+                iPad8,[5-8]):  "iPad Pro 3 (12.9 Inch)" ;;
+                iPad2,[5-7]):  "iPad mini" ;;
+                iPad4,[4-6]):  "iPad mini 2" ;;
+                iPad4,[7-9]):  "iPad mini 3" ;;
+                iPad5,[1-2]):  "iPad mini 4" ;;
+                iPad11,[1-2]): "iPad mini 5" ;;
 
-                "iPhone1,1"):     "iPhone" ;;
-                "iPhone1,2"):     "iPhone 3G" ;;
-                "iPhone2,1"):     "iPhone 3GS" ;;
-                "iPhone3,"[1-3]): "iPhone 4" ;;
-                "iPhone4,1"):     "iPhone 4S" ;;
-                "iPhone5,"[1-2]): "iPhone 5" ;;
-                "iPhone5,"[3-4]): "iPhone 5c" ;;
-                "iPhone6,"[1-2]): "iPhone 5s" ;;
-                "iPhone7,2"):     "iPhone 6" ;;
-                "iPhone7,1"):     "iPhone 6 Plus" ;;
-                "iPhone8,1"):     "iPhone 6s" ;;
-                "iPhone8,2"):     "iPhone 6s Plus" ;;
-                "iPhone8,4"):     "iPhone SE" ;;
-                "iPhone9,"[13]):  "iPhone 7" ;;
-                "iPhone9,"[24]):  "iPhone 7 Plus" ;;
-                "iPhone10,"[14]): "iPhone 8" ;;
-                "iPhone10,"[25]): "iPhone 8 Plus" ;;
-                "iPhone10,"[36]): "iPhone X" ;;
-                "iPhone11,2"):    "iPhone XS" ;;
-                "iPhone11,"[46]): "iPhone XS Max" ;;
-                "iPhone11,8"):    "iPhone XR" ;;
+                iPhone1,1):     "iPhone" ;;
+                iPhone1,2):     "iPhone 3G" ;;
+                iPhone2,1):     "iPhone 3GS" ;;
+                iPhone3,[1-3]): "iPhone 4" ;;
+                iPhone4,1):     "iPhone 4S" ;;
+                iPhone5,[1-2]): "iPhone 5" ;;
+                iPhone5,[3-4]): "iPhone 5c" ;;
+                iPhone6,[1-2]): "iPhone 5s" ;;
+                iPhone7,2):     "iPhone 6" ;;
+                iPhone7,1):     "iPhone 6 Plus" ;;
+                iPhone8,1):     "iPhone 6s" ;;
+                iPhone8,2):     "iPhone 6s Plus" ;;
+                iPhone8,4):     "iPhone SE" ;;
+                iPhone9,[13]):  "iPhone 7" ;;
+                iPhone9,[24]):  "iPhone 7 Plus" ;;
+                iPhone10,[14]): "iPhone 8" ;;
+                iPhone10,[25]): "iPhone 8 Plus" ;;
+                iPhone10,[36]): "iPhone X" ;;
+                iPhone11,2):    "iPhone XS" ;;
+                iPhone11,[46]): "iPhone XS Max" ;;
+                iPhone11,8):    "iPhone XR" ;;
 
-                "iPod1,1"): "iPod touch" ;;
-                "ipod2,1"): "iPod touch 2G" ;;
-                "ipod3,1"): "iPod touch 3G" ;;
-                "ipod4,1"): "iPod touch 4G" ;;
-                "ipod5,1"): "iPod touch 5G" ;;
-                "ipod7,1"): "iPod touch 6G" ;;
+                iPod1,1): "iPod touch" ;;
+                ipod2,1): "iPod touch 2G" ;;
+                ipod3,1): "iPod touch 3G" ;;
+                ipod4,1): "iPod touch 4G" ;;
+                ipod5,1): "iPod touch 5G" ;;
+                ipod7,1): "iPod touch 6G" ;;
             esac
-            model="$_"
+
+            model=$_
         ;;
 
-        "BSD" | "MINIX")
-            model="$(sysctl -n hw.vendor hw.product)"
+        BSD|MINIX)
+            model=$(sysctl -n hw.vendor hw.product)
         ;;
 
-        "Windows")
-            model="$(wmic computersystem get manufacturer,model)"
-            model="${model/Manufacturer}"
-            model="${model/Model}"
+        Windows)
+            model=$(wmic computersystem get manufacturer,model)
+            model=${model/Manufacturer}
+            model=${model/Model}
         ;;
 
-        "Solaris")
-            model="$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')"
+        Solaris)
+            model=$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')
         ;;
 
-        "AIX")
-            model="$(/usr/bin/uname -M)"
+        AIX)
+            model=$(/usr/bin/uname -M)
         ;;
 
-        "FreeMiNT")
-            model="$(sysctl -n hw.model)"
+        FreeMiNT)
+            model=$(sysctl -n hw.model)
         ;;
     esac
 
     # Remove dummy OEM info.
-    model="${model//To be filled by O.E.M.}"
-    model="${model//To Be Filled*}"
-    model="${model//OEM*}"
-    model="${model//Not Applicable}"
-    model="${model//System Product Name}"
-    model="${model//System Version}"
-    model="${model//Undefined}"
-    model="${model//Default string}"
-    model="${model//Not Specified}"
-    model="${model//Type1ProductConfigId}"
-    model="${model//INVALID}"
-    model="${model//�}"
+    model=${model//To be filled by O.E.M.}
+    model=${model//To Be Filled*}
+    model=${model//OEM*}
+    model=${model//Not Applicable}
+    model=${model//System Product Name}
+    model=${model//System Version}
+    model=${model//Undefined}
+    model=${model//Default string}
+    model=${model//Not Specified}
+    model=${model//Type1ProductConfigId}
+    model=${model//INVALID}
+    model=${model//�}
 
-    case "$model" in
+    case $model in
         "Standard PC"*) model="KVM/QEMU (${model})" ;;
         "OpenBSD"*)     model="vmm ($model)" ;;
     esac
 }
 
 get_title() {
-    user="${USER:-$(whoami || printf "%s" "${HOME/*\/}")}"
-    hostname="${HOSTNAME:-$(hostname)}"
-    title="${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
-    length="$((${#user} + ${#hostname} + 1))"
+    user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
+    hostname=${HOSTNAME:-$(hostname)}
+    title=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
+    length=$((${#user} + ${#hostname} + 1))
 }
 
 get_kernel() {
     # Since these OS are integrated systems, it's better to skip this function altogether
-    [[ "$os" =~ (AIX|IRIX) ]] && return
+    [[ $os =~ (AIX|IRIX) ]] && return
 
     # Haiku uses 'uname -v' and not - 'uname -r'.
-    [[ "$os" == Haiku ]] && {
+    [[ $os == Haiku ]] && {
         kernel=$(uname -v)
         return
     }
 
-    case "$kernel_shorthand" in
-        "on")  kernel="$kernel_version" ;;
-        "off") kernel="$kernel_name $kernel_version" ;;
+    case $kernel_shorthand in
+        on)  kernel=$kernel_version ;;
+        off) kernel="$kernel_name $kernel_version" ;;
     esac
 
     # Hide kernel info if it's identical to the distro info.
-    if [[ "$os" =~ (BSD|MINIX) && "$distro" == *"$kernel_name"* ]]; then
-        case "$distro_shorthand" in
-            "on" | "tiny") kernel="$kernel_version" ;;
-            *)             unset kernel ;;
+    [[ $os =~ (BSD|MINIX) && $distro == *"$kernel_name"* ]] &&
+        case $distro_shorthand in
+            on|tiny) kernel=$kernel_version ;;
+            *)       unset kernel ;;
         esac
-    fi
 }
 
 get_uptime() {
     # Get uptime in seconds.
-    case "$os" in
-        "Linux" | "Windows" | "MINIX")
+    case $os in
+        Linux|Windows|MINIX)
             if [[ -r /proc/uptime ]]; then
-                seconds="$(< /proc/uptime)"
-                seconds="${seconds/.*}"
+                s=$(< /proc/uptime)
+                s=${s/.*}
             else
-                boot="$(date -d"$(uptime -s)" +%s)"
-                now="$(date +%s)"
-                seconds="$((now - boot))"
+                boot=$(date -d"$(uptime -s)" +%s)
+                now=$(date +%s)
+                s=$((now - boot))
             fi
         ;;
 
-        "Mac OS X" | "iPhone OS" | "BSD" | "FreeMiNT")
-            boot="$(sysctl -n kern.boottime)"
-            boot="${boot/\{ sec = }"
-            boot="${boot/,*}"
+        "Mac OS X"|"iPhone OS"|BSD|FreeMiNT)
+            boot=$(sysctl -n kern.boottime)
+            boot=${boot/\{ sec = }
+            boot=${boot/,*}
 
             # Get current date in seconds.
-            now="$(date +%s)"
-            seconds="$((now - boot))"
+            now=$(date +%s)
+            s=$((now - boot))
         ;;
 
-        "Solaris")
-            seconds="$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')"
-            seconds="${seconds/.*}"
+        Solaris)
+            s=$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')
+            s=${s/.*}
         ;;
 
-        "AIX" | "IRIX")
-            t="$(LC_ALL=POSIX ps -o etime= -p 1)"
-            d="0" h="0"
-            case "$t" in *"-"*) d="${t%%-*}"; t="${t#*-}";; esac
-            case "$t" in *":"*":"*) h="${t%%:*}"; t="${t#*:}";; esac
-            h="${h#0}" t="${t#0}"
-            seconds="$((d*86400 + h*3600 + ${t%%:*}*60 + ${t#*:}))"
+        AIX|IRIX)
+            t=$(LC_ALL=POSIX ps -o etime= -p 1)
+
+            [[ $t == *-*   ]] && { d=${t%%-*}; t=${t#*-}; }
+            [[ $t == *:*:* ]] && { h=${t%%:*}; t=${t#*:}; }
+
+            h=${h#0} 
+            t=${t#0}
+
+            s=$((${d:-0}*86400 + ${h:-0}*3600 + ${t%%:*}*60 + ${t#*:}))
         ;;
 
-        "Haiku")
-            seconds=$(($(system_time) / 1000000))
+        Haiku)
+            s=$(($(system_time) / 1000000))
         ;;
     esac
 
-    days="$((seconds / 60 / 60 / 24)) days"
-    hours="$((seconds / 60 / 60 % 24)) hours"
-    mins="$((seconds / 60 % 60)) minutes"
+    d="$((s / 60 / 60 / 24)) days"
+    h="$((s / 60 / 60 % 24)) hours"
+    m="$((s / 60 % 60)) mins"
 
     # Remove plural if < 2.
-    ((${days/ *} == 1))  && days="${days/s}"
-    ((${hours/ *} == 1)) && hours="${hours/s}"
-    ((${mins/ *} == 1))  && mins="${mins/s}"
+    ((${d/ *} == 1)) && d=${d/s}
+    ((${h/ *} == 1)) && h=${h/s}
+    ((${m/ *} == 1)) && m=${m/s}
 
     # Hide empty fields.
-    ((${days/ *} == 0))  && unset days
-    ((${hours/ *} == 0)) && unset hours
-    ((${mins/ *} == 0))  && unset mins
+    ((${d/ *} == 0)) && unset days
+    ((${h/ *} == 0)) && unset hours
+    ((${m/ *} == 0)) && unset mins
 
-    uptime="${days:+$days, }${hours:+$hours, }${mins}"
-    uptime="${uptime%', '}"
-    uptime="${uptime:-${seconds} seconds}"
+    uptime=${d:+$d, }${h:+$h, }$m
+    uptime=${uptime%', '}
+    uptime=${uptime:-$seconds secs}
 
     # Make the output of uptime smaller.
-    case "$uptime_shorthand" in
-        "on")
-            uptime="${uptime/minutes/mins}"
-            uptime="${uptime/minute/min}"
-            uptime="${uptime/seconds/secs}"
-        ;;
+    case $uptime_shorthand in
+        on) ;;
 
-        "tiny")
-            uptime="${uptime/ days/d}"
-            uptime="${uptime/ day/d}"
-            uptime="${uptime/ hours/h}"
-            uptime="${uptime/ hour/h}"
-            uptime="${uptime/ minutes/m}"
-            uptime="${uptime/ minute/m}"
-            uptime="${uptime/ seconds/s}"
-            uptime="${uptime//,}"
+        tiny)
+            uptime=${uptime/ days/d}
+            uptime=${uptime/ day/d}
+            uptime=${uptime/ hours/h}
+            uptime=${uptime/ hour/h}
+            uptime=${uptime/ mins/m}
+            uptime=${uptime/ min/m}
+            uptime=${uptime/ secs/s}
+            uptime=${uptime//,}
         ;;
     esac
 }
