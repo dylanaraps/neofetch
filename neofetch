@@ -6427,8 +6427,12 @@ ${c1}/\\,-'''''-,/\\
 EOF
         ;;
 
-        "FreeBSD"*|HardenedBSD*)
-            set_colors 1 7 3
+        FreeBSD*|HardenedBSD*)
+            case $ascii_distro in
+                *HardenedBSD*) set_colors 4 7 3 ;;
+                *)             set_colors 1 7 3
+            esac
+
             read -rd '' ascii_data <<'EOF'
    ${c2}```                        ${c1}`
   ${c2}` `.....---...${c1}....--.```   -/
