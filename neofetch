@@ -1216,6 +1216,13 @@ get_kernel() {
         kernel=$(uname -v)
         return
     }
+ 
+    # In Windows 'uname' may return the info of GNUenv thus use wmic for OS kernel
+    [[ "$os" == Windows ]] && {
+        kernel=$(wmic os get Version)
+        kernel="${kernel/Version}"
+        return
+    }
 
     case $kernel_shorthand in
         on)  kernel=$kernel_version ;;
