@@ -3586,7 +3586,8 @@ print_ascii() {
 
     # Calculate size of ascii file in line length / line count.
     while IFS=$'\n' read -r line; do
-        line="${line//\\\\/\\}"
+        line=${line//\\\\/\\}
+        line=${line//█/ }
         ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
