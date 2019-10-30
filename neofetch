@@ -957,9 +957,10 @@ get_distro() {
                     distro=${distro/DragonFly/DragonFlyBSD}
 
                     # Workarounds for some BSD based distros.
-                    [[ -f /etc/pcbsd-lang ]]     && distro=PCBSD
-                    [[ -f /etc/trueos-lang ]]    && distro=TrueOS
-                    [[ -f /etc/pacbsd-release ]] && distro=PacBSD
+                    [[ -f /etc/pcbsd-lang ]]       && distro=PCBSD
+                    [[ -f /etc/trueos-lang ]]      && distro=TrueOS
+                    [[ -f /etc/pacbsd-release ]]   && distro=PacBSD
+                    [[ -f /etc/hbsd-update.conf ]] && distro=HardenedBSD
                 fi
             fi
 
@@ -6419,7 +6420,7 @@ ${c1}/\\,-'''''-,/\\
 EOF
         ;;
 
-        "FreeBSD"*)
+        "FreeBSD"*|HardenedBSD*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
    ${c2}```                        ${c1}`
