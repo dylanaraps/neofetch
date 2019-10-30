@@ -9543,10 +9543,10 @@ EOF
 
     # Overwrite distro colors if '$ascii_colors' doesn't
     # equal 'distro'.
-    if [[ "${ascii_colors[0]}" != "distro" ]]; then
-        color_text="off"
+    [[ ${ascii_colors[0]} != distro ]] && {
+        color_text=off
         set_colors "${ascii_colors[@]}"
-    fi
+    }
 }
 
 main() {
@@ -9557,21 +9557,21 @@ main() {
     eval "$config"
 
     get_args "$@"
-    [[ "$verbose" != "on" ]] && exec 2>/dev/null
+    [[ $verbose != on ]] && exec 2>/dev/null
     get_simple "$@"
     get_distro
     get_bold
     get_distro_ascii
-    [[ "$stdout" == "on" ]] && stdout
+    [[ $stdout == on ]] && stdout
 
     # Minix doesn't support these sequences.
-    if [[ "$TERM" != "minix" && "$stdout" != "on" ]]; then
+    [[ $TERM != minix && $stdout != on ]] && {
         # If the script exits for any reason, unhide the cursor.
         trap 'printf "\e[?25h\e[?7h"' EXIT
 
         # Hide the cursor and disable line wrap.
         printf '\e[?25l\e[?7l'
-    fi
+    }
 
     image_backend
     get_cache_dir
@@ -9581,17 +9581,19 @@ main() {
 
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
-    [[ "$image_backend" == *w3m* ]] && display_image
+    [[ $image_backend == *w3m* ]] && display_image
 
     # Add neofetch info to verbose output.
     err "Neofetch command: $0 $*"
     err "Neofetch version: $version"
 
-    # Show error messages.
-    [[ "$verbose" == "on" ]] && printf "%b" "$err" >&2
+    [[ $verbose == on ]] && printf %b "$err" >&2
 
     # If `--loop` was used, constantly redraw the image.
-    while [[ "$image_loop" == "on" && "$image_backend" == "w3m" ]]; do display_image; sleep 1; done
+    while [[ $image_loop == on && $image_backend == w3m ]]; do 
+        display_image
+        sleep 1
+    done
 
     return 0
 }
