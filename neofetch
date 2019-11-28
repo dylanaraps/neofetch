@@ -600,6 +600,19 @@ block_width=3
 # Flag:     --block_height
 block_height=1
 
+# Color Alignment
+#
+# Default: 'auto'
+# Values: 'auto', 'num'
+# Flag: --col_offset
+#
+# Number specifies how far from the left side of the terminal (in spaces) to
+# begin printing the columns, in case you want to e.g. center them under your
+# text.
+# Example:
+# col_offset="auto" - Default behavior of neofetch
+# col_offset=7      - Leave 7 spaces then print the colors
+col_offset="auto"
 
 # Progress Bars
 
@@ -3471,7 +3484,10 @@ get_cols() {
         # Add block height to info height.
         ((info_height+=block_range[1]>7?block_height+3:block_height+2))
 
-        printf '\n\e[%bC%b\n\n' "$text_padding" "${zws}${cols}"
+        case $col_offset in
+            "auto") printf '\n\e[%bC%b\n\n' "$text_padding" "${zws}${cols}" ;;
+            *) printf '\n\e[%bC%b\n\n' "$col_offset" "${zws}${cols}" ;;
+        esac
     fi
 
     unset -v blocks blocks2 cols
@@ -4455,6 +4471,7 @@ TEXT FORMATTING:
 
 COLOR BLOCKS:
     --color_blocks on/off       Enable/Disable the color blocks
+    --col_offset auto/num      Left-padding of color blocks
     --block_width num           Width of color blocks in spaces
     --block_height num          Height of color blocks in lines
     --block_range num num       Range of colors to print as blocks
@@ -4652,6 +4669,7 @@ get_args() {
             "--block_range") block_range=("$2" "$3") ;;
             "--block_width") block_width="$2" ;;
             "--block_height") block_height="$2" ;;
+            "--col_offset") col_offset="$2" ;;
 
             # Bars
             "--bar_char")
