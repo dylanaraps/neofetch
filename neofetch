@@ -1061,7 +1061,7 @@ get_distro() {
     # Get OS architecture.
     case $os in
         Solaris|AIX|Haiku|IRIX|FreeMiNT)
-            machine_arch=$(uname -p) 
+            machine_arch=$(uname -p)
         ;;
 
         *)  machine_arch=$kernel_machine ;;
@@ -1216,7 +1216,7 @@ get_kernel() {
         kernel=$(uname -v)
         return
     }
- 
+
     # In Windows 'uname' may return the info of GNUenv thus use wmic for OS kernel.
     [[ $os == Windows ]] && {
         kernel=$(wmic os get Version)
@@ -1272,7 +1272,7 @@ get_uptime() {
             [[ $t == *-*   ]] && { d=${t%%-*}; t=${t#*-}; }
             [[ $t == *:*:* ]] && { h=${t%%:*}; t=${t#*:}; }
 
-            h=${h#0} 
+            h=${h#0}
             t=${t#0}
 
             s=$((${d:-0}*86400 + ${h:-0}*3600 + ${t%%:*}*60 + ${t#*:}))
@@ -8344,6 +8344,22 @@ yMMMMMMMMMMMMMMMMNNh.
 EOF
         ;;
 
+        "Raspbian_small"*)
+            set_colors 2 1
+            read -rd '' ascii_data <<'EOF'
+${c1}   .~~.   .~~.
+  '. \\ ' ' / .'
+${c2}   .~ .~~~..~.
+  : .~.'~'.~. :
+ ~ (   ) (   ) ~
+( : '~'.~.'~' : )
+ ~ .~ (   ) ~. ~
+  (  : '~' :  )
+   '~ .~~~. ~'
+       '~'
+EOF
+        ;;
+
         "Raspbian"*)
             set_colors 2 1
             read -rd '' ascii_data <<'EOF'
@@ -9594,7 +9610,7 @@ main() {
     [[ $verbose == on ]] && printf %b "$err" >&2
 
     # If `--loop` was used, constantly redraw the image.
-    while [[ $image_loop == on && $image_backend == w3m ]]; do 
+    while [[ $image_loop == on && $image_backend == w3m ]]; do
         display_image
         sleep 1
     done
