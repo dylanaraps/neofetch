@@ -6216,7 +6216,7 @@ EOF
         "dragonfly_old"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-     ${c1}                 .-.
+     ${c1}                   .-.
                  ${c3} ()${c1}I${c3}()
             ${c1} "==.__:-:__.=="
             "==.__/~|~\__.=="
