@@ -4612,17 +4612,18 @@ ASCII:
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: Arch and Ubuntu have 'old' logo variants.
+                                NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 
-                                NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
+                                NOTE: Use '{distro name}_old' to use the old logos.
 
                                 NOTE: Ubuntu has flavor variants.
 
-                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME',
-                                'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
+                                NOTE: Change this to 'Lubuntu', 'Kubuntu', 'Xubuntu', 'Ubuntu-GNOME',
+                                'Ubuntu-Studio', 'Ubuntu-Mate'  or 'Ubuntu-Budgie' to use the flavors.
 
-                                NOTE: Alpine, Arch, CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS,
-                                OpenBSD, postmarketOS, and Void have a smaller logo variant.
+                                NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch,
+                                CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD,
+                                postmarketOS, and Void have a smaller logo variant.
 
                                 NOTE: Use '{distro name}_small' to use the small variants.
 
@@ -6215,8 +6216,7 @@ EOF
         "dragonfly_old"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-                   ${c1} |
-                   .-.
+     ${c1}              .-.
                  ${c3} ()${c1}I${c3}()
             ${c1} "==.__:-:__.=="
             "==.__/~|~\__.=="
@@ -8154,7 +8154,7 @@ ${c1}               PPPPPPPPPPPPPP
 EOF
         ;;
 
-        "popos_small"*)
+        "popos_small"* | "pop_os_small"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
 ${c1}______
@@ -8168,7 +8168,7 @@ ${c1}______
 EOF
         ;;
 
-        "Pop!_OS"*)
+        "Pop!_OS"* | "popos"* | "pop_os"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
 ${c1}             /////////////
@@ -8508,7 +8508,7 @@ RRRR     RRRRRRRRRRRRRRRRRRR  R   RRRR
 EOF
         ;;
 
-        "redhat_old")
+        "redhat_old" | "rhel_old"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}             `.-..........`
