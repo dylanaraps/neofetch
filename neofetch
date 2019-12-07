@@ -8930,7 +8930,7 @@ ${c2}            -```````````
 EOF
         ;;
 
-        "Source Mage"*)
+        "Source Mage"* | "Source_Mage"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c2}       :ymNMNho.
