@@ -5931,7 +5931,7 @@ ${c1}             `.--::::::--.`
 EOF
         ;;
 
-        "Clear Linux OS"*)
+        "Clear Linux OS"* | "Clear_Linux"*)
             set_colors 4 3 7 6
             read -rd '' ascii_data <<'EOF'
 ${c1}          BBB
