@@ -5931,7 +5931,7 @@ ${c1}             `.--::::::--.`
 EOF
         ;;
 
-        "Clear Linux OS"*)
+        "Clear Linux OS"* | "Clear_Linux"*)
             set_colors 4 3 7 6
             read -rd '' ascii_data <<'EOF'
 ${c1}          BBB
@@ -6006,7 +6006,7 @@ ${c2}:sssssssssssso++${c1}${c3}`:/:--------.````````
 EOF
         ;;
 
-        "Container Linux by CoreOS"*)
+        "Container Linux by CoreOS"* | "Container_Linux"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}                .....
@@ -7122,7 +7122,7 @@ ${c2}    \\
 EOF
         ;;
 
-        "Linux Lite"*)
+        "Linux Lite"* | "Linux_Lite"*)
             set_colors 3 7
             read -rd '' ascii_data <<'EOF'
 ${c1}          ,xXc
@@ -8557,7 +8557,7 @@ MMMMMMMMMMM.                     MMMM
 EOF
         ;;
 
-        "Refracted Devuan"*)
+        "Refracted Devuan"* | "Refracted_Devuan"*)
             set_colors 8 7
             read -rd '' ascii_data <<'EOF'
 ${c2}                             A
@@ -8930,7 +8930,7 @@ ${c2}            -```````````
 EOF
         ;;
 
-        "Source Mage"*)
+        "Source Mage"* | "Source_Mage"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c2}       :ymNMNho.
