@@ -7122,7 +7122,7 @@ ${c2}    \\
 EOF
         ;;
 
-        "Linux Lite"*)
+        "Linux Lite"* | "Linux_Lite"*)
             set_colors 3 7
             read -rd '' ascii_data <<'EOF'
 ${c1}          ,xXc
