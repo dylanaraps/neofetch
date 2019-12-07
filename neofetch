@@ -383,6 +383,17 @@ public_ip_host="http://ident.me"
 public_ip_timeout=2
 
 
+# Desktop Environment
+
+
+# Show Desktop Environment version
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --de_version
+de_version="off"
+
+
 # Disk
 
 
@@ -1599,6 +1610,17 @@ get_de() {
 
     ((KDE_SESSION_VERSION >= 4)) && de=${de/KDE/Plasma}
 
+    if [[ $de_version == on && $de ]]; then
+        case $de in
+            "Plasma"*)
+                de_ver=$(plasmashell --version)
+                de_ver=${de_ver/* }
+            ;;
+            # TODO: Add other DEs
+        esac
+        de="$de $de_ver"
+    fi
+
     de_run=1
 }
 
@@ -2751,6 +2773,9 @@ get_style() {
     if [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         # Get DE if user has disabled the function.
         ((de_run != 1)) && get_de
+
+        # remove version from $de
+        [[ $de_version == on ]] && de=${de/ *}
 
         # Check for DE Theme.
         case $de in
@@ -4523,6 +4548,7 @@ INFO:
 
                                 NOTE: This only supports Linux.
 
+    --de_version on/off         Show/Hide Desktop Environment version
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
@@ -4698,6 +4724,7 @@ get_args() {
             "--gpu_brand") gpu_brand="$2" ;;
             "--gpu_type") gpu_type="$2" ;;
             "--refresh_rate") refresh_rate="$2" ;;
+            "--de_version") de_version="$2" ;;
             "--gtk_shorthand") gtk_shorthand="$2" ;;
             "--gtk2") gtk2="$2" ;;
             "--gtk3") gtk3="$2" ;;
