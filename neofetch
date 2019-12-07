@@ -8557,7 +8557,7 @@ MMMMMMMMMMM.                     MMMM
 EOF
         ;;
 
-        "Refracted Devuan"*)
+        "Refracted Devuan"* | "Refracted_Devuan"*)
             set_colors 8 7
             read -rd '' ascii_data <<'EOF'
 ${c2}                             A
