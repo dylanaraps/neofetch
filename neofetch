@@ -4619,7 +4619,7 @@ ASCII:
                                 NOTE: Ubuntu has flavor variants.
 
                                 NOTE: Change this to 'Lubuntu', 'Kubuntu', 'Xubuntu', 'Ubuntu-GNOME',
-                                'Ubuntu-Studio', 'Ubuntu-Mate'  or 'Ubuntu-Budgie' to use the flavors.
+                               'Ubuntu-Studio', 'Ubuntu-Mate'  or 'Ubuntu-Budgie' to use the flavors.
 
                                 NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu, 
                                 CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android, 
