@@ -6006,7 +6006,7 @@ ${c2}:sssssssssssso++${c1}${c3}`:/:--------.````````
 EOF
         ;;
 
-        "Container Linux by CoreOS"*)
+        "Container Linux by CoreOS"* | "Container_Linux"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}                .....
