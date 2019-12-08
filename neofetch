@@ -1608,25 +1608,15 @@ get_de() {
 
     if [[ $de_version == on && $de ]]; then
         case $de in
-            "Plasma"*)
-                de_ver=$(plasmashell --version)
-                de_ver=${de_ver/* }
-            ;;
-            "MATE"*)
-                de_ver=$(mate-session --version)
-                de_ver=${de_ver/* }
-            ;;
-            "Xfce"*)
-                de_ver=$(xfce4-session --version)
-                de_ver=${de_ver/)*}
-                de_ver=${de_ver/* }
-            ;;
-            "GNOME"*)
-                de_ver=$(gnome-shell --version)
-                de_ver=${de_ver/* }
-            ;;
+            "Plasma"*) de_ver=$(plasmashell --version) ;;
+            "MATE"*)   de_ver=$(mate-session --version) ;;
+            "Xfce"*)   de_ver=$(xfce4-session --version) ;;
+            "GNOME"*)  de_ver=$(gnome-shell --version) ;;
             # TODO: Add other DEs
         esac
+        de_ver=${de_ver/)*}
+        de_ver=${de_ver/* }
+
         de="$de $de_ver"
     fi
 
