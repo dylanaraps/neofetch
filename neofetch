@@ -1616,6 +1616,10 @@ get_de() {
                 de_ver=$(plasmashell --version)
                 de_ver=${de_ver/* }
             ;;
+            "MATE"*)
+                de_ver=$(mate-session --version)
+                de_ver=${de_ver/* }
+            ;;
             # TODO: Add other DEs
         esac
         de="$de $de_ver"
