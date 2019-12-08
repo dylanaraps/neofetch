@@ -1610,8 +1610,10 @@ get_de() {
             "GNOME"*)    de_ver=$(gnome-shell --version) ;;
             "Cinnamon"*) de_ver=$(cinnamon --version) ;;
             "Deepin"*)   de_ver=$(awk -F'=' '/Version/ {print $2}' /etc/deepin-version) ;;
+            "Budgie"*)   de_ver=$(budgie-desktop --version) ;;
             # TODO: Add other DEs
         esac
+        de_ver=${de_ver/Copyright*}
         de_ver=${de_ver/)*}
         de_ver=${de_ver/* }
 
