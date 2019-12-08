@@ -1609,6 +1609,7 @@ get_de() {
             "Xfce"*)     de_ver=$(xfce4-session --version) ;;
             "GNOME"*)    de_ver=$(gnome-shell --version) ;;
             "Cinnamon"*) de_ver=$(cinnamon --version) ;;
+            "Deepin"*)   de_ver=$(awk -F'=' '/Version/ {print $2}' /etc/deepin-version) ;;
             # TODO: Add other DEs
         esac
         de_ver=${de_ver/)*}
