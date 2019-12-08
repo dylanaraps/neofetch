@@ -1597,21 +1597,18 @@ get_de() {
         *xfce*)  de=Xfce ;;
         *mate*)  de=MATE ;;
         *GNOME*) de=GNOME ;;
-
-        *MUFFIN*|Cinnamon)
-            de=$(cinnamon --version)
-            de=${de:-Cinnamon}
-        ;;
+        *MUFFIN*|Cinnamon) de=Cinnamon ;;
     esac
 
     ((KDE_SESSION_VERSION >= 4)) && de=${de/KDE/Plasma}
 
     if [[ $de_version == on && $de ]]; then
         case $de in
-            "Plasma"*) de_ver=$(plasmashell --version) ;;
-            "MATE"*)   de_ver=$(mate-session --version) ;;
-            "Xfce"*)   de_ver=$(xfce4-session --version) ;;
-            "GNOME"*)  de_ver=$(gnome-shell --version) ;;
+            "Plasma"*)   de_ver=$(plasmashell --version) ;;
+            "MATE"*)     de_ver=$(mate-session --version) ;;
+            "Xfce"*)     de_ver=$(xfce4-session --version) ;;
+            "GNOME"*)    de_ver=$(gnome-shell --version) ;;
+            "Cinnamon"*) de_ver=$(cinnamon --version) ;;
             # TODO: Add other DEs
         esac
         de_ver=${de_ver/)*}
