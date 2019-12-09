@@ -1592,12 +1592,12 @@ get_de() {
     # Format strings.
     case $de in
         KDE_SESSION_VERSION*) de=KDE${de/* = } ;;
-        *xfce4*) de=Xfce4 ;;
-        *xfce5*) de=Xfce5 ;;
-        *xfce*)  de=Xfce ;;
-        *mate*)  de=MATE ;;
-        *GNOME*) de=GNOME ;;
-        *MUFFIN*|Cinnamon) de=Cinnamon ;;
+        *xfce4*)  de=Xfce4 ;;
+        *xfce5*)  de=Xfce5 ;;
+        *xfce*)   de=Xfce ;;
+        *mate*)   de=MATE ;;
+        *GNOME*)  de=GNOME ;;
+        *MUFFIN*) de=Cinnamon ;;
     esac
 
     ((KDE_SESSION_VERSION >= 4)) && de=${de/KDE/Plasma}
@@ -1615,6 +1615,7 @@ get_de() {
             "Lumina"*)   de_ver=$(lumina-desktop --version 2>&1) ;;
             "Trinity"*)  de_ver=$(tde-config --version) ;;
         esac
+
         de_ver=${de_ver/*TDE:}
         de_ver=${de_ver/tde-config*}
         de_ver=${de_ver/liblxqt*}
@@ -2779,7 +2780,7 @@ get_style() {
         # Get DE if user has disabled the function.
         ((de_run != 1)) && get_de
 
-        # remove version from $de
+        # Remove version from '$de'.
         [[ $de_version == on ]] && de=${de/ *}
 
         # Check for DE Theme.
