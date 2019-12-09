@@ -1613,6 +1613,7 @@ get_de() {
             "Budgie"*)   de_ver=$(budgie-desktop --version) ;;
             "LXQt"*)     de_ver=$(lxqt-session --version) ;;
             "Lumina"*)   de_ver=$(lumina-desktop --version 2>&1) ;;
+            "Trinity"*)  de_ver=$(tde-config --version | awk '/TDE:/ {print $2}') ;;
             # TODO: Add other DEs
         esac
         de_ver=${de_ver/liblxqt*}
