@@ -1612,12 +1612,14 @@ get_de() {
             "Deepin"*)   de_ver=$(awk -F'=' '/Version/ {print $2}' /etc/deepin-version) ;;
             "Budgie"*)   de_ver=$(budgie-desktop --version) ;;
             "LXQt"*)     de_ver=$(lxqt-session --version) ;;
+            "Lumina"*)   de_ver=$(lumina-desktop --version 2>&1) ;;
             # TODO: Add other DEs
         esac
         de_ver=${de_ver/liblxqt*}
         de_ver=${de_ver/Copyright*}
         de_ver=${de_ver/)*}
         de_ver=${de_ver/* }
+        de_ver=${de_ver//\"}
 
         de="$de $de_ver"
     fi
