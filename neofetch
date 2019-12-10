@@ -1613,6 +1613,7 @@ get_de() {
             "LXQt"*)     de_ver=$(lxqt-session --version) ;;
             "Lumina"*)   de_ver=$(lumina-desktop --version 2>&1) ;;
             "Trinity"*)  de_ver=$(tde-config --version) ;;
+            "Unity"*)    de_ver=$(unity --version) ;;
         esac
 
         de_ver=${de_ver/*TDE:}
