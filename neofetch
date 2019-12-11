@@ -1648,6 +1648,7 @@ get_wm() {
                            -e fireplace \
                            -e greenfield \
                            -e grefsen \
+                           -e kwin \
                            -e lipstick \
                            -e maynard \
                            -e mazecompositor \
