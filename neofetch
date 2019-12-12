@@ -1646,6 +1646,7 @@ get_wm() {
                            -e clayland \
                            -e dwc \
                            -e fireplace \
+                           -e gnome-shell \
                            -e greenfield \
                            -e grefsen \
                            -e kwin \
@@ -1677,10 +1678,6 @@ get_wm() {
             wm=${wm/\"}
             wm=${wm/\"*}
         }
-
-        # Rename window managers to their proper values.
-        [[ $wm == *WINDOWMAKER* ]]   && wm=wmaker
-        [[ $wm == *"GNOME Shell"* ]] && wm=Mutter
 
         # Fallback for non-EWMH WMs.
         [[ $wm ]] ||
@@ -1741,6 +1738,10 @@ get_wm() {
         esac
     fi
 
+    # Rename window managers to their proper values.
+    [[ $wm == *WINDOWMAKER* ]] && wm=wmaker
+    [[ $wm == *GNOME*Shell* ]] && wm=Mutter
+
     wm_run=1
 }
 
@@ -1764,7 +1765,7 @@ get_wm_theme() {
             wm_theme="$detheme (${wm_theme})"
         ;;
 
-        "Compiz" | "Mutter" | "GNOME Shell" | "Gala")
+        "Compiz" | "Mutter" | "Gala")
             if type -p gsettings >/dev/null; then
                 wm_theme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
 
@@ -1808,15 +1809,17 @@ get_wm_theme() {
         ;;
 
         "Openbox")
-            if [[ "$de" == "LXDE" && -f "${HOME}/.config/openbox/lxde-rc.xml" ]]; then
-                ob_file="lxde-rc"
+            case $de in
+                "LXDE"*) ob_file="lxde-rc" ;;
+                "LXQt"*) ob_file="lxqt-rc" ;;
+                      *) ob_file="rc" ;;
+            esac
 
-            elif [[ -f "${HOME}/.config/openbox/rc.xml" ]]; then
-                ob_file="rc"
-            fi
+            ob_file="${XDG_CONFIG_HOME}/openbox/${ob_file}.xml"
 
-            wm_theme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' \
-                        "${XDG_CONFIG_HOME}/openbox/${ob_file}.xml")";
+            [[ -f "$ob_file" ]] && \
+                wm_theme="$(awk '/<theme>/ {while (getline n) {if (match(n, /<name>/))
+                            {l=n; exit}}} END {split(l, a, "[<>]"); print a[3]}' "$ob_file")"
         ;;
 
         "PekWM")
