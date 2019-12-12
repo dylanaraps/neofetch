@@ -1816,7 +1816,8 @@ get_wm_theme() {
                 ob_file="rc"
             fi
 
-            wm_theme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' \
+            wm_theme="$(awk '/<theme>/ {while (getline n) {if (match(n, /<name>/)) {l=n; exit}}}
+                        END {split(l, a, "[<>]"); print a[3]}' \
                         "${XDG_CONFIG_HOME}/openbox/${ob_file}.xml")";
         ;;
 
