@@ -1809,19 +1809,17 @@ get_wm_theme() {
         ;;
 
         "Openbox")
-            if [[ "$de" == "LXDE" && -f "${HOME}/.config/openbox/lxde-rc.xml" ]]; then
-                ob_file="lxde-rc"
+            case $de in
+                "LXDE"*) ob_file="lxde-rc" ;;
+                "LXQt"*) ob_file="lxqt-rc" ;;
+                      *) ob_file="rc" ;;
+            esac
 
-            elif [[ "$de" == "LXQt" && -f "${HOME}/.config/openbox/lxqt-rc.xml" ]]; then
-                ob_file="lxqt-rc"
+            ob_file="${XDG_CONFIG_HOME}/openbox/${ob_file}.xml"
 
-            elif [[ -f "${HOME}/.config/openbox/rc.xml" ]]; then
-                ob_file="rc"
-            fi
-
-            wm_theme="$(awk '/<theme>/ {while (getline n) {if (match(n, /<name>/)) {l=n; exit}}}
-                        END {split(l, a, "[<>]"); print a[3]}' \
-                        "${XDG_CONFIG_HOME}/openbox/${ob_file}.xml")";
+            [[ -f "$ob_file" ]] && \
+                wm_theme="$(awk '/<theme>/ {while (getline n) {if (match(n, /<name>/))
+                            {l=n; exit}}} END {split(l, a, "[<>]"); print a[3]}' "$ob_file")"
         ;;
 
         "PekWM")
