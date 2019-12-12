@@ -1812,6 +1812,9 @@ get_wm_theme() {
             if [[ "$de" == "LXDE" && -f "${HOME}/.config/openbox/lxde-rc.xml" ]]; then
                 ob_file="lxde-rc"
 
+            elif [[ "$de" == "LXQt" && -f "${HOME}/.config/openbox/lxqt-rc.xml" ]]; then
+                ob_file="lxqt-rc"
+
             elif [[ -f "${HOME}/.config/openbox/rc.xml" ]]; then
                 ob_file="rc"
             fi
