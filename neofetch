@@ -1646,6 +1646,7 @@ get_wm() {
                            -e clayland \
                            -e dwc \
                            -e fireplace \
+                           -e gnome-shell \
                            -e greenfield \
                            -e grefsen \
                            -e kwin \
@@ -1677,10 +1678,6 @@ get_wm() {
             wm=${wm/\"}
             wm=${wm/\"*}
         }
-
-        # Rename window managers to their proper values.
-        [[ $wm == *WINDOWMAKER* ]]   && wm=wmaker
-        [[ $wm == *"GNOME Shell"* ]] && wm=Mutter
 
         # Fallback for non-EWMH WMs.
         [[ $wm ]] ||
@@ -1740,6 +1737,10 @@ get_wm() {
             ;;
         esac
     fi
+
+    # Rename window managers to their proper values.
+    [[ $wm == *WINDOWMAKER* ]] && wm=wmaker
+    [[ $wm == *GNOME*Shell* ]] && wm=Mutter
 
     wm_run=1
 }
