@@ -1765,7 +1765,7 @@ get_wm_theme() {
             wm_theme="$detheme (${wm_theme})"
         ;;
 
-        "Compiz" | "Mutter" | "GNOME Shell" | "Gala")
+        "Compiz" | "Mutter" | "Gala")
             if type -p gsettings >/dev/null; then
                 wm_theme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
 
