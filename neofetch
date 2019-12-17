@@ -383,6 +383,17 @@ public_ip_host="http://ident.me"
 public_ip_timeout=2
 
 
+# Desktop Environment
+
+
+# Show Desktop Environment version
+#
+# Default: 'off'
+# Values:  'on', 'off'
+# Flag:    --de_version
+de_version="off"
+
+
 # Disk
 
 
@@ -602,6 +613,19 @@ block_width=3
 # Flag:     --block_height
 block_height=1
 
+# Color Alignment
+#
+# Default: 'auto'
+# Values: 'auto', 'num'
+# Flag: --col_offset
+#
+# Number specifies how far from the left side of the terminal (in spaces) to
+# begin printing the columns, in case you want to e.g. center them under your
+# text.
+# Example:
+# col_offset="auto" - Default behavior of neofetch
+# col_offset=7      - Leave 7 spaces then print the colors
+col_offset="auto"
 
 # Progress Bars
 
@@ -1073,7 +1097,7 @@ get_distro() {
     # Get OS architecture.
     case $os in
         Solaris|AIX|Haiku|IRIX|FreeMiNT)
-            machine_arch=$(uname -p) 
+            machine_arch=$(uname -p)
         ;;
 
         *)  machine_arch=$kernel_machine ;;
@@ -1231,7 +1255,7 @@ get_kernel() {
         kernel=$(uname -v)
         return
     }
- 
+
     # In Windows 'uname' may return the info of GNUenv thus use wmic for OS kernel.
     [[ $os == Windows ]] && {
         kernel=$(wmic os get Version)
@@ -1287,7 +1311,7 @@ get_uptime() {
             [[ $t == *-*   ]] && { d=${t%%-*}; t=${t#*-}; }
             [[ $t == *:*:* ]] && { h=${t%%:*}; t=${t#*:}; }
 
-            h=${h#0} 
+            h=${h#0}
             t=${t#0}
 
             s=$((${d:-0}*86400 + ${h:-0}*3600 + ${t%%:*}*60 + ${t#*:}))
@@ -1371,7 +1395,6 @@ get_packages() {
             has sorcery    && tot gaze installed
             has alps       && tot alps showinstalled
             has butch      && tot butch list
-            has bonsai     && tot bonsai list
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
@@ -1583,23 +1606,41 @@ get_de() {
     # Format strings.
     case $de in
         KDE_SESSION_VERSION*) de=KDE${de/* = } ;;
-        *xfce4*) de=Xfce4 ;;
-        *xfce5*) de=Xfce5 ;;
-        *xfce*)  de=Xfce ;;
-        *mate*)  de=MATE ;;
-
-        *MUFFIN*|Cinnamon)
-            de=$(cinnamon --version)
-            de=${de:-Cinnamon}
-        ;;
-
-        *GNOME*)
-            de=$(gnome-shell --version)
-            de=${de/Shell }
-        ;;
+        *xfce4*)  de=Xfce4 ;;
+        *xfce5*)  de=Xfce5 ;;
+        *xfce*)   de=Xfce ;;
+        *mate*)   de=MATE ;;
+        *GNOME*)  de=GNOME ;;
+        *MUFFIN*) de=Cinnamon ;;
     esac
 
-    ((KDE_SESSION_VERSION >= 4)) && de=${de/KDE/Plasma}
+    ((${KDE_SESSION_VERSION:-0} >= 4)) && de=${de/KDE/Plasma}
+
+    if [[ $de_version == on && $de ]]; then
+        case $de in
+            "Plasma"*)   de_ver=$(plasmashell --version) ;;
+            "MATE"*)     de_ver=$(mate-session --version) ;;
+            "Xfce"*)     de_ver=$(xfce4-session --version) ;;
+            "GNOME"*)    de_ver=$(gnome-shell --version) ;;
+            "Cinnamon"*) de_ver=$(cinnamon --version) ;;
+            "Deepin"*)   de_ver=$(awk -F'=' '/Version/ {print $2}' /etc/deepin-version) ;;
+            "Budgie"*)   de_ver=$(budgie-desktop --version) ;;
+            "LXQt"*)     de_ver=$(lxqt-session --version) ;;
+            "Lumina"*)   de_ver=$(lumina-desktop --version 2>&1) ;;
+            "Trinity"*)  de_ver=$(tde-config --version) ;;
+            "Unity"*)    de_ver=$(unity --version) ;;
+        esac
+
+        de_ver=${de_ver/*TDE:}
+        de_ver=${de_ver/tde-config*}
+        de_ver=${de_ver/liblxqt*}
+        de_ver=${de_ver/Copyright*}
+        de_ver=${de_ver/)*}
+        de_ver=${de_ver/* }
+        de_ver=${de_ver//\"}
+
+        de="$de $de_ver"
+    fi
 
     de_run=1
 }
@@ -1620,8 +1661,10 @@ get_wm() {
                            -e clayland \
                            -e dwc \
                            -e fireplace \
+                           -e gnome-shell \
                            -e greenfield \
                            -e grefsen \
+                           -e kwin \
                            -e lipstick \
                            -e maynard \
                            -e mazecompositor \
@@ -1650,10 +1693,6 @@ get_wm() {
             wm=${wm/\"}
             wm=${wm/\"*}
         }
-
-        # Rename window managers to their proper values.
-        [[ $wm == *WINDOWMAKER* ]]   && wm=wmaker
-        [[ $wm == *"GNOME Shell"* ]] && wm=Mutter
 
         # Fallback for non-EWMH WMs.
         [[ $wm ]] ||
@@ -1714,6 +1753,10 @@ get_wm() {
         esac
     fi
 
+    # Rename window managers to their proper values.
+    [[ $wm == *WINDOWMAKER* ]] && wm=wmaker
+    [[ $wm == *GNOME*Shell* ]] && wm=Mutter
+
     wm_run=1
 }
 
@@ -1737,7 +1780,7 @@ get_wm_theme() {
             wm_theme="$detheme (${wm_theme})"
         ;;
 
-        "Compiz" | "Mutter" | "GNOME Shell" | "Gala")
+        "Compiz" | "Mutter" | "Gala")
             if type -p gsettings >/dev/null; then
                 wm_theme="$(gsettings get org.gnome.shell.extensions.user-theme name)"
 
@@ -1781,15 +1824,17 @@ get_wm_theme() {
         ;;
 
         "Openbox")
-            if [[ "$de" == "LXDE" && -f "${HOME}/.config/openbox/lxde-rc.xml" ]]; then
-                ob_file="lxde-rc"
+            case $de in
+                "LXDE"*) ob_file="lxde-rc" ;;
+                "LXQt"*) ob_file="lxqt-rc" ;;
+                      *) ob_file="rc" ;;
+            esac
 
-            elif [[ -f "${HOME}/.config/openbox/rc.xml" ]]; then
-                ob_file="rc"
-            fi
+            ob_file="${XDG_CONFIG_HOME}/openbox/${ob_file}.xml"
 
-            wm_theme="$(awk -F "[<,>]" '/<theme/ {getline; print $3}' \
-                        "${XDG_CONFIG_HOME}/openbox/${ob_file}.xml")";
+            [[ -f "$ob_file" ]] && \
+                wm_theme="$(awk '/<theme>/ {while (getline n) {if (match(n, /<name>/))
+                            {l=n; exit}}} END {split(l, a, "[<>]"); print a[3]}' "$ob_file")"
         ;;
 
         "PekWM")
@@ -2755,6 +2800,9 @@ get_style() {
         # Get DE if user has disabled the function.
         ((de_run != 1)) && get_de
 
+        # Remove version from '$de'.
+        [[ $de_version == on ]] && de=${de/ *}
+
         # Check for DE Theme.
         case $de in
             "KDE"* | "Plasma"*)
@@ -3536,7 +3584,10 @@ get_cols() {
         # Add block height to info height.
         ((info_height+=block_range[1]>7?block_height+3:block_height+2))
 
-        printf '\n\e[%bC%b\n\n' "$text_padding" "${zws}${cols}"
+        case $col_offset in
+            "auto") printf '\n\e[%bC%b\n\n' "$text_padding" "${zws}${cols}" ;;
+            *) printf '\n\e[%bC%b\n\n' "$col_offset" "${zws}${cols}" ;;
+        esac
     fi
 
     unset -v blocks blocks2 cols
@@ -4523,6 +4574,7 @@ INFO:
 
                                 NOTE: This only supports Linux.
 
+    --de_version on/off         Show/Hide Desktop Environment version
     --gtk_shorthand on/off      Shorten output of gtk theme/icons
     --gtk2 on/off               Enable/Disable gtk2 theme/font/icons output
     --gtk3 on/off               Enable/Disable gtk3 theme/font/icons output
@@ -4560,6 +4612,7 @@ TEXT FORMATTING:
 
 COLOR BLOCKS:
     --color_blocks on/off       Enable/Disable the color blocks
+    --col_offset auto/num      Left-padding of color blocks
     --block_width num           Width of color blocks in spaces
     --block_height num          Height of color blocks in lines
     --block_range num num       Range of colors to print as blocks
@@ -4611,17 +4664,21 @@ ASCII:
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: Arch and Ubuntu have 'old' logo variants.
+                                NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 
-                                NOTE: Use 'arch_old' or 'ubuntu_old' to use the old logos.
+                                NOTE: Use '{distro name}_old' to use the old logos.
 
                                 NOTE: Ubuntu has flavor variants.
 
-                                NOTE: Change this to 'Lubuntu', 'Xubuntu', 'Ubuntu-GNOME',
-                                'Ubuntu-Studio' or 'Ubuntu-Budgie' to use the flavors.
+                                NOTE: Change this to Lubuntu, Kubuntu, Xubuntu, Ubuntu-GNOME,
+                                Ubuntu-Studio, Ubuntu-Mate  or Ubuntu-Budgie to use the flavors.
 
-                                NOTE: Alpine, Arch, CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS,
-                                OpenBSD, postmarketOS, and Void have a smaller logo variant.
+                                NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
+                                CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android,
+                                Antrix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
+                                Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
+                                Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
+                                postmarketOS, and Void have a smaller logo variant.
 
                                 NOTE: Use '{distro name}_small' to use the small variants.
 
@@ -4693,6 +4750,7 @@ get_args() {
             "--gpu_brand") gpu_brand="$2" ;;
             "--gpu_type") gpu_type="$2" ;;
             "--refresh_rate") refresh_rate="$2" ;;
+            "--de_version") de_version="$2" ;;
             "--gtk_shorthand") gtk_shorthand="$2" ;;
             "--gtk2") gtk2="$2" ;;
             "--gtk3") gtk3="$2" ;;
@@ -4757,6 +4815,7 @@ get_args() {
             "--block_range") block_range=("$2" "$3") ;;
             "--block_width") block_width="$2" ;;
             "--block_height") block_height="$2" ;;
+            "--col_offset") col_offset="$2" ;;
 
             # Bars
             "--bar_char")
@@ -5731,6 +5790,29 @@ ${c1}                              ......
      ${c2}.,,,,++++,..  .,,,,,.....,+++,.,,${c1}
 EOF
         ;;
+    "Carbs"*)
+        set_colors 4 5 4 4 4 4
+        read -rd '' ascii_data <<'EOF'
+${c2}             ..........               
+          ..,;:ccccccc:;'..           
+       ..,clllc:;;;;;:cllc,.          
+      .,cllc,...     ..';;'.          
+     .;lol;..           ..            
+    .,lol;.                           
+    .coo:.                            
+   .'lol,.                            
+   .,lol,.                            
+   .,lol,.                            
+    'col;.                            
+    .:ooc'.                           
+    .'col:.                           
+     .'cllc'..          .''.          
+      ..:lolc,'.......',cll,.         
+        ..;cllllccccclllc;'.          
+          ...',;;;;;;,,...            
+                .....
+EOF
+        ;;
 
         "centos_small"*)
             set_colors 3 2 4 5 7
@@ -5925,7 +6007,7 @@ ${c1}             `.--::::::--.`
 EOF
         ;;
 
-        "Clear Linux OS"*)
+        "Clear Linux OS"* | "Clear_Linux"*)
             set_colors 4 3 7 6
             read -rd '' ascii_data <<'EOF'
 ${c1}          BBB
@@ -6000,7 +6082,7 @@ ${c2}:sssssssssssso++${c1}${c3}`:/:--------.````````
 EOF
         ;;
 
-        "Container Linux by CoreOS"*)
+        "Container Linux by CoreOS"* | "Container_Linux"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}                .....
@@ -6232,8 +6314,7 @@ EOF
         "dragonfly_old"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-                   ${c1} |
-                   .-.
+     ${c1}                   .-.
                  ${c3} ()${c1}I${c3}()
             ${c1} "==.__:-:__.=="
             "==.__/~|~\__.=="
@@ -7136,7 +7217,7 @@ ${c2}    \\
 EOF
         ;;
 
-        "Linux Lite"*)
+        "Linux Lite"* | "Linux_Lite"*)
             set_colors 3 7
             read -rd '' ascii_data <<'EOF'
 ${c1}          ,xXc
@@ -8171,7 +8252,7 @@ ${c1}               PPPPPPPPPPPPPP
 EOF
         ;;
 
-        "popos_small"*)
+        "popos_small"* | "pop_os_small"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
 ${c1}______
@@ -8185,7 +8266,7 @@ ${c1}______
 EOF
         ;;
 
-        "Pop!_OS"*)
+        "Pop!_OS"* | "popos"* | "pop_os"*)
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
 ${c1}             /////////////
@@ -8410,6 +8491,22 @@ yMMMMMMMMMMMMMMMMNNh.
 EOF
         ;;
 
+        "Raspbian_small"*)
+            set_colors 2 1
+            read -rd '' ascii_data <<'EOF'
+${c1}   .~~.   .~~.
+  '. \\ ' ' / .'
+${c2}   .~ .~~~..~.
+  : .~.'~'.~. :
+ ~ (   ) (   ) ~
+( : '~'.~.'~' : )
+ ~ .~ (   ) ~. ~
+  (  : '~' :  )
+   '~ .~~~. ~'
+       '~'
+EOF
+        ;;
+
         "Raspbian"*)
             set_colors 2 1
             read -rd '' ascii_data <<'EOF'
@@ -8509,7 +8606,7 @@ RRRR     RRRRRRRRRRRRRRRRRRR  R   RRRR
 EOF
         ;;
 
-        "redhat_old")
+        "redhat_old" | "rhel_old"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}             `.-..........`
@@ -8555,7 +8652,7 @@ MMMMMMMMMMM.                     MMMM
 EOF
         ;;
 
-        "Refracted Devuan"*)
+        "Refracted Devuan"* | "Refracted_Devuan"*)
             set_colors 8 7
             read -rd '' ascii_data <<'EOF'
 ${c2}                             A
@@ -8743,6 +8840,32 @@ M-       ,=;;;#:,      ,:#;;:=,       ,@
 EOF
         ;;
 
+        "Septor"*)
+            set_colors 4 7 4
+            read -rd '' ascii_data <<'EOF'
+${c1}ssssssssssssssssssssssssssssssssssssssss
+ssssssssssssssssssssssssssssssssssssssss
+ssssssssssssssssssssssssssssssssssssssss
+ssssssssssssssssssssssssssssssssssssssss
+ssssssssss${c2};okOOOOOOOOOOOOOOko;${c1}ssssssssss
+sssssssss${c2}oNWWWWWWWWWWWWWWWWWWNo${c1}sssssssss
+ssssssss${c2}:WWWWWWWWWWWWWWWWWWWWWW:${c1}ssssssss
+ssssssss${c2}lWWWWWk${c1}ssssssssss${c2}lddddd:${c1}ssssssss
+ssssssss${c2}cWWWWWNKKKKKKKKKKKKOx:${c1}ssssssssss
+${c3}yy${c1}sssssss${c2}OWWWWWWWWWWWWWWWWWWWWx${c1}sssssss${c3}yy
+yyyyyyyyyy${c2}:kKNNNNNNNNNNNNWWWWWW:${c3}yyyyyyyy
+yyyyyyyy${c2}sccccc;${c3}yyyyyyyyyy${c2}kWWWWW:${c3}yyyyyyyy
+yyyyyyyy${c2}:WWWWWWNNNNNNNNNNWWWWWW;${c3}yyyyyyyy
+yyyyyyyy${c2}.dWWWWWWWWWWWWWWWWWWWNd${c3}yyyyyyyyy
+yyyyyyyyyy${c2}sdO0KKKKKKKKKKKK0Od;${c3}yyyyyyyyyy
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+EOF
+        ;;
+
         "SharkLinux"*)
             set_colors 4 7
             read -rd '' ascii_data <<'EOF'
@@ -8902,7 +9025,7 @@ ${c2}            -```````````
 EOF
         ;;
 
-        "Source Mage"*)
+        "Source Mage"* | "Source_Mage"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c2}       :ymNMNho.
@@ -9660,7 +9783,7 @@ main() {
     [[ $verbose == on ]] && printf %b "$err" >&2
 
     # If `--loop` was used, constantly redraw the image.
-    while [[ $image_loop == on && $image_backend == w3m ]]; do 
+    while [[ $image_loop == on && $image_backend == w3m ]]; do
         display_image
         sleep 1
     done
