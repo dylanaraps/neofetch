@@ -3741,6 +3741,10 @@ END
                     image="$(decode_url "$image")"
                 ;;
 
+                "Plasma"*)
+                    image="$(cat ${HOME}/.config/plasma-org.kde.plasma.desktop-appletsrc | grep --fixed-strings --after-context 1  "[Wallpaper][org.kde.image][General]" | grep --extended-regexp --only-matching  "file.+")"
+                ;;
+
                 *)
                     if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
                         image="$(awk -F\' '/feh/ {printf $(NF-1)}' "${HOME}/.fehbg")"
@@ -5777,23 +5781,23 @@ EOF
     "Carbs"*)
         set_colors 4 5 4 4 4 4
         read -rd '' ascii_data <<'EOF'
-${c2}             ..........               
-          ..,;:ccccccc:;'..           
-       ..,clllc:;;;;;:cllc,.          
-      .,cllc,...     ..';;'.          
-     .;lol;..           ..            
-    .,lol;.                           
-    .coo:.                            
-   .'lol,.                            
-   .,lol,.                            
-   .,lol,.                            
-    'col;.                            
-    .:ooc'.                           
-    .'col:.                           
-     .'cllc'..          .''.          
-      ..:lolc,'.......',cll,.         
-        ..;cllllccccclllc;'.          
-          ...',;;;;;;,,...            
+${c2}             ..........
+          ..,;:ccccccc:;'..
+       ..,clllc:;;;;;:cllc,.
+      .,cllc,...     ..';;'.
+     .;lol;..           ..
+    .,lol;.
+    .coo:.
+   .'lol,.
+   .,lol,.
+   .,lol,.
+    'col;.
+    .:ooc'.
+    .'col:.
+     .'cllc'..          .''.
+      ..:lolc,'.......',cll,.
+        ..;cllllccccclllc;'.
+          ...',;;;;;;,,...
                 .....
 EOF
         ;;
