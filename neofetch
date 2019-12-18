@@ -5781,23 +5781,23 @@ EOF
     "Carbs"*)
         set_colors 4 5 4 4 4 4
         read -rd '' ascii_data <<'EOF'
-${c2}             ..........
-          ..,;:ccccccc:;'..
-       ..,clllc:;;;;;:cllc,.
-      .,cllc,...     ..';;'.
-     .;lol;..           ..
-    .,lol;.
-    .coo:.
-   .'lol,.
-   .,lol,.
-   .,lol,.
-    'col;.
-    .:ooc'.
-    .'col:.
-     .'cllc'..          .''.
-      ..:lolc,'.......',cll,.
-        ..;cllllccccclllc;'.
-          ...',;;;;;;,,...
+${c2}             ..........               
+          ..,;:ccccccc:;'..           
+       ..,clllc:;;;;;:cllc,.          
+      .,cllc,...     ..';;'.          
+     .;lol;..           ..            
+    .,lol;.                           
+    .coo:.                            
+   .'lol,.                            
+   .,lol,.                            
+   .,lol,.                            
+    'col;.                            
+    .:ooc'.                           
+    .'col:.                           
+     .'cllc'..          .''.          
+      ..:lolc,'.......',cll,.         
+        ..;cllllccccclllc;'.          
+          ...',;;;;;;,,...            
                 .....
 EOF
         ;;
