@@ -3102,21 +3102,33 @@ END
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
+            _qdbus() {
+                if type -p qdbus-qt5 >/dev/null; then
+                    qdbus-qt5 "$@"
+                else
+                    qdbus "$@"
+                fi
+            }
+
             IFS=$'\n' read -d "" -ra konsole_instances \
-                <<< "$(qdbus | awk '/org.kde.konsole/ {print $1}')"
+                <<< "$(_qdbus | awk '/org.kde.konsole/ {print $1}')"
 
             for i in "${konsole_instances[@]}"; do
-                IFS=$'\n' read -d "" -ra konsole_sessions <<< "$(qdbus "$i" | grep -F '/Sessions/')"
+                IFS=$'\n' read -d "" -ra konsole_sessions \
+                    <<< "$(_qdbus "$i" | grep -F '/Sessions/')"
 
                 for session in "${konsole_sessions[@]}"; do
-                    if ((child == "$(qdbus "$i" "$session" processId)")); then
-                        profile="$(qdbus "$i" "$session" environment |\
+                    if ((child == "$(_qdbus "$i" "$session" processId)")); then
+                        profile="$(_qdbus "$i" "$session" environment |\
                                    awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
+                        [[ ! $profile ]] && profile="$(_qdbus "$i" "$session" profile)"
                         break
                     fi
                 done
                 [[ "$profile" ]] && break
             done
+
+            [[ ! $profile ]] && return
 
             # We could have two profile files for the same profile name, take first match
             profile_filename="$(grep -l "Name=${profile}" "$HOME"/.local/share/konsole/*.profile)"
