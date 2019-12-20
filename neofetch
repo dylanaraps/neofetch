@@ -3125,7 +3125,7 @@ END
                         break
                     fi
                 done
-                [[ "$profile" ]] && break
+                [[ $profile ]] && break
             done
 
             [[ ! $profile ]] && return
@@ -3134,7 +3134,7 @@ END
             profile_filename="$(grep -l "Name=${profile}" "$HOME"/.local/share/konsole/*.profile)"
             profile_filename="${profile_filename/$'\n'*}"
 
-            [[ "$profile_filename" ]] && \
+            [[ $profile_filename ]] && \
                 term_font="$(awk -F '=|,' '/Font=/ {print $2,$3}' "$profile_filename")"
         ;;
 
