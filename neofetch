@@ -3119,6 +3119,8 @@ END
                 [[ "$profile" ]] && break
             done
 
+            [[ ! $profile ]] && return
+
             # We could have two profile files for the same profile name, take first match
             profile_filename="$(grep -l "Name=${profile}" "$HOME"/.local/share/konsole/*.profile)"
             profile_filename="${profile_filename/$'\n'*}"
