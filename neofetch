@@ -3102,6 +3102,8 @@ END
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
+            QT_BINDIR="$(qtpaths --binaries-dir)" && PATH+=":$QT_BINDIR"
+
             IFS=$'\n' read -d "" -ra konsole_instances \
                 <<< "$(qdbus | awk '/org.kde.konsole/ {print $1}')"
 
