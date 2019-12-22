@@ -3102,6 +3102,8 @@ END
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
+            QT_BINDIR="$(qtpaths --binaries-dir)" && PATH+=":$QT_BINDIR"
+
             IFS=$'\n' read -d "" -ra konsole_instances \
                 <<< "$(qdbus | awk '/org.kde.konsole/ {print $1}')"
 
@@ -3112,17 +3114,20 @@ END
                     if ((child == "$(qdbus "$i" "$session" processId)")); then
                         profile="$(qdbus "$i" "$session" environment |\
                                    awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
+                        [[ $profile ]] || profile="$(qdbus "$i" "$session" profile)"
                         break
                     fi
                 done
-                [[ "$profile" ]] && break
+                [[ $profile ]] && break
             done
+
+            [[ $profile ]] || return
 
             # We could have two profile files for the same profile name, take first match
             profile_filename="$(grep -l "Name=${profile}" "$HOME"/.local/share/konsole/*.profile)"
             profile_filename="${profile_filename/$'\n'*}"
 
-            [[ "$profile_filename" ]] && \
+            [[ $profile_filename ]] && \
                 term_font="$(awk -F '=|,' '/Font=/ {print $2,$3}' "$profile_filename")"
         ;;
 
