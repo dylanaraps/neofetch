@@ -3112,6 +3112,7 @@ END
                     if ((child == "$(qdbus "$i" "$session" processId)")); then
                         profile="$(qdbus "$i" "$session" environment |\
                                    awk -F '=' '/KONSOLE_PROFILE_NAME/ {print $2}')"
+                        [[ ! $profile ]] && profile="$(qdbus "$i" "$session" profile)"
                         break
                     fi
                 done
