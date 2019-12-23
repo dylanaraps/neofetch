@@ -9658,22 +9658,22 @@ ssssssssssssso/-`      `-/osssssssssssss
 EOF
         ;;
         "Redox"*)
-            set_colors 7 7
+            set_colors 4 7
             read -rd '' ascii_data <<'EOF'
-\x1B[38;5;75m              `.-/+NNMNNN+-.`
+${c1}              `.-/+NNMNNN+-.`
            `:+oo+/-.-yds--/+oo+:`
         `/ss/++::/+o++++o+/:```:ss/`
       `+h+``oMMN+.````````.:+syyy:/h+`
       /h/+mmm/://:+oo+//+oo+:. hNNh.`/h/
      oy` ydds`/s+:`        `:+s/-.+Ndd-so
     os `yo  /y:                :y/.dmM- so
-   :h  s+  os`    \x1B[0msmhhhyyy/\x1B[38;5;75m     `so  +s  h:
-   m. -h  /h      \x1B[0myM    .oM+\x1B[38;5;75m      h/  h- .m
-   N  s+  d.      \x1B[0myM     -Ms\x1B[38;5;75m      .d  +s  m
-   h  y/  M       \x1B[0myM :+sydy`\x1B[38;5;75m       M  /y  h
-   M  oo  y/      \x1B[0myM .yNy.  \x1B[38;5;75m      /y  oo  M
-   y/ `m` .d.     \x1B[0myM   :md- \x1B[38;5;75m     .d.:hNy /y
-   .d` :h:--h:    \x1B[0m+s    `ss`\x1B[38;5;75m    :h- oMNh`d.
+   :h  s+  os`    ${c2}smhhhyyy/${c1}     `so  +s  h:
+   m. -h  /h      ${c2}yM    .oM+${c1}      h/  h- .m
+   N  s+  d.      ${c2}yM     -Ms${c1}      .d  +s  m
+   h  y/  M       ${c2}yM :+sydy`${c1}       M  /y  h
+   M  oo  y/      ${c2}yM .yNy.  ${c1}      /y  oo  M
+   y/ `m` .d.     ${c2}yM   :md- ${c1}     .d.:hNy /y
+   .d` :h:--h:    ${c2}+s    `ss`${c1}    :h- oMNh`d.
     :d.-MMN:.oo:              :oo.+sd+..d:
      -d//oyy////so/:oyo..ydhos/. +MMM::d-
       `sy- yMMN. `./MMMo+dNm/ ./ss-./ys`
