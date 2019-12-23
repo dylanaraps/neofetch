@@ -3746,6 +3746,11 @@ END
                     image="$(decode_url "$image")"
                 ;;
 
+                "Plasma"*)
+                    image="${XDG_CONFIG_HOME}/plasmarc"
+                    image="$(awk -F '=' '$1 == "usersWallpapers" { print $2 }' "$image")"
+                ;;
+
                 *)
                     if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
                         image="$(awk -F\' '/feh/ {printf $(NF-1)}' "${HOME}/.fehbg")"
