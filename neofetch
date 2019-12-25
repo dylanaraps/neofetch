@@ -3782,7 +3782,6 @@ END
                 "Plasma"*)
                     image=$XDG_CONFIG_HOME/plasma-org.kde.plasma.desktop-appletsrc
                     image=$(awk -F '=' '$1 == "Image" { print $2 }' "$image")
-                    image=${image##file://}
                 ;;
 
                 *)
