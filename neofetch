@@ -2672,9 +2672,12 @@ get_song() {
 
         "exaile"*)
             # NOTE: Exaile >= 4.0.0 will support mpris2.
-            song="$(dbus-send --print-reply --dest=org.exaile.Exaile  /org/exaile/Exaile \
-                    org.exaile.Exaile.Query |
-                    awk -F':|,' '{if ($6 && $8 && $4) printf $6 "\n" $8 "\n" $4}')"
+            song="$(dbus-send --print-reply --dest=org.exaile.Exaile \
+                    /org/exaile/Exaile org.exaile.Exaile.Query |
+                    awk -F ':' '{sub(",[^,]*$", "", $3); t=$3;
+                                 sub(",[^,]*$", "", $4); a=$4;
+                                 sub(",[^,]*$", "", $5); b=$5}
+                                 END {print a "\n" b "\n" t}')"
         ;;
 
         "muine"*)
@@ -3782,7 +3785,6 @@ END
                 "Plasma"*)
                     image=$XDG_CONFIG_HOME/plasma-org.kde.plasma.desktop-appletsrc
                     image=$(awk -F '=' '$1 == "Image" { print $2 }' "$image")
-                    image=${image##file://}
                 ;;
 
                 *)
