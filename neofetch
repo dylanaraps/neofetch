@@ -3325,17 +3325,17 @@ END
 }
 
 get_disk() {
-    type -p df &>/dev/null ||\
+    type -p df &>/dev/null ||
         { err "Disk requires 'df' to function. Install 'df' to get disk info."; return; }
 
-    df_version="$(df --version 2>&1)"
+    df_version=$(df --version 2>&1)
 
     case $df_version in
-        *"IMitv"*)   df_flags=(-P -g) ;; # AIX
-        *"befhikm"*) df_flags=(-P -k) ;; # IRIX
-        *"hiklnP"*) df_flags=(-h) ;; # OpenBSD
+        *IMitv*)   df_flags=(-P -g) ;; # AIX
+        *befhikm*) df_flags=(-P -k) ;; # IRIX
+        *hiklnP*)  df_flags=(-h)    ;; # OpenBSD
 
-        *"Tracker"*) # Haiku
+        *Tracker*) # Haiku
             err "Your version of df cannot be used due to the non-standard flags"
             return
         ;;
@@ -3349,7 +3349,7 @@ get_disk() {
     unset "disks[0]"
 
     # Stop here if 'df' fails to print disk info.
-    [[ -z "${disks[*]}" ]] && {
+    [[ ${disks[*]} ]] || {
         err "Disk: df failed to print the disks, make sure the disk_show array is set properly."
         return
     }
@@ -3357,10 +3357,10 @@ get_disk() {
     for disk in "${disks[@]}"; do
         # Create a second array and make each element split at whitespace this time.
         IFS=" " read -ra disk_info <<< "$disk"
-        disk_perc="${disk_info[4]/\%}"
+        disk_perc=${disk_info[4]/\%}
 
         case $df_version in
-            *"befhikm"*)
+            *befhikm*)
                 disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)"
             ;;
 
@@ -3369,35 +3369,33 @@ get_disk() {
             ;;
         esac
 
-        # Subtitle.
         case $disk_subtitle in
-            "name")
-                disk_sub="${disk_info[0]}"
+            name)
+                disk_sub=${disk_info[0]}
             ;;
 
-            "dir")
-                disk_sub="${disk_info[5]/*\/}"
-                disk_sub="${disk_sub:-${disk_info[5]}}"
+            dir)
+                disk_sub=${disk_info[5]/*\/}
+                disk_sub=${disk_sub:-${disk_info[5]}}
             ;;
 
             *)
-                disk_sub="${disk_info[5]}"
+                disk_sub=${disk_info[5]}
             ;;
         esac
 
-        # Bar.
         case $disk_display in
-            "bar")     disk="$(bar "$disk_perc" "100")" ;;
-            "infobar") disk+=" $(bar "$disk_perc" "100")" ;;
-            "barinfo") disk="$(bar "$disk_perc" "100")${info_color} $disk" ;;
-            "perc")    disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
+            bar)     disk="$(bar "$disk_perc" "100")" ;;
+            infobar) disk+=" $(bar "$disk_perc" "100")" ;;
+            barinfo) disk="$(bar "$disk_perc" "100")${info_color} $disk" ;;
+            perc)    disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
         esac
 
         # Append '(disk mount point)' to the subtitle.
-        if [[ -z "$subtitle" ]]; then
-            prin "${disk_sub}" "$disk"
+        if [[ "$subtitle" ]]; then
+            prin "$subtitle ($disk_sub)" "$disk"
         else
-            prin "${subtitle} (${disk_sub})" "$disk"
+            prin "$disk_sub" "$disk"
         fi
     done
 }
