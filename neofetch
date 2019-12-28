@@ -750,10 +750,11 @@ image_source="auto"
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata,
 #       Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
 #       SharkLinux, Siduction, Slackware, SliTaz, SmartOS, Solus,
-#       Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Tumbleweed,
-#       openSUSE, SwagArch, Tails, Trisquel, Ubuntu-Budgie, Ubuntu-GNOME,
-#       Ubuntu-MATE, Ubuntu-Studio, Ubuntu, Void, Obarun, windows10,
-#       Windows7, Xubuntu, Zorin, and IRIX have ascii logos
+#       Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
+#       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
+#       Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio, Ubuntu,
+#       Void, Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX
+#       have ascii logos
 # NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
 # NOTE: Ubuntu has flavor variants.
@@ -2671,9 +2672,12 @@ get_song() {
 
         "exaile"*)
             # NOTE: Exaile >= 4.0.0 will support mpris2.
-            song="$(dbus-send --print-reply --dest=org.exaile.Exaile  /org/exaile/Exaile \
-                    org.exaile.Exaile.Query |
-                    awk -F':|,' '{if ($6 && $8 && $4) printf $6 "\n" $8 "\n" $4}')"
+            song="$(dbus-send --print-reply --dest=org.exaile.Exaile \
+                    /org/exaile/Exaile org.exaile.Exaile.Query |
+                    awk -F ':' '{sub(",[^,]*$", "", $3); t=$3;
+                                 sub(",[^,]*$", "", $4); a=$4;
+                                 sub(",[^,]*$", "", $5); b=$5}
+                                 END {print a "\n" b "\n" t}')"
         ;;
 
         "muine"*)
@@ -3779,7 +3783,6 @@ END
                 "Plasma"*)
                     image=$XDG_CONFIG_HOME/plasma-org.kde.plasma.desktop-appletsrc
                     image=$(awk -F '=' '$1 == "Image" { print $2 }' "$image")
-                    image=${image##file://}
                 ;;
 
                 *)
@@ -4712,10 +4715,11 @@ ASCII:
                                 Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata,
                                 Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
                                 SharkLinux, Siduction, Slackware, SliTaz, SmartOS, Solus,
-                                Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Tumbleweed,
-                                openSUSE, SwagArch, Tails, Trisquel, Ubuntu-Budgie, Ubuntu-GNOME,
-                                Ubuntu-MATE, Ubuntu-Studio, Ubuntu, Void, Obarun, windows10,
-                                Windows7, Xubuntu, Zorin, and IRIX have ascii logos
+                                Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
+                                openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
+                                Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio, Ubuntu,
+                                Void, Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX
+                                have ascii logos
 
                                 NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 
@@ -9184,6 +9188,28 @@ ${c1}                 `-     `
   ``   ./:`                .: `..`.-
 ``./+/:-                     -+++:-
     -/+`                      :.
+EOF
+        ;;
+
+        "openSUSE Leap"* | "openSUSE_Leap"*)
+            set_colors 2 7
+            read -rd '' ascii_data <<'EOF'
+${c2}                 `-++:`
+               ./oooooo/-
+            `:oooooooooooo:.
+          -+oooooooooooooooo+-`
+       ./oooooooooooooooooooooo/-
+      :oooooooooooooooooooooooooo:
+    `  `-+oooooooooooooooooooo/-   `
+ `:oo/-   .:ooooooooooooooo+:`  `-+oo/.
+`/oooooo:.   -/oooooooooo/.   ./oooooo/.
+  `:+ooooo+-`  `:+oooo+-   `:oooooo+:`
+     .:oooooo/.   .::`   -+oooooo/.
+        -/oooooo:.    ./oooooo+-
+          `:+ooooo+-:+oooooo:`
+             ./oooooooooo/.
+                -/oooo+:`
+                  `:/.
 EOF
         ;;
 
