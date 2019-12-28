@@ -1249,6 +1249,7 @@ get_model() {
     model=${model//Not Specified}
     model=${model//Type1ProductConfigId}
     model=${model//INVALID}
+    model=${model//All Series}
     model=${model//�}
 
     case $model in
