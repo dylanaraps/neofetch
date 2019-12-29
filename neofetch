@@ -2596,16 +2596,14 @@ get_song() {
             org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' \
             string:'Metadata' |\
             awk -F '"' 'BEGIN {RS=" entry"}; /"xesam:artist"/ {a = $4} /"xesam:album"/ {b = $4}
-                        /"xesam:title"/ {t = $4} END {print a "\n" b "\n" t}'
+                        /"xesam:title"/ {t = $4} END {print a " \n" b " \n" t}'
         )"
     }
 
     case ${player/*\/} in
-        "mpd"*|"mopidy"*) song="$(mpc -f '%artist%\n%album%\n%title%' current "${mpc_args[@]}")" ;;
-        "mocp"*)          song="$(mocp -Q '%artist\n%album\n%song')" ;;
-        "deadbeef"*)      song="$(deadbeef --nowplaying-tf '%artist%\\n%album%\\n%title%')" ;;
-        "xmms2d"*)        song="$(xmms2 current -f "\${artist}"$'\n'"\${album}"$'\n'"\${title}")" ;;
-        "qmmp"*)          song="$(qmmp --nowplaying '%p\\n%a\\n%t')" ;;
+        "mocp"*)          song="$(mocp -Q '%artist \n%album \n%song')" ;;
+        "deadbeef"*)      song="$(deadbeef --nowplaying-tf '%artist% \\n%album% \\n%title%')" ;;
+        "qmmp"*)          song="$(qmmp --nowplaying '%p \n%a \n%t')" ;;
         "gnome-music"*)   get_song_dbus "GnomeMusic" ;;
         "lollypop"*)      get_song_dbus "Lollypop" ;;
         "clementine"*)    get_song_dbus "clementine" ;;
@@ -2632,6 +2630,14 @@ get_song() {
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
         "io.elementary.music"*)        get_song_dbus "Music" ;;
 
+        "mpd"* | "mopidy"*)
+            song="$(mpc -f '%artist% \n%album% \n%title%' current "${mpc_args[@]}")"
+        ;;
+
+        "xmms2d"*)
+            song="$(xmms2 current -f "\${artist}"$' \n'"\${album}"$' \n'"\${title}")"
+        ;;
+
         "cmus"*)
             # NOTE: cmus >= 2.8.0 supports mpris2
             song="$(cmus-remote -Q | awk 'BEGIN { ORS=" "};
@@ -2644,7 +2650,7 @@ get_song() {
                                           /tag title/ {
                                               $1=$2=""; sub("  ", ""); t=$0
                                           }
-                                          END { print a "\n" b "\n" t }')"
+                                          END { print a " \n" b " \n" t }')"
         ;;
 
         "spotify"*)
@@ -2668,7 +2674,7 @@ get_song() {
         "banshee"*)
             song="$(banshee --query-artist --query-album --query-title |\
                     awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
-                               END {print a "\n" b "\n"t}')"
+                               END {print a " \n" b " \n"t}')"
         ;;
 
         "exaile"*)
@@ -2678,31 +2684,31 @@ get_song() {
                     awk -F ':' '{sub(",[^,]*$", "", $3); t=$3;
                                  sub(",[^,]*$", "", $4); a=$4;
                                  sub(",[^,]*$", "", $5); b=$5}
-                                 END {print a "\n" b "\n" t}')"
+                                 END {print a " \n" b " \n" t}')"
         ;;
 
         "muine"*)
             song="$(dbus-send --print-reply --dest=org.gnome.Muine /org/gnome/Muine/Player \
                     org.gnome.Muine.Player.GetCurrentSong |
                     awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
-                               END {print a "\n" b "\n" t}')"
+                               END {print a " \n" b " \n" t}')"
         ;;
 
         "quodlibet"*)
             song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet \
                     /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
                     awk -F'"' 'BEGIN {RS=" entry"}; /"artist"/ {a=$4} /"album"/ {b=$4}
-                    /"title"/ {t=$4} END {print a "\n" b "\n" t}')"
+                    /"title"/ {t=$4} END {print a " \n" b " \n" t}')"
         ;;
 
         "pogo"*)
             song="$(dbus-send --print-reply --dest=org.mpris.pogo /Player \
                     org.freedesktop.MediaPlayer.GetMetadata |
                     awk -F'"' 'BEGIN {RS=" entry"}; /"artist"/ {a=$4} /"album"/ {b=$4}
-                    /"title"/ {t=$4} END {print a "\n" b "\n" t}')"
+                    /"title"/ {t=$4} END {print a " \n" b " \n" t}')"
         ;;
 
-        *) mpc &>/dev/null && song="$(mpc -f '%artist%\n%album%\n%title%' current)" || return ;;
+        *) mpc &>/dev/null && song="$(mpc -f '%artist% \n%album% \n%title%' current)" || return ;;
     esac
 
     IFS=$'\n' read -d "" -r artist album title <<< "${song//'\n'/$'\n'}"
