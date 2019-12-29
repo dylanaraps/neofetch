@@ -1975,8 +1975,8 @@ get_cpu() {
 
             # Select the right temperature file.
             for temp_dir in /sys/class/hwmon/*; do
-                [[ "$(< "${temp_dir}/name")" =~ (coretemp|fam15h_power|k10temp) ]] && \
-                    { temp_dir="${temp_dir}/temp1_input"; break; }
+                [[ "$(< "$temp_dir/name")" =~ (coretemp|fam15h_power|k10temp) ]] &&
+                    { temp_dir=$temp_dir/temp1_input; break; }
             done
 
             # Get CPU speed.
@@ -3598,12 +3598,13 @@ get_cols() {
         printf -v block_spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
-        [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}${reset}nl}"
-        [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}${reset}nl}"
+        [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}[mnl}"
+        [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}[mnl}"
 
         # Add newlines to the string.
-        cols="${cols%%'nl'}"
-        cols="${cols//nl/\\n\\e[${text_padding}C${zws}}"
+        cols=${cols%%nl}
+        cols=${cols//nl/
+[${text_padding}C${zws}}
 
         # Add block height to info height.
         ((info_height+=block_range[1]>7?block_height+3:block_height+2))
