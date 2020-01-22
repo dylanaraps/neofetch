@@ -419,7 +419,7 @@ disk_show=('/')
 # What to append to the Disk subtitle.
 #
 # Default: 'mount'
-# Values:  'mount', 'name', 'dir'
+# Values:  'mount', 'name', 'dir', 'none'
 # Flag:    --disk_subtitle
 #
 # Example:
@@ -433,6 +433,10 @@ disk_show=('/')
 # dir:    'Disk (/): 74G / 118G (66%)'
 #         'Disk (Local Disk): 74G / 118G (66%)'
 #         'Disk (Videos): 74G / 118G (66%)'
+#
+# none:   'Disk: 74G / 118G (66%)'
+#         'Disk: 74G / 118G (66%)'
+#         'Disk: 74G / 118G (66%)'
 disk_subtitle="mount"
 
 
@@ -3383,6 +3387,8 @@ get_disk() {
                 disk_sub=${disk_sub:-${disk_info[5]}}
             ;;
 
+            none) ;;
+
             *)
                 disk_sub=${disk_info[5]}
             ;;
@@ -3397,7 +3403,7 @@ get_disk() {
 
         # Append '(disk mount point)' to the subtitle.
         if [[ "$subtitle" ]]; then
-            prin "$subtitle ($disk_sub)" "$disk"
+            prin "$subtitle${disk_sub:+ ($disk_sub)}" "$disk"
         else
             prin "$disk_sub" "$disk"
         fi
@@ -4615,13 +4621,15 @@ INFO:
                                 NOTE: Multiple values can be given. (--disk_show '/' '/dev/sdc1')
 
     --disk_subtitle type        What information to append to the Disk subtitle.
-                                Takes: name, mount, dir
+                                Takes: name, mount, dir, none
 
                                 'name' shows the disk's name (sda1, sda2, etc)
 
                                 'mount' shows the disk's mount point (/, /mnt/Local Disk, etc)
 
                                 'dir' shows the basename of the disks's path. (/, Local Disk, etc)
+
+                                'none' shows only 'Disk' or the configured title.
 
     --ip_host url               URL to query for public IP
     --ip_timeout int            Public IP timeout (in seconds).
