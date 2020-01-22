@@ -2809,6 +2809,8 @@ get_resolution() {
                         resolution="$(xrandr --nograb --current |\
                                       awk -F 'connected |\\+|\\(' \
                                              '/ connected/ && $2 {printf $2 ", "}')"
+
+                        resolution="${resolution/primary, }"
                         resolution="${resolution/primary }"
                     ;;
                 esac
