@@ -439,6 +439,18 @@ disk_show=('/')
 #         'Disk: 74G / 118G (66%)'
 disk_subtitle="mount"
 
+# Disk percent.
+# Show/Hide disk percent.
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    --disk_percent
+#
+# Example:
+# on:  'Disk (/): 74G / 118G (66%)'
+# off: 'Disk (/): 74G / 118G'
+disk_percent="on"
+
 
 # Song
 
@@ -3368,13 +3380,18 @@ get_disk() {
         IFS=" " read -ra disk_info <<< "$disk"
         disk_perc=${disk_info[4]/\%}
 
+        case $disk_percent in
+            off) disk_perc=
+        esac
+
         case $df_version in
             *befhikm*)
-                disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G (${disk_perc}%)"
+                disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G"
+                disk+="${disk_perc:+ ($disk_perc%)}"
             ;;
 
             *)
-                disk="${disk_info[2]/i} / ${disk_info[1]/i} (${disk_perc}%)"
+                disk="${disk_info[2]/i} / ${disk_info[1]/i}${disk_perc:+ ($disk_perc%)}"
             ;;
         esac
 
@@ -4632,6 +4649,8 @@ INFO:
 
                                 'none' shows only 'Disk' or the configured title.
 
+    --disk_percent on/off       Hide/Show disk percent.
+
     --ip_host url               URL to query for public IP
     --ip_timeout int            Public IP timeout (in seconds).
     --song_format format        Print the song data in a specific format (see config file).
@@ -4835,6 +4854,7 @@ get_args() {
             ;;
 
             "--disk_subtitle") disk_subtitle="$2" ;;
+            "--disk_percent")  disk_percent="$2" ;;
             "--disk_show")
                 unset disk_show
                 for arg in "$@"; do
