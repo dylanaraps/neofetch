@@ -736,7 +736,7 @@ image_source="auto"
 #       XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
 #       BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
 #       BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
-#       Chapeau, Chrom, Cleanjaro, ClearOS, Clear_Linux, Clover,
+#       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover,
 #       Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary,
 #       Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
@@ -996,7 +996,7 @@ get_distro() {
             # While the file is a series of variables they can't be sourced
             # by the shell since the values aren't quoted.
             elif [[ -f /etc/lsb-release && $(< /etc/lsb-release) == *CHROMEOS* ]]; then
-                distro=$(awk -F '=' '/NAME|VERSION/ {printf $2 " "}' /etc/lsb-release)
+                distro='Chrome OS'
 
             elif type -p guix >/dev/null; then
                 case $distro_shorthand in
@@ -1033,11 +1033,12 @@ get_distro() {
                 esac
 
             elif [[ $(< /proc/version) == *chrome-bot* || -f /dev/cros_ec ]]; then
-                case $distro_shorthand in
-                    on)   distro+=" [Chrome OS]" ;;
-                    tiny) distro="Chrome OS" ;;
-                    *)    distro+=" on Chrome OS" ;;
-                esac
+                [[ $distro != *Chrome* ]] &&
+                    case $distro_shorthand in
+                        on)   distro+=" [Chrome OS]" ;;
+                        tiny) distro="Chrome OS" ;;
+                        *)    distro+=" on Chrome OS" ;;
+                    esac
             fi
 
             distro=$(trim_quotes "$distro")
