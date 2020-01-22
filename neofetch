@@ -735,7 +735,7 @@ image_source="auto"
 #       Chapeau, Chrom, Cleanjaro, ClearOS, Clear_Linux, Clover,
 #       Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary,
-#       Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
+#       Endless, EuroLinux, Exherbo, ExpidusOS, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Gentoo, Pentoo,
 #       gNewSense, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
 #       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
@@ -4701,7 +4701,7 @@ ASCII:
                                 Chapeau, Chrom, Cleanjaro, ClearOS, Clear_Linux, Clover,
                                 Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
                                 DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary,
-                                Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
+                                Endless, EuroLinux, Exherbo, ExpidusOS, Fedora, Feren, FreeBSD,
                                 FreeMiNT, Frugalware, Funtoo, GalliumOS, Gentoo, Pentoo,
                                 gNewSense, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
                                 Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
@@ -6539,6 +6539,52 @@ KX  '0XdKMMK;.xMMMk, .0MMMMMXx;  ...
           'dXMMXkl;,.        .,o0MMNo'
              ':d0XWMMMMWNNNNMMMNOl'
                    ':okKXWNKkl'
+EOF
+        ;;
+
+      "ExpidusOS"*)
+          set_colors 4 7 1
+          read -rd '' acii_data <<'EOF'
+                                             .........
+                                     ....,,,**********,,,,....
+                                   ..,,***,,,........,,,****,...
+                                  ..,,,,..... .....,,,,*******,,....
+                                 ..,,,..  ....,*********,**********,,...
+                                ..,,,......,****,............,**,,*****,..
+                                ..,**,...,***,..           ..,**,...,****,..
+                                 .,,**,,,,,,..           ...,**,..  ..,***,.
+                                  ..,*****,. .       ....,,***,.....  .,**,.
+                                   ...,,****,,,,,,,,,,*************,,,,***,.
+                                      ..,*************,,,.........,,*****,..
+                                        ..,********,...      .....,*******,..
+                                          ...********,,,,,,,,********,..,***,..
+                                           ..,,,,,,,,**********,,..... ..,**,..
+                                           ..,**,......,**/////////**,...,**,..
+                                           ..,**,,.,*/////**,,,,,**/////****,..
+                                             .,****///*,..         ..,*/****,.
+                                              ..*****,..............,*****//*..
+                                             ..*//**,*****,,,,,,*****,,..,*///,.
+                                           ...,///,,,,,********,,,.....  ..///*..
+                                         ..,**/((//////////////**,,..    ..*//*,.
+                                     ..,**//**/((/,.........,,,**///*,.....*//*..
+                                   ..,*//*,...,///,.             .,*///*,,,///,.
+                                  .,*//*,... ..,*//*..             ..,*//////,..
+                          ....,*//////(####(//*,*////*,...          ..,*(((/,..
+                        ..,/(###(/***,,,,**/((####((////*,,........,*//(((/,.
+                     ..,*(##(/,...*//,..   ....,*(##((/*//////////(///**///,.
+                     .*(##/,..  ..*//*,.         .,/##(*....,,,,,,.....,*/*,.
+               ...,,,/(#(/*,.... ..,//*,..        ..*(##*..         ..,*/*,..
+          ...,*//(///((((///(//*,...,*//*,....     ../(#/,.      ..,*//**,..
+        ..,/////*,..,/#(/...,*////*,..,**//**,,... ../(#/,.....,,*///*,...
+       .,*//*,...  ..*##(,.  ..,*///*,...,,**////****/((/****///***,...
+      .,*/*,.        ,/(##*..   ..*/(*,.     ...,**//////***,,...
+     ..,/*,..        ..*/##(/,.. .,*//*..    ...,/(##/*....
+     ..*(/*..          ..,/(###(/**/((/,..,,*/(###(/,..
+     ..,///,..            ...,*((#%%%########((*,,...
+       .,//(*,..             ...,/((/*,,,,,....
+        ..,//(/*,....     ...*//((/,..
+          ..,,*//(//////////(//*,,..
+               ...,,******,,....
 EOF
         ;;
 
