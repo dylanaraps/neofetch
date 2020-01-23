@@ -2783,8 +2783,11 @@ get_resolution() {
         ;;
 
         "Windows")
-            maparray -t sw < <(wmic path Win32_VideoController get CurrentHorizontalResolution)
-            maparray -t sh < <(wmic path Win32_VideoController get CurrentVerticalResolution)
+            IFS=$'\n' read -d "" -ra sw \
+                < <(wmic path Win32_VideoController get CurrentHorizontalResolution)
+
+            IFS=$'\n' read -d "" -ra sh \
+                < <(wmic path Win32_VideoController get CurrentVerticalResolution)
 
             sw=("${sw[@]//CurrentHorizontalResolution}")
             sh=("${sh[@]//CurrentHorizontalResolution}")
