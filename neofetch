@@ -2793,7 +2793,8 @@ get_resolution() {
             sh=("${sh[@]//*CurrentVerticalResolution*}")
 
             for ((mn = 0; mn < ${#sw[@]}; mn++)) {
-                resolution+=${sw[mn]//[[:space:]]}x${sh[mn]//[[:space:]]},
+                [[ ${sw[mn]//[[:space:]]} && ${sh[mn]//[[:space:]]} ]] &&
+                    resolution+=${sw[mn]//[[:space:]]}x${sh[mn]//[[:space:]]},
             }
 
             resolution=${resolution%,}
