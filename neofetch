@@ -2783,15 +2783,17 @@ get_resolution() {
         ;;
 
         "Windows")
-            local width=""
-            width="$(wmic path Win32_VideoController get CurrentHorizontalResolution)"
-            width="${width//CurrentHorizontalResolution/}"
+            maparray -t sw < <(wmic path Win32_VideoController get CurrentHorizontalResolution)
+            maparray -t sh < <(wmic path Win32_VideoController get CurrentVerticalResolution)
 
-            local height=""
-            height="$(wmic path Win32_VideoController get CurrentVerticalResolution)"
-            height="${height//CurrentVerticalResolution/}"
+            sw=("${sw[@]//CurrentHorizontalResolution}")
+            sh=("${sh[@]//CurrentHorizontalResolution}")
 
-            [[ "$(trim "$width")" ]] && resolution="${width//[[:space:]]}x${height//[[:space:]]}"
+            for ((mn = 0; mn < ${#sw[@]}; mn++)) {
+                resolution+=${sw[mn]//[[:space:]]}x${sh[mn]//[[:space:]]},
+            }
+
+            resolution=${resolution%,}
         ;;
 
         "Haiku")
