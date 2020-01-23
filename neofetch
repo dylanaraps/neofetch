@@ -3355,6 +3355,41 @@ END
             # Default fallback font hardcoded in terminal-preferences.c
             [[ -z "$term_font" ]] && term_font="Monospace 12"
         ;;
+
+        conemu-*)
+            local ce_arg_list
+            local ce_arg_idx
+            local ce_conf
+
+            # Could have used `eval set -- "$ConEmuArgs"` instead for arg parsing
+            readarray -t ce_arg_list < <(xargs -n1 printf "%s\n" <<< "${ConEmuArgs-}")
+
+            for ce_arg_idx in "${!ce_arg_list[@]}"; do
+                # Search for "-LoadCfgFile" arg
+                [[ "${ce_arg_list[$ce_arg_idx]}" == -LoadCfgFile ]] && {
+                    # Conf path is the next arg
+                    ce_conf=${ce_arg_list[++ce_arg_idx]}
+                    break
+                }
+            done
+
+            # https://conemu.github.io/en/ConEmuXml.html#search-sequence
+            for ce_conf in "$ce_conf" "${ConEmuDir-}\ConEmu.xml" "${ConEmuDir-}\.ConEmu.xml" \
+                           "${ConEmuBaseDir-}\ConEmu.xml" "${ConEmuBaseDir-}\.ConEmu.xml" \
+                           "$APPDATA\ConEmu.xml" "$APPDATA\.ConEmu.xml"; do
+                # Search for first conf file available
+                [[ -f "$ce_conf" ]] && {
+                    # Very basic XML parsing
+                    term_font="$(awk '/name="FontName"/ && match($0, /data="([^"]*)"/) {
+                        print substr($0, RSTART+6, RLENGTH-7)}' "$ce_conf")"
+                    break
+                }
+            done
+
+            # Null-terminated contents in /proc/registry files triggers a Bash warning
+            [[ "$term_font" ]] || read -r term_font < \
+                /proc/registry/HKEY_CURRENT_USER/Software/ConEmu/.Vanilla/FontName
+        ;;
     esac
 }
 
