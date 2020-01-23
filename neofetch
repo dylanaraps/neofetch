@@ -3357,11 +3357,7 @@ END
         ;;
 
         conemu-*)
-            local ce_arg_list
-            local ce_arg_idx
-            local ce_conf
-
-            # Could have used `eval set -- "$ConEmuArgs"` instead for arg parsing
+            # Could have used `eval set -- "$ConEmuArgs"` instead for arg parsing.
             readarray -t ce_arg_list < <(xargs -n1 printf "%s\n" <<< "${ConEmuArgs-}")
 
             for ce_arg_idx in "${!ce_arg_list[@]}"; do
@@ -3386,7 +3382,7 @@ END
                 }
             done
 
-            # Null-terminated contents in /proc/registry files triggers a Bash warning
+            # Null-terminated contents in /proc/registry files triggers a Bash warning.
             [[ "$term_font" ]] || read -r term_font < \
                 /proc/registry/HKEY_CURRENT_USER/Software/ConEmu/.Vanilla/FontName
         ;;
