@@ -2789,12 +2789,12 @@ get_resolution() {
             IFS=$'\n' read -d "" -ra sh \
                 <<< "$(wmic path Win32_VideoController get CurrentVerticalResolution)"
 
-            sw=("${sw[@]//*CurrentHorizontalResolution*}")
-            sh=("${sh[@]//*CurrentVerticalResolution*}")
+            sw=("${sw[@]//CurrentHorizontalResolution}")
+            sh=("${sh[@]//CurrentVerticalResolution}")
 
             for ((mn = 0; mn < ${#sw[@]}; mn++)) {
                 [[ ${sw[mn]//[[:space:]]} && ${sh[mn]//[[:space:]]} ]] &&
-                    resolution+=${sw[mn]//[[:space:]]}x${sh[mn]//[[:space:]]},
+                    resolution+="${sw[mn]//[[:space:]]}x${sh[mn]//[[:space:]]}, "
             }
 
             resolution=${resolution%,}
