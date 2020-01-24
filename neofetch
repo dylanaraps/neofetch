@@ -64,6 +64,7 @@ print_info() {
     info "WM Theme" wm_theme
     info "Theme" theme
     info "Icons" icons
+    info "Cursor" cursor
     info "Terminal" term
     info "Terminal Font" term_font
     info "CPU" cpu
@@ -2874,6 +2875,18 @@ get_style() {
                         kde_font_size="${kde_font_size/,*}"
                         kde_theme="${kde_theme/,*} ${kde_theme/*,} ${kde_font_size}"
                     fi
+
+                    if [[ "$kde" == "cursorTheme" ]]; then
+                        if [[ -f "${kde_config_dir}/kcminputrc" ]]; then
+                            kde_config_file="${kde_config_dir}/kcminputrc"
+                            kde_theme="$(grep "cursorTheme" "$kde_config_file")"
+                            kde_theme="${kde_theme/*=}"
+                        elif [[ -f "${kde_config_dir}/startupconfig" ]]; then
+                            kde_config_file="${kde_config_dir}/startupconfig"
+                            kde_theme="$(grep "cursortheme" "$kde_config_file")"
+                            kde_theme="${kde_theme/*=}"
+                        fi
+                    fi
                     kde_theme="$kde_theme [$de], "
                 else
                     err "Theme: KDE config files not found, skipping."
@@ -3015,6 +3028,17 @@ get_font() {
 
     get_style
     font="$theme"
+}
+
+get_cursor() {
+    name="gtk-cursor-theme-name"
+    gsettings="cursor-theme"
+    gconf="cursor_theme"
+    xfconf="/Gtk/CursorThemeName"
+    kde="cursorTheme"
+
+    get_style
+    cursor="$theme"
 }
 
 get_term() {
