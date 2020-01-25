@@ -171,23 +171,23 @@ memory_unit="mib"
 #
 # Default: '1'
 # Values:  'int'
-# Flag:    --memory_used_gb_prec
+# Flag:    --memory_used_gib_prec
 #
 # Example:
 # 1: '1.8GiB / 7.7GiB'
 # 2: '1.76GiB / 7.7GiB'
-memory_used_gb_prec="1"
+memory_used_gib_prec="1"
 
 # Number of digit places past the decimal for total GiB
 #
 # Default: '1'
 # Values:  'int'
-# Flag:    --memory_total_gb_prec
+# Flag:    --memory_total_gib_prec
 #
 # Example:
 # 0: '1.8GiB / 8GiB'
 # 1: '1.8GiB / 7.7GiB'
-memory_total_gb_prec="1"
+memory_total_gib_prec="1"
 
 
 # Packages
@@ -2563,8 +2563,8 @@ get_memory() {
 
     if [[ "$memory_unit" == "gib" ]]; then
         mem_label='GiB'
-        mem_used=$(awk "BEGIN {print sprintf(\"%.${memory_used_gb_prec}f\", ${mem_used}/1024)}")
-        mem_total=$(awk "BEGIN {print sprintf(\"%.${memory_total_gb_prec}f\", ${mem_total}/1024)}")
+        mem_used=$(awk "BEGIN {print sprintf(\"%.${memory_used_gib_prec}f\", ${mem_used}/1024)}")
+        mem_total=$(awk "BEGIN {print sprintf(\"%.${memory_total_gib_prec}f\", ${mem_total}/1024)}")
     elif [[ "$memory_unit" == "kib" ]]; then
         mem_label='KiB'
         mem_used=$(( mem_used * 1024 ))
@@ -4672,8 +4672,8 @@ INFO:
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --memory_percent on/off     Display memory percentage.
     --memory_unit kib/mib/gib   Display memory in the selected unit.
-    --memory_used_gb_prec int   Digit places after the decimal for used memory in GiB.
-    --memory_total_gb_prec int  Digit places after the decimal for total memory in GiB.
+    --memory_used_gib_prec int  Digit places after the decimal for used memory in GiB.
+    --memory_total_gib_prec int Digit places after the decimal for total memory in GiB.
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
 
@@ -4867,8 +4867,8 @@ get_args() {
             "--music_player") music_player="$2" ;;
             "--memory_percent") memory_percent="$2" ;;
             "--memory_unit") memory_unit="$2" ;;
-            "--memory_used_gb_prec") memory_used_gb_prec="$2" ;;
-            "--memory_total_gb_prec") memory_total_gb_prec="$2" ;;
+            "--memory_used_gib_prec") memory_used_gib_prec="$2" ;;
+            "--memory_total_gib_prec") memory_total_gib_prec="$2" ;;
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
