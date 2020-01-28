@@ -70,6 +70,7 @@ print_info() {
     info "GPU" gpu
     info "Memory" memory
 
+    # info longtitle
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "CPU Usage" cpu_usage
     # info "Disk" disk
@@ -1279,6 +1280,13 @@ get_title() {
     user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
     hostname=${HOSTNAME:-$(hostname)}
     title=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
+    length=$((${#user} + ${#hostname} + 1))
+}
+
+get_longtitle() {
+    user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
+    hostname=$(hostname -f)
+    longtitle=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
     length=$((${#user} + ${#hostname} + 1))
 }
 
