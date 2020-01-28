@@ -85,6 +85,16 @@ print_info() {
     info cols
 }
 
+# Title
+
+
+# Hide/Show Fully qualified domain name.
+#
+# Default:  'off'
+# Values:   'on', 'off'
+# Flag:     --title_fqdn
+title_fqdn="off"
+
 
 # Kernel
 
@@ -1277,7 +1287,12 @@ get_model() {
 
 get_title() {
     user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
-    hostname=${HOSTNAME:-$(hostname)}
+
+    case $title_fqdn in
+        on) hostname=$(hostname -f) ;;
+        *)  hostname=${HOSTNAME:-$(hostname)} ;;
+    esac
+
     title=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
     length=$((${#user} + ${#hostname} + 1))
 }
@@ -4634,6 +4649,7 @@ INFO:
 
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 
+    --title_fqdn on/off         Hide/Show Fully Qualified Domain Name in title.
     --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
@@ -4873,6 +4889,7 @@ get_args() {
     while [[ "$1" ]]; do
         case $1 in
             # Info
+            "--title_fqdn") title_fqdn="$2" ;;
             "--package_managers") package_managers="$2" ;;
             "--os_arch") os_arch="$2" ;;
             "--cpu_cores") cpu_cores="$2" ;;
