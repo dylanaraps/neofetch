@@ -3943,6 +3943,9 @@ get_window_size() {
     # user input so we have to use read to store the out
     # -put as a variable.
     # The 1 second timeout is required for older bash
+    #
+    # False positive.
+    # shellcheck disable=2141
     case ${BASH_VERSINFO[0]} in
         4|5) IFS=';t' read -d t -t 0.05 -sra term_size ;;
         *)   IFS=';t' read -d t -t 1 -sra term_size ;;
