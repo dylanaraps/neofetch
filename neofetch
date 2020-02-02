@@ -2191,6 +2191,8 @@ get_cpu() {
     cpu="${cpu//Quad-Core}"
     cpu="${cpu//Six-Core}"
     cpu="${cpu//Eight-Core}"
+    cpu="${cpu//[1-9][0-9]-Core}"
+    cpu="${cpu//[0-9]-Core}"
     cpu="${cpu//, * Compute Cores}"
     cpu="${cpu//Core / }"
     cpu="${cpu//(\"AuthenticAMD\"*)}"
