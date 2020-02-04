@@ -1502,6 +1502,10 @@ get_packages() {
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
             has snap && ps -e | grep -qFm 1 snapd >/dev/null && tot snap list && ((packages-=1))
+
+            # This is the only standard location for appimages.
+            # See: https://github.com/AppImage/AppImageKit/wiki
+            manager=appimage && has appimaged && dir ~/.local/bin/*.appimage
         ;;
 
         "Mac OS X"|MINIX)
