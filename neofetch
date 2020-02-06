@@ -965,6 +965,12 @@ get_distro() {
                         distro="Proxmox VE ${distro%/*}"
                 esac
 
+            elif [[ $DESKTOP_SESSION == regolith ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="Regolith";;
+                    *) distro="Regolith ($(lsb_release -sic))"
+                esac
+
             elif type -p lsb_release >/dev/null; then
                 case $distro_shorthand in
                     on)   lsb_flags=-si ;;
@@ -8864,6 +8870,31 @@ d/hhhhhhhhhhhh${c3}`-/osyso+-`${c1}hhhhhhhhhhhh.h
       h+.hhhhhh${c6}+sssssss+${c1}hhhhhh`/yd
         dho:.hhh${c6}.:+++/.${c1}hhh`-+yd
             ddhso+++++osyhd
+EOF
+        ;;
+
+        "Regolith"*)
+            set_colors 1
+            read -rd '' ascii_data <<'EOF'
+${c1}
+                 ``....```              
+            `.:/++++++/::-.`            
+          -/+++++++:.`                  
+        -++++++++:`                     
+      `/++++++++-                       
+     `/++++++++.                    -/+/
+     /++++++++/             ``   .:+++:.
+    -+++++++++/          ./++++:+++/-`  
+    :+++++++++/         `+++++++/-`     
+    :++++++++++`      .-/+++++++`       
+   `:++++++++++/``.-/++++:-:::-`      ` 
+ `:+++++++++++++++++/:.`            ./` 
+:++/-:+++++++++/:-..              -/+.  
++++++++++/::-...:/+++/-..````..-/+++.   
+`......``.::/+++++++++++++++++++++/.    
+         -/+++++++++++++++++++++/.      
+           .:/+++++++++++++++/-`        
+              `.-:://////:-. 
 EOF
         ;;
 
