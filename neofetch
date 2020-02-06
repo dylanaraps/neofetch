@@ -973,6 +973,15 @@ get_distro() {
                 esac
                 distro=$(lsb_release "$lsb_flags")
 
+                # Temporary support for Regolith Linux
+                if [[ $DESKTOP_SESSION == "regolith" ]]; then
+                    case $distro_shorthand in
+                        on)   distro+="-REGOLITH" ;;
+                        tiny) distro+="-REGOLITH" ;;
+                        *)    distro=$(lsb_release -si)"-REGOLITH "$(lsb_release -sr) ;;
+                    esac
+                fi
+
             elif [[ -f /etc/os-release || \
                     -f /usr/lib/os-release || \
                     -f /etc/openwrt_release || \
@@ -1629,7 +1638,7 @@ get_de() {
         *)
             ((wm_run != 1)) && get_wm
 
-            # Temporary!!
+            # Temporary support for Regolith Linux
             if [[ $DESKTOP_SESSION == regolith ]]; then
                 de=Regolith
 
@@ -8871,7 +8880,7 @@ d/hhhhhhhhhhhh${c3}`-/osyso+-`${c1}hhhhhhhhhhhh.h
 EOF
         ;;
 
-        "Regolith"*)
+        "Ubuntu-REGOLITH"*)
             set_colors 1
             read -rd '' ascii_data <<'EOF'
 ${c1}
