@@ -965,12 +965,6 @@ get_distro() {
                         distro="Proxmox VE ${distro%/*}"
                 esac
 
-            elif [[ $DESKTOP_SESSION == regolith ]]; then
-                case $distro_shorthand in
-                    on|tiny) distro="Regolith";;
-                    *) distro="Regolith ($(lsb_release -sic))"
-                esac
-
             elif type -p lsb_release >/dev/null; then
                 case $distro_shorthand in
                     on)   lsb_flags=-si ;;
