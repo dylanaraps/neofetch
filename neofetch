@@ -997,6 +997,12 @@ get_distro() {
                     *) distro="GoboLinux $(< /etc/GoboLinuxVersion)"
                 esac
 
+            elif [[ -f /etc/SDE-VERSION ]]; then
+                distro="$(< /etc/SDE-VERSION)"
+                case $distro_shorthand in
+                    on|tiny) distro="${distro% *}" ;;
+                esac
+
             elif type -p crux >/dev/null; then
                 distro=$(crux)
                 case $distro_shorthand in
@@ -1446,6 +1452,7 @@ get_packages() {
             has sorcery    && tot gaze installed
             has alps       && tot alps showinstalled
             has butch      && tot butch list
+            has mine       && tot mine -q
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
@@ -9366,6 +9373,19 @@ ${c2}                 `-++:`
              ./oooooooooo/.
                 -/oooo+:`
                   `:/.
+EOF
+        ;;
+
+        "t2"*)
+            set_colors 7 4
+            read -rd '' ascii_data <<'EOF'
+${c2}
+TTTTTTTTTT
+    tt   ${c1}222${c2}
+    tt  ${c1}2   2${c2}
+    tt     ${c1}2${c2}
+    tt    ${c1}2${c2}
+    tt  ${c1}22222${c2}
 EOF
         ;;
 
