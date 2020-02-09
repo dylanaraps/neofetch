@@ -7762,7 +7762,7 @@ ${c2}               ``-:::::-``
 EOF
         ;;
 
-        "Linux Mint_old")
+        "Linux Mint Old"* | "LinuxMintOld"* | "mint_old"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
 ${c1}MMMMMMMMMMMMMMMMMMMMMMMMMmds+.
