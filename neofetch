@@ -1261,6 +1261,7 @@ get_model() {
 
         FreeMiNT)
             model=$(sysctl -n hw.model)
+            model=${model/ (_MCH *)}
         ;;
     esac
 
@@ -1799,11 +1800,11 @@ get_wm() {
                 freemint_wm=(/proc/*)
 
                 case ${freemint_wm[*]} in
-                    *xaaes*) wm=XaAES ;;
-                    *myaes*) wm=MyAES ;;
-                    *naes*)  wm=N.AES ;;
-                    geneva)  wm=Geneva ;;
-                    *)       wm="Atari AES" ;;
+                    *xaaes* | *xaloader*) wm=XaAES ;;
+                    *myaes*)              wm=MyAES ;;
+                    *naes*)               wm=N.AES ;;
+                    geneva)               wm=Geneva ;;
+                    *)                    wm="Atari AES" ;;
                 esac
             ;;
         esac
@@ -2560,7 +2561,7 @@ get_memory() {
         "FreeMiNT")
             mem="$(awk -F ':|kB' '/MemTotal:|MemFree:/ {printf $2, " "}' /kern/meminfo)"
             mem_free="${mem/*  }"
-            mem_total="${mem/  *}"
+            mem_total="${mem/$mem_free}"
             mem_used="$((mem_total - mem_free))"
             mem_total="$((mem_total / 1024))"
             mem_used="$((mem_used / 1024))"
