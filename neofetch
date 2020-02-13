@@ -2828,6 +2828,10 @@ get_resolution() {
             [[ "$refresh_rate" == "off" ]] && resolution="${resolution/ @*}"
         ;;
 
+        "FreeMiNT")
+            # Need to block X11 queries
+        ;;
+
         *)
             if type -p xrandr >/dev/null && [[ $DISPLAY && -z $WAYLAND_DISPLAY ]]; then
                 case $refresh_rate in
@@ -3711,10 +3715,6 @@ get_cols() {
     fi
 
     unset -v blocks blocks2 cols
-
-    # TosWin2 on FreeMiNT is terrible at this,
-    # so we'll reset colors arbitrarily.
-    [[ "$term" == "TosWin2" ]] && printf '\e[30;47m'
 
     # Tell info() that we printed manually.
     prin=1
@@ -6766,8 +6766,7 @@ EOF
         ;;
 
         "FreeMiNT"*)
-            # Don't explicitly set colors since
-            # TosWin2 doesn't reset well.
+            set_colors 7
             read -rd '' ascii_data <<'EOF'
 ${c1}          ##
           ##         #########
