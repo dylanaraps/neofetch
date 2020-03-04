@@ -3980,9 +3980,6 @@ get_window_size() {
         term_width="${term_size[2]}"
     fi
 
-    [[ "$image_backend" == "kitty" ]] &&
-        IFS=x read -r term_width term_height <<< "$(kitty +kitten icat --print-window-size)"
-
     # Get terminal width/height.
     if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
         if type -p xdotool &>/dev/null; then
