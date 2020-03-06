@@ -1594,6 +1594,13 @@ get_shell() {
             shell+=$("$SHELL" -c "printf %s \$tcsh")
         ;;
 
+        yash)
+            shell+=$("$SHELL" --version 2>&1)
+            shell=${shell/ $shell_name}
+            shell=${shell/ Yet another shell }
+            shell=${shell/ Copyright*}
+        ;;
+
         *)
             shell+=$("$SHELL" --version 2>&1)
             shell=${shell/ $shell_name}
