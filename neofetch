@@ -1396,7 +1396,7 @@ get_uptime() {
 
     uptime=${d:+$d, }${h:+$h, }$m
     uptime=${uptime%', '}
-    uptime=${uptime:-$seconds secs}
+    uptime=${uptime:-$s secs}
 
     # Make the output of uptime smaller.
     case $uptime_shorthand in
