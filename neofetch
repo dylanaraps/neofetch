@@ -28,7 +28,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version=6.1.0
+version=7.0.0
 
 bash_version=${BASH_VERSION/.*}
 sys_locale=${LANG:-C}
