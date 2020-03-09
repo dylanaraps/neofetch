@@ -398,10 +398,10 @@ public_ip_timeout=2
 
 # Show Desktop Environment version
 #
-# Default: 'off'
+# Default: 'on'
 # Values:  'on', 'off'
 # Flag:    --de_version
-de_version="off"
+de_version="on"
 
 
 # Disk
