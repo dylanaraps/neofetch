@@ -1032,6 +1032,11 @@ get_distro() {
                     *) distro="Guix System $(guix system -V | awk 'NR==1{printf $5}')"
                 esac
 
+            # Display whether using '-current' or '-release' on OpenBSD.
+            elif [[ $kernel_name = OpenBSD ]] ; then
+                read -ra kernel_info <<< "$(sysctl -n kern.version)"
+                distro=${kernel_info[*]:0:2}
+
             else
                 for release_file in /etc/*-release; do
                     distro+=$(< "$release_file")
