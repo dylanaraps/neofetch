@@ -625,6 +625,12 @@ underline_char="-"
 # separator=" =":   'WM = dwm'
 separator=":"
 
+# Align Text
+#
+# Default: 'off'
+# Values: 'left', 'right', 'off'
+# Flag: --align_output
+align_output="off"
 
 # Color Blocks
 
@@ -4498,23 +4504,26 @@ prin() {
     # If $2 doesn't exist we format $1 as info.
     if [[ "$(trim "$1")" && "$2" ]]; then
         [[ "$json" ]] && { printf '    %s\n' "\"${1}\": \"${2}\","; return; }
-
-        string="${1}${2:+: $2}"
-    else
-        string="${2:-$1}"
-        local subtitle_color="$info_color"
     fi
 
+    string=$1
     string="$(trim "${string//$'\e[0m'}")"
     length="$(strip_sequences "$string")"
     length="${#length}"
 
     # Format the output.
-    string="${string/:/${reset}${colon_color}${separator:=:}${info_color}}"
+    string="${string/:/${reset}${colon_color}}"
+    [[ "$2" ]] && string="${string}${separator:=:}${info_color}"
     string="${subtitle_color}${bold}${string}"
 
-    # Print the info.
-    printf '%b\n' "${text_padding:+\e[${text_padding}C}${zws}${string//\\n}${reset} "
+    printf '%b' "${text_padding:+\e[${text_padding}C}${zws}"
+    case "$align_output" in
+        "left")  printf '%-*b' "$offset" "${string} " ;;
+        "right") printf '%+*b' "$offset" "${string} " ;;
+        "off") printf '%b' "${string} " ;;
+    esac
+    [[ "$2" ]] && printf '%b' "${2}"
+    printf "\n"
 
     # Calculate info height.
     ((++info_height))
@@ -4683,10 +4692,13 @@ get_user_config() {
 
     elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config.conf" ]]; then
         source "${XDG_CONFIG_HOME}/neofetch/config.conf"
+        # We will need these assignments later to calculate the alignment offset
+        config_file="${XDG_CONFIG_HOME}/neofetch/config.conf"
         err "Config: Sourced user config.    (${XDG_CONFIG_HOME}/neofetch/config.conf)"
 
     elif [[ -f "${XDG_CONFIG_HOME}/neofetch/config" ]]; then
         source "${XDG_CONFIG_HOME}/neofetch/config"
+        config_file="${XDG_CONFIG_HOME}/neofetch/config"
         err "Config: Sourced user config.    (${XDG_CONFIG_HOME}/neofetch/config)"
 
     elif [[ -z "$no_config" ]]; then
@@ -4984,6 +4996,8 @@ TEXT FORMATTING:
     --underline_char char       Character to use when underlining title
     --bold on/off               Enable/Disable bold text
     --separator string          Changes the default ':' separator to the specified string.
+    --align_output (left|right|off)
+                                Aligns the text output to the separator string
 
 COLOR BLOCKS:
     --color_blocks on/off       Enable/Disable the color blocks
@@ -5231,6 +5245,7 @@ get_args() {
             "--underline_char") underline_char="$2" ;;
             "--bold") bold="$2" ;;
             "--separator") separator="$2" ;;
+            "--align_output") align_output="$2" ;;
 
             # Color Blocks
             "--color_blocks") color_blocks="$2" ;;
@@ -10905,6 +10920,37 @@ EOF
     }
 }
 
+get_longest_label() {
+    # Parse the user's configuration file for the longest label
+    longest_label_length=0
+    {
+        while read -r line; do
+            # By splitting the string on quotes we ensure that the first field is always
+            # extraneous info we don't care about. If the line doesn't have what we want
+            # then there is no second field. If it does, then the second field is the
+            # label of that line of info, and the longest one is the longest label.
+            IFS='\"' read -r -a this_line_labels <<< "$line"
+            IFS=' ' read -r -a this_line_spaces <<< "$line"
+            if [[ ${this_line_spaces[0]} != "#" ]]; then
+                if [[ ${#this_line_labels[1]} -gt $longest_label_length ]]; then
+                    longest_label_length=${#this_line_labels[1]}
+                fi
+            fi
+            if [[ "$line" == "}" ]]; then
+                break
+            fi
+        done
+    } < "${config_file}"
+    echo "$longest_label_length"
+}
+
+get_offset() {
+    longest_string_offset=$((18 + $(get_longest_label) + ${#separator}))
+    offset=$((text_padding - longest_string_offset))
+    offset=$((text_padding - offset))
+    echo $offset
+}
+
 main() {
     cache_uname
     get_os
@@ -10932,6 +10978,11 @@ main() {
     image_backend
     get_cache_dir
     old_functions
+
+    case "$align_output" in
+        left|right) offset=$(get_offset) ;;
+    esac
+
     print_info
     dynamic_prompt
 
