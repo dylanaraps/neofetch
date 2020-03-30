@@ -2984,11 +2984,11 @@ get_style() {
             elif type -p gsettings >/dev/null; then
                 gtk3_theme="$(gsettings get org.gnome.desktop.interface "$gsettings")"
 
-            elif [[ -f "/usr/share/gtk-3.0/settings.ini" ]]; then
-                gtk3_theme="$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)"
-
             elif [[ -f "/etc/gtk-3.0/settings.ini" ]]; then
                 gtk3_theme="$(grep "^[^#]*$name" /etc/gtk-3.0/settings.ini)"
+
+            elif [[ -f "/usr/share/gtk-3.0/settings.ini" ]]; then
+                gtk3_theme="$(grep "^[^#]*$name" /usr/share/gtk-3.0/settings.ini)"
             fi
 
             gtk3_theme="${gtk3_theme/${name}*=}"
