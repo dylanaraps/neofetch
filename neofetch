@@ -6890,7 +6890,7 @@ EOF
         ;;
 
         "Gentoo"*)
-            set_colors 5 7
+            set_colors 4 7
             read -rd '' ascii_data <<'EOF'
 ${c1}         -/oyddmdhs+:.
      -o${c2}dNMMMMMMMMNNmhy+${c1}-`
