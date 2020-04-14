@@ -753,8 +753,8 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, AOSC,
-#       Apricity, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
+# NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, "AOSC OS",
+#       "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
 #       XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
 #       BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
 #       BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
@@ -4817,8 +4817,8 @@ ASCII:
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, AOSC,
-                                Apricity, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
+                                NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, "AOSC OS",
+                                "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
                                 BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
                                 BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
@@ -5393,7 +5393,31 @@ ${c1}
 EOF
         ;;
 
-        "AOSC"*)
+        "AOSC OS/Retro"*)
+            set_colors 4 7 1 3
+            read -rd '' ascii_data <<'EOF'
+${c2}          .........
+     ...................
+   .....................${c1}################${c2}
+ ..............     ....${c1}################${c2}
+..............       ...${c1}################${c2}
+.............         ..${c1}****************${c2}
+............     .     .${c1}****************${c2}
+...........     ...     ${c1}................${c2}
+..........     .....     ${c1}...............${c2}
+.........     .......     ...
+ .${c3}......                   ${c2}.
+  ${c3}.....      .....${c2}....    ${c4}...........
+  ${c3}....      ......${c2}.       ${c4}...........
+  ${c3}...      .......        ${c4}...........
+  ${c3}................        ${c4}***********
+  ${c3}................        ${c4}###########
+  ${c3}****************
+  ${c3}################
+EOF
+        ;;
+
+        "AOSC OS"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c2}             .:+syhhhhys+:.
