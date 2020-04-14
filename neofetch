@@ -763,7 +763,7 @@ image_source="auto"
 #       DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Gentoo, Pentoo,
-#       gNewSense, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
+#       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
 #       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
 #       Korora, KSLinux, Kubuntu, LEDE, LFS, Linux_Lite,
 #       LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva,
@@ -4825,7 +4825,7 @@ ASCII:
                                 DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary,
                                 EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
                                 FreeMiNT, Frugalware, Funtoo, GalliumOS, Gentoo, Pentoo,
-                                gNewSense, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
+                                gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
                                 Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
                                 Korora, KSLinux, Kubuntu, LEDE, LFS, Linux_Lite,
                                 LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva,
@@ -6977,6 +6977,33 @@ ollllllh          +llllllllllll+          hllllllo
     ochllc.            ++++            .cllhco
        `+occooo+.                .+ooocco+'
               `+oo++++      ++++oo+'
+EOF
+        ;;
+
+        "GNOME"*)
+            set_colors 4
+            read -rd '' ascii_data <<'EOF'
+${c1}                               ,@@@@@@@@,
+                 @@@@@@      @@@@@@@@@@@@
+        ,@@.    @@@@@@@    *@@@@@@@@@@@@
+       @@@@@%   @@@@@@(    @@@@@@@@@@@&
+       @@@@@@    @@@@*     @@@@@@@@@#
+@@@@*   @@@@,              *@@@@@%
+@@@@@.
+ @@@@#         @@@@@@@@@@@@@@@@
+         ,@@@@@@@@@@@@@@@@@@@@@@@,
+      ,@@@@@@@@@@@@@@@@@@@@@@@@@@&
+    .@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@
+   @@@@@@@@@@@@@@@@@@@@@@@@(
+   @@@@@@@@@@@@@@@@@@@@%
+    @@@@@@@@@@@@@@@@
+     @@@@@@@@@@@@*        @@@@@@@@/
+      &@@@@@@@@@@        @@@@@@@@@*
+        @@@@@@@@@@@,    @@@@@@@@@*
+          ,@@@@@@@@@@@@@@@@@@@@&
+              &@@@@@@@@@@@@@@
+                     ...
 EOF
         ;;
 
