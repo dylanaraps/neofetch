@@ -903,24 +903,24 @@ get_os() {
     # $kernel_name is set in a function called cache_uname and is
     # just the output of "uname -s".
     case $kernel_name in
-        Darwin):   "$darwin_name" ;;
-        SunOS):    Solaris ;;
-        Haiku):    Haiku ;;
-        MINIX):    MINIX ;;
-        AIX):      AIX ;;
-        IRIX*):    IRIX ;;
-        FreeMiNT): FreeMiNT ;;
+        Darwin)   os=$darwin_name ;;
+        SunOS)    os=Solaris ;;
+        Haiku)    os=Haiku ;;
+        MINIX)    os=MINIX ;;
+        AIX)      os=AIX ;;
+        IRIX*)    os=IRIX ;;
+        FreeMiNT) os=FreeMiNT ;;
 
         Linux|GNU*)
-            : Linux
+            os=Linux
         ;;
 
         *BSD|DragonFly|Bitrig)
-            : BSD
+            os=BSD
         ;;
 
         CYGWIN*|MSYS*|MINGW*)
-            : Windows
+            os=Windows
         ;;
 
         *)
@@ -929,8 +929,6 @@ get_os() {
             exit 1
         ;;
     esac
-
-    os=$_
 }
 
 get_distro() {
@@ -1425,7 +1423,7 @@ get_packages() {
     # dir: Count files or dirs in a glob.
     # pac: If packages > 0, log package manager name.
     # tot: Count lines in command output.
-    has() { type -p "$1" >/dev/null && manager=$_; }
+    has() { type -p "$1" >/dev/null && manager=$1; }
     dir() { ((packages+=$#)); pac "$#"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() { IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";((packages+=${#pkgs[@]}));pac "${#pkgs[@]}";}
