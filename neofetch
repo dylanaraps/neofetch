@@ -1727,7 +1727,7 @@ get_wm() {
     # If function was run, stop here.
     ((wm_run == 1)) && return
 
-    case $uname in
+    case $kernel_name in
         *OpenBSD*) ps_flags=(x -c) ;;
         *)         ps_flags=(-e) ;;
     esac
