@@ -30,7 +30,14 @@
 
 version=7.0.0
 
-bash_version=${BASH_VERSION/.*}
+if [[ "$BASH_VERSION" ]]; then
+    bash_version=${BASH_VERSION/.*}
+else
+    BASH_VERSION=$(bash -c "printf %s \"\$BASH_VERSION\"")
+    bash_version=5
+    shopt -s eval_unsafe_arith
+fi
+
 sys_locale=${LANG:-C}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 PATH=$PATH:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec
@@ -1593,6 +1600,10 @@ get_shell() {
             shell=${shell/version}
         ;;
 
+        osh)
+            shell+=$("$SHELL" -c "printf %s \"\$OIL_VERSION\"")
+        ;;
+
         tcsh)
             shell+=$("$SHELL" -c "printf %s \$tcsh")
         ;;
@@ -2338,7 +2349,7 @@ get_gpu() {
                     { unset -v gpu; continue; }
 
                 case $gpu in
-                    *"advanced"*)
+                    *"Advanced"*)
                         brand="${gpu/*AMD*ATI*/AMD ATI}"
                         brand="${brand:-${gpu/*AMD*/AMD}}"
                         brand="${brand:-${gpu/*ATI*/ATi}}"
@@ -2352,13 +2363,13 @@ get_gpu() {
                         gpu="$brand $gpu"
                     ;;
 
-                    *"nvidia"*)
+                    *"NVIDIA"*)
                         gpu="${gpu/*\[}"
                         gpu="${gpu/\]*}"
                         gpu="NVIDIA $gpu"
                     ;;
 
-                    *"intel"*)
+                    *"Intel"*)
                         gpu="${gpu/*Intel/Intel}"
                         gpu="${gpu/\(R\)}"
                         gpu="${gpu/Corporation}"
@@ -2369,7 +2380,7 @@ get_gpu() {
                         [[ -z "$(trim "$gpu")" ]] && gpu="Intel Integrated Graphics"
                     ;;
 
-                    *"virtualbox"*)
+                    *"VirtualBox"*)
                         gpu="VirtualBox Graphics Adapter"
                     ;;
 
@@ -4261,7 +4272,11 @@ info() {
     [[ "$prin" ]] && return
 
     # Update the variable.
-    output="$(trim "${!2:-${!1}}")"
+    if [[ "$2" ]]; then
+        output="$(trim "${!2}")"
+    else
+        output="$(trim "${!1}")"
+    fi
 
     if [[ "$2" && "${output// }" ]]; then
         prin "$1" "$output"
