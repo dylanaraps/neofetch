@@ -34,6 +34,7 @@ version=7.0.0
 # but do not set the 'BASH_' shell variables (osh).
 bash_version=${BASH_VERSINFO[0]:-5}
 shopt -s eval_unsafe_arith &>/dev/null
+
 sys_locale=${LANG:-C}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 PATH=$PATH:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec
@@ -1589,6 +1590,7 @@ get_shell() {
         bash)
             [[ $BASH_VERSION ]] ||
                 BASH_VERSION=$("$SHELL" -c "printf %s \"\$BASH_VERSION\"")
+
             shell+=${BASH_VERSION/-*}
         ;;
 
