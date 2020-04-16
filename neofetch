@@ -30,6 +30,8 @@
 
 version=7.0.0
 
+# Fallback to a value of '5' for shells which support bash
+# but do not set the 'BASH_' shell variables (osh).
 bash_version=${BASH_VERSINFO[0]:-5}
 shopt -s eval_unsafe_arith &>/dev/null
 sys_locale=${LANG:-C}
