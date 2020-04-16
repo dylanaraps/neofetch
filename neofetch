@@ -30,7 +30,11 @@
 
 version=7.0.0
 
-bash_version=${BASH_VERSION/.*}
+# Fallback to a value of '5' for shells which support bash
+# but do not set the 'BASH_' shell variables (osh).
+bash_version=${BASH_VERSINFO[0]:-5}
+shopt -s eval_unsafe_arith &>/dev/null
+
 sys_locale=${LANG:-C}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 PATH=$PATH:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec
@@ -1583,7 +1587,12 @@ get_shell() {
     [[ $shell_version != on ]] && return
 
     case ${shell_name:=${SHELL##*/}} in
-        bash) shell+=${BASH_VERSION/-*} ;;
+        bash)
+            [[ $BASH_VERSION ]] ||
+                BASH_VERSION=$("$SHELL" -c "printf %s \"\$BASH_VERSION\"")
+
+            shell+=${BASH_VERSION/-*}
+        ;;
 
         sh|ash|dash) ;;
 
@@ -1591,6 +1600,14 @@ get_shell() {
             shell+=$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")
             shell=${shell/ * KSH}
             shell=${shell/version}
+        ;;
+
+        osh)
+            if [[ $OIL_VERSION ]]; then
+                shell+=$OIL_VERSION
+            else
+                shell+=$("$SHELL" -c "printf %s \"\$OIL_VERSION\"")
+            fi
         ;;
 
         tcsh)
@@ -2338,7 +2355,7 @@ get_gpu() {
                     { unset -v gpu; continue; }
 
                 case $gpu in
-                    *"advanced"*)
+                    *"Advanced"*)
                         brand="${gpu/*AMD*ATI*/AMD ATI}"
                         brand="${brand:-${gpu/*AMD*/AMD}}"
                         brand="${brand:-${gpu/*ATI*/ATi}}"
@@ -2352,13 +2369,13 @@ get_gpu() {
                         gpu="$brand $gpu"
                     ;;
 
-                    *"nvidia"*)
+                    *"NVIDIA"*)
                         gpu="${gpu/*\[}"
                         gpu="${gpu/\]*}"
                         gpu="NVIDIA $gpu"
                     ;;
 
-                    *"intel"*)
+                    *"Intel"*)
                         gpu="${gpu/*Intel/Intel}"
                         gpu="${gpu/\(R\)}"
                         gpu="${gpu/Corporation}"
@@ -2369,7 +2386,7 @@ get_gpu() {
                         [[ -z "$(trim "$gpu")" ]] && gpu="Intel Integrated Graphics"
                     ;;
 
-                    *"virtualbox"*)
+                    *"VirtualBox"*)
                         gpu="VirtualBox Graphics Adapter"
                     ;;
 
@@ -3974,7 +3991,7 @@ get_window_size() {
     #
     # False positive.
     # shellcheck disable=2141
-    case ${BASH_VERSINFO[0]} in
+    case $bash_version in
         4|5) IFS=';t' read -d t -t 0.05 -sra term_size ;;
         *)   IFS=';t' read -d t -t 1 -sra term_size ;;
     esac
@@ -4222,7 +4239,7 @@ display_image() {
 
             # Add a tiny delay to fix issues with images not
             # appearing in specific terminal emulators.
-            ((BASH_VERSINFO[0]>3)) && sleep 0.05
+            ((bash_version>3)) && sleep 0.05
             printf '%b\n%s;\n%s\n' "0;1;$xoffset;$yoffset;$width;$height;;;;;$image" 3 4 |\
             "${w3m_img_path:-false}" -bg "$background_color" &>/dev/null
         ;;
@@ -4261,7 +4278,11 @@ info() {
     [[ "$prin" ]] && return
 
     # Update the variable.
-    output="$(trim "${!2:-${!1}}")"
+    if [[ "$2" ]]; then
+        output="$(trim "${!2}")"
+    else
+        output="$(trim "${!1}")"
+    fi
 
     if [[ "$2" && "${output// }" ]]; then
         prin "$1" "$output"
