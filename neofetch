@@ -1689,7 +1689,7 @@ get_de() {
             # When a window manager is started from a display manager
             # the desktop variables are sometimes also set to the
             # window manager name. This checks to see if WM == DE
-            # and dicards the DE value.
+            # and discards the DE value.
             [[ $de == "$wm" ]] && { unset -v de; return; }
         ;;
     esac
@@ -5200,7 +5200,7 @@ get_simple() {
 }
 
 old_functions() {
-    # Removed functions for backwards compatability.
+    # Removed functions for backwards compatibility.
     get_line_break() { :; }
 }
 
