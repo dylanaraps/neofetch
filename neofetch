@@ -33,7 +33,6 @@ version=7.0.0
 if [[ "$BASH_VERSION" ]]; then
     bash_version=${BASH_VERSION/.*}
 else
-    BASH_VERSION=$(bash -c "printf %s \"\$BASH_VERSION\"")
     bash_version=5
     shopt -s eval_unsafe_arith
 fi
@@ -1590,7 +1589,11 @@ get_shell() {
     [[ $shell_version != on ]] && return
 
     case ${shell_name:=${SHELL##*/}} in
-        bash) shell+=${BASH_VERSION/-*} ;;
+        bash)
+            [[ $BASH_VERSION ]] ||
+                BASH_VERSION=$("$SHELL" -c "printf %s \"\$BASH_VERSION\"")
+            shell+=${BASH_VERSION/-*}
+        ;;
 
         sh|ash|dash) ;;
 
@@ -1601,7 +1604,11 @@ get_shell() {
         ;;
 
         osh)
-            shell+=$("$SHELL" -c "printf %s \"\$OIL_VERSION\"")
+            if [[ $OIL_VERSION ]]; then
+                shell+=$OIL_VERSION
+            else
+                shell+=$("$SHELL" -c "printf %s \"\$OIL_VERSION\"")
+            fi
         ;;
 
         tcsh)
