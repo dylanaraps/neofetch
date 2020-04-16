@@ -30,8 +30,8 @@
 
 version=7.0.0
 
-if [[ "$BASH_VERSION" ]]; then
-    bash_version=${BASH_VERSION/.*}
+if [[ "${BASH_VERSINFO[0]}" ]]; then
+    bash_version=${BASH_VERSINFO[0]}
 else
     bash_version=5
     shopt -s eval_unsafe_arith
@@ -3992,7 +3992,7 @@ get_window_size() {
     #
     # False positive.
     # shellcheck disable=2141
-    case ${BASH_VERSINFO[0]} in
+    case $bash_version in
         4|5) IFS=';t' read -d t -t 0.05 -sra term_size ;;
         *)   IFS=';t' read -d t -t 1 -sra term_size ;;
     esac
@@ -4240,7 +4240,7 @@ display_image() {
 
             # Add a tiny delay to fix issues with images not
             # appearing in specific terminal emulators.
-            ((BASH_VERSINFO[0]>3)) && sleep 0.05
+            ((bash_version>3)) && sleep 0.05
             printf '%b\n%s;\n%s\n' "0;1;$xoffset;$yoffset;$width;$height;;;;;$image" 3 4 |\
             "${w3m_img_path:-false}" -bg "$background_color" &>/dev/null
         ;;
