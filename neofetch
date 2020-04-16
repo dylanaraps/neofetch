@@ -30,13 +30,8 @@
 
 version=7.0.0
 
-if [[ "${BASH_VERSINFO[0]}" ]]; then
-    bash_version=${BASH_VERSINFO[0]}
-else
-    bash_version=5
-    shopt -s eval_unsafe_arith
-fi
-
+bash_version=${BASH_VERSINFO[0]:-5}
+shopt -s eval_unsafe_arith &>/dev/null
 sys_locale=${LANG:-C}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 PATH=$PATH:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec
