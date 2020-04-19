@@ -9,13 +9,6 @@ before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install screenresolution; fi
 
-install:
-  # Install a custom version of shellcheck instead of Travis CI's default
-  - scversion="latest" # or "v0.4.7", or "latest"
-  - wget "https://storage.googleapis.com/shellcheck/shellcheck-${scversion}.linux.x86_64.tar.xz"
-  - tar --xz -xvf "shellcheck-${scversion}.linux.x86_64.tar.xz"
-  - shellcheck() { "shellcheck-${scversion}/shellcheck" "$@"; }
-
 script:
     - time ./neofetch --travis -v
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then shellcheck -e SC2244 -e SC2243 neofetch; fi
