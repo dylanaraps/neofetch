@@ -9247,6 +9247,32 @@ yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 EOF
         ;;
 
+        "Serene"*)
+            set_colors 6 6
+            read -rd '' ascii_data <<'EOF'
+${c1}              __---''''''---__
+          .                      .
+        :                          :
+      -                       _______----_-
+     s               __----'''     __----
+ __h_            _-'           _-'     h
+ '-._''--.._    ;           _-'         y
+  :  ''-._  '-._/        _-'             :
+  y       ':_       _--''                y
+  m    .--'' '-._.;'                     m
+  m   :        :                         m
+  y    '.._     '-__                     y
+  :        '--._    '''----___           :
+   y            '--._         ''-- _    y
+    h                '--._          :  h
+     s                  __';         vs
+      -         __..--''             -
+        :_..--''                   :
+          .                     _ .
+            `''---______---''-``
+EOF
+        ;;
+
         "SharkLinux"*)
             set_colors 4 7
             read -rd '' ascii_data <<'EOF'
