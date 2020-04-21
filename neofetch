@@ -3747,8 +3747,8 @@ get_cols() {
         ((info_height+=block_range[1]>7?block_height+3:block_height+2))
 
         case $col_offset in
-            "auto") printf '\n\e[%bC%b\n\n' "$text_padding" "${zws}${cols}" ;;
-            *) printf '\n\e[%bC%b\n\n' "$col_offset" "${zws}${cols}" ;;
+            "auto") printf '\n\e[%bC%b\n' "$text_padding" "${zws}${cols}" ;;
+            *) printf '\n\e[%bC%b\n' "$col_offset" "${zws}${cols}" ;;
         esac
     fi
 
