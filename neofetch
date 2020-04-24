@@ -1798,7 +1798,8 @@ get_wm() {
                                -e "[d]wm" \
                                -e "[2]bwm" \
                                -e "[m]onsterwm" \
-                               -e "[t]inywm")
+                               -e "[t]inywm" \
+                               -e "[x]monad")
 
     else
         case $os in
