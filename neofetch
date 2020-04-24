@@ -4838,7 +4838,7 @@ ASCII:
     --ascii_distro distro       Which Distro's ascii art to print
 
                                 NOTE: AIX, Alpine, AlterLinux, Anarchy, Android, Antergos, antiX,
-                                "AOSC OS", "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs,
+                                \"AOSC OS\", \"AOSC OS/Retro\", Apricity, ArcoLinux, ArchBox, ARCHlabs,
                                 ArchStrike, XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
                                 BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
                                 BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
