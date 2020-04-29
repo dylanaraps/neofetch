@@ -940,7 +940,7 @@ get_distro() {
             elif type -p guix >/dev/null; then
                 case "$distro_shorthand" in
                     "on" | "tiny") distro="Guix System" ;;
-                    *) distro="Guix System $(guix system -V | awk 'NR==1{printf $5}')"
+                    *) distro="Guix System $(guix -V | awk 'NR==1{printf $4}')"
                 esac
 
             else
