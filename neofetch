@@ -758,9 +758,9 @@ image_source="auto"
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
 # NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, "AOSC OS",
-#       "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
-#       XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
-#       BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
+#       "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs,
+#       ArchStrike, XFerience, ArchMerge, Arch, Artix, Arya, Bedrock,
+#       Bitrig, BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
 #       BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover,
 #       Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
