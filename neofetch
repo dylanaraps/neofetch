@@ -1594,7 +1594,7 @@ get_shell() {
             shell+=${BASH_VERSION/-*}
         ;;
 
-        sh|ash|dash) ;;
+        sh|ash|dash|es) ;;
 
         *ksh)
             shell+=$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")
