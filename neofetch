@@ -774,8 +774,8 @@ image_source="auto"
 #       Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
 #       Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner,
 #       NuTyX, OBRevenge, OpenBSD, OpenIndiana, openmamba, OpenMandriva,
-#       OpenStage, OpenWrt, osmc, Oracle, PacBSD, Parabola, Pardus, Parrot,
-#       Parsix, TrueOS, PCLinuxOS, Peppermint, popos, Porteus,
+#       OpenStage, OpenWrt, osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus,
+#       Parrot, Parsix, TrueOS, PCLinuxOS, Peppermint, popos, Porteus,
 #       PostMarketOS, Proxmox, Puppy, PureOS, Qubes, Radix, Raspbian,
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata,
 #       Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
@@ -956,6 +956,12 @@ get_distro() {
                 case $distro_shorthand in
                     on|tiny) distro=Siduction ;;
                     *) distro="Siduction ($(lsb_release -sic))"
+                esac
+
+            elif [[ -f /etc/mcst_version ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="OS Elbrus" ;;
+                    *) distro="OS Elbrus $(< /etc/mcst_version)"
                 esac
 
             elif type -p pveversion >/dev/null; then
@@ -1594,7 +1600,7 @@ get_shell() {
             shell+=${BASH_VERSION/-*}
         ;;
 
-        sh|ash|dash) ;;
+        sh|ash|dash|es) ;;
 
         *ksh)
             shell+=$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")
@@ -2385,6 +2391,10 @@ get_gpu() {
                         gpu="${gpu/*Xeon*/Intel HD Graphics}"
 
                         [[ -z "$(trim "$gpu")" ]] && gpu="Intel Integrated Graphics"
+                    ;;
+
+                    *"MCST"*)
+                        gpu="${gpu/*MCST*MGA2*/MCST MGA2}"
                     ;;
 
                     *"VirtualBox"*)
@@ -4854,8 +4864,8 @@ ASCII:
                                 Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
                                 Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner,
                                 NuTyX, OBRevenge, OpenBSD, OpenIndiana, openmamba, OpenMandriva,
-                                OpenStage, OpenWrt, osmc, Oracle, PacBSD, Parabola, Pardus, Parrot,
-                                Parsix, TrueOS, PCLinuxOS, Peppermint, popos, Porteus,
+                                OpenStage, OpenWrt, osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus,
+                                Parrot, Parsix, TrueOS, PCLinuxOS, Peppermint, popos, Porteus,
                                 PostMarketOS, Proxmox, Puppy, PureOS, Qubes, Radix, Raspbian,
                                 Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata,
                                 Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
@@ -8403,6 +8413,26 @@ ${c1}
 EOF
         ;;
 
+        "OS Elbrus"*)
+            set_colors 4 7 3
+            read -rd '' ascii_data <<'EOF'
+${c1}   ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
+   ██▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀██
+   ██                       ██
+   ██   ███████   ███████   ██
+   ██   ██   ██   ██   ██   ██
+   ██   ██   ██   ██   ██   ██
+   ██   ██   ██   ██   ██   ██
+   ██   ██   ██   ██   ██   ██
+   ██   ██   ███████   ███████
+   ██   ██                  ██
+   ██   ██▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄██
+   ██   ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀██
+   ██                       ██
+   ███████████████████████████
+EOF
+        ;;
+
         "PacBSD"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
@@ -10181,6 +10211,31 @@ ${c3}#######${c2}#${c1}#####${c2}#${c3}#######
 ${c3}  #####${c2}#######${c3}#####
 EOF
                 ;;
+        "Profelis SambaBOX"* | "SambaBOX"*)
+            set_colors 3 6
+            read -rd '' ascii_data <<'EOF'
+${c1}
+                    #
+               *////#####
+           /////////#########(
+      .((((((/////    ,####(#(((((
+  /#######(((*             (#(((((((((.
+//((#(#(#,        ((##(        ,((((((//
+//////        #(##########(       //////
+//////    ((#(#(#(#(##########(/////////
+/////(    (((((((#########(##((((((/////
+/(((#(                             ((((/
+####(#                             ((###
+#########(((/////////(((((((((,    (#(#(
+########(   /////////(((((((*      #####
+####///,        *////(((         (((((((
+.///////////                .//(((((((((
+     ///////////,       *(/////((((*
+         ,/(((((((((##########/.
+             .((((((#######
+                  ((##*
+EOF
+        ;;
 
                 "SunOS")
                     set_colors 3 7
@@ -10220,6 +10275,7 @@ oMMMMmMMMMNds:.+MMMmmMMN/.-odNMMMMmMMMM+
              .odNm+  /dNms.
 EOF
                 ;;
+
             esac
         ;;
     esac
