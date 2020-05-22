@@ -2472,8 +2472,11 @@ get_gpu() {
         ;;
 
         "Windows")
-            gpu="$(wmic path Win32_VideoController get caption)"
-            gpu="${gpu//Caption}"
+            while read -r line; do
+                prin "${subtitle:+${subtitle}${gpu_name}}" "$(trim "$line")"
+            done < <(wmic path Win32_VideoController get caption)
+
+            gpu=${gpu//Caption}
         ;;
 
         "Haiku")
