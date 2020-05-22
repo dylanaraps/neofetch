@@ -3493,7 +3493,7 @@ get_disk() {
     for disk in "${disks[@]}"; do
         # Create a second array and make each element split at whitespace this time.
         IFS=" " read -ra disk_info <<< "$disk"
-        disk_perc=${disk_info[4]/\%}
+        disk_perc=${disk_info[-2]/\%}
 
         case $disk_percent in
             off) disk_perc=
@@ -3501,29 +3501,29 @@ get_disk() {
 
         case $df_version in
             *befhikm*)
-                disk="$((disk_info[2]/1024/1024))G / $((disk_info[1]/1024/1024))G"
+                disk="$((disk_info[-4]/1024/1024))G / $((disk_info[-5]/1024/1024))G"
                 disk+="${disk_perc:+ ($disk_perc%)}"
             ;;
 
             *)
-                disk="${disk_info[2]/i} / ${disk_info[1]/i}${disk_perc:+ ($disk_perc%)}"
+                disk="${disk_info[-4]/i} / ${disk_info[-5]/i}${disk_perc:+ ($disk_perc%)}"
             ;;
         esac
 
         case $disk_subtitle in
             name)
-                disk_sub=${disk_info[0]}
+                disk_sub=${disk_info[@]::${#disk_info[@]}-5}
             ;;
 
             dir)
-                disk_sub=${disk_info[5]/*\/}
-                disk_sub=${disk_sub:-${disk_info[5]}}
+                disk_sub=${disk_info[-1]/*\/}
+                disk_sub=${disk_sub:-${disk_info[-1]}}
             ;;
 
             none) ;;
 
             *)
-                disk_sub=${disk_info[5]}
+                disk_sub=${disk_info[-1]}
             ;;
         esac
 
