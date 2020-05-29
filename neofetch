@@ -783,7 +783,7 @@ image_source="auto"
 #       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio, Ubuntu,
-#       Void, Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX
+#       Venom, Void, Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX
 #       have ascii logos
 # NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
@@ -1480,6 +1480,7 @@ get_packages() {
             has eopkg   && dir ${br_prefix}/var/lib/eopkg/package/*
             has crew    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
             has pkgtool && dir ${br_prefix}/var/log/packages/*
+            has scratch && dir ${br_prefix}/var/lib/scratchpkg/index/*/.pkginfo
             has kagami  && dir ${br_prefix}/var/lib/kagami/pkgs/*
             has cave    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
                                ${br_prefix}/var/db/paludis/repositories/installed/data/*/
@@ -4876,7 +4877,7 @@ ASCII:
                                 Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
                                 openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio, Ubuntu,
-                                Void, Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX
+                                Venom, Void, Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX
                                 have ascii logos
 
                                 NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
@@ -9938,6 +9939,27 @@ oss${c2}yNMMMNyMMh${c1}sssssssssssssshmmmh${c1}ssssssso
       -+sssssssssssssssss${c2}yyy${c1}ssss+-
         `:+ssssssssssssssssss+:`
             .-/+oossssoo+/-.
+EOF
+        ;;
+
+        "Venom"*)
+            set_colors 8 4
+            read -rd '' ascii_data <<'EOF'
+${c1}   :::::::          :::::::
+   mMMMMMMm        dMMMMMMm
+   /MMMMMMMo      +MMMMMMM/
+    yMMMMMMN      mMMMMMMy
+     NMMMMMMs    oMMMMMMm
+     +MMMMMMN:   NMMMMMM+
+      hMMMMMMy  sMMMMMMy
+      :NMMMMMM::NMMMMMN:
+       oMMMMMMyyMMMMMM+
+        dMMMMMMMMMMMMh
+        /MMMMMMMMMMMN:
+         sMMMMMMMMMMo
+          mMMMMMMMMd
+          +MMMMMMMN:
+            ::::::
 EOF
         ;;
 
