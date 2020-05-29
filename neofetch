@@ -3526,7 +3526,7 @@ get_disk() {
 
         case $disk_subtitle in
             name)
-                disk_sub=${disk_info[@]::${#disk_info[@]}-5}
+                disk_sub=${disk_info[*]::${#disk_info[@]}-5}
             ;;
 
             dir)
