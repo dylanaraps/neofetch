@@ -2117,7 +2117,7 @@ get_cpu() {
                 "iPhone6,"[1-2]): "Apple A7 (2) @ 1.3GHz" ;;
                 "iPhone7,"[1-2]): "Apple A8 (2) @ 1.4GHz" ;;
                 "iPhone8,"[1-4] | "iPad6,1"[12]): "Apple A9 (2) @ 1.85GHz" ;;
-                "iPhone9,"[1-4] | "iPad7,"[5-6] | "iPad7,1"[1-2]"): "Apple A10 Fusion (4) @ 2.34GHz" ;;
+                "iPhone9,"[1-4] | "iPad7,"[5-6] | "iPad7,1"[1-2]): "Apple A10 Fusion (4) @ 2.34GHz" ;;
                 "iPhone10,"[1-6]): "Apple A11 Bionic (6) @ 2.39GHz" ;;
                 "iPhone11,"[2468] | "iPad11,"[1-4]): "Apple A12 Bionic (6) @ 2.49GHz" ;;
                 "iPhone12,"[1358]): "Apple A13 Bionic (6) @ 2.65GHz" ;;
