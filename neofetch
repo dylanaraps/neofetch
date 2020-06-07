@@ -501,6 +501,7 @@ disk_percent="on"
 # mpd
 # muine
 # netease-cloud-music
+# playerctl
 # pogo
 # pragha
 # qmmp
@@ -2656,6 +2657,7 @@ get_song() {
         "muine"
         "netease-cloud-music"
         "plasma-browser-integration"
+        "playerctl"
         "pogo"
         "pragha"
         "qmmp"
@@ -2791,6 +2793,10 @@ get_song() {
                     awk -F'"' 'BEGIN {RS=" entry"}; /"artist"/ {a=$4} /"album"/ {b=$4}
                     /"title"/ {t=$4} END {print a " \n" b " \n" t}')"
         ;;
+        
+        "playerctl"*)
+            song="$(playerctl metadata --format '{{ artist }} \n{{ album }} \n{{ title }}')"
+         ;;
 
         *) mpc &>/dev/null && song="$(mpc -f '%artist% \n%album% \n%title%' current)" || return ;;
     esac
