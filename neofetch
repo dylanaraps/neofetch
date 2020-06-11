@@ -7006,7 +7006,7 @@ EOF
         ;;
 
         "Garuda"*)
-            set_colors 7 7
+            set_colors 4 4
             read -rd '' ascii_data <<'EOF'
 ${c1}              _......._
          _╖╦╠╠╠╠╠╠╠╠╠╠╠╠║╗╗╖_
@@ -7026,7 +7026,7 @@ ${c1}              _......._
         `'"╙╚╚║╣╣╣╣╣╣╣╣╝╝╜"
                '"""""'
 EOF
-		;;
+        ;;
 		
         "gentoo_small")
             set_colors 5 7
