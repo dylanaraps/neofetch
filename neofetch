@@ -7006,7 +7006,7 @@ EOF
         ;;
 
         "Garuda"*)
-            set_colors 4 4
+            set_colors 4 7
             read -rd '' ascii_data <<'EOF'
 ${c1}              _......._
          _╖╦╠╠╠╠╠╠╠╠╠╠╠╠║╗╗╖_
