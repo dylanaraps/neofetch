@@ -7004,7 +7004,7 @@ yyyo+:-..............................-//
 o/:-...................................:
 EOF
         ;;
-
+        
         "Garuda"*)
             set_colors 7 7
             read -rd '' ascii_data <<'EOF'
@@ -7031,8 +7031,8 @@ ${c1}                  __,,,,,,,_
                                  ╜ 
 EOF
         ;;
-		
-        "gentoo_small")+
+        
+        "gentoo_small")
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
 ${c1} _-----_
