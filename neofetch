@@ -767,7 +767,7 @@ image_source="auto"
 #       Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
-#       FreeMiNT, Frugalware, Funtoo, GalliumOS, Gentoo, Pentoo,
+#       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
 #       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
 #       Korora, KSLinux, Kubuntu, LEDE, LFS, Linux_Lite,
@@ -4861,7 +4861,7 @@ ASCII:
                                 Container_Linux, CRUX, Cucumber, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
-                                Funtoo, GalliumOS, Gentoo, Pentoo, gNewSense, GNOME, GNU, GoboLinux,
+                                Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU, GoboLinux,
                                 Grombyang, Guix, Haiku, Huayra, Hyperbola, janus, Kali, KaOS,
                                 KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE, LFS,
                                 Linux_Lite, LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva,
@@ -7004,7 +7004,34 @@ yyyo+:-..............................-//
 o/:-...................................:
 EOF
         ;;
-
+        
+        "Garuda"*)
+            set_colors 7 7
+            read -rd '' ascii_data <<'EOF'
+${c1}                  __,,,,,,,_
+            _╓╗╣╫╠╠╠╠╠╠╠╠╠╠╠╠╠╕╗╗┐_ 
+         ╥╢╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╥,
+       ╗╠╠╠╠╠╠╠╝╜╜╜╜╝╢╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠┐
+      ╣╠╠╠╠╠╠╠╠╢╣╢╗╕ , `"╘╠╠╠╠╠╠╠╠╠╠╠╠╠╠╔╥_
+    ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╕╙╥╥╜   `"╜╠╬╠╠╠╠╠╠╠╠╠╠╠╥,
+    ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗╥╥╥╥╗╗╬╠╠╠╠╠╠╠╝╙╠╠╣╠╠╠╠╢┐
+   ╣╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╥╬╣╠╠╠╠╠╠╠╠╗
+  ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
+  ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠
+  ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╬     ```"╜╝╢╠╠╡
+ ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╣,         ╘╠╪
+ ╞╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╢┐        ╜
+ `╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
+ ,╬╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠"╕
+ ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
+ ╝^╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╝╣╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╡
+  ╔╜`╞┘╢╛╜ ╡╢╠"╚╠╠╜╝┌╞╞"╢╠╠╠╠╠╠╠╠╠╠╣╩╢╪
+     ╜╒"   `╜    `      ╜╙╕  └╣╠╠╠╠╕ ╞╙╖
+                                ╠╠╠
+                                 ╜ 
+EOF
+        ;;
+        
         "gentoo_small")
             set_colors 5 7
             read -rd '' ascii_data <<'EOF'
