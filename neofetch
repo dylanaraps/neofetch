@@ -730,7 +730,7 @@ disk_display="off"
 #
 # Default:  'ascii'
 # Values:   'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'off',
-#           'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
+#           'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
 # Flag:     --backend
 image_backend="ascii"
 
@@ -3785,7 +3785,7 @@ image_backend() {
         "off") image_backend="off" ;;
 
         "caca" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
-        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty")
+        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty" | "pot")
             get_image_source
 
             [[ ! -f "$image" ]] && {
@@ -3810,7 +3810,7 @@ image_backend() {
         *)
             err "Image: Unknown image backend specified '$image_backend'."
             err "Image: Valid backends are: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'kitty',
-                                            'off', 'sixel', 'pixterm', 'termpix', 'tycat', 'w3m')"
+                                            'off', 'sixel', 'pot', 'pixterm', 'termpix', 'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
             print_ascii
         ;;
@@ -4210,6 +4210,13 @@ display_image() {
                 --align left \
                 --place "$((width/font_width))x$((height/font_height))@${xoffset}x${yoffset}" \
             "$image"
+        ;;
+
+        "pot")
+            pot \
+                "$image" \
+                --size="$((width / font_width))x$((height / font_height))" \
+                --loader=std
         ;;
 
         "pixterm")
@@ -4838,6 +4845,7 @@ IMAGE BACKEND:
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
     --kitty source              Shortcut to use 'kitty' backend.
+    --pot source                Shortcut to use 'pot' backend.
     --pixterm source            Shortcut to use 'pixterm' backend.
     --sixel source              Shortcut to use 'sixel' backend.
     --termpix source            Shortcut to use 'termpix' backend.
@@ -5055,7 +5063,7 @@ get_args() {
             # Image backend
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pixterm" |\
+            "--ascii" | "--caca" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" | "--pixterm" |\
             "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
                 image_backend="${1/--}"
                 case $2 in
