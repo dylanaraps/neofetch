@@ -1087,7 +1087,7 @@ get_distro() {
             distro=${distro/NAME=}
         ;;
 
-        "Mac OS X")
+        "Mac OS X"|"macOS")
             case $osx_version in
                 10.4*)  codename="Mac OS X Tiger" ;;
                 10.5*)  codename="Mac OS X Leopard" ;;
@@ -1101,6 +1101,8 @@ get_distro() {
                 10.13*) codename="macOS High Sierra" ;;
                 10.14*) codename="macOS Mojave" ;;
                 10.15*) codename="macOS Catalina" ;;
+                10.16*) codename="macOS Big Sur" ;;
+                11.0*)  codename="macOS Big Sur" ;;
                 *)      codename=macOS ;;
             esac
 
@@ -1113,7 +1115,7 @@ get_distro() {
                     case $osx_version in
                         10.[4-7]*)            distro=${distro/${codename}/Mac OS X} ;;
                         10.[8-9]*|10.1[0-1]*) distro=${distro/${codename}/OS X} ;;
-                        10.1[2-4]*)           distro=${distro/${codename}/macOS} ;;
+                        10.1[2-6]*|11.0*)     distro=${distro/${codename}/macOS} ;;
                     esac
                     distro=${distro/ ${osx_build}}
                 ;;
@@ -1197,7 +1199,7 @@ get_model() {
             fi
         ;;
 
-        "Mac OS X")
+        "Mac OS X"|"macOS")
             if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC") != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
@@ -1369,7 +1371,7 @@ get_uptime() {
             fi
         ;;
 
-        "Mac OS X"|"iPhone OS"|BSD|FreeMiNT)
+        "Mac OS X"|"macOS"|"iPhone OS"|BSD|FreeMiNT)
             boot=$(sysctl -n kern.boottime)
             boot=${boot/\{ sec = }
             boot=${boot/,*}
@@ -1538,7 +1540,7 @@ get_packages() {
             manager=appimage && has appimaged && dir ~/.local/bin/*.appimage
         ;;
 
-        "Mac OS X"|MINIX)
+        "Mac OS X"|"macOS"|MINIX)
             has port  && tot port installed && ((packages-=1))
             has brew  && dir /usr/local/Cellar/*
             has pkgin && tot pkgin list
@@ -1654,7 +1656,7 @@ get_de() {
     ((de_run == 1)) && return
 
     case $os in
-        "Mac OS X") de=Aqua ;;
+        "Mac OS X"|"macOS") de=Aqua ;;
 
         Windows)
             case $distro in
@@ -1794,7 +1796,7 @@ get_wm() {
                            -e westford \
                            -e weston)
 
-    elif [[ $DISPLAY && $os != "Mac OS X" && $os != FreeMiNT ]]; then
+    elif [[ $DISPLAY && $os != "Mac OS X" && $os != "macOS" && $os != FreeMiNT ]]; then
         type -p xprop &>/dev/null && {
             id=$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)
             id=${id##* }
@@ -1818,7 +1820,7 @@ get_wm() {
 
     else
         case $os in
-            "Mac OS X")
+            "Mac OS X"|"macOS")
                 ps_line=$(ps -e | grep -o \
                     -e "[S]pectacle" \
                     -e "[A]methyst" \
@@ -2098,7 +2100,7 @@ get_cpu() {
             esac
         ;;
 
-        "Mac OS X")
+        "Mac OS X"|"macOS")
             cpu="$(sysctl -n machdep.cpu.brand_string)"
 
             # Get CPU cores.
@@ -2278,8 +2280,8 @@ get_cpu() {
     # Add CPU cores to the output.
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
         case $os in
-            "Mac OS X") cpu="${cpu/@/(${cores}) @}" ;;
-            *)          cpu="$cpu ($cores)" ;;
+            "Mac OS X"|"macOS") cpu="${cpu/@/(${cores}) @}" ;;
+            *)                  cpu="$cpu ($cores)" ;;
         esac
 
     # Add CPU speed to the output.
@@ -2318,14 +2320,14 @@ get_cpu_usage() {
             # Get CPU cores if unset.
             if [[ "$cpu_cores" != "logical" ]]; then
                 case $os in
-                    "Linux" | "MINIX") cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
-                    "Mac OS X")        cores="$(sysctl -n hw.logicalcpu_max)" ;;
-                    "BSD")             cores="$(sysctl -n hw.ncpu)" ;;
-                    "Solaris")         cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
-                    "Haiku")           cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
-                    "iPhone OS")       cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
-                    "IRIX")            cores="$(sysconf NPROC_ONLN)" ;;
-                    "FreeMiNT")        cores="$(sysctl -n hw.ncpu)" ;;
+                    "Linux" | "MINIX")  cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
+                    "Mac OS X"|"macOS") cores="$(sysctl -n hw.logicalcpu_max)" ;;
+                    "BSD")              cores="$(sysctl -n hw.ncpu)" ;;
+                    "Solaris")          cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
+                    "Haiku")            cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
+                    "iPhone OS")        cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
+                    "IRIX")             cores="$(sysconf NPROC_ONLN)" ;;
+                    "FreeMiNT")         cores="$(sysctl -n hw.ncpu)" ;;
 
                     "AIX")
                         cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')"
@@ -2426,7 +2428,7 @@ get_gpu() {
             return
         ;;
 
-        "Mac OS X")
+        "Mac OS X"|"macOS")
             if [[ -f "${cache_dir}/neofetch/gpu" ]]; then
                 source "${cache_dir}/neofetch/gpu"
 
@@ -2523,7 +2525,7 @@ get_memory() {
             mem_total="$((mem_total / 1024))"
         ;;
 
-        "Mac OS X" | "iPhone OS")
+        "Mac OS X" | "macOS" | "iPhone OS")
             mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
             mem_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
             mem_active="$(vm_stat | awk '/ active/ { printf $3 }')"
@@ -2743,7 +2745,7 @@ get_song() {
             case $os in
                 "Linux") get_song_dbus "spotify" ;;
 
-                "Mac OS X")
+                "Mac OS X"|"macOS")
                     song="$(osascript -e 'tell application "Spotify" to artist of current track as¬
                                           string & "\n" & album of current track as¬
                                           string & "\n" & name of current track as string')"
@@ -2825,7 +2827,7 @@ get_song() {
 
 get_resolution() {
     case $os in
-        "Mac OS X")
+        "Mac OS X"|"macOS")
             if type -p screenresolution >/dev/null; then
                 resolution="$(screenresolution get 2>&1 | awk '/Display/ {printf $6 "Hz, "}')"
                 resolution="${resolution//x??@/ @ }"
@@ -2932,7 +2934,7 @@ get_style() {
     # Fix weird output when the function is run multiple times.
     unset gtk2_theme gtk3_theme theme path
 
-    if [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    if [[ "$DISPLAY" && $os != "Mac OS X" && $os != "macOS" ]]; then
         # Get DE if user has disabled the function.
         ((de_run != 1)) && get_de
 
@@ -3615,7 +3617,7 @@ get_battery() {
             esac
         ;;
 
-        "Mac OS X")
+        "Mac OS X"|"macOS")
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
             state="$(pmset -g batt | awk '/;/ {print $4}')"
             [[ "$state" == "charging;" ]] && battery_state="charging"
@@ -3655,7 +3657,7 @@ get_local_ip() {
             local_ip="$(ifconfig | awk '{printf $3; exit}')"
         ;;
 
-        "Mac OS X" | "iPhone OS")
+        "Mac OS X" | "macOS" | "iPhone OS")
             local_ip="$(ipconfig getifaddr en0)"
             [[ -z "$local_ip" ]] && local_ip="$(ipconfig getifaddr en1)"
         ;;
@@ -3715,7 +3717,7 @@ get_gpu_driver() {
             fi
         ;;
 
-        "Mac OS X")
+        "Mac OS X"|"macOS")
             if [[ "$(kextstat | grep "GeForceWeb")" != "" ]]; then
                 gpu_driver="NVIDIA Web Driver"
             else
@@ -3882,7 +3884,7 @@ get_image_source() {
 
 get_wallpaper() {
     case $os in
-        "Mac OS X")
+        "Mac OS X"|"macOS")
             image="$(osascript <<END
                      tell application "System Events" to picture of current desktop
 END
@@ -4024,7 +4026,7 @@ get_window_size() {
     fi
 
     # Get terminal width/height.
-    if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && "$os" != "Mac OS X" ]]; then
+    if (( "${term_width:-0}" < 50 )) && [[ "$DISPLAY" && $os != "Mac OS X" && $os != "macOS" ]]; then
         if type -p xdotool &>/dev/null; then
             IFS=$'\n' read -d "" -ra win \
                 <<< "$(xdotool getactivewindow getwindowgeometry --shell %1)"
@@ -4545,7 +4547,7 @@ cache() {
 
 get_cache_dir() {
     case $os in
-        "Mac OS X") cache_dir="/Library/Caches" ;;
+        "Mac OS X"|"macOS") cache_dir="/Library/Caches" ;;
         *)          cache_dir="/tmp" ;;
     esac
 }
