@@ -1814,6 +1814,7 @@ get_wm() {
                                -e "[2]bwm" \
                                -e "[m]onsterwm" \
                                -e "[t]inywm" \
+                               -e "[x]11fs" \
                                -e "[x]monad")
 
     else
