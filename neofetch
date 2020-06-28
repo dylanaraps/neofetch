@@ -511,6 +511,7 @@ disk_percent="on"
 # smplayer
 # spotify
 # strawberry
+# tauonmb
 # tomahawk
 # vlc
 # xmms2d
@@ -2669,6 +2670,7 @@ get_song() {
         "spotify"
         "Spotify"
         "strawberry"
+        "tauonmb"
         "tomahawk"
         "vlc"
         "xmms2d"
@@ -2720,6 +2722,7 @@ get_song() {
         "strawberry"*)    get_song_dbus "strawberry" ;;
         "gogglesmm"*)     get_song_dbus "gogglesmm" ;;
         "xnoise"*)        get_song_dbus "xnoise" ;;
+        "tauonmb"*)       get_song_dbus "tauon" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
         "io.elementary.music"*)        get_song_dbus "Music" ;;
