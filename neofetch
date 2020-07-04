@@ -501,6 +501,7 @@ disk_percent="on"
 # mpd
 # muine
 # netease-cloud-music
+# olivia
 # playerctl
 # pogo
 # pragha
@@ -2658,6 +2659,7 @@ get_song() {
         "mpd"
         "muine"
         "netease-cloud-music"
+        "olivia"
         "plasma-browser-integration"
         "playerctl"
         "pogo"
@@ -2723,6 +2725,7 @@ get_song() {
         "gogglesmm"*)     get_song_dbus "gogglesmm" ;;
         "xnoise"*)        get_song_dbus "xnoise" ;;
         "tauonmb"*)       get_song_dbus "tauon" ;;
+        "olivia"*)        get_song_dbus "olivia" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
         "io.elementary.music"*)        get_song_dbus "Music" ;;
