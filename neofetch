@@ -6639,7 +6639,7 @@ ${c5}⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠛⠀⠀⠀⠀
 
 EOF
         ;;
-        
+
         "Itc")
             set_colors 1
             read -rd '' ascii_data <<'EOF'
