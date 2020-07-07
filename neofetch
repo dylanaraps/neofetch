@@ -4222,7 +4222,7 @@ display_image() {
         "pot")
             pot \
                 "$image" \
-                --size="$((width / font_width))x$((height / font_height))" \
+                --size="$((width / font_width))x$((height / font_height))"
         ;;
 
         "pixterm")
