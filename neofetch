@@ -4223,7 +4223,6 @@ display_image() {
             pot \
                 "$image" \
                 --size="$((width / font_width))x$((height / font_height))" \
-                --loader=std
         ;;
 
         "pixterm")
