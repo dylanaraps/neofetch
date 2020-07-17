@@ -1087,6 +1087,18 @@ get_distro() {
 
             distro=$(trim_quotes "$distro")
             distro=${distro/NAME=}
+
+            # Get Ubuntu flavor.
+            if [[ $distro == "Ubuntu"* ]]; then
+                case $XDG_CONFIG_DIRS in
+                    *"plasma"*)  distro=${distro/Ubuntu/Kubuntu} ;;
+                    *"mate"*)    distro=${distro/Ubuntu/Ubuntu MATE} ;;
+                    *"xubuntu"*) distro=${distro/Ubuntu/Xubuntu} ;;
+                    *"Lubuntu"*) distro=${distro/Ubuntu/Lubuntu} ;;
+                    *"budgie"*)  distro=${distro/Ubuntu/Ubuntu Budgie} ;;
+                    *"studio"*)  distro=${distro/Ubuntu/Ubuntu Studio} ;;
+                esac
+            fi
         ;;
 
         "Mac OS X"|"macOS")
@@ -9890,7 +9902,7 @@ ${c1}  ▀█████████    ███████${c2}███▀�
 EOF
         ;;
 
-        "Ubuntu-Budgie"*)
+        "Ubuntu Budgie"* | "Ubuntu-Budgie"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c2}           ./oydmMMMMMMmdyo/.
@@ -9938,7 +9950,7 @@ ${c4}       `soooo.     .oooo`
 EOF
         ;;
 
-        "Ubuntu-MATE"*)
+        "Ubuntu MATE"* | "Ubuntu-MATE"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
 ${c1}           `:+shmNNMMNNmhs+:`
@@ -9988,7 +10000,7 @@ ${c3}                         `oo++.
 EOF
         ;;
 
-        "Ubuntu-Studio")
+        "Ubuntu Studio"* | "Ubuntu-Studio")
             set_colors 6 7
             read -rd '' ascii_data <<'EOF'
 ${c1}              ..-::::::-.`
