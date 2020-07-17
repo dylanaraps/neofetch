@@ -3819,7 +3819,8 @@ image_backend() {
         *)
             err "Image: Unknown image backend specified '$image_backend'."
             err "Image: Valid backends are: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'kitty',
-                                            'off', 'sixel', 'pot', 'pixterm', 'termpix', 'tycat', 'w3m')"
+                                            'off', 'sixel', 'pot', 'pixterm', 'termpix', 'tycat',
+                                            'w3m')"
             err "Image: Falling back to ascii mode."
             print_ascii
         ;;
@@ -5071,8 +5072,8 @@ get_args() {
             # Image backend
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" | "--pixterm" |\
-            "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
+            "--ascii" | "--caca" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" |\
+            "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
                 image_backend="${1/--}"
                 case $2 in
                     "-"* | "") ;;
