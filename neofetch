@@ -1091,12 +1091,13 @@ get_distro() {
             # Get Ubuntu flavor.
             if [[ $distro == "Ubuntu"* ]]; then
                 case $XDG_CONFIG_DIRS in
-                    *"plasma"*)  distro=${distro/Ubuntu/Kubuntu} ;;
-                    *"mate"*)    distro=${distro/Ubuntu/Ubuntu MATE} ;;
-                    *"xubuntu"*) distro=${distro/Ubuntu/Xubuntu} ;;
-                    *"Lubuntu"*) distro=${distro/Ubuntu/Lubuntu} ;;
-                    *"budgie"*)  distro=${distro/Ubuntu/Ubuntu Budgie} ;;
-                    *"studio"*)  distro=${distro/Ubuntu/Ubuntu Studio} ;;
+                    *"plasma"*)   distro=${distro/Ubuntu/Kubuntu} ;;
+                    *"mate"*)     distro=${distro/Ubuntu/Ubuntu MATE} ;;
+                    *"xubuntu"*)  distro=${distro/Ubuntu/Xubuntu} ;;
+                    *"Lubuntu"*)  distro=${distro/Ubuntu/Lubuntu} ;;
+                    *"budgie"*)   distro=${distro/Ubuntu/Ubuntu Budgie} ;;
+                    *"studio"*)   distro=${distro/Ubuntu/Ubuntu Studio} ;;
+                    *"cinnamon"*) distro=${distro/Ubuntu/Ubuntu Cinnamon} ;;
                 esac
             fi
         ;;
@@ -9899,6 +9900,32 @@ ${c1}  ▀█████████    ███████${c2}███▀�
                 █████▄   ▀▀  ▄██
                   ██████▄▄▄████
                      ▀▀█████▀▀
+EOF
+        ;;
+
+        "Ubuntu Cinnamon"* | "Ubuntu-Cinnamon"*)
+            set_colors 1
+            read -rd '' ascii_data <<'EOF'
+${c1}            .-:/++oooo++/:-.
+        `:/oooooooooooooooooo/-`
+      -/oooooooooooooooooooo+ooo/-
+    .+oooooooooooooooooo+/-`.ooooo+.
+   :oooooooooooo+//:://++:. .ooooooo:
+  /oooooooooo+o:`.----.``./+/oooooooo/
+ /ooooooooo+. +ooooooooo+:``/ooooooooo/
+.ooooooooo: .+ooooooooooooo- -ooooooooo.
+/oooooo/o+ .ooooooo:`+oo+ooo- :oooooooo/
+ooo+:. .o: :ooooo:` .+/. ./o+:/ooooooooo
+oooo/-`.o: :ooo/` `/+.     ./.:ooooooooo
+/oooooo+o+``++. `:+-          /oooooooo/
+.ooooooooo/``  -+:`          :ooooooooo.
+ /ooooooooo+--+/`          .+ooooooooo/
+  /ooooooooooo+.`      `.:++:oooooooo/
+   :oooooooooooooo++++oo+-` .ooooooo:
+    .+ooooooooooooooooooo+:..ooooo+.
+      -/oooooooooooooooooooooooo/-
+        `-/oooooooooooooooooo/:`
+            .-:/++oooo++/:-.
 EOF
         ;;
 
