@@ -2659,6 +2659,8 @@ get_network() {
                         networks+="$(cat "$i/speed")"
                     else
                         networks+="Wifi"
+                        phy="$(cat "$i/phy80211/name")"
+                        (iw "$phy" info | grep -qF 'VHT Capabilities') && networks+='6'
                     fi
                     networks+=$'\n'
                 fi
@@ -2670,6 +2672,8 @@ get_network() {
             [ "$n" -gt 1 ] && network+="${n}x "
             if [ "$i" = "Wifi" ]; then
                 network+="Wifi; "
+            elif [ "$i" = "Wifi6" ]; then
+                network+="Wifi6; "
             elif [ "$i" = "-1" ]; then
                 network+="Unknown; "
             elif [ "${i%000}" = "$i" ]; then
