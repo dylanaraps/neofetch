@@ -170,6 +170,18 @@ uptime_shorthand="on"
 # off:  '1801MiB / 7881MiB'
 memory_percent="off"
 
+# Change memory output unit.
+#
+# Default: 'mib'
+# Values:  'kib', 'mib', 'gib'
+# Flag:    --memory_unit
+#
+# Example:
+# kib  '1020928KiB / 7117824KiB'
+# mib  '1042MiB / 6951MiB'
+# gib: ' 0.98GiB / 6.79GiB'
+memory_unit="mib"
+
 
 # Packages
 
@@ -2638,6 +2650,20 @@ get_memory() {
 
     [[ "$memory_percent" == "on" ]] && ((mem_perc=mem_used * 100 / mem_total))
 
+    case $memory_unit in
+        gib)
+            mem_used=$(awk '{printf "%.2f", $1 / $2}' <<< "$mem_used 1024")
+            mem_total=$(awk '{printf "%.2f", $1 / $2}' <<< "$mem_total 1024")
+            mem_label=GiB
+        ;;
+
+        kib)
+            mem_used=$((mem_used * 1024))
+            mem_total=$((mem_total * 1024))
+            mem_label=KiB
+        ;;
+    esac
+
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
 
     # Bars.
@@ -4817,6 +4843,7 @@ INFO:
     --song_format format        Print the song data in a specific format (see config file).
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --memory_percent on/off     Display memory percentage.
+    --memory_unit kib/mib/gib   Memory output unit.
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
 
@@ -5009,6 +5036,7 @@ get_args() {
             "--song_shorthand") song_shorthand="$2" ;;
             "--music_player") music_player="$2" ;;
             "--memory_percent") memory_percent="$2" ;;
+            "--memory_unit") memory_unit="$2" ;;
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
