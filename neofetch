@@ -3986,6 +3986,11 @@ END
                     image=$(awk -F '=' '$1 == "Image" { print $2 }' "$image")
                 ;;
 
+                "LXQt"*)
+                    image="$XDG_CONFIG_HOME/pcmanfm-qt/lxqt/settings.conf"
+                    image="$(awk -F '=' '$1 == "Wallpaper" {print $2}' "$image")"
+                ;;
+
                 *)
                     if type -p feh >/dev/null && [[ -f "${HOME}/.fehbg" ]]; then
                         image="$(awk -F\' '/feh/ {printf $(NF-1)}' "${HOME}/.fehbg")"
