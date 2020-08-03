@@ -7745,28 +7745,28 @@ EOF
         ;;
 
         "Lubuntu"*)
-            set_colors 4 7 1
+            set_colors 27 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}           `-mddhhhhhhhhhddmss`
-        ./mdhhhhhhhhhhhhhhhhhhhhhh.
-     :mdhhhhhhhhhhhhhhhhhhhhhhhhhhhm`
-   :ymhhhhhhhhhhhhhhhyyyyyyhhhhhhhhhy:
-  `odhyyyhhhhhhhhhy+-````./syhhhhhhhho`
- `hhy..:oyhhhhhhhy-`:osso/..:/++oosyyyh`
- dhhs   .-/syhhhhs`shhhhhhyyyyyyyyyyyyhs
-:hhhy`  yso/:+syhy/yhhhhhshhhhhhhhhhhhhh:
-hhhhho. +hhhys++oyyyhhhhh-yhhhhhhhhhhhhhs
-hhhhhhs-`/syhhhhyssyyhhhh:-yhhhhhhhhhhhhh
-hhhhhhs  `:/+ossyyhyyhhhhs -yhhhhhhhhhhhh
-hhhhhhy/ `syyyssyyyyhhhhhh: :yhhhhhhhhhhs
-:hhhhhhyo:-/osyhhhhhhhhhhho  ohhhhhhhhhh:
- sdhhhhhhhyyssyyhhhhhhhhhhh+  +hhhhhhhhs
- `shhhhhhhhhhhhhhhhhhhhhhy+` .yhhhhhhhh`
-  +sdhhhhhhhhhhhhhhhhhyo/. `/yhhhhhhhd`
-   `:shhhhhhhhhh+---..``.:+yyhhhhhhh:
-     `:mdhhhhhh/.syssyyyyhhhhhhhd:`
-        `+smdhhh+shhhhhhhhhhhhdm`
-           `sNmdddhhhhhhhddm-`
+${c1}           `.:/ossyyyysso/:.
+        `.:yyyyyyyyyyyyyyyyyy:.`
+      .:yyyyyyyyyyyyyyyyyyyyyyyy:.
+    .:yyyyyyyyyyyyyyyyyyyyyyyyyyyy:.
+   -yyyyyyyyyyyyyy${c2}+hNMMMNh+${c1}yyyyyyyyy-
+  :yy${c2}mNy+${c1}yyyyyyyy${c2}+Nmso++smMdhyysoo+${c1}yy:
+ -yy${c2}+MMMmmy${c1}yyyyyy${c2}hh${c1}yyyyyyyyyyyyyyyyyyy-
+.yyyy${c2}NMN${c1}yy${c2}shhs${c1}yyy${c2}+o${c1}yyyyyyyyyyyyyyyyyyyy.
+:yyyy${c2}oNM+${c1}yyyy${c2}+sso${c1}yyyyyyy${c2}ss${c1}yyyyyyyyyyyyy:
+:yyyyy${c2}+dNs${c1}yyyyyyy${c2}++${c1}yyyyy${c2}oN+${c1}yyyyyyyyyyyy:
+:yyyyy${c2}oMMmhysso${c1}yyyyyyyyyy${c2}mN+${c1}yyyyyyyyyyy:
+:yyyyyy${c2}hMm${c1}yyyyy${c2}+++${c1}yyyyyyy${c2}+MN${c1}yyyyyyyyyyy:
+.yyyyyyy${c2}ohmy+${c1}yyyyyyyyyyyyy${c2}NMh${c1}yyyyyyyyyy.
+ -yyyyyyyyyy${c2}++${c1}yyyyyyyyyyyy${c2}MMh${c1}yyyyyyyyy-
+  :yyyyyyyyyyyyyyyyyyyyy${c2}+mMN+${c1}yyyyyyyy:
+   -yyyyyyyyyyyyyyyyy${c2}+sdMMd+${c1}yyyyyyyy-
+    .:yyyyyyyyy${c2}hmdmmNMNdy+${c1}yyyyyyyy:.
+      .:yyyyyyy${c2}my${c1}yyyyyyyyyyyyyyy:.
+        `.:yyyy${c2}s${c1}yyyyyyyyyyyyy:.`
+           `.:/oosyyyysso/:.`
 EOF
         ;;
 
@@ -10286,23 +10286,23 @@ EOF
 ${c1}           `-/osyhddddhyso/-`
         .+yddddddddddddddddddy+.
       :yddddddddddddddddddddddddy:
-    -yddddddddddddddddddddhdddddddy-
-   odddddddddddyshdddddddh`dddd+ydddo
- `yddddddhshdd-   ydddddd+`ddh.:dddddy`
- sddddddy   /d.   :dddddd-:dy`-ddddddds
-:ddddddds    /+   .dddddd`yy`:ddddddddd:
-sdddddddd`    .    .-:/+ssdyodddddddddds
-ddddddddy                  `:ohddddddddd
-dddddddd.                      +dddddddd
-sddddddy                        ydddddds
-:dddddd+                      .oddddddd:
- sdddddo                   ./ydddddddds
- `yddddd.              `:ohddddddddddy`
-   oddddh/`      `.:+shdddddddddddddo
-    -ydddddhyssyhdddddddddddddddddy-
+    :ydddddddddddddddddddhhdddddddy:
+  `oddddddddddd${c2}hhh${c1}ddddddd${c2}hh${c1}ddd${c2}hh${c1}ddddo`
+ `ydddddd${c2}hhh${c1}dd${c2}hhhhh${c1}ddddd${c2}hhh${c1}dd${c2}hhh${c1}dddddy`
+ sdddddd${c2}hhhhh${c1}d${c2}hhhhh${c1}ddddd${c2}hhh${c1}d${c2}hhh${c1}ddddddds
+:ddddddd${c2}hhhhhhhhhhh${c1}ddddd${c2}hh${c1}d${c2}hhh${c1}ddddddddd:
+ydddddddd${c2}hhhhhhhhhhhhhhhhhhhh${c1}ddddddddddy
+dddddddd${c2}hhhhhhhhhhhhhhhhhhhhhhh${c1}ddddddddh
+hddddddd${c2}hhhhhhhhhhhhhhhhhhhhhhhh${c1}dddddddh
+ydddddd${c2}hhhhhhhhhhhhhhhhhhhhhhhhhh${c1}ddddddy
+:dddddd${c2}hhhhhhhhhhhhhhhhhhhhhhhhh${c1}ddddddd:
+ sddddd${c2}hhhhhhhhhhhhhhhhhhhhhhh${c1}dddddddds
+ `yddddd${c2}hhhhhhhhhhhhhhhhhhh${c1}ddddddddddy`
+  `oddddd${c2}hhhhhhhhhhhhhh${c1}dddddddddddddo`
+    :yddddd${c2}hhhhhh${c1}dddddddddddddddddy:
       :yddddddddddddddddddddddddy:
         .+yddddddddddddddddddy+.
-           `-/osyhddddhyso/-`
+           `-/osyhhddhhyso/-`
 EOF
         ;;
                 "IRIX"*)
