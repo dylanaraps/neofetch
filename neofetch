@@ -7624,7 +7624,7 @@ EOF
         ;;
 
         "Kubuntu"*)
-            set_colors 4 7 1
+            set_colors 33 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}           `.:/ossyyyysso/:.
         .:oyyyyyyyyyyyyyyyyyyo:`
@@ -7745,7 +7745,7 @@ EOF
         ;;
 
         "Lubuntu"*)
-            set_colors 4 7 1
+            set_colors 27 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}           `-mddhhhhhhhhhddmss`
         ./mdhhhhhhhhhhhhhhhhhhhhhh.
@@ -9962,7 +9962,7 @@ EOF
         ;;
 
         "Ubuntu Cinnamon"* | "Ubuntu-Cinnamon"*)
-            set_colors 1
+            set_colors 130 7
             read -rd '' ascii_data <<'EOF'
 ${c1}            .-:/++oooo++/:-.
         `:/oooooooooooooooooo/-`
@@ -10036,7 +10036,7 @@ EOF
         ;;
 
         "Ubuntu MATE"* | "Ubuntu-MATE"*)
-            set_colors 2 7
+            set_colors 113 7
             read -rd '' ascii_data <<'EOF'
 ${c1}           `:+shmNNMMNNmhs+:`
         .odMMMMMMMMMMMMMMMMMMdo.
@@ -10086,7 +10086,7 @@ EOF
         ;;
 
         "Ubuntu Studio"* | "Ubuntu-Studio")
-            set_colors 6 7
+            set_colors 45 7
             read -rd '' ascii_data <<'EOF'
 ${c1}              ..-::::::-.`
          `.:+++++++++++${c2}ooo${c1}++:.`
@@ -10112,7 +10112,7 @@ EOF
         ;;
 
         "ubuntu_small")
-            set_colors 1 7 3
+            set_colors 202 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}         _
      ---(_)
@@ -10124,7 +10124,7 @@ EOF
         ;;
 
         "Ubuntu"* | "i3buntu"*)
-            set_colors 1 7 3
+            set_colors 202 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}            .-/+oossssoo+/-.
         `:+ssssssssssssssssss+:`
@@ -10281,7 +10281,7 @@ EOF
         ;;
 
         "Xubuntu"*)
-            set_colors 4 7 1
+            set_colors 18 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}           `-/osyhddddhyso/-`
         .+yddddddddddddddddddy+.
