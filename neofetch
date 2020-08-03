@@ -10281,28 +10281,28 @@ EOF
         ;;
 
         "Xubuntu"*)
-            set_colors 4 7 1
+            set_colors 20 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}           `-/osyhddddhyso/-`
-        .+yddddddddddddddddddy+.
-      :yddddddddddddddddddddddddy:
-    :ydddddddddddddddddddhhdddddddy:
-  `oddddddddddd${c2}hhh${c1}ddddddd${c2}hh${c1}ddd${c2}hh${c1}ddddo`
- `ydddddd${c2}hhh${c1}dd${c2}hhhhh${c1}ddddd${c2}hhh${c1}dd${c2}hhh${c1}dddddy`
- sdddddd${c2}hhhhh${c1}d${c2}hhhhh${c1}ddddd${c2}hhh${c1}d${c2}hhh${c1}ddddddds
-:ddddddd${c2}hhhhhhhhhhh${c1}ddddd${c2}hh${c1}d${c2}hhh${c1}ddddddddd:
-ydddddddd${c2}hhhhhhhhhhhhhhhhhhhh${c1}ddddddddddy
-dddddddd${c2}hhhhhhhhhhhhhhhhhhhhhhh${c1}ddddddddh
-hddddddd${c2}hhhhhhhhhhhhhhhhhhhhhhhh${c1}dddddddh
-ydddddd${c2}hhhhhhhhhhhhhhhhhhhhhhhhhh${c1}ddddddy
-:dddddd${c2}hhhhhhhhhhhhhhhhhhhhhhhhh${c1}ddddddd:
- sddddd${c2}hhhhhhhhhhhhhhhhhhhhhhh${c1}dddddddds
- `yddddd${c2}hhhhhhhhhhhhhhhhhhh${c1}ddddddddddy`
-  `oddddd${c2}hhhhhhhhhhhhhh${c1}dddddddddddddo`
-    :yddddd${c2}hhhhhh${c1}dddddddddddddddddy:
-      :yddddddddddddddddddddddddy:
-        .+yddddddddddddddddddy+.
-           `-/osyhhddhhyso/-`
+${c1}           `.:/ossyyyysso/:.
+        `.yyyyyyyyyyyyyyyyyyyy.`
+      `yyyyyyyyyyyyyyyyyyyyyyyyyy`
+    `yyyyyyyyyyyyyyyyyyyy${c2}::${c1}yyyyyyyy`
+   .yyyyyyyyyyy${c2}/+:${c1}yyyyyyy${c2}ds${c1}yyy${c2}+y${c1}yyyy.
+  yyyyyyy${c2}:o/${c1}yy${c2}dMMM+${c1}yyyyy${c2}/M+${c1}y${c2}:hM+${c1}yyyyyy
+ yyyyyyy${c2}+MMMy${c1}y${c2}mMMMh${c1}yyyyy${c2}yM::mM+${c1}yyyyyyyy
+`yyyyyyy${c2}+MMMMysMMMd${c1}yyyyy${c2}dh:mN+${c1}yyyyyyyyy`
+yyyyyyyy${c2}:NMMMMmMMMMmmdhyy+/y:${c1}yyyyyyyyyyy
+yyyyyyyy${c2}+MMMMMMMMMMMMMMMMMMNho:${c1}yyyyyyyyy
+yyyyyyyy${c2}mMMMMMMMMMMMMMMMMMMMMMMy${c1}yyyyyyyy
+yyyyyyy${c2}+MMMMMMMMMMMMMMMMMMMMMMMM/${c1}yyyyyyy
+`yyyyyy${c2}sMMMMMMMMMMMMMMMMMMMMMMmo${c1}yyyyyyy`
+ yyyyyy${c2}oMMMMMMMMMMMMMMMMMMMmy+${c1}yyyyyyyyy
+  yyyyy${c2}:mMMMMMMMMMMMMMMNho/${c1}yyyyyyyyyyy
+   .yyyy${c2}:yNMMMMMMMNdyo:${c1}yyyyyyyyyyyyy.
+    `yyyyyy${c2}:/++/::${c1}yyyyyyyyyyyyyyyyy`
+      `yyyyyyyyyyyyyyyyyyyyyyyyyy`
+        `.yyyyyyyyyyyyyyyyyyyy.`
+           `.:/oosyyyysso/:.`
 EOF
         ;;
                 "IRIX"*)
