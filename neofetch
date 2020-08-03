@@ -7745,7 +7745,7 @@ EOF
         ;;
 
         "Lubuntu"*)
-            set_colors 27 7 1
+            set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}           `.:/ossyyyysso/:.
         `.:yyyyyyyyyyyyyyyyyy:.`
@@ -10281,7 +10281,7 @@ EOF
         ;;
 
         "Xubuntu"*)
-            set_colors 20 7 1
+            set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}           `.:/ossyyyysso/:.
         `.yyyyyyyyyyyyyyyyyyyy.`
