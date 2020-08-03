@@ -7745,28 +7745,28 @@ EOF
         ;;
 
         "Lubuntu"*)
-            set_colors 4 7 1
+            set_colors 27 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}           `-mddhhhhhhhhhddmss`
-        ./mdhhhhhhhhhhhhhhhhhhhhhh.
-     :mdhhhhhhhhhhhhhhhhhhhhhhhhhhhm`
-   :ymhhhhhhhhhhhhhhhyyyyyyhhhhhhhhhy:
-  `odhyyyhhhhhhhhhy+-````./syhhhhhhhho`
- `hhy..:oyhhhhhhhy-`:osso/..:/++oosyyyh`
- dhhs   .-/syhhhhs`shhhhhhyyyyyyyyyyyyhs
-:hhhy`  yso/:+syhy/yhhhhhshhhhhhhhhhhhhh:
-hhhhho. +hhhys++oyyyhhhhh-yhhhhhhhhhhhhhs
-hhhhhhs-`/syhhhhyssyyhhhh:-yhhhhhhhhhhhhh
-hhhhhhs  `:/+ossyyhyyhhhhs -yhhhhhhhhhhhh
-hhhhhhy/ `syyyssyyyyhhhhhh: :yhhhhhhhhhhs
-:hhhhhhyo:-/osyhhhhhhhhhhho  ohhhhhhhhhh:
- sdhhhhhhhyyssyyhhhhhhhhhhh+  +hhhhhhhhs
- `shhhhhhhhhhhhhhhhhhhhhhy+` .yhhhhhhhh`
-  +sdhhhhhhhhhhhhhhhhhyo/. `/yhhhhhhhd`
-   `:shhhhhhhhhh+---..``.:+yyhhhhhhh:
-     `:mdhhhhhh/.syssyyyyhhhhhhhd:`
-        `+smdhhh+shhhhhhhhhhhhdm`
-           `sNmdddhhhhhhhddm-`
+${c1}           `.:/ossyyyysso/:.
+        `.:yyyyyyyyyyyyyyyyyy:.`
+      .:yyyyyyyyyyyyyyyyyyyyyyyy:.
+    .:yyyyyyyyyyyyyyyyyyyyyyyyyyyy:.
+   -yyyyyyyyyyyyyy${c2}+hNMMMNh+${c1}yyyyyyyyy-
+  :yy${c2}mNy+${c1}yyyyyyyy${c2}+Nmso++smMdhyysoo+${c1}yy:
+ -yy${c2}+MMMmmy${c1}yyyyyy${c2}hh${c1}yyyyyyyyyyyyyyyyyyy-
+.yyyy${c2}NMN${c1}yy${c2}shhs${c1}yyy${c2}+o${c1}yyyyyyyyyyyyyyyyyyyy.
+:yyyy${c2}oNM+${c1}yyyy${c2}+sso${c1}yyyyyyy${c2}ss${c1}yyyyyyyyyyyyy:
+:yyyyy${c2}+dNs${c1}yyyyyyy${c2}++${c1}yyyyy${c2}oN+${c1}yyyyyyyyyyyy:
+:yyyyy${c2}oMMmhysso${c1}yyyyyyyyyy${c2}mN+${c1}yyyyyyyyyyy:
+:yyyyyy${c2}hMm${c1}yyyyy${c2}+++${c1}yyyyyyy${c2}+MN${c1}yyyyyyyyyyy:
+.yyyyyyy${c2}ohmy+${c1}yyyyyyyyyyyyy${c2}NMh${c1}yyyyyyyyyy.
+ -yyyyyyyyyy${c2}++${c1}yyyyyyyyyyyy${c2}MMh${c1}yyyyyyyyy-
+  :yyyyyyyyyyyyyyyyyyyyy${c2}+mMN+${c1}yyyyyyyy:
+   -yyyyyyyyyyyyyyyyy${c2}+sdMMd+${c1}yyyyyyyy-
+    .:yyyyyyyyy${c2}hmdmmNMNdy+${c1}yyyyyyyy:.
+      .:yyyyyyy${c2}my${c1}yyyyyyyyyyyyyyy:.
+        `.:yyyy${c2}s${c1}yyyyyyyyyyyyy:.`
+           `.:/oosyyyysso/:.`
 EOF
         ;;
 
@@ -10281,28 +10281,28 @@ EOF
         ;;
 
         "Xubuntu"*)
-            set_colors 4 7 1
+            set_colors 20 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}           `-/osyhddddhyso/-`
-        .+yddddddddddddddddddy+.
-      :yddddddddddddddddddddddddy:
-    -yddddddddddddddddddddhdddddddy-
-   odddddddddddyshdddddddh`dddd+ydddo
- `yddddddhshdd-   ydddddd+`ddh.:dddddy`
- sddddddy   /d.   :dddddd-:dy`-ddddddds
-:ddddddds    /+   .dddddd`yy`:ddddddddd:
-sdddddddd`    .    .-:/+ssdyodddddddddds
-ddddddddy                  `:ohddddddddd
-dddddddd.                      +dddddddd
-sddddddy                        ydddddds
-:dddddd+                      .oddddddd:
- sdddddo                   ./ydddddddds
- `yddddd.              `:ohddddddddddy`
-   oddddh/`      `.:+shdddddddddddddo
-    -ydddddhyssyhdddddddddddddddddy-
-      :yddddddddddddddddddddddddy:
-        .+yddddddddddddddddddy+.
-           `-/osyhddddhyso/-`
+${c1}           `.:/ossyyyysso/:.
+        `.yyyyyyyyyyyyyyyyyyyy.`
+      `yyyyyyyyyyyyyyyyyyyyyyyyyy`
+    `yyyyyyyyyyyyyyyyyyyy${c2}::${c1}yyyyyyyy`
+   .yyyyyyyyyyy${c2}/+:${c1}yyyyyyy${c2}ds${c1}yyy${c2}+y${c1}yyyy.
+  yyyyyyy${c2}:o/${c1}yy${c2}dMMM+${c1}yyyyy${c2}/M+${c1}y${c2}:hM+${c1}yyyyyy
+ yyyyyyy${c2}+MMMy${c1}y${c2}mMMMh${c1}yyyyy${c2}yM::mM+${c1}yyyyyyyy
+`yyyyyyy${c2}+MMMMysMMMd${c1}yyyyy${c2}dh:mN+${c1}yyyyyyyyy`
+yyyyyyyy${c2}:NMMMMmMMMMmmdhyy+/y:${c1}yyyyyyyyyyy
+yyyyyyyy${c2}+MMMMMMMMMMMMMMMMMMNho:${c1}yyyyyyyyy
+yyyyyyyy${c2}mMMMMMMMMMMMMMMMMMMMMMMy${c1}yyyyyyyy
+yyyyyyy${c2}+MMMMMMMMMMMMMMMMMMMMMMMM/${c1}yyyyyyy
+`yyyyyy${c2}sMMMMMMMMMMMMMMMMMMMMMMmo${c1}yyyyyyy`
+ yyyyyy${c2}oMMMMMMMMMMMMMMMMMMMmy+${c1}yyyyyyyyy
+  yyyyy${c2}:mMMMMMMMMMMMMMMNho/${c1}yyyyyyyyyyy
+   .yyyy${c2}:yNMMMMMMMNdyo:${c1}yyyyyyyyyyyyy.
+    `yyyyyy${c2}:/++/::${c1}yyyyyyyyyyyyyyyyy`
+      `yyyyyyyyyyyyyyyyyyyyyyyyyy`
+        `.yyyyyyyyyyyyyyyyyyyy.`
+           `.:/oosyyyysso/:.`
 EOF
         ;;
                 "IRIX"*)
