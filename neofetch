@@ -2767,6 +2767,7 @@ get_song() {
         "xnoise"*)        get_song_dbus "xnoise" ;;
         "tauonmb"*)       get_song_dbus "tauon" ;;
         "olivia"*)        get_song_dbus "olivia" ;;
+        "exaile"*)        get_song_dbus "exaile" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
         "io.elementary.music"*)        get_song_dbus "Music" ;;
@@ -2809,16 +2810,6 @@ get_song() {
             song="$(banshee --query-artist --query-album --query-title |\
                     awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
                                END {print a " \n" b " \n"t}')"
-        ;;
-
-        "exaile"*)
-            # NOTE: Exaile >= 4.0.0 will support mpris2.
-            song="$(dbus-send --print-reply --dest=org.exaile.Exaile \
-                    /org/exaile/Exaile org.exaile.Exaile.Query |
-                    awk -F ':' '{sub(",[^,]*$", "", $3); t=$3;
-                                 sub(",[^,]*$", "", $4); a=$4;
-                                 sub(",[^,]*$", "", $5); b=$5}
-                                 END {print a " \n" b " \n" t}')"
         ;;
 
         "muine"*)
