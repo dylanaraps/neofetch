@@ -7665,7 +7665,7 @@ EOF
         ;;
 
         "LibreELEC"*)
-            set_colors 2 3 7 4 1
+            set_colors 2 3 7 14 13
             read -rd '' ascii_data <<'EOF'
 ${c1}          :+ooo/.      ${c2}./ooo+:
 ${c1}        :+ooooooo/.  ${c2}./ooooooo+:
