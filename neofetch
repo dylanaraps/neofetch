@@ -2768,6 +2768,7 @@ get_song() {
         "tauonmb"*)       get_song_dbus "tauon" ;;
         "olivia"*)        get_song_dbus "olivia" ;;
         "exaile"*)        get_song_dbus "exaile" ;;
+        "quodlibet"*)     get_song_dbus "quodlibet" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
         "io.elementary.music"*)        get_song_dbus "Music" ;;
@@ -2817,13 +2818,6 @@ get_song() {
                     org.gnome.Muine.Player.GetCurrentSong |
                     awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
                                END {print a " \n" b " \n" t}')"
-        ;;
-
-        "quodlibet"*)
-            song="$(dbus-send --print-reply --dest=net.sacredchao.QuodLibet \
-                    /net/sacredchao/QuodLibet net.sacredchao.QuodLibet.CurrentSong |\
-                    awk -F'"' 'BEGIN {RS=" entry"}; /"artist"/ {a=$4} /"album"/ {b=$4}
-                    /"title"/ {t=$4} END {print a " \n" b " \n" t}')"
         ;;
 
         "pogo"*)
