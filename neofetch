@@ -1565,6 +1565,10 @@ get_packages() {
             # This is the only standard location for appimages.
             # See: https://github.com/AppImage/AppImageKit/wiki
             manager=appimage && has appimaged && dir ~/.local/bin/*.appimage
+
+			# npm can be used to install JavaScript CLI tools like tsc and webpack-cli.
+			# -1 packages because npm itself is a package.
+			has npm && tot ls $(npm root -g) --color=none && ((packages-=1))
         ;;
 
         "Mac OS X"|"macOS"|MINIX)
