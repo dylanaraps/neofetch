@@ -784,7 +784,7 @@ image_source="auto"
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
 #       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
-#       Korora, KSLinux, Kubuntu, LEDE, LFS, Linux_Lite,
+#       Korora, KSLinux, Kubuntu, LaxerOS, LEDE, LFS, Linux_Lite,
 #       LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva,
 #       Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
 #       Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner,
@@ -4917,7 +4917,7 @@ ASCII:
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, janus, Kali,
-                                KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
+                                KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LaxerOS, LEDE,
                                 LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS,
                                 Mandriva, Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
                                 Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner, NuTyX,
@@ -7637,6 +7637,34 @@ oyyyyysos${c2}dy${c1}yyyyyyyyyyyyyyyyyy${c2}dMMMMy${c1}syyyo
       -oyyyyyyy${c2}dMMy${c1}yyyyyysosyyyyo-
         ./oyyyyyyyyyyyyyyyyyyo/.
            `.:/oosyyyysso/:.`
+EOF
+        ;;
+
+        "LaxerOS"*)
+            set_colors 7 4
+            read -rd '' ascii_data <<'EOF'
+${c2}           
+                    /.
+                 `://:-                 
+                `//////:                
+               .////////:`              
+              -//////////:`             
+             -/////////////`            
+            :///////////////.           
+          `://////.```-//////-          
+         `://///:`     .//////-         
+        `//////:        `//////:        
+       .//////-          `://///:`      
+      -//////-            `://///:`     
+     -//////.               ://////`    
+    ://////`                 -//////.   
+   `/////:`                   ./////:   
+    .-::-`                     .:::-`
+       
+.:://////////////////////////////////::.
+////////////////////////////////////////
+.:////////////////////////////////////:.
+
 EOF
         ;;
 
