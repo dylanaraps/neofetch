@@ -5487,6 +5487,34 @@ ${c1}         -o          o-
 EOF
         ;;
 
+    "instantOS"*)
+        set_colors 4 6
+        read -rd '' ascii_data <<'EOF'
+
+${c1}
+     'cx0XWWMMWNKOd:'.                  
+  .;kNMMMMMMMMMMMMMWNKd'                
+ 'kNMMMMMMWNNNWMMMMMMMMXo.              
+,0MMMMMW0o;'..,:dKWMMMMMWx.             
+OMMMMMXl.        .xNMMMMMNo             
+WMMMMNl           .kWWMMMMO'            
+MMMMMX;            oNWMMMMK,            
+NMMMMWo           .OWMMMMMK,            
+kWMMMMNd.        ,kWMMMMMMK,            
+'kWMMMMWXxl:;;:okNMMMMMMMMK,            
+ .oXMMMMMMMWWWMMMMMMMMMMMMK,            
+   'oKWMMMMMMMMMMMMMMMMMMMK,            
+     .;lxOKXXXXXXXXXXXXXXXO;......      
+          ................,d0000000kd:. 
+                          .kMMMMMMMMMW0;
+                          .kMMMMMMMMMMMX
+                          .xMMMMMMMMMMMW
+                           cXMMMMMMMMMM0
+                            :0WMMMMMMNx,
+                             .o0NMWNOc. 
+EOF
+        ;;
+
         "Antergos"*)
             set_colors 4 6
             read -rd '' ascii_data <<'EOF'
