@@ -1788,40 +1788,41 @@ get_wm() {
     # If function was run, stop here.
     ((wm_run == 1)) && return
 
-    case $kernel_name in
-        *OpenBSD*) ps_flags=(x -c) ;;
-        *)         ps_flags=(-e) ;;
-    esac
-
-    if [[ $WAYLAND_DISPLAY ]]; then
-        wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
-                           -e arcan \
-                           -e asc \
-                           -e clayland \
-                           -e dwc \
-                           -e fireplace \
-                           -e gnome-shell \
-                           -e greenfield \
-                           -e grefsen \
-                           -e kwin \
-                           -e lipstick \
-                           -e maynard \
-                           -e mazecompositor \
-                           -e motorcar \
-                           -e orbital \
-                           -e orbment \
-                           -e perceptia \
-                           -e rustland \
-                           -e sway \
-                           -e ulubis \
-                           -e velox \
-                           -e wavy \
-                           -e way-cooler \
-                           -e wayfire \
-                           -e wayhouse \
-                           -e westeros \
-                           -e westford \
-                           -e weston)
+    if [[ -O "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" ]]; then
+        case $kernel_name in
+            *OpenBSD*)
+                ps_flags=(x -c)
+                wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
+                                   -e arcan \
+                                   -e asc \
+                                   -e clayland \
+                                   -e dwc \
+                                   -e fireplace \
+                                   -e gnome-shell \
+                                   -e greenfield \
+                                   -e grefsen \
+                                   -e kwin \
+                                   -e lipstick \
+                                   -e maynard \
+                                   -e mazecompositor \
+                                   -e motorcar \
+                                   -e orbital \
+                                   -e orbment \
+                                   -e perceptia \
+                                   -e rustland \
+                                   -e sway \
+                                   -e ulubis \
+                                   -e velox \
+                                   -e wavy \
+                                   -e way-cooler \
+                                   -e wayfire \
+                                   -e wayhouse \
+                                   -e westeros \
+                                   -e westford \
+                                   -e weston)
+            ;;
+            *)  wm=$(fuser -v "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" 2>&1 | sed -rne "s/^\s+$USER.* ([^ ]*$)/\1/p") ;;
+        esac
 
     elif [[ $DISPLAY && $os != "Mac OS X" && $os != "macOS" && $os != FreeMiNT ]]; then
         type -p xprop &>/dev/null && {
