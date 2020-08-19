@@ -1825,7 +1825,7 @@ get_wm() {
                                    -e westford \
                                    -e weston)
             ;;
-            *)  wm=$(fuser -v "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" 2>&1 | sed -rne "s/^\s+$USER.* ([^ ]*$)/\1/p") ;;
+            *)  wm=$(ps -p $(lsof -t $XDG_RUNTIME_DIR/${WAYLAND_DISPLAY:-wayland-0}) --no-headers --format comm) ;;
         esac
 
     elif [[ $DISPLAY && $os != "Mac OS X" && $os != "macOS" && $os != FreeMiNT ]]; then
