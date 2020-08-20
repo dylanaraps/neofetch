@@ -1794,40 +1794,42 @@ get_wm() {
     esac
 
     if [[ -O "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" ]]; then
-        case $kernel_name in
-            *OpenBSD*)
-                wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
-                                   -e arcan \
-                                   -e asc \
-                                   -e clayland \
-                                   -e dwc \
-                                   -e fireplace \
-                                   -e gnome-shell \
-                                   -e greenfield \
-                                   -e grefsen \
-                                   -e kwin \
-                                   -e lipstick \
-                                   -e maynard \
-                                   -e mazecompositor \
-                                   -e motorcar \
-                                   -e orbital \
-                                   -e orbment \
-                                   -e perceptia \
-                                   -e rustland \
-                                   -e sway \
-                                   -e ulubis \
-                                   -e velox \
-                                   -e wavy \
-                                   -e way-cooler \
-                                   -e wayfire \
-                                   -e wayhouse \
-                                   -e westeros \
-                                   -e westford \
-                                   -e weston)
-            ;;
-            *)  wm=$(ps -p "$(lsof -t "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}")" -ho comm)
-            ;;
-        esac
+        if tmp_pid="$(lsof -t "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" 2>&1)" ||
+           tmp_pid="$(fuser   "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" 2>&1)"; then
+            wm="$(ps -p "${tmp_pid}" -ho comm=)"
+        else
+            # lsof may not exist, or may need root on some systems. Similarly fuser.
+            # On those systems we search for a list of known window managers, this can mistakenly
+            # match processes for another user or session and will miss unlisted window managers.
+            wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
+                               -e arcan \
+                               -e asc \
+                               -e clayland \
+                               -e dwc \
+                               -e fireplace \
+                               -e gnome-shell \
+                               -e greenfield \
+                               -e grefsen \
+                               -e kwin \
+                               -e lipstick \
+                               -e maynard \
+                               -e mazecompositor \
+                               -e motorcar \
+                               -e orbital \
+                               -e orbment \
+                               -e perceptia \
+                               -e rustland \
+                               -e sway \
+                               -e ulubis \
+                               -e velox \
+                               -e wavy \
+                               -e way-cooler \
+                               -e wayfire \
+                               -e wayhouse \
+                               -e westeros \
+                               -e westford \
+                               -e weston)
+        fi
 
     elif [[ $DISPLAY && $os != "Mac OS X" && $os != "macOS" && $os != FreeMiNT ]]; then
         type -p xprop &>/dev/null && {
