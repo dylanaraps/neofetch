@@ -2499,7 +2499,7 @@ get_gpu() {
         ;;
 
         "Windows")
-            while mapfile line; do
+            while read -r line; do
                 prin "${subtitle:+${subtitle}${gpu_name}}" "$(trim "${line[@]}")"
             done <<< "$(wmic PATH Win32_videocontroller GET description | awk 'NF' | tail +2)"
 
