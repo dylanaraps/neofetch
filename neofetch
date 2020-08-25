@@ -39,7 +39,7 @@ sys_locale=${LANG:-C}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 PATH=$PATH:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec
 reset='\e[0m'
-shopt -s nocasematch
+shopt -s nocasematch extglob
 
 # Speed up script by not using unicode.
 LC_ALL=C
@@ -3879,7 +3879,8 @@ print_ascii() {
         line=${line//\\\\/\\}
         line=${line//█/ }
         # Use Regex through sed to remove color and formatting codes
-        line=$(echo "$line" | sed 's/\x1B\[[0-9;]*[JKmsu]//g')
+        search='\\033\[*([0-9;])[JKmsu]'
+        line=${line//$search/}
         ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
