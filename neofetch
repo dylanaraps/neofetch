@@ -3897,7 +3897,7 @@ print_ascii() {
     # Calculate size of ascii file in line length / line count.
     while IFS=$'\n' read -r line; do
         line=${line//█/ }
-        # This method to strip escape codes doesn't always work but is faster in some cases if run first
+        # Fast method to strip codes
         strip_escape_codes "${line}" line
         # Use patterns to replace color codes that the above line did not catch
         line=${line//\\033\[*([0-9;])[JKmsu]/}
