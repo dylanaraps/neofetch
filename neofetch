@@ -3878,6 +3878,8 @@ print_ascii() {
     while IFS=$'\n' read -r line; do
         line=${line//\\\\/\\}
         line=${line//█/ }
+        # Use Regex through sed to remove color and formatting codes
+        line=$(echo "$line" | sed 's/\x1B\[[0-9;]*[JKmsu]//g')
         ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
