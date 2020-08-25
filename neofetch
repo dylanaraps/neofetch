@@ -3879,8 +3879,8 @@ print_ascii() {
         line=${line//\\\\/\\}
         line=${line//█/ }
         # Use Regex through sed to remove color and formatting codes
-        search='\\033\[*([0-9;])[JKmsu]'
-        line=${line//$search/}
+        line=${line//\\033\[*([0-9;])[JKmsu]/}
+        line=${line//\[*([0-9;])[JKmsu]/}
         ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
