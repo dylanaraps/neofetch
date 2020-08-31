@@ -1466,6 +1466,9 @@ get_uptime() {
 }
 
 get_packages() {
+		# to adjust the number of pkgs per pkg manager
+		pkgs_h=0
+
     # has: Check if package manager installed.
     # dir: Count files or dirs in a glob.
     # pac: If packages > 0, log package manager name.
@@ -1473,14 +1476,18 @@ get_packages() {
     has() { type -p "$1" >/dev/null && manager=$1; }
     dir() { ((packages+=$#)); pac "$#"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
-    tot() { IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";((packages+=${#pkgs[@]}));pac "${#pkgs[@]}";}
+    tot() { 
+				IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
+				((packages+=${#pkgs[@]}));
+				pac "$((${#pkgs[@]}-pkgs_h))";
+		}
 
     # Redefine tot() for Bedrock Linux.
     [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
         tot() {
             IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in $(brl list); do strat -r "$s" "$@"; done)"
             ((packages+="${#pkgs[@]}"))
-            pac "${#pkgs[@]}"
+						pac "$((${#pkgs[@]}-pkgs_h))";
         }
         br_prefix="/bedrock/strata/*"
     }
@@ -1560,7 +1567,8 @@ get_packages() {
 
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
-            has snap && ps -e | grep -qFm 1 snapd >/dev/null && tot snap list && ((packages-=1))
+            has snap && ps -e | grep -qFm 1 snapd >/dev/null && \
+										pkgs_h=1 tot snap list && ((packages-=1))
 
             # This is the only standard location for appimages.
             # See: https://github.com/AppImage/AppImageKit/wiki
