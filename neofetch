@@ -1474,24 +1474,24 @@ get_packages() {
     # pac: If packages > 0, log package manager name.
     # tot: Count lines in command output.
     has() { type -p "$1" >/dev/null && manager=$1; }
-    dir() { ((packages+=$#)); pac "$#"; }
+    dir() { ((packages+=$#)); pac "$(($#-pkgs_h))"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() { 
-				IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
-				((packages+=${#pkgs[@]}));
-				pac "$((${#pkgs[@]}-pkgs_h))";
-		}
+	IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
+	((packages+=${#pkgs[@]}));
+	pac "$((${#pkgs[@]}-pkgs_h))";
+    }
 
     # Redefine tot() for Bedrock Linux.
     [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
         tot() {
             IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in $(brl list); do strat -r "$s" "$@"; done)"
             ((packages+="${#pkgs[@]}"))
-						pac "$((${#pkgs[@]}-pkgs_h))";
+	    pac "$((${#pkgs[@]}-pkgs_h))";
         }
         br_prefix="/bedrock/strata/*"
     }
-
+    
     case $os in
         Linux|BSD|"iPhone OS"|Solaris)
             # Package Manager Programs.
@@ -1506,7 +1506,7 @@ get_packages() {
             has lvu        && tot lvu installed
             has tce-status && tot tce-status -i
             has pkg_info   && tot pkg_info
-            has tazpkg     && tot tazpkg list && ((packages-=6))
+            has tazpkg     && pkgs_h=6 tot tazpkg list && ((packages-=6))
             has sorcery    && tot gaze installed
             has alps       && tot alps showinstalled
             has butch      && tot butch list
@@ -1530,15 +1530,15 @@ get_packages() {
                                ${br_prefix}/var/db/paludis/repositories/installed/data/*/
             shopt -u nullglob
             }
-
+	    
             # Other (Needs complex command)
             has kpm-pkg && ((packages+=$(kpm  --get-selections | grep -cv deinstall$)))
-
+	    
             has guix && {
                 manager=guix-system && tot guix package -p "/run/current-system/profile" -I
                 manager=guix-user   && tot guix package -I
             }
-
+	    
             has nix-store && {
                 manager=nix-system  && tot nix-store -q --requisites /run/current-system/sw
                 manager=nix-user    && tot nix-store -q --requisites ~/.nix-profile
@@ -1554,7 +1554,7 @@ get_packages() {
 
                 *)
                     has pkg && dir /var/db/pkg/*
-
+		    
                     ((packages == 0)) && \
                         has pkg && tot pkg list
                 ;;
@@ -1568,15 +1568,15 @@ get_packages() {
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
             has snap && ps -e | grep -qFm 1 snapd >/dev/null && \
-										pkgs_h=1 tot snap list && ((packages-=1))
-
+		pkgs_h=1 tot snap list && ((packages-=1))
+	    
             # This is the only standard location for appimages.
             # See: https://github.com/AppImage/AppImageKit/wiki
             manager=appimage && has appimaged && dir ~/.local/bin/*.appimage
         ;;
 
         "Mac OS X"|"macOS"|MINIX)
-            has port  && tot port installed && ((packages-=1))
+            has port  && pkgs_h=1 tot port installed && ((packages-=1))
             has brew  && dir /usr/local/Cellar/*
             has pkgin && tot pkgin list
 
@@ -1598,31 +1598,31 @@ get_packages() {
             esac
 
             # Scoop environment throws errors if `tot scoop list` is used
-            has scoop && dir ~/scoop/apps/* && ((packages-=1))
-
+            has scoop && pkgs_h=1 dir ~/scoop/apps/* && ((packages-=1))
+	    
             # Count chocolatey packages.
             [[ -d /cygdrive/c/ProgramData/chocolatey/lib ]] && \
                 dir /cygdrive/c/ProgramData/chocolatey/lib/*
-        ;;
-
+            ;;
+	
         Haiku)
             has pkgman && dir /boot/system/package-links/*
             packages=${packages/pkgman/depot}
-        ;;
-
+            ;;
+	
         IRIX)
             manager=swpkg
-            tot versions -b && ((packages-=3))
+            pkgs_h=3 tot versions -b && ((packages-=3))
         ;;
     esac
-
+    
     if ((packages == 0)); then
         unset packages
-
+	
     elif [[ $package_managers == on ]]; then
         printf -v packages '%s, ' "${managers[@]}"
         packages=${packages%,*}
-
+	
     elif [[ $package_managers == tiny ]]; then
         packages+=" (${manager_string%,*})"
     fi
