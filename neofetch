@@ -508,6 +508,7 @@ disk_percent="on"
 # iTunes
 # juk
 # lollypop
+# MellowPlayer
 # mocp
 # mopidy
 # mpd
@@ -2695,6 +2696,7 @@ get_song() {
         "iTunes"
         "juk"
         "lollypop"
+        "MellowPlayer"
         "mocp"
         "mopidy"
         "mpd"
@@ -2833,9 +2835,16 @@ get_song() {
                     /"title"/ {t=$4} END {print a " \n" b " \n" t}')"
         ;;
 
+        "MellowPlayer"*)
+            song="$(qdbus org.mpris.MediaPlayer2.MellowPlayer3 /org/mpris/MediaPlayer2 \
+                    org.mpris.MediaPlayer2.Player.Metadata |
+                    awk -F':' '/xesam:artist/ {a=$3} /xesam:album/ {b=$3}
+                    /xesam:title/ {t=$3} END {print a " \n" b " \n" t}')"
+        ;;
+
         "playerctl"*)
             song="$(playerctl metadata --format '{{ artist }} \n{{ album }} \n{{ title }}')"
-         ;;
+        ;;
 
         *) mpc &>/dev/null && song="$(mpc -f '%artist% \n%album% \n%title%' current)" || return ;;
     esac
