@@ -2774,7 +2774,7 @@ get_song() {
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
         "io.elementary.music"*)        get_song_dbus "Music" ;;
-        "MellowPlayer"*)        get_song_dbus "MellowPlayer3" ;;
+        "MellowPlayer"*)  get_song_dbus "MellowPlayer3" ;;
 
         "mpd"* | "mopidy"*)
             song="$(mpc -f '%artist% \n%album% \n%title%' current "${mpc_args[@]}")"
