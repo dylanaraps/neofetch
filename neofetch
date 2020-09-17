@@ -1489,6 +1489,7 @@ get_packages() {
         Linux|BSD|"iPhone OS"|Solaris)
             # Package Manager Programs.
             has kiss       && tot kiss l
+            has cpt-list   && tot cpt-list
             has pacman-key && tot pacman -Qq --color never
             has dpkg       && tot dpkg-query -f '.\n' -W
             has rpm        && tot rpm -qa
