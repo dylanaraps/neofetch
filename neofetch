@@ -1466,8 +1466,8 @@ get_uptime() {
 }
 
 get_packages() {
-		# to adjust the number of pkgs per pkg manager
-		pkgs_h=0
+    # to adjust the number of pkgs per pkg manager
+    pkgs_h=0
 
     # has: Check if package manager installed.
     # dir: Count files or dirs in a glob.
@@ -1491,7 +1491,7 @@ get_packages() {
         }
         br_prefix="/bedrock/strata/*"
     }
-    
+
     case $os in
         Linux|BSD|"iPhone OS"|Solaris)
             # Package Manager Programs.
@@ -1530,15 +1530,15 @@ get_packages() {
                                ${br_prefix}/var/db/paludis/repositories/installed/data/*/
             shopt -u nullglob
             }
-	    
+
             # Other (Needs complex command)
             has kpm-pkg && ((packages+=$(kpm  --get-selections | grep -cv deinstall$)))
-	    
+
             has guix && {
                 manager=guix-system && tot guix package -p "/run/current-system/profile" -I
                 manager=guix-user   && tot guix package -I
             }
-	    
+
             has nix-store && {
                 manager=nix-system  && tot nix-store -q --requisites /run/current-system/sw
                 manager=nix-user    && tot nix-store -q --requisites ~/.nix-profile
@@ -1554,7 +1554,7 @@ get_packages() {
 
                 *)
                     has pkg && dir /var/db/pkg/*
-		    
+
                     ((packages == 0)) && \
                         has pkg && tot pkg list
                 ;;
@@ -1569,7 +1569,7 @@ get_packages() {
             # Only run snap if the daemon is also running.
             has snap && ps -e | grep -qFm 1 snapd >/dev/null && \
 		pkgs_h=1 tot snap list && ((packages-=1))
-	    
+
             # This is the only standard location for appimages.
             # See: https://github.com/AppImage/AppImageKit/wiki
             manager=appimage && has appimaged && dir ~/.local/bin/*.appimage
@@ -1599,30 +1599,30 @@ get_packages() {
 
             # Scoop environment throws errors if `tot scoop list` is used
             has scoop && pkgs_h=1 dir ~/scoop/apps/* && ((packages-=1))
-	    
-            # Count chocolatey packages.
+
+	    # Count chocolatey packages.
             [[ -d /cygdrive/c/ProgramData/chocolatey/lib ]] && \
                 dir /cygdrive/c/ProgramData/chocolatey/lib/*
-            ;;
-	
+        ;;
+
         Haiku)
             has pkgman && dir /boot/system/package-links/*
             packages=${packages/pkgman/depot}
-            ;;
+	;;
 	
         IRIX)
             manager=swpkg
             pkgs_h=3 tot versions -b && ((packages-=3))
         ;;
     esac
-    
+
     if ((packages == 0)); then
         unset packages
-	
+
     elif [[ $package_managers == on ]]; then
         printf -v packages '%s, ' "${managers[@]}"
         packages=${packages%,*}
-	
+
     elif [[ $package_managers == tiny ]]; then
         packages+=" (${manager_string%,*})"
     fi
