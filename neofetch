@@ -4252,11 +4252,11 @@ display_image() {
                 source "$(ueberzug library)"
                 ImageLayer 0< <(
                 ImageLayer::add\
-                        [identifier]="neofetch"\
-                        [x]="0" [y]="0"\
-                        [max_width]="$((width / font_width))"\
-                        [max_height]="$((height / font_height))"\
-                        [path]="$image";
+                        ['identifier']="neofetch"\
+                        ['x']="0" ['y']="0"\
+                        ['max_width']="$((width / font_width))"\
+                        ['max_height']="$((height / font_height))"\
+                        ['path']="$image";
                 read -r;
                 )
             fi
