@@ -4920,6 +4920,7 @@ IMAGE BACKEND:
     --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
     --w3m source                Shortcut to use 'w3m' backend.
+    --ueberzug source            Shortcut to use 'ueberzug' backend
     --off                       Shortcut to use 'off' backend (Disable ascii art).
 
     NOTE: 'source; can be any of the following: 'auto', 'ascii', 'wallpaper', '/path/to/img',
@@ -5135,7 +5136,7 @@ get_args() {
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
             "--ascii" | "--caca" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" |\
-            "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
+            "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty" | "--ueberzug")
                 image_backend="${1/--}"
                 case $2 in
                     "-"* | "") ;;
