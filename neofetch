@@ -4257,7 +4257,7 @@ display_image() {
                         ['max_width']="$((width / font_width))"\
                         ['max_height']="$((height / font_height))"\
                         ['path']="$image";
-                read -r;
+                read -rs;
                 )
             fi
         ;;
