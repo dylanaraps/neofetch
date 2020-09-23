@@ -4253,7 +4253,7 @@ display_image() {
                 ImageLayer 0< <(
                 ImageLayer::add\
                         ['identifier']="neofetch"\
-                        ['x']="0" ['y']="0"\
+                        ['x']="$xoffset" ['y']="$yoffset"\
                         ['max_width']="$((width / font_width))"\
                         ['max_height']="$((height / font_height))"\
                         ['path']="$image";
