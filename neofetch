@@ -1433,7 +1433,7 @@ get_uptime() {
 
     d="$((s / 60 / 60 / 24)) days"
     h="$((s / 60 / 60 % 24)) hours"
-    m="$((s / 60 % 60)) mins"
+    m="$((s / 60 % 60)) minutes"
 
     # Remove plural if < 2.
     ((${d/ *} == 1)) && d=${d/s}
@@ -1447,20 +1447,24 @@ get_uptime() {
 
     uptime=${d:+$d, }${h:+$h, }$m
     uptime=${uptime%', '}
-    uptime=${uptime:-$s secs}
+    uptime=${uptime:-$s seconds}
 
     # Make the output of uptime smaller.
     case $uptime_shorthand in
-        on) ;;
+        on)
+            uptime=${uptime/ minutes/ mins}
+            uptime=${uptime/ minute/ min}
+            uptime=${uptime/ seconds/ secs}
+        ;;
 
         tiny)
             uptime=${uptime/ days/d}
             uptime=${uptime/ day/d}
             uptime=${uptime/ hours/h}
             uptime=${uptime/ hour/h}
-            uptime=${uptime/ mins/m}
-            uptime=${uptime/ min/m}
-            uptime=${uptime/ secs/s}
+            uptime=${uptime/ minutes/m}
+            uptime=${uptime/ minute/m}
+            uptime=${uptime/ seconds/s}
             uptime=${uptime//,}
         ;;
     esac
