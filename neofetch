@@ -744,7 +744,7 @@ disk_display="off"
 # Image backend.
 #
 # Default:  'ascii'
-# Values:   'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'off',
+# Values:   'ascii', 'caca', 'catimg', 'chafa', 'jp2a', 'iterm2', 'off',
 #           'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
 # Flag:     --backend
 image_backend="ascii"
@@ -880,6 +880,14 @@ crop_offset="center"
 # Flags:   --image_size
 #          --size
 image_size="auto"
+
+# Catimg block size.
+# Control the resolution of catimg.
+#
+# Default: '2'
+# Values:  '1', '2'
+# Flags:   --catimg_size
+catimg_size="2"
 
 # Gap between image and text
 #
@@ -3833,7 +3841,7 @@ image_backend() {
         "ascii") print_ascii ;;
         "off") image_backend="off" ;;
 
-        "caca" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
+        "caca" | "catimg" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
         "tycat" | "w3m" | "sixel" | "pixterm" | "kitty" | "pot")
             get_image_source
 
@@ -3858,9 +3866,9 @@ image_backend() {
 
         *)
             err "Image: Unknown image backend specified '$image_backend'."
-            err "Image: Valid backends are: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'kitty',
-                                            'off', 'sixel', 'pot', 'pixterm', 'termpix', 'tycat',
-                                            'w3m')"
+            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'chafa', 'jp2a', 'iterm2',
+                                            'kitty', 'off', 'sixel', 'pot', 'pixterm', 'termpix',
+                                            'tycat', 'w3m')"
             err "Image: Falling back to ascii mode."
             print_ascii
         ;;
@@ -4246,6 +4254,10 @@ display_image() {
                 -H "$((height / font_height))" \
                 --gamma=0.6 \
             "$image"
+        ;;
+
+        "catimg")
+            catimg -w "$((width*catimg_size / font_width))" -r "$catimg_size" "$image"
         ;;
 
         "chafa")
@@ -4885,8 +4897,8 @@ BARS:
 
 IMAGE BACKEND:
     --backend backend           Which image backend to use.
-                                Possible values: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2',
-                                'off', 'sixel', 'tycat', 'w3m', 'kitty'
+                                Possible values: 'ascii', 'caca', 'catimg', 'chafa', 'jp2a',
+                                'iterm2', 'off', 'sixel', 'tycat', 'w3m', 'kitty'
     --source source             Which image or ascii file to use.
                                 Possible values: 'auto', 'ascii', 'wallpaper', '/path/to/img',
                                 '/path/to/ascii', '/path/to/dir/', 'command output' [ascii]
@@ -4896,6 +4908,7 @@ IMAGE BACKEND:
                                 NEW: neofetch --ascii \"\$(fortune | cowsay -W 30)\"
 
     --caca source               Shortcut to use 'caca' backend.
+    --catimg source             Shortcut to use 'catimg' backend.
     --chafa source              Shortcut to use 'chafa' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
@@ -4969,6 +4982,7 @@ IMAGE:
                                 in some terminals emulators when using image mode.
     --size 00px | --size 00%    How to size the image.
                                 Possible values: auto, 00px, 00%, none
+    --catimg_size 1/2           Change the resolution of catimg.
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
     --crop_offset value         Change the crop offset for normal mode.
@@ -5120,8 +5134,8 @@ get_args() {
             # Image backend
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" |\
-            "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
+            "--ascii" | "--caca" | "--catimg" | "--chafa" | "--jp2a" | "--iterm2" | "--off" |\
+            "--pot" | "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
                 image_backend="${1/--}"
                 case $2 in
                     "-"* | "") ;;
@@ -5132,6 +5146,7 @@ get_args() {
             # Image options
             "--loop") image_loop="on" ;;
             "--image_size" | "--size") image_size="$2" ;;
+            "--catimg_size") catimg_size="$2" ;;
             "--crop_mode") crop_mode="$2" ;;
             "--crop_offset") crop_offset="$2" ;;
             "--xoffset") xoffset="$2" ;;
