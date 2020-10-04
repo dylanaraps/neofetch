@@ -2517,7 +2517,7 @@ get_gpu() {
 
         "Windows")
             while read -r line; do
-                [[ $win_gpu ]] || {
+                [[ -z $win_gpu ]] || [[ -z "$line" ]] && {
                     win_gpu=1
                     continue
                 }
