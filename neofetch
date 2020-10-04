@@ -407,6 +407,13 @@ public_ip_host="http://ident.me"
 # Flag:    --ip_timeout
 public_ip_timeout=2
 
+# Local IP interface
+#
+# Default: 'auto' (interface of default route)
+# Values:  'auto', 'en0', 'en1'
+# Flag:    --ip_interface
+local_ip_interface=('auto')
+
 
 # Desktop Environment
 
@@ -3702,9 +3709,25 @@ get_battery() {
 get_local_ip() {
     case $os in
         "Linux" | "BSD" | "Solaris" | "AIX" | "IRIX")
-            local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
-            local_ip="${local_ip/uid*}"
-            [[ -z "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
+            if [[ "${local_ip_interface[0]}" == "auto" ]]; then
+                local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
+                local_ip="${local_ip/uid*}"
+                [[ "$local_ip" ]] || local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
+            else
+                for interface in "${local_ip_interface[@]}"; do
+                    local_ip="$(ip addr show "$interface" 2> /dev/null |
+                        awk '/inet / {print $2; exit}')"
+                    local_ip="${local_ip/\/*}"
+                    [[ "$local_ip" ]] ||
+                        local_ip="$(ifconfig "$interface" 2> /dev/null |
+                        awk '/broadcast/ {print $2; exit}')"
+                    if [[ -n "$local_ip" ]]; then
+                        prin "$interface" "$local_ip"
+                    else
+                        err "Local IP: Could not detect local ip for $interface"
+                    fi
+                done
+            fi
         ;;
 
         "MINIX")
@@ -3712,8 +3735,19 @@ get_local_ip() {
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
-            local_ip="$(ipconfig getifaddr en0)"
-            [[ -z "$local_ip" ]] && local_ip="$(ipconfig getifaddr en1)"
+            if [[ "${local_ip_interface[0]}" == "auto" ]]; then
+                interface="$(route get 1 | awk -F': ' '/interface/ {printf $2; exit}')"
+                local_ip="$(ipconfig getifaddr "$interface")"
+            else
+                for interface in "${local_ip_interface[@]}"; do
+                    local_ip="$(ipconfig getifaddr "$interface")"
+                    if [[ -n "$local_ip" ]]; then
+                        prin "$interface" "$local_ip"
+                    else
+                        err "Local IP: Could not detect local ip for $interface"
+                    fi
+                done
+            fi
         ;;
 
         "Windows")
@@ -4882,6 +4916,7 @@ INFO:
 
     --ip_host url               URL to query for public IP
     --ip_timeout int            Public IP timeout (in seconds).
+    --ip_interface value        Interface(s) to use for local IP
     --song_format format        Print the song data in a specific format (see config file).
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --memory_percent on/off     Display memory percentage.
@@ -5078,6 +5113,17 @@ get_args() {
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
             "--ip_timeout") public_ip_timeout="$2" ;;
+            "--ip_interface")
+                unset local_ip_interface
+                for arg in "$@"; do
+                    case "$arg" in
+                        "--ip_interface") ;;
+                        "-"*) break ;;
+                        *) local_ip_interface+=("$arg") ;;
+                    esac
+                done
+            ;;
+
             "--song_format") song_format="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
             "--music_player") music_player="$2" ;;
