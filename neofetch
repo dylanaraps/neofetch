@@ -1688,8 +1688,17 @@ get_de() {
 
         Windows)
             case $distro in
-                "Windows 8"*|"Windows 10"*) de="Modern UI/Metro" ;;
-                *) de=Aero
+                "Windows 10"*)
+                    de=Fluent
+                ;;
+
+                "Windows 8"*)
+                    de=Metro
+                ;;
+
+                *)
+                    de=Aero
+                ;;
             esac
         ;;
 
@@ -1870,15 +1879,21 @@ get_wm() {
             ;;
 
             Windows)
-                wm=$(tasklist | grep -m 1 -o -F \
-                                     -e bugn \
-                                     -e Windawesome \
-                                     -e blackbox \
-                                     -e emerge \
-                                     -e litestep)
+                wm=$(
+                    tasklist |
 
-                [[ $wm == blackbox ]] && wm="bbLean (Blackbox)"
-                wm=${wm:+$wm, }Explorer
+                    grep -Fom 1 \
+                         -e bugn \
+                         -e Windawesome \
+                         -e blackbox \
+                         -e emerge \
+                         -e litestep
+                )
+
+                [[ $wm == blackbox ]] &&
+                    wm="bbLean (Blackbox)"
+
+                wm=${wm:+$wm, }DWM.exe
             ;;
 
             FreeMiNT)
