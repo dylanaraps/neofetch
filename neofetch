@@ -1911,7 +1911,7 @@ get_wm() {
                                      -e litestep)
 
                 [[ $wm == blackbox ]] && wm="bbLean (Blackbox)"
-                wm=${wm:+$wm, }Explorer
+                wm=${wm:+$wm, }DWM.exe
             ;;
 
             FreeMiNT)
