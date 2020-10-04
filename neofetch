@@ -5630,6 +5630,30 @@ dhhyys+/-`
 EOF
         ;;
 
+        "Archcraft"*)
+            set_colors 6 6 7 1
+            read -rd '' ascii_data <<'EOF'
+${c1}                   -m:                        
+                  :NMM+      .+               
+                 +MMMMMo    -NMy              
+                sMMMMMMMy  -MMMMh`            
+               yMMMMMMMMMd` oMMMMd`           
+             `dMMMMMMMMMMMm. /MMMMm-          
+            .mMMMMMm-dMMMMMN- :NMMMN:         
+           -NMMMMMd`  yMMMMMN: .mMMMM/        
+          :NMMMMMy     sMMMMMM+ `dMMMMo       
+         +MMMMMMs       +MMMMMMs `hMMMMy      
+        oMMMMMMMds-      :NMMMMMy  sMMMMh`    
+       yMMMMMNoydMMmo`    -NMMMMMd` +MMMMd.   
+     `dMMMMMN-   `:yNNs`   .mMMMMMm. /MMMMm-  
+    .mMMMMMm.        :hN/   `dMMMMMN- -NMMMN: 
+   -NMMMMMd`           -hh`  `yMMMMMN: .mMMMM/
+  :NMMMMMy         `s`   :h.   oMMMMMM+ `-----
+ +MMMMMMo         .dMm.   `o.   +MMMMMMo      
+sMMMMMM+         .mMMMN:    :`   :NMMMMMy     
+EOF
+        ;;
+
         "arcolinux_small"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
