@@ -3686,6 +3686,9 @@ get_battery() {
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining)"
             battery="${battery/EstimatedChargeRemaining}"
             battery="$(trim "$battery")%"
+            state="$(wmic /NameSpace:'\\root\WMI' Path BatteryStatus get Charging)"
+            state="${state/Charging}"
+            [[ "$state" == *TRUE* ]] && battery_state="charging"
         ;;
 
         "Haiku")
