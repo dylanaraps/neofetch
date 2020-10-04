@@ -1860,7 +1860,19 @@ get_wm() {
         fi
 
     elif [[ $DISPLAY && $os != "Mac OS X" && $os != "macOS" && $os != FreeMiNT ]]; then
-        type -p xprop &>/dev/null && {
+        # non-EWMH WMs.
+        wm=$(ps "${ps_flags[@]}" | grep -m 1 -o \
+                           -e "[s]owm" \
+                           -e "[c]atwm" \
+                           -e "[f]vwm" \
+                           -e "[d]wm" \
+                           -e "[2]bwm" \
+                           -e "[m]onsterwm" \
+                           -e "[t]inywm" \
+                           -e "[x]11fs" \
+                           -e "[x]monad")
+
+        [[ -z $wm ]] && type -p xprop &>/dev/null && {
             id=$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)
             id=${id##* }
             wm=$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)
@@ -1868,19 +1880,6 @@ get_wm() {
             wm=${wm/\"}
             wm=${wm/\"*}
         }
-
-        # Fallback for non-EWMH WMs.
-        [[ $wm ]] ||
-            wm=$(ps "${ps_flags[@]}" | grep -m 1 -o \
-                               -e "[s]owm" \
-                               -e "[c]atwm" \
-                               -e "[f]vwm" \
-                               -e "[d]wm" \
-                               -e "[2]bwm" \
-                               -e "[m]onsterwm" \
-                               -e "[t]inywm" \
-                               -e "[x]11fs" \
-                               -e "[x]monad")
 
     else
         case $os in
