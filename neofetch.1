@@ -235,7 +235,7 @@ Possible values: bar, infobar, barinfo, off
 \fB\-\-backend\fR backend
 Which image backend to use.
 Possible values: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2',
-\&'off', 'sixel', 'tycat', 'w3m', 'kitty'
+\&'off', 'sixel', 'tycat', 'w3m', 'kitty', 'ueberzug'
 .TP
 \fB\-\-source\fR source
 Which image or ascii file to use.
@@ -279,6 +279,9 @@ Shortcut to use 'tycat' backend.
 .TP
 \fB\-\-w3m\fR source
 Shortcut to use 'w3m' backend.
+.TP
+\fB\-\-ueberzug\fR source
+Shortcut to use 'ueberzug' backend.
 .TP
 \fB\-\-off\fR
 Shortcut to use 'off' backend (Disable ascii art).
@@ -365,11 +368,11 @@ west, center, east, southwest, south, southeast
 .TP
 \fB\-\-xoffset\fR px
 How close the image will be to the left edge of the
-window. This only works with w3m.
+window. This only works with w3m and ueberzug.
 .TP
 \fB\-\-yoffset\fR px
 How close the image will be to the top edge of the
-window. This only works with w3m.
+window. This only works with w3m and ueberzug.
 .TP
 \fB\-\-bg_color\fR color
 Background color to display behind transparent image.

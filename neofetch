@@ -744,7 +744,8 @@ disk_display="off"
 #
 # Default:  'ascii'
 # Values:   'ascii', 'caca', 'catimg', 'chafa', 'jp2a', 'iterm2', 'off',
-#           'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
+#           'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty', 'ueberzug'
+
 # Flag:     --backend
 image_backend="ascii"
 
@@ -3837,13 +3838,14 @@ image_backend() {
         "off") image_backend="off" ;;
 
         "caca" | "catimg" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
-        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty" | "pot")
+        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty" | "pot", | "ueberzug")
             get_image_source
 
             [[ ! -f "$image" ]] && {
                 to_ascii "Image: '$image_source' doesn't exist, falling back to ascii mode."
                 return
             }
+            [[ "$image_backend" == "ueberzug" ]] && wait=true;
 
             get_window_size
 
@@ -4258,6 +4260,24 @@ display_image() {
             "$image"
         ;;
 
+
+        "ueberzug")
+            if [ "$wait" = true ];then
+                wait=false;
+            else
+                source "$(ueberzug library)"
+                ImageLayer 0< <(
+                ImageLayer::add\
+                        ['identifier']="neofetch"\
+                        ['x']="$xoffset" ['y']="$yoffset"\
+                        ['max_width']="$((width / font_width))"\
+                        ['max_height']="$((height / font_height))"\
+                        ['path']="$image";
+                read -rs;
+                )
+            fi
+        ;;
+        
         "catimg")
             catimg -w "$((width*catimg_size / font_width))" -r "$catimg_size" "$image"
         ;;
@@ -4921,6 +4941,7 @@ IMAGE BACKEND:
     --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
     --w3m source                Shortcut to use 'w3m' backend.
+    --ueberzug source            Shortcut to use 'ueberzug' backend
     --off                       Shortcut to use 'off' backend (Disable ascii art).
 
     NOTE: 'source; can be any of the following: 'auto', 'ascii', 'wallpaper', '/path/to/img',
@@ -5135,9 +5156,9 @@ get_args() {
 
             # Image backend
             "--backend") image_backend="$2" ;;
-            "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--catimg" | "--chafa" | "--jp2a" | "--iterm2" | "--off" |\
-            "--pot" | "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
+            "--source") image_source="$2" ;;       
+            "--ascii" | "--caca" | "--catimg" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" |\
+            "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty" | "--ueberzug")
                 image_backend="${1/--}"
                 case $2 in
                     "-"* | "") ;;
@@ -10726,6 +10747,7 @@ main() {
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
     [[ $image_backend == *w3m* ]] && display_image
+    [[ $image_backend == *ueberzug* ]] && display_image
 
     # Add neofetch info to verbose output.
     err "Neofetch command: $0 $*"
