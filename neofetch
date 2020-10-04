@@ -1637,59 +1637,78 @@ get_packages() {
 }
 
 get_shell() {
-    case $shell_path in
-        on)  shell="$SHELL " ;;
-        off) shell="${SHELL##*/} " ;;
-    esac
+    if [[ $os == "Windows" ]]; then
 
-    [[ $shell_version != on ]] && return
+        case $shell_path in
+            on)  shell="$(echo $COMSPEC | sed 's:\\:\\\\:g') " ;;
+            off) shell="${COMSPEC##*\\} " ;;
+        esac
 
-    case ${shell_name:=${SHELL##*/}} in
-        bash)
-            [[ $BASH_VERSION ]] ||
-                BASH_VERSION=$("$SHELL" -c "printf %s \"\$BASH_VERSION\"")
+        [[ $shell_version != on ]] && return
 
-            shell+=${BASH_VERSION/-*}
-        ;;
+        if [[ $COMSPEC == *powershell* || $COMSPEC == *pwsh* ]]; then
+            shell+="$($COMSPEC '$ver = $PSVersionTable.PSVersion; "$ver"')"
+        elif [[ $COMSPEC == *cmd* ]]; then
+            shell+="2"
+        fi
 
-        sh|ash|dash|es) ;;
+    else
 
-        *ksh)
-            shell+=$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")
-            shell=${shell/ * KSH}
-            shell=${shell/version}
-        ;;
+        case $shell_path in
+            on)  shell="$SHELL " ;;
+            off) shell="${SHELL##*/} " ;;
+        esac
 
-        osh)
-            if [[ $OIL_VERSION ]]; then
-                shell+=$OIL_VERSION
-            else
-                shell+=$("$SHELL" -c "printf %s \"\$OIL_VERSION\"")
-            fi
-        ;;
+        [[ $shell_version != on ]] && return
 
-        tcsh)
-            shell+=$("$SHELL" -c "printf %s \$tcsh")
-        ;;
+        case ${shell_name:=${SHELL##*/}} in
+            bash)
+                [[ $BASH_VERSION ]] ||
+                    BASH_VERSION=$("$SHELL" -c "printf %s \"\$BASH_VERSION\"")
 
-        yash)
-            shell+=$("$SHELL" --version 2>&1)
-            shell=${shell/ $shell_name}
-            shell=${shell/ Yet another shell}
-            shell=${shell/Copyright*}
-        ;;
+                shell+=${BASH_VERSION/-*}
+            ;;
 
-        *)
-            shell+=$("$SHELL" --version 2>&1)
-            shell=${shell/ $shell_name}
-        ;;
-    esac
+            sh|ash|dash|es) ;;
 
-    # Remove unwanted info.
-    shell=${shell/, version}
-    shell=${shell/xonsh\//xonsh }
-    shell=${shell/options*}
-    shell=${shell/\(*\)}
+            *ksh)
+                shell+=$("$SHELL" -c "printf %s \"\$KSH_VERSION\"")
+                shell=${shell/ * KSH}
+                shell=${shell/version}
+            ;;
+
+            osh)
+                if [[ $OIL_VERSION ]]; then
+                    shell+=$OIL_VERSION
+                else
+                    shell+=$("$SHELL" -c "printf %s \"\$OIL_VERSION\"")
+                fi
+            ;;
+
+            tcsh)
+                shell+=$("$SHELL" -c "printf %s \$tcsh")
+            ;;
+
+            yash)
+                shell+=$("$SHELL" --version 2>&1)
+                shell=${shell/ $shell_name}
+                shell=${shell/ Yet another shell}
+                shell=${shell/Copyright*}
+            ;;
+
+            *)
+                shell+=$("$SHELL" --version 2>&1)
+                shell=${shell/ $shell_name}
+            ;;
+        esac
+
+        # Remove unwanted info.
+        shell=${shell/, version}
+        shell=${shell/xonsh\//xonsh }
+        shell=${shell/options*}
+        shell=${shell/\(*\)}
+
+    fi
 }
 
 get_de() {
