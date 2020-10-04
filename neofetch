@@ -5207,8 +5207,9 @@ get_args() {
             # Image backend
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--catimg" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" |\
-            "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty" | "--ueberzug")
+            "--ascii" | "--caca" | "--catimg" | "--chafa" | "--jp2a" | "--iterm2" | "--off" |\
+            "--pot" | "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty" |\
+            "--ueberzug")
                 image_backend="${1/--}"
                 case $2 in
                     "-"* | "") ;;
