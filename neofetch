@@ -728,8 +728,7 @@ bar_color_total="distro"
 #
 # Default: 'off'
 # Values:  'bar', 'infobar', 'barinfo', 'off'
-# Flags:   --cpu_display
-#          --memory_display
+# Flags:   --memory_display
 #          --battery_display
 #          --disk_display
 #
@@ -738,7 +737,6 @@ bar_color_total="distro"
 # infobar: 'info [---=======]'
 # barinfo: '[---=======] info'
 # off:     'info'
-cpu_display="off"
 memory_display="off"
 battery_display="off"
 disk_display="off"
@@ -985,7 +983,7 @@ get_distro() {
 
             elif [[ -f /etc/armbian-release ]]; then
                 . /etc/armbian-release
-                distro="Armbian $DISTRIBUTION_CODENAME ($VERSION)"
+                distro="Armbian $DISTRIBUTION_CODENAME (${VERSION:-})"
 
             elif [[ -f /etc/siduction-version ]]; then
                 case $distro_shorthand in
@@ -1500,7 +1498,7 @@ get_packages() {
     has() { type -p "$1" >/dev/null && manager=$1; }
     dir() { ((packages+=$#)); pac "$(($#-pkgs_h))"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
-    tot() { 
+    tot() {
 	IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
 	((packages+=${#pkgs[@]}));
 	pac "$((${#pkgs[@]}-pkgs_h))";
@@ -1634,7 +1632,7 @@ get_packages() {
             has pkgman && dir /boot/system/package-links/*
             packages=${packages/pkgman/depot}
 	;;
-	
+
         IRIX)
             manager=swpkg
             pkgs_h=3 tot versions -b && ((packages-=3))
@@ -4314,7 +4312,7 @@ display_image() {
                 )
             fi
         ;;
-        
+
         "catimg")
             catimg -w "$((width*catimg_size / font_width))" -r "$catimg_size" "$image"
         ;;
@@ -4946,8 +4944,6 @@ BARS:
     --bar_length num            Length in spaces to make the bars.
     --bar_colors num num        Colors to make the bar.
                                 Set in this order: elapsed, total
-    --cpu_display mode          Bar mode.
-                                Possible values: bar, infobar, barinfo, off
     --memory_display mode       Bar mode.
                                 Possible values: bar, infobar, barinfo, off
     --battery_display mode      Bar mode.
@@ -5198,14 +5194,13 @@ get_args() {
                 bar_color_total="$3"
             ;;
 
-            "--cpu_display") cpu_display="$2" ;;
             "--memory_display") memory_display="$2" ;;
             "--battery_display") battery_display="$2" ;;
             "--disk_display") disk_display="$2" ;;
 
             # Image backend
             "--backend") image_backend="$2" ;;
-            "--source") image_source="$2" ;;       
+            "--source") image_source="$2" ;;
             "--ascii" | "--caca" | "--catimg" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" |\
             "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty" | "--ueberzug")
                 image_backend="${1/--}"
@@ -5336,7 +5331,6 @@ get_args() {
 
                 refresh_rate="on"
                 shell_version="on"
-                cpu_display="infobar"
                 memory_display="infobar"
                 disk_display="infobar"
                 cpu_temp="C"
@@ -5587,26 +5581,26 @@ EOF
         read -rd '' ascii_data <<'EOF'
 
 ${c1}
-     'cx0XWWMMWNKOd:'.                  
-  .;kNMMMMMMMMMMMMMWNKd'                
- 'kNMMMMMMWNNNWMMMMMMMMXo.              
-,0MMMMMW0o;'..,:dKWMMMMMWx.             
-OMMMMMXl.        .xNMMMMMNo             
-WMMMMNl           .kWWMMMMO'            
-MMMMMX;            oNWMMMMK,            
-NMMMMWo           .OWMMMMMK,            
-kWMMMMNd.        ,kWMMMMMMK,            
-'kWMMMMWXxl:;;:okNMMMMMMMMK,            
- .oXMMMMMMMWWWMMMMMMMMMMMMK,            
-   'oKWMMMMMMMMMMMMMMMMMMMK,            
-     .;lxOKXXXXXXXXXXXXXXXO;......      
-          ................,d0000000kd:. 
+     'cx0XWWMMWNKOd:'.
+  .;kNMMMMMMMMMMMMMWNKd'
+ 'kNMMMMMMWNNNWMMMMMMMMXo.
+,0MMMMMW0o;'..,:dKWMMMMMWx.
+OMMMMMXl.        .xNMMMMMNo
+WMMMMNl           .kWWMMMMO'
+MMMMMX;            oNWMMMMK,
+NMMMMWo           .OWMMMMMK,
+kWMMMMNd.        ,kWMMMMMMK,
+'kWMMMMWXxl:;;:okNMMMMMMMMK,
+ .oXMMMMMMMWWWMMMMMMMMMMMMK,
+   'oKWMMMMMMMMMMMMMMMMMMMK,
+     .;lxOKXXXXXXXXXXXXXXXO;......
+          ................,d0000000kd:.
                           .kMMMMMMMMMW0;
                           .kMMMMMMMMMMMX
                           .xMMMMMMMMMMMW
                            cXMMMMMMMMMM0
                             :0WMMMMMMNx,
-                             .o0NMWNOc. 
+                             .o0NMWNOc.
 EOF
         ;;
 
@@ -5731,24 +5725,24 @@ EOF
         "Archcraft"*)
             set_colors 6 6 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}                   -m:                        
-                  :NMM+      .+               
-                 +MMMMMo    -NMy              
-                sMMMMMMMy  -MMMMh`            
-               yMMMMMMMMMd` oMMMMd`           
-             `dMMMMMMMMMMMm. /MMMMm-          
-            .mMMMMMm-dMMMMMN- :NMMMN:         
-           -NMMMMMd`  yMMMMMN: .mMMMM/        
-          :NMMMMMy     sMMMMMM+ `dMMMMo       
-         +MMMMMMs       +MMMMMMs `hMMMMy      
-        oMMMMMMMds-      :NMMMMMy  sMMMMh`    
-       yMMMMMNoydMMmo`    -NMMMMMd` +MMMMd.   
-     `dMMMMMN-   `:yNNs`   .mMMMMMm. /MMMMm-  
-    .mMMMMMm.        :hN/   `dMMMMMN- -NMMMN: 
+${c1}                   -m:
+                  :NMM+      .+
+                 +MMMMMo    -NMy
+                sMMMMMMMy  -MMMMh`
+               yMMMMMMMMMd` oMMMMd`
+             `dMMMMMMMMMMMm. /MMMMm-
+            .mMMMMMm-dMMMMMN- :NMMMN:
+           -NMMMMMd`  yMMMMMN: .mMMMM/
+          :NMMMMMy     sMMMMMM+ `dMMMMo
+         +MMMMMMs       +MMMMMMs `hMMMMy
+        oMMMMMMMds-      :NMMMMMy  sMMMMh`
+       yMMMMMNoydMMmo`    -NMMMMMd` +MMMMd.
+     `dMMMMMN-   `:yNNs`   .mMMMMMm. /MMMMm-
+    .mMMMMMm.        :hN/   `dMMMMMN- -NMMMN:
    -NMMMMMd`           -hh`  `yMMMMMN: .mMMMM/
   :NMMMMMy         `s`   :h.   oMMMMMM+ `-----
- +MMMMMMo         .dMm.   `o.   +MMMMMMo      
-sMMMMMM+         .mMMMN:    :`   :NMMMMMy     
+ +MMMMMMo         .dMm.   `o.   +MMMMMMo
+sMMMMMM+         .mMMMN:    :`   :NMMMMMy
 EOF
         ;;
 
@@ -7806,24 +7800,24 @@ EOF
         "LaxerOS"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
-${c2}           
+${c2}
                     /.
-                 `://:-                 
-                `//////:                
-               .////////:`              
-              -//////////:`             
-             -/////////////`            
-            :///////////////.           
-          `://////.```-//////-          
-         `://///:`     .//////-         
-        `//////:        `//////:        
-       .//////-          `://///:`      
-      -//////-            `://///:`     
-     -//////.               ://////`    
-    ://////`                 -//////.   
-   `/////:`                   ./////:   
+                 `://:-
+                `//////:
+               .////////:`
+              -//////////:`
+             -/////////////`
+            :///////////////.
+          `://////.```-//////-
+         `://///:`     .//////-
+        `//////:        `//////:
+       .//////-          `://///:`
+      -//////-            `://///:`
+     -//////.               ://////`
+    ://////`                 -//////.
+   `/////:`                   ./////:
     .-::-`                     .:::-`
-       
+
 .:://////////////////////////////////::.
 ////////////////////////////////////////
 .:////////////////////////////////////:.
@@ -10500,7 +10494,7 @@ ${c1}   -1vvnvv.     `~+++`        ++|+++
         +Invnvnvnnnnnnnnvvnn;.
           ~|Invnvnvvnvvvnnv}+`
              -~|{*l}*|~
-            
+
 EOF
 
         ;;
