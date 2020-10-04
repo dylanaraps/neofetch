@@ -75,7 +75,6 @@ print_info() {
     info "Memory" memory
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
-    # info "CPU Usage" cpu_usage
     # info "Disk" disk
     # info "Battery" battery
     # info "Font" font
@@ -2363,47 +2362,6 @@ get_cpu() {
         deg="[${deg/${deg: -1}}.${deg: -1}°${cpu_temp:-C}]"
         cpu="$cpu $deg"
     fi
-}
-
-get_cpu_usage() {
-    case $os in
-        "Windows")
-            cpu_usage="$(wmic cpu get loadpercentage)"
-            cpu_usage="${cpu_usage/LoadPercentage}"
-            cpu_usage="${cpu_usage//[[:space:]]}"
-        ;;
-
-        *)
-            # Get CPU cores if unset.
-            if [[ "$cpu_cores" != "logical" ]]; then
-                case $os in
-                    "Linux" | "MINIX")  cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
-                    "Mac OS X"|"macOS") cores="$(sysctl -n hw.logicalcpu_max)" ;;
-                    "BSD")              cores="$(sysctl -n hw.ncpu)" ;;
-                    "Solaris")          cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
-                    "Haiku")            cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
-                    "iPhone OS")        cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
-                    "IRIX")             cores="$(sysconf NPROC_ONLN)" ;;
-                    "FreeMiNT")         cores="$(sysctl -n hw.ncpu)" ;;
-
-                    "AIX")
-                        cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')"
-                    ;;
-                esac
-            fi
-
-            cpu_usage="$(ps aux | awk 'BEGIN {sum=0} {sum+=$3}; END {print sum}')"
-            cpu_usage="$((${cpu_usage/\.*} / ${cores:-1}))"
-        ;;
-    esac
-
-    # Print the bar.
-    case $cpu_display in
-        "bar")     cpu_usage="$(bar "$cpu_usage" 100)" ;;
-        "infobar") cpu_usage="${cpu_usage}% $(bar "$cpu_usage" 100)" ;;
-        "barinfo") cpu_usage="$(bar "$cpu_usage" 100)${info_color} ${cpu_usage}%" ;;
-        *)         cpu_usage="${cpu_usage}%" ;;
-    esac
 }
 
 get_gpu() {
@@ -5258,7 +5216,6 @@ get_args() {
                     info "GPU Driver" gpu_driver
                     info "Memory" memory
 
-                    info "CPU Usage" cpu_usage
                     info "Disk" disk
                     info "Battery" battery
                     info "Font" font
@@ -5311,6 +5268,7 @@ get_simple() {
 old_functions() {
     # Removed functions for backwards compatibility.
     get_line_break() { :; }
+    get_cpu_usage() { :; }
 }
 
 get_distro_ascii() {
