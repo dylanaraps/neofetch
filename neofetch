@@ -1718,11 +1718,11 @@ get_de() {
 
         Windows)
             case $distro in
-                "Windows 10"*)
+                *"Windows 10"*)
                     de=Fluent
                 ;;
 
-                "Windows 8"*)
+                *"Windows 8"*)
                     de=Metro
                 ;;
 
@@ -2517,12 +2517,14 @@ get_gpu() {
 
         "Windows")
             while read -r line; do
+                line=$(trim "$line")
+
                 [[ -z $win_gpu ]] || [[ -z "$line" ]] && {
                     win_gpu=1
                     continue
                 }
 
-                prin "${subtitle:+${subtitle}${gpu_name}}" "$(trim "$line")"
+                prin "${subtitle:+${subtitle}${gpu_name}}" "$line"
             done < <(wmic path Win32_VideoController get caption)
         ;;
 
