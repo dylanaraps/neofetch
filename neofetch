@@ -1720,7 +1720,8 @@ get_de() {
 
         Windows)
             case $distro in
-                "Windows 8"*|"Windows 10"*) de="Modern UI/Metro" ;;
+                *"Windows 10"*) de="Fluent" ;;
+                *"Windows 8"*) de="Metro" ;;
                 *) de=Aero
             esac
         ;;
