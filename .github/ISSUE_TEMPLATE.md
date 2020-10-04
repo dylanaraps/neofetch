@@ -2,6 +2,8 @@
 
 If you're suggesting a new feature then just a description will suffice.
 
+- [ ] Does this issue still occur in the master branch? (**Required if issue**)
+
 
 #### Neofetch version
 
