@@ -976,6 +976,10 @@ get_distro() {
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
 
+            elif [[ -f /etc/armbian-release ]]; then
+                . /etc/armbian-release
+                distro="Armbian $DISTRIBUTION_CODENAME ($VERSION)"
+
             elif [[ -f /etc/siduction-version ]]; then
                 case $distro_shorthand in
                     on|tiny) distro=Siduction ;;
