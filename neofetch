@@ -2245,7 +2245,17 @@ get_cpu() {
             [[ -z "$speed" ]] && speed="$(sysctl -n  hw.clockrate)"
 
             # Get CPU cores.
-            cores="$(sysctl -n hw.ncpu)"
+            case $kernel_name in
+                "OpenBSD"*)
+                    [[ "$(sysctl -n hw.smt)" == "1" ]] && smt="on" || smt="off"
+                    ncpufound="$(sysctl -n hw.ncpufound)"
+                    ncpuonline="$(sysctl -n hw.ncpuonline)"
+                    cores="${ncpuonline}/${ncpufound},\\xc2\\xa0SMT\\xc2\\xa0${smt}"
+                ;;
+                *)
+                    cores="$(sysctl -n hw.ncpu)"
+                ;;
+            esac
 
             # Get CPU temp.
             case $kernel_name in
