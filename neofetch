@@ -75,6 +75,7 @@ print_info() {
     info "Memory" memory
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
+    # info "CPU Usage" cpu_usage
     # info "Disk" disk
     # info "Battery" battery
     # info "Font" font
@@ -407,13 +408,6 @@ public_ip_host="http://ident.me"
 # Flag:    --ip_timeout
 public_ip_timeout=2
 
-# Local IP interface
-#
-# Default: 'auto' (interface of default route)
-# Values:  'auto', 'en0', 'en1'
-# Flag:    --ip_interface
-local_ip_interface=('auto')
-
 
 # Desktop Environment
 
@@ -514,7 +508,6 @@ disk_percent="on"
 # iTunes
 # juk
 # lollypop
-# MellowPlayer
 # mocp
 # mopidy
 # mpd
@@ -728,7 +721,8 @@ bar_color_total="distro"
 #
 # Default: 'off'
 # Values:  'bar', 'infobar', 'barinfo', 'off'
-# Flags:   --memory_display
+# Flags:   --cpu_display
+#          --memory_display
 #          --battery_display
 #          --disk_display
 #
@@ -737,6 +731,7 @@ bar_color_total="distro"
 # infobar: 'info [---=======]'
 # barinfo: '[---=======] info'
 # off:     'info'
+cpu_display="off"
 memory_display="off"
 battery_display="off"
 disk_display="off"
@@ -748,9 +743,8 @@ disk_display="off"
 # Image backend.
 #
 # Default:  'ascii'
-# Values:   'ascii', 'caca', 'catimg', 'chafa', 'jp2a', 'iterm2', 'off',
-#           'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty', 'ueberzug'
-
+# Values:   'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'off',
+#           'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty'
 # Flag:     --backend
 image_backend="ascii"
 
@@ -778,34 +772,34 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
-#       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
-#       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
-#       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
-#       bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
-#       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
-#       Container_Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS,
-#       Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
+# NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, "AOSC OS",
+#       "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs,
+#       ArchStrike, XFerience, ArchMerge, Arch, Artix, Arya, Bedrock,
+#       Bitrig, BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
+#       BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
+#       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover,
+#       Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
+#       DesaOS, Devuan, DracOS, DarkOs, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
-#       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
-#       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
-#       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, Maui,
-#       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
-#       Netrunner, Nitrux, NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD,
-#       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
-#       osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
-#       TrueOS, PCLinuxOS, Pengwin, Peppermint, popos, Porteus, PostMarketOS,
-#       Proxmox, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, Reborn_OS,
-#       Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
-#       sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
-#       SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
-#       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
-#       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
-#       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
-#       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, semc, Obarun,
-#       windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
+#       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
+#       Korora, KSLinux, Kubuntu, LEDE, LFS, Linux_Lite,
+#       LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva,
+#       Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
+#       Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner,
+#       NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana, openmamba,
+#       OpenMandriva, OpenStage, OpenWrt, osmc, Oracle, OS Elbrus, PacBSD,
+#       Parabola, Pardus, Parrot, Parsix, TrueOS, PCLinuxOS, Peppermint,
+#       popos, Porteus, PostMarketOS, Proxmox, Puppy, PureOS, Qubes, Radix,
+#       Raspbian, Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan,
+#       Regata, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific,
+#       Septor, SereneLinux, SharkLinux, Siduction, Slackware, SliTaz,
+#       SmartOS, Solus, Source_Mage, Sparky, Star, SteamOS, SunOS,
+#       openSUSE_Leap, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails,
+#       Trisquel, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio,
+#       Ubuntu, Venom, Void, Obarun, windows10, Windows7, Xubuntu, Zorin,
+#       and IRIX have ascii logos
 # NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
 # NOTE: Ubuntu has flavor variants.
@@ -885,14 +879,6 @@ crop_offset="center"
 # Flags:   --image_size
 #          --size
 image_size="auto"
-
-# Catimg block size.
-# Control the resolution of catimg.
-#
-# Default: '2'
-# Values:  '1', '2'
-# Flags:   --catimg_size
-catimg_size="2"
 
 # Gap between image and text
 #
@@ -980,10 +966,6 @@ get_distro() {
                     on|tiny) distro="Red Star OS" ;;
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
-
-            elif [[ -f /etc/armbian-release ]]; then
-                . /etc/armbian-release
-                distro="Armbian $DISTRIBUTION_CODENAME (${VERSION:-})"
 
             elif [[ -f /etc/siduction-version ]]; then
                 case $distro_shorthand in
@@ -1316,7 +1298,11 @@ get_model() {
         ;;
 
         BSD|MINIX)
-            model=$(sysctl -n hw.vendor hw.product)
+            if [[ $(uname -s) = "FreeBSD" ]]; then
+                model=$(kenv smbios.system.version)
+            else
+                model=$(sysctl -n hw.vendor hw.product)
+            fi
         ;;
 
         Windows)
@@ -1450,7 +1436,7 @@ get_uptime() {
 
     d="$((s / 60 / 60 / 24)) days"
     h="$((s / 60 / 60 % 24)) hours"
-    m="$((s / 60 % 60)) minutes"
+    m="$((s / 60 % 60)) mins"
 
     # Remove plural if < 2.
     ((${d/ *} == 1)) && d=${d/s}
@@ -1464,52 +1450,41 @@ get_uptime() {
 
     uptime=${d:+$d, }${h:+$h, }$m
     uptime=${uptime%', '}
-    uptime=${uptime:-$s seconds}
+    uptime=${uptime:-$s secs}
 
     # Make the output of uptime smaller.
     case $uptime_shorthand in
-        on)
-            uptime=${uptime/ minutes/ mins}
-            uptime=${uptime/ minute/ min}
-            uptime=${uptime/ seconds/ secs}
-        ;;
+        on) ;;
 
         tiny)
             uptime=${uptime/ days/d}
             uptime=${uptime/ day/d}
             uptime=${uptime/ hours/h}
             uptime=${uptime/ hour/h}
-            uptime=${uptime/ minutes/m}
-            uptime=${uptime/ minute/m}
-            uptime=${uptime/ seconds/s}
+            uptime=${uptime/ mins/m}
+            uptime=${uptime/ min/m}
+            uptime=${uptime/ secs/s}
             uptime=${uptime//,}
         ;;
     esac
 }
 
 get_packages() {
-    # to adjust the number of pkgs per pkg manager
-    pkgs_h=0
-
     # has: Check if package manager installed.
     # dir: Count files or dirs in a glob.
     # pac: If packages > 0, log package manager name.
     # tot: Count lines in command output.
     has() { type -p "$1" >/dev/null && manager=$1; }
-    dir() { ((packages+=$#)); pac "$(($#-pkgs_h))"; }
+    dir() { ((packages+=$#)); pac "$#"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
-    tot() {
-	IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
-	((packages+=${#pkgs[@]}));
-	pac "$((${#pkgs[@]}-pkgs_h))";
-    }
+    tot() { IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";((packages+=${#pkgs[@]}));pac "${#pkgs[@]}";}
 
     # Redefine tot() for Bedrock Linux.
     [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
         tot() {
             IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in $(brl list); do strat -r "$s" "$@"; done)"
             ((packages+="${#pkgs[@]}"))
-	    pac "$((${#pkgs[@]}-pkgs_h))";
+            pac "${#pkgs[@]}"
         }
         br_prefix="/bedrock/strata/*"
     }
@@ -1518,7 +1493,6 @@ get_packages() {
         Linux|BSD|"iPhone OS"|Solaris)
             # Package Manager Programs.
             has kiss       && tot kiss l
-            has cpt-list   && tot cpt-list
             has pacman-key && tot pacman -Qq --color never
             has dpkg       && tot dpkg-query -f '.\n' -W
             has rpm        && tot rpm -qa
@@ -1529,7 +1503,7 @@ get_packages() {
             has lvu        && tot lvu installed
             has tce-status && tot tce-status -i
             has pkg_info   && tot pkg_info
-            has tazpkg     && pkgs_h=6 tot tazpkg list && ((packages-=6))
+            has tazpkg     && tot tazpkg list && ((packages-=6))
             has sorcery    && tot gaze installed
             has alps       && tot alps showinstalled
             has butch      && tot butch list
@@ -1590,8 +1564,7 @@ get_packages() {
 
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
-            has snap && ps -e | grep -qFm 1 snapd >/dev/null && \
-		pkgs_h=1 tot snap list && ((packages-=1))
+            has snap && ps -e | grep -qFm 1 snapd >/dev/null && tot snap list && ((packages-=1))
 
             # This is the only standard location for appimages.
             # See: https://github.com/AppImage/AppImageKit/wiki
@@ -1599,7 +1572,7 @@ get_packages() {
         ;;
 
         "Mac OS X"|"macOS"|MINIX)
-            has port  && pkgs_h=1 tot port installed && ((packages-=1))
+            has port  && tot port installed && ((packages-=1))
             has brew  && dir /usr/local/Cellar/*
             has pkgin && tot pkgin list
 
@@ -1621,9 +1594,9 @@ get_packages() {
             esac
 
             # Scoop environment throws errors if `tot scoop list` is used
-            has scoop && pkgs_h=1 dir ~/scoop/apps/* && ((packages-=1))
+            has scoop && dir ~/scoop/apps/* && ((packages-=1))
 
-	    # Count chocolatey packages.
+            # Count chocolatey packages.
             [[ -d /cygdrive/c/ProgramData/chocolatey/lib ]] && \
                 dir /cygdrive/c/ProgramData/chocolatey/lib/*
         ;;
@@ -1631,11 +1604,11 @@ get_packages() {
         Haiku)
             has pkgman && dir /boot/system/package-links/*
             packages=${packages/pkgman/depot}
-	;;
+        ;;
 
         IRIX)
             manager=swpkg
-            pkgs_h=3 tot versions -b && ((packages-=3))
+            tot versions -b && ((packages-=3))
         ;;
     esac
 
@@ -1718,17 +1691,8 @@ get_de() {
 
         Windows)
             case $distro in
-                *"Windows 10"*)
-                    de=Fluent
-                ;;
-
-                *"Windows 8"*)
-                    de=Metro
-                ;;
-
-                *)
-                    de=Aero
-                ;;
+                "Windows 8"*|"Windows 10"*) de="Modern UI/Metro" ;;
+                *) de=Aero
             esac
         ;;
 
@@ -1818,14 +1782,8 @@ get_de() {
         de_ver=${de_ver/* }
         de_ver=${de_ver//\"}
 
-        de+=" $de_ver"
+        de="$de $de_ver"
     fi
-
-    # TODO:
-    #  - New config option + flag: --de_display_server on/off ?
-    #  - Add display of X11, Arcan and anything else relevant.
-    [[ $de && $WAYLAND_DISPLAY ]] &&
-        de+=" (Wayland)"
 
     de_run=1
 }
@@ -1839,58 +1797,38 @@ get_wm() {
         *)         ps_flags=(-e) ;;
     esac
 
-    if [[ -O "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" ]]; then
-        if tmp_pid="$(lsof -t "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" 2>&1)" ||
-           tmp_pid="$(fuser   "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" 2>&1)"; then
-            wm="$(ps -p "${tmp_pid}" -ho comm=)"
-        else
-            # lsof may not exist, or may need root on some systems. Similarly fuser.
-            # On those systems we search for a list of known window managers, this can mistakenly
-            # match processes for another user or session and will miss unlisted window managers.
-            wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
-                               -e arcan \
-                               -e asc \
-                               -e clayland \
-                               -e dwc \
-                               -e fireplace \
-                               -e gnome-shell \
-                               -e greenfield \
-                               -e grefsen \
-                               -e kwin \
-                               -e lipstick \
-                               -e maynard \
-                               -e mazecompositor \
-                               -e motorcar \
-                               -e orbital \
-                               -e orbment \
-                               -e perceptia \
-                               -e rustland \
-                               -e sway \
-                               -e ulubis \
-                               -e velox \
-                               -e wavy \
-                               -e way-cooler \
-                               -e wayfire \
-                               -e wayhouse \
-                               -e westeros \
-                               -e westford \
-                               -e weston)
-        fi
+    if [[ $WAYLAND_DISPLAY ]]; then
+        wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
+                           -e arcan \
+                           -e asc \
+                           -e clayland \
+                           -e dwc \
+                           -e fireplace \
+                           -e gnome-shell \
+                           -e greenfield \
+                           -e grefsen \
+                           -e kwin \
+                           -e lipstick \
+                           -e maynard \
+                           -e mazecompositor \
+                           -e motorcar \
+                           -e orbital \
+                           -e orbment \
+                           -e perceptia \
+                           -e rustland \
+                           -e sway \
+                           -e ulubis \
+                           -e velox \
+                           -e wavy \
+                           -e way-cooler \
+                           -e wayfire \
+                           -e wayhouse \
+                           -e westeros \
+                           -e westford \
+                           -e weston)
 
     elif [[ $DISPLAY && $os != "Mac OS X" && $os != "macOS" && $os != FreeMiNT ]]; then
-        # non-EWMH WMs.
-        wm=$(ps "${ps_flags[@]}" | grep -m 1 -o \
-                           -e "[s]owm" \
-                           -e "[c]atwm" \
-                           -e "[f]vwm" \
-                           -e "[d]wm" \
-                           -e "[2]bwm" \
-                           -e "[m]onsterwm" \
-                           -e "[t]inywm" \
-                           -e "[x]11fs" \
-                           -e "[x]monad")
-
-        [[ -z $wm ]] && type -p xprop &>/dev/null && {
+        type -p xprop &>/dev/null && {
             id=$(xprop -root -notype _NET_SUPPORTING_WM_CHECK)
             id=${id##* }
             wm=$(xprop -id "$id" -notype -len 100 -f _NET_WM_NAME 8t)
@@ -1898,6 +1836,19 @@ get_wm() {
             wm=${wm/\"}
             wm=${wm/\"*}
         }
+
+        # Fallback for non-EWMH WMs.
+        [[ $wm ]] ||
+            wm=$(ps "${ps_flags[@]}" | grep -m 1 -o \
+                               -e "[s]owm" \
+                               -e "[c]atwm" \
+                               -e "[f]vwm" \
+                               -e "[d]wm" \
+                               -e "[2]bwm" \
+                               -e "[m]onsterwm" \
+                               -e "[t]inywm" \
+                               -e "[x]11fs" \
+                               -e "[x]monad")
 
     else
         case $os in
@@ -1922,21 +1873,15 @@ get_wm() {
             ;;
 
             Windows)
-                wm=$(
-                    tasklist |
+                wm=$(tasklist | grep -m 1 -o -F \
+                                     -e bugn \
+                                     -e Windawesome \
+                                     -e blackbox \
+                                     -e emerge \
+                                     -e litestep)
 
-                    grep -Fom 1 \
-                         -e bugn \
-                         -e Windawesome \
-                         -e blackbox \
-                         -e emerge \
-                         -e litestep
-                )
-
-                [[ $wm == blackbox ]] &&
-                    wm="bbLean (Blackbox)"
-
-                wm=${wm:+$wm, }DWM.exe
+                [[ $wm == blackbox ]] && wm="bbLean (Blackbox)"
+                wm=${wm:+$wm, }Explorer
             ;;
 
             FreeMiNT)
@@ -2156,7 +2101,7 @@ get_cpu() {
 
             # Select the right temperature file.
             for temp_dir in /sys/class/hwmon/*; do
-                [[ "$(< "${temp_dir}/name")" =~ (cpu_thermal|coretemp|fam15h_power|k10temp) ]] && {
+                [[ "$(< "${temp_dir}/name")" =~ (coretemp|fam15h_power|k10temp) ]] && {
                     temp_dirs=("$temp_dir"/temp*_input)
                     temp_dir=${temp_dirs[0]}
                     break
@@ -2255,7 +2200,8 @@ get_cpu() {
                 ;;
                 "OpenBSD"* | "Bitrig"*)
                     deg="$(sysctl hw.sensors | \
-                        awk -F'=|degC' '/(ksmn|adt|lm|cpu)0.temp0/ {printf("%2.1f", $2); exit}')"
+                           awk -F '=| degC' '/lm0.temp|cpu0.temp/ {print $2; exit}')"
+                    deg="${deg/00/0}"
                 ;;
             esac
         ;;
@@ -2394,6 +2340,47 @@ get_cpu() {
     fi
 }
 
+get_cpu_usage() {
+    case $os in
+        "Windows")
+            cpu_usage="$(wmic cpu get loadpercentage)"
+            cpu_usage="${cpu_usage/LoadPercentage}"
+            cpu_usage="${cpu_usage//[[:space:]]}"
+        ;;
+
+        *)
+            # Get CPU cores if unset.
+            if [[ "$cpu_cores" != "logical" ]]; then
+                case $os in
+                    "Linux" | "MINIX")  cores="$(grep -c "^processor" /proc/cpuinfo)" ;;
+                    "Mac OS X"|"macOS") cores="$(sysctl -n hw.logicalcpu_max)" ;;
+                    "BSD")              cores="$(sysctl -n hw.ncpu)" ;;
+                    "Solaris")          cores="$(kstat -m cpu_info | grep -c -F "chip_id")" ;;
+                    "Haiku")            cores="$(sysinfo -cpu | grep -c -F 'CPU #')" ;;
+                    "iPhone OS")        cores="${cpu/*\(}"; cores="${cores/\)*}" ;;
+                    "IRIX")             cores="$(sysconf NPROC_ONLN)" ;;
+                    "FreeMiNT")         cores="$(sysctl -n hw.ncpu)" ;;
+
+                    "AIX")
+                        cores="$(lparstat -i | awk -F':' '/Online Virtual CPUs/ {printf $2}')"
+                    ;;
+                esac
+            fi
+
+            cpu_usage="$(ps aux | awk 'BEGIN {sum=0} {sum+=$3}; END {print sum}')"
+            cpu_usage="$((${cpu_usage/\.*} / ${cores:-1}))"
+        ;;
+    esac
+
+    # Print the bar.
+    case $cpu_display in
+        "bar")     cpu_usage="$(bar "$cpu_usage" 100)" ;;
+        "infobar") cpu_usage="${cpu_usage}% $(bar "$cpu_usage" 100)" ;;
+        "barinfo") cpu_usage="$(bar "$cpu_usage" 100)${info_color} ${cpu_usage}%" ;;
+        *)         cpu_usage="${cpu_usage}%" ;;
+    esac
+}
+
 get_gpu() {
     case $os in
         "Linux")
@@ -2517,15 +2504,10 @@ get_gpu() {
 
         "Windows")
             while read -r line; do
-                line=$(trim "$line")
-
-                [[ -z $win_gpu ]] || [[ -z "$line" ]] && {
-                    win_gpu=1
-                    continue
-                }
-
-                prin "${subtitle:+${subtitle}${gpu_name}}" "$line"
+                prin "${subtitle:+${subtitle}${gpu_name}}" "$(trim "$line")"
             done < <(wmic path Win32_VideoController get caption)
+
+            gpu=${gpu//Caption}
         ;;
 
         "Haiku")
@@ -2542,7 +2524,7 @@ get_gpu() {
                 ;;
 
                 *)
-                    gpu="$(glxinfo -B | grep -F 'OpenGL renderer string')"
+                    gpu="$(glxinfo | grep -F 'OpenGL renderer string')"
                     gpu="${gpu/OpenGL renderer string: }"
                 ;;
             esac
@@ -2717,7 +2699,6 @@ get_song() {
         "iTunes"
         "juk"
         "lollypop"
-        "MellowPlayer"
         "mocp"
         "mopidy"
         "mpd"
@@ -2790,11 +2771,9 @@ get_song() {
         "xnoise"*)        get_song_dbus "xnoise" ;;
         "tauonmb"*)       get_song_dbus "tauon" ;;
         "olivia"*)        get_song_dbus "olivia" ;;
-        "exaile"*)        get_song_dbus "exaile" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
         "plasma-browser-integration"*) get_song_dbus "plasma-browser-integration" ;;
         "io.elementary.music"*)        get_song_dbus "Music" ;;
-        "MellowPlayer"*)  get_song_dbus "MellowPlayer3" ;;
 
         "mpd"* | "mopidy"*)
             song="$(mpc -f '%artist% \n%album% \n%title%' current "${mpc_args[@]}")"
@@ -2834,6 +2813,16 @@ get_song() {
             song="$(banshee --query-artist --query-album --query-title |\
                     awk -F':' '/^artist/ {a=$2} /^album/ {b=$2} /^title/ {t=$2}
                                END {print a " \n" b " \n"t}')"
+        ;;
+
+        "exaile"*)
+            # NOTE: Exaile >= 4.0.0 will support mpris2.
+            song="$(dbus-send --print-reply --dest=org.exaile.Exaile \
+                    /org/exaile/Exaile org.exaile.Exaile.Query |
+                    awk -F ':' '{sub(",[^,]*$", "", $3); t=$3;
+                                 sub(",[^,]*$", "", $4); a=$4;
+                                 sub(",[^,]*$", "", $5); b=$5}
+                                 END {print a " \n" b " \n" t}')"
         ;;
 
         "muine"*)
@@ -3230,8 +3219,7 @@ get_term_font() {
 
             [[ -f "${confs[0]}" ]] || return
 
-            term_font="$(awk '/normal:/ {while (!/family:/ || /#/)
-                         {if (!getline) {exit}} print; exit}' "${confs[0]}")"
+            term_font="$(awk -F ':|#' '/normal:/ {getline; print}' "${confs[0]}")"
             term_font="${term_font/*family:}"
             term_font="${term_font/$'\n'*}"
             term_font="${term_font/\#*}"
@@ -3430,16 +3418,15 @@ END
                 # like a font definition. NOTE: There is a slight limitation in this approach.
                 # Technically "Font Name" is a valid font. As it doesn't specify any font options
                 # though it is hard to match it correctly amongst the rest of the noise.
-                [[ -n "$binary" ]] &&
-                    term_font=$(
-                        strings "$binary" |
-
-                        grep -m 1 "*font[^2]"
-                    )
+                [[ -n "$binary" ]] && \
+                    term_font="$(strings "$binary" | grep -F -m 1 \
+                                                          -e "pixelsize=" \
+                                                          -e "size=" \
+                                                          -e "antialias=" \
+                                                          -e "autohint=")"
             fi
 
             term_font="${term_font/xft:}"
-            term_font="${term_font#*=}"
             term_font="${term_font/:*}"
         ;;
 
@@ -3691,9 +3678,6 @@ get_battery() {
             battery="$(wmic Path Win32_Battery get EstimatedChargeRemaining)"
             battery="${battery/EstimatedChargeRemaining}"
             battery="$(trim "$battery")%"
-            state="$(wmic /NameSpace:'\\root\WMI' Path BatteryStatus get Charging)"
-            state="${state/Charging}"
-            [[ "$state" == *TRUE* ]] && battery_state="charging"
         ;;
 
         "Haiku")
@@ -3715,25 +3699,9 @@ get_battery() {
 get_local_ip() {
     case $os in
         "Linux" | "BSD" | "Solaris" | "AIX" | "IRIX")
-            if [[ "${local_ip_interface[0]}" == "auto" ]]; then
-                local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
-                local_ip="${local_ip/uid*}"
-                [[ "$local_ip" ]] || local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
-            else
-                for interface in "${local_ip_interface[@]}"; do
-                    local_ip="$(ip addr show "$interface" 2> /dev/null |
-                        awk '/inet / {print $2; exit}')"
-                    local_ip="${local_ip/\/*}"
-                    [[ "$local_ip" ]] ||
-                        local_ip="$(ifconfig "$interface" 2> /dev/null |
-                        awk '/broadcast/ {print $2; exit}')"
-                    if [[ -n "$local_ip" ]]; then
-                        prin "$interface" "$local_ip"
-                    else
-                        err "Local IP: Could not detect local ip for $interface"
-                    fi
-                done
-            fi
+            local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
+            local_ip="${local_ip/uid*}"
+            [[ -z "$local_ip" ]] && local_ip="$(ifconfig -a | awk '/broadcast/ {print $2; exit}')"
         ;;
 
         "MINIX")
@@ -3741,19 +3709,8 @@ get_local_ip() {
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
-            if [[ "${local_ip_interface[0]}" == "auto" ]]; then
-                interface="$(route get 1 | awk -F': ' '/interface/ {printf $2; exit}')"
-                local_ip="$(ipconfig getifaddr "$interface")"
-            else
-                for interface in "${local_ip_interface[@]}"; do
-                    local_ip="$(ipconfig getifaddr "$interface")"
-                    if [[ -n "$local_ip" ]]; then
-                        prin "$interface" "$local_ip"
-                    else
-                        err "Local IP: Could not detect local ip for $interface"
-                    fi
-                done
-            fi
+            local_ip="$(ipconfig getifaddr en0)"
+            [[ -z "$local_ip" ]] && local_ip="$(ipconfig getifaddr en1)"
         ;;
 
         "Windows")
@@ -3856,11 +3813,11 @@ get_cols() {
 [${text_padding}C${zws}}
 
         # Add block height to info height.
-        ((info_height+=block_range[1]>7?block_height+2:block_height+1))
+        ((info_height+=block_range[1]>7?block_height+3:block_height+2))
 
         case $col_offset in
-            "auto") printf '\n\e[%bC%b\n' "$text_padding" "${zws}${cols}" ;;
-            *) printf '\n\e[%bC%b\n' "$col_offset" "${zws}${cols}" ;;
+            "auto") printf '\n\e[%bC%b\n\n' "$text_padding" "${zws}${cols}" ;;
+            *) printf '\n\e[%bC%b\n\n' "$col_offset" "${zws}${cols}" ;;
         esac
     fi
 
@@ -3880,15 +3837,14 @@ image_backend() {
         "ascii") print_ascii ;;
         "off") image_backend="off" ;;
 
-        "caca" | "catimg" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
-        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty" | "pot", | "ueberzug")
+        "caca" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
+        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty" | "pot")
             get_image_source
 
             [[ ! -f "$image" ]] && {
                 to_ascii "Image: '$image_source' doesn't exist, falling back to ascii mode."
                 return
             }
-            [[ "$image_backend" == "ueberzug" ]] && wait=true;
 
             get_window_size
 
@@ -3906,9 +3862,9 @@ image_backend() {
 
         *)
             err "Image: Unknown image backend specified '$image_backend'."
-            err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'chafa', 'jp2a', 'iterm2',
-                                            'kitty', 'off', 'sixel', 'pot', 'pixterm', 'termpix',
-                                            'tycat', 'w3m')"
+            err "Image: Valid backends are: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2', 'kitty',
+                                            'off', 'sixel', 'pot', 'pixterm', 'termpix', 'tycat',
+                                            'w3m')"
             err "Image: Falling back to ascii mode."
             print_ascii
         ;;
@@ -3938,14 +3894,7 @@ print_ascii() {
     done <<< "${ascii_data//\$\{??\}}"
 
     # Fallback if file not found.
-    ((lines==1)) && {
-        lines=
-        ascii_len=
-        image_source=auto
-        get_distro_ascii
-        print_ascii
-        return
-    }
+    ((lines==1)) && { lines=; ascii_len=; image_source=auto; get_distro_ascii; print_ascii; return; }
 
     # Colors.
     ascii_data="${ascii_data//\$\{c1\}/$c1}"
@@ -4301,28 +4250,6 @@ display_image() {
                 -H "$((height / font_height))" \
                 --gamma=0.6 \
             "$image"
-        ;;
-
-
-        "ueberzug")
-            if [ "$wait" = true ];then
-                wait=false;
-            else
-                source "$(ueberzug library)"
-                ImageLayer 0< <(
-                ImageLayer::add\
-                        ['identifier']="neofetch"\
-                        ['x']="$xoffset" ['y']="$yoffset"\
-                        ['max_width']="$((width / font_width))"\
-                        ['max_height']="$((height / font_height))"\
-                        ['path']="$image";
-                read -rs;
-                )
-            fi
-        ;;
-
-        "catimg")
-            catimg -w "$((width*catimg_size / font_width))" -r "$catimg_size" "$image"
         ;;
 
         "chafa")
@@ -4922,7 +4849,6 @@ INFO:
 
     --ip_host url               URL to query for public IP
     --ip_timeout int            Public IP timeout (in seconds).
-    --ip_interface value        Interface(s) to use for local IP
     --song_format format        Print the song data in a specific format (see config file).
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --memory_percent on/off     Display memory percentage.
@@ -4940,7 +4866,7 @@ TEXT FORMATTING:
 
 COLOR BLOCKS:
     --color_blocks on/off       Enable/Disable the color blocks
-    --col_offset auto/num       Left-padding of color blocks
+    --col_offset auto/num      Left-padding of color blocks
     --block_width num           Width of color blocks in spaces
     --block_height num          Height of color blocks in lines
     --block_range num num       Range of colors to print as blocks
@@ -4952,6 +4878,8 @@ BARS:
     --bar_length num            Length in spaces to make the bars.
     --bar_colors num num        Colors to make the bar.
                                 Set in this order: elapsed, total
+    --cpu_display mode          Bar mode.
+                                Possible values: bar, infobar, barinfo, off
     --memory_display mode       Bar mode.
                                 Possible values: bar, infobar, barinfo, off
     --battery_display mode      Bar mode.
@@ -4961,8 +4889,8 @@ BARS:
 
 IMAGE BACKEND:
     --backend backend           Which image backend to use.
-                                Possible values: 'ascii', 'caca', 'catimg', 'chafa', 'jp2a',
-                                'iterm2', 'off', 'sixel', 'tycat', 'w3m', 'kitty'
+                                Possible values: 'ascii', 'caca', 'chafa', 'jp2a', 'iterm2',
+                                'off', 'sixel', 'tycat', 'w3m', 'kitty'
     --source source             Which image or ascii file to use.
                                 Possible values: 'auto', 'ascii', 'wallpaper', '/path/to/img',
                                 '/path/to/ascii', '/path/to/dir/', 'command output' [ascii]
@@ -4972,7 +4900,6 @@ IMAGE BACKEND:
                                 NEW: neofetch --ascii \"\$(fortune | cowsay -W 30)\"
 
     --caca source               Shortcut to use 'caca' backend.
-    --catimg source             Shortcut to use 'catimg' backend.
     --chafa source              Shortcut to use 'chafa' backend.
     --iterm2 source             Shortcut to use 'iterm2' backend.
     --jp2a source               Shortcut to use 'jp2a' backend.
@@ -4983,7 +4910,6 @@ IMAGE BACKEND:
     --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
     --w3m source                Shortcut to use 'w3m' backend.
-    --ueberzug source           Shortcut to use 'ueberzug' backend
     --off                       Shortcut to use 'off' backend (Disable ascii art).
 
     NOTE: 'source; can be any of the following: 'auto', 'ascii', 'wallpaper', '/path/to/img',
@@ -4993,35 +4919,33 @@ ASCII:
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
-                                instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
-                                Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
-                                XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
-                                BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD, BunsenLabs,
-                                Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
-                                Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
-                                CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan, DracOS,
-                                DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
+                                NOTE: AIX, Alpine, AlterLinux, Anarchy, Android, Antergos, antiX,
+                                \"AOSC OS\", \"AOSC OS/Retro\", Apricity, ArcoLinux, ArchBox,
+                                ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch, Artix, Arya,
+                                Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
+                                BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau,
+                                Chrom, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
+                                Container_Linux, CRUX, Cucumber, Debian, Deepin, DesaOS, Devuan,
+                                DracOS, DarkOs, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
-                                LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
-                                Mageia, MagpieOS, Mandriva, Manjaro, Maui, Mer, Minix, LinuxMint,
-                                Live_Raizo, MX_Linux, Namib, Neptune, NetBSD, Netrunner, Nitrux,
-                                NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana,
-                                openmamba, OpenMandriva, OpenStage, OpenWrt, osmc, Oracle,
-                                OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix, TrueOS,
-                                PCLinuxOS, Pengwin, Peppermint, popos, Porteus, PostMarketOS,
-                                Proxmox, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, Reborn_OS,
-                                Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
-                                sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
-                                SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
-                                Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
-                                t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
-                                Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
-                                Ubuntu-Studio, Ubuntu, Univention, Venom, Void, semc, Obarun,
-                                windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
+                                LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS,
+                                Mandriva, Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
+                                Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner, NuTyX,
+                                OBRevenge, OpenBSD, openEuler, OpenIndiana, openmamba, OpenMandriva,
+                                OpenStage, OpenWrt, osmc, Oracle, OS Elbrus, PacBSD, Parabola,
+                                Pardus, Parrot, Parsix, TrueOS, PCLinuxOS, Peppermint, popos,
+                                Porteus, PostMarketOS, Proxmox, Puppy, PureOS, Qubes, Radix,
+                                Raspbian, Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan,
+                                Regata, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific,
+                                Septor, SereneLinux, SharkLinux, Siduction, Slackware, SliTaz,
+                                SmartOS, Solus, Source_Mage, Sparky, Star, SteamOS, SunOS,
+                                openSUSE_Leap, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails,
+                                Trisquel, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio,
+                                Ubuntu, Venom, Void, Obarun, windows10, Windows7, Xubuntu, Zorin,
+                                and IRIX have ascii logos
 
                                 NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 
@@ -5049,7 +4973,6 @@ IMAGE:
                                 in some terminals emulators when using image mode.
     --size 00px | --size 00%    How to size the image.
                                 Possible values: auto, 00px, 00%, none
-    --catimg_size 1/2           Change the resolution of catimg.
     --crop_mode mode            Which crop mode to use
                                 Takes the values: normal, fit, fill
     --crop_offset value         Change the crop offset for normal mode.
@@ -5119,17 +5042,6 @@ get_args() {
             "--shell_version") shell_version="$2" ;;
             "--ip_host") public_ip_host="$2" ;;
             "--ip_timeout") public_ip_timeout="$2" ;;
-            "--ip_interface")
-                unset local_ip_interface
-                for arg in "$@"; do
-                    case "$arg" in
-                        "--ip_interface") ;;
-                        "-"*) break ;;
-                        *) local_ip_interface+=("$arg") ;;
-                    esac
-                done
-            ;;
-
             "--song_format") song_format="$2" ;;
             "--song_shorthand") song_shorthand="$2" ;;
             "--music_player") music_player="$2" ;;
@@ -5204,6 +5116,7 @@ get_args() {
                 bar_color_total="$3"
             ;;
 
+            "--cpu_display") cpu_display="$2" ;;
             "--memory_display") memory_display="$2" ;;
             "--battery_display") battery_display="$2" ;;
             "--disk_display") disk_display="$2" ;;
@@ -5211,9 +5124,8 @@ get_args() {
             # Image backend
             "--backend") image_backend="$2" ;;
             "--source") image_source="$2" ;;
-            "--ascii" | "--caca" | "--catimg" | "--chafa" | "--jp2a" | "--iterm2" | "--off" |\
-            "--pot" | "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty" |\
-            "--ueberzug")
+            "--ascii" | "--caca" | "--chafa" | "--jp2a" | "--iterm2" | "--off" | "--pot" |\
+            "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty")
                 image_backend="${1/--}"
                 case $2 in
                     "-"* | "") ;;
@@ -5224,7 +5136,6 @@ get_args() {
             # Image options
             "--loop") image_loop="on" ;;
             "--image_size" | "--size") image_size="$2" ;;
-            "--catimg_size") catimg_size="$2" ;;
             "--crop_mode") crop_mode="$2" ;;
             "--crop_offset") crop_offset="$2" ;;
             "--xoffset") xoffset="$2" ;;
@@ -5321,6 +5232,7 @@ get_args() {
                     info "GPU Driver" gpu_driver
                     info "Memory" memory
 
+                    info "CPU Usage" cpu_usage
                     info "Disk" disk
                     info "Battery" battery
                     info "Font" font
@@ -5342,6 +5254,7 @@ get_args() {
 
                 refresh_rate="on"
                 shell_version="on"
+                cpu_display="infobar"
                 memory_display="infobar"
                 disk_display="infobar"
                 cpu_temp="C"
@@ -5372,7 +5285,6 @@ get_simple() {
 old_functions() {
     # Removed functions for backwards compatibility.
     get_line_break() { :; }
-    get_cpu_usage() { :; }
 }
 
 get_distro_ascii() {
@@ -5587,34 +5499,6 @@ ${c1}         -o          o-
 EOF
         ;;
 
-    "instantOS"*)
-        set_colors 4 6
-        read -rd '' ascii_data <<'EOF'
-
-${c1}
-     'cx0XWWMMWNKOd:'.
-  .;kNMMMMMMMMMMMMMWNKd'
- 'kNMMMMMMWNNNWMMMMMMMMXo.
-,0MMMMMW0o;'..,:dKWMMMMMWx.
-OMMMMMXl.        .xNMMMMMNo
-WMMMMNl           .kWWMMMMO'
-MMMMMX;            oNWMMMMK,
-NMMMMWo           .OWMMMMMK,
-kWMMMMNd.        ,kWMMMMMMK,
-'kWMMMMWXxl:;;:okNMMMMMMMMK,
- .oXMMMMMMMWWWMMMMMMMMMMMMK,
-   'oKWMMMMMMMMMMMMMMMMMMMK,
-     .;lxOKXXXXXXXXXXXXXXXO;......
-          ................,d0000000kd:.
-                          .kMMMMMMMMMW0;
-                          .kMMMMMMMMMMMX
-                          .xMMMMMMMMMMMW
-                           cXMMMMMMMMMM0
-                            :0WMMMMMMNx,
-                             .o0NMWNOc.
-EOF
-        ;;
-
         "Antergos"*)
             set_colors 4 6
             read -rd '' ascii_data <<'EOF'
@@ -5730,30 +5614,6 @@ MMMMMMNmNNMMMMMMMMmo.
 MMMMMMMMMMMMMMMms:`
 MMMMMMMMMMNds/.
 dhhyys+/-`
-EOF
-        ;;
-
-        "Archcraft"*)
-            set_colors 6 6 7 1
-            read -rd '' ascii_data <<'EOF'
-${c1}                   -m:
-                  :NMM+      .+
-                 +MMMMMo    -NMy
-                sMMMMMMMy  -MMMMh`
-               yMMMMMMMMMd` oMMMMd`
-             `dMMMMMMMMMMMm. /MMMMm-
-            .mMMMMMm-dMMMMMN- :NMMMN:
-           -NMMMMMd`  yMMMMMN: .mMMMM/
-          :NMMMMMy     sMMMMMM+ `dMMMMo
-         +MMMMMMs       +MMMMMMs `hMMMMy
-        oMMMMMMMds-      :NMMMMMy  sMMMMh`
-       yMMMMMNoydMMmo`    -NMMMMMd` +MMMMd.
-     `dMMMMMN-   `:yNNs`   .mMMMMMm. /MMMMm-
-    .mMMMMMm.        :hN/   `dMMMMMN- -NMMMN:
-   -NMMMMMd`           -hh`  `yMMMMMN: .mMMMM/
-  :NMMMMMy         `s`   :h.   oMMMMMM+ `-----
- +MMMMMMo         .dMm.   `o.   +MMMMMMo
-sMMMMMM+         .mMMMN:    :`   :NMMMMMy
 EOF
         ;;
 
@@ -7262,27 +7122,28 @@ EOF
         "Garuda"*)
             set_colors 7 7
             read -rd '' ascii_data <<'EOF'
-${c1}                                        
-              .%;888:X8889888@8:        
-             x;XxXB%8b8:b8%b88xx8:      
-          .88Xx;;             8X8x:.    
-         .tt8xX                 x8x8;   
-       .t%xx8:                   Xxx.8: 
-      .@8x8;                      x8xx@;
-    ,tSXXX°       .bbbbbbbbbbbbbbbbb8x@.
-   .SXxx°        bBBBBBBBBBBBBBBBBB:S;8.
-  ,888S°                           ;8SS 
- .@8@%°                            ;8:  
- <8X88/                                 
-  x%888       .@88@8@X@X8X@@X@X@8@Xx    
-   .x8X@:   bb8x8x8b8b8x8s8x88b88x;     
-    .xxS88                  .@8@;:      
-      .x.88               .Xt@x;        
-       .::SSX88@8b8B8B8b@@8Sxx;         
-         .xq)9898999989989899°          
-                                        
+${c1}                  __,,,,,,,_
+            _╓╗╣╫╠╠╠╠╠╠╠╠╠╠╠╠╠╕╗╗┐_
+         ╥╢╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╥,
+       ╗╠╠╠╠╠╠╠╝╜╜╜╜╝╢╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠┐
+      ╣╠╠╠╠╠╠╠╠╢╣╢╗╕ , `"╘╠╠╠╠╠╠╠╠╠╠╠╠╠╠╔╥_
+    ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╕╙╥╥╜   `"╜╠╬╠╠╠╠╠╠╠╠╠╠╠╥,
+    ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗╥╥╥╥╗╗╬╠╠╠╠╠╠╠╝╙╠╠╣╠╠╠╠╢┐
+   ╣╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╥╬╣╠╠╠╠╠╠╠╠╗
+  ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
+  ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠
+  ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╬     ```"╜╝╢╠╠╡
+ ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╣,         ╘╠╪
+ ╞╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╢┐        ╜
+ `╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
+ ,╬╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠"╕
+ ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
+ ╝^╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╝╣╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╡
+  ╔╜`╞┘╢╛╜ ╡╢╠"╚╠╠╜╝┌╞╞"╢╠╠╠╠╠╠╠╠╠╠╣╩╢╪
+     ╜╒"   `╜    `      ╜╙╕  └╣╠╠╠╠╕ ╞╙╖
+                                ╠╠╠
+                                 ╜
 EOF
-
         ;;
 
         "gentoo_small")
@@ -7807,60 +7668,6 @@ EOF
 EOF
         ;;
 
-        "LaxerOS"*)
-            set_colors 7 4
-            read -rd '' ascii_data <<'EOF'
-${c2}
-                    /.
-                 `://:-
-                `//////:
-               .////////:`
-              -//////////:`
-             -/////////////`
-            :///////////////.
-          `://////.```-//////-
-         `://///:`     .//////-
-        `//////:        `//////:
-       .//////-          `://///:`
-      -//////-            `://///:`
-     -//////.               ://////`
-    ://////`                 -//////.
-   `/////:`                   ./////:
-    .-::-`                     .:::-`
-
-.:://////////////////////////////////::.
-////////////////////////////////////////
-.:////////////////////////////////////:.
-
-EOF
-        ;;
-
-        "LibreELEC"*)
-            set_colors 2 3 7 14 13
-            read -rd '' ascii_data <<'EOF'
-${c1}          :+ooo/.      ${c2}./ooo+:
-${c1}        :+ooooooo/.  ${c2}./ooooooo+:
-${c1}      :+ooooooooooo:${c2}:ooooooooooo+:
-${c1}    :+ooooooooooo+-  ${c2}-+ooooooooooo+:
-${c1}  :+ooooooooooo+-  ${c3}--  ${c2}-+ooooooooooo+:
-${c1}.+ooooooooooo+-  ${c3}:+oo+:  ${c2}-+ooooooooooo+-
-${c1}-+ooooooooo+-  ${c3}:+oooooo+:  ${c2}-+oooooooooo-
-${c1}  :+ooooo+-  ${c3}:+oooooooooo+:  ${c2}-+oooooo:
-${c1}    :+o+-  ${c3}:+oooooooooooooo+:  ${c2}-+oo:
-${c4}     ./   ${c3}:oooooooooooooooooo:   ${c5}/.
-${c4}   ./oo+:  ${c3}-+oooooooooooooo+-  ${c5}:+oo/.
-${c4} ./oooooo+:  ${c3}-+oooooooooo+-  ${c5}:+oooooo/.
-${c4}-oooooooooo+:  ${c3}-+oooooo+-  ${c5}:+oooooooooo-
-${c4}.+ooooooooooo+:  ${c3}-+oo+-  ${c5}:+ooooooooooo+.
-${c4}  -+ooooooooooo+:  ${c3}..  ${c5}:+ooooooooooo+-
-${c4}    -+ooooooooooo+:  ${c5}:+ooooooooooo+-
-${c4}      -+oooooooooo+:${c5}:+oooooooooo+-
-${c4}        -+oooooo+:    ${c5}:+oooooo+-
-${c4}          -+oo+:        ${c5}:+oo+-
-${c4}            ..            ${c5}..
-EOF
-        ;;
-
         "Linux")
             set_colors fg 8 3
             read -rd '' ascii_data <<'EOF'
@@ -7944,26 +7751,26 @@ EOF
         "Lubuntu"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}           `.:/ossyyyysso/:.
-        `.:yyyyyyyyyyyyyyyyyy:.`
-      .:yyyyyyyyyyyyyyyyyyyyyyyy:.
-    .:yyyyyyyyyyyyyyyyyyyyyyyyyyyy:.
-   -yyyyyyyyyyyyyy${c2}+hNMMMNh+${c1}yyyyyyyyy-
-  :yy${c2}mNy+${c1}yyyyyyyy${c2}+Nmso++smMdhyysoo+${c1}yy:
- -yy${c2}+MMMmmy${c1}yyyyyy${c2}hh${c1}yyyyyyyyyyyyyyyyyyy-
-.yyyy${c2}NMN${c1}yy${c2}shhs${c1}yyy${c2}+o${c1}yyyyyyyyyyyyyyyyyyyy.
-:yyyy${c2}oNM+${c1}yyyy${c2}+sso${c1}yyyyyyy${c2}ss${c1}yyyyyyyyyyyyy:
-:yyyyy${c2}+dNs${c1}yyyyyyy${c2}++${c1}yyyyy${c2}oN+${c1}yyyyyyyyyyyy:
-:yyyyy${c2}oMMmhysso${c1}yyyyyyyyyy${c2}mN+${c1}yyyyyyyyyyy:
-:yyyyyy${c2}hMm${c1}yyyyy${c2}+++${c1}yyyyyyy${c2}+MN${c1}yyyyyyyyyyy:
-.yyyyyyy${c2}ohmy+${c1}yyyyyyyyyyyyy${c2}NMh${c1}yyyyyyyyyy.
- -yyyyyyyyyy${c2}++${c1}yyyyyyyyyyyy${c2}MMh${c1}yyyyyyyyy-
-  :yyyyyyyyyyyyyyyyyyyyy${c2}+mMN+${c1}yyyyyyyy:
-   -yyyyyyyyyyyyyyyyy${c2}+sdMMd+${c1}yyyyyyyy-
-    .:yyyyyyyyy${c2}hmdmmNMNdy+${c1}yyyyyyyy:.
-      .:yyyyyyy${c2}my${c1}yyyyyyyyyyyyyyy:.
-        `.:yyyy${c2}s${c1}yyyyyyyyyyyyy:.`
-           `.:/oosyyyysso/:.`
+${c1}           `-mddhhhhhhhhhddmss`
+        ./mdhhhhhhhhhhhhhhhhhhhhhh.
+     :mdhhhhhhhhhhhhhhhhhhhhhhhhhhhm`
+   :ymhhhhhhhhhhhhhhhyyyyyyhhhhhhhhhy:
+  `odhyyyhhhhhhhhhy+-````./syhhhhhhhho`
+ `hhy..:oyhhhhhhhy-`:osso/..:/++oosyyyh`
+ dhhs   .-/syhhhhs`shhhhhhyyyyyyyyyyyyhs
+:hhhy`  yso/:+syhy/yhhhhhshhhhhhhhhhhhhh:
+hhhhho. +hhhys++oyyyhhhhh-yhhhhhhhhhhhhhs
+hhhhhhs-`/syhhhhyssyyhhhh:-yhhhhhhhhhhhhh
+hhhhhhs  `:/+ossyyhyyhhhhs -yhhhhhhhhhhhh
+hhhhhhy/ `syyyssyyyyhhhhhh: :yhhhhhhhhhhs
+:hhhhhhyo:-/osyhhhhhhhhhhho  ohhhhhhhhhh:
+ sdhhhhhhhyyssyyhhhhhhhhhhh+  +hhhhhhhhs
+ `shhhhhhhhhhhhhhhhhhhhhhy+` .yhhhhhhhh`
+  +sdhhhhhhhhhhhhhhhhhyo/. `/yhhhhhhhd`
+   `:shhhhhhhhhh+---..``.:+yyhhhhhhh:
+     `:mdhhhhhh/.syssyyyyhhhhhhhd:`
+        `+smdhhh+shhhhhhhhhhhhdm`
+           `sNmdddhhhhhhhddm-`
 EOF
         ;;
 
@@ -8283,31 +8090,6 @@ ${c2}               ``-:::::-``
 EOF
         ;;
 
-        "Live Raizo"* | "Live_Raizo"*)
-            set_colors 3
-            read -rd '' ascii_data <<'EOF'
-${c1}             `......`
-        -+shmNMMMMMMNmhs/.
-     :smMMMMMmmhyyhmmMMMMMmo-
-   -hMMMMd+:. `----` .:odMMMMh-
- `hMMMN+. .odNMMMMMMNdo. .yMMMMs`
- hMMMd. -dMMMMmdhhdNMMMNh` .mMMMh
-oMMMm` :MMMNs.:sddy:-sMMMN- `NMMM+
-mMMMs  dMMMo sMMMMMMd yMMMd  sMMMm
-----`  .---` oNMMMMMh `---.  .----
-              .sMMy:
-               /MM/
-              +dMMms.
-             hMMMMMMN
-            `dMMMMMMm:
-      .+ss+sMNysMMoomMd+ss+.
-     +MMMMMMN` +MM/  hMMMMMNs
-     sMMMMMMm-hNMMMd-hMMMMMMd
-      :yddh+`hMMMMMMN :yddy/`
-             .hMMMMd:
-               `..`
-EOF
-        ;;
 
         "mx_small"*)
             set_colors 4 6 7
@@ -9043,27 +8825,6 @@ yyhh-   ${c2}ymm-       /dmdyosyd`  ${c1}`yhh+
 EOF
         ;;
 
-        "Pengwin"*)
-            set_colors 5 5 13
-            read -rd '' ascii_data <<'EOF'
-${c3}                     ...`
-${c3}                     `-///:-`
-${c3}                       .+${c2}ssys${c3}/
-${c3}                        +${c2}yyyyy${c3}o    ${c2}
-${c2}                        -yyyyyy:
-${c2}           `.:/+ooo+/:` -yyyyyy+
-${c2}         `:oyyyyyys+:-.`syyyyyy:
-${c2}        .syyyyyyo-`   .oyyyyyyo
-${c2}       `syyyyyy   `-+yyyyyyy/`
-${c2}       /yyyyyy+ -/osyyyyyyo/.
-${c2}       +yyyyyy-  `.-:::-.`
-${c2}       .yyyyyy-
-${c3}        :${c2}yyyyy${c3}o
-${c3}         .+${c2}ooo${c3}+
-${c3}           `.::/:.
-EOF
-        ;;
-
         "Peppermint"*)
             set_colors 1 15 3
             read -rd '' ascii_data <<'EOF'
@@ -9306,30 +9067,6 @@ ${c1}               `..--..`
 EOF
         ;;
 
-        "Quibian"*)
-            set_colors 3 7
-            read -rd '' ascii_data <<'EOF'
-${c1}            `.--::::::::--.`
-        `.-:::-..``   ``..-::-.`
-      .::::-`   .${c2}+${c1}:``       `.-::.`
-    .::::.`    -::::::-`       `.::.
-  `-:::-`    -:::::::::--..``     .::`
- `::::-     .${c2}oy${c1}:::::::---.```.:    `::`
- -::::  `.-:::::::::::-.```         `::
-.::::.`-:::::::::::::.               `:.
--::::.:::::::::::::::                 -:
-::::::::::::::::::::`                 `:
-:::::::::::::::::::-                  `:
-:::::::::::::::::::                   --
-.:::::::::::::::::`                  `:`
-`:::::::::::::::::                   -`
- .:::::::::::::::-                  -`
-  `::::::::::::::-                `.`
-    .::::::::::::-               ``
-      `.--:::::-.
-EOF
-        ;;
-
         "Radix"*)
             set_colors 1 2
             read -rd '' ascii_data <<'EOF'
@@ -9357,15 +9094,16 @@ EOF
         "Raspbian_small"*)
             set_colors 2 1
             read -rd '' ascii_data <<'EOF'
-${c1}   ..    ,.
-  :oo: .:oo:
-  'o\\o o/o:
-${c2} :: . :: . ::
-:: :::  ::: ::
-:'  '',.''  ':
- ::: :::: :::
- ':,  ''  ,:'
-   ' ~::~ '
+${c1}   .~~.   .~~.
+  '. \\ ' ' / .'
+${c2}   .~ .~~~..~.
+  : .~.'~'.~. :
+ ~ (   ) (   ) ~
+( : '~'.~.'~' : )
+ ~ .~ (   ) ~. ~
+  (  : '~' :  )
+   '~ .~~~. ~'
+       '~'
 EOF
         ;;
 
@@ -10228,28 +9966,28 @@ EOF
         ;;
 
         "Ubuntu Cinnamon"* | "Ubuntu-Cinnamon"*)
-            set_colors 1 7
+            set_colors 1
             read -rd '' ascii_data <<'EOF'
-${c1}            .-/+oooooooo+/-.
-        `:+oooooooooooooooooo+:`
-      -+oooooooooooooooooooooooo+-
-    .ooooooooooooooooooo${c2}:ohNd${c1}oooooo.
-   /oooooooooooo${c2}:/+oo++:/ohNd${c1}ooooooo/
-  +oooooooooo${c2}:osNdhyyhdNNh+:+${c1}oooooooo+
- /ooooooooo${c2}/dN/${c1}ooooooooo${c2}/sNNo${c1}ooooooooo/
-.ooooooooo${c2}oMd:${c1}oooooooooooo${c2}:yMy${c1}ooooooooo.
-+ooooo${c2}:+o/Md${c1}oooooo${c2}:sm/${c1}oo/ooo${c2}yMo${c1}oooooooo+
-ooo${c2}:sdMdosMo${c1}ooooo${c2}oNMd${c1}//${c2}dMd+${c1}o${c2}:so${c1}ooooooooo
-oooo${c2}+ymdosMo${c1}ooo${c2}+mMm${c1}+/${c2}hMMMMMh+hs${c1}ooooooooo
-+oooooo${c2}:${c1}:${c2}/Nm:${c1}/${c2}hMNo${c1}:y${c2}MMMMMMMMMM+${c1}oooooooo+
-.ooooooooo${c2}/NNMNy${c1}:o${c2}NMMMMMMMMMMo${c1}ooooooooo.
-/oooooooooo${c2}:yh:${c1}+m${c2}MMMMMMMMMMd/${c1}ooooooooo/
-  +oooooooooo${c2}+${c1}/h${c2}mMMMMMMNds//o${c1}oooooooo+
-   /oooooooooooo${c2}+:////:o/ymMd${c1}ooooooo/
-    .oooooooooooooooooooo${c2}/sdh${c1}oooooo.
-      -+oooooooooooooooooooooooo+-
-        `:+oooooooooooooooooo+:`
-            .-/+oooooooo+/-.
+${c1}            .-:/++oooo++/:-.
+        `:/oooooooooooooooooo/-`
+      -/oooooooooooooooooooo+ooo/-
+    .+oooooooooooooooooo+/-`.ooooo+.
+   :oooooooooooo+//:://++:. .ooooooo:
+  /oooooooooo+o:`.----.``./+/oooooooo/
+ /ooooooooo+. +ooooooooo+:``/ooooooooo/
+.ooooooooo: .+ooooooooooooo- -ooooooooo.
+/oooooo/o+ .ooooooo:`+oo+ooo- :oooooooo/
+ooo+:. .o: :ooooo:` .+/. ./o+:/ooooooooo
+oooo/-`.o: :ooo/` `/+.     ./.:ooooooooo
+/oooooo+o+``++. `:+-          /oooooooo/
+.ooooooooo/``  -+:`          :ooooooooo.
+ /ooooooooo+--+/`          .+ooooooooo/
+  /ooooooooooo+.`      `.:++:oooooooo/
+   :oooooooooooooo++++oo+-` .ooooooo:
+    .+ooooooooooooooooooo+:..ooooo+.
+      -/oooooooooooooooooooooooo/-
+        `-/oooooooooooooooooo/:`
+            .-:/++oooo++/:-.
 EOF
         ;;
 
@@ -10304,27 +10042,26 @@ EOF
         "Ubuntu MATE"* | "Ubuntu-MATE"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
-${c1}            .:/+oossssoo+/:.`
-        `:+ssssssssssssssssss+:`
-      -+sssssssssssssss${c2}y${c1}ssssssss+-
-    .osssssssssssss${c2}yy${c1}ss${c2}mMmh${c1}ssssssso.
-   /sssssssss${c2}ydmNNNmmd${c1}s${c2}mMMMMNdy${c1}sssss/
- `+ssssssss${c2}hNNdy${c1}sssssss${c2}mMMMMNdy${c1}ssssss+`
- +sssssss${c2}yNNh${c1}ss${c2}hmNNNNm${c1}s${c2}mMmh${c1}s${c2}ydy${c1}sssssss+
--sssss${c2}y${c1}ss${c2}Nm${c1}ss${c2}hNNh${c1}ssssss${c2}y${c1}s${c2}hh${c1}ss${c2}mMy${c1}sssssss-
-+ssss${c2}yMNdy${c1}ss${c2}hMd${c1}ssssssssss${c2}hMd${c1}ss${c2}NN${c1}sssssss+
-sssss${c2}yMMMMMmh${c1}sssssssssssss${c2}NM${c1}ss${c2}dMy${c1}sssssss
-sssss${c2}yMMMMMmhy${c1}ssssssssssss${c2}NM${c1}ss${c2}dMy${c1}sssssss
-+ssss${c2}yMNdy${c1}ss${c2}hMd${c1}ssssssssss${c2}hMd${c1}ss${c2}NN${c1}sssssss+
--sssss${c2}y${c1}ss${c2}Nm${c1}ss${c2}hNNh${c1}ssssssss${c2}dh${c1}ss${c2}mMy${c1}sssssss-
- +sssssss${c2}yNNh${c1}ss${c2}hmNNNNm${c1}s${c2}mNmh${c1}s${c2}ymy${c1}sssssss+
-  +ssssssss${c2}hNNdy${c1}sssssss${c2}mMMMMmhy${c1}ssssss+
-   /sssssssss${c2}ydmNNNNmd${c1}s${c2}mMMMMNdh${c1}sssss/
-    .osssssssssssss${c2}yy${c1}ss${c2}mMmdy${c1}sssssso.
-      -+sssssssssssssss${c2}y${c1}ssssssss+-
-        `:+ssssssssssssssssss+:`
-            .:/+oossssoo+/:.
-
+${c1}           `:+shmNNMMNNmhs+:`
+        .odMMMMMMMMMMMMMMMMMMdo.
+      /dMMMMMMMMMMMMMMMmMMMMMMMMd/
+    :mMMMMMMMMMMMMNNNNM/`/yNMMMMMMm:
+  `yMMMMMMMMMms:..-::oM:    -omMMMMMy`
+ `dMMMMMMMMy-.odNMMMMMM:    -odMMMMMMd`
+ hMMMMMMMm-.hMMy/....+M:`/yNm+mMMMMMMMh
+/MMMMNmMN-:NMy`-yNMMMMMmNyyMN:`dMMMMMMM/
+hMMMMm -odMMh`sMMMMMMMMMMs sMN..MMMMMMMh
+NMMMMm    `/yNMMMMMMMMMMMM: MM+ mMMMMMMN
+NMMMMm    `/yNMMMMMMMMMMMM: MM+ mMMMMMMN
+hMMMMm -odMMh sMMMMMMMMMMs oMN..MMMMMMMh
+/MMMMNNMN-:NMy`-yNMMMMMNNsyMN:`dMMMMMMM/
+ hMMMMMMMm-.hMMy/....+M:.+hNd+mMMMMMMMh
+ `dMMMMMMMMy-.odNMMMMMM:    :smMMMMMMd`
+   yMMMMMMMMMms/..-::oM:    .+dMMMMMy
+    :mMMMMMMMMMMMMNNNNM: :smMMMMMMm:
+      /dMMMMMMMMMMMMMMMdNMMMMMMMd/
+        .odMMMMMMMMMMMMMMMMMMdo.
+           `:+shmNNMMNNmhs+:`
 EOF
         ;;
 
@@ -10416,32 +10153,6 @@ oss${c2}yNMMMNyMMh${c1}sssssssssssssshmmmh${c1}ssssssso
 EOF
         ;;
 
-        "Univention"*)
-            set_colors 1 7
-            read -rd '' ascii_data <<'EOF'
-${c1}         ./osssssssssssssssssssssso+-
-       `ohhhhhhhhhhhhhhhhhhhhhhhhhhhhy:
-       shhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh-
-   `-//${c2}sssss${c1}/hhhhhhhhhhhhhh+${c2}s${c1}.hhhhhhhhh+
- .ohhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}sss${c1}+hhhhhhh+
-.yhhhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}ssss${c1}:hhhhhh+
-+hhhhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}sssss${c1}yhhhhh+
-+hhhhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}sssss${c1}yhhhhh+
-+hhhhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}sssss${c1}yhhhhh+
-+hhhhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}sssss${c1}yhhhhh+
-+hhhhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}sssss${c1}yhhhhh+
-+hhhhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}sssss${c1}yhhhhh+
-+hhhhhy${c2}sssss${c1}.hhhhhhhhhhhhhh.${c2}sssss${c1}yhhhhh+
-+hhhhhy${c2}ssssss${c1}+yhhhhhhhhhhy/${c2}ssssss${c1}yhhhhh+
-+hhhhhh:${c2}sssssss${c1}:hhhhhhh+${c2}.ssssssss${c1}yhhhhy.
-+hhhhhhh+`${c2}ssssssssssssssss${c1}hh${c2}sssss${c1}yhhho`
-+hhhhhhhhhs+${c2}ssssssssssss${c1}+hh+${c2}sssss${c1}/:-`
--hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhho
- :yhhhhhhhhhhhhhhhhhhhhhhhhhhhh+`
-   -+ossssssssssssssssssssss+:`
-EOF
-        ;;
-
         "Venom"*)
             set_colors 8 4
             read -rd '' ascii_data <<'EOF'
@@ -10498,36 +10209,6 @@ ${c1}     -1vvnvv.     `~+++`        ++|+++
             ~|Invnvnvvnvvvnnv}+`
                -~|{*l}*|~
 EOF
-
-        ;;
-
-        "semc"*)
-            set_colors 2 8
-            read -rd '' ascii_data <<'EOF'
-${c1}              __.;=====;.__
-          _.=+==++=++=+=+===;.
-           -=+++=+===+=+=+++++=_
-      .     -=:``     `--==+=++==.
-     _vi,    `            --+=++++:
-    .uvnvi.       _._       -==+==+.
-   .vvnvnI`    .;==|==;.     :|=||=|.
-${c2}     _______._______.___  ___.  ______
-    /       |   ____|   \/   | /      |
-   |   (----|  |__  |  \  /  ||  ,----'
-    \   \   |   __| |  |\/|  ||  |
-.----)   |  |  |____|  |  |  ||  `----.
-|_______/   |_______|__|  |__| \______|
-
-${c1}   -1vvnvv.     `~+++`        ++|+++
-    +vnvnnv,                 `-|===
-     +vnvnvns.           .      :=-
-      -Invnvvnsi..___..=sv=.     `
-        +Invnvnvnnnnnnnnvvnn;.
-          ~|Invnvnvvnvvvnnv}+`
-             -~|{*l}*|~
-
-EOF
-
         ;;
 
         "Obarun"*)
@@ -10606,26 +10287,26 @@ EOF
         "Xubuntu"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}           `.:/ossyyyysso/:.
-        `.yyyyyyyyyyyyyyyyyyyy.`
-      `yyyyyyyyyyyyyyyyyyyyyyyyyy`
-    `yyyyyyyyyyyyyyyyyyyy${c2}::${c1}yyyyyyyy`
-   .yyyyyyyyyyy${c2}/+:${c1}yyyyyyy${c2}ds${c1}yyy${c2}+y${c1}yyyy.
-  yyyyyyy${c2}:o/${c1}yy${c2}dMMM+${c1}yyyyy${c2}/M+${c1}y${c2}:hM+${c1}yyyyyy
- yyyyyyy${c2}+MMMy${c1}y${c2}mMMMh${c1}yyyyy${c2}yM::mM+${c1}yyyyyyyy
-`yyyyyyy${c2}+MMMMysMMMd${c1}yyyyy${c2}dh:mN+${c1}yyyyyyyyy`
-yyyyyyyy${c2}:NMMMMmMMMMmmdhyy+/y:${c1}yyyyyyyyyyy
-yyyyyyyy${c2}+MMMMMMMMMMMMMMMMMMNho:${c1}yyyyyyyyy
-yyyyyyyy${c2}mMMMMMMMMMMMMMMMMMMMMMMy${c1}yyyyyyyy
-yyyyyyy${c2}+MMMMMMMMMMMMMMMMMMMMMMMM/${c1}yyyyyyy
-`yyyyyy${c2}sMMMMMMMMMMMMMMMMMMMMMMmo${c1}yyyyyyy`
- yyyyyy${c2}oMMMMMMMMMMMMMMMMMMMmy+${c1}yyyyyyyyy
-  yyyyy${c2}:mMMMMMMMMMMMMMMNho/${c1}yyyyyyyyyyy
-   .yyyy${c2}:yNMMMMMMMNdyo:${c1}yyyyyyyyyyyyy.
-    `yyyyyy${c2}:/++/::${c1}yyyyyyyyyyyyyyyyy`
-      `yyyyyyyyyyyyyyyyyyyyyyyyyy`
-        `.yyyyyyyyyyyyyyyyyyyy.`
-           `.:/oosyyyysso/:.`
+${c1}           `-/osyhddddhyso/-`
+        .+yddddddddddddddddddy+.
+      :yddddddddddddddddddddddddy:
+    -yddddddddddddddddddddhdddddddy-
+   odddddddddddyshdddddddh`dddd+ydddo
+ `yddddddhshdd-   ydddddd+`ddh.:dddddy`
+ sddddddy   /d.   :dddddd-:dy`-ddddddds
+:ddddddds    /+   .dddddd`yy`:ddddddddd:
+sdddddddd`    .    .-:/+ssdyodddddddddds
+ddddddddy                  `:ohddddddddd
+dddddddd.                      +dddddddd
+sddddddy                        ydddddds
+:dddddd+                      .oddddddd:
+ sdddddo                   ./ydddddddds
+ `yddddd.              `:ohddddddddddy`
+   oddddh/`      `.:+shdddddddddddddo
+    -ydddddhyssyhdddddddddddddddddy-
+      :yddddddddddddddddddddddddy:
+        .+yddddddddddddddddddy+.
+           `-/osyhddddhyso/-`
 EOF
         ;;
                 "IRIX"*)
@@ -10876,7 +10557,6 @@ main() {
     # w3m-img: Draw the image a second time to fix
     # rendering issues in specific terminal emulators.
     [[ $image_backend == *w3m* ]] && display_image
-    [[ $image_backend == *ueberzug* ]] && display_image
 
     # Add neofetch info to verbose output.
     err "Neofetch command: $0 $*"
