@@ -4402,7 +4402,7 @@ display_image() {
 
         "viu")
             viu \
-                -t -w ""$((width / font_width))"" -h "$((height / font_height))" \
+                -t -w "$((width / font_width))" -h "$((height / font_height))" \
             "$image"
         ;;
 
