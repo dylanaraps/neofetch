@@ -2991,9 +2991,9 @@ get_resolution() {
 
             elif [[ -d /sys/class/drm ]]; then
                 for dev in /sys/class/drm/*/modes; do
-                    read -r resolution _ < "$dev"
+                    read -r single_resolution _ < "$dev"
 
-                    [[ $resolution ]] && break
+                    [[ $single_resolution ]] && resolution="${single_resolution}, ${resolution}"
                 done
             fi
         ;;
