@@ -782,7 +782,7 @@ image_source="auto"
 # NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
-#       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
+#       Artix, Arya, Bedrock, BigLinux, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS,
@@ -5016,7 +5016,7 @@ ASCII:
                                 NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
                                 instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
-                                XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
+                                XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, BigLinux, Bitrig,
                                 BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
@@ -5400,6 +5400,7 @@ get_distro_ascii() {
     #
     # $ascii_distro is the same as $distro.
     case $(trim "$ascii_distro") in
+    
         "AIX"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
@@ -6088,6 +6089,30 @@ ${c1}--------------------------------------
 --------------------------------------
 EOF
         ;;
+	
+        "BigLinux"*)
+            set_colors 4 7 1
+            read -rd '' ascii_data <<'EOF'
+${c2}                                ...      
+                             .xXMMMWk.   
+                           .0MMMMMMMMMo  
+                 :xkx:    'WMMMMW.   ;Md 
+  .             XMMMMM:  .MMMMW        k.
+ c;             :MMMMO   XMMMK          ,
+ Nc               ...   .MMMM       lkk; 
+.MX      ,cc,     cKX0c .MMMd     dWMMMMd
+:MM.   ;NMMMWWk.  MMMMM  MMM,   ,NMMMMMMM,
+cMMN:;OMMMK  ;MMc KMMMM. .MMc  xMMMMc.0MMk
+'MMMMMMMM.   .MMM. KMMMX   xNxWMMMx    WMO
+ kMMMMMO     ;MMM:  :MMMX.   .;l;      :Ml
+  lNM,       KMMM,    .oWMd            .M.
+ '          dMMMM                      .K
+ .X.      .OMMMM,                      . 
+  xMk:'':kMMMMMc                   
+   kMMMMMMMMMM.                          
+    :NMMMMMW,                            
+       ..                                
+EOF
 
         "Bitrig"*)
             set_colors 2 7
