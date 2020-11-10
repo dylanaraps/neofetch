@@ -6113,6 +6113,7 @@ cMMN:;OMMMK  ;MMc KMMMM. .MMc  xMMMMc.0MMk
     :NMMMMMW,                            
        ..                                
 EOF
+        ;;
 
         "Bitrig"*)
             set_colors 2 7
