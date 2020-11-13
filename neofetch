@@ -749,7 +749,8 @@ disk_display="off"
 #
 # Default:  'ascii'
 # Values:   'ascii', 'caca', 'catimg', 'chafa', 'jp2a', 'iterm2', 'off',
-#           'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty', 'ueberzug'
+#           'pot', 'termpix', 'pixterm', 'tycat', 'w3m', 'kitty', 'ueberzug',
+#           'viu'
 
 # Flag:     --backend
 image_backend="ascii"
@@ -778,34 +779,34 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Alpine, Anarchy, Android, Antergos, antiX, "AOSC OS",
-#       "AOSC OS/Retro", Apricity, ArcoLinux, ArchBox, ARCHlabs,
-#       ArchStrike, XFerience, ArchMerge, Arch, Artix, Arya, Bedrock,
-#       Bitrig, BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
-#       BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
-#       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover,
-#       Condres, Container_Linux, CRUX, Cucumber, Debian, Deepin,
-#       DesaOS, Devuan, DracOS, DarkOs, DragonFly, Drauger, Elementary,
+# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
+#       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
+#       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
+#       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
+#       bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
+#       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
+#       Container_Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS,
+#       Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
-#       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion,
-#       Korora, KSLinux, Kubuntu, LEDE, LFS, Linux_Lite,
-#       LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva,
-#       Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
-#       Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner,
-#       NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana, openmamba,
-#       OpenMandriva, OpenStage, OpenWrt, osmc, Oracle, OS Elbrus, PacBSD,
-#       Parabola, Pardus, Parrot, Parsix, TrueOS, PCLinuxOS, Peppermint,
-#       popos, Porteus, PostMarketOS, Proxmox, Puppy, PureOS, Qubes, Radix,
-#       Raspbian, Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan,
-#       Regata, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific,
-#       Septor, SereneLinux, SharkLinux, Siduction, Slackware, SliTaz,
-#       SmartOS, Solus, Source_Mage, Sparky, Star, SteamOS, SunOS,
-#       openSUSE_Leap, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails,
-#       Trisquel, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio,
-#       Ubuntu, Venom, Void, Obarun, windows10, Windows7, Xubuntu, Zorin,
-#       and IRIX have ascii logos
+#       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
+#       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
+#       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, Maui,
+#       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
+#       Netrunner, Nitrux, NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD,
+#       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
+#       osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
+#       TrueOS, PCLinuxOS, Pengwin, Peppermint, popos, Porteus, PostMarketOS,
+#       Proxmox, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, Reborn_OS,
+#       Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
+#       sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
+#       SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
+#       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
+#       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
+#       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
+#       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, semc, Obarun,
+#       windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
 # NOTE: Ubuntu has flavor variants.
@@ -2568,10 +2569,21 @@ get_memory() {
                     "MemFree" | "Buffers" | "Cached" | "SReclaimable")
                         mem_used="$((mem_used-=${b/kB}))"
                     ;;
+
+                    # Available since Linux 3.14rc (34e431b0ae398fc54ea69ff85ec700722c9da773).
+                    # If detected this will be used over the above calculation for mem_used.
+                    "MemAvailable")
+                        mem_avail=${b/kB}
+                    ;;
                 esac
             done < /proc/meminfo
 
-            mem_used="$((mem_used / 1024))"
+            if [[ $mem_avail ]]; then
+                mem_used=$(((mem_total - mem_avail) / 1024))
+            else
+                mem_used="$((mem_used / 1024))"
+            fi
+
             mem_total="$((mem_total / 1024))"
         ;;
 
@@ -2979,9 +2991,9 @@ get_resolution() {
 
             elif [[ -d /sys/class/drm ]]; then
                 for dev in /sys/class/drm/*/modes; do
-                    read -r resolution _ < "$dev"
+                    read -r single_resolution _ < "$dev"
 
-                    [[ $resolution ]] && break
+                    [[ $single_resolution ]] && resolution="${single_resolution}, ${resolution}"
                 done
             fi
         ;;
@@ -3881,7 +3893,8 @@ image_backend() {
         "off") image_backend="off" ;;
 
         "caca" | "catimg" | "chafa" | "jp2a" | "iterm2" | "termpix" |\
-        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty" | "pot", | "ueberzug")
+        "tycat" | "w3m" | "sixel" | "pixterm" | "kitty" | "pot", | "ueberzug" |\
+         "viu")
             get_image_source
 
             [[ ! -f "$image" ]] && {
@@ -3908,7 +3921,7 @@ image_backend() {
             err "Image: Unknown image backend specified '$image_backend'."
             err "Image: Valid backends are: 'ascii', 'caca', 'catimg', 'chafa', 'jp2a', 'iterm2',
                                             'kitty', 'off', 'sixel', 'pot', 'pixterm', 'termpix',
-                                            'tycat', 'w3m')"
+                                            'tycat', 'w3m', 'viu')"
             err "Image: Falling back to ascii mode."
             print_ascii
         ;;
@@ -4408,6 +4421,12 @@ display_image() {
         "tycat")
             tycat \
                 -g "${width}x${height}" \
+            "$image"
+        ;;
+
+        "viu")
+            viu \
+                -t -w "$((width / font_width))" -h "$((height / font_height))" \
             "$image"
         ;;
 
@@ -4986,7 +5005,7 @@ BARS:
 IMAGE BACKEND:
     --backend backend           Which image backend to use.
                                 Possible values: 'ascii', 'caca', 'catimg', 'chafa', 'jp2a',
-                                'iterm2', 'off', 'sixel', 'tycat', 'w3m', 'kitty'
+                                'iterm2', 'off', 'sixel', 'tycat', 'w3m', 'kitty', 'viu'
     --source source             Which image or ascii file to use.
                                 Possible values: 'auto', 'ascii', 'wallpaper', '/path/to/img',
                                 '/path/to/ascii', '/path/to/dir/', 'command output' [ascii]
@@ -5007,7 +5026,8 @@ IMAGE BACKEND:
     --termpix source            Shortcut to use 'termpix' backend.
     --tycat source              Shortcut to use 'tycat' backend.
     --w3m source                Shortcut to use 'w3m' backend.
-    --ueberzug source            Shortcut to use 'ueberzug' backend
+    --ueberzug source           Shortcut to use 'ueberzug' backend
+    --viu source                Shortcut to use 'viu' backend
     --off                       Shortcut to use 'off' backend (Disable ascii art).
 
     NOTE: 'source; can be any of the following: 'auto', 'ascii', 'wallpaper', '/path/to/img',
@@ -5017,33 +5037,35 @@ ASCII:
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: AIX, Alpine, AlterLinux, Anarchy, Android, Antergos, antiX,
-                                \"AOSC OS\", \"AOSC OS/Retro\", Apricity, ArcoLinux, ArchBox,
-                                ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch, Artix, Arya,
-                                Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD,
-                                BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau,
-                                Chrom, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
-                                Container_Linux, CRUX, Cucumber, Debian, Deepin, DesaOS, Devuan,
-                                DracOS, DarkOs, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
+                                NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
+                                instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
+                                Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
+                                XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
+                                BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD, BunsenLabs,
+                                Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
+                                Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
+                                CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan, DracOS,
+                                DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
-                                LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos, Mageia, MagpieOS,
-                                Mandriva, Manjaro, Maui, Mer, Minix, LinuxMint, MX_Linux, Namib,
-                                Neptune, NetBSD, Netrunner, Nitrux, NixOS, Nurunner, NuTyX,
-                                OBRevenge, OpenBSD, openEuler, OpenIndiana, openmamba, OpenMandriva,
-                                OpenStage, OpenWrt, osmc, Oracle, OS Elbrus, PacBSD, Parabola,
-                                Pardus, Parrot, Parsix, TrueOS, PCLinuxOS, Peppermint, popos,
-                                Porteus, PostMarketOS, Proxmox, Puppy, PureOS, Qubes, Radix,
-                                Raspbian, Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan,
-                                Regata, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific,
-                                Septor, SereneLinux, SharkLinux, Siduction, Slackware, SliTaz,
-                                SmartOS, Solus, Source_Mage, Sparky, Star, SteamOS, SunOS,
-                                openSUSE_Leap, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails,
-                                Trisquel, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE, Ubuntu-Studio,
-                                Ubuntu, Venom, Void, Obarun, windows10, Windows7, Xubuntu, Zorin,
-                                and IRIX have ascii logos
+                                LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
+                                Mageia, MagpieOS, Mandriva, Manjaro, Maui, Mer, Minix, LinuxMint,
+                                Live_Raizo, MX_Linux, Namib, Neptune, NetBSD, Netrunner, Nitrux,
+                                NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana,
+                                openmamba, OpenMandriva, OpenStage, OpenWrt, osmc, Oracle,
+                                OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix, TrueOS,
+                                PCLinuxOS, Pengwin, Peppermint, popos, Porteus, PostMarketOS,
+                                Proxmox, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, Reborn_OS,
+                                Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
+                                sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
+                                SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
+                                Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
+                                t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
+                                Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
+                                Ubuntu-Studio, Ubuntu, Univention, Venom, Void, semc, Obarun,
+                                windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 
                                 NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 
@@ -5235,7 +5257,7 @@ get_args() {
             "--source") image_source="$2" ;;
             "--ascii" | "--caca" | "--catimg" | "--chafa" | "--jp2a" | "--iterm2" | "--off" |\
             "--pot" | "--pixterm" | "--sixel" | "--termpix" | "--tycat" | "--w3m" | "--kitty" |\
-            "--ueberzug")
+            "--ueberzug" | "--viu")
                 image_backend="${1/--}"
                 case $2 in
                     "-"* | "") ;;
@@ -7284,28 +7306,27 @@ EOF
         "Garuda"*)
             set_colors 7 7
             read -rd '' ascii_data <<'EOF'
-${c1}                  __,,,,,,,_
-            _╓╗╣╫╠╠╠╠╠╠╠╠╠╠╠╠╠╕╗╗┐_
-         ╥╢╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╥,
-       ╗╠╠╠╠╠╠╠╝╜╜╜╜╝╢╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠┐
-      ╣╠╠╠╠╠╠╠╠╢╣╢╗╕ , `"╘╠╠╠╠╠╠╠╠╠╠╠╠╠╠╔╥_
-    ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╕╙╥╥╜   `"╜╠╬╠╠╠╠╠╠╠╠╠╠╠╥,
-    ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗╥╥╥╥╗╗╬╠╠╠╠╠╠╠╝╙╠╠╣╠╠╠╠╢┐
-   ╣╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╥╬╣╠╠╠╠╠╠╠╠╗
-  ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
-  ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠
-  ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╬     ```"╜╝╢╠╠╡
- ╒╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╣,         ╘╠╪
- ╞╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╢┐        ╜
- `╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
- ,╬╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠"╕
- ╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╗
- ╝^╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╝╣╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╠╡
-  ╔╜`╞┘╢╛╜ ╡╢╠"╚╠╠╜╝┌╞╞"╢╠╠╠╠╠╠╠╠╠╠╣╩╢╪
-     ╜╒"   `╜    `      ╜╙╕  └╣╠╠╠╠╕ ╞╙╖
-                                ╠╠╠
-                                 ╜
+${c1}                                        
+              .%;888:X8889888@8:        
+             x;XxXB%8b8:b8%b88xx8:      
+          .88Xx;;             8X8x:.    
+         .tt8xX                 x8x8;   
+       .t%xx8:                   Xxx.8: 
+      .@8x8;                      x8xx@;
+    ,tSXXX°       .bbbbbbbbbbbbbbbbb8x@.
+   .SXxx°        bBBBBBBBBBBBBBBBBB:S;8.
+  ,888S°                           ;8SS 
+ .@8@%°                            ;8:  
+ <8X88/                                 
+  x%888       .@88@8@X@X8X@@X@X@8@Xx    
+   .x8X@:   bb8x8x8b8b8x8s8x88b88x;     
+    .xxS88                  .@8@;:      
+      .x.88               .Xt@x;        
+       .::SSX88@8b8B8B8b@@8Sxx;         
+         .xq)9898999989989899°          
+                                        
 EOF
+
         ;;
 
         "gentoo_small")
@@ -8516,7 +8537,7 @@ EOF
 EOF
         ;;
 
-        "NixOS"*)
+        "nixos_old"*)
             set_colors 4 6
             read -rd '' ascii_data <<'EOF'
 ${c1}          ::::.    ${c2}':::::     ::::'
@@ -8538,6 +8559,32 @@ ${c1}            .:::::::: ${c2}'::::::::::
 ${c1}           .::::''::::.     ${c2}'::::.
 ${c1}          .::::'   ::::.     ${c2}'::::.
 ${c1}         .::::      ::::      ${c2}'::::.
+EOF
+        ;;
+
+        "NixOS"*)
+            set_colors 4 6
+            read -rd '' ascii_data <<'EOF'
+${c1}          ▗██▙       ${c2}▜███▙    ▟██▖
+${c1}          ▜███▙       ${c2}▜███▙  ▟███▛
+${c1}           ▜███▙       ${c2}▜███▙▟███▛
+${c1}            ▜███▙       ${c2}▜██████▛
+${c1}     ▟█████████████████▙ ${c2}▜████▛     ${c1}▟▙
+${c1}    ▟███████████████████▙ ${c2}▜███▙    ${c1}▟██▙
+${c2}           ▄▄▄▄▖           ▜███▙  ${c1}▟███▛
+${c2}          ▟███▛             ▜██▛ ${c1}▟███▛
+${c2}         ▟███▛               ▜▛ ${c1}▟███▛   
+${c2}▟███████████▛                  ${c1}▟██████████▙
+${c2}▜██████████▛                  ${c1}▟███████████▛
+${c2}      ▟███▛ ${c1}▟▙               ▟███▛
+${c2}     ▟███▛ ${c1}▟██▙             ▟███▛
+${c2}    ▟███▛  ${c1}▜███▙           ▝▀▀▀▀
+${c2}    ▜██▛    ${c1}▜███▙ ${c2}▜██████████████████▛
+${c2}     ▜▛     ${c1}▟████▙ ${c2}▜████████████████▛
+${c1}           ▟██████▙       ${c2}▜███▙
+${c1}          ▟███▛▜███▙       ${c2}▜███▙
+${c1}         ▟███▛  ▜███▙       ${c2}▜███▙
+${c1}         ▝██▛    ▜███▙       ${c2}▜██▘
 EOF
         ;;
 
@@ -9063,6 +9110,27 @@ yyhh-   ${c2}ymm-       /dmdyosyd`  ${c1}`yhh+
       dysyhhhso///://+syhhhssh
          dhyssyhhhhhhyssyyhN
               mddhdhdmN
+EOF
+        ;;
+
+        "Pengwin"*)
+            set_colors 5 5 13
+            read -rd '' ascii_data <<'EOF'
+${c3}                     ...`
+${c3}                     `-///:-`
+${c3}                       .+${c2}ssys${c3}/
+${c3}                        +${c2}yyyyy${c3}o    ${c2}
+${c2}                        -yyyyyy:
+${c2}           `.:/+ooo+/:` -yyyyyy+
+${c2}         `:oyyyyyys+:-.`syyyyyy:
+${c2}        .syyyyyyo-`   .oyyyyyyo
+${c2}       `syyyyyy   `-+yyyyyyy/`
+${c2}       /yyyyyy+ -/osyyyyyyo/.
+${c2}       +yyyyyy-  `.-:::-.`
+${c2}       .yyyyyy-
+${c3}        :${c2}yyyyy${c3}o
+${c3}         .+${c2}ooo${c3}+
+${c3}           `.::/:.
 EOF
         ;;
 
@@ -10503,31 +10571,18 @@ EOF
 
         ;;
 
-        "semc"*)
-            set_colors 2 8
+       	"semc"*)
+            set_colors 2 8 1
             read -rd '' ascii_data <<'EOF'
-${c1}              __.;=====;.__
-          _.=+==++=++=+=+===;.
-           -=+++=+===+=+=+++++=_
-      .     -=:``     `--==+=++==.
-     _vi,    `            --+=++++:
-    .uvnvi.       _._       -==+==+.
-   .vvnvnI`    .;==|==;.     :|=||=|.
-${c2}     _______._______.___  ___.  ______
-    /       |   ____|   \/   | /      |
-   |   (----|  |__  |  \  /  ||  ,----'
-    \   \   |   __| |  |\/|  ||  |
-.----)   |  |  |____|  |  |  ||  `----.
-|_______/   |_______|__|  |__| \______|
-
-${c1}   -1vvnvv.     `~+++`        ++|+++
-    +vnvnnv,                 `-|===
-     +vnvnvns.           .      :=-
-      -Invnvvnsi..___..=sv=.     `
-        +Invnvnvnnnnnnnnvvnn;.
-          ~|Invnvnvvnvvvnnv}+`
-             -~|{*l}*|~
-
+${c1}            /\
+     ______/  \
+    /      |()| ${c2}E M C
+${c1}   |   (-- |  |
+    \   \  |  |
+.----)   | |__|
+|_______/ / ${c3}"${c1}  \
+              ${c3}"
+            "
 EOF
 
         ;;
