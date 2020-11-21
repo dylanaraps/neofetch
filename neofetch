@@ -1535,6 +1535,7 @@ get_packages() {
             has alps       && tot alps showinstalled
             has butch      && tot butch list
             has mine       && tot mine -q
+            has swupd      && tot swupd bundle-list --quiet
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
