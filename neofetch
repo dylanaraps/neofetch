@@ -2727,7 +2727,7 @@ get_song() {
         "gogglesmm"
         "guayadeque"
         "io.elementary.music"
-        "iTunes"
+        "Music"
         "juk"
         "lollypop"
         "MellowPlayer"
@@ -2837,8 +2837,8 @@ get_song() {
             esac
         ;;
 
-        "itunes"*)
-            song="$(osascript -e 'tell application "iTunes" to artist of current track as¬
+        "music"*)
+            song="$(osascript -e 'tell application "Music" to artist of current track as¬
                                   string & "\n" & album of current track as¬
                                   string & "\n" & name of current track as string')"
         ;;
