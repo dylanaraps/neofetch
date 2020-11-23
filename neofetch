@@ -7290,26 +7290,27 @@ EOF
         ;;
 
         "Garuda"*)
-            set_colors 7 7
+            set_colors 7 7 3 7 2 4
             read -rd '' ascii_data <<'EOF'
-${c1}
-              .%;888:X8889888@8:
-             x;XxXB%8b8:b8%b88xx8:
-          .88Xx;;             8X8x:.
-         .tt8xX                 x8x8;
-       .t%xx8:                   Xxx.8:
-      .@8x8;                      x8xx@;
-    ,tSXXX°       .bbbbbbbbbbbbbbbbb8x@.
-   .SXxx°        bBBBBBBBBBBBBBBBBB:S;8.
-  ,888S°                           ;8SS
- .@8@%°                            ;8:
- <8X88/
-  x%888       .@88@8@X@X8X@@X@X@8@Xx
-   .x8X@:   bb8x8x8b8b8x8s8x88b88x;
-    .xxS88                  .@8@;:
-      .x.88               .Xt@x;
-       .::SSX88@8b8B8B8b@@8Sxx;
-         .xq)9898999989989899°
+
+${c3}
+                     .%;888:8898898:
+                   x;XxXB%89b8:b8%b88:
+                .8Xxd                8X:.
+              .8Xx;                    8x:.
+            .tt8x          ${c6}.d${c3}            x88;
+         .@8x8;          ${c6}.db:${c3}              xx@;
+       ${c4},tSXX°          .bbbbbbbbbbbbbbbbbbbB8x@;
+     .SXxx            bBBBBBBBBBBBBBBBBBBBbSBX8;
+   ,888S                                     pd!
+  8X88/                                       q
+  GBB.
+   ${c5}x%88        d888@8@X@X@X88X@@XX@@X@8@X.
+     dxXd    dB8b8b8B8B08bB88b998888b88x.
+      dxx8o                      .@@;.
+        dx88                   .t@x.
+          d:SS@8ba89aa67a853Sxxad.
+            .d988999889889899dd.
 
 EOF
 
