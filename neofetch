@@ -4327,15 +4327,14 @@ display_image() {
             if [ "$wait" = true ];then
                 wait=false;
             else
-                source "$(ueberzug library)"
-                ImageLayer 0< <(
-                ImageLayer::add\
-                        ['identifier']="neofetch"\
-                        ['x']="$xoffset" ['y']="$yoffset"\
-                        ['max_width']="$((width / font_width))"\
-                        ['max_height']="$((height / font_height))"\
-                        ['path']="$image";
-                read -rs;
+                ueberzug layer --parser bash 0< <(
+                    declare -Ap ADD=(\
+                        [action]="add"\
+                        [identifier]="neofetch"\
+                        [x]=$xoffset [y]=$yoffset\
+                        [path]=$image\
+                    )
+                    read -rs
                 )
             fi
         ;;
