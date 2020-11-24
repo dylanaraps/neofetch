@@ -3335,7 +3335,7 @@ END
             QT_BINDIR="$(qtpaths --binaries-dir)" && PATH+=":$QT_BINDIR"
 
             IFS=$'\n' read -d "" -ra konsole_instances \
-                <<< "$(qdbus | awk '/org.kde.konsole/ {print $1}')"
+                <<< "$(qdbus | awk '/org.kde.'"$term"'/ {print $1}')"
 
             for i in "${konsole_instances[@]}"; do
                 IFS=$'\n' read -d "" -ra konsole_sessions <<< "$(qdbus "$i" | grep -F '/Sessions/')"
