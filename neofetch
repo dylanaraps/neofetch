@@ -2839,7 +2839,7 @@ get_song() {
             esac
         ;;
 	
-	    "itunes"*)
+        "itunes"*)
             song="$(osascript -e 'tell application "iTunes" to artist of current track as¬
                                   string & "\n" & album of current track as¬
                                   string & "\n" & name of current track as string')"
