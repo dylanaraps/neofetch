@@ -512,6 +512,7 @@ disk_percent="on"
 # guayadeque
 # io.elementary.music
 # iTunes
+# Music
 # juk
 # lollypop
 # MellowPlayer
@@ -2727,7 +2728,7 @@ get_song() {
         "gogglesmm"
         "guayadeque"
         "io.elementary.music"
-	"iTunes"
+	    "iTunes"
         "Music"
         "juk"
         "lollypop"
@@ -2838,7 +2839,7 @@ get_song() {
             esac
         ;;
 	
-	"itunes"*)
+	    "itunes"*)
             song="$(osascript -e 'tell application "iTunes" to artist of current track as¬
                                   string & "\n" & album of current track as¬
                                   string & "\n" & name of current track as string')"
