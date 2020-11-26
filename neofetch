@@ -1566,9 +1566,13 @@ get_packages() {
             }
 
             has nix-store && {
-                manager=nix-system  && tot nix-store -q --requisites /run/current-system/sw
-                manager=nix-user    && tot nix-store -q --requisites ~/.nix-profile
-                manager=nix-default && tot nix-store -q --requisites /nix/var/nix/profiles/default
+                nix-user-pkgs() {
+                    nix-store -qR ~/.nix-profile
+                    nix-store -qR /etc/profiles/per-user/"$USER"
+                }
+                manager=nix-system  && tot nix-store -qR /run/current-system/sw
+                manager=nix-user    && tot nix-user-pkgs
+                manager=nix-default && tot nix-store -qR /nix/var/nix/profiles/default
             }
 
             # pkginfo is also the name of a python package manager which is painfully slow.
@@ -1607,8 +1611,12 @@ get_packages() {
             has pkgin && tot pkgin list
 
             has nix-store && {
-                manager=nix-system && tot nix-store -q --requisites "/run/current-system/sw"
-                manager=nix-user   && tot nix-store -q --requisites "$HOME/.nix-profile"
+                nix-user-pkgs() {
+                    nix-store -qR ~/.nix-profile
+                    nix-store -qR /etc/profiles/per-user/"$USER"
+                }
+                manager=nix-system && tot nix-store -qR /run/current-system/sw
+                manager=nix-user   && tot nix-store -qR nix-user-pkgs
             }
         ;;
 
