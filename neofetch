@@ -1555,6 +1555,7 @@ get_packages() {
             has pkgtool && dir ${br_prefix}/var/log/packages/*
             has scratch && dir ${br_prefix}/var/lib/scratchpkg/index/*/.pkginfo
             has kagami  && dir ${br_prefix}/var/lib/kagami/pkgs/*
+            has hardman && dir ${br_prefix}/var/hpkg/packages/*.info
             has cave    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
                                ${br_prefix}/var/db/paludis/repositories/installed/data/*/
             shopt -u nullglob
@@ -7626,7 +7627,30 @@ ${c1}                     WW
 WW                           W
 EOF
         ;;
-
+        "HarDClanZ"*)
+            set_colors 4 7 1
+            read -rd '' ascii_data <<'EOF'
+${c1}          ........::::....
+        ::################::..
+      :########################:.
+     :######**###################:
+    :###${c2}&&&&^${c1}############ ${c2}&${c1}#######:
+   :#${c2}&&&&&${c1}.:##############:${c2}^&o${c1}`:###:
+  :#${c2}&&&&${c1}.:#################:.${c2}&&&${c1}`###:
+ :##${c2}&^${c1}:######################:${c2}^&&${c1}::##:
+ :#############################:${c2}&${c1}:##::
+ :##########${c2}@@${c1}###########${c2}@@${c1}#####:.###:
+:#########${c2}@@${c3}o${c2}@@${c1}#########${c2}@@${c3}o${c2}@@${c1}########:
+:#######:${c2}@@${c3}o${c5}0${c3}o${c2}@@@@${c1}###${c2}@@@@${c3}o${c5}0${c3}o${c2}@@${c1}######: :
+ :######:${c2}@@@${c3}o${c2}@@@@@@${c1}V${c2}@@@@@@${c3}o${c2}@@@${c1}######:
+   :#####:${c2}@@@@@@@@@@@@@@@@@@@${c1}:####;
+    :####:.${c2}@@@@@@@@@@@@@@@@${c1}:#####:
+    `:####:.${c2}@@@@@@@@@@@@@@${c1}:#####:
+      ``:##:.${c2}@@@@@@@@@@@@${c1}^## # : 
+         : ##  ${c2}\@@@;@@@/ ${c1}:: # : 
+                 ${c2} VVV
+EOF
+        ;;
         "januslinux"*|"janus"*|"Ataraxia Linux"*|"Ataraxia"*)
             set_colors 4 5 6 2
             read -rd '' ascii_data <<'EOF'
@@ -10892,7 +10916,7 @@ oMMMMmMMMMNds:.+MMMmmMMN/.-odNMMMMmMMMM+
              .odNm+  /dNms.
 EOF
                 ;;
-
+               
             esac
         ;;
     esac
