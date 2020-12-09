@@ -1619,7 +1619,7 @@ get_packages() {
                     nix-store -qR /etc/profiles/per-user/"$USER"
                 }
                 manager=nix-system && tot nix-store -qR /run/current-system/sw
-                manager=nix-user   && tot nix-store -qR nix-user-pkgs
+                manager=nix-user   && tot nix-user-pkgs
             }
         ;;
 
