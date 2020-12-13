@@ -807,7 +807,7 @@ image_source="auto"
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
 #       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, semc, Obarun,
-#       windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
+#       windows10, Windows7, Xubuntu, KrassOS Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
 # NOTE: Ubuntu has flavor variants.
@@ -982,6 +982,13 @@ get_distro() {
                     on|tiny) distro="Red Star OS" ;;
                     *) distro="Red Star OS $(awk -F'[^0-9*]' '$0=$2' /etc/redstar-release)"
                 esac
+
+            elif [[ -f /etc/KrassOS.version ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="KrassOS" ;;
+                    *) distro="KrassOS $(awk '/release/{print $2}' /etc/KrassOS.version)"
+                esac
+
 
             elif [[ -f /etc/armbian-release ]]; then
                 . /etc/armbian-release
@@ -5069,7 +5076,7 @@ ASCII:
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
                                 Ubuntu-Studio, Ubuntu, Univention, Venom, Void, semc, Obarun,
-                                windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
+                                windows10, Windows7, Xubuntu, Zorin, KrassOS, and IRIX have ascii logos.
 
                                 NOTE: Arch, Ubuntu, Redhat, and Dragonfly have 'old' logo variants.
 
@@ -10690,6 +10697,32 @@ yyyyyyy${c2}+MMMMMMMMMMMMMMMMMMMMMMMM/${c1}yyyyyyy
            `.:/oosyyyysso/:.`
 EOF
         ;;
+        *"KrassOS"*|*"Krass"*)
+            set_colors 4 7
+            read -rd '' ascii_data <<'EOF'
+                                                  
+${c1}                  ${c2}**@@@@@@@@@@@*                  
+             ${c2},@@@@%${c1}(((((((((((((${c2}%@@@@,            
+          ${c2}#@@&${c1}(((((((((((((((((((((((${c2}&@@%         
+        ${c2}@@&${c1}(((((((((((((((((((((((((((((${c2}@@@       
+      ${c2}@@&${c1}(((((((((((((((((((((((((((((((((${c2}&@@     
+    ${c2}.@@${c1}(((((((((((((((((((((((((((((((((((((${c2}@@.   
+    ${c2}@@${c1}(((((((((((((((((((((((((((((((((((((((${c2}@@   
+   ${c2}@@#${c1}(((((((((((((((((((((((((((((${c2}%@@@@@@@#${c1}(#${c2}@@  
+  ${c2}.@@${c1}((((((((((((((((${c2}#%@@@@@@@@@&%#${c1}((((${c2}%@&${c1}((((${c2}@@. 
+  ${c2}.@@${c1}(((((((/(${c2}&@@@@@@%${c1}(/((((((((((((((${c2}@@/${c1}(((((${c2}@@. 
+  ${c2}.@@${c1}(///////////////////////////////${c2}@${c1}(///////${c2}@@  
+   ${c2}%@#${c1}/////////////////////////////(${c2}#${c1}////////${c2}%@%  
+   ${c2} @@${c1}(///////////////////////////${c2}%${c1}/////////(${c2}@@   
+     ${c2}@@#${c1}***********************************${c2}%@@    
+      ${c2}*@@${c1}********************************${c2}/@@/     
+        ${c2},@@#${c1}***************************${c2}%@@*       
+           ${c2}@@@&${c1}********************${c2}/@@@@          
+               ${c2}&@@@@&${c1}(//***//(${c2}&@@@@&              
+${c1}                  ${c2}**@@@@@@@@@@@*                    
+                  
+EOF
+        ;;
                 "IRIX"*)
                     set_colors 4 7
                     read -rd '' ascii_data <<'EOF'
@@ -10868,7 +10901,7 @@ ${c1}                 `-     `
 EOF
                 ;;
 
-                "IRIX"*)
+                 "IRIX"*)
                     set_colors 4 7
                     read -rd '' ascii_data <<'EOF'
 ${c1}           ./ohmNd/  +dNmho/-
