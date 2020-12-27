@@ -1637,7 +1637,7 @@ get_packages() {
             ProgramData=$(cygpath --folder 0x0023 2>/dev/null)
             if [[ -z $ProgramData ]]; then
               mount=$(awk '/^C:/ {print $2}' /proc/mounts 2>/dev/null)
-              ProgramData=${ProgramData:-${c_mount:-/cygdrive/c}/ProgramData}
+              ProgramData=${ProgramData:-${mount:-/cygdrive/c}/ProgramData}
             fi
 
             # Scoop environment throws errors if `tot scoop list` is used
