@@ -74,6 +74,7 @@ print_info() {
     info "GPU" gpu
     info "Memory" memory
 
+    # info "Bootloader" bootloader #Linux/macOS only
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "Disk" disk
     # info "Battery" battery
@@ -2718,6 +2719,22 @@ get_memory() {
         "bar")     memory="$(bar "${mem_used}" "${mem_total}")" ;;
         "infobar") memory="${memory} $(bar "${mem_used}" "${mem_total}")" ;;
         "barinfo") memory="$(bar "${mem_used}" "${mem_total}")${info_color} ${memory}" ;;
+    esac
+}
+
+get_bootloader() {
+    case $os in
+        "Linux")
+            if [[ -d "/boot/grub" ]]; then
+                bootloader="GRUB ($(grub-install --version | awk '{printf $3}'))"
+            fi
+        ;;
+        
+        "Mac OS X"|"macOS")
+            if [[ $(nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version) != "" ]]; then
+                bootloader="OpenCore ($(nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version | awk '{printf $2}' ))"
+            fi
+        ;;
     esac
 }
 
@@ -5369,6 +5386,7 @@ get_args() {
                     info "GPU Driver" gpu_driver
                     info "Memory" memory
 
+                    info "Bootloader" bootloader
                     info "Disk" disk
                     info "Battery" battery
                     info "Font" font
@@ -5396,7 +5414,7 @@ get_args() {
 
                 # Known implicit unused variables.
                 mpc_args=()
-                printf '%s\n' "$kernel $icons $font $battery $locale ${mpc_args[*]}"
+                printf '%s\n' "$kernel $icons $font $battery $locale $bootloader ${mpc_args[*]}"
             ;;
         esac
 
