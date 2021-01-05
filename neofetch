@@ -2724,12 +2724,6 @@ get_memory() {
 
 get_bootloader() {
     case $os in
-        "Linux")
-            if [[ -d "/boot/grub" ]]; then
-                bootloader="GRUB ($(grub-install --version | awk '{printf $3}'))"
-            fi
-        ;;
-        
         "Mac OS X"|"macOS")
             if [[ $(nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version) != "" ]]; then
                 bootloader="OpenCore ($(nvram 4D1FDA02-38C7-4A6A-9CC6-4BCCA8B30102:opencore-version | awk '{printf $2}' ))"
