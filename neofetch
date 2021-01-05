@@ -63,15 +63,15 @@ print_info() {
     info underline
 
     info "CPU" cpu
+    info "Memory" memory
     info "GPU" gpu
     info "GPU Driver" gpu_driver  # Linux/macOS only
-    info "Memory" memory
+    info "Resolution" resolution
     info underline
 
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
-    info "Resolution" resolution
     info "DE" de
     info "WM" wm
     info "WM Theme" wm_theme
