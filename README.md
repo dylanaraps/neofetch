@@ -1,3 +1,17 @@
+# Neofetch-OC
+
+This is my personal modified version/fork of neofetch which is aimed for use with OpenCore.
+
+It shows more useful infomration such as the OpenCore version and date as well art colors is inverted to make it stand out a little. This can still be run on a real mac to get a more pre-defined output.
+
+| Before |  After |
+:-------:|:-------:
+![oc-before](screenshots/oc-before.png?raw=true)  |  ![oc-after](screenshots/oc-after.png?raw=true)
+
+
+
+---
+
 <h3 align="center"><img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px"></h3>
 <p align="center">A command-line system information tool written in bash 3.2+</p>
 
