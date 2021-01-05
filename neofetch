@@ -59,6 +59,7 @@ print_info() {
     info "OS" distro
     info "Host" model
     info "Kernel" kernel
+    info "Bootloader" bootloader # macOS only
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
@@ -74,7 +75,6 @@ print_info() {
     info "GPU" gpu
     info "Memory" memory
 
-    # info "Bootloader" bootloader #Linux/macOS only
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "Disk" disk
     # info "Battery" battery
