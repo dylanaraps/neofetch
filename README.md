@@ -2,7 +2,7 @@
 
 This is my personal modified version/fork of neofetch which is aimed for use with OpenCore.
 
-It shows more useful infomration such as the OpenCore version and date as well art colors is inverted to make it stand out a little. This can still be run on a real mac to get a more pre-defined output.
+It shows more useful information such as the OpenCore version and date as well ascii art colors is inverted to make it stand out a little. This version can still be run on a real mac to get a more pre-defined output.
 
 | Before |  After |
 :-------:|:-------:
