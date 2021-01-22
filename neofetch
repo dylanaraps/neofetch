@@ -802,7 +802,7 @@ image_source="auto"
 #       Proxmox, PuffOS, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, 
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, 
 #       Rocky, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
-#       SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
+#       SereneLinux, SharkLinux, Siduction, SkiffOS, Slackware, SliTaz, SmartOS,
 #       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
@@ -10290,6 +10290,22 @@ yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 EOF
         ;;
+
+        "SkiffOS"*)
+            set_colors 4 7
+            read -rd '' ascii_data <<'EOF'
+${c2}
+             ,@@@@@@@@@@@w,_
+  ${c2}====~~~,,.${c2}A@@@@@@@@@@@@@@@@@W,_
+  ${c1}`||||||||||||||L{${c2}"@$@@@@@@@@B"
+   ${c1}`|||||||||||||||||||||L{${c2}"$D
+     ${c2}@@@@@@@@@@@@@@@@@@@@@${c1}_||||}==,
+      ${c2}*@@@@@@@@@@@@@@@@@@@@@@@@@p${c1}||||==,
+        ${c1}`'||LLL{{""${c2}@$B@@@@@@@@@@@@@@@p${c1}||
+            ${c1}`~=|||||||||||L"${c2}$@@@@@@@@@@@
+                   ${c1}````'"""""""${c2}'""""""""
+EOF
+            ;;
 
         "Solus"*)
             set_colors 4 7 1
