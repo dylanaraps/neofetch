@@ -5054,7 +5054,7 @@ ASCII:
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
-                                LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
+                                LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, LoopLinux macos,
                                 Mageia, MagpieOS, Mandriva, Manjaro, Maui, Mer, Minix, LinuxMint,
                                 Live_Raizo, MX_Linux, Namib, Neptune, NetBSD, Netrunner, Nitrux,
                                 NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana,
@@ -8033,7 +8033,29 @@ ${c3}          __
          |  |__| | |   | .'|  _|
          |_____|___|_|_|__,|_|
 EOF
+
         ;;
+
+        "LoopLinux"* )
+            set_colors 4 6 2
+            read -rd '' ascii_data <<'EOF'
+${c1}                                     ......
+      .,cdxxxoc,.               .:kKMMMNWMMMNk:.
+    cKMMN0OOOKWMMXo. ;        ;0MWk:.      .:OMMk.
+  ;WMK;.       .lKMMNM,     :NMK,             .OMW;
+${c2} cMW;    x       'WMMMN,             xxxx       oMM'
+.MMc     x            loopxMN:      yxxxxx       KM0
+'MM$     x              'NMO       xxxxxxxx      oMM
+.MM,     x            .kMMl         xxxxxx       xMN
+ KM0     xxxx          .kMM0.        xxxx      .WMd
+ .XM0.           ,OMMK,    OMMMK.              .XMK
+${c3}   oWMO:.    .;xNMMk,       NNNMKl.          .xWMx
+     :ONMMNXMMMKx;          .  ,xNMWKkxllox0NMWk,
+         loopl                    .:dOOXXKOxl,
+EOF
+
+		
+		;;
 
         "mac"*"_small")
             set_colors 2 3 1 5 4
