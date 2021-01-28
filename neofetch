@@ -1513,7 +1513,7 @@ get_packages() {
             ((packages+="${#pkgs[@]}"))
 	    pac "$((${#pkgs[@]}-pkgs_h))";
         }
-        br_prefix="/bedrock/strata/*"
+        br_prefix="/bedrock/strata/hijacked"
     }
 
     case $os in
