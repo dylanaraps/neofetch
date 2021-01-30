@@ -971,7 +971,7 @@ get_distro() {
 
     case $os in
         Linux|BSD|MINIX)
-            if [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]]; then
+            if [[ -f /bedrock/etc/bedrock-release && -z $BEDROCK_RESTRICT ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="Bedrock Linux" ;;
                     *) distro=$(< /bedrock/etc/bedrock-release)
@@ -1498,7 +1498,9 @@ get_packages() {
     # pac: If packages > 0, log package manager name.
     # tot: Count lines in command output.
     has() { type -p "$1" >/dev/null && manager=$1; }
-    dir() { ((packages+=$#)); pac "$(($#-pkgs_h))"; }
+    # globbing is intentional here
+    # shellcheck disable=SC2206
+    dir() { pkgs=($@); ((packages+=${#pkgs[@]})); pac "$((${#pkgs[@]}-pkgs_h))"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() {
 	IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
@@ -1506,14 +1508,22 @@ get_packages() {
 	pac "$((${#pkgs[@]}-pkgs_h))";
     }
 
-    # Redefine tot() for Bedrock Linux.
+    # Redefine tot() and dir() for Bedrock Linux.
     [[ -f /bedrock/etc/bedrock-release && $PATH == */bedrock/cross/* ]] && {
+        br_strata=$(brl list)
         tot() {
-            IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in $(brl list); do strat -r "$s" "$@"; done)"
+            IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in ${br_strata}; do strat -r "$s" "$@"; done)"
             ((packages+="${#pkgs[@]}"))
-	    pac "$((${#pkgs[@]}-pkgs_h))";
+            pac "$((${#pkgs[@]}-pkgs_h))";
         }
-        br_prefix="/bedrock/strata/*"
+        dir() {
+            local pkgs=()
+            # globbing is intentional here
+            # shellcheck disable=SC2206
+            for s in ${br_strata}; do pkgs+=(/bedrock/strata/$s/$@); done
+            ((packages+=${#pkgs[@]}))
+            pac "$((${#pkgs[@]}-pkgs_h))"
+        }
     }
 
     case $os in
@@ -1547,16 +1557,16 @@ get_packages() {
             # shellcheck disable=SC2086
             {
             shopt -s nullglob
-            has brew    && dir "$(brew --cellar)"/*
-            has emerge  && dir ${br_prefix}/var/db/pkg/*/*/
-            has Compile && dir ${br_prefix}/Programs/*/
-            has eopkg   && dir ${br_prefix}/var/lib/eopkg/package/*
-            has crew    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
-            has pkgtool && dir ${br_prefix}/var/log/packages/*
-            has scratch && dir ${br_prefix}/var/lib/scratchpkg/index/*/.pkginfo
-            has kagami  && dir ${br_prefix}/var/lib/kagami/pkgs/*
-            has cave    && dir ${br_prefix}/var/db/paludis/repositories/cross-installed/*/data/*/ \
-                               ${br_prefix}/var/db/paludis/repositories/installed/data/*/
+            has brew    && dir "$(brew --cellar)/*"
+            has emerge  && dir "/var/db/pkg/*/*"
+            has Compile && dir "/Programs/*/"
+            has eopkg   && dir "/var/lib/eopkg/package/*"
+            has crew    && dir "/usr/local/etc/crew/meta/*.filelist"
+            has pkgtool && dir "/var/log/packages/*"
+            has scratch && dir "/var/lib/scratchpkg/index/*/.pkginfo"
+            has kagami  && dir "/var/lib/kagami/pkgs/*"
+            has cave    && dir "/var/db/paludis/repositories/cross-installed/*/data/*/ \
+                               /var/db/paludis/repositories/installed/data/*/"
             shopt -u nullglob
             }
 
