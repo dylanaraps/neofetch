@@ -1635,12 +1635,13 @@ get_packages() {
             esac
 
             ProgramData=$(cygpath --folder 0x0023 2>/dev/null)
-            if [[ -z $ProgramData ]]; then
+            if [[ -z "$ProgramData" ]]; then
               mount=$(awk '/^C:/ {print $2}' /proc/mounts 2>/dev/null)
               ProgramData=${ProgramData:-${mount:-/cygdrive/c}/ProgramData}
             fi
 
             # Scoop environment throws errors if `tot scoop list` is used
+	    # shellcheck disable=SC2086
             has scoop && {
               sdir=$(cygpath "${SCOOP}" 2>/dev/null)
               sdir=${sdir:-~/scoop}
@@ -1652,6 +1653,7 @@ get_packages() {
             }
 
             # Count chocolatey packages.
+	    # shellcheck disable=SC2086
             has choco && dir $ProgramData/chocolatey/lib/*
         ;;
 
