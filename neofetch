@@ -3423,7 +3423,7 @@ END
         ;;
 
         "mintty")
-            term_font="$(awk -F '=' '!/^($|#)/ && /^\s*Font\s*=/ {printf $2; exit}' "${HOME}/.minttyrc")"
+            term_font="$(awk -F '=' '!/^($|#)/ && /^\\s*Font\\s*=/ {printf $2; exit}' "${HOME}/.minttyrc")"
         ;;
 
         "pantheon"*)
