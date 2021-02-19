@@ -1730,9 +1730,7 @@ get_de() {
     case $os in
         "Mac OS X"|"macOS") de=Aqua ;;
 
-        Windows)
-            de="Windows Explorer"
-        ;;
+        Windows) de="Windows Explorer" ;;
 
         FreeMiNT)
             freemint_wm=(/proc/*)
