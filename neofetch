@@ -1731,19 +1731,7 @@ get_de() {
         "Mac OS X"|"macOS") de=Aqua ;;
 
         Windows)
-            case $distro in
-                *"Windows 10"*)
-                    de=Fluent
-                ;;
-
-                *"Windows 8"*)
-                    de=Metro
-                ;;
-
-                *)
-                    de=Aero
-                ;;
-            esac
+            de="Windows Explorer"
         ;;
 
         FreeMiNT)
