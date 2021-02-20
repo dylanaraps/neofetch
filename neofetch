@@ -6754,7 +6754,7 @@ EOF
         ;;
 
         "Debian"*)
-            set_colors 1 7 3
+            set_colors 1 197 3
             read -rd '' ascii_data <<'EOF'
 ${c2}       _,met$$$$$gg.
     ,g$$$$$$$$$$$$$$$P.
