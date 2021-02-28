@@ -786,8 +786,8 @@ image_source="auto"
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
-#       Container_Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS,
-#       Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
+#       Container_Linux, CRUX, Cucumber, CyberOS, dahlia, Debian, Deepin,
+#       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
@@ -6714,6 +6714,30 @@ o/${c2}--...::-:/::/:-......-::::::-/-...-${c1}:/o
       -/+/:${c2}----..........----${c1}:/+/-
         `:/+//${c2}::--------:::${c1}/+/:`
            `.-://++++++//:-.`
+EOF
+        ;;
+
+        "CyberOS"*)
+            set_colors 6 4 5
+            read -rd '' ascii_data <<'EOF'
+${c2}                 c${c3};''''''''''''''''          
+                ${c2}ccc:${c3};''''''''''''''          
+                ${c2}cccccc;${c3};,,,,,,,;${c1}lddddddddd   
+               ${c2}cccccco${c1}kkdddddddddddddddddd   
+              ${c2}ccccld${c1}O00kddddddddddddddddd    
+       Oxk    ${c2}cco${c1}xO0000kddddddddddddddx      
+     000kddddodO0000000k${c1}dddddddddddd         
+    0000OxddddxO0000000k${c1}dddddddddx           
+   000000OxdddddxkO0000k${c1}dddddol${c2}ccc${c1}
+   0000000kdddddddxkO00k${c1}dddo${c2}ccccccccc${c1}
+           ddddddddddxOk${c1}ol${c2}ccccccccccccccl${c1}
+            ddddddddddddo${c2}dddddddddddddddd    
+                         xddddddddddddddd    
+                           xddddddddddddd    
+                              ddddddddddd    
+                                xdddddddd    
+                                   dddddd    
+                                     xddd    
 EOF
         ;;
 
