@@ -1598,6 +1598,11 @@ get_packages() {
             has spm     && tot spm list -i
             has puyo    && dir ~/.puyo/installed
 
+
+            has rookie.py && {
+                manager=rookie.py && tot rookie.py --list-packages
+            }
+
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
             has snap && ps -e | grep -qFm 1 snapd >/dev/null && \
