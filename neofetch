@@ -138,6 +138,17 @@ distro_shorthand="off"
 # off: 'Arch Linux'
 os_arch="on"
 
+# Show btw in case you use Arch Linux
+#
+# Default: 'on'
+# Values:  'on', 'off'
+# Flag:    '--i-use-arch-btw'
+#
+# Example:
+# on: 'Arch Linux btw x86_64'
+# off: 'Arch Linux x86_64'
+i_use_arch_btw="on"
+
 
 # Uptime
 
@@ -1033,6 +1044,10 @@ get_distro() {
                     tiny) distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
                     off)  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
+
+                if [[ "$distro" == "Arch Linux"* && "$i_use_arch_btw" == "on" ]]; then
+                    distro="$distro btw"
+                fi
 
             elif [[ -f /etc/GoboLinuxVersion ]]; then
                 case $distro_shorthand in
@@ -4902,6 +4917,10 @@ INFO:
     --title_fqdn on/off         Hide/Show Fully Qualified Domain Name in title.
     --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
     --os_arch on/off            Hide/Show OS architecture.
+    --i-use-arch-btw            Show a btw after the name of the distro
+
+                                NOTE: This only supports Arch Linux
+
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
                                 scaling_current, scaling_min, scaling_max
@@ -5148,6 +5167,7 @@ get_args() {
             "--title_fqdn") title_fqdn="$2" ;;
             "--package_managers") package_managers="$2" ;;
             "--os_arch") os_arch="$2" ;;
+            "--i-use-arch-btw") i_use_arch_btw="$2" ;;
             "--cpu_cores") cpu_cores="$2" ;;
             "--cpu_speed") cpu_speed="$2" ;;
             "--speed_type") speed_type="$2" ;;
