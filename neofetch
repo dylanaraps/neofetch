@@ -143,6 +143,7 @@ os_arch="on"
 # Default: 'on'
 # Values:  'on', 'off'
 # Flag:    '--i-use-arch-btw'
+# Short:   '--btw'
 #
 # Example:
 # on: 'Arch Linux btw x86_64'
@@ -4918,7 +4919,7 @@ INFO:
     --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
     --os_arch on/off            Hide/Show OS architecture.
     --i-use-arch-btw            Show a btw after the name of the distro
-
+    --btw
                                 NOTE: This only supports Arch Linux
 
     --speed_type type           Change the type of cpu speed to display.
@@ -5167,7 +5168,7 @@ get_args() {
             "--title_fqdn") title_fqdn="$2" ;;
             "--package_managers") package_managers="$2" ;;
             "--os_arch") os_arch="$2" ;;
-            "--i-use-arch-btw") i_use_arch_btw="$2" ;;
+            "--i-use-arch-btw" | "--btw") i_use_arch_btw="$2" ;;
             "--cpu_cores") cpu_cores="$2" ;;
             "--cpu_speed") cpu_speed="$2" ;;
             "--speed_type") speed_type="$2" ;;
