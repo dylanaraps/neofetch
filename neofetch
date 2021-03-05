@@ -57,6 +57,7 @@ print_info() {
     info underline
 
     info "OS" distro
+    info "Based on" based_on
     info "Host" model
     info "Kernel" kernel
     info "Uptime" uptime
@@ -1000,11 +1001,12 @@ get_distro() {
                 esac
                 
             elif [[ -f /usr/local/bin/twistver ]]; then
+	        distro="$( twistver )"
                 . /etc/os-release
                 case $distro_shorthand in
-                    on)   distro="$( twistver ) based on ${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
-                    tiny) distro="$( twistver ) based on ${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
-                    off)  distro="$( twistver ) based on ${PRETTY_NAME:-{${DISTRIB_DESCRIPTION} (${UBUNTU_CODENAME})}" ;;
+                    on)   based_on="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
+                    tiny) based_on="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
+                    off)  based_on="${PRETTY_NAME:-{${DISTRIB_DESCRIPTION} (${UBUNTU_CODENAME})}" ;;
                 esac
 
             elif type -p pveversion >/dev/null; then
