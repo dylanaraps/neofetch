@@ -140,7 +140,7 @@ os_arch="on"
 
 # Show btw in case you use Arch Linux
 #
-# Default: 'on'
+# Default: 'off'
 # Values:  'on', 'off'
 # Flag:    '--i-use-arch-btw'
 # Short:   '--btw'
@@ -148,7 +148,7 @@ os_arch="on"
 # Example:
 # on: 'Arch Linux btw x86_64'
 # off: 'Arch Linux x86_64'
-i_use_arch_btw="on"
+i_use_arch_btw="off"
 
 
 # Uptime
@@ -1046,7 +1046,7 @@ get_distro() {
                     off)  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
                 esac
 
-                if [[ "$distro" == "Arch Linux"* && "$i_use_arch_btw" == "on" ]]; then
+                if [[ "$distro" == "Arch Linux"* && "$i_use_arch_btw" != "off" ]]; then
                     distro="$distro btw"
                 fi
 
@@ -4918,7 +4918,7 @@ INFO:
     --title_fqdn on/off         Hide/Show Fully Qualified Domain Name in title.
     --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
     --os_arch on/off            Hide/Show OS architecture.
-    --i-use-arch-btw            Show a btw after the name of the distro
+    --i-use-arch-btw            Show btw after the name of the distro
     --btw
                                 NOTE: This only supports Arch Linux
 
