@@ -1551,7 +1551,7 @@ get_packages() {
             has emerge  && dir ${br_prefix}/var/db/pkg/*/*/
             has Compile && dir ${br_prefix}/Programs/*/
             has eopkg   && dir ${br_prefix}/var/lib/eopkg/package/*
-            has crew    && dir ${br_prefix}/usr/local/etc/crew/meta/*.filelist
+            has crew    && dir ${br_prefix}/${CREW_PREFIX:-/usr/local}/etc/crew/meta/*.filelist
             has pkgtool && dir ${br_prefix}/var/log/packages/*
             has scratch && dir ${br_prefix}/var/lib/scratchpkg/index/*/.pkginfo
             has kagami  && dir ${br_prefix}/var/lib/kagami/pkgs/*
