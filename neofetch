@@ -76,6 +76,7 @@ print_info() {
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "Disk" disk
+    # info "ZFS" zpools     # if you have ZFS pools
     # info "Battery" battery
     # info "Font" font
     # info "Song" song
@@ -3646,6 +3647,45 @@ get_disk() {
         esac
 
         case $disk_display in
+            bar)     disk="$(bar "$disk_perc" "100")" ;;
+            infobar) disk+=" $(bar "$disk_perc" "100")" ;;
+            barinfo) disk="$(bar "$disk_perc" "100")${info_color} $disk" ;;
+            perc)    disk="${disk_perc}% $(bar "$disk_perc" "100")" ;;
+        esac
+
+        # Append '(disk mount point)' to the subtitle.
+        if [[ "$subtitle" ]]; then
+            prin "$subtitle${disk_sub:+ ($disk_sub)}" "$disk"
+        else
+            prin "$disk_sub" "$disk"
+        fi
+    done
+}
+
+get_zpools() {
+    type -p zpool &>/dev/null ||
+        { err "Collecting zpool stats requires 'zpool' to function. Install 'zpool' to get disk info."; return; }
+
+    IFS=$'\n' read -d "" -ra pools <<< "$(zpool list -H -o name,allocated,size,capacity)"
+
+    # Stop here if 'zpool' fails.
+    [[ ${pools[*]} ]] || {
+        err "Disk: zpool failed to print the ZFS pools."
+        return
+    }
+
+    for pool in "${pools[@]}"; do
+        # Create a second array and make each element split at whitespace this time.
+        IFS=$'\t' read -ra pool_info <<< "$pool"
+
+        case "${disk_percent}" in
+            off) disk_perc= ;;
+            *)   disk_perc=${pool_info[3]/\%}
+        esac
+        disk="${pool_info[1]} / ${pool_info[2]}${disk_perc:+ (${disk_perc}%)}"
+        disk_sub="${pool_info[0]}"
+
+        case "${disk_display}" in
             bar)     disk="$(bar "$disk_perc" "100")" ;;
             infobar) disk+=" $(bar "$disk_perc" "100")" ;;
             barinfo) disk="$(bar "$disk_perc" "100")${info_color} $disk" ;;
