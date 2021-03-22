@@ -3267,6 +3267,7 @@ get_term_font() {
             term_font="${term_font/*family:}"
             term_font="${term_font/$'\n'*}"
             term_font="${term_font/\#*}"
+            term_font="${term_font//\"}"
         ;;
 
         "Apple_Terminal")
