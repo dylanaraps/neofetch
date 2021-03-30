@@ -3206,11 +3206,6 @@ get_style() {
         gtk3_theme="$(trim_quotes "$gtk3_theme")"
         qt_theme="$(trim_quotes "$qt_theme")"
 
-        # Toggle visibility of GTK themes.
-        [[ "$gtk2" == "off" ]] && unset gtk2_theme
-        [[ "$gtk3" == "off" ]] && unset gtk3_theme
-        [[ "$qt"  ==  "off" ]] && unset qt_theme
-
         # Handle Qt theme engines that load external themes
         case "$qt_theme" in
             'Kvantum')
@@ -3223,6 +3218,11 @@ get_style() {
                 qt_theme="$gtk2_theme"
                 ;;
         esac
+
+        # Toggle visibility of GTK themes.
+        [[ "$gtk2" == "off" ]] && unset gtk2_theme
+        [[ "$gtk3" == "off" ]] && unset gtk3_theme
+        [[ "$qt"  ==  "off" ]] && unset qt_theme
 
         # Format the string based on which themes exist.
         # append_theme theme toolkit
@@ -3250,11 +3250,7 @@ get_style() {
 
         # Make the output shorter by removing "[GTKX]" from the string.
         if [[ "$gtk_shorthand" == "on" ]]; then
-            theme="${theme// '[GTK'[0-9]']'}"
-            theme="${theme/ '[GTK2/3]'}"
-            theme="${theme/ '[KDE]'}"
-            theme="${theme/ '[Plasma]'}"
-            theme="${theme/ '[Qt]'}"
+            theme="${theme// '['*']'}"
         fi
     fi
 }
