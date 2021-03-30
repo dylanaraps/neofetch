@@ -1609,9 +1609,10 @@ get_packages() {
         ;;
 
         "Mac OS X"|"macOS"|MINIX)
-            has port  && pkgs_h=1 tot port installed && ((packages-=1))
-            has brew  && dir /usr/local/Cellar/*
-            has pkgin && tot pkgin list
+            has port     && pkgs_h=1 tot port installed && ((packages-=1))
+            has brew     && dir /usr/local/Cellar/*
+            has pkgin    && tot pkgin list
+            has pkg_info && tot pkg_info
 
             has nix-store && {
                 nix-user-pkgs() {
