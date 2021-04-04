@@ -1536,6 +1536,7 @@ get_packages() {
             has alps       && tot alps showinstalled
             has butch      && tot butch list
             has swupd      && tot swupd bundle-list --quiet
+            has pisi       && tot pisi li
 
             # 'mine' conflicts with minesweeper games.
             [[ -f /etc/SDE-VERSION ]] &&
