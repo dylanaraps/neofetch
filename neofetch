@@ -9170,24 +9170,25 @@ EOF
         "Pisi"*)
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
-${c1} .smNdy+-    `.:/osyyso+:.`    -+ydmNs.
-/Md- -/ymMdmNNdhso/::/oshdNNmdMmy/. :dM/
-mN.     oMdyy- -y          `-dMo     .Nm
-.mN+`  sMy hN+ -:             yMs  `+Nm.
- `yMMddMs.dy `+`               sMddMMy`
-   +MMMo  .`  .                 oMMM+
-   `NM/    `````.`    `.`````    +MN`
-   yM+   `.-:yhomy    ymohy:-.`   +My
-   yM:          yo    oy          :My
-   +Ms         .N`    `N.      +h sM+
-   `MN      -   -::::::-   : :o:+`NM`
-    yM/    sh   -dMMMMd-   ho  +y+My
-    .dNhsohMh-//: /mm/ ://-yMyoshNd`
-      `-ommNMm+:/. oo ./:+mMNmmo:`
-     `/o+.-somNh- :yy: -hNmos-.+o/`
-    ./` .s/`s+sMdd+``+ddMs+s`/s. `/.
-        : -y.  -hNmddmNy.  .y- :
-         -+       `..`       +-
+${c1}   \Fv/!-                      `:?lzC
+   Q!::=zFx!  `;v6WBCicl;`  ,vCC\!::#.
+  ,%:::,'` +#%@@FQ@@.   ,cF%i``-',::a?
+  +m:,'```}3,/@@Q\@@       "af- `-'"7f
+  =o'.` /m'   :Q@:Qg         ,kl  `.|o
+  :k` '$+      'Narm           >d,  ii
+   #`!p.        `C ,            'd+ %'
+   !0m                           `6Kv
+   =a                              m+
+  !A     '|L\!`           :|L\!     $:
+ .8`     3l-6QQ?        '#Q%''Q     `0-
+ :6      ^K`o#gQ        uQQ6.\E      p:
+  i{      :jCxjk        ?9stj\      u\
+   |a`            -''.            `e>
+    ,m+     '^ !`s@@@@a'"`+`     >e'
+      !3|`!=>>r-  'U%:  '>>>=:`\3!
+       'xopE|      `'     `ledoz-
+    `;=>>+``^llci/|==|/iclc;`'>>>>:
+   `^`+~          ````          !!-^
 EOF
         ;;
 
