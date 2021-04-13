@@ -1763,7 +1763,7 @@ get_de() {
             ((wm_run != 1)) && get_wm
 
             # Temporary support for Regolith Linux
-            if [[ $DESKTOP_SESSION == regolith ]]; then
+            if [[ $DESKTOP_SESSION == *regolith ]]; then
                 de=Regolith
 
             elif [[ $XDG_CURRENT_DESKTOP ]]; then
