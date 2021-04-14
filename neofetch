@@ -1537,7 +1537,7 @@ get_packages() {
             has swupd      && tot swupd bundle-list --quiet
 
             # Using DNF package cache is much faster than rpm.
-            if has dnf; then
+            if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
                 pac "$(sqlite3 /var/cache/dnf/packages.db "SELECT count(pkg) FROM installed")"
             else
                 has rpm && tot rpm -qa
