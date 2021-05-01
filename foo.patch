@@ -1,0 +1,69 @@
+From cc3863bf602cc402310e31ff5d790eaf63f1b5b5 Mon Sep 17 00:00:00 2001
+From: Kaleb <51819073+klebdotio@users.noreply.github.com>
+Date: Sat, 1 May 2021 22:06:47 +1000
+Subject: [PATCH 1/2] Add Rocky Linux ASCII Art
+
+---
+ neofetch | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/neofetch b/neofetch
+index 62b82ea4..17a8d755 100755
+--- a/neofetch
++++ b/neofetch
+@@ -9664,6 +9664,24 @@ ${c1}
+ EOF
+         ;;
+ 
++	"Rocky Linux"*)
++	    set_colors 2
++    	    read -rd '' ascii_data <<'EOF'
++${c1}    `-/+++++++++/-.`
++ `-+++++++++++++++++-`
++.+++++++++++++++++++++.
++-+++++++++++++++++++++++.
+++++++++++++++++/-/+++++++
+++++++++++++++/.   ./+++++
+++++++++++++:.       ./+++
+++++++++++:`   `:/:`   .:/
++-++++++:`   .:+++++:`
++ .+++-`   ./+++++++++:`
++  `-`   ./+++++++++++-
++       -+++++++++:-.`
++EOF
++	;;
++
+         "Rosa"*)
+             set_colors 4 7 1
+             read -rd '' ascii_data <<'EOF'
+-- 
+2.31.1
+
+
+From 856af92467beb207f44b4a2a81cb5ca7d0d3c521 Mon Sep 17 00:00:00 2001
+From: Kaleb <51819073+klebdotio@users.noreply.github.com>
+Date: Sat, 1 May 2021 22:09:20 +1000
+Subject: [PATCH 2/2] Add Rocky Linux into the ASCII logo list
+
+---
+ neofetch | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/neofetch b/neofetch
+index 17a8d755..55c594b9 100755
+--- a/neofetch
++++ b/neofetch
+@@ -800,8 +800,8 @@ image_source="auto"
+ #       osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
+ #       TrueOS, PCLinuxOS, Pengwin, Peppermint, popos, Porteus, PostMarketOS,
+ #       Proxmox, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, Reborn_OS,
+-#       Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
+-#       sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
++#       Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rocky Linux,
++#       Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
+ #       SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
+ #       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
+ #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
+-- 
+2.31.1
+
