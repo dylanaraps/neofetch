@@ -1610,7 +1610,7 @@ get_packages() {
 
         "Mac OS X"|"macOS"|MINIX)
             has port  && pkgs_h=1 tot port installed && ((packages-=1))
-            has brew  && dir /usr/local/Cellar/*
+            has brew  && dir "$(brew --cellar)"/*
             has pkgin && tot pkgin list
 
             has nix-store && {
