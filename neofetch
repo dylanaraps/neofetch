@@ -8915,6 +8915,18 @@ ${c1}   ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄
 EOF
         ;;
 
+"KittyOs"*)
+            set_colors 4 7 3
+            read -rd '' ascii_data <<'EOF'
+${c1}   /\_/| 
+	=0-0=
+ 	\'I'|
+ 	|<|,,\_
+ 	|[>,,/,\ 
+ 	|[|,\_,,)
+ 	((J(=__/
+EOF
+        ;;
         "PacBSD"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
