@@ -1619,6 +1619,7 @@ get_packages() {
             has port  && pkgs_h=1 tot port installed && ((packages-=1))
             has brew  && dir /usr/local/Cellar/*
             has pkgin && tot pkgin list
+	    has dpkg  && tot dpkg-query -f '.\n' -W
 
             has nix-store && {
                 nix-user-pkgs() {
