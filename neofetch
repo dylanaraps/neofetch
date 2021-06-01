@@ -790,7 +790,7 @@ image_source="auto"
 #       Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
-#       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra,
+#       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
 #       Hyperbola, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, Maui,
@@ -7591,6 +7591,20 @@ ${c2}                     `
                                 ``
 EOF
         ;;
+	"HydroOS"*)
+            set_colors 1 2 3 4 5
+            read -rd '' ascii_data <<'EOF'
+${c1}
+  _    _           _            ____   _____
+ | |  | |         | |          / __ \ / ____|
+ | |__| |_   _  __| |_ __ ___ | |  | | (___
+ |  __  | | | |/ _` | '__/ _ \| |  | |\___ \
+ | |  | | |_| | (_| | | | (_) | |__| |____) |
+ |_|  |_|\__, |\__,_|_|  \___/ \____/|_____/
+          __/ |
+         |___/
+EOF
+	;;
 
         "hyperbola_small"*)
             set_colors 8
