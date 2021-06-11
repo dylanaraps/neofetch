@@ -1523,7 +1523,6 @@ get_packages() {
             has cpt-list   && tot cpt-list
             has pacman-key && tot pacman -Qq --color never
             has apt        && tot apt list --installed && ((packages-=1))
-            has rpm        && tot rpm -qa
             has xbps-query && tot xbps-query -l
             has apk        && tot apk info
             has opkg       && tot opkg list-installed
@@ -1536,6 +1535,13 @@ get_packages() {
             has alps       && tot alps showinstalled
             has butch      && tot butch list
             has swupd      && tot swupd bundle-list --quiet
+
+            # Using the dnf package cache is much faster than rpm.
+            if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
+                pac "$(sqlite3 /var/cache/dnf/packages.db "SELECT count(pkg) FROM installed")"
+            else
+                has rpm && tot rpm -qa
+            fi
 
             # 'mine' conflicts with minesweeper games.
             [[ -f /etc/SDE-VERSION ]] &&
