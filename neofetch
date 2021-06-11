@@ -2615,6 +2615,7 @@ get_gpu() {
                 case $line in
                     *Caption*|'')
                         continue
+                    ;;
 
                     *)
                         prin "${subtitle:+${subtitle}${gpu_name}}" "$line"
