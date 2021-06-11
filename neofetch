@@ -786,8 +786,8 @@ image_source="auto"
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
-#       Container_Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS,
-#       Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
+#       Container_Linux, CrystalUX, CRUX, Cucumber, dahlia, Debian, Deepin, 
+#       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
@@ -5049,8 +5049,8 @@ ASCII:
                                 BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
-                                CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan, DracOS,
-                                DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
+                                CrystalUX, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan, 
+				DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, janus, Kali,
@@ -6691,6 +6691,32 @@ ${c2} odxxdx${c3}xllod${c2}ddooxx${c1}dc:ldo
 ${c2}   lodd${c1}dolccc${c2}ccox${c1}xoloo
 EOF
         ;;
+
+	*"CrystalUX"*)
+	    set_colors 13 5
+	    read -rd '' ascii_data <<'EOF'
+${c1}                        mysssym
+${c1}                      mysssym
+${c1}                    mysssym
+${c1}                  mysssym
+${c1}                mysssyd
+${c1}              mysssyd    N
+${c1}            mysssyd    mysym
+${c1}          mysssyd      dysssym
+${c1}        mysssyd          dysssym
+${c1}      mysssyd              dysssym
+${c1}      mysssyd              dysssym
+${c1}        mysssyd          dysssym
+${c1}          mysssyd      dysssym
+${c1}            mysym    dysssym
+${c1}              N    dysssym
+${c1}                 dysssym
+${c1}               dysssym
+${c1}             dysssym
+${c1}           dysssym
+${c1}         dysssym
+EOF
+	;;
 
         *"Cucumber"*)
             set_colors 2 3
