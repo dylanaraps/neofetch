@@ -2601,12 +2601,13 @@ get_memory() {
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
+            hw_pagesize="$(sysctl -n hw.pagesize)"
             mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
-            mem_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
-            mem_active="$(vm_stat | awk '/ active/ { printf $3 }')"
-            mem_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
-            mem_compressed="${mem_compressed:-0}"
-            mem_used="$(((${mem_wired//.} + ${mem_active//.} + ${mem_compressed//.}) * 4 / 1024))"
+            pages_app="$(($(sysctl -n vm.page_pageable_internal_count) - $(sysctl -n vm.page_purgeable_count)))"
+            pages_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
+            pages_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
+            pages_compressed="${pages_compressed:-0}"
+            mem_used="$(((${pages_app} + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
         ;;
 
         "BSD" | "MINIX")
