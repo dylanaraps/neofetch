@@ -3047,7 +3047,8 @@ get_resolution() {
         ;;
     esac
 
-    resolution="${resolution%,*}"
+    resolution="${resolution%%,}"
+    resolution="${resolution%%, }"
     [[ -z "${resolution/x}" ]] && resolution=
 }
 
