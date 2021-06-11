@@ -158,7 +158,7 @@ uptime_shorthand="on"
 # Memory
 
 
-# Show memory pecentage in output.
+# Show memory percentage in output.
 #
 # Default: 'off'
 # Values:  'on', 'off'
@@ -1644,7 +1644,7 @@ get_packages() {
                     nix-store -qR /etc/profiles/per-user/"$USER"
                 }
                 manager=nix-system && tot nix-store -qR /run/current-system/sw
-                manager=nix-user   && tot nix-store -qR nix-user-pkgs
+                manager=nix-user   && tot nix-user-pkgs
             }
         ;;
 
@@ -2213,17 +2213,50 @@ get_cpu() {
                 speed="$((speed / 1000))"
 
             else
-                speed="$(awk -F ': |\\.' '/cpu MHz|^clock/ {printf $2; exit}' "$cpu_file")"
-                speed="${speed/MHz}"
+                case $kernel_machine in
+                    "sparc"*)
+                        # SPARC systems use a different file to expose clock speed information.
+                        speed_file="/sys/devices/system/cpu/cpu0/clock_tick"
+                        speed="$(($(< "$speed_file") / 1000000))"
+                    ;;
+
+                    *)
+                        speed="$(awk -F ': |\\.' '/cpu MHz|^clock/ {printf $2; exit}' "$cpu_file")"
+                        speed="${speed/MHz}"
+                    ;;
+                esac
             fi
 
             # Get CPU temp.
             [[ -f "$temp_dir" ]] && deg="$(($(< "$temp_dir") * 100 / 10000))"
 
             # Get CPU cores.
-            case $cpu_cores in
-                "logical" | "on") cores="$(grep -c "^processor" "$cpu_file")" ;;
-                "physical") cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")" ;;
+            case $kernel_machine in
+                "sparc"*)
+                    case $cpu_cores in
+                        # SPARC systems doesn't expose detailed topology information in
+                        # /proc/cpuinfo so I have to use lscpu here.
+                        "logical" | "on")
+                            cores="$(lscpu | awk -F ': *' '/^CPU\(s\)/ {print $2}')"
+                        ;;
+                        "physical")
+                            cores="$(lscpu | awk -F ': *' '/^Core\(s\) per socket/ {print $2}')"
+                            sockets="$(lscpu | awk -F ': *' '/^Socket\(s\)/ {print $2}')"
+                            cores="$((sockets * cores))"
+                        ;;
+                    esac
+                ;;
+
+                *)
+                    case $cpu_cores in
+                        "logical" | "on")
+                            cores="$(grep -c "^processor" "$cpu_file")"
+                        ;;
+                        "physical")
+                            cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")"
+                        ;;
+                    esac
+                ;;
             esac
         ;;
 
@@ -2286,7 +2319,17 @@ get_cpu() {
             [[ -z "$speed" ]] && speed="$(sysctl -n  hw.clockrate)"
 
             # Get CPU cores.
-            cores="$(sysctl -n hw.ncpu)"
+            case $kernel_name in
+                "OpenBSD"*)
+                    [[ "$(sysctl -n hw.smt)" == "1" ]] && smt="on" || smt="off"
+                    ncpufound="$(sysctl -n hw.ncpufound)"
+                    ncpuonline="$(sysctl -n hw.ncpuonline)"
+                    cores="${ncpuonline}/${ncpufound},\\xc2\\xa0SMT\\xc2\\xa0${smt}"
+                ;;
+                *)
+                    cores="$(sysctl -n hw.ncpu)"
+                ;;
+            esac
 
             # Get CPU temp.
             case $kernel_name in
@@ -2439,9 +2482,17 @@ get_gpu() {
     case $os in
         "Linux")
             # Read GPUs into array.
-            gpu_cmd="$(lspci -mm | awk -F '\"|\" \"|\\(' \
-                                          '/"Display|"3D|"VGA/ {a[$0] = $1 " " $3 " " $4}
-                                           END {for(i in a) {if(!seen[a[i]]++) print a[i]}}')"
+            gpu_cmd="$(lspci -mm |
+                       awk -F '\"|\" \"|\\(' \
+                              '/"Display|"3D|"VGA/ {
+                                  a[$0] = $1 " " $3 " " ($7 ~ /^$|^Device [[:xdigit:]]+$/ ? $4 : $7)
+                              }
+                              END { for (i in a) {
+                                  if (!seen[a[i]]++) {
+                                      sub("^[^ ]+ ", "", a[i]);
+                                      print a[i]
+                                  }
+                              }}')"
             IFS=$'\n' read -d "" -ra gpus <<< "$gpu_cmd"
 
             # Remove duplicate Intel Graphics outputs.
@@ -9314,7 +9365,7 @@ EOF
         "PCLinuxOS"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-            ${c1}mhhhyyyyhhhdN
+${c1}            mhhhyyyyhhhdN
         dyssyhhhhhhhhhhhssyhN
      Nysyhhyo/:-.....-/oyhhhssd
    Nsshhy+.              `/shhysm
