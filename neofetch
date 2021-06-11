@@ -1522,7 +1522,7 @@ get_packages() {
             has kiss       && tot kiss l
             has cpt-list   && tot cpt-list
             has pacman-key && tot pacman -Qq --color never
-            has apt        && tot apt list
+            has apt        && tot apt list --installed && ((packages-=1))
             has rpm        && tot rpm -qa
             has xbps-query && tot xbps-query -l
             has apk        && tot apk info
@@ -1610,7 +1610,7 @@ get_packages() {
 
         "Mac OS X"|"macOS"|MINIX)
             has port  && pkgs_h=1 tot port installed && ((packages-=1))
-            has brew  && dir /usr/local/Cellar/*
+            has brew  && dir "$(brew --cellar)"/*
             has pkgin && tot pkgin list
 
             has nix-store && {
