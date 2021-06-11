@@ -1115,6 +1115,7 @@ get_distro() {
                         tiny) distro="Chrome OS" ;;
                         *)    distro+=" on Chrome OS" ;;
                     esac
+                    distro=${distro## on }
             fi
 
             distro=$(trim_quotes "$distro")
