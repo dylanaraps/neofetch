@@ -275,13 +275,14 @@ cpu_speed="on"
 # Display CPU cores in output
 #
 # Default: 'logical'
-# Values:  'logical', 'physical', 'off'
+# Values:  'logical', 'physical', 'hybrid', 'off'
 # Flag:    --cpu_cores
-# Support: 'physical' doesn't work on BSD.
+# Support: 'physical' doesn't work on BSD. 'hybrid' works on Linux only.
 #
 # Example:
 # logical:  'Intel i7-6500U (4) @ 3.1GHz' (All virtual cores)
 # physical: 'Intel i7-6500U (2) @ 3.1GHz' (All physical cores)
+# hybrid:   '2 x Intel i7-6500U (2) @ 3.1GHz' (physical cores x virtual cores per physical core)
 # off:      'Intel i7-6500U @ 3.1GHz'
 cpu_cores="logical"
 
@@ -2221,8 +2222,16 @@ get_cpu() {
 
             # Get CPU cores.
             case $cpu_cores in
-                "logical" | "on") cores="$(grep -c "^processor" "$cpu_file")" ;;
-                "physical") cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")" ;;
+                "logical" | "on") 
+                    cores="$(grep -c "^processor" "$cpu_file")" ;;
+                "physical") 
+                    cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")" 
+                ;;
+                "hybrid")
+                    logical_cores="$(grep -c "^processor" "$cpu_file")" 
+                    cores=$logical_cores
+                    physical_cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")"
+                 ;;
             esac
         ;;
 
@@ -2407,6 +2416,13 @@ get_cpu() {
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
         case $os in
             "Mac OS X"|"macOS") cpu="${cpu/@/(${cores}) @}" ;;
+            "Linux") 
+                if [[ "$cpu_cores" == "hybrid" ]]; then
+                    cpu="$physical_cores x $cpu ($((logical_cores / physical_cores)))"
+                else
+                    cpu="$cpu ($cores)"
+                fi 
+            ;;
             *)                  cpu="$cpu ($cores)" ;;
         esac
 
