@@ -1263,11 +1263,11 @@ get_model() {
                 iPad6,1[12]):        "iPad 5" ;;
                 iPad7,[5-6]):        "iPad 6" ;;
                 iPad7,1[12]):        "iPad 7" ;;
-		        iPad11,[67]):        "iPad 8" ;;
+                iPad11,[67]):        "iPad 8" ;;
                 iPad4,[1-3]):        "iPad Air" ;;
                 iPad5,[3-4]):        "iPad Air 2" ;;
                 iPad11,[3-4]):       "iPad Air 3" ;;
-		        iPad13,[1-2]):       "iPad Air 4";;
+                iPad13,[1-2]):       "iPad Air 4";;
                 iPad6,[7-8]):        "iPad Pro (12.9 Inch)" ;;
                 iPad6,[3-4]):        "iPad Pro (9.7 Inch)" ;;
                 iPad7,[1-2]):        "iPad Pro 2 (12.9 Inch)" ;;
@@ -1307,10 +1307,10 @@ get_model() {
                 iPhone12,3):    "iPhone 11 Pro" ;;
                 iPhone12,5):    "iPhone 11 Pro Max" ;;
                 iPhone12,8):    "iPhone SE 2020" ;;
-		        iPhone13,1):    "iPhone 12 Mini" ;;
-		        iPhone13,2):    "iPhone 12" ;;
-		        iPhone13,3):    "iPhone 12 Pro" ;;
-		        iPhone13,4):    "iPhone 12 Pro Max" ;;
+                iPhone13,1):    "iPhone 12 Mini" ;;
+                iPhone13,2):    "iPhone 12" ;;
+                iPhone13,3):    "iPhone 12 Pro" ;;
+                iPhone13,4):    "iPhone 12 Pro Max" ;;
 
                 iPod1,1): "iPod touch" ;;
                 ipod2,1): "iPod touch 2G" ;;
@@ -1318,7 +1318,7 @@ get_model() {
                 ipod4,1): "iPod touch 4G" ;;
                 ipod5,1): "iPod touch 5G" ;;
                 ipod7,1): "iPod touch 6G" ;;
-		        iPod9,1): "iPod touch 7G" ;;
+                iPod9,1): "iPod touch 7G" ;;
             esac
 
             model=$_
@@ -1508,9 +1508,9 @@ get_packages() {
     dir() { ((packages+=$#)); pac "$(($#-pkgs_h))"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() {
-	IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
-	((packages+=${#pkgs[@]}));
-	pac "$((${#pkgs[@]}-pkgs_h))";
+        IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
+        ((packages+=${#pkgs[@]}));
+        pac "$((${#pkgs[@]}-pkgs_h))";
     }
 
     # Redefine tot() for Bedrock Linux.
@@ -1518,7 +1518,7 @@ get_packages() {
         tot() {
             IFS=$'\n' read -d "" -ra pkgs <<< "$(for s in $(brl list); do strat -r "$s" "$@"; done)"
             ((packages+="${#pkgs[@]}"))
-	    pac "$((${#pkgs[@]}-pkgs_h))";
+            pac "$((${#pkgs[@]}-pkgs_h))";
         }
         br_prefix="/bedrock/strata/*"
     }
@@ -1614,7 +1614,7 @@ get_packages() {
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
             has snap && ps -e | grep -qFm 1 snapd >/dev/null && \
-		pkgs_h=1 tot snap list && ((packages-=1))
+            pkgs_h=1 tot snap list && ((packages-=1))
 
             # This is the only standard location for appimages.
             # See: https://github.com/AppImage/AppImageKit/wiki
@@ -1625,7 +1625,7 @@ get_packages() {
             has port  && pkgs_h=1 tot port installed && ((packages-=1))
             has brew  && dir "$(brew --cellar)"/*
             has pkgin && tot pkgin list
-	        has dpkg  && tot dpkg-query -f '.\n' -W
+            has dpkg  && tot dpkg-query -f '.\n' -W
 
             has nix-store && {
                 nix-user-pkgs() {
@@ -1651,7 +1651,7 @@ get_packages() {
             # Scoop environment throws errors if `tot scoop list` is used
             has scoop && pkgs_h=1 dir ~/scoop/apps/* && ((packages-=1))
 
-	    # Count chocolatey packages.
+            # Count chocolatey packages.
             [[ -d /cygdrive/c/ProgramData/chocolatey/lib ]] && \
                 dir /cygdrive/c/ProgramData/chocolatey/lib/*
         ;;
@@ -1659,7 +1659,7 @@ get_packages() {
         Haiku)
             has pkgman && dir /boot/system/package-links/*
             packages=${packages/pkgman/depot}
-	;;
+        ;;
 
         IRIX)
             manager=swpkg
@@ -2241,7 +2241,7 @@ get_cpu() {
                 "iPhone10,"[1-6]): "Apple A11 Bionic (6) @ 2.39GHz" ;;
                 "iPhone11,"[2468] | "iPad11,"[1-4] | "iPad11,"[6-7]): "Apple A12 Bionic (6) @ 2.49GHz" ;;
                 "iPhone12,"[1358]): "Apple A13 Bionic (6) @ 2.65GHz" ;;
-		        "iPhone13,"[1-4] | "iPad13,"[1-2]): "Apple A14 Bionic (6) @ 3.00Ghz" ;;
+                "iPhone13,"[1-4] | "iPad13,"[1-2]): "Apple A14 Bionic (6) @ 3.00Ghz" ;;
 
                 "iPod2,1"): "Samsung S5L8720 (1) @ 533MHz" ;;
                 "iPod3,1"): "Samsung S5L8922 (1) @ 600MHz" ;;
@@ -2531,7 +2531,7 @@ get_gpu() {
                 "iPhone10,"[1-6]):                            "Apple Designed GPU (A11)" ;;
                 "iPhone11,"[2468] | "iPad11,"[67]):           "Apple Designed GPU (A12)" ;;
                 "iPhone12,"[1358]):                           "Apple Designed GPU (A13)" ;;
-		        "iPhone13,"[1234] | "iPad13,"[12]):           "Apple Designed GPU (A14)" ;;
+                "iPhone13,"[1234] | "iPad13,"[12]):           "Apple Designed GPU (A14)" ;;
 
                 "iPad3,"[1-3]):     "PowerVR SGX534MP4" ;;
                 "iPad3,"[4-6]):     "PowerVR SGX554MP4" ;;
@@ -5067,7 +5067,7 @@ ASCII:
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 CrystalUX, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan, 
-				DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
+                                DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, janus, Kali,
@@ -6381,7 +6381,7 @@ EOF
         "CelOS"*)
             set_colors 3 2 4 5 7
             read -rd '' ascii_data <<'EOF'
-	    
+    
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@#                       @@@
 @@         ,#%%%%%(.        (@
@@ -6731,9 +6731,9 @@ ${c2}   lodd${c1}dolccc${c2}ccox${c1}xoloo
 EOF
         ;;
 
-	*"CrystalUX"*)
-	    set_colors 13 5
-	    read -rd '' ascii_data <<'EOF'
+        *"CrystalUX"*)
+            set_colors 13 5
+            read -rd '' ascii_data <<'EOF'
 ${c1}                        mysssym
 ${c1}                      mysssym
 ${c1}                    mysssym
@@ -6755,7 +6755,7 @@ ${c1}             dysssym
 ${c1}           dysssym
 ${c1}         dysssym
 EOF
-	;;
+        ;;
 
         *"Cucumber"*)
             set_colors 2 3
@@ -7682,7 +7682,8 @@ ${c2}                     `
                                 ``
 EOF
         ;;
-	"HydroOS"*)
+
+        "HydroOS"*)
             set_colors 1 2 3 4 5
             read -rd '' ascii_data <<'EOF'
 ${c1}
@@ -7695,7 +7696,7 @@ ${c1}
           __/ |
          |___/
 EOF
-	;;
+        ;;
 
         "hyperbola_small"*)
             set_colors 8
@@ -9796,9 +9797,9 @@ ${c1}
 EOF
         ;;
 
-	"rocky_small"*)
-	    set_colors 2
-    	    read -rd '' ascii_data <<'EOF'
+        "rocky_small"*)
+            set_colors 2
+                read -rd '' ascii_data <<'EOF'
 ${c1}    `-/+++++++++/-.`
  `-+++++++++++++++++-`
 .+++++++++++++++++++++.
@@ -9812,7 +9813,7 @@ ${c1}    `-/+++++++++/-.`
   `-`   ./+++++++++++-
        -+++++++++:-.`
 EOF
-	;;
+        ;;
 
         "rocky"*)
             set_colors 35
@@ -10751,7 +10752,7 @@ EOF
 
         ;;
 
-       	"semc"*)
+       "semc"*)
             set_colors 2 8 1
             read -rd '' ascii_data <<'EOF'
 ${c1}            /\
