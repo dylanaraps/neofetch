@@ -1840,7 +1840,7 @@ get_de() {
             Xfce*)     de_ver=$(xfce4-session --version) ;;
             GNOME*)    de_ver=$(gnome-shell --version) ;;
             Cinnamon*) de_ver=$(cinnamon --version) ;;
-            Deepin*)   de_ver=$(awk -F'=' '/Version/ {print $2}' /etc/deepin-version) ;;
+            Deepin*)   de_ver=$(awk -F'=' '/MajorVersion/ {print $2}' /etc/os-version) ;;
             Budgie*)   de_ver=$(budgie-desktop --version) ;;
             LXQt*)     de_ver=$(lxqt-session --version) ;;
             Lumina*)   de_ver=$(lumina-desktop --version 2>&1) ;;
