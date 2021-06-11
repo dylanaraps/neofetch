@@ -8323,7 +8323,7 @@ o00.              k0O${c2}dddddd${c1}occ
 EOF
         ;;
 
-        "Mandriva"*)
+        "Mandriva"* | "Mandrake"*)
             set_colors 4 3
             read -rd '' ascii_data <<'EOF'
 ${c2}                        ``
