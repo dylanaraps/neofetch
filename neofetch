@@ -2213,17 +2213,50 @@ get_cpu() {
                 speed="$((speed / 1000))"
 
             else
-                speed="$(awk -F ': |\\.' '/cpu MHz|^clock/ {printf $2; exit}' "$cpu_file")"
-                speed="${speed/MHz}"
+                case $kernel_machine in
+                    "sparc"*)
+                        # SPARC systems use a different file to expose clock speed information.
+                        speed_file="/sys/devices/system/cpu/cpu0/clock_tick"
+                        speed="$(($(< "$speed_file") / 1000000))"
+                    ;;
+
+                    *)
+                        speed="$(awk -F ': |\\.' '/cpu MHz|^clock/ {printf $2; exit}' "$cpu_file")"
+                        speed="${speed/MHz}"
+                    ;;
+                esac
             fi
 
             # Get CPU temp.
             [[ -f "$temp_dir" ]] && deg="$(($(< "$temp_dir") * 100 / 10000))"
 
             # Get CPU cores.
-            case $cpu_cores in
-                "logical" | "on") cores="$(grep -c "^processor" "$cpu_file")" ;;
-                "physical") cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")" ;;
+            case $kernel_machine in
+                "sparc"*)
+                    case $cpu_cores in
+                        # SPARC systems doesn't expose detailed topology information in
+                        # /proc/cpuinfo so I have to use lscpu here.
+                        "logical" | "on")
+                            cores="$(lscpu | awk -F ': *' '/^CPU\(s\)/ {print $2}')"
+                        ;;
+                        "physical")
+                            cores="$(lscpu | awk -F ': *' '/^Core\(s\) per socket/ {print $2}')"
+                            sockets="$(lscpu | awk -F ': *' '/^Socket\(s\)/ {print $2}')"
+                            cores="$((sockets * cores))"
+                        ;;
+                    esac
+                ;;
+
+                *)
+                    case $cpu_cores in
+                        "logical" | "on")
+                            cores="$(grep -c "^processor" "$cpu_file")"
+                        ;;
+                        "physical")
+                            cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")"
+                        ;;
+                    esac
+                ;;
             esac
         ;;
 
