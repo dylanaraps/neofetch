@@ -158,7 +158,7 @@ uptime_shorthand="on"
 # Memory
 
 
-# Show memory pecentage in output.
+# Show memory percentage in output.
 #
 # Default: 'off'
 # Values:  'on', 'off'
