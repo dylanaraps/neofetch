@@ -1124,12 +1124,12 @@ get_distro() {
             # Get Ubuntu flavor.
             if [[ $distro == "Ubuntu"* ]]; then
                 case $XDG_CONFIG_DIRS in
+                    *"studio"*)   distro=${distro/Ubuntu/Ubuntu Studio} ;;
                     *"plasma"*)   distro=${distro/Ubuntu/Kubuntu} ;;
                     *"mate"*)     distro=${distro/Ubuntu/Ubuntu MATE} ;;
                     *"xubuntu"*)  distro=${distro/Ubuntu/Xubuntu} ;;
                     *"Lubuntu"*)  distro=${distro/Ubuntu/Lubuntu} ;;
                     *"budgie"*)   distro=${distro/Ubuntu/Ubuntu Budgie} ;;
-                    *"studio"*)   distro=${distro/Ubuntu/Ubuntu Studio} ;;
                     *"cinnamon"*) distro=${distro/Ubuntu/Ubuntu Cinnamon} ;;
                 esac
             fi
