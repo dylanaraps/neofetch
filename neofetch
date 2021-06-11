@@ -3307,7 +3307,8 @@ get_term() {
                 term="$(tty)"
             ;;
 
-            "ruby"|"1"|"tmux"*|"systemd"|"sshd"*|"python"*|"USER"*"PID"*|"kdeinit"*|"launchd"*)
+            "ruby"|"1"|"tmux"*|"systemd"|"sshd"*|"python"*|
+            "USER"*"PID"*|"kdeinit"*|"launchd"*|"bwrap")
                 break
             ;;
 
