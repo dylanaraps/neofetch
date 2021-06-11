@@ -1894,6 +1894,7 @@ get_wm() {
                                -e gnome-shell \
                                -e greenfield \
                                -e grefsen \
+                               -e hikari \
                                -e kwin \
                                -e lipstick \
                                -e maynard \
