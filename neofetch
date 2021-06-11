@@ -9336,8 +9336,8 @@ EOF
         ;;
 
         "PNM Linux"* | "WHPNM Linux"*)
-                set_colors 33 9 15 202
-                read -rd '' ascii_data <<'EOF'
+            set_colors 33 9 15 202
+            read -rd '' ascii_data <<'EOF'
 
 ${c1}
                ``.---..` `--`           
