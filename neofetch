@@ -1571,7 +1571,7 @@ get_packages() {
             # shellcheck disable=SC2086
             {
             shopt -s nullglob
-            has brew    && dir "$(brew --cellar)/*"
+            has brew    && dir "$(brew --cellar)/* $(brew --caskroom)/*"
             has emerge  && dir "/var/db/pkg/*/*"
             has Compile && dir "/Programs/*/"
             has eopkg   && dir "/var/lib/eopkg/package/*"
@@ -1634,7 +1634,7 @@ get_packages() {
 
         "Mac OS X"|"macOS"|MINIX)
             has port  && pkgs_h=1 tot port installed && ((packages-=1))
-            has brew  && dir "$(brew --cellar)"/*
+            has brew  && dir "$(brew --cellar)/* $(brew --caskroom)/*"
             has pkgin && tot pkgin list
             has dpkg  && tot dpkg-query -f '.\n' -W
 
