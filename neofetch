@@ -5540,6 +5540,16 @@ h//NNNNh  ossss` +h  md- .hm/ `sNNNNN:+y
 EOF
         ;;
 
+	"Aperio GNU/Linux"*)
+	    set_colors 255
+	    read -rd '' ascii_data <<'EOF'
+${c2}
+ _.._  _ ._.. _
+(_][_)(/,[  |(_)
+   |   GNU/Linux
+EOF
+	;;
+	
         "Hash"*)
             set_colors 123
             read -rd '' ascii_data <<'EOF'
