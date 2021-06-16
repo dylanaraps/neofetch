@@ -11071,6 +11071,32 @@ llllllllllllll  lllllllllllllllllll
 EOF
         ;;
 
+        "Windows 11"*)
+            set_colors 6 7
+            read -rd '' ascii_data <<'EOF'
+${c1}                                
+hyyyyyyyyyyyyyyyyyy  ssssssssssssssssssy
+yooosssssssssssssss  ++++++++++++++++++s
+yoossssssssssssssss  ++++++++++++++++++s
+yssssssssssssssssss  ++++++++++++++++++s
+yssssssssssssssssss  ++++++++++++++++++s
+yssssssssssssssssss  ++++++++++++++++++s
+yssssssssssssssssss  ++++++++++++++++++s
+yssssssssssssssssss  ++++++++++++++++++s
+yssssssssssssssssss  ++++++++++++++++++s
+
+hyyyyhhhhhhhhhhhhhh  +++++++++++++++++os
+hyyhhhhhhhhhhhhhhhh  +++++++++++++++++os
+hhhhhhhhhhhhhhhhhhh  +++++++++++++ooooos
+hhhhhhhhhhhhhhhhhdd  +++++++++++ooooooos
+hhhhhhhhhhhhhhhhddd  +++++++++ooooooooos
+hhhhhhhhhhhhhhddddd  +++++++ooooooooooos
+hhhhhhhhhhhhhdddddd  ++++++oooooooooooos
+hhhhhhhhhhhdddddddd  +++ooooooooooooooos
+dddddddddddddmmmmmm  ssssssssssyyyyyyyyh
+EOF
+        ;;
+	
         "Windows"*)
             set_colors 1 2 4 3
             read -rd '' ascii_data <<'EOF'
