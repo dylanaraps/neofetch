@@ -1080,6 +1080,11 @@ get_distro() {
                 read -ra kernel_info <<< "$(sysctl -n kern.version)"
                 distro=${kernel_info[*]:0:2}
 
+            elif [[ -f /etc/VERSION ]]; then
+                # Source the DSM VERSION file
+                source /etc/VERSION
+                distro="Synology DSM ${productversion}-${buildnumber} Update ${smallfixnumber}"
+
             else
                 for release_file in /etc/*-release; do
                     distro+=$(< "$release_file")
@@ -1554,6 +1559,7 @@ get_packages() {
             has alps       && tot alps showinstalled
             has butch      && tot butch list
             has swupd      && tot swupd bundle-list --quiet
+            has dpkg       && pkgs_h=5 tot dpkg --list
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
