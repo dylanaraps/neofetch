@@ -3558,7 +3558,6 @@ END
                                                           -e "size=" \
                                                           -e "antialias=" \
                                                           -e "autohint=")"
-                    term_font="${term_font/xft:}"
                 fi
 
             fi
