@@ -3549,19 +3549,18 @@ END
                 # like a font definition. NOTE: There is a slight limitation in this approach.
                 # Technically "Font Name" is a valid font. As it doesn't specify any font options
                 # though it is hard to match it correctly amongst the rest of the noise.
-                [[ -n "$binary" ]] && \
+                if [[ -n "$(strings "$binary" | grep resource)" ]]; then
+                    xrdb_st=$(xrdb -query | grep st.font)
+                    term_font="${xrdb_st/st.font:}"
+                elif [[ -n "$binary" ]]; then
                     term_font="$(strings "$binary" | grep -F -m 1 \
                                                           -e "pixelsize=" \
                                                           -e "size=" \
                                                           -e "antialias=" \
                                                           -e "autohint=")"
-
-                term_font="${term_font/xft:}"
-
-                if [[ -n "$(strings "$binary" | grep resource)" ]]; then
-                    xrdb_st=$(xrdb -query | grep st.font)
-                    [[ -n "$xrdb_st" ]] && term_font="${xrdb_st/st.font:}"
+                    term_font="${term_font/xft:}"
                 fi
+
             fi
 
             term_font="${term_font/:*}"
