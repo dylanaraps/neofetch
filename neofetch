@@ -3428,11 +3428,9 @@ END
         ;;
 
         "kitty"*)
-            kitty_config="$(kitty --debug-config)"
-            [[ "$kitty_config" != *font_family* ]] && return
-
-            term_font="$(awk '/^font_family|^font_size/ {$1="";gsub("^ *","",$0);print $0}' \
-                         <<< "$kitty_config")"
+            term_font="from kitty.cli import *; o = create_default_opts(); \
+                       print(f'{o.font_family} {o.font_size}')"
+            term_font="$(kitty +runpy ''"$term_font"'')"
         ;;
 
         "konsole" | "yakuake")
