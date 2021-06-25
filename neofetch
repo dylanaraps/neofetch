@@ -2611,7 +2611,7 @@ get_gpu() {
         ;;
 
         "Windows")
-            while read -r line; do
+            wmic path Win32_VideoController get caption | while read -r line; do
                 line=$(trim "$line")
 
                 case $line in
@@ -2623,7 +2623,7 @@ get_gpu() {
                         prin "${subtitle:+${subtitle}${gpu_name}}" "$line"
                     ;;
                 esac
-            done < <(wmic path Win32_VideoController get caption)
+            done
         ;;
 
         "Haiku")
