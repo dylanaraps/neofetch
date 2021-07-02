@@ -7660,7 +7660,13 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 
 EOF
         ;;
-
+        "glaucus"*)
+            set_colors X
+            read -rd '' ascii_data <<'EOF'
+${c1}
+<LOGO>
+EOF
+        ;;
         "gNewSense"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
