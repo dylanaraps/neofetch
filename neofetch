@@ -7661,7 +7661,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 EOF
         ;;
         "glaucus"*)
-            set_colors 34
+            set_colors 5
             read -rd '' ascii_data <<'EOF'
 ${c1}             ,,        ,d88P             
            ,d8P    ,ad8888*               
