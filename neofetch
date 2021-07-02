@@ -7660,6 +7660,7 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 
 EOF
         ;;
+	
         "glaucus"*)
             set_colors 5
             read -rd '' ascii_data <<'EOF'
@@ -7677,6 +7678,7 @@ ${c1}             ,,        ,d88P
    *^888^*            *Y888P**
 EOF
         ;;
+	
         "gNewSense"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
