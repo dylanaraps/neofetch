@@ -1669,17 +1669,17 @@ get_packages() {
 
             # Scoop environment throws errors if `tot scoop list` is used
             has scoop && {
-              sdir=$(cygpath "${SCOOP}" 2>/dev/null)
-              sdir="${sdir:-~/scoop}"
-              pkgs_h=1 dir "${sdir}/apps/*" && ((packages-=1))
+              sdir=$(cygpath "$SCOOP" 2>/dev/null)
+              sdir="${sdir:-$HOME/scoop}"
+              pkgs_h=1 dir "$sdir"/apps/* && ((packages-=1))
               manager=scoop-global
-              sdir=$(cygpath "${SCOOP_GLOBAL}" 2>/dev/null)
+              sdir=$(cygpath "$SCOOP_GLOBAL" 2>/dev/null)
               sdir="${sdir:-$ProgramData/scoop}"
-              dir "${sdir}/apps/*"
+              dir "$sdir"/apps/*
             }
 
             # Count chocolatey packages.
-            has choco && dir "$ProgramData/chocolatey/lib/*"
+            has choco && dir "$ProgramData"/chocolatey/lib/*
         ;;
 
         Haiku)
