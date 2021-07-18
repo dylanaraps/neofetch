@@ -1375,7 +1375,7 @@ get_title() {
     user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
 
     case $title_fqdn in
-        on) hostname="$(uname -n)" ;;
+        on) hostname="$(hostname -f)" ;;
         *)  hostname="${HOSTNAME:-"$(
                 hostname="$(uname -n)"
                 printf '%s\n' "${hostname%%.*}"
