@@ -1376,10 +1376,10 @@ get_title() {
 
     case $title_fqdn in
         on) hostname="$(uname -n)" ;;
-        *)  hostname="${HOSTNAME:-$(
+        *)  hostname="${HOSTNAME:-"$(
                 hostname="$(uname -n)"
                 printf '%s\n' "${hostname%%.*}"
-            )}" ;;
+            )"}" ;;
     esac
 
     title=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
