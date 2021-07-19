@@ -1608,13 +1608,15 @@ get_packages() {
             # TODO: Fix this somehow.
             has pkginfo && tot pkginfo -i
 
-            case $kernel_name in
-                FreeBSD|DragonFly) has pkg && tot pkg info ;;
+            case $os-$kernel_name in
+                BSD-FreeBSD|BSD-DragonFly)
+                    has pkg && tot pkg info
+                ;;
 
-                *)
+                BSD-*)
                     has pkg && dir /var/db/pkg/*
 
-                    ((packages == 0)) && \
+                    ((packages == 0)) &&
                         has pkg && tot pkg list
                 ;;
             esac
