@@ -10461,6 +10461,27 @@ ${c2}
 EOF
             ;;
 
+        "Slax"*)
+            set_colors 2
+            read -rd '' ascii_data <<'EOF'
+${c1}            .cMMc.
+      .,,.cMMMMMMm.      ..
+    .cMMMMMMMMMMMMm  ,cmMMMMc.
+    vMMMMMMMMMMMMMM cMMMMMMMM.
+     \"MMMMMMMMMMMMMMMMMMMMMMm.
+       `";mMMMMMMMMMMMMMMMMMMMMM\
+ .cMMMMMMMMMMMMMMMMMMMMMMMMMMMMMy
+ MMMMMMMMMMMMMMMMMMMMMMMMMMMM:"
+ "MMMMMMMMMMMMMMMMMMMMMMc.
+   `MMMMMMMMM:'MMMMMMMMMMMMc.
+    MMMMMMMM" MMMMMMMMMMMMMM.
+    `"MMM"` .  MMMMMMMMMMMMMy'
+            | 'MMMMMMy
+            l   `"""'
+            "
+EOF
+            ;;
+
         "Solus"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
