@@ -11237,18 +11237,18 @@ EOF
         "Ventricle"*)
             set_colors 1 0
             read -rd '' ascii_data <<'EOF'
-${c2}              M####M
-${c2}          ##MMM    M####N
-${c2}       M#M               M###
-${c2}     ##M                    M##
-${c2}   N#M                        MN#
-${c2}  M#M                          MY##
-${c2} VMM                            MM#
+${c2}               M####M
+${c2}           ##MMM    M####N
+${c2}        M#M               M###
+${c2}      ##M                    M##
+${c2}    N#M                        MN#
+${c2}   M#M                          MY##
+${c2}  VMM                            MM#
 ${c2}                                 MM##
-${c2}  ${c1}NWM
-${c2} ${c1}###                             .M
-${c2}  ${c1}###                             M:MN
-${c2}                                 ${c1}#UUM
+${c2} ${c1}NWM
+${c2}${c1}###                              .M
+${c2} ${c1}###                            c:MN
+${c2}                               ${c1}#UUM
 ${c2}   #MM
 ${c2}    #MM#                      M#M
 ${c2}      #M##                  ##M
