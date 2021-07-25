@@ -1506,7 +1506,7 @@ get_packages() {
     # dir: Count files or dirs in a glob.
     # pac: If packages > 0, log package manager name.
     # tot: Count lines in command output.
-    has() { type -p "$1" >/dev/null && manager=$1; }
+    has() { [ -z "$manager" ] && type -p "$1" >/dev/null && manager=$1; }
     # globbing is intentional here
     # shellcheck disable=SC2206
     dir() { pkgs=($@); ((packages+=${#pkgs[@]})); pac "$((${#pkgs[@]}-pkgs_h))"; }
