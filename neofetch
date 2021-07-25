@@ -6533,22 +6533,28 @@ EOF
 
 
         "CelOS"*)
-            set_colors 3 2 4 5 7
+            set_colors 4 6 5 7
             read -rd '' ascii_data <<'EOF'
 
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@#                       @@@
-@@         ,#%%%%%(.        (@
-@#      %%%%%%%%%%%%%%#      @
-@#    %%%%%%%%#      %%%/    @
-@#   #%%%%%%%%.      #%%%*   @
-@#   %%%%%%%%%%%*  (%%%%%#   @
-@#   #%%%%    %%%%%%%%%%%,   @
-@#    #%%%%%%%%%%%%%%%%%,    @
-@#      #%%%%%%%%%%%%%*      @
-@@          *##%#(,         @@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
+${c4}                         .,cmmmmMMMMmmmm,.
+                    .,cmMMMMMMMMMMMMMMMMMMMMmc.
+                 .cMMMMMMMMMMMMMMMMMMMMMMMMMMMmc.
+               .cMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc.
+             ,:MMM ${c3}####################################${c4}
+            cMMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmc\
+           .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.
+          .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc
+          "******************************MMMMMMMMMMMMMc:
+    ${c3}#################################### ${c4}MMMMMMMMMMMMMc
+          "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM:
+          `":MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+           'MMMMMMMMM*******************************:
+            \"MMMMMM ${c3}#####################################
+             ${c4}`:MMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmm;
+               `"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+                 `":MMMMMMMMMMMMMMMMMMMMMMMMM;'
+                    `":MMMMMMMMMMMMMMMMMM;"'
+                          "**********"
 
 EOF
         ;;
