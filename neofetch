@@ -6536,25 +6536,28 @@ EOF
             set_colors 4 6 0 5
             read -rd '' ascii_data <<'EOF'
 
-${c4}                         .,cmmmmmmmmmmmc,.
-                    .,cmMMMMMMMMMMMMMMMMMMMMmc.
-                 .cMMMMMMMMMMMMMMMMMMMMMMMMMMMmc.
-               .cMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc.
-             ,:MMM ${c3}####################################${c4}
-            cMMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmc.
-           .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.
-          .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc
-          "******************************MMMMMMMMMMMMMc:
-    ${c3}#################################### ${c4}MMMMMMMMMMMMMc
-          "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM:
-           "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
-           'MMMMMMMMM*******************************:
-            \"MMMMMM ${c3}#####################################
-             ${c4}`:MMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmm;
-               `"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
-                 `":MMMMMMMMMMMMMMMMMMMMMMMMM;'
-                    `":MMMMMMMMMMMMMMMMMMM:"
-                         "************"
+${c4}                     .,cmmmmmmmmmmmc,.
+                .,cmMMMMMMMMMMMMMMMMMMMMmc.
+             .cMMMMMMMMMMMMMMMMMMMMMMMMMMMmc.
+           .cMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc.
+         ,:MMM ${c3}####################################${c4}
+        cMMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmc.
+       .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.
+      .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc
+      "******************************MMMMMMMMMMMMMc:
+${c3}#################################### ${c4}MMMMMMMMMMMMMc
+      "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM:
+       "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+       'MMMMMMMMM*******************************:
+        \"MMMMMM ${c3}#####################################
+         ${c4}`:MMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmm;
+           `"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+             `":MMMMMMMMMMMMMMMMMMMMMMMMM;'
+                `":MMMMMMMMMMMMMMMMMMM:"
+                     "************"
+
+
+
 
 EOF
         ;;
@@ -7669,25 +7672,25 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 
 EOF
         ;;
-	
+
         "glaucus"*)
             set_colors 5
             read -rd '' ascii_data <<'EOF'
-${c1}             ,,        ,d88P             
-           ,d8P    ,ad8888*               
+${c1}             ,,        ,d88P
+           ,d8P    ,ad8888*
          ,888P    d88888*     ,,ad8888P*
-    d   d888P   a88888P*  ,ad8888888*     
-  .d8  d8888:  d888888* ,d888888P*       
- .888; 88888b d8888888b8888888P           
- d8888J888888a88888888888888P*    ,d      
- 88888888888888888888888888P   ,,d8*       
- 888888888888888888888888888888888*       
- *8888888888888888888888888888888*        
-  Y888888888P* `*``*888888888888*          
+    d   d888P   a88888P*  ,ad8888888*
+  .d8  d8888:  d888888* ,d888888P*
+ .888; 88888b d8888888b8888888P
+ d8888J888888a88888888888888P*    ,d
+ 88888888888888888888888888P   ,,d8*
+ 888888888888888888888888888888888*
+ *8888888888888888888888888888888*
+  Y888888888P* `*``*888888888888*
    *^888^*            *Y888P**
 EOF
         ;;
-	
+
         "gNewSense"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
@@ -7839,23 +7842,18 @@ EOF
         "Haiku"*)
             set_colors 2 8
             read -rd '' ascii_data <<'EOF'
-${c2}          :dc'
-       'l:;'${c1},${c2}'ck.    .;dc:.
-       co    ${c1}..${c2}k.  .;;   ':o.
-       co    ${c1}..${c2}k. ol      ${c1}.${c2}0.
-       co    ${c1}..${c2}k. oc     ${c1}..${c2}0.
-       co    ${c1}..${c2}k. oc     ${c1}..${c2}0.
-.Ol,.  co ${c1}...''${c2}Oc;kkodxOdddOoc,.
- ';lxxlxOdxkxk0kd${c1}oooll${c2}dl${c1}ccc:${c2}clxd;
-     ..${c1}oOolllllccccccc:::::${c2}od;
-       cx:ooc${c1}:::::::;${c2}cooolcX.
-       cd${c1}.${c2}''cloxdoollc' ${c1}...${c2}0.
-       cd${c1}......${c2}k;${c1}.${c2}xl${c1}....  .${c2}0.
-       .::c${c1};..${c2}cx;${c1}.${c2}xo${c1}..... .${c2}0.
-          '::c'${c1}...${c2}do${c1}..... .${c2}K,
-                  cd,.${c1}....:${c2}O,${c1}
-                    ':clod:'${c1}
-                        ${c1}
+
+${c2}      MM         MM
+      MM         MM
+      MM      ${c1}. ccmmm-${c1}
+      MM  ${c2}.cMMMLMMM'${c1}
+"'---cMMMMMMMMM"**${c2}M
+      M${c1}"*:Mc`"``${c2} MM
+      MM         MM
+      ""         ""
+
+
+
 EOF
         ;;
 
@@ -11109,7 +11107,7 @@ ${c1}
 ################  ################
 ################  ################
 ################  ################
- 
+
 ################  ################
 ################  ################
 ################  ################
