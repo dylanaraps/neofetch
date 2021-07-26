@@ -6536,25 +6536,25 @@ EOF
             set_colors 4 6 0 5
             read -rd '' ascii_data <<'EOF'
 
-${c4}                         .,cmmmmMMMMmmmm,.
+${c4}                         .,cmmmmmmmmmmmc,.
                     .,cmMMMMMMMMMMMMMMMMMMMMmc.
                  .cMMMMMMMMMMMMMMMMMMMMMMMMMMMmc.
                .cMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc.
              ,:MMM ${c3}####################################${c4}
-            cMMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmc\
+            cMMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmc.
            .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.
           .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc
           "******************************MMMMMMMMMMMMMc:
     ${c3}#################################### ${c4}MMMMMMMMMMMMMc
           "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM:
-          `":MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+           "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
            'MMMMMMMMM*******************************:
             \"MMMMMM ${c3}#####################################
              ${c4}`:MMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmm;
                `"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
                  `":MMMMMMMMMMMMMMMMMMMMMMMMM;'
-                    `":MMMMMMMMMMMMMMMMMM;"'
-                          "**********"
+                    `":MMMMMMMMMMMMMMMMMMM:"
+                         "************"
 
 EOF
         ;;
