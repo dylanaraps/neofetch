@@ -6533,7 +6533,7 @@ EOF
 
 
         "CelOS"*)
-            set_colors 4 6 5 7
+            set_colors 4 6 0 5
             read -rd '' ascii_data <<'EOF'
 
 ${c4}                         .,cmmmmMMMMmmmm,.
