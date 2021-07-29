@@ -780,7 +780,7 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, AmogOS, Anarchy, Android, instantOS,
+# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Aravalli, AmogOS, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
@@ -5453,17 +5453,17 @@ get_args() {
                     info "Terminal" term
                     info "Terminal Font" term_font
                     info "CPU" cpu
-                    info "GPU" gpu
-                    info "GPU Driver" gpu_driver
+                   # nfo "GPU" gpu
+                    #info "GPU Driver" gpu_driver
                     info "Memory" memory
 
-                    info "Disk" disk
-                    info "Battery" battery
-                    info "Font" font
-                    info "Song" song
-                    info "Local IP" local_ip
-                    info "Public IP" public_ip
-                    info "Users" users
+                    #info "Disk" disk
+                    #nfo "Battery" battery
+                    #info "Font" font
+                    #info "Song" song
+                    #info "Local IP" local_ip
+                    #info "Public IP" public_ip
+                   #info "Users" users
 
                     info cols
 
@@ -5549,6 +5549,34 @@ ${c2}
  _.._  _ ._.. _
 (_][_)(/,[  |(_)
    |   GNU/Linux
+EOF
+	;;
+
+
+	"Aravalli"*)
+	    set_colors 25 25 112
+	    read -rd '' ascii_data <<'EOF'
+${c2}
+                   ....
+                  .okdol:;'..
+                 .lkc.,:looool;'.
+                .:Ol.     ..,coddo,.
+                ,ko.      .....;kO;.
+               'xx. ..';;;;,'.;xx,.
+              .d0oclllc;'.. .;kd'
+           ..,dK0dl;..     .:ko.
+       .';lodol;..        .lkc.
+   .,:ok00xl;'.......   .,o0o,'''',,,,,,,,,'.
+   ;OX0kxdoollc::;,,'...':ldlllllllllllld0Kd'
+   .,dkc.....                        ..cxd:.
+     .;xx:.                        ..cxd;.
+       .:xd;.                    .'lxd,.
+         .cxdlccccccclooooollc:;cdxo,.
+          ..;::::::::dKkllc;,,:xko'.
+                    .ck;   .;dxl'.
+                    .lk,..;dxc..
+                    .oOodkx:.
+                    .oKx:'.
 EOF
 	;;
 
