@@ -1502,10 +1502,52 @@ get_packages() {
     # to adjust the number of pkgs per pkg manager
     pkgs_h=0
 
+    # get possible manager names for all os
+    case $os in
+        Linux|BSD|"iPhone OS"|Solaris)
+          manager_candidates=(
+            kiss cpt pacman dpkg xbps apk opkg pacman
+            lvu tce pkg_info tazpkg sorcery alps butch
+            swupd pisi dnf rpm mine brew emerge
+            Compile eopkg crew pkgtool scratch kagami cave
+            kpm-pkg guix nix-store pkginfo pkg flatpak
+            spm puyo snap appimaged
+          )
+          ;;
+        "Mac OS X"|"macOS"|MINIX)
+          manager_candidates=(
+            port brew pkgin dpkg nix-store
+          )
+          ;;
+        AIX|FreeMiNT)
+          manager_candidates=(
+            lslpp rpm
+          )
+          ;;
+        Windows)
+          manager_candidates=(
+            cygcheck pacman scoop
+          )
+          ;;
+        Haiku)
+          manager_candidates=(
+            pkgman
+          )
+          ;;
+        IRIX)
+          manager_candidates=(
+          )
+          ;;
+    esac
+    # Join manager names as regex to search for executable names by grep
+    # For example, find brew or apt or scoop by /brew$|/apt$|/scoop$
+    manager_candidates=$(printf '/%s$|' "${manager_candidates[@]}")
+    manager_candidates=${manager_candidates%"|"}
+
+    # find all the possible files for package managers at once
     OLD_PATH=$PATH
     PATH+=:EOF # little hack to list last PATH dir
-    declare -a manager_files
-    manager_files=($(printf '%s\n' ${PATH//:/\/* } | grep -f manager_candidates -o))
+    manager_hits=($(printf '%s\n' ${PATH//:/\/* } | grep -E $manager_candidates -o))
     PATH=$OLD_PATH
 
     # has: Check if package manager installed.
@@ -1513,7 +1555,9 @@ get_packages() {
     # pac: If packages > 0, log package manager name.
     # tot: Count lines in command output.
     has() { 
-        if printf '%s\n' "${manager_files[@]}" | grep -P "^/"$1"$" > /dev/null; then
+        # check if the command is in the possible manager file list
+        if printf '%s\n' "${manager_hits[@]}" | grep -E "^/"$1"$" > /dev/null; then
+            # if it is in the possible manager file list, double check the availability of this command
             if type -p "$1" >/dev/null; then
                 manager=$1
                 return 0
