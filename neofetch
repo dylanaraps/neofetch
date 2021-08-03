@@ -1502,11 +1502,25 @@ get_packages() {
     # to adjust the number of pkgs per pkg manager
     pkgs_h=0
 
+    OLD_PATH=$PATH
+    PATH+=:EOF # little hack to list last PATH dir
+    declare -a manager_files
+    manager_files=($(printf '%s\n' ${PATH//:/\/* } | grep -f manager_candidates -o))
+    PATH=$OLD_PATH
+
     # has: Check if package manager installed.
     # dir: Count files or dirs in a glob.
     # pac: If packages > 0, log package manager name.
     # tot: Count lines in command output.
-    has() { [ -z "$manager" ] && type -p "$1" >/dev/null && manager=$1; }
+    has() { 
+        if printf '%s\n' "${manager_files[@]}" | grep -P "^/"$1"$" > /dev/null; then
+            if type -p "$1" >/dev/null; then
+                manager=$1
+                return 0
+            fi
+        fi
+        return 1
+    }
     # globbing is intentional here
     # shellcheck disable=SC2206
     dir() { pkgs=($@); ((packages+=${#pkgs[@]})); pac "$((${#pkgs[@]}-pkgs_h))"; }
