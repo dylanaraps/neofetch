@@ -6186,13 +6186,19 @@ EOF
         "artix_small"*)
             set_colors 6 6 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}      /\\
-     /  \\
-    /`'.,\\
-   /     ',
-  /      ,`\\
- /   ,.'`.  \\
-/.,'`     `'.\\
+${c1}            '
+           'A'
+          'ooo'
+         'ookxo'
+         `ookxxo'
+       '.   `ooko'
+      'ooo`.   `oo'
+     'ooxxxoo`.   `'
+    'ookxxxkooo.`   . 
+   'ookxxkoo'`   .'oo'
+  'ooxoo'`     .:ooxxo'
+ 'io'`             `'oo'
+'`                     `'
 EOF
         ;;
 
