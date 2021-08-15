@@ -2883,6 +2883,7 @@ get_song() {
         "gnome-music"*)   get_song_dbus "GnomeMusic" ;;
         "lollypop"*)      get_song_dbus "Lollypop" ;;
         "clementine"*)    get_song_dbus "clementine" ;;
+        "cmus"*)          get_song_dbus "cmus" ;;
         "juk"*)           get_song_dbus "juk" ;;
         "bluemindo"*)     get_song_dbus "Bluemindo" ;;
         "guayadeque"*)    get_song_dbus "guayadeque" ;;
@@ -2916,14 +2917,6 @@ get_song() {
 
         "xmms2d"*)
             song="$(xmms2 current -f "\${artist}"$' \n'"\${album}"$' \n'"\${title}")"
-        ;;
-
-        "cmus"*)
-            # NOTE: cmus >= 2.8.0 supports mpris2
-            song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; a=$0}
-                                          /tag album / {$1=$2=""; b=$0}
-                                          /tag title/  {$1=$2=""; t=$0}
-                                          END {print a " \n" b " \n" t}')"
         ;;
 
         "spotify"*)
