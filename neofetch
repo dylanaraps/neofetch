@@ -1738,6 +1738,12 @@ get_shell() {
             shell=${shell/ Yet another shell}
             shell=${shell/Copyright*}
         ;;
+	
+        nu)
+            shell="${shell:0:2}shell "
+            shell+=$("$SHELL" --version | grep -o '\d\.\d\d\.\d[^-]' | head -n 1 )
+        ;;
+
 
         *)
             shell+=$("$SHELL" --version 2>&1)
