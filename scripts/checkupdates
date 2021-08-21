@@ -1,1 +1,116 @@
+#!/usr/bin/bash
+#
+#   checkupdates: Safely print a list of pending updates.
+#
+#   Copyright (c) 2013 Kyle Keen <keenerd@gmail.com>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 
+declare -r myname='checkupdates'
+declare -r myver='1.4.0'
+
+LIBRARY=${LIBRARY:-'/usr/share/makepkg'}
+
+DOWNLOAD_CACHE=0
+USE_COLOR=0
+
+# Import libmakepkg
+source "$LIBRARY"/util/message.sh
+source "$LIBRARY"/util/parseopts.sh
+
+usage() {
+	cat << __EOF__
+${myname} v${myver}
+
+Safely print a list of pending updates
+
+Usage: ${myname} [options]
+
+  Options:
+    -d, --download        download pending updates to the pacman cache.
+    -h, --help            display this help message and exit.
+
+Note: Export the "CHECKUPDATES_DB" variable to change the path of the temporary database.
+
+__EOF__
+}
+
+OPT_SHORT='dh'
+OPT_LONG=('download' 'help' 'nocolor')
+
+if ! parseopts "$OPT_SHORT" "${OPT_LONG[@]}" -- "$@"; then
+	exit 1
+fi
+set -- "${OPTRET[@]}"
+unset OPT_SHORT OPT_LONG OPTRET
+
+while :; do
+	case $1 in
+		-d|--download)
+			DOWNLOAD_CACHE=1 ;;
+		-h|--help)
+			usage
+			exit 0 ;;
+		--nocolor)
+			USE_COLOR='n';;
+		--)
+			shift
+			break ;;
+	esac
+	shift
+done
+
+# check if messages are to be printed using color
+if [[ -t 2 && $USE_COLOR != "n" ]]; then
+	colorize
+else
+	unset ALL_OFF BOLD BLUE GREEN RED YELLOW
+fi
+
+if ! type -P fakeroot >/dev/null; then
+	error 'Cannot find the fakeroot binary.'
+	exit 1
+fi
+
+if [[ -z $CHECKUPDATES_DB ]]; then
+	CHECKUPDATES_DB="${TMPDIR:-/tmp}/checkup-db-${UID}/"
+fi
+
+trap 'rm -f $CHECKUPDATES_DB/db.lck' INT TERM EXIT
+
+DBPath="$(pacman-conf DBPath)"
+if [[ -z "$DBPath" ]] || [[ ! -d "$DBPath" ]]; then
+	DBPath="/var/lib/pacman/"
+fi
+
+mkdir -p "$CHECKUPDATES_DB"
+ln -s "${DBPath}/local" "$CHECKUPDATES_DB" &> /dev/null
+if ! fakeroot -- pacman -Syu --dbpath "$CHECKUPDATES_DB" --logfile /dev/null &> /dev/null; then
+	error 'Cannot fetch updates'
+	exit 1
+fi
+mapfile -t updates < <(pacman -Qu --dbpath "$CHECKUPDATES_DB" 2> /dev/null | grep -v '\[.*\]')
+
+if (( ${#updates[@]} )); then
+	printf '%s\n' "${updates[@]}"
+	if (( DOWNLOAD_CACHE )); then
+		sudo pacman -Sw --noconfirm "${updates[@]%% *}" --dbpath "$CHECKUPDATES_DB" --logfile /dev/null
+	fi
+else
+	echo "None"
+	exit 2
+fi
+
+# vim: set noet:
