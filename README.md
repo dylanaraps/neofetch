@@ -8,6 +8,7 @@
 </p>
 
 <img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" align="right" height="240px">
+Forked to add an "Update" entry, which displays the amount of upgradeable packages using pacman-contrib's "checkupdates" script. 
 
 Neofetch is a command-line system information tool written in `bash 3.2+`. Neofetch displays information about your operating system, software and hardware in an aesthetic and visually pleasing way.
 
