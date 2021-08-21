@@ -73,7 +73,7 @@ print_info() {
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
-    prin "Updates" $(checkupdates)
+    prin "Updates" $(cat ~/Documents/Scripts/updateoutput)
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "Disk" disk
@@ -85,7 +85,6 @@ print_info() {
     # info "Public IP" public_ip
     # info "Users" users
     # info "Locale" locale  # This only works on glibc systems.
-    # info "Last Update" updatecheck
 
     info cols
 }
