@@ -1,1 +1,1 @@
-bash ~/Documents/Scripts/checkupdates > ~/Documents/Scripts/updateoutput
+bash ~/scripts/checkupdates > ~/scripts/updateoutput
