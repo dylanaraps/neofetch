@@ -1541,7 +1541,7 @@ get_packages() {
             has kiss       && tot kiss l
             has cpt-list   && tot cpt-list
             has pacman-key && tot pacman -Qq --color never
-            has dpkg       && pac "$(dpkg --list | grep -c ^ii)"
+            has dpkg       && tot dpkg-query -f '.\n' -W
             has xbps-query && tot xbps-query -l
             has apk        && tot apk info
             has opkg       && tot opkg list-installed
