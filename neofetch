@@ -1102,10 +1102,11 @@ get_distro() {
             fi
 
             if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
+                caption="$(powershell.exe -c wmic os get Caption | sed -n '2 p')"
                 case $distro_shorthand in
-                    on)   distro+=" [Windows 10]" ;;
-                    tiny) distro="Windows 10" ;;
-                    *)    distro+=" on Windows 10" ;;
+                    on)   distro+=" [$caption]" ;;
+                    tiny) distro="$caption" ;;
+                    *)    distro+=" on $caption" ;;
                 esac
 
             elif [[ $(< /proc/version) == *chrome-bot* || -f /dev/cros_ec ]]; then
@@ -1761,6 +1762,10 @@ get_de() {
 
         Windows)
             case $distro in
+                *"Windows 11"*)
+                    de=Fluent
+                ;;
+
                 *"Windows 10"*)
                     de=Fluent
                 ;;
