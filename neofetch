@@ -1009,12 +1009,21 @@ get_distro() {
                 esac
 
             elif type -p twistver >/dev/null; then
-                . /etc/os-release
-                case $distro_shorthand in
-                    on)   distro="$( twistver ) (${NAME} ${VERSION_ID})" ;;
-                    tiny) distro="$( twistver ) (${NAME})" ;;
-                    off)  distro="$( twistver ) (${PRETTY_NAME}})" ;;
-                esac
+                if [[ -f /etc/armbian-release ]]; then
+                    . /etc/armbian-release
+                    case $distro_shorthand in
+                        on)   distro="$( twistver ) (Armbian ${VERSION})" ;;
+                        tiny) distro="$( twistver ) (Armbian)" ;;
+                        off)  distro="$( twistver ) (Armbian ${VERSION} ${DISTRIBUTION_CODENAME})" ;;
+                    esac
+                else
+                    . /etc/os-release
+                    case $distro_shorthand in
+                        on)   distro="$( twistver ) (${NAME} ${VERSION_ID})" ;;
+                        tiny) distro="$( twistver ) (${NAME})" ;;
+                        off)  distro="$( twistver ) (${PRETTY_NAME}})" ;;
+                    esac
+                fi
 
             elif type -p lsb_release >/dev/null; then
                 case $distro_shorthand in
