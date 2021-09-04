@@ -784,7 +784,7 @@ image_source="auto"
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
-#       bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
+#       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, CrystalUX, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
@@ -1541,7 +1541,7 @@ get_packages() {
             has kiss       && tot kiss l
             has cpt-list   && tot cpt-list
             has pacman-key && tot pacman -Qq --color never
-            has dpkg       && pac "$(dpkg --list | grep -c ^ii)"
+            has dpkg       && tot dpkg-query -f '.\n' -W
             has xbps-query && tot xbps-query -l
             has apk        && tot apk info
             has opkg       && tot opkg list-installed
@@ -1908,6 +1908,7 @@ get_wm() {
                                -e orbital \
                                -e orbment \
                                -e perceptia \
+                               -e river \
                                -e rustland \
                                -e sway \
                                -e ulubis \
@@ -2882,6 +2883,7 @@ get_song() {
         "gnome-music"*)   get_song_dbus "GnomeMusic" ;;
         "lollypop"*)      get_song_dbus "Lollypop" ;;
         "clementine"*)    get_song_dbus "clementine" ;;
+        "cmus"*)          get_song_dbus "cmus" ;;
         "juk"*)           get_song_dbus "juk" ;;
         "bluemindo"*)     get_song_dbus "Bluemindo" ;;
         "guayadeque"*)    get_song_dbus "guayadeque" ;;
@@ -2915,14 +2917,6 @@ get_song() {
 
         "xmms2d"*)
             song="$(xmms2 current -f "\${artist}"$' \n'"\${album}"$' \n'"\${title}")"
-        ;;
-
-        "cmus"*)
-            # NOTE: cmus >= 2.8.0 supports mpris2
-            song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; a=$0}
-                                          /tag album / {$1=$2=""; b=$0}
-                                          /tag title/  {$1=$2=""; t=$0}
-                                          END {print a " \n" b " \n" t}')"
         ;;
 
         "spotify"*)
@@ -5133,7 +5127,7 @@ ASCII:
                                 instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
-                                BlackArch, BLAG, BlankOn, BlueLight, bonsai, BSD, BunsenLabs,
+                                BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 CrystalUX, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
@@ -6384,6 +6378,30 @@ ${c1}              oMMNMMMMMMMMMMMMMMMMMMMMMM
 EOF
         ;;
 
+       "Bodhi"*)
+           set_colors 7 11 2
+           read -rd '' ascii_data <<'EOF'
+${c1}|           ${c2},,mmKKKKKKKKWm,,
+ ${c1}'      ${c2},aKKP${c1}LL**********|L*${c2}TKp,
+   ${c1}t  ${c2}aKP${c1}L**```          ```**L${c2}*Kp
+    IX${c1}EL${c3}L,wwww,              ${c1}``*||${c2}Kp
+  ,#P${c1}L|${c3}KKKpPP@IPPTKmw,          ${c1}`*||${c2}K
+ ,K${c1}LL*${c3}{KKKKKKPPb$KPhpKKPKp        ${c1}`||${c2}K
+ #${c1}PL  ${c3}!KKKKKKPhKPPP$KKEhKKKKp      ${c1}`||${c2}K
+!H${c1}L*   ${c3}1KKKKKKKphKbPKKKKKK$KKp      ${c1}`|I${c2}W
+$${c1}bL     ${c3}KKKKKKKKBQKhKbKKKKKKKK       ${c1}|I${c2}N
+$${c1}bL     ${c3}!KKKKKKKKKKNKKKKKKKPP`       ${c1}|I${c2}b
+TH${c1}L*     ${c3}TKKKKKK##KKKN@KKKK^         ${c1}|I${c2}M
+ K@${c1}L      ${c3}*KKKKKKKKKKKEKE5          ${c1}||${c2}K
+ `NL${c1}L      ${c3}`KKKKKKKKKK"```|L       ${c1}||${c2}#P
+  `K@${c1}LL       ${c3}`"**"`        ${c1}'.   :||${c2}#P
+    Yp${c1}LL                      ${c1}' |L${c2}$M`
+     `Tp${c1}pLL,                ,|||${c2}p'L
+        "Kpp${c1}LL++,.,    ,,|||$${c2}#K*   ${c1}'.
+           ${c2}`"MKWpppppppp#KM"`        ${c1}`h,
+EOF
+       ;;
+
        "bonsai"*)
            set_colors 6 2 3
            read -rd '' ascii_data <<'EOF'
@@ -6508,21 +6526,30 @@ EOF
 
 
         "CelOS"*)
-            set_colors 3 2 4 5 7
+            set_colors 4 6 0 5
             read -rd '' ascii_data <<'EOF'
 
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@#                       @@@
-@@         ,#%%%%%(.        (@
-@#      %%%%%%%%%%%%%%#      @
-@#    %%%%%%%%#      %%%/    @
-@#   #%%%%%%%%.      #%%%*   @
-@#   %%%%%%%%%%%*  (%%%%%#   @
-@#   #%%%%    %%%%%%%%%%%,   @
-@#    #%%%%%%%%%%%%%%%%%,    @
-@#      #%%%%%%%%%%%%%*      @
-@@          *##%#(,         @@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+${c4}                     .,cmmmmmmmmmmmc,.
+                .,cmMMMMMMMMMMMMMMMMMMMMmc.
+             .cMMMMMMMMMMMMMMMMMMMMMMMMMMMmc.
+           .cMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc.
+         ,:MMM ${c3}####################################${c4}
+        cMMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmc.
+       .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM.
+      .MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMc
+      "******************************MMMMMMMMMMMMMc:
+${c3}#################################### ${c4}MMMMMMMMMMMMMc
+      "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM:
+       "MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+       'MMMMMMMMM*******************************:
+        \"MMMMMM ${c3}#####################################
+         ${c4}`:MMMMMMmmmmmmmmmmmmmmmmmmmmmmmmmmmmm;
+           `"MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"
+             `":MMMMMMMMMMMMMMMMMMMMMMMMM;'
+                `":MMMMMMMMMMMMMMMMMMM:"
+                     "************"
+
+
 
 
 EOF
@@ -7806,25 +7833,22 @@ EOF
         ;;
 
         "Haiku"*)
-            set_colors 2 8
+            set_colors 1 3 7 2
             read -rd '' ascii_data <<'EOF'
-${c2}          :dc'
-       'l:;'${c1},${c2}'ck.    .;dc:.
-       co    ${c1}..${c2}k.  .;;   ':o.
-       co    ${c1}..${c2}k. ol      ${c1}.${c2}0.
-       co    ${c1}..${c2}k. oc     ${c1}..${c2}0.
-       co    ${c1}..${c2}k. oc     ${c1}..${c2}0.
-.Ol,.  co ${c1}...''${c2}Oc;kkodxOdddOoc,.
- ';lxxlxOdxkxk0kd${c1}oooll${c2}dl${c1}ccc:${c2}clxd;
-     ..${c1}oOolllllccccccc:::::${c2}od;
-       cx:ooc${c1}:::::::;${c2}cooolcX.
-       cd${c1}.${c2}''cloxdoollc' ${c1}...${c2}0.
-       cd${c1}......${c2}k;${c1}.${c2}xl${c1}....  .${c2}0.
-       .::c${c1};..${c2}cx;${c1}.${c2}xo${c1}..... .${c2}0.
-          '::c'${c1}...${c2}do${c1}..... .${c2}K,
-                  cd,.${c1}....:${c2}O,${c1}
-                    ':clod:'${c1}
-                        ${c1}
+${c3}
+
+           MMMM              MMMM
+           MMMM              MMMM
+           MMMM              MMMM
+           MMMM              MMMM
+           MMMM${c4}       .ciO| /YMMMMM*"
+${c3}           MMMM${c4}   .cOMMMMM|/MMMMM/`
+ ,         ,iMM|/MMMMMMMMMMMMMMM*
+  `*.__,-cMMMMMMMMMMMMMMMMM/`${c3}.MMM
+           MM${c4}MMMMMMM/`:MMM/  ${c3}MMMM
+           MMMM              MMMM
+           MMMM              MMMM
+           """"              """"
 EOF
         ;;
 
@@ -7946,6 +7970,30 @@ ${c1}            cooo:     ${c2}coooooooooooooooooool
                        :oooool,    coool:, looool:,
                        looool:      ooooooooooooooo:
                        cooolc        .ooooooooooool
+EOF
+        ;;
+
+        "Kaisen"*)
+            set_colors 1 7 3
+            read -rd '' ascii_data <<'EOF'
+${c1}                          `
+                  `:+oyyho.
+             `+:`sdddddd/
+        `+` :ho oyo++ohds-`
+       .ho :dd.  .: `sddddddhhyso+/-
+       ody.ddd-:yd- +hysssyhddddddddho`
+       yddddddhddd` ` `--`   -+hddddddh.
+       hddy-+dddddy+ohh/..+sddddy/:::+ys
+      :ddd/sdddddddddd- oddddddd       `
+     `yddddddddddddddd/ /ddddddd/
+:.  :ydddddddddddddddddo..sddddddy/`
+odhdddddddo- `ddddh+-``....-+hdddddds.
+-ddddddhd:   /dddo  -ydddddddhdddddddd-
+ /hdy:o - `:sddds   .`./hdddddddddddddo
+  `/-  `+hddyosy+       :dddddddy-.-od/
+      :sydds           -hddddddd`    /
+       .+shd-      `:ohddddddddd`
+                `:+ooooooooooooo:
 EOF
         ;;
 
@@ -8344,11 +8392,11 @@ EOF
         "mac"* | "Darwin")
             set_colors 2 3 1 1 5 4
             read -rd '' ascii_data <<'EOF'
-${c1}                    'c.
+${c1}                    c.'
                  ,xNMM.
                .OMMMMo
-               OMMM0,
-     .;loddo:' loolloddol;.
+               lMM"
+     .;loddo:.  .olloddol;.
    cKMMMMMMMMMMNWMMMMMMMMMM0:
 ${c2} .KMMMMMMMMMMMMMMMMMMMMMMMWd.
  XMMMMMMMMMMMMMMMMMMMMMMMX.
@@ -8356,11 +8404,11 @@ ${c3};MMMMMMMMMMMMMMMMMMMMMMMM:
 :MMMMMMMMMMMMMMMMMMMMMMMM:
 ${c4}.MMMMMMMMMMMMMMMMMMMMMMMMX.
  kMMMMMMMMMMMMMMMMMMMMMMMMWd.
- ${c5}.XMMMMMMMMMMMMMMMMMMMMMMMMMMk
-  .XMMMMMMMMMMMMMMMMMMMMMMMMK.
+ ${c5}'XMMMMMMMMMMMMMMMMMMMMMMMMMMk
+  'XMMMMMMMMMMMMMMMMMMMMMMMMK.
     ${c6}kMMMMMMMMMMMMMMMMMMMMMMd
      ;KMMMMMMMWXXWMMMMMMMk.
-       .cooc,.    .,coo:.
+       "cooc*"    "*coo'"
 EOF
         ;;
 
@@ -11260,11 +11308,11 @@ EOF
                 "Darwin")
                     set_colors 2 3 1 1 5 4
                     read -rd '' ascii_data <<'EOF'
-${c1}                    'c.
+${c1}                    c.'
                  ,xNMM.
                .OMMMMo
-               OMMM0,
-     .;loddo:' loolloddol;.
+               lMMM"
+     .;loddo:.  .olloddol;.
    cKMMMMMMMMMMNWMMMMMMMMMM0:
 ${c2} .KMMMMMMMMMMMMMMMMMMMMMMMWd.
  XMMMMMMMMMMMMMMMMMMMMMMMX.
@@ -11272,11 +11320,11 @@ ${c3};MMMMMMMMMMMMMMMMMMMMMMMM:
 :MMMMMMMMMMMMMMMMMMMMMMMM:
 ${c4}.MMMMMMMMMMMMMMMMMMMMMMMMX.
  kMMMMMMMMMMMMMMMMMMMMMMMMWd.
- ${c5}.XMMMMMMMMMMMMMMMMMMMMMMMMMMk
-  .XMMMMMMMMMMMMMMMMMMMMMMMMK.
+ ${c5}'XMMMMMMMMMMMMMMMMMMMMMMMMMMk
+  'XMMMMMMMMMMMMMMMMMMMMMMMMK.
     ${c6}kMMMMMMMMMMMMMMMMMMMMMMd
      ;KMMMMMMMWXXWMMMMMMMk.
-       .cooc,.    .,coo:.
+       "cooc*"    "*coo'"
 EOF
                 ;;
 
