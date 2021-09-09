@@ -1007,7 +1007,6 @@ get_distro() {
                 case $distro_shorthand in
                     on|tiny) distro="LindowsOS" ;;
                     *) distro="$(awk '/Version/ {print $2,$3}' /etc/lindowsos-version)"
-					echo $distro
                 esac
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
