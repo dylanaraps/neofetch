@@ -1001,12 +1001,12 @@ get_distro() {
             elif [[ -f /etc/linspire-version ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="Linspire" ;;
-                    *) distro="Linspire $(grep -e Version /etc/linspire-version | cut -d: -f2)"
+                    *) distro="Linspire $(awk '/Version/ {print $2}' /etc/linspire-version)"
                 esac
             elif [[ -f /etc/lindowsos-version ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="LindowsOS" ;;
-                    *) distro="$(grep -e Version /etc/lindowsos-version | cut -d: -f2)"
+                    *) distro="$(awk '/Version/ {print $2,$3}' /etc/lindowsos-version)"
                 esac
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
@@ -8626,7 +8626,7 @@ EOF
         ;;
         "Linspire"* | "Freespire"* | "Lindows"*)
             set_colors 4 2
-            read -rd '' ascii_data <<'EOF'                                               
+            read -rd '' ascii_data <<'EOF'
 ${c2}                                                   __^ 	
 ${c2}                                                __/    \\
 ${c2}   MMy        dMy                            __/        \\ 
