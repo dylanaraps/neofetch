@@ -1549,6 +1549,7 @@ get_packages() {
             has lvu        && tot lvu installed
             has tce-status && tot tce-status -i
             has pkg_info   && tot pkg_info
+            has pkgin      && tot pkgin list
             has tazpkg     && pkgs_h=6 tot tazpkg list && ((packages-=6))
             has sorcery    && tot gaze installed
             has alps       && tot alps showinstalled
