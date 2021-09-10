@@ -998,16 +998,19 @@ get_distro() {
                     on|tiny) distro="OS Elbrus" ;;
                     *) distro="OS Elbrus $(< /etc/mcst_version)"
                 esac
+				
             elif [[ -f /etc/linspire-version ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="Linspire" ;;
                     *) distro="Linspire $(awk '/Version/ {print $2}' /etc/linspire-version)"
                 esac
+				
             elif [[ -f /etc/lindowsos-version ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="LindowsOS" ;;
                     *) distro="$(awk '/Version/ {print $2,$3}' /etc/lindowsos-version)"
                 esac
+				
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
                     on|tiny) distro="Proxmox VE" ;;
