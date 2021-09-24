@@ -945,6 +945,7 @@ get_os() {
         AIX)      os=AIX ;;
         IRIX*)    os=IRIX ;;
         FreeMiNT) os=FreeMiNT ;;
+        SerenityOS) os=SerenityOS ;;
 
         Linux|GNU*)
             os=Linux
@@ -1207,6 +1208,10 @@ get_distro() {
         FreeMiNT)
             distro=FreeMiNT
         ;;
+
+        SerenityOS)
+            distro=SerenityOS
+        ;;
     esac
 
     distro=${distro//Enterprise Server}
@@ -1416,7 +1421,7 @@ get_kernel() {
 get_uptime() {
     # Get uptime in seconds.
     case $os in
-        Linux|Windows|MINIX)
+        Linux|Windows|MINIX|SerenityOS)
             if [[ -r /proc/uptime ]]; then
                 s=$(< /proc/uptime)
                 s=${s/.*}
@@ -1702,6 +1707,8 @@ get_shell() {
         on)  shell="$SHELL " ;;
         off) shell="${SHELL##*/} " ;;
     esac
+
+    [[ "$os" == SerenityOS ]] && shell="SerenityOS Shell "
 
     [[ $shell_version != on ]] && return
 
@@ -2416,6 +2423,10 @@ get_cpu() {
             cpu="$(awk -F':' '/CPU:/ {printf $2}' /kern/cpuinfo)"
             speed="$(awk -F '[:.M]' '/Clocking:/ {printf $2}' /kern/cpuinfo)"
         ;;
+
+        "SerenityOS")
+            cpu="$(jq -r '.[0].brandstr' /proc/cpuinfo)"
+        ;;
     esac
 
     # Remove un-needed patterns from cpu output.
@@ -2782,6 +2793,15 @@ get_memory() {
             mem_used="$((mem_used / 1024))"
         ;;
 
+        "SerenityOS")
+            memstat="$(< /proc/memstat)"
+            user_physical_allocated="$(printf "%s" "$memstat" | jq .user_physical_allocated)"
+            user_physical_available="$(printf "%s" "$memstat" | jq .user_physical_available)"
+            mem_used="$((user_physical_allocated * 4096 / 1024 / 1024))"
+            mem_free="$((user_physical_available * 4096 / 1024 / 1024))"
+            mem_total="$((mem_used + mem_free))"
+        ;;
+
     esac
 
     [[ "$memory_percent" == "on" ]] && ((mem_perc=mem_used * 100 / mem_total))
@@ -3110,6 +3130,13 @@ get_style() {
     # Fix weird output when the function is run multiple times.
     unset gtk2_theme gtk3_theme theme path
 
+    if [[ "$os" == "SerenityOS" ]]; then
+        theme=$(ini /etc/WindowServer.ini Theme Name)
+        if [ -z "$theme" ]; then
+            theme="Default"
+        fi
+    fi
+
     if [[ "$DISPLAY" && $os != "Mac OS X" && $os != "macOS" ]]; then
         # Get DE if user has disabled the function.
         ((de_run != 1)) && get_de
@@ -3287,6 +3314,8 @@ get_term() {
         "Hyper")        term="HyperTerm" ;;
         *)              term="${TERM_PROGRAM/\.app}" ;;
     esac
+
+    [[ "$os" == SerenityOS ]] && term="SerenityOS Terminal"
 
     # Most likely TosWin2 on FreeMiNT - quick check
     [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && term="TosWin2"
@@ -5147,7 +5176,7 @@ ASCII:
                                 Proxmox, PuffOS, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, Reborn_OS,
                                 Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
                                 sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
-                                SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
+                                SereneLinux, SerenityOS, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
                                 Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
@@ -10333,6 +10362,34 @@ ${c1}              __---''''''---__
         :_..--''                   :
           .                     _ .
             `''---______---''-``
+EOF
+        ;;
+
+        "SerenityOS"*)
+            set_colors 3 1 7 8 15
+            read -rd '' ascii_data <<'EOF'
+${c4}    _         __
+  / o \    ,^ _ `\
+  \./ ]   |  /*  /
+${c5}    - *~ .#_ ${c4}`--`
+${c5}  ,`   '    "w
+${c5} ]`   /      ]${c4}Kp
+${c5} B  'M   %m  ]${c4}KK
+ K${c5}p   \      #${c4}KKH
+ KK${c5}N,,,w,__,#${c4}KKK
+ `KKK${c2}\KKKKK${c4}KKK${c3}KK${c4}${c2}KNw${c4}
+   #R${c3}K${c4}K${c3}\KK${c4}gKKKH${c3}L5${c4}${c2}KK${c4}K
+  ]K${c3}|a${c4}#KKKKKBKNp${c3}LI${c4}${c2}K${c4}KN
+ .K${c3}K${c4}KDKBKBBKKKKKKN${c3}]${c4}${c2}KK${c4}
+${c2} ]K${c3}IMK${c4}KBKKKKKKKK${c3}RMI${c4}${c2}KKH${c4}
+${c2} ]K${c3}I${c4}#KkBBBBBBKKKKN${c3}I${c4}${c2}KK${c4}
+${c2} ]K${c3}[K${c4}KKBKKKKKKKKM${c3}*]${c4}KK
+ `KN${c3}|1${c4}KKKKKKKBKM${c3}`L${c4}KKM
+  `KN${c3},|]${c4}KKKKK${c3}/|L;${c4}${c2}#${c4}KK
+    `--KKK KK${c2}KKKKK${c4}
+    aaNKKKaKK  ${c2}`${c4}
+    KKKKKKKKM
+        ````
 EOF
         ;;
 
