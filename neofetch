@@ -3292,6 +3292,7 @@ get_term() {
     [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && term="TosWin2"
     [[ "$SSH_CONNECTION" ]] && term="$SSH_TTY"
     [[ "$WT_SESSION" ]]     && term="Windows Terminal"
+    [[ "$TERMUX_VERSION" ]] && term="Termux ${TERMUX_VERSION}"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
