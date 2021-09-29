@@ -3292,7 +3292,6 @@ get_term() {
     [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && term="TosWin2"
     [[ "$SSH_CONNECTION" ]] && term="$SSH_TTY"
     [[ "$WT_SESSION" ]]     && term="Windows Terminal"
-    [[ "$TERMUX_VERSION" ]] && term="Termux ${TERMUX_VERSION}"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -3331,6 +3330,10 @@ get_term() {
             ;;
         esac
     done
+
+    # Termux sets TERMUX_VERSION. Put this after the PPID check because this is
+    # also set if using a terminal on an X server.
+    [[ -z "$term" && "$TERMUX_VERSION" ]] && term="Termux ${TERMUX_VERSION}"
 
     # Log that the function was run.
     term_run=1
