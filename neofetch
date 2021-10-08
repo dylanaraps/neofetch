@@ -2499,6 +2499,12 @@ get_gpu() {
                                       print a[i]
                                   }
                               }}')"
+
+            if [[ "$gpu_cmd" == "" ]]; then
+                gpu_cmd="$(glxinfo -B | grep -F 'OpenGL renderer string')"
+                gpu_cmd="${gpu_cmd/OpenGL renderer string: }"
+            fi
+
             IFS=$'\n' read -d "" -ra gpus <<< "$gpu_cmd"
 
             # Remove duplicate Intel Graphics outputs.
@@ -2532,6 +2538,7 @@ get_gpu() {
                     ;;
 
                     *"NVIDIA"*)
+                        gpu="${gpu/*NVIDIA}"
                         gpu="${gpu/*\[}"
                         gpu="${gpu/\]*}"
                         gpu="NVIDIA $gpu"
