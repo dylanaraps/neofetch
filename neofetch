@@ -2191,6 +2191,10 @@ get_cpu() {
                     [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
                 ;;
 
+                "aarch64" | "armv7l" | "armv6l")
+                    cpu="$(lscpu | awk  '/Model name:/ {print $3}')"
+                ;;
+
                 *)
                     cpu="$(awk -F '\\s*: | @' \
                             '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
