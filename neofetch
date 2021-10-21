@@ -11077,23 +11077,26 @@ EOF
         "VNux"*)
         set_colors 1
             read -rd '' ascii_data <<'EOF'
-${c1}           ,>.          
-        .~nZwL|I        
-       -Cwkhqpbwnl      
-       `</1[cX?~!'      
-     `  [C/]UUv',       
-"_?f/{I _u0wXc(,:       
-`]1r\-i >m0QOk0,;'      
- "^   .'x$%8@$$n`I`     
-  '  ,l]B$$$$$$$)!>".   
-  ''"+-W$%8&&8%$B]?i,.  
-   `i/Z$MMMMMMMM$hj\,,  
-   I_jM$&MWWWWMWh)!~]^  
-.l1QqX_\bWMMMMWhzv[\Cu' 
-_OqqmdLl~88W&&@mJbdpqdu,
-{qqqqqpwXLpbbwzxwmwqZLnl
-l{|fcQOmJ"":,^ \wmZc<'  
-     `;;.      .i+;     
+${c1}              `             
+           ^[XOx~.          
+        ^_nwdbbkp0ti'       
+        <vJCZw0LQ0UjI       
+          _j>!vC1,,         
+     ',  ,CYt1O(Ml;"        
+`~-{r(1I ^/zmwJuc:I^        
+'?)|U/}- ^fOCLLOw_,;        
+ ,i,``. ",k%ooW@$d"I,'      
+  '    ;^u$$$$$$$$X^<:^     
+  '` .>>($$$@@@@$$$nl[::    
+   ``!}?B$%&WMMW&%$$1-}":   
+   .^?jZ$WMMWWWWMMW$ofc;;`  
+    <~x&$&MWWWWWWWWp-l>[<   
+ 'ljmwn~tk8MWWWWM8OXr+]nC[  
+!JZqwwdX:^C8#MMMM@XOdpdpq0< 
+<wwwwmmpO10@%%%%8dnqmwmqqqJl
+?QOZmqqqpbt[run/?!0pwqqQj-, 
+ ^:l<{nUUv>      ^x00J("    
+                   ^"                                
 EOF
 
         ;;
