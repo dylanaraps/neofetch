@@ -11074,7 +11074,7 @@ EOF
         ;;
         
         "VNux"*)
-        set_colors 1
+        set_colors 9
             read -rd '' ascii_data <<'EOF'
 ${c1}              `             
            ^[XOx~.          
