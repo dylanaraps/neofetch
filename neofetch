@@ -2968,6 +2968,8 @@ get_resolution() {
 
                     [[ $resolution ]] && break
                 done
+else
+resolution="$(adb kill-server > /dev/null 2>&1 && adb start-server > /dev/null 2>&1 && adb connect localhost:5555 > /dev/null 2>&1 && adb -s localhost:5555 shell wm size | sed 's/.*: //g')"
             fi
         ;;
     esac
