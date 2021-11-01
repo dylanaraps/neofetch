@@ -1211,7 +1211,7 @@ get_model() {
     case $os in
         Linux)
             if [[ -d /system/app/ && -d /system/priv-app ]]; then
-                model="$(getprop ro.product.brand) $(getprop ro.product.model)"
+                model="$(echo "$(getprop ro.product.brand) $(getprop ro.product.model)" | sed 's/.*/\u&/')"
 
             elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
                     -f /sys/devices/virtual/dmi/id/product_version ]]; then
