@@ -77,6 +77,7 @@ print_info() {
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "Disk" disk
     # info "Battery" battery
+    # info "Power Adapter" power_adapter # macOS only
     # info "Font" font
     # info "Song" song
     # [[ "$player" ]] && prin "Music Player" "$player"
@@ -3749,6 +3750,18 @@ get_disk() {
     done
 }
 
+get_power_adapter() {
+    case $os in
+        "Mac OS X"|"macOS")
+            power_adapter="$(pmset -g ac | awk '/Wattage/ {print $3}')"
+            [[ "$power_adapter" ]] || power_adapter="not connected"
+        ;;
+        *)
+            power_adapter="unknown"
+        ;;
+    esac
+}
+
 get_battery() {
     case $os in
         "Linux")
@@ -5459,6 +5472,7 @@ get_args() {
 
                     info "Disk" disk
                     info "Battery" battery
+                    info "Power Adapter" power_adapter
                     info "Font" font
                     info "Song" song
                     info "Local IP" local_ip
