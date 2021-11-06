@@ -10785,7 +10785,7 @@ EOF
             set_colors 4 6
             read -rd '' ascii_data <<'EOF'
 ${c1}                         ,o$$$o.
-                       ,o$$Y"""Y$$b
+                      ,o$$Y"""Y$$b
     ,o$$$$$$o.       ,$$'   ,   Y$$b
  ,o$$$$$$$$$$$$o.    :$      b   Y$$.
 ,$$"'      "Y$$$$o.   'b.   ,b  d$$$
