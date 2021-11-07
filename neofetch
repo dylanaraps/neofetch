@@ -8536,6 +8536,30 @@ ${c1}██████████████████  ██████�
 EOF
         ;;
 
+        "MassOS"*)
+            set_colors 7
+            read -rd '' ascii_data <<'EOF'
+${c1} -+++/+++osyyhdmNNMMMMNdy/
+ /MMMMMMMMMMMMMMMMMMMMMMMMm.
+ /MMMMMMMMMMMMMMMMMMMMMMMMMm
+ /MMMMMMMMMMMMMMMMMMMMMMMMMM:
+ :ddddddddhddddddddhdddddddd/
+ /NNNNNNNm:NNNNNNNN-NNNNNNNNo
+ /MMMMMMMN:MMMMMMMM-MMMMMMMMs
+ /MMMMMMMN:MMMMMMMM-MMMMMMMMs
+ /MMMMMMMN:MMMMMMMM-MMMMMMMMs
+ /MMMMMMMN:MMMMMMMM-MMMMMMMMs
+ /MMMMMMMN:MMMMMMMM-MMMMMMMMs
+ /MMMMMMMN:MMMMMMMM-MMMMMMMMs
+ /MMMMMMMN:MMMMMMMM-MMMMMMMMs
+ /MMMMMMMN:MMMMMMMM-MMMMMMMMs
+ :MMMMMMMN:MMMMMMMM-MMMMMMMMs
+  dMMMMMMN:MMMMMMMM-MMMMMMMMs
+  `yNMMMMN:MMMMMMMM-MMMMMMMMs
+    `:+oss.ssssssss.ssssssss/
+EOF
+        ;;
+
         "TeArch"*)
             set_colors 39 7 1
             read -rd '' ascii_data <<'EOF'
