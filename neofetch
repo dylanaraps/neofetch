@@ -1740,8 +1740,8 @@ get_shell() {
         ;;
 	
         nu)
-            shell="${shell:0:2}shell "
-            shell+=$("$SHELL" --version | grep -o '\d\.\d\d\.\d[^-]' | head -n 1 )
+            shell+=$("$SHELL" -c "version | get version")
+            shell=${shell/ $shell_name}
         ;;
 
 
