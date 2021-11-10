@@ -1744,6 +1744,12 @@ get_shell() {
             shell=${shell/ Yet another shell}
             shell=${shell/Copyright*}
         ;;
+	
+        nu)
+            shell+=$("$SHELL" -c "version | get version")
+            shell=${shell/ $shell_name}
+        ;;
+
 
         *)
             shell+=$("$SHELL" --version 2>&1)
