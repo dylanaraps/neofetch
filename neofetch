@@ -2219,6 +2219,10 @@ get_cpu() {
                     break
                 }
             done
+	    # If on a Raspberry Pi...
+            if grep -q "Raspberry Pi" /proc/device-tree/model; then
+                temp_dir=/sys/class/thermal/thermal_zone0/temp
+            fi
 
             # Get CPU speed.
             if [[ -d "$speed_dir" ]]; then
