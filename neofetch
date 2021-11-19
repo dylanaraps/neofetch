@@ -1556,6 +1556,7 @@ get_packages() {
             has butch      && tot butch list
             has swupd      && tot swupd bundle-list --quiet
             has pisi       && tot pisi li
+			has bulge      && tot bulge list
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -11077,33 +11078,25 @@ EOF
                 "yiffOS"*)
                     set_colors 93 92
                     read -rd '' ascii_data <<'EOF'
-${c1}               NK                                   
-               N0OKN                                
-               NxcldkKXNW                           
-               WOlcccllox0XW                        
-                0olccllllloxOKNW                    
-                Kdlclllllllllldk0XW                 
-                XxllllllllllllllloxOKNW             
-                Nkllllllllllllllllllodk0XWW         
-               N0dlllllllllllllllllllllodxOKNW      
-             WKxllllllllllllllllllllllllllooxOKNW   
-            NOollllllllllllllllllllllllooollooodk0XW
-           WOolllllllllllllllllllllllooooooooooooodx
-          WKdllllllllllllllllllllloooooooooooooooooo
-          Nxllllllllllllllllllloooooooooooooooooo${c2}ooo
-${c1}         NOollllllllllllllllooooooooooooooooo${c2}ooooooo
-${c1}      WX0xollllllllllllllloooooooooooooo${c2}oooooooooooo
-${c1}    WKkdllllllllllllllooooooooooooo${c2}ooooooooooooooooo
-${c1}XWN0xolllllllllllllllooooooooo${c2}oooooooooooooooooooooo
-${c1} N0dllllllllllooooooooooo${c2}ooooooooooooooooooooooooooo
-${c1}   Kkdolllllllooooddddd${c2}doooooooooooooooooooooooooddo
-${c1}     X0xoloodxkO0XX${c2}    XK0xdoooooooooooooooooodddddo
-${c1}        K00XNW${c2}            WX0xdooooooooooooooddddddd
-                             WXOxdoooooodddddddddddd
-                                WXOxdddddddddddddddd
-                                   NXOkddddddddddddd
-                                      NX0kdddddddddd
-                                        WN0xdddddddd
+${c1}            NK
+             NxKXW
+             WOlcoXW
+             0olccloxNW
+             XxllllllloxOKNW
+             Nklllllllllllodk0XWW
+            N0dllllllllllllllodxOKNW
+          WKxlllllllllllllllllllooxOKN
+        WKdllllllllllllllooooooooooooo
+       Nxllllllllllllllloooooooooo${c2}oooo
+${c1}     XXNOolllllllllllloooooooooo${c2}oooooo
+${c1}   WX0xolllllllllllooooooooooo${c2}oooooooo
+${c1} XWN0xolllllllllloooooooo${c2}ooooooooooooo
+${c1}   Kkdolllllllooooddddd${c2}doooooooooooddo
+${c1}        K00XNW${c2}      WX0xdooooooddddddd
+                       WXOxdoooooodddd
+                          WXOxdddddddd
+                                NX0ddd
+                                  WN0d
 EOF
                 ;;
 
