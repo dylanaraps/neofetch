@@ -2202,8 +2202,32 @@ get_cpu() {
                     [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
                 ;;
 
+                "aarch64" | "armv7l")
+                    if grep -q "Raspberry Pi" /proc/device-tree/model; then
+                        cpu_revision="$(awk -F':' '/Revision/ {print substr($2,4,1); exit}' "$cpu_file")"
+                        case $cpu_revision in
+                            "0")
+                                cpu="BCM2835"
+                            ;;
+    
+                            "1")
+                                cpu="BCM2835"
+                            ;;
+    
+                            "2")
+                                cpu="BCM2837"
+                            ;;
+    
+                            "3")
+                                cpu="BCM2711"
+                            ;;
+                        esac
+
+                    fi
+                ;;&
+
                 *)
-                    cpu="$(awk -F '\\s*: | @' \
+                    [[ -z "$cpu" ]] && cpu="$(awk -F '\\s*: | @' \
                             '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
                             cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
                 ;;
