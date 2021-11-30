@@ -993,6 +993,12 @@ get_distro() {
                     *) distro="Siduction ($(lsb_release -sic))"
                 esac
 
+            elif [[ -f /etc/q4os_version ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="Q4OS" ;;
+                    *) distro="Q4OS $(cat /etc/q4os_version)"
+                esac
+               
             elif [[ -f /etc/mcst_version ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="OS Elbrus" ;;
@@ -9830,6 +9836,31 @@ dNd                                  dNd
 dNd                                  dNd
 dNm//////////////////////////////////mNd
 dmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmd
+EOF
+        ;;
+
+        "Q4OS"*)
+            set_colors 4 1
+            read -rd '' ascii_data <<'EOF'
+${c1}           .:*****  :=====.           
+        ${c1}.:********  :========.        
+     ${c1} .***********  :===========.     
+    ${c1}.:************  :============-    
+  ${c1} .**************  :==============   
+ ${c1} :***************  :===============  
+ ${c1}:**************.    :=============== 
+${c1}.*************:        .=============.
+${c1}*************.          .============:
+                                      
+${c1}:############.          ${c2}:==:          
+${c1}:##############.      ${c2}:======:        
+ ${c1}:################  ${c2}.==========:      
+  ${c1}:###############   ${c2}.===========:    
+   ${c1}:##############     ${c2}.===========:  
+    ${c1}:#############       ${c2}.=========:  
+      ${c1}:###########         ${c2}.=====:    
+        ${c1}.#########           ${c2}.=:      
+            ${c1}.#####                    
 EOF
         ;;
 
