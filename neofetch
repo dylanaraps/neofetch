@@ -11320,6 +11320,28 @@ yyyyyyy${c2}+MMMMMMMMMMMMMMMMMMMMMMMM/${c1}yyyyyyy
            `.:/oosyyyysso/:.`
 EOF
         ;;
+                "Soda"*) 
+                   set_colors 7 1
+                   read -rd '' ascii_data <<'EOF'
+                   
+${c1}              NN.      ${c2}.kxOK.         
+             ${c1}MWNXXX.  ${c2}oc;  ;::;,.     
+           ${c1}cMMMMMWNXXO;.              
+          ${c1}KMMMMMMMMMWN00X             
+         ${c1}coxXMMMMMMMMMMWXXXX          
+       ${c2}.;;;;;${c1}ckXMMMMMMMMMMWX          
+      ${c2},;;;;;;;;;${c1}ckXMMMMMMMo           
+    ${c2}.;;;;;;;;;;;;;;${c1}ckXMMN             
+   ${c1}dMkc${c2};;;;;;;;;;;;;;;c,              
+  ${c1}NMMMMXkc${c2};;;;;;;;;;;'                
+${c1}'MMMMMMMMMXxc${c2};;;;;;;                  
+ ${c1}MMMMMMMMMMMMXx${c2}:;;.                   
+    ${c1}MMMMMMMMMMMMX                     
+      ${c1}.MMMMMMMMc                      
+         ${c1}.MMMK 
+EOF
+               ;;
+               
                 "IRIX"*)
                     set_colors 4 7
                     read -rd '' ascii_data <<'EOF'
@@ -11440,6 +11462,7 @@ ${c1}    _-`````-,           ,- '- .
                   `;
 EOF
                 ;;
+                
 
                 "Linux")
                     set_colors fg 8 3
