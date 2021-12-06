@@ -144,7 +144,7 @@ os_arch="on"
 
 # Shorten the output of the uptime function
 #
-# Default: 'on'
+# Default: 'tiny'
 # Values:  'on', 'tiny', 'off'
 # Flag:    --uptime_shorthand
 #
@@ -152,7 +152,7 @@ os_arch="on"
 # on:   '2 days, 10 hours, 3 mins'
 # tiny: '2d 10h 3m'
 # off:  '2 days, 10 hours, 3 minutes'
-uptime_shorthand="on"
+uptime_shorthand="tiny"
 
 
 # Memory
@@ -160,14 +160,14 @@ uptime_shorthand="on"
 
 # Show memory percentage in output.
 #
-# Default: 'off'
+# Default: 'on'
 # Values:  'on', 'off'
 # Flag:    --memory_percent
 #
 # Example:
 # on:   '1801MiB / 7881MiB (22%)'
 # off:  '1801MiB / 7881MiB'
-memory_percent="off"
+memory_percent="on"
 
 # Change memory output unit.
 #
@@ -238,7 +238,7 @@ speed_type="bios_limit"
 
 # CPU speed shorthand
 #
-# Default: 'off'
+# Default: 'on'
 # Values: 'on', 'off'.
 # Flag:    --speed_shorthand
 # NOTE: This flag is not supported in systems with CPU speed less than 1 GHz
@@ -246,7 +246,7 @@ speed_type="bios_limit"
 # Example:
 # on:    'i7-6500U (4) @ 3.1GHz'
 # off:   'i7-6500U (4) @ 3.100GHz'
-speed_shorthand="off"
+speed_shorthand="on"
 
 # Enable/Disable CPU brand in output.
 #
@@ -341,7 +341,7 @@ gpu_type="all"
 
 
 # Display refresh rate next to each monitor
-# Default: 'off'
+# Default: 'on'
 # Values:  'on', 'off'
 # Flag:    --refresh_rate
 # Supports: Doesn't work on Windows.
@@ -349,7 +349,7 @@ gpu_type="all"
 # Example:
 # on:  '1920x1080 @ 60Hz'
 # off: '1920x1080'
-refresh_rate="off"
+refresh_rate="on"
 
 
 # Gtk Theme / Icons / Font
@@ -727,7 +727,7 @@ bar_color_total="distro"
 # Info display
 # Display a bar with the info.
 #
-# Default: 'off'
+# Default: 'infobar'
 # Values:  'bar', 'infobar', 'barinfo', 'off'
 # Flags:   --memory_display
 #          --battery_display
@@ -738,9 +738,9 @@ bar_color_total="distro"
 # infobar: 'info [---=======]'
 # barinfo: '[---=======] info'
 # off:     'info'
-memory_display="off"
-battery_display="off"
-disk_display="off"
+memory_display="infobar"
+battery_display="infobar"
+disk_display="infobar"
 
 
 # Backend Settings
