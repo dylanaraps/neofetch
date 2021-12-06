@@ -1102,10 +1102,13 @@ get_distro() {
             fi
 
             if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
+                windows_version=$(wmic os get Version)
+                windows_version=$(trim "${windows_version/Version}")
+
                 case $distro_shorthand in
-                    on)   distro+=" [Windows 10]" ;;
-                    tiny) distro="Windows 10" ;;
-                    *)    distro+=" on Windows 10" ;;
+                    on)   distro+=" [Windows $windows_version]" ;;
+                    tiny) distro="Windows ${windows_version::2}" ;;
+                    *)    distro+=" on Windows $windows_version" ;;
                 esac
 
             elif [[ $(< /proc/version) == *chrome-bot* || -f /dev/cros_ec ]]; then
