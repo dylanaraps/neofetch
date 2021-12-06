@@ -1102,7 +1102,7 @@ get_distro() {
             fi
 
             if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
-                windows_version=$(wmic os get Version)
+                windows_version=$(wmic.exe os get Version)
                 windows_version=$(trim "${windows_version/Version}")
 
                 case $distro_shorthand in
