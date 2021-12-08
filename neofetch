@@ -8,7 +8,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2015-2020 Dylan Araps
+# Copyright (c) 2015-2021 Dylan Araps
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -780,13 +780,13 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, AmogOS, Anarchy, Android, instantOS,
+# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
-#       Container_Linux, CrystalUX, CRUX, Cucumber, dahlia, Debian, Deepin,
+#       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
@@ -799,14 +799,14 @@ image_source="auto"
 #       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
 #       osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
 #       TrueOS, PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
-#       Proxmox, PuffOS, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian,
+#       Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian,
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith,
 #       Rocky, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
 #       SereneLinux, SharkLinux, Siduction, SkiffOS, Slackware, SliTaz, SmartOS,
 #       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
-#       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, LangitKetujuh, semc,
+#       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
 #       Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
@@ -1102,10 +1102,13 @@ get_distro() {
             fi
 
             if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
+                windows_version=$(wmic.exe os get Version)
+                windows_version=$(trim "${windows_version/Version}")
+
                 case $distro_shorthand in
-                    on)   distro+=" [Windows 10]" ;;
-                    tiny) distro="Windows 10" ;;
-                    *)    distro+=" on Windows 10" ;;
+                    on)   distro+=" [Windows $windows_version]" ;;
+                    tiny) distro="Windows ${windows_version::2}" ;;
+                    *)    distro+=" on Windows $windows_version" ;;
                 esac
 
             elif [[ $(< /proc/version) == *chrome-bot* || -f /dev/cros_ec ]]; then
@@ -1234,6 +1237,11 @@ get_model() {
         Linux)
             if [[ -d /system/app/ && -d /system/priv-app ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
+
+            elif [[ -f /sys/devices/virtual/dmi/id/board_vendor ||
+                    -f /sys/devices/virtual/dmi/id/board_name ]]; then
+                model=$(< /sys/devices/virtual/dmi/id/board_vendor)
+                model+=" $(< /sys/devices/virtual/dmi/id/board_name)"
 
             elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
                     -f /sys/devices/virtual/dmi/id/product_version ]]; then
@@ -1541,7 +1549,7 @@ get_packages() {
             has kiss       && tot kiss l
             has cpt-list   && tot cpt-list
             has pacman-key && tot pacman -Qq --color never
-            has dpkg       && pac "$(dpkg --list | grep -c ^ii)"
+            has dpkg       && tot dpkg-query -f '.\n' -W
             has xbps-query && tot xbps-query -l
             has apk        && tot apk info
             has opkg       && tot opkg list-installed
@@ -1549,12 +1557,14 @@ get_packages() {
             has lvu        && tot lvu installed
             has tce-status && tot tce-status -i
             has pkg_info   && tot pkg_info
+            has pkgin      && tot pkgin list
             has tazpkg     && pkgs_h=6 tot tazpkg list && ((packages-=6))
             has sorcery    && tot gaze installed
             has alps       && tot alps showinstalled
             has butch      && tot butch list
             has swupd      && tot swupd bundle-list --quiet
             has pisi       && tot pisi li
+            has pacstall   && tot pacstall -L
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -1738,6 +1748,12 @@ get_shell() {
             shell=${shell/ Yet another shell}
             shell=${shell/Copyright*}
         ;;
+
+        nu)
+            shell+=$("$SHELL" -c "version | get version")
+            shell=${shell/ $shell_name}
+        ;;
+
 
         *)
             shell+=$("$SHELL" --version 2>&1)
@@ -2490,7 +2506,7 @@ get_gpu() {
             gpu_cmd="$(lspci -mm |
                        awk -F '\"|\" \"|\\(' \
                               '/"Display|"3D|"VGA/ {
-                                  a[$0] = $1 " " $3 " " ($7 ~ /^$|^Device [[:xdigit:]]+$/ ? $4 : $7)
+                                  a[$0] = $1 " " $3 " " ($(NF-1) ~ /^$|^Device [[:xdigit:]]+$/ ? $4 : $(NF-1))
                               }
                               END { for (i in a) {
                                   if (!seen[a[i]]++) {
@@ -2883,6 +2899,7 @@ get_song() {
         "gnome-music"*)   get_song_dbus "GnomeMusic" ;;
         "lollypop"*)      get_song_dbus "Lollypop" ;;
         "clementine"*)    get_song_dbus "clementine" ;;
+        "cmus"*)          get_song_dbus "cmus" ;;
         "juk"*)           get_song_dbus "juk" ;;
         "bluemindo"*)     get_song_dbus "Bluemindo" ;;
         "guayadeque"*)    get_song_dbus "guayadeque" ;;
@@ -2916,14 +2933,6 @@ get_song() {
 
         "xmms2d"*)
             song="$(xmms2 current -f "\${artist}"$' \n'"\${album}"$' \n'"\${title}")"
-        ;;
-
-        "cmus"*)
-            # NOTE: cmus >= 2.8.0 supports mpris2
-            song="$(cmus-remote -Q | awk '/tag artist/ {$1=$2=""; a=$0}
-                                          /tag album / {$1=$2=""; b=$0}
-                                          /tag title/  {$1=$2=""; t=$0}
-                                          END {print a " \n" b " \n" t}')"
         ;;
 
         "spotify"*)
@@ -5137,7 +5146,7 @@ ASCII:
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
-                                CrystalUX, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
+                                Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
@@ -5150,14 +5159,14 @@ ASCII:
                                 openmamba, OpenMandriva, OpenStage, OpenWrt, osmc, Oracle,
                                 OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix, TrueOS,
                                 PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
-                                Proxmox, PuffOS, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, Reborn_OS,
+                                Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian, Reborn_OS,
                                 Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
                                 sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
                                 SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
                                 Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
-                                Ubuntu-Studio, Ubuntu, Univention, Venom, Void, LangitKetujuh, semc,
+                                Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
                                 Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 
                                 NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
@@ -5687,31 +5696,6 @@ dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
 .:+ydNMMMMMMMMMMMh    yMMMMMMMMMMMNdy+:.
      `.:+shNMMMMMh    yMMMMMNhs+:``
             `-+shy    shs+:`
-EOF
-        ;;
-        "AmogOS"*)
-            set_colors 6 6 7 1
-            read -rd '' ascii_data <<'EOF'
-${c1}                   '
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣤⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⠟⠉⠉⠉⠉⠉⠉⠉⠙⠻⢶⣄⠀⠀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣷⡀⠀⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⡟⠀⣠⣶⠛⠛⠛⠛⠛⠛⠳⣦⡀⠀⠘⣿⡄⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⠁⠀⢹⣿⣦⣀⣀⣀⣀⣀⣠⣼⡇⠀⠀⠸⣷⠀⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⡏⠀⠀⠀⠉⠛⠿⠿⠿⠿⠛⠋⠁⠀⠀⠀⠀⣿⡄
-⠀⠀    ⠀⠀⢠⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡇⠀
-      ⠀⠀⣸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀
-⠀⠀⠀⠀⠀⠀⠀⠀⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣧⠀
-⠀⠀⠀⠀⠀⠀⠀⢸⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⠀
-⠀⠀⠀⠀⠀⠀⠀⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀
-⠀⠀⠀⠀⠀⠀⠀⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀
-⠀⠀⠀⠀⠀⠀⢰⣿⠀⠀⠀⠀⣠⡶⠶⠿⠿⠿⠿⢷⣦⠀⠀⠀⠀⠀⠀⠀⣿⠀
-⠀⠀⣀⣀⣀⠀⣸⡇⠀⠀⠀⠀⣿⡀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠀⠀⠀⣿⠀
-⣠⡿⠛⠛⠛⠛⠻⠀⠀⠀⠀⠀⢸⣇⠀⠀⠀⠀⠀⠀⣿⠇⠀⠀⠀⠀⠀⠀⣿⠀
-⢻⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡟⠀⠀⢀⣤⣤⣴⣿⠀⠀⠀⠀⠀⠀⠀⣿⠀
-⠈⠙⢷⣶⣦⣤⣤⣤⣴⣶⣾⠿⠛⠁⢀⣶⡟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡟⠀
-          ⠀⠀⠀⠀⠈⣿⣆⡀⠀⠀⠀⠀⠀⠀⢀⣠⣴⡾⠃⠀
-⠀        ⠀⠀⠀⠀⠀⠀⠈⠛⠻⢿⣿⣾⣿⡿⠿⠟⠋⠁⠀⠀⠀
 EOF
         ;;
         "Anarchy"*)
@@ -6562,6 +6546,29 @@ ${c2}             ..........
 EOF
         ;;
 
+    "CBL-Mariner"*)
+        set_colors 6
+        read -rd '' ascii_data <<'EOF'
+${c1}                    .
+                  :-  .
+                :==. .=:
+              :===:  -==:
+            :-===:  .====:
+          :-====-   -=====:
+         -======   :=======:
+        -======.  .=========:
+       -======:   -==========.
+      -======-    -===========.
+     :======-      :===========.
+    :=======.       .-==========.
+   :=======:          -==========.
+  :=======-            :==========.
+ :=======-              .-========-
+:--------.                :========-
+                    ..:::--=========-
+            ..::---================-=-
+EOF
+        ;;
 
         "CelOS"*)
             set_colors 4 6 0 5
@@ -6924,7 +6931,7 @@ ${c2}   lodd${c1}dolccc${c2}ccox${c1}xoloo
 EOF
         ;;
 
-        *"CrystalUX"*)
+        *"Crystal Linux"*)
             set_colors 13 5
             read -rd '' ascii_data <<'EOF'
 ${c1}                        mysssym
@@ -7703,25 +7710,25 @@ MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 
 EOF
         ;;
-	
+
         "glaucus"*)
             set_colors 5
             read -rd '' ascii_data <<'EOF'
-${c1}             ,,        ,d88P             
-           ,d8P    ,ad8888*               
+${c1}             ,,        ,d88P
+           ,d8P    ,ad8888*
          ,888P    d88888*     ,,ad8888P*
-    d   d888P   a88888P*  ,ad8888888*     
-  .d8  d8888:  d888888* ,d888888P*       
- .888; 88888b d8888888b8888888P           
- d8888J888888a88888888888888P*    ,d      
- 88888888888888888888888888P   ,,d8*       
- 888888888888888888888888888888888*       
- *8888888888888888888888888888888*        
-  Y888888888P* `*``*888888888888*          
+    d   d888P   a88888P*  ,ad8888888*
+  .d8  d8888:  d888888* ,d888888P*
+ .888; 88888b d8888888b8888888P
+ d8888J888888a88888888888888P*    ,d
+ 88888888888888888888888888P   ,,d8*
+ 888888888888888888888888888888888*
+ *8888888888888888888888888888888*
+  Y888888888P* `*``*888888888888*
    *^888^*            *Y888P**
 EOF
         ;;
-	
+
         "gNewSense"*)
             set_colors 4 5 7 6
             read -rd '' ascii_data <<'EOF'
@@ -7871,25 +7878,22 @@ EOF
         ;;
 
         "Haiku"*)
-            set_colors 2 8
+            set_colors 1 3 7 2
             read -rd '' ascii_data <<'EOF'
-${c2}          :dc'
-       'l:;'${c1},${c2}'ck.    .;dc:.
-       co    ${c1}..${c2}k.  .;;   ':o.
-       co    ${c1}..${c2}k. ol      ${c1}.${c2}0.
-       co    ${c1}..${c2}k. oc     ${c1}..${c2}0.
-       co    ${c1}..${c2}k. oc     ${c1}..${c2}0.
-.Ol,.  co ${c1}...''${c2}Oc;kkodxOdddOoc,.
- ';lxxlxOdxkxk0kd${c1}oooll${c2}dl${c1}ccc:${c2}clxd;
-     ..${c1}oOolllllccccccc:::::${c2}od;
-       cx:ooc${c1}:::::::;${c2}cooolcX.
-       cd${c1}.${c2}''cloxdoollc' ${c1}...${c2}0.
-       cd${c1}......${c2}k;${c1}.${c2}xl${c1}....  .${c2}0.
-       .::c${c1};..${c2}cx;${c1}.${c2}xo${c1}..... .${c2}0.
-          '::c'${c1}...${c2}do${c1}..... .${c2}K,
-                  cd,.${c1}....:${c2}O,${c1}
-                    ':clod:'${c1}
-                        ${c1}
+${c3}
+
+           MMMM              MMMM
+           MMMM              MMMM
+           MMMM              MMMM
+           MMMM              MMMM
+           MMMM${c4}       .ciO| /YMMMMM*"
+${c3}           MMMM${c4}   .cOMMMMM|/MMMMM/`
+ ,         ,iMM|/MMMMMMMMMMMMMMM*
+  `*.__,-cMMMMMMMMMMMMMMMMM/`${c3}.MMM
+           MM${c4}MMMMMMM/`:MMM/  ${c3}MMMM
+           MMMM              MMMM
+           MMMM              MMMM
+           """"              """"
 EOF
         ;;
 
@@ -8433,11 +8437,11 @@ EOF
         "mac"* | "Darwin")
             set_colors 2 3 1 1 5 4
             read -rd '' ascii_data <<'EOF'
-${c1}                    'c.
+${c1}                    c.'
                  ,xNMM.
                .OMMMMo
-               OMMM0,
-     .;loddo:' loolloddol;.
+               lMM"
+     .;loddo:.  .olloddol;.
    cKMMMMMMMMMMNWMMMMMMMMMM0:
 ${c2} .KMMMMMMMMMMMMMMMMMMMMMMMWd.
  XMMMMMMMMMMMMMMMMMMMMMMMX.
@@ -8445,11 +8449,11 @@ ${c3};MMMMMMMMMMMMMMMMMMMMMMMM:
 :MMMMMMMMMMMMMMMMMMMMMMMM:
 ${c4}.MMMMMMMMMMMMMMMMMMMMMMMMX.
  kMMMMMMMMMMMMMMMMMMMMMMMMWd.
- ${c5}.XMMMMMMMMMMMMMMMMMMMMMMMMMMk
-  .XMMMMMMMMMMMMMMMMMMMMMMMMK.
+ ${c5}'XMMMMMMMMMMMMMMMMMMMMMMMMMMk
+  'XMMMMMMMMMMMMMMMMMMMMMMMMK.
     ${c6}kMMMMMMMMMMMMMMMMMMMMMMd
      ;KMMMMMMMWXXWMMMMMMMk.
-       .cooc,.    .,coo:.
+       "cooc*"    "*coo'"
 EOF
         ;;
 
@@ -9124,23 +9128,29 @@ EOF
         "openEuler"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}
-                       (#####
-                     (((########  #####
-                    (((        ##########    __...__
-             ((((((((           #######    /((((((###\
-           (((((((((((   .......           \(((((####/
-          ((((((    ((((#########            *******
-    %((((((#          ((########
- /////(((((              ###
-/////(((((((#   (((&
-         (((((((((((((
-          ((((((((((((
-           (((((((((     ((((((###
-                       /((((((######
-                      //((((((######
-                       /((((((#####
-                        *********/
+${c1}                 `.cc.`
+             ``.cccccccc..`
+          `.cccccccccccccccc.`
+      ``.cccccccccccccccccccccc.``
+   `..cccccccccccccccccccccccccccc..`
+`.ccccccccccccccc${c2}/++/${c1}ccccccccccccccccc.`
+.ccccccccccccccc${c2}mNMMNdo+oso+${c1}ccccccccccc.
+.cccccccccc${c2}/++odms+//+mMMMMm/:+syso/${c1}cccc
+.ccccccccc${c2}yNNMMMs:::/::+o+/:${c1}c${c2}dMMMMMm${c1}cccc
+.ccccccc${c2}:+NmdyyhNNmNNNd:${c1}ccccc${c1}${c2}:oyyyo:${c1}cccc
+.ccc${c2}:ohdmMs:${c1}cccc${c2}+mNMNmy${c1}ccccccccccccccccc
+.cc${c2}/NMMMMMo////:${c1}c${c2}:///:${c1}cccccccccccccccccc
+.cc${c2}:syysyNMNNNMNy${c1}ccccccccccccccccccccccc
+.cccccccc${c2}+MMMMMNy${c1}c${c2}:/+++/${c1}cccccccccccccccc
+.ccccccccc${c2}ohhhs/${c1}c${c2}omMMMMNh${c1}ccccccccccccccc
+.ccccccccccccccc${c2}:MMMMMMMM/${c1}cccccccccccccc
+.cccccccccccccccc${c2}sNNNNNd+${c1}cccccccccccccc.
+`..cccccccccccccccc${c2}/+/:${c1}cccccccccccccc..`
+   ``.cccccccccccccccccccccccccccc.``
+       `.cccccccccccccccccccccc.`
+          ``.cccccccccccccc.``
+              `.cccccccc.`
+                 `....`
 EOF
         ;;
 
@@ -9857,6 +9867,27 @@ ${c1}               `..--..`
          .-:///////ssssssssssssssssss/`
             `.:////ssss+/+ssssssssssss.
                 `--//-    `-/osssso/.
+EOF
+        ;;
+
+        "Qubyt"*)
+            set_colors 4 5 0 4
+            read -rd '' ascii_data <<'EOF'
+${c1}    ########################${c2}(${c3}ooo
+${c1}    ########################${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo           ${c1}##${c3}o    ${c2}((((${c3}ooo
+${c1}###${c2}(${c3}ooo          o${c2}((${c1}###   ${c3}oooooo
+${c1}###${c2}(${c3}ooo           oo${c2}((${c1}###${c3}o
+${c1}###${c2}(${c3}ooo             ooo${c2}((${c1}###
+${c1}################${c2}(${c3}oo    oo${c2}((((${c3}o
+${c2}(((((((((((((((((${c3}ooo     ooooo
+  oooooooooooooooooo        o
 EOF
         ;;
 
@@ -11114,6 +11145,33 @@ EOF
 
         ;;
 
+        "VNux"*)
+        set_colors 11 8 15 1 7
+            read -rd '' ascii_data <<'EOF'
+${c1}              `
+           ^[XOx~.
+        ^_nwdbbkp0ti'
+        <vJCZw0LQ0Uj>
+${c2}          _j>!vC1,,
+     ${c4},${c2}   ,CY${c3}O${c2}t${c3}O${c2}1(l;"
+`${c4}~-{r(1I${c2} ^${c1}/zmwJuc:${c2}I^
+'${c4}?)|${c1}U${c4}/}-${c2} ^${c3}f${c1}OCLLOw${c3}_${c2},;
+ ,${c4}i,``. ${c2}",${c3}k%ooW@$d"${c2}I,'
+  '    ;^${c3}u$$$$$$$$^<${c2}:^
+   ` .>>${c3}($$${c5}$@@@@$$${c3}$nl${c2}[::
+    `!}?${c3}B$${c5}%&WMMW&%$${c3}$1}-${c2}}":
+    ^?j${c3}Z$${c5}WMMWWWWMMW$${c3}ofc${c2};;`
+    <~x&${c3}$${c5}&MWWWWWWWWp${c3}-${c5}l>[<
+${c1} 'ljmwn${c2}~tk8${c5}MWWWWM8O${c2}X${c1}r${c2}+]nC${c1}[
+!JZqwwdX${c2}:^C8${c5}#MMMM@${c2}X${c1}Odpdpq0<
+<wwwwmmpO${c2}1${c3}0@%%%%8${c2}d${c1}nqmwmqqqJl
+?QOZmqqqpb${c2}t[run/?!${c1}0pwqqQj-,
+ ^:l<{nUUv>      ^x00J("
+                   ^"
+EOF
+
+        ;;
+
         "LangitKetujuh"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
@@ -11188,7 +11246,7 @@ ${c1}
 ################  ################
 ################  ################
 ################  ################
- 
+
 ################  ################
 ################  ################
 ################  ################
@@ -11349,11 +11407,11 @@ EOF
                 "Darwin")
                     set_colors 2 3 1 1 5 4
                     read -rd '' ascii_data <<'EOF'
-${c1}                    'c.
+${c1}                    c.'
                  ,xNMM.
                .OMMMMo
-               OMMM0,
-     .;loddo:' loolloddol;.
+               lMMM"
+     .;loddo:.  .olloddol;.
    cKMMMMMMMMMMNWMMMMMMMMMM0:
 ${c2} .KMMMMMMMMMMMMMMMMMMMMMMMWd.
  XMMMMMMMMMMMMMMMMMMMMMMMX.
@@ -11361,11 +11419,11 @@ ${c3};MMMMMMMMMMMMMMMMMMMMMMMM:
 :MMMMMMMMMMMMMMMMMMMMMMMM:
 ${c4}.MMMMMMMMMMMMMMMMMMMMMMMMX.
  kMMMMMMMMMMMMMMMMMMMMMMMMWd.
- ${c5}.XMMMMMMMMMMMMMMMMMMMMMMMMMMk
-  .XMMMMMMMMMMMMMMMMMMMMMMMMK.
+ ${c5}'XMMMMMMMMMMMMMMMMMMMMMMMMMMk
+  'XMMMMMMMMMMMMMMMMMMMMMMMMK.
     ${c6}kMMMMMMMMMMMMMMMMMMMMMMd
      ;KMMMMMMMWXXWMMMMMMMk.
-       .cooc,.    .,coo:.
+       "cooc*"    "*coo'"
 EOF
                 ;;
 
