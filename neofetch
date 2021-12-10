@@ -4823,10 +4823,11 @@ cache() {
 }
 
 get_cache_dir() {
-    case $os in
-        "Mac OS X"|"macOS") cache_dir="/Library/Caches" ;;
-        *)          cache_dir="/tmp" ;;
-    esac
+    if [[ "$TMPDIR" ]]; then
+        cache_dir="$TMPDIR"
+    else
+        cache_dir="/tmp"
+    fi
 }
 
 kde_config_dir() {
@@ -5379,8 +5380,7 @@ get_args() {
             "--gap") gap="$2" ;;
             "--clean")
                 [[ -d "$thumbnail_dir" ]] && rm -rf "$thumbnail_dir"
-                rm -rf "/Library/Caches/neofetch/"
-                rm -rf "/tmp/neofetch/"
+                rm -rf "$cache_dir/neofetch/"
                 exit
             ;;
 
@@ -11542,6 +11542,7 @@ EOF
 main() {
     cache_uname
     get_os
+    get_cache_dir
 
     # Load default config.
     eval "$config"
@@ -11564,7 +11565,6 @@ main() {
     }
 
     image_backend
-    get_cache_dir
     old_functions
     print_info
     dynamic_prompt
