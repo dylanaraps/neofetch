@@ -1068,6 +1068,9 @@ get_distro() {
             # by the shell since the values aren't quoted.
             elif [[ -f /etc/lsb-release && $(< /etc/lsb-release) == *CHROMEOS* ]]; then
                 distro='Chrome OS'
+		
+	    elif [[ -f /etc/vzlinux-release ]]; then
+                distro='VzLinux'
 
             elif type -p guix >/dev/null; then
                 case $distro_shorthand in
@@ -11462,6 +11465,33 @@ ${c3}#######${c2}#${c1}#####${c2}#${c3}#######
 ${c3}  #####${c2}#######${c3}#####
 EOF
                 ;;
+
+"VzLinux"*)
+set_colors 1 7 3
+read -rd '' ascii_data <<'EOF'                                            
+${c2}                 ${c1}.::::::::.${c2}                  
+    `/////`      ${c1}:zzzzzzzz${c2}        ://///-     
+     VVVVVu`         ${c1}-zzz`${c2}       /VVVVV.     
+     `dVVVVV        ${c1}.zzz`${c2}       :VVVVV:      
+      `VVVVVo       ${c1}zzz${c2}        -VVVVV/       
+       .VVVVV\     ${c1}zzz/${c2}       .VVVVV+        
+        -VVVVV:   ${c1}zzzzzzzzz${c2}  .dVVVVs         
+         \VVVVV-  ${c1}`````````${c2}  VVVVVV          
+          +VVVVV.           sVVVVu`          
+           oVVVVd`         +VVVVd`           
+            VVVVVV        /VVVVV.            
+            `uVVVVs      -VVVVV-             
+             `dVVVV+    .VVVVV/              
+              .VVVVV\  `dVVVV+               
+               -VVVVV-`uVVVVo                
+                :VVVVVVVVVVV                 
+                 \VVVVVVVVu                  
+                  oVVVVVVd`                  
+                   sVVVVV.                   
+                    ----.                    
+EOF
+;;         
+
         "Profelis SambaBOX"* | "SambaBOX"*)
             set_colors 3 6
             read -rd '' ascii_data <<'EOF'
