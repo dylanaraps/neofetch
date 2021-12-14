@@ -803,7 +803,7 @@ image_source="auto"
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith,
 #       Rocky, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
 #       SereneLinux, SharkLinux, Siduction, SkiffOS, Slackware, SliTaz, SmartOS,
-#       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
+#       Solus, Sulin, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
 #       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
@@ -1587,6 +1587,8 @@ get_packages() {
             has emerge  && dir "/var/db/pkg/*/*"
             has Compile && dir "/Programs/*/"
             has eopkg   && dir "/var/lib/eopkg/package/*"
+            has inary   && dir "/var/lib/inary/package/*"
+            has tekel   && dir "/data/app/$USER/* /data/app/system/*"
             has crew    && dir "${CREW_PREFIX:-/usr/local}/etc/crew/meta/*.filelist"
             has pkgtool && dir "/var/log/packages/*"
             has scratch && dir "/var/lib/scratchpkg/index/*/.pkginfo"
@@ -5163,7 +5165,7 @@ ASCII:
                                 Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
                                 sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
                                 SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
-                                Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
+                                Solus, Sulin, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
                                 Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
@@ -6071,23 +6073,23 @@ EOF
         "ArchStrike"*)
             set_colors 8 6
             read -rd '' ascii_data <<'EOF'
-${c1}                   *   
-                  **.
-                 ****
-                ******
-                *******
-              ** *******
-             **** *******
-            ${c1}****${c2}_____${c1}***${c2}/${c1}*
-           ***${c2}/${c1}*******${c2}//${c1}***
-          **${c2}/${c1}********${c2}///${c1}*${c2}/${c1}**
-         **${c2}/${c1}*******${c2}////${c1}***${c2}/${c1}**
-        **${c2}/${c1}****${c2}//////.,${c1}****${c2}/${c1}**
-       ***${c2}/${c1}*****${c2}/////////${c1}**${c2}/${c1}***
-      ****${c2}/${c1}****    ${c2}/////${c1}***${c2}/${c1}****
-     ******${c2}/${c1}***  ${c2}////   ${c1}**${c2}/${c1}******
-    ********${c2}/${c1}* ${c2}///      ${c1}*${c2}/${c1}********
-  ,******     ${c2}// ______ /    ${c1}******,
+${c1}                   *   
+                  **.
+                 ****
+                ******
+                *******
+              ** *******
+             **** *******
+            ${c1}****${c2}_____${c1}***${c2}/${c1}*
+           ***${c2}/${c1}*******${c2}//${c1}***
+          **${c2}/${c1}********${c2}///${c1}*${c2}/${c1}**
+         **${c2}/${c1}*******${c2}////${c1}***${c2}/${c1}**
+        **${c2}/${c1}****${c2}//////.,${c1}****${c2}/${c1}**
+       ***${c2}/${c1}*****${c2}/////////${c1}**${c2}/${c1}***
+      ****${c2}/${c1}****    ${c2}/////${c1}***${c2}/${c1}****
+     ******${c2}/${c1}***  ${c2}////   ${c1}**${c2}/${c1}******
+    ********${c2}/${c1}* ${c2}///      ${c1}*${c2}/${c1}********
+  ,******     ${c2}// ______ /    ${c1}******,
 EOF
         ;;
 
@@ -10573,6 +10575,33 @@ ${c2}            -```````````
       `:+ssssssssssssssssssss+-
          `-/+ssssssssssso+/-`
               `.-----..`
+EOF
+            ;;
+
+        "Sulin"*)
+            set_colors 4 7 1
+            read -rd '' ascii_data <<'EOF'
+${c2}
+                         /\          /\
+                        ( \\\\        // ) 
+                         \ \\\\      // /
+                          \_\\\\||||//_/
+                           \/ _  _ \
+                          \/|(O)(O)|
+                         \/ |      |
+     ___________________\/  \      /
+    //                //     |____|
+   //                ||     /      \
+  //|                \|     \ 0  0 /
+ // \       )         V    / \____/
+//   \     /        (     /
+      \   /_________|  |_/
+      /  /\   /     |  ||
+     /  / /  /      \  ||
+     | |  | |        | ||               
+     | |  | |        | ||               
+     |_|  |_|        |_||               
+     \_\  \_\        \_\\               
 EOF
         ;;
 
