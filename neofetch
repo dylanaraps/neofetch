@@ -46,7 +46,7 @@ LC_ALL=C
 LANG=C
 
 # Fix issues with gsettings.
-export GIO_EXTRA_MODULES=/usr/lib/x86_64-linux-gnu/gio/modules/
+[[ -z $GIO_EXTRA_MODULES ]] && export GIO_EXTRA_MODULES=/usr/lib/x86_64-linux-gnu/gio/modules/
 
 # Neofetch default config.
 read -rd '' config <<'EOF'
