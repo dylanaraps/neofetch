@@ -4718,6 +4718,7 @@ set_text_colors() {
     case ${bar_color_total}${1} in
         distro[736]) bar_color_total=$(color "$1") ;;
         distro[0-9]) bar_color_total=$(color "$2") ;;
+        distro*)     bar_color_total=$(color "$1") ;;
         *)           bar_color_total=$(color "$bar_color_total") ;;
     esac
 }
