@@ -789,7 +789,7 @@ image_source="auto"
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
-#       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
+#       FreeMiNT, Frugalware, Funtoo, FusionX, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
 #       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
@@ -5149,7 +5149,7 @@ ASCII:
                                 Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
-                                Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
+                                Funtoo, FusionX, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
                                 LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
@@ -7586,6 +7586,30 @@ xXXXXXX, cXXXNNNXXXXNNXXXXXXXXNNNNKOOK; d0O .k
   kXX  xN0:.       KNN' oNNNX' ,XNk
   kXX  xNNXNNNNNNNNXNNNNNNNNXNNOxXNX0Xl
   ...  ......................... .;cc;.
+EOF
+        ;;
+
+        "FusionX"*)
+            set_colors 4 4 7
+            read -rd '' ascii_data <<'EOF'
+${c2}   
+	          .
+                 kXNNX
+                 0XXXXXNNk
+                 XXXXXXXXXNK
+                .XXXXXXXXXXXNx
+ xXNW.          'XXXXXXXXXX.
+'XXXXXNW0       ;XXXXXX
+kXXXXXXXXXNW.${c3}  MW.
+${c2}0XXXXXXXXXXX.${c3}cXXXX;
+${c2}lXXXXXXXXXd   ${c3} ol .
+${c2}.XXXXXk         ONXXNW:
+ .K             OXXXXXXNWK
+                0XXXXXXXXXXNW.
+                KXXXXXXXXXXc
+                KXXXXXXXX
+                KXXXd
+                .
 EOF
         ;;
 
