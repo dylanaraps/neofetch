@@ -1217,8 +1217,8 @@ get_distro() {
     [[ $distro ]] || distro="$os (Unknown)"
 
     # Get OS architecture.
-    case $os in
-        Solaris|AIX|Haiku|IRIX|FreeMiNT)
+    case $os-$kernel_name in
+        Solaris-*|AIX-*|Haiku-*|IRIX-*|FreeMiNT-*|BSD-FreeBSD)
             machine_arch=$(uname -p)
         ;;
 
