@@ -1620,7 +1620,7 @@ get_packages() {
 
             case $os-$kernel_name in
                 BSD-FreeBSD|BSD-DragonFly)
-                    has pkg && tot pkg info
+                    has pkg && tot pkg info </dev/null
                 ;;
 
                 BSD-*)
