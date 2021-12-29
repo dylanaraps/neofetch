@@ -780,7 +780,7 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
+# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, AmogOS, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
@@ -5139,7 +5139,7 @@ ASCII:
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
+                                NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, AmogOS, Anarchy, Android,
                                 instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
@@ -5696,6 +5696,30 @@ dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
 .:+ydNMMMMMMMMMMMh    yMMMMMMMMMMMNdy+:.
      `.:+shNMMMMMh    yMMMMMNhs+:``
             `-+shy    shs+:`
+EOF
+        ;;
+                "AmogOS"*)
+                                set_colors 15 6
+                                            read -rd '' ascii_data <<'EOF'
+${c1}             ___________      
+            /           \      
+           /   ${c2}______${c1}    \    
+          /   ${c2}/      \${c1}    \   
+          |  ${c2}(        )${c1}    \  
+         /    ${c2}\______/${c1}     | 
+         |                 |  
+        /                   \ 
+        |                   |
+        |                   | 
+       /                    | 
+       |                    | 
+       |     _______        | 
+  ____/     /       \       | 
+ /          |       |       | 
+ |          /   ____/       | 
+ \_________/   /            | 
+               \         __/  
+                \_______/   
 EOF
         ;;
         "Anarchy"*)
