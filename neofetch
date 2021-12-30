@@ -1887,7 +1887,7 @@ get_de() {
 
         de+=" $de_ver"
 
-        [[ $de == "Plasma"* ]] && de+=" [KF5 $kf_ver] [Qt $qt_ver] "
+        [[ $de == "Plasma"* ]] && de+=" [KF5 $kf_ver] [Qt $qt_ver]"
     fi
 
     # TODO:
