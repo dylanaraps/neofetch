@@ -784,7 +784,7 @@ image_source="auto"
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
-#       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
+#       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, Carli, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
@@ -5144,7 +5144,7 @@ ASCII:
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
-                                Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
+                                Calculate, Carbs, Carli, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
@@ -6537,6 +6537,29 @@ ${c2}             ..........
         ..;cllllccccclllc;'.
           ...',;;;;;;,,...
                 .....
+EOF
+        ;;
+
+    "Carli"*)
+            set_colors 7 1
+            read -rd '' ascii_data <<'EOF'
+${c1}               .@@.
+              @@@@@@
+             @@@@@@@@
+            @@@@@@@@@@
+           @@@@@@@@@@@@
+          @@@@@@@@@@@@@@
+         @@@@@@@@ @@@@@@@
+        @@@@@@@@   @@@@@@@
+       @@@@@@@@     @@@@@@@
+      @@@@@@@@       @@@@@@@
+     @@@@@@@@   ${c2}@@@@@@@@@@@@@@@@@${c1}
+    @@@@@@@@    ${c2}@ $$$  xxx  --- @${c1}
+   @@@@@@@@     ${c2}@ $$$  xxx  --- @${c1}
+  @@@@@@@@      ${c2}@               @${c1}
+ @@@@@@@@       ${c2}@ +++  xxx  %%% @${c1}
+@@@@@@@@        ${c2}@ +++  xxx  %%% @${c1}
+@@@@@@@         ${c2}@@@@@@@@@@@@@@@@@${c1}
 EOF
         ;;
 
