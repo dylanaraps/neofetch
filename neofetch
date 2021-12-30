@@ -1856,7 +1856,15 @@ get_de() {
 
     if [[ $de_version == on && $de ]]; then
         case $de in
-            Plasma*)   de_ver=$(plasmashell --version) ;;
+            Plasma*)   de_ver=$(plasmashell --version)
+                       kf_ver=$(kf5-config --version)
+                       qt_ver=${kf_ver/KDE*}
+                       qt_ver=${qt_ver/Qt:}
+                       qt_ver=$(trim $qt_ver)
+                       kf_ver=${kf_ver/kf5*}
+                       kf_ver=${kf_ver/*:}
+                       kf_ver=$(trim $kf_ver)
+            ;;
             MATE*)     de_ver=$(mate-session --version) ;;
             Xfce*)     de_ver=$(xfce4-session --version) ;;
             GNOME*)    de_ver=$(gnome-shell --version) ;;
@@ -1878,6 +1886,8 @@ get_de() {
         de_ver=${de_ver//\"}
 
         de+=" $de_ver"
+
+        [[ $de == "Plasma"* ]] && de+=" [KF5 $kf_ver] [Qt $qt_ver] "
     fi
 
     # TODO:
