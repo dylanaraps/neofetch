@@ -3371,7 +3371,8 @@ get_term_font() {
 
         "Apple_Terminal")
             term_font="$(osascript <<END
-                         tell application "Terminal" to font name of window frontmost
+                         tell application "Terminal" to font name of window frontmost \
+			 & " " & font size of window frontmost
 END
 )"
         ;;
