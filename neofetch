@@ -1856,7 +1856,8 @@ get_de() {
 
     if [[ $de_version == on && $de ]]; then
         case $de in
-            Plasma*)   de_ver=$(plasmashell --version)
+            Plasma*)
+                       de_ver=$(plasmashell --version)
                        kf_ver=$(kf5-config --version)
                        qt_ver=${kf_ver/KDE*}
                        qt_ver=${qt_ver/Qt:}
