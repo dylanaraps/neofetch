@@ -10324,9 +10324,9 @@ EOF
         ;;
 
         "SalientOS"*)
-            set_colors 6 6 7 1
+            set_colors 2 4
             read -rd '' ascii_data <<'EOF'
-${c1}              ooxxxxo
+${c2}              ooxxxxo
           ooxxxxxxo
        oxxxxxxxxx         oooooo
      oxxxxxxxxxx        xxxxxxxxxxo
@@ -10342,7 +10342,7 @@ oxxxxxxxxxxxxxxxxxxo      oxxxxxxxxxxxxo
  oxxxxxxxxxxxxxxxxxx       xxxxxxxxxxxo
   oxxxxxxxxxxxxxxxxx       xxxxxxxxxxo
    oxxxxxxxxxxxxxxxx       xxxxxxxxxo
-     oxxxxxxxxxxxxo       oxxxxxxxo
+     oxxxxxxxxxxxxo       0xxxxxxxo
         oxxxxxxxo         xxxxxxo
                         oxxxoo
                       xoo
