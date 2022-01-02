@@ -1102,10 +1102,13 @@ get_distro() {
             fi
 
             if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
+                windows_version=$(wmic.exe os get Version)
+                windows_version=$(trim "${windows_version/Version}")
+
                 case $distro_shorthand in
-                    on)   distro+=" [Windows 10]" ;;
-                    tiny) distro="Windows 10" ;;
-                    *)    distro+=" on Windows 10" ;;
+                    on)   distro+=" [Windows $windows_version]" ;;
+                    tiny) distro="Windows ${windows_version::2}" ;;
+                    *)    distro+=" on Windows $windows_version" ;;
                 esac
 
             elif [[ $(< /proc/version) == *chrome-bot* || -f /dev/cros_ec ]]; then
@@ -1561,6 +1564,7 @@ get_packages() {
             has butch      && tot butch list
             has swupd      && tot swupd bundle-list --quiet
             has pisi       && tot pisi li
+            has pacstall   && tot pacstall -L
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -11596,7 +11600,7 @@ main() {
     err "Neofetch command: $0 $*"
     err "Neofetch version: $version"
 
-    [[ $verbose == on ]] && printf %b "$err" >&2
+    [[ $verbose == on ]] && printf '%b\033[m' "$err" >&2
 
     # If `--loop` was used, constantly redraw the image.
     while [[ $image_loop == on && $image_backend == w3m ]]; do
