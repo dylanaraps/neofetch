@@ -2471,8 +2471,14 @@ get_cpu() {
     # Add CPU cores to the output.
     [[ "$cpu_cores" != "off" && "$cores" ]] && \
         case $os in
-            "Mac OS X"|"macOS") cpu="${cpu/@/(${cores}) @}" ;;
-            *)                  cpu="$cpu ($cores)" ;;
+            "Mac OS X"|"macOS")
+                if [[ $(uname -m) == 'arm64' ]]; then
+                    cpu="$cpu ($cores)"
+                else
+                    cpu="${cpu/@/(${cores}) @}"
+                fi
+            ;;
+            *) cpu="$cpu ($cores)" ;;
         esac
 
     # Add CPU speed to the output.
@@ -2591,10 +2597,16 @@ get_gpu() {
                 source "${cache_dir}/neofetch/gpu"
 
             else
-                gpu="$(system_profiler SPDisplaysDataType |\
-                       awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
-                gpu="${gpu//\/ \$}"
-                gpu="${gpu%,*}"
+                if [[ $(uname -m) == 'arm64' ]]; then
+                    chipset=$(system_profiler SPDisplaysDataType | awk '/Chipset Model/ { printf "%s %s %s", $3, $4, $5 }')
+                    cores=$(system_profiler SPDisplaysDataType | awk '/Total Number of Cores/ { printf "%d", $5 }')
+                    gpu="${chipset} (${cores})"
+                else
+                    gpu="$(system_profiler SPDisplaysDataType |\
+                        awk -F': ' '/^\ *Chipset Model:/ {printf $2 ", "}')"
+                    gpu="${gpu//\/ \$}"
+                    gpu="${gpu%,*}"
+                fi
 
                 cache "gpu" "$gpu"
             fi
