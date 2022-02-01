@@ -1,6 +1,6 @@
 ## Description
 
-Only fill in the fields below if relevant.
+Add HoleOS and its ASCII to Neofetch
 
 
 ## Features

@@ -790,7 +790,7 @@ image_source="auto"
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
-#       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
+#       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, HoleOS, Huayra, HydroOS
 #       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
@@ -5150,7 +5150,7 @@ ASCII:
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
-                                GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
+                                GoboLinux, Grombyang, Guix, Haiku, HoleOS, Huayra, Hyperbola, iglunix, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
                                 LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
                                 Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, LinuxMint,
@@ -7888,6 +7888,31 @@ ${c3}           MMMM${c4}   .cOMMMMM|/MMMMM/`
            MMMM              MMMM
            MMMM              MMMM
            """"              """"
+EOF
+        ;;
+	
+        "HoleOS"*)
+            set_colors 1 3 7
+            read -rd '' ascii_data <<'EOF'
+${c3}
+
+   ${c2}MMMMMMMM
+ MMMMMMMMMMM
+MMMMMMMMMMMMM   ${c3}MMMMMMMM
+${c2}MMMMMMMMMMMMM   ${c3}MMMMMMMMMM
+${c2}MMMMMMMMMMMMM   ${c3}MMMMMMMMMMMMM
+ ${c2}MMMMMMMMMMM    ${c3}MMMMMMMMMMMMMMM
+  ${c2}MMMMMMMMM     ${c3}MMMMMMMMMMMMMMM
+               MMMMMMMMMMMMMMMM
+      MMMMMMMMMMMMMMMMMMMMMMMMM
+      MMMMMMMMMMMMMM
+      MMMMMMMMMMMMM      ${c2}MMMMMMM
+      ${c3}MMMMMMMMMMMMM    ${c2}MMMMMMMMMMM
+      ${c3}MMMMMMMMMMMMM   ${c2}MMMMMMMMMMMMM
+        ${c3}MMMMMMMMMMM   ${c2}MMMMMMMMMMMMM
+           ${c3}MMMMMMMM   ${c2}MMMMMMMMMMMMM
+                       MMMMMMMMMMM
+                        MMMMMMMMM  
 EOF
         ;;
 
