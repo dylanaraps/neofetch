@@ -3985,18 +3985,21 @@ get_cols() {
         [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}[mnl}"
         [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}[mnl}"
 
+        # Determine the horizontal offset of the blocks.
+        case $col_offset in
+            "auto")  block_offset="$text_padding" ;;
+            *)       block_offset="$col_offset" ;;
+        esac
+
         # Add newlines to the string.
         cols=${cols%%nl}
         cols=${cols//nl/
-[${text_padding}C${zws}}
+[${block_offset}C${zws}}
 
         # Add block height to info height.
         ((info_height+=block_range[1]>7?block_height+2:block_height+1))
 
-        case $col_offset in
-            "auto") printf '\n\e[%bC%b\n' "$text_padding" "${zws}${cols}" ;;
-            *) printf '\n\e[%bC%b\n' "$col_offset" "${zws}${cols}" ;;
-        esac
+        printf '\n\e[%bC%b\n' "$block_offset" "${zws}${cols}"
     fi
 
     unset -v blocks blocks2 cols
