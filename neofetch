@@ -783,7 +783,7 @@ image_source="auto"
 # NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
-#       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
+#       Artix, Arya, Bedrock, Bitrig, BigLinux, BlackArch, BLAG, BlankOn, BlueLight,
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
@@ -6293,6 +6293,31 @@ ${c1}   `hMMMMN+
 /MN/-------oNN:
 hMd.       .dMh
 sm/         /ms
+EOF
+        ;;
+
+        "BigLinux"*)
+            set_colors 4 7 1
+            read -rd '' ascii_data <<'EOF'
+${c2}                                ...      
+                             .xXMMMWk.   
+                           .0MMMMMMMMMo  
+                 :xkx:    'WMMMMW.   ;Md 
+  .             XMMMMM:  .MMMMW        k.
+ c;             :MMMMO   XMMMK          ,
+ Nc               ...   .MMMM       lkk; 
+.MX      ,cc,     cKX0c .MMMd     dWMMMMd
+:MM.   ;NMMMWWk.  MMMMM  MMM,   ,NMMMMMMM,
+cMMN:;OMMMK  ;MMc KMMMM. .MMc  xMMMMc.0MMk
+'MMMMMMMM.   .MMM. KMMMX   xNxWMMMx    WMO
+ kMMMMMO     ;MMM:  :MMMX.   .;l;      :Ml
+  lNM,       KMMM,    .oWMd            .M.
+ '          dMMMM                      .K
+ .X.      .OMMMM,                      . 
+  xMk:'':kMMMMMc                   
+   kMMMMMMMMMM.                          
+    :NMMMMMW,                            
+       ..                                
 EOF
         ;;
 
