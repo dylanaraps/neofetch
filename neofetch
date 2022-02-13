@@ -666,7 +666,7 @@ block_width=3
 # Flag:     --block_height
 block_height=1
 
-# Color Alignment
+# Column Alignment
 #
 # Default: 'auto'
 # Values: 'auto', 'num'
