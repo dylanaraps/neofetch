@@ -1022,8 +1022,8 @@ get_distro() {
                     -f /etc/lsb-release ]]; then
 
                 # Source the os-release file
-                for file in /etc/lsb-release /usr/lib/os-release \
-                            /etc/os-release  /etc/openwrt_release; do
+                for file in /etc/lsb-release    /etc/os-release \
+                            /usr/lib/os-release /etc/openwrt_release; do
                     source "$file" && break
                 done
 
