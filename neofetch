@@ -4998,7 +4998,7 @@ INFO:
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 
     --title_fqdn on/off         Hide/Show Fully Qualified Domain Name in title.
-    --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
+    --package_managers on/off   Hide/Show Package Manager names. (on, tiny, off)
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
