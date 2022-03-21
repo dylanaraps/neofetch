@@ -794,7 +794,7 @@ image_source="auto"
 #       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
-#       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
+#       Mer, Minix, Linspire, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
 #       Netrunner, Nitrux, NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD,
 #       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
 #       osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
@@ -998,7 +998,19 @@ get_distro() {
                     on|tiny) distro="OS Elbrus" ;;
                     *) distro="OS Elbrus $(< /etc/mcst_version)"
                 esac
-
+				
+            elif [[ -f /etc/linspire-version ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="Linspire" ;;
+                    *) distro="Linspire $(awk '/Version/ {print $2}' /etc/linspire-version)"
+                esac
+				
+            elif [[ -f /etc/lindowsos-version ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="LindowsOS" ;;
+                    *) distro="$(awk '/Version/ {print $2,$3}' /etc/lindowsos-version)"
+                esac
+				
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
                     on|tiny) distro="Proxmox VE" ;;
@@ -5153,7 +5165,7 @@ ASCII:
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
                                 LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
-                                Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, LinuxMint,
+                                Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, Linspire, LinuxMint,
                                 Live_Raizo, MX_Linux, Namib, Neptune, NetBSD, Netrunner, Nitrux,
                                 NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana,
                                 openmamba, OpenMandriva, OpenStage, OpenWrt, osmc, Oracle,
@@ -8677,7 +8689,25 @@ ${c2}   -sdhyo+:-`                -/syymm:
               `::ohdmds-`
 EOF
         ;;
-
+		
+        "Linspire"* | "Freespire"* | "Lindows"*)
+            set_colors 4 2
+            read -rd '' ascii_data <<'EOF'
+${c2}                                                   __^ 	
+${c2}                                                __/    \\
+${c2}   MMy        dMy                            __/        \\ 
+${c2}  dMMy        MMy                            ${c1}MM${c2}          \\
+${c2}  MMMy            ,,        ${c1}dMMMMn                        ${c2}\\
+${c2} dMMy        dMM dMMMMMMy  ${c1}dMM  MM dMMMMMy  dMM MM.nMMM dMMMMMM
+${c1}MMM          ${c2}MMy MMy  MMy ${c1}dMM      MMy  MMy MMy MMy    dy   dMy 
+${c1}MMM         ${c2}dMM dMM   MMy  ${c1}dMMMMy dMM  dMM dMM dMM    dMMMMMMM  
+${c2} dMMy       MMy MMy  MMy     ${c1}dMMy MM  MMy MMy  MMy    dMM
+${c2}dMMy       dMM dMM  dMM ${c1}dMM  MMy dMMMMMy dMM  dMM     MMy   MM
+${c2}MMMMMMMMMM MMy MMy  MMy ${c1}dMMMyyy MMy     MMy  MMy      dMMMMMMy
+${c2}                                ${c1}dy
+EOF
+        ;;
+		
         "linuxmint_small"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
