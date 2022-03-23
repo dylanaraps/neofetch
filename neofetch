@@ -3346,6 +3346,8 @@ get_term() {
         esac
     done
 
+    [[ $FIG_TERM == "1" ]] && term="$term + Fig"
+
     # Log that the function was run.
     term_run=1
 }
