@@ -780,7 +780,7 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
+# NOTE: AIX, Asahi, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
@@ -5139,7 +5139,7 @@ ASCII:
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
+                                NOTE: AIX, Asahi, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
                                 instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
@@ -5561,6 +5561,32 @@ ${c2}
    |   GNU/Linux
 EOF
 	;;
+	
+        "Asahi"*)
+            set_colors 3 2 1 8 7 6 4
+            read -rd '' ascii_data <<'EOF'
+${c1}                   ##  ${c2}**                 
+                ${c1}*####${c2}****.                
+                  ${c1}###${c2},                     
+               ${c3}...,${c1}/#${c3},,,..                
+          ${c3}/*,,,,,,,,${c1}*${c3},........${c4},,          
+        ${c3},((((((//*,,,,,,,,${c4},......         
+       ${c3}((((((((((((((${c5}%..${c4}..........       
+     ${c3},(((((((((((((((${c5}@@(${c4}............      
+    ${c3}(((((((((((((((((${c5}@@@@/${c4}............    
+  ${c3},((((((((((((((((((${c5}@@@@@&*${c4}...........   
+ ${c3}((((((((((((((((((((${c5}@@@@@@@&${c4},........... 
+${c3}(((((((((((((((((((((${c5}@@@${c6}&%&${c5}@@@%${c4},..........
+ ${c3}/(((((((((((((((((((${c5}@@@${c6}&%%&${c5}@@@@(${c4}........ 
+    ${c3},((((((((((((((((${c5}@@@${c6}&&${c5}@@&/&@@@/${c4}..     
+        ${c3}/((((((((((((${c5}@@@@@@/${c4}.../&&        
+           ${c3}.(((((((((${c5}@@@@(${c4}....            
+               ${c3}/(((((${c5}@@#${c4}...               
+                  ${c3}.((${c4}&,                   
+                   
+
+EOF
+        ;;
 
         "Hash"*)
             set_colors 123
