@@ -1082,7 +1082,8 @@ get_distro() {
 
             else
                 for release_file in /etc/*-release; do
-                    distro+=$(< "$release_file")
+                    distro=$(< "$release_file")
+                    break
                 done
 
                 if [[ -z $distro ]]; then
