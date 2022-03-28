@@ -4715,11 +4715,11 @@ set_text_colors() {
         bar_color_elapsed="$(color "$bar_color_elapsed")"
     fi
 
-    case ${bar_color_total}${1} in
-        distro[736]) bar_color_total=$(color "$1") ;;
-        distro[0-9]) bar_color_total=$(color "$2") ;;
-        *)           bar_color_total=$(color "$bar_color_total") ;;
-    esac
+    if [[ "$bar_color_total" == "distro" ]]; then
+        bar_color_total="$(color fg)"
+    else
+        bar_color_total="$(color "$bar_color_total")"
+    fi
 }
 
 color() {
