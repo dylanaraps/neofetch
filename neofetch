@@ -7498,12 +7498,9 @@ ${c1}/\\,-'''''-,/\\
 EOF
         ;;
 
-        FreeBSD*|HardenedBSD*)
-            case $ascii_distro in
-                *HardenedBSD*) set_colors 4 7 3 ;;
-                *)             set_colors 1 7 3
-            esac
-
+        FreeBSD*)
+            set_colors 1 7 3
+            
             read -rd '' ascii_data <<'EOF'
    ${c2}```                        ${c1}`
   ${c2}` `.....---...${c1}....--.```   -/
@@ -7520,6 +7517,28 @@ EOF
      ${c2}`:`                  ${c1}`:`
        .--             `--.
           .---.....----.
+EOF
+        ;;
+
+        HardenedBSD*)
+            set_colors 4 6
+
+            read -rd '' ascii_data <<'EOF'
+
+${c2}          ....-------....
+       .-`ooooooooooooooo`-.
+      ${c1}:...${c2} ooooooooooooooooo:
+     ${c1}/$$$$`${c2}.ooOOOOOOOOOooo${c1}...\\${c2}
+   ${c1}.-$#####$`...${c2}oOOOOOo${c1}--`$$$-.
+   /$###########------`$#####$/
+  `:$########################$:`
+  `:$##########$-----$#######$:`
+   /$######$...`${c2}OOOOO${c1}`:$#####$/
+   .-$###$--${c2}OOOOOOOOOOO${c1}``-$#-.
+    --$$:`${c2}OOOOOOOOOOOOOOOO${c1}`-.
+     `:`${c2}OOOOOOOOOOO${c1}---${c2}OOOOO:`
+       `-.OOOOOOO${c1}.`###`.${c2}..`
+          `---..${c1}/..----`
 EOF
         ;;
 
