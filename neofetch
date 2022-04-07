@@ -4,7 +4,7 @@
 # shellcheck disable=2009
 #
 # Neofetch: A command-line system information tool written in bash 3.2+.
-# https://github.com/dylanaraps/neofetch
+# https://github.com/trhacknon/neofetch
 #
 # The MIT License (MIT)
 #
@@ -51,7 +51,7 @@ export GIO_EXTRA_MODULES=/usr/lib/x86_64-linux-gnu/gio/modules/
 # Neofetch default config.
 read -rd '' config <<'EOF'
 # See this wiki page for more info:
-# https://github.com/dylanaraps/neofetch/wiki/Customizing-Info
+# https://github.com/trhacknon/neofetch/wiki/Customizing-Info
 print_info() {
     info title
     info underline
