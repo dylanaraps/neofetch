@@ -9,8 +9,7 @@ from typing import Literal, Iterable
 from hypy_utils import printc, json_stringify, color
 
 from .neofetch_util import run_neofetch
-from .presets import PRESETS
-
+from .presets import PRESETS, ColorProfile
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
 CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
@@ -130,6 +129,8 @@ def run():
     parser.add_argument('-c', '--config', action='store_true', help=color(f'Configure {hyfetch}'))
     parser.add_argument('-p', '--preset', help=f'Use preset', choices=PRESETS.keys())
     parser.add_argument('-m', '--mode', help=f'Color mode', choices=['ansi', '8bit', 'rgb'])
+    parser.add_argument('--c-scale', dest='scale', help=f'Lighten colors by a multiplier', type=float)
+    parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
 
     args = parser.parse_args()
 
@@ -146,5 +147,13 @@ def run():
     if args.mode:
         config.mode = args.mode
 
+    preset = PRESETS.get(config.preset)
+
+    # Lighten
+    if args.scale:
+        preset = ColorProfile([c.lighten(args.scale) for c in preset.colors])
+    if args.light:
+        preset = ColorProfile([c.set_light(args.light) for c in preset.colors])
+
     # Run
-    run_neofetch(PRESETS.get(config.preset))
+    run_neofetch(preset)

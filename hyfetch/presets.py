@@ -1,21 +1,23 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Literal
 
 from .color_util import RGB
 
 
-@dataclass
 class ColorProfile:
-    colors: list[str]
+    raw: list[str]
+    colors: list[RGB]
     spacing: Literal['equal', 'weighted'] = 'equal'
 
-    def decode(self) -> list[RGB]:
-        """
-        Decode to a list of RGBs
+    def __init__(self, colors: list[str] | list[RGB]):
+        if isinstance(colors[0], str):
+            self.raw = colors
+            self.colors = [RGB.from_hex(c) for c in colors]
+        else:
+            self.colors = colors
 
-        :return: List of RGBs
-        """
-        return [RGB.from_hex(c) for c in self.colors]
 
     def with_weights(self, weights: list[int]) -> list[RGB]:
         """
@@ -24,8 +26,7 @@ class ColorProfile:
         :param weights: Weights of each color (weights[i] = how many times color[i] appears)
         :return:
         """
-        colors = self.decode()
-        return [c for i, w in enumerate(weights) for c in [colors[i]] * w]
+        return [c for i, w in enumerate(weights) for c in [self.colors[i]] * w]
 
     def with_length(self, length: int) -> list[RGB]:
         """

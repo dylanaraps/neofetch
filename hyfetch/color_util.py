@@ -1,4 +1,23 @@
+import colorsys
 from typing import NamedTuple
+
+
+def redistribute_rgb(r: int, g: int, b: int) -> tuple[int, int, int]:
+    """
+    Redistribute RGB after lightening
+
+    Credit: https://stackoverflow.com/a/141943/7346633
+    """
+    threshold = 255.999
+    m = max(r, g, b)
+    if m <= threshold:
+        return int(r), int(g), int(b)
+    total = r + g + b
+    if total >= 3 * threshold:
+        return int(threshold), int(threshold), int(threshold)
+    x = (3 * threshold - total) / (3 * m - total)
+    gray = threshold - x * m
+    return int(gray + x * r), int(gray + x * g), int(gray + x * b)
 
 
 class RGB(NamedTuple):
@@ -59,3 +78,22 @@ class RGB(NamedTuple):
         :return: ANSI 16 escape code
         """
         raise NotImplementedError()
+
+    def lighten(self, multiplier: float) -> 'RGB':
+        """
+        Lighten the color by a multiplier
+
+        :param multiplier: Multiplier
+        :return: Lightened color (original isn't modified)
+        """
+        return RGB(*redistribute_rgb(*[v * multiplier for v in self]))
+
+    def set_light(self, light: int) -> 'RGB':
+        """
+        Set HSL lightness value
+
+        :param light: Lightness value
+        :return: New color (original isn't modified)
+        """
+        h, l, s = colorsys.rgb_to_hls(*[v / 255.0 for v in self])
+        return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(h, light, s)])
