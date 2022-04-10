@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, Optional
 
 from .color_util import RGB
 
@@ -60,16 +60,27 @@ class ColorProfile:
 
         return self.with_weights(weights)
 
-    def color_text(self, txt: str, foreground: bool = True) -> str:
+    def color_text(self, txt: str, foreground: bool = True, space_only: bool = False) -> str:
         """
         Color a text
 
         :param txt: Text
         :param foreground: Whether the foreground text show the color or the background block
+        :param space_only: Whether to only color spaces
         :return: Colored text
         """
         colors = self.with_length(len(txt))
-        return ''.join([colors[i].to_ansi_rgb(foreground) + c for i, c in enumerate(txt)]) + '\033[0m'
+        result = ''
+        for i, t in enumerate(txt):
+            if space_only and t != ' ':
+                if i > 0 and txt[i - 1] == ' ':
+                    result += '\033[0m'
+                result += t
+            else:
+                result += colors[i].to_ansi_rgb(foreground) + t
+
+        result += '\033[0m'
+        return result
 
 
 PRESETS: dict[str, ColorProfile] = {

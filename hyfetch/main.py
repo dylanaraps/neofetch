@@ -98,13 +98,20 @@ def create_config() -> Config:
                                  ['ansi', '8bit', 'rgb'], 'rgb')
 
     # Print preset
-    print('Available presets:')
+    print('Available presets:\n')
     spacing = max(max(len(k) for k in PRESETS.keys()), 30)
+    flags = []
     for name, preset in PRESETS.items():
-        printc(preset.color_text(center_text(name, spacing), foreground=False))
-
-        # preset_demo = ''.join(f'{c.to_ansi_rgb(False)} ' for c in preset.with_length(flag_length))
-        # printc(name + ' ' * (spacing - len(name)) + preset_demo)
+        flags.append([preset.color_text(' ' * spacing, foreground=False),
+                      '&0' + preset.color_text(center_text(name, spacing), foreground=False),
+                      preset.color_text(' ' * spacing, foreground=False)])
+    flags_per_row = 3
+    while flags:
+        current = flags[:flags_per_row]
+        flags = flags[flags_per_row:]
+        for line in range(len(current[0])):
+            printc('  '.join(flag[line] for flag in current))
+        print()
 
     print()
     tmp = PRESETS['rainbow'].color_text('preset')
@@ -139,7 +146,7 @@ def run():
 
     # Reset config
     if args.config:
-        create_config()
+        config = create_config()
 
     # Param overwrite config
     if args.preset:
