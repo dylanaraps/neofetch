@@ -124,6 +124,7 @@ def create_config() -> Config:
 
 def run():
     parser = argparse.ArgumentParser(description='neofetch with flags <3')
+    parser.parse_args()
     # TODO: Param overwrite config
     config = check_config()
     run_neofetch(PRESETS.get(config.preset))

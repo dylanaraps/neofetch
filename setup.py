@@ -25,12 +25,13 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
-    packages=find_packages(exclude=("tests",)),
+    packages=['hyfetch'],
+    package_data={'hyfetch': ['hyfetch/*']},
     include_package_data=True,
     install_requires=['hypy_utils==1.0.5'],
     entry_points={
         "console_scripts": [
-            "hyfetch=hyfetch.hyfetch:main",
+            "hyfetch=hyfetch.main:run",
         ]
     },
 )
