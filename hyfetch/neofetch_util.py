@@ -27,7 +27,7 @@ def get_distro_ascii() -> str:
     return check_output([get_command_path(), "print_ascii"]).decode().strip()
 
 
-def run(preset: ColorProfile):
+def run_neofetch(preset: ColorProfile):
     # Get existing ascii
     asc = get_distro_ascii()
 

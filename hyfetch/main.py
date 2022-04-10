@@ -8,6 +8,7 @@ from typing import Literal, Iterable
 
 from hypy_utils import printc, json_stringify
 
+from .neofetch_util import run_neofetch
 from .presets import PRESETS
 
 
@@ -110,13 +111,19 @@ def create_config() -> Config:
     tmp = PRESETS['rainbow'].color_text('preset')
     preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow')
 
-    # Save and return
+    # Create config
     c = Config(preset, color_system)
-    c.save()
+
+    # Save config
+    save = literal_input(f'Save config?', ['y', 'n'], 'y')
+    if save == 'y':
+        c.save()
+
     return c
 
 
 def run():
     parser = argparse.ArgumentParser(description='neofetch with flags <3')
+    # TODO: Param overwrite config
     config = check_config()
-    # TODO: --setup command
+    run_neofetch(PRESETS.get(config.preset))
