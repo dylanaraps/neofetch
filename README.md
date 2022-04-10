@@ -1,7 +1,39 @@
 # HyFetch
 
+neofetch with pride flags <3
+
 ![image](https://user-images.githubusercontent.com/22280294/162614541-af2b4660-f1f7-4287-b978-1aa2266ac70f.png)
+
+## Installation
+
+Install Python >= 3.9 first. Then, just do:
+
+```sh
+pip install hyfetch
+```
+
+## Usage
+
+When you run `hyfetch` for the first time, it will prompt you to choose a color system and a preset. Just follow the prompt, and everything should work (hopefully). If something doesn't work, feel free to submit an issue!
+
+#### Q: How do I change my config?
+
+A: Use `hyfetch -c`
+
+#### Q: What do I do if the color is too dark/light for my theme?
+
+A: You can try setting the colors' "lightness" using the `--c-set-l` parameter. The value should be between 0 and 1. For example, if you are using dark theme and the rainbow flag is too dark to display, you can type:
+
+```sh
+hyfetch -p rainbow --c-set-l 0.8
+```
+
+Feel free to experiment with it!
+
 ![image](https://user-images.githubusercontent.com/22280294/162614553-eb758e4e-1936-472c-8ca7-b601c696c6eb.png)
+
+## More Screenshots
+
 ![image](https://user-images.githubusercontent.com/22280294/162614578-3b878abb-2a32-4427-997e-f90b3f5cfd7c.png)
 
 <h3 align="center"><img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px"></h3>
