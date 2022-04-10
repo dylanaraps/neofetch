@@ -4067,11 +4067,16 @@ print_ascii() {
     LC_ALL="$sys_locale"
 
     # Calculate size of ascii file in line length / line count.
-    while IFS=$'\n' read -r line; do
-        line=${line//\\\\/\\}
-        line=${line//█/ }
-        ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
-    done <<< "${ascii_data//\$\{??\}}"
+    if [ -n "$ascii_len" ] && [ -n "$ascii_lines" ]
+    then
+        lines=$ascii_lines
+    else
+        while IFS=$'\n' read -r line; do
+            line=${line//\\\\/\\}
+            line=${line//█/ }
+            ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
+        done <<< "${ascii_data//\$\{??\}}"
+    fi
 
     # Fallback if file not found.
     ((lines==1)) && {
@@ -11587,6 +11592,15 @@ main() {
     done
 
     return 0
+}
+
+get_print_ascii() {
+    cache_uname
+    get_os
+    get_distro
+    get_bold
+    get_distro_ascii
+    echo "$ascii_data"
 }
 
 main "$@"
