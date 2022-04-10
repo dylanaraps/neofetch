@@ -58,3 +58,81 @@ class ColorProfile:
             border_i += 1
 
         return self.with_weights(weights)
+
+
+PRESETS: dict[str, ColorProfile] = {
+    'rainbow': ColorProfile([
+        '#E50000',
+        '#FF8D00',
+        '#FFEE00',
+        '#028121',
+        '#004CFF',
+        '#770088'
+    ]),
+
+    'transgender': ColorProfile([
+        '#55CDFD',
+        '#F6AAB7',
+        '#FFFFFF',
+        '#F6AAB7',
+        '#55CDFD'
+    ]),
+    'nonbinary': ColorProfile([
+        '#FCF431',
+        '#FCFCFC',
+        '#9D59D2',
+        '#282828'
+    ]),
+    'agender': ColorProfile([
+        '#000000',
+        '#BABABA',
+        '#FFFFFF',
+        '#BAF484',
+        '#FFFFFF',
+        '#BABABA',
+        '#000000'
+    ]),
+    'queer': ColorProfile([
+        '#B57FDD',
+        '#FFFFFF',
+        '#49821E'
+    ]),
+    'genderfluid': ColorProfile([
+        '#FE76A2',
+        '#FFFFFF',
+        '#BF12D7',
+        '#000000',
+        '#303CBE'
+    ]),
+
+    'bisexual': ColorProfile([
+        '#D60270',
+        '#9B4F96',
+        '#0038A8'
+    ]),
+    'pansexual': ColorProfile([
+        '#FF1C8D',
+        '#FFD700',
+        '#1AB3FF'
+    ]),
+    'lesbian': ColorProfile([
+        '#D62800',
+        '#FF9B56',
+        '#FFFFFF',
+        '#D462A6',
+        '#A40062'
+    ]),
+    'asexual': ColorProfile([
+        '#000000',
+        '#A4A4A4',
+        '#FFFFFF',
+        '#810081'
+    ]),
+    'aromantic': ColorProfile([
+        '#3BA740',
+        '#A8D47A',
+        '#FFFFFF',
+        '#ABABAB',
+        '#000000'
+    ]),
+}
