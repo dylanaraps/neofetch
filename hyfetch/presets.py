@@ -54,7 +54,7 @@ class ColorProfile:
         while extras > 0:
             extras -= 2
             weights[border_i] += 1
-            weights[-border_i] += 1
+            weights[-(border_i + 1)] += 1
             border_i += 1
 
         return self.with_weights(weights)
