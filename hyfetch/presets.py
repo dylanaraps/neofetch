@@ -59,6 +59,17 @@ class ColorProfile:
 
         return self.with_weights(weights)
 
+    def color_text(self, txt: str, foreground: bool = True) -> str:
+        """
+        Color a text
+
+        :param txt: Text
+        :param foreground: Whether the foreground text show the color or the background block
+        :return: Colored text
+        """
+        colors = self.with_length(len(txt))
+        return ''.join([colors[i].to_ansi_rgb(foreground) + c for i, c in enumerate(txt)]) + '\033[0m'
+
 
 PRESETS: dict[str, ColorProfile] = {
     'rainbow': ColorProfile([
