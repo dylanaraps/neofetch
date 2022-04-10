@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Iterable
 
-from hypy_utils import printc, json_stringify
+from hypy_utils import printc, json_stringify, color
 
 from .neofetch_util import run_neofetch
 from .presets import PRESETS
@@ -123,8 +123,28 @@ def create_config() -> Config:
 
 
 def run():
-    parser = argparse.ArgumentParser(description='neofetch with flags <3')
-    parser.parse_args()
-    # TODO: Param overwrite config
+    # Create CLI
+    hyfetch = color('&b&lhy&f&lfetch&r')
+    parser = argparse.ArgumentParser(description=color(f'{hyfetch} - neofetch with flags <3'))
+
+    parser.add_argument('-c', '--config', action='store_true', help=color(f'Configure {hyfetch}'))
+    parser.add_argument('-p', '--preset', help=f'Use preset', choices=PRESETS.keys())
+    parser.add_argument('-m', '--mode', help=f'Color mode', choices=['ansi', '8bit', 'rgb'])
+
+    args = parser.parse_args()
+
+    # Load config
     config = check_config()
+
+    # Reset config
+    if args.config:
+        create_config()
+
+    # Param overwrite config
+    if args.preset:
+        config.preset = args.preset
+    if args.mode:
+        config.mode = args.mode
+
+    # Run
     run_neofetch(PRESETS.get(config.preset))
