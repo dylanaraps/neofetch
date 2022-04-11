@@ -53,6 +53,9 @@ Feel free to experiment with it!
 ## More Screenshots
 
 ![image](https://user-images.githubusercontent.com/22280294/162614578-3b878abb-2a32-4427-997e-f90b3f5cfd7c.png)
+![image](https://user-images.githubusercontent.com/22280294/162661621-f1c61338-7857-4d3f-9fe3-c6b635d68c38.png)
+
+## Original Readme from Neofetch Below
 
 <h3 align="center"><img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px"></h3>
 <p align="center">A command-line system information tool written in bash 3.2+</p>
