@@ -8,6 +8,7 @@ from typing import Literal, Iterable
 
 from hypy_utils import printc, json_stringify, color
 
+from .color_util import AnsiMode
 from .neofetch_util import run_neofetch
 from .presets import PRESETS, ColorProfile
 
@@ -18,7 +19,7 @@ CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
 @dataclass
 class Config:
     preset: str
-    mode: Literal['default', 'ansi', '8bit', 'rgb']
+    mode: AnsiMode
 
     def save(self):
         CONFIG_PATH.write_text(json_stringify(self), 'utf-8')
@@ -95,7 +96,7 @@ def create_config() -> Config:
     # Select color system
     # TODO: Demo of each color system
     color_system = literal_input('Which &acolor &bsystem &rdo you want to use?',
-                                 ['ansi', '8bit', 'rgb'], 'rgb')
+                                 ['8bit', 'rgb'], 'rgb')
 
     # Print preset
     print('Available presets:\n')
@@ -135,7 +136,7 @@ def run():
 
     parser.add_argument('-c', '--config', action='store_true', help=color(f'Configure {hyfetch}'))
     parser.add_argument('-p', '--preset', help=f'Use preset', choices=PRESETS.keys())
-    parser.add_argument('-m', '--mode', help=f'Color mode', choices=['ansi', '8bit', 'rgb'])
+    parser.add_argument('-m', '--mode', help=f'Color mode', choices=['8bit', 'rgb'])
     parser.add_argument('--c-scale', dest='scale', help=f'Lighten colors by a multiplier', type=float)
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
 
@@ -163,4 +164,4 @@ def run():
         preset = ColorProfile([c.set_light(args.light) for c in preset.colors])
 
     # Run
-    run_neofetch(preset)
+    run_neofetch(preset, config.mode)

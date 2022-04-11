@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 
 import pkg_resources
 
+from .color_util import AnsiMode
 from .presets import ColorProfile
 
 
@@ -27,7 +28,7 @@ def get_distro_ascii() -> str:
     return check_output([get_command_path(), "print_ascii"]).decode().strip()
 
 
-def run_neofetch(preset: ColorProfile):
+def run_neofetch(preset: ColorProfile, mode: AnsiMode):
     # Get existing ascii
     asc = get_distro_ascii()
 
@@ -37,7 +38,7 @@ def run_neofetch(preset: ColorProfile):
     # Add new colors
     lines = asc.split('\n')
     colors = preset.with_length(len(lines))
-    asc = '\n'.join([colors[i].to_ansi_rgb() + l for i, l in enumerate(lines)])
+    asc = '\n'.join([colors[i].to_ansi(mode) + l for i, l in enumerate(lines)])
 
     # Write temp file
     with TemporaryDirectory() as tmp_dir:

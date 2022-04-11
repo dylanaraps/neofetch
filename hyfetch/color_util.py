@@ -1,5 +1,7 @@
 import colorsys
-from typing import NamedTuple
+from typing import NamedTuple, Literal
+
+AnsiMode = Literal['default', 'ansi', '8bit', 'rgb']
 
 
 def redistribute_rgb(r: int, g: int, b: int) -> tuple[int, int, int]:
@@ -69,32 +71,41 @@ class RGB(NamedTuple):
 
         :return: ANSI 256 escape code like \033[38;5;206m'
         """
-        r, g, b = self
+        r, g, b = self.r, self.g, self.b
 
+        gray_possible = True
         gray = False
         sep = 42.5
 
-        while True:
+        while gray_possible:
             if r < sep or g < sep or b < sep:
                 gray = r < sep and g < sep and b < sep
-                break
+                gray_possible = False
             sep += 42.5
 
         if gray:
             color = 232 + (r + g + b) / 33
         else:
-            color = 16 + (r / 256 * 6) * 36 + (g / 256 * 6) * 6 + (b / 256 * 6)
+            color = 16 + int(r / 256. * 6) * 36 + int(g / 256. * 6) * 6 + int(b / 256. * 6)
 
         c = '38' if foreground else '48'
         return f'\033[{c};5;{int(color)}m'
 
-    def to_ansi_16(self) -> str:
+    def to_ansi_16(self, foreground: bool = True) -> str:
         """
         Convert RGB to ANSI 16 Color Escape Code
 
         :return: ANSI 16 escape code
         """
         raise NotImplementedError()
+
+    def to_ansi(self, mode: AnsiMode, foreground: bool = True):
+        if mode == 'rgb':
+            return self.to_ansi_rgb(foreground)
+        if mode == '8bit':
+            return self.to_ansi_8bit(foreground)
+        if mode == 'ansi':
+            return self.to_ansi_16(foreground)
 
     def lighten(self, multiplier: float) -> 'RGB':
         """

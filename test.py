@@ -1,4 +1,7 @@
+from hypy_utils import printc
+
 from hyfetch.color_util import RGB
+from hyfetch.neofetch_util import get_command_path, run_neofetch
 from hyfetch.presets import PRESETS
 
 
@@ -6,10 +9,32 @@ def print_colors_test(colors: list[RGB]):
     print(''.join(f'{c.to_ansi_rgb()}#' for c in colors))
 
 
-if __name__ == '__main__':
+def test_preset_length():
     p = PRESETS.get('transgender')
     print_colors_test(p.with_length(9))
     print_colors_test(p.with_length(6))
     p = PRESETS.get('nonbinary')
     print_colors_test(p.with_length(7))
     print_colors_test(p.with_length(6))
+
+
+def test_command_path():
+    print(get_command_path())
+
+
+def test_rgb_8bit_conversion():
+    for r in range(0, 255, 16):
+        for g in range(0, 255, 16):
+            print(RGB(r, g, 0).to_ansi_rgb(False), end=' ')
+        printc('&r')
+    print()
+    for r in range(0, 255, 16):
+        for g in range(0, 255, 16):
+            print(RGB(r, g, 0).to_ansi_8bit(False), end=' ')
+        printc('&r')
+    print()
+
+
+
+if __name__ == '__main__':
+    test_rgb_8bit_conversion()
