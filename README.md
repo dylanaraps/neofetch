@@ -6,7 +6,7 @@ neofetch with pride flags <3
 
 ## Installation
 
-Install Python >= 3.9 first. Then, just do:
+Install Python >= 3.7 first. Then, just do:
 
 ```sh
 pip install hyfetch
@@ -31,6 +31,20 @@ hyfetch -p rainbow --c-set-l 0.8
 Feel free to experiment with it!
 
 ![image](https://user-images.githubusercontent.com/22280294/162614553-eb758e4e-1936-472c-8ca7-b601c696c6eb.png)
+
+## Change Log
+
+### 1.0.2
+
+* Implement RGB to 8bit conversion
+* Add support for Python 3.7 and 3.8
+
+### 1.0.1
+
+* Included 11 flag presets
+* Ability to lighten colors with `--c-set-l <lightness>`
+* Command-line flag chooser
+* Supports Python >= 3.9
 
 ## More Screenshots
 
