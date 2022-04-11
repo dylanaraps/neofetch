@@ -34,6 +34,10 @@ Feel free to experiment with it!
 
 ## Change Log
 
+### 1.0.3
+
+* Fix missing dependency for setuptools
+
 ### 1.0.2
 
 * Implement RGB to 8bit conversion
