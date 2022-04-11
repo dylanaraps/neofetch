@@ -81,7 +81,6 @@ class ColorProfile:
         result += '\033[0m'
         return result
 
-_C = ColorProfile # for convenience, must remove
 PRESETS: dict[str, ColorProfile] = {
     'rainbow': ColorProfile([
         '#E50000',
@@ -160,19 +159,19 @@ PRESETS: dict[str, ColorProfile] = {
     # below sourced from https://www.flagcolorcodes.com/flags/pride
     # goto f"https://www.flagcolorcodes.com/{preset}" for info
     # todo: sane sorting
-    'autosexual': _C([
+    'autosexual': ColorProfile([
         '#99D9EA',
         '#7F7F7F'
     ]),
-    'intergender': _C([
-        # todo: implement weighted spacing
+    'intergender': ColorProfile([
+        # todo: use weighted spacing
         '#900DC2',
         '#900DC2',
         '#FFE54F',
         '#900DC2',
         '#900DC2',
     ]),
-    'greygender': _C([
+    'greygender': ColorProfile([
         '#B3B3B3',
         '#B3B3B3',
         '#FFFFFF',
@@ -182,14 +181,14 @@ PRESETS: dict[str, ColorProfile] = {
         '#535353',
         '#535353',
     ]),
-    'akiosexual': _C([
+    'akiosexual': ColorProfile([
         '#F9485E',
         '#FEA06A',
         '#FEF44C',
         '#FFFFFF',
         '#000000',
     ]),
-    'transmasculine': _C([
+    'transmasculine': ColorProfile([
         '#FF8ABD',
         '#CDF5FE',
         '#9AEBFF',
@@ -198,7 +197,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#CDF5FE',
         '#FF8ABD',
     ]),
-    'demifaun': _C([
+    'demifaun': ColorProfile([
         '#7F7F7F',
         '#7F7F7F',
         '#C6C6C6',
@@ -213,26 +212,26 @@ PRESETS: dict[str, ColorProfile] = {
         '#7F7F7F',
         '#7F7F7F',
     ]),
-    'neutrois': _C([
+    'neutrois': ColorProfile([
         '#FFFFFF',
         '#1F9F00',
         '#000000'
     ]),
-    'biromantic alt 2': _C([
+    'biromantic alt 2': ColorProfile([
         '#8869A5',
         '#D8A7D8',
         '#FFFFFF',
         '#FDB18D',
         '#151638',
     ]),
-    'biromantic alt 2': _C([
+    'biromantic alt 2': ColorProfile([
         '#740194',
         '#AEB1AA',
         '#FFFFFF',
         '#AEB1AA',
         '#740194',
     ]),
-    'autoromantic': _C([ # symbol interpreted
+    'autoromantic': ColorProfile([ # symbol interpreted
         '#99D9EA',
         '#99D9EA',
         '#99D9EA',
@@ -249,7 +248,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#7F7F7F',
     ]),
     # i didn't expect this one to work. cool!
-    'boyflux alt 2': _C([
+    'boyflux alt 2': ColorProfile([
         '#E48AE4',
         '#9A81B4',
         '#55BFAB',
