@@ -61,15 +61,32 @@ class RGB(NamedTuple):
         c = '38' if foreground else '48'
         return f'\033[{c};2;{self.r};{self.g};{self.b}m'
 
-    def to_ansi_256(self, foreground: bool = True) -> str:
+    def to_ansi_8bit(self, foreground: bool = True) -> str:
         """
-        Convert RGB to ANSI 256 Color Escape Code.
+        Convert RGB to ANSI 8bit 256 Color Escape Code.
 
         This encoding supports 256 colors in total.
 
         :return: ANSI 256 escape code like \033[38;5;206m'
         """
-        raise NotImplementedError()
+        r, g, b = self
+
+        gray = False
+        sep = 42.5
+
+        while True:
+            if r < sep or g < sep or b < sep:
+                gray = r < sep and g < sep and b < sep
+                break
+            sep += 42.5
+
+        if gray:
+            color = 232 + (r + g + b) / 33
+        else:
+            color = 16 + (r / 256 * 6) * 36 + (g / 256 * 6) * 6 + (b / 256 * 6)
+
+        c = '38' if foreground else '48'
+        return f'\033[{c};5;{int(color)}m'
 
     def to_ansi_16(self) -> str:
         """
