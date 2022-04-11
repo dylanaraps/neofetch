@@ -72,15 +72,12 @@ class RGB(NamedTuple):
         :return: ANSI 256 escape code like \033[38;5;206m'
         """
         r, g, b = self.r, self.g, self.b
-
-        gray_possible = True
-        gray = False
         sep = 42.5
 
-        while gray_possible:
+        while True:
             if r < sep or g < sep or b < sep:
                 gray = r < sep and g < sep and b < sep
-                gray_possible = False
+                break
             sep += 42.5
 
         if gray:
