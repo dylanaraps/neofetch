@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Literal, Optional
+from typing_extensions import Literal
 
 from .color_util import RGB
 

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 
 import argparse
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, Iterable
+from typing import Iterable
 
 from hypy_utils import printc, json_stringify, color
 
