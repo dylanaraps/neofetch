@@ -81,7 +81,6 @@ class ColorProfile:
         result += '\033[0m'
         return result
 
-
 PRESETS: dict[str, ColorProfile] = {
     'rainbow': ColorProfile([
         '#E50000',
@@ -157,4 +156,130 @@ PRESETS: dict[str, ColorProfile] = {
         '#ABABAB',
         '#000000'
     ]),
+    # below sourced from https://www.flagcolorcodes.com/flags/pride
+    # goto f"https://www.flagcolorcodes.com/{preset}" for info
+    # todo: sane sorting
+    'autosexual': ColorProfile([
+        '#99D9EA',
+        '#7F7F7F'
+    ]),
+    'intergender': ColorProfile([
+        # todo: use weighted spacing
+        '#900DC2',
+        '#900DC2',
+        '#FFE54F',
+        '#900DC2',
+        '#900DC2',
+    ]),
+    'greygender': ColorProfile([
+        '#B3B3B3',
+        '#B3B3B3',
+        '#FFFFFF',
+        '#062383',
+        '#062383',
+        '#FFFFFF',
+        '#535353',
+        '#535353',
+    ]),
+    'akiosexual': ColorProfile([
+        '#F9485E',
+        '#FEA06A',
+        '#FEF44C',
+        '#FFFFFF',
+        '#000000',
+    ]),
+    'transmasculine': ColorProfile([
+        '#FF8ABD',
+        '#CDF5FE',
+        '#9AEBFF',
+        '#74DFFF',
+        '#9AEBFF',
+        '#CDF5FE',
+        '#FF8ABD',
+    ]),
+    'demifaun': ColorProfile([
+        '#7F7F7F',
+        '#7F7F7F',
+        '#C6C6C6',
+        '#C6C6C6',
+        '#FCC688',
+        '#FFF19C',
+        '#FFFFFF',
+        '#8DE0D5',
+        '#9682EC',
+        '#C6C6C6',
+        '#C6C6C6',
+        '#7F7F7F',
+        '#7F7F7F',
+    ]),
+    'neutrois': ColorProfile([
+        '#FFFFFF',
+        '#1F9F00',
+        '#000000'
+    ]),
+    'biromantic alt 2': ColorProfile([
+        '#8869A5',
+        '#D8A7D8',
+        '#FFFFFF',
+        '#FDB18D',
+        '#151638',
+    ]),
+    'biromantic alt 2': ColorProfile([
+        '#740194',
+        '#AEB1AA',
+        '#FFFFFF',
+        '#AEB1AA',
+        '#740194',
+    ]),
+    'autoromantic': ColorProfile([ # symbol interpreted
+        '#99D9EA',
+        '#99D9EA',
+        '#99D9EA',
+        '#99D9EA',
+        '#99D9EA',
+        '#000000',
+        '#3DA542',
+        '#3DA542',
+        '#000000',
+        '#7F7F7F',
+        '#7F7F7F',
+        '#7F7F7F',
+        '#7F7F7F',
+        '#7F7F7F',
+    ]),
+    # i didn't expect this one to work. cool!
+    'boyflux alt 2': ColorProfile([
+        '#E48AE4',
+        '#9A81B4',
+        '#55BFAB',
+        '#FFFFFF',
+        '#A8A8A8',
+        '#81D5EF',
+        '#81D5EF',
+        '#81D5EF',
+        '#81D5EF',
+        '#81D5EF',
+        '#69ABE5',
+        '#69ABE5',
+        '#69ABE5',
+        '#69ABE5',
+        '#69ABE5',
+        '#69ABE5',
+        '#69ABE5',
+        '#69ABE5',
+        '#69ABE5',
+        '#69ABE5',
+        '#5276D4',
+        '#5276D4',
+        '#5276D4',
+        '#5276D4',
+        '#5276D4',
+        '#5276D4',
+        '#5276D4',
+        '#5276D4',
+        '#5276D4',
+        '#5276D4',
+    ]),
+
+
 }
