@@ -39,6 +39,10 @@ Feel free to experiment with it!
 * [ ] Add interactive configurator for adjusting brightness
 * [ ] Add configuration to emphasize certain parts of the original ASCII art (to make icons like Fedora and Ubuntu look nicer)
 
+### 1.0.4
+
+* Add more flags (#1)
+
 ### 1.0.3
 
 * Fix missing dependency for setuptools
