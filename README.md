@@ -41,7 +41,7 @@ Feel free to experiment with it!
 
 ### 1.0.4
 
-* Add more flags (#1)
+* Add more flags ([PR #1](https://github.com/hykilpikonna/hyfetch/pull/1))
 
 ### 1.0.3
 
