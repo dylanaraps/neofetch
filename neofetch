@@ -784,7 +784,7 @@ image_source="auto"
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
-#       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
+#       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, CenterOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
@@ -6631,6 +6631,24 @@ ${c2}              <><><><>
                  ''
 EOF
         ;;
+
+        "Center"*)
+            read -rd '' ascii_data <<'EOF'
+${c2}                           .
+                    o,
+            .       d,       .
+            ';'   ..d;..  .cl'
+              .:; 'oldO,.oo.
+              ..,:,xKXxoo;'.
+        ,;;;;;ldxkONMMMXxkxc;;;;;.
+        .....':oddXWMNOxlcl:......
+               .:dlxk0c;:. .
+              :d:.,xcld,.,:.
+            ;l,    .l;     ';'
+                   .o;
+                    l,
+EOF
+                ;;
 
         "Chakra"*)
             set_colors 4 5 7 6
