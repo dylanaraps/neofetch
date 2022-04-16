@@ -6,11 +6,20 @@ neofetch with pride flags <3
 
 ## Installation
 
+### Method 1: Install using Python pip (Recommended)
+
 Install Python >= 3.7 first. Then, just do:
 
 ```sh
 pip install hyfetch
 ```
+
+### Method 2: Install using system package manager
+
+Currently, these distributions have existing packages for HyFetch:
+
+* ArchLinux: `yay -S hyfetch` (Thanks to @ Aleksana)
+* Guix: [In progress](https://issues.guix.gnu.org/54847#8-lineno27)
 
 ## Usage
 
