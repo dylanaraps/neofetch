@@ -13,8 +13,7 @@ from .presets import PRESETS, ColorProfile
 from .serializer import json_stringify
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
-CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
-VERSION = '1.0.6'
+VERSION = '1.0.7'
 
 
 @dataclass
@@ -23,6 +22,7 @@ class Config:
     mode: AnsiMode
 
     def save(self):
+        CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
         CONFIG_PATH.write_text(json_stringify(self), 'utf-8')
 
 

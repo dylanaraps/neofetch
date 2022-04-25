@@ -48,6 +48,10 @@ Feel free to experiment with it!
 * [ ] Add interactive configurator for adjusting brightness
 * [ ] Add configuration to emphasize certain parts of the original ASCII art (to make icons like Fedora and Ubuntu look nicer)
 
+### 1.0.7
+
+* Fix: Make config path not on init but when it's actually needed.
+
 ### 1.0.6
 
 * Remove `hypy_utils` dependency to make packaging easier.
