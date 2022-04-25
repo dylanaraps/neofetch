@@ -48,6 +48,10 @@ Feel free to experiment with it!
 * [ ] Add interactive configurator for adjusting brightness
 * [ ] Add configuration to emphasize certain parts of the original ASCII art (to make icons like Fedora and Ubuntu look nicer)
 
+### 1.0.5
+
+* Fix terminal emulator detection ([PR #2](https://github.com/hykilpikonna/hyfetch/pull/2))
+
 ### 1.0.4
 
 * Add more flags ([PR #1](https://github.com/hykilpikonna/hyfetch/pull/1))
