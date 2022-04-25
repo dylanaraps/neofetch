@@ -1,6 +1,4 @@
-from hypy_utils import printc
-
-from hyfetch.color_util import RGB
+from hyfetch.color_util import RGB, printc
 from hyfetch.neofetch_util import get_command_path, run_neofetch
 from hyfetch.presets import PRESETS
 
@@ -33,7 +31,6 @@ def test_rgb_8bit_conversion():
             print(RGB(r, g, 0).to_ansi_8bit(False), end=' ')
         printc('&r')
     print()
-
 
 
 if __name__ == '__main__':

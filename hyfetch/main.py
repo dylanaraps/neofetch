@@ -7,14 +7,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-from hypy_utils import printc, json_stringify, color
-
-from .color_util import AnsiMode
+from .color_util import AnsiMode, printc, color
 from .neofetch_util import run_neofetch
 from .presets import PRESETS, ColorProfile
+from .serializer import json_stringify
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
 CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
+VERSION = '1.0.6'
 
 
 @dataclass
@@ -140,8 +140,13 @@ def run():
     parser.add_argument('-m', '--mode', help=f'Color mode', choices=['8bit', 'rgb'])
     parser.add_argument('--c-scale', dest='scale', help=f'Lighten colors by a multiplier', type=float)
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
+    parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
 
     args = parser.parse_args()
+
+    if args.version:
+        print(f'Version is {VERSION}')
+        return
 
     # Load config
     config = check_config()
