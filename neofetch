@@ -1777,7 +1777,7 @@ get_de() {
 
         Windows)
             case $distro in
-                *"Windows 10"*)
+                *"Windows 1"*)
                     de=Fluent
                 ;;
 
