@@ -3315,7 +3315,7 @@ get_term() {
         name="$(get_process_name "$parent")"
 
         case ${name// } in
-            "${SHELL/*\/}"|*"sh"|"screen"|"su"*|"newgrp") ;;
+            "${SHELL/*\/}"|*"sh"|"screen"|"su"*|"newgrp"|"hyfetch") ;;
 
             "login"*|*"Login"*|"init"|"(init)")
                 term="$(tty)"
