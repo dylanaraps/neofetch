@@ -22,6 +22,8 @@ Currently, these distributions have existing packages for HyFetch:
 * NixOS: `nix-env -i hyfetch` ([In Progress](https://github.com/NixOS/nixpkgs/pull/170309))
 * Guix: [In progress](https://issues.guix.gnu.org/54847#8-lineno27)
 
+Currently, if you're using NixOS, you can use HyFetch with `nix-shell -p python38Packages.pip --run "pip install hyfetch -qqq; hyfetch"`
+
 ## Usage
 
 When you run `hyfetch` for the first time, it will prompt you to choose a color system and a preset. Just follow the prompt, and everything should work (hopefully). If something doesn't work, feel free to submit an issue!
