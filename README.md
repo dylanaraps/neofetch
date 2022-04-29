@@ -22,7 +22,7 @@ Currently, these distributions have existing packages for HyFetch:
 * NixOS: `nix-env -i hyfetch` ([In Progress](https://github.com/NixOS/nixpkgs/pull/170309))
 * Guix: [In progress](https://issues.guix.gnu.org/54847#8-lineno27)
 
-Currently, if you're using NixOS, you can use HyFetch with `nix-shell -p python38Packages.pip --run "pip install hyfetch -qqq; hyfetch"`
+Currently, if you're using NixOS, you can use HyFetch with `nix-env -if https://github.com/hykilpikonna/hyfetch/tarball/master -A hyfetch`
 
 ## Usage
 
