@@ -1008,14 +1008,6 @@ get_distro() {
                         distro="Proxmox VE ${distro%/*}"
                 esac
 
-            elif type -p lsb_release >/dev/null; then
-                case $distro_shorthand in
-                    on)   lsb_flags=-si ;;
-                    tiny) lsb_flags=-si ;;
-                    *)    lsb_flags=-sd ;;
-                esac
-                distro=$(lsb_release "$lsb_flags")
-
             elif [[ -f /etc/os-release || \
                     -f /usr/lib/os-release || \
                     -f /etc/openwrt_release || \
@@ -1024,15 +1016,25 @@ get_distro() {
                 # Source the os-release file
                 for file in /etc/lsb-release /usr/lib/os-release \
                             /etc/os-release  /etc/openwrt_release; do
-                    source "$file" && break
+                    source "$file"
                 done
 
                 # Format the distro name.
                 case $distro_shorthand in
                     on)   distro="${NAME:-${DISTRIB_ID}} ${VERSION_ID:-${DISTRIB_RELEASE}}" ;;
                     tiny) distro="${NAME:-${DISTRIB_ID:-${TAILS_PRODUCT_NAME}}}" ;;
-                    off)  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} ${UBUNTU_CODENAME}" ;;
+                    off)  distro="${PRETTY_NAME:-${DISTRIB_DESCRIPTION}} (${UBUNTU_CODENAME})" ;;
                 esac
+
+            elif type -p lsb_release >/dev/null; then
+                case $distro_shorthand in
+                    on)   lsb_flags=-si ;;
+                    tiny) lsb_flags=-si ;;
+                    *)    lsb_flags=-sd ;;
+                esac
+                distro=$(lsb_release "$lsb_flags")
+
+
 
             elif [[ -f /etc/GoboLinuxVersion ]]; then
                 case $distro_shorthand in
