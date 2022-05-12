@@ -20,7 +20,7 @@ Currently, these distributions have existing packages for HyFetch:
 
 * ArchLinux: `yay -S hyfetch` (Thanks to @ Aleksana)
 * NixOS: `nix-env -i hyfetch` ([In Progress](https://github.com/NixOS/nixpkgs/pull/170309))
-* Guix: [In progress](https://issues.guix.gnu.org/54847#8-lineno27)
+* Guix: `guix install hyfetch` (Thanks to @ WammKD)
 
 Currently, if you're using NixOS, you can use HyFetch with `nix-env -if https://github.com/hykilpikonna/hyfetch/tarball/master -A hyfetch`
 
