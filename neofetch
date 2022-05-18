@@ -783,7 +783,7 @@ image_source="auto"
 # NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
-#       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
+#       Artix, Arya, Bedrock, BigLinux, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
@@ -5142,7 +5142,7 @@ ASCII:
                                 NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
                                 instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
-                                XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
+                                XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, BigLinux, Bitrig,
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
@@ -6273,6 +6273,31 @@ ${c1}--------------------------------------
 EOF
         ;;
 
+        "BigLinux"*)
+            set_colors 6 11 4
+            read -rd '' ascii_data <<'EOF'        
+${c1}                                 ...
+                              :OWMMMNd.
+                            :NMMMMMMMMWc
+                  okkl.    kMMMMMW0xdOWMl
+  :             xMMMMMW.  kMMMMNc      lW.
+ :x             NMMMMMO  ,MMMM0.        'l
+ Xx              "lkk"   kMMMX      .okx,
+${c2}.MX      .cc;.    .xXKx. KMMM:    .OMMMMMl
+:MM'   'KMMMMWK:  0MMMMk xMMM.   lWMMMMMMM'
+cMMN:;xMMMMk::MMO oMMMMX .XMM. .KMMMWOOMMMd
+'MMMMMMMMN,   NMMx OMMMMl .kM0OMMMMk.  ;MMd
+ xMMMMMMd    .MMMW  :NMMMd  .ckKKx'     KMc
+  dWMNd.     oMMMN    lkNMX,            oM.
+ ;.         ;MMMMx      "MM:.           cO
+${c3} .X.       oMMMMW.                      l.
+  dMk:..;xWMMMMW,
+   kMMMMMMMMMMX.
+    :XMMMMMMK:
+      ':MM:"      Made in Brazil
+EOF
+        ;;
+        
         "Bitrig"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
