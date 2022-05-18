@@ -1677,8 +1677,12 @@ get_packages() {
             has scoop && pkgs_h=1 dir ~/scoop/apps/* && ((packages-=1))
 
             # Count chocolatey packages.
-            [[ -d /cygdrive/c/ProgramData/chocolatey/lib ]] && \
-                dir /cygdrive/c/ProgramData/chocolatey/lib/*
+            # [[ -d /c/ProgramData/chocolatey/lib ]] && \
+            #     dir /c/ProgramData/chocolatey/lib/*
+            has choco && tot choco list --localonly
+
+            # Count winget
+            has winget && tot winget list
         ;;
 
         Haiku)
