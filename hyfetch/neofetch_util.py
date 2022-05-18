@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import os
+import platform
 import re
+import subprocess
 from pathlib import Path
 from subprocess import check_output
 from tempfile import TemporaryDirectory
@@ -51,4 +53,17 @@ def run_neofetch(preset: ColorProfile, mode: AnsiMode):
         # Call neofetch with the temp file
         os.environ['ascii_len'] = str(max(len(l) for l in lines))
         os.environ['ascii_lines'] = str(len(lines))
-        os.system(get_command_path() + f' --ascii --source {path.absolute()} --ascii-colors')
+
+        if platform.system() != 'Windows':
+            os.system(f'{get_command_path()} --ascii --source {path.absolute()} --ascii-colors"')
+
+        if platform.system() == 'Windows':
+            cmd = get_command_path().replace("\\", "/").replace("C:/", "/c/")
+            path_str = str(path.absolute()).replace('\\', '/').replace('C:/', '/c/')
+
+            cmd = f'ascii_len={max(len(l) for l in lines)} ascii_lines={len(lines)} ' \
+                  f'{cmd} --ascii --source {path_str} --ascii-colors'
+            full_cmd = ['C:\\Program Files\\Git\\bin\\bash.exe', '-c', cmd]
+            # print(full_cmd)
+
+            subprocess.run(full_cmd)
