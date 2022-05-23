@@ -3443,6 +3443,8 @@ END
             term_font="from kitty.cli import *; o = create_default_opts(); \
                        print(f'{o.font_family} {o.font_size}')"
             term_font="$(kitty +runpy ''"$term_font"'')"
+            term_font="${term_font//=}"
+            term_font="${term_font//\'}"
         ;;
 
         "konsole" | "yakuake")
