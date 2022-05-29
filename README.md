@@ -1,4 +1,4 @@
-<h3 align="center"><img src="[https://media.discordapp.net/attachments/940740865129865219/980312819541106688/ZQI2EYz.png?width=1440&height=342](https://media.discordapp.net/attachments/940740865129865219/980314867561021530/ZQI2EYz.png?width=1440&height=342)" alt="logo" height="100px"></h3>
+<h3 align="center"><img src="https://media.discordapp.net/attachments/940740865129865219/980314867561021530/ZQI2EYz.png?width=1440&height=342" alt="logo" height="100px"></h3>
 <p align="center">A command-line system information tool written in bash 3.2+</p>
 
 <p align="center">
