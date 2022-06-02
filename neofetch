@@ -11058,7 +11058,7 @@ EOF
             set_colors 1
             read -rd '' ascii_data <<'EOF'
 ${c1}                          ..
-            ..,:clll,  'cooooc'
+            ..,:clll:  'cooooc'
          .;looooooo;  cooooooooc
        ,looool:,'..  .oooooooooo.
      'loool;.         ;oooooooo;
@@ -11068,8 +11068,8 @@ ${c1}                          ..
 cooooooooo.                     :ooo:
 cooooooooo.                     ,oooc
 .oooooooc.                      :ooo:
- '.;lo;.'                       'oooo'
-    ..,;:                      .looo:
+ '.;lo;.'                      'oooo'
+    ..,;:                     .looo:
     'ooool.           .:lool;. .co:
      .cooooc'.      .coooooooo,  '
        .:ooooolc;,. 'oooooooool
