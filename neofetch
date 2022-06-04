@@ -11017,14 +11017,19 @@ EOF
         ;;
 
         "ubuntu_small")
-            set_colors 1 7 3
+            set_colors 1
             read -rd '' ascii_data <<'EOF'
-${c1}         _
-     ---(_)
- _/  ---  \\
-(_) |   |
-  \\  --- _/
-     ---(_)
+${c1}       ..;,; .,;,.
+    .,lool: .ooooo,
+   ;oo;:    .coool.
+ ....         ''' ,l;
+:oooo,            'oo.
+looooc            :oo'
+ '::'             ,oo:
+   ,.,       .... co,
+    lo:;.   :oooo; .
+     ':ooo; cooooc
+        '''  ''''
 EOF
         ;;
 
@@ -11054,7 +11059,7 @@ oss${c2}yNMMMNyMMh${c1}sssssssssssssshmmmh${c1}ssssssso
 EOF
         ;;
         
-         "Ubuntu"* | "Ubuntu"*)
+         "Ubuntu"*)
             set_colors 1
             read -rd '' ascii_data <<'EOF'
 ${c1}                             ....
