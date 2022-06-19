@@ -1,3 +1,4 @@
+from hyfetch.color_scale import test_color_scale
 from hyfetch.color_util import RGB, printc
 from hyfetch.neofetch_util import get_command_path, run_neofetch
 from hyfetch.presets import PRESETS
@@ -35,3 +36,4 @@ def test_rgb_8bit_conversion():
 
 if __name__ == '__main__':
     test_rgb_8bit_conversion()
+    test_color_scale()

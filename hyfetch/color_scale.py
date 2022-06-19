@@ -62,7 +62,7 @@ class Scale:
         return RGB(*get_raw(self.rgb, ratio))
 
 
-if __name__ == '__main__':
+def test_color_scale():
     scale = Scale(['#232323', '#4F1879', '#B43A78', '#F98766', '#FCFAC0'])
 
     colors = 100
