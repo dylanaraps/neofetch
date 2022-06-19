@@ -11607,4 +11607,11 @@ get_print_ascii() {
     echo "$ascii_data"
 }
 
+get_print_custom_ascii() {
+    distro="$CUSTOM_DISTRO"
+    ascii_distro=$distro
+    get_distro_ascii
+    echo "$ascii_data"
+}
+
 main "$@"

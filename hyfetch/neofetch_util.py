@@ -32,10 +32,17 @@ def get_distro_ascii() -> str:
     return check_output([get_command_path(), "print_ascii"]).decode().strip()
 
 
-def run_neofetch(preset: ColorProfile, mode: AnsiMode):
-    # Get existing ascii
-    asc = get_distro_ascii()
+def get_custom_distro_ascii(distro: str) -> str:
+    """
+    Get the distro ascii of a specific distro
 
+    :return: Distro ascii
+    """
+    os.environ['CUSTOM_DISTRO'] = distro
+    return check_output([get_command_path(), "print_custom_ascii"]).decode().strip()
+
+
+def replace_colors(asc: str, preset: ColorProfile, mode: AnsiMode):
     # Remove existing colors
     asc = re.sub('\\${.*?}', '', asc)
 
@@ -43,6 +50,12 @@ def run_neofetch(preset: ColorProfile, mode: AnsiMode):
     lines = asc.split('\n')
     colors = preset.with_length(len(lines))
     asc = '\n'.join([colors[i].to_ansi(mode) + l for i, l in enumerate(lines)])
+
+    return asc, lines
+
+
+def run_neofetch(preset: ColorProfile, mode: AnsiMode):
+    asc, lines = replace_colors(get_distro_ascii(), preset, mode)
 
     # Write temp file
     with TemporaryDirectory() as tmp_dir:
