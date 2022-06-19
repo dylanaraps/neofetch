@@ -81,6 +81,7 @@ class ColorProfile:
         result += '\033[0m'
         return result
 
+
 PRESETS: dict[str, ColorProfile] = {
     'rainbow': ColorProfile([
         '#E50000',
@@ -98,12 +99,14 @@ PRESETS: dict[str, ColorProfile] = {
         '#F6AAB7',
         '#55CDFD'
     ]),
+
     'nonbinary': ColorProfile([
         '#FCF431',
         '#FCFCFC',
         '#9D59D2',
         '#282828'
     ]),
+
     'agender': ColorProfile([
         '#000000',
         '#BABABA',
@@ -113,11 +116,13 @@ PRESETS: dict[str, ColorProfile] = {
         '#BABABA',
         '#000000'
     ]),
+
     'queer': ColorProfile([
         '#B57FDD',
         '#FFFFFF',
         '#49821E'
     ]),
+
     'genderfluid': ColorProfile([
         '#FE76A2',
         '#FFFFFF',
@@ -131,11 +136,13 @@ PRESETS: dict[str, ColorProfile] = {
         '#9B4F96',
         '#0038A8'
     ]),
+
     'pansexual': ColorProfile([
         '#FF1C8D',
         '#FFD700',
         '#1AB3FF'
     ]),
+
     'lesbian': ColorProfile([
         '#D62800',
         '#FF9B56',
@@ -143,12 +150,14 @@ PRESETS: dict[str, ColorProfile] = {
         '#D462A6',
         '#A40062'
     ]),
+
     'asexual': ColorProfile([
         '#000000',
         '#A4A4A4',
         '#FFFFFF',
         '#810081'
     ]),
+
     'aromantic': ColorProfile([
         '#3BA740',
         '#A8D47A',
@@ -156,6 +165,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#ABABAB',
         '#000000'
     ]),
+
     # below sourced from https://www.flagcolorcodes.com/flags/pride
     # goto f"https://www.flagcolorcodes.com/{preset}" for info
     # todo: sane sorting
@@ -163,6 +173,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#99D9EA',
         '#7F7F7F'
     ]),
+
     'intergender': ColorProfile([
         # todo: use weighted spacing
         '#900DC2',
@@ -171,6 +182,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#900DC2',
         '#900DC2',
     ]),
+
     'greygender': ColorProfile([
         '#B3B3B3',
         '#B3B3B3',
@@ -181,6 +193,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#535353',
         '#535353',
     ]),
+
     'akiosexual': ColorProfile([
         '#F9485E',
         '#FEA06A',
@@ -188,6 +201,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#FFFFFF',
         '#000000',
     ]),
+
     'transmasculine': ColorProfile([
         '#FF8ABD',
         '#CDF5FE',
@@ -197,6 +211,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#CDF5FE',
         '#FF8ABD',
     ]),
+
     'demifaun': ColorProfile([
         '#7F7F7F',
         '#7F7F7F',
@@ -212,25 +227,29 @@ PRESETS: dict[str, ColorProfile] = {
         '#7F7F7F',
         '#7F7F7F',
     ]),
+
     'neutrois': ColorProfile([
         '#FFFFFF',
         '#1F9F00',
         '#000000'
     ]),
-    'biromantic alt 2': ColorProfile([
+
+    'biromantic1': ColorProfile([
         '#8869A5',
         '#D8A7D8',
         '#FFFFFF',
         '#FDB18D',
         '#151638',
     ]),
-    'biromantic alt 2': ColorProfile([
+
+    'biromantic2': ColorProfile([
         '#740194',
         '#AEB1AA',
         '#FFFFFF',
         '#AEB1AA',
         '#740194',
     ]),
+
     'autoromantic': ColorProfile([ # symbol interpreted
         '#99D9EA',
         '#99D9EA',
@@ -247,8 +266,9 @@ PRESETS: dict[str, ColorProfile] = {
         '#7F7F7F',
         '#7F7F7F',
     ]),
+
     # i didn't expect this one to work. cool!
-    'boyflux alt 2': ColorProfile([
+    'boyflux2': ColorProfile([
         '#E48AE4',
         '#9A81B4',
         '#55BFAB',
@@ -280,6 +300,4 @@ PRESETS: dict[str, ColorProfile] = {
         '#5276D4',
         '#5276D4',
     ]),
-
-
 }
