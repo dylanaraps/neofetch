@@ -131,8 +131,8 @@ def create_config() -> Config:
         flags = flags[flags_per_row:]
 
         # Print by row
-        for line in range(len(current[0])):
-            printc('  '.join(flag[line] for flag in current))
+        for line in zip(*current):
+            printc('  '.join(line))
 
         print()
 
