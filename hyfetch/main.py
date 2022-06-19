@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-from .color_util import AnsiMode, printc, color, clear_screen
+from .color_util import AnsiMode, printc, color, clear_screen, RGB
 from .neofetch_util import run_neofetch, replace_colors, get_custom_distro_ascii
 from .presets import PRESETS, ColorProfile
 from .serializer import json_stringify
@@ -82,7 +82,8 @@ def create_config() -> Config:
     title = '\nWelcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.\n'
     clear_screen(title)
 
-    # Select color system
+    ##############################
+    # 1. Select color system
     try:
         # Demonstrate RGB with a gradient. This requires numpy
         from .color_scale import Scale
@@ -104,22 +105,31 @@ def create_config() -> Config:
         # Numpy not found, skip gradient test, use fallback
         color_system = literal_input('Which &acolor &bsystem &rdo you want to use?',
                                      ['8bit', 'rgb'], 'rgb')
+    color_system = AnsiMode(color_system)
 
+
+    ##############################
+    # 3. Choose preset
     clear_screen(title)
-
-    # Print preset
     print('2. Let\'s choose a flag! Available flags:\n')
-    spacing = max(max(len(k) for k in PRESETS.keys()), 30)
+
+    # Create flags = [[lines]]
     flags = []
+    spacing = max(max(len(k) for k in PRESETS.keys()), 20)
     for name, preset in PRESETS.items():
-        t = preset.color_text(' ' * spacing, foreground=False)
-        flags.append([t, '&0' + preset.color_text(name.center(spacing), foreground=False), t])
-    flags_per_row = 3
+        flag = preset.color_text(' ' * spacing, foreground=False)
+        flags.append([name.center(spacing), flag, flag, flag])
+
+    # Calculate flags per row
+    flags_per_row = term_len // (spacing + 2)
     while flags:
         current = flags[:flags_per_row]
         flags = flags[flags_per_row:]
+
+        # Print by row
         for line in range(len(current[0])):
             printc('  '.join(flag[line] for flag in current))
+
         print()
 
     print()
