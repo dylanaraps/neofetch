@@ -13,3 +13,20 @@ try:
 except Exception:
     TERM_LEN = 40
 
+TEST_ASCII = r"""
+    |\___/|    
+    )     (    
+   =\     /=   
+     )===(     
+    /     \    
+    |     |    
+   /       \   
+   \       /   
+/\_/\_   _/_/\_
+  |  |( (  |  |
+  |  | ) ) |  |
+  |  |(_(  |  |
+  |  |  |  |  |
+  |  |  |  |  |""".strip()
+
+TEST_ASCII_WIDTH = max(len(line) for line in TEST_ASCII.split('\n'))
