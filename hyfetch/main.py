@@ -9,13 +9,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+from . import constants
 from .color_util import AnsiMode, printc, color, clear_screen, RGB
+from .constants import CONFIG_PATH, VERSION
 from .neofetch_util import run_neofetch, replace_colors, get_custom_distro_ascii
 from .presets import PRESETS, ColorProfile
 from .serializer import json_stringify
-
-CONFIG_PATH = Path.home() / '.config/hyfetch.json'
-VERSION = '1.0.7'
 
 
 # Obtain terminal size
@@ -50,20 +49,25 @@ def check_config() -> Config:
     return create_config()
 
 
-def literal_input(prompt: str, options: Iterable[str], default: str) -> str:
+def literal_input(prompt: str, options: Iterable[str], default: str, show_ops: bool = True) -> str:
     """
     Ask the user to provide an input among a list of options
 
     :param prompt: Input prompt
     :param options: Options
     :param default: Default option
+    :param show_ops: Show options
     :return: Selection
     """
     options = list(options)
     lows = [o.lower() for o in options]
 
-    op_text = '|'.join([f'&l&n{o}&r' if o == default else o for o in options])
-    printc(f'{prompt} ({op_text})')
+    if show_ops:
+        op_text = '|'.join([f'&l&n{o}&r' if o == default else o for o in options])
+        printc(f'{prompt} ({op_text})')
+    else:
+        printc(f'{prompt} (default: {default})')
+
     selection = input('> ') or default
     while not selection.lower() in lows:
         print(f'Invalid selection! {selection} is not one of {"|".join(options)}')
@@ -105,8 +109,9 @@ def create_config() -> Config:
         # Numpy not found, skip gradient test, use fallback
         color_system = literal_input('Which &acolor &bsystem &rdo you want to use?',
                                      ['8bit', 'rgb'], 'rgb')
-    color_system = AnsiMode(color_system)
 
+    # Override global color mode
+    constants.COLOR_MODE = color_system
 
     ##############################
     # 3. Choose preset
@@ -180,6 +185,10 @@ def run():
     if args.mode:
         config.mode = args.mode
 
+    # Override global color mode
+    constants.COLOR_MODE = config.mode
+
+    # Get preset
     preset = PRESETS.get(config.preset)
 
     # Lighten
@@ -193,7 +202,7 @@ def run():
         asc = get_custom_distro_ascii(args.test_distro)
         print(asc)
         print(replace_colors(asc, preset, config.mode)[0])
-        exit(0)
+        return
 
     # Run
     run_neofetch(preset, config.mode)

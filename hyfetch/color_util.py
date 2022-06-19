@@ -4,6 +4,8 @@ import colorsys
 from typing import NamedTuple
 from typing_extensions import Literal
 
+from hyfetch.constants import COLOR_MODE
+
 AnsiMode = Literal['default', 'ansi', '8bit', 'rgb']
 
 
@@ -36,7 +38,7 @@ def color(msg: str) -> str:
             code = code.replace(',', ' ').replace(';', ' ').replace('  ', ' ')
             rgb = tuple(int(c) for c in code.split(' '))
 
-        msg = msg[:i] + RGB(*rgb).to_ansi_rgb(foreground=fore) + msg[end + 1:]
+        msg = msg[:i] + RGB(*rgb).to_ansi(mode=COLOR_MODE, foreground=fore) + msg[end + 1:]
 
     return msg
 
@@ -151,7 +153,7 @@ class RGB(NamedTuple):
         """
         raise NotImplementedError()
 
-    def to_ansi(self, mode: AnsiMode, foreground: bool = True):
+    def to_ansi(self, mode: AnsiMode = COLOR_MODE, foreground: bool = True):
         if mode == 'rgb':
             return self.to_ansi_rgb(foreground)
         if mode == '8bit':
