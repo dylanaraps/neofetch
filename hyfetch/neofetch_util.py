@@ -55,7 +55,7 @@ def run_neofetch(preset: ColorProfile, mode: AnsiMode):
         os.environ['ascii_lines'] = str(len(lines))
 
         if platform.system() != 'Windows':
-            os.system(f'{get_command_path()} --ascii --source {path.absolute()} --ascii-colors"')
+            os.system(f'{get_command_path()} --ascii --source {path.absolute()} --ascii-colors')
 
         if platform.system() == 'Windows':
             cmd = get_command_path().replace("\\", "/").replace("C:/", "/c/")
