@@ -73,30 +73,6 @@ def literal_input(prompt: str, options: Iterable[str], default: str) -> str:
     return options[lows.index(selection)]
 
 
-def center_text(txt: str, spaces: int) -> str:
-    """
-    Put the text in the center in a defined space
-
-    >>> center_text('meow', 9)
-    '  meow   '
-
-    :param txt: Text
-    :param spaces: Total space of the text
-    :return: Text with length spaces
-    """
-    spaces -= len(txt)
-
-    if spaces % 2 == 1:
-        spaces -= 1
-        txt += ' '
-
-    while spaces > 0:
-        spaces -= 2
-        txt = f' {txt} '
-
-    return txt
-
-
 def create_config() -> Config:
     """
     Create config interactively
@@ -132,13 +108,12 @@ def create_config() -> Config:
     clear_screen(title)
 
     # Print preset
-    print('Available presets:\n')
+    print('2. Let\'s choose a flag! Available flags:\n')
     spacing = max(max(len(k) for k in PRESETS.keys()), 30)
     flags = []
     for name, preset in PRESETS.items():
-        flags.append([preset.color_text(' ' * spacing, foreground=False),
-                      '&0' + preset.color_text(center_text(name, spacing), foreground=False),
-                      preset.color_text(' ' * spacing, foreground=False)])
+        t = preset.color_text(' ' * spacing, foreground=False)
+        flags.append([t, '&0' + preset.color_text(name.center(spacing), foreground=False), t])
     flags_per_row = 3
     while flags:
         current = flags[:flags_per_row]
