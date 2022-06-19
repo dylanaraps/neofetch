@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .color_util import AnsiMode, printc, color
-from .neofetch_util import run_neofetch
+from .neofetch_util import run_neofetch, replace_colors, get_custom_distro_ascii
 from .presets import PRESETS, ColorProfile
 from .serializer import json_stringify
 
@@ -141,6 +141,8 @@ def run():
     parser.add_argument('--c-scale', dest='scale', help=f'Lighten colors by a multiplier', type=float)
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
+    parser.add_argument('--debug', action='store_true', help=color(f'Debug mode'))
+    parser.add_argument('--test-distro', help=color(f'Test print a specific distro\'s ascii art'))
 
     args = parser.parse_args()
 
@@ -168,6 +170,13 @@ def run():
         preset = ColorProfile([c.lighten(args.scale) for c in preset.colors])
     if args.light:
         preset = ColorProfile([c.set_light(args.light) for c in preset.colors])
+
+    # Test distro ascii art
+    if args.test_distro:
+        asc = get_custom_distro_ascii(args.test_distro)
+        print(asc)
+        print(replace_colors(asc, preset, config.mode)[0])
+        exit(0)
 
     # Run
     run_neofetch(preset, config.mode)
