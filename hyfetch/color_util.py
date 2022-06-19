@@ -53,7 +53,7 @@ def clear_screen():
     """
     Clear screen using ANSI escape codes
     """
-    print('\033[2J\033[H')
+    print('\033[2J\033[H', end='')
 
 
 def redistribute_rgb(r: int, g: int, b: int) -> tuple[int, int, int]:

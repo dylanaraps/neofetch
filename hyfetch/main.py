@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-from .color_util import AnsiMode, printc, color
+from .color_util import AnsiMode, printc, color, clear_screen
 from .neofetch_util import run_neofetch, replace_colors, get_custom_distro_ascii
 from .presets import PRESETS, ColorProfile
 from .serializer import json_stringify
@@ -103,6 +103,7 @@ def create_config() -> Config:
 
     :return: Config object (automatically stored)
     """
+    clear_screen()
     printc('\nWelcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.\n')
 
     # Select color system
@@ -128,6 +129,7 @@ def create_config() -> Config:
         color_system = literal_input('Which &acolor &bsystem &rdo you want to use?',
                                      ['8bit', 'rgb'], 'rgb')
 
+    clear_screen()
 
     # Print preset
     print('Available presets:\n')
