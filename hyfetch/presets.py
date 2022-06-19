@@ -17,7 +17,6 @@ class ColorProfile:
         else:
             self.colors = colors
 
-
     def with_weights(self, weights: list[int]) -> list[RGB]:
         """
         Map colors based on weights
@@ -76,10 +75,28 @@ class ColorProfile:
                     result += '\033[0m'
                 result += t
             else:
-                result += colors[i].to_ansi_rgb(foreground) + t
+                result += colors[i].to_ansi(foreground=foreground) + t
 
         result += '\033[0m'
         return result
+
+    def lighten(self, multiplier: float) -> ColorProfile:
+        """
+        Lighten the color profile by a multiplier
+
+        :param multiplier: Multiplier
+        :return: Lightened color profile (original isn't modified)
+        """
+        return ColorProfile([c.lighten(multiplier) for c in self.colors])
+
+    def set_light(self, light: int):
+        """
+        Set HSL lightness value
+
+        :param light: Lightness value
+        :return: New color profile (original isn't modified)
+        """
+        return ColorProfile([c.set_light(light) for c in self.colors])
 
 
 PRESETS: dict[str, ColorProfile] = {

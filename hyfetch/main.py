@@ -118,13 +118,15 @@ def create_config() -> Config:
 
     ##############################
     # 2. Select light/dark mode
-    light_dark = literal_input(f'1. Is your terminal in &gf(#85e7e9)light mode&r or &gf(#c471ed)dark mode&r?',
+    clear_screen(title)
+    light_dark = literal_input(f'2. Is your terminal in &gf(#85e7e9)light mode&r or &gf(#c471ed)dark mode&r?',
                                ['light', 'dark'], 'dark')
 
     ##############################
     # 3. Choose preset
     clear_screen(title)
-    print('2. Let\'s choose a flag! Available flags:\n')
+    print('3. Let\'s choose a flag!\n'
+          'Available flags:\n')
 
     # Create flags = [[lines]]
     flags = []
@@ -147,7 +149,7 @@ def create_config() -> Config:
 
     print()
     tmp = PRESETS['rainbow'].color_text('preset')
-    preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow')
+    preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow', show_ops=False)
 
     # Create config
     c = Config(preset, color_system, light_dark)
@@ -201,9 +203,9 @@ def run():
 
     # Lighten
     if args.scale:
-        preset = ColorProfile([c.lighten(args.scale) for c in preset.colors])
+        preset = preset.lighten(args.scale)
     if args.light:
-        preset = ColorProfile([c.set_light(args.light) for c in preset.colors])
+        preset = preset.set_light(args.light)
 
     # Test distro ascii art
     if args.test_distro:
