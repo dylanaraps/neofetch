@@ -49,11 +49,14 @@ def printc(msg: str):
     print(color(msg + '&r'))
 
 
-def clear_screen():
+def clear_screen(title: str = ''):
     """
     Clear screen using ANSI escape codes
     """
     print('\033[2J\033[H', end='')
+
+    if title:
+        printc(title)
 
 
 def redistribute_rgb(r: int, g: int, b: int) -> tuple[int, int, int]:

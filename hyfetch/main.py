@@ -103,8 +103,8 @@ def create_config() -> Config:
 
     :return: Config object (automatically stored)
     """
-    clear_screen()
-    printc('\nWelcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.\n')
+    title = '\nWelcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.\n'
+    clear_screen(title)
 
     # Select color system
     try:
@@ -129,7 +129,7 @@ def create_config() -> Config:
         color_system = literal_input('Which &acolor &bsystem &rdo you want to use?',
                                      ['8bit', 'rgb'], 'rgb')
 
-    clear_screen()
+    clear_screen(title)
 
     # Print preset
     print('Available presets:\n')
