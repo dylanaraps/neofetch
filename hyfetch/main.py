@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -14,6 +16,13 @@ from .serializer import json_stringify
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
 VERSION = '1.0.7'
+
+
+# Obtain terminal size
+try:
+    term_len = os.get_terminal_size().columns
+except Exception:
+    term_len = 40
 
 
 @dataclass
@@ -94,10 +103,31 @@ def create_config() -> Config:
 
     :return: Config object (automatically stored)
     """
+    printc('\nWelcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.\n')
+
     # Select color system
-    # TODO: Demo of each color system
-    color_system = literal_input('Which &acolor &bsystem &rdo you want to use?',
-                                 ['8bit', 'rgb'], 'rgb')
+    try:
+        # Demonstrate RGB with a gradient. This requires numpy
+        from .color_scale import Scale
+
+        scale2 = Scale(['#12c2e9', '#c471ed', '#f7797d'])
+        _8bit = [scale2(i / term_len).to_ansi_8bit(False) for i in range(term_len)]
+        _rgb = [scale2(i / term_len).to_ansi_rgb(False) for i in range(term_len)]
+
+        printc('&f' + ''.join(c + t for c, t in zip(_8bit, '8bit Color Testing'.center(term_len))))
+        printc('&f' + ''.join(c + t for c, t in zip(_rgb, 'RGB Color Testing'.center(term_len))))
+
+        print()
+        printc(f'1. Which &acolor &bsystem &rdo you want to use?')
+        printc(f'(If you can\'t see colors under "RGB Color Testing", please choose 8bit)')
+        print()
+        color_system = literal_input('Your choice?', ['8bit', 'rgb'], 'rgb')
+
+    except ModuleNotFoundError:
+        # Numpy not found, skip gradient test, use fallback
+        color_system = literal_input('Which &acolor &bsystem &rdo you want to use?',
+                                     ['8bit', 'rgb'], 'rgb')
+
 
     # Print preset
     print('Available presets:\n')
