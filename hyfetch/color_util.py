@@ -170,11 +170,11 @@ class RGB(NamedTuple):
         """
         return RGB(*redistribute_rgb(*[v * multiplier for v in self]))
 
-    def set_light(self, light: int) -> 'RGB':
+    def set_light(self, light: float) -> 'RGB':
         """
         Set HSL lightness value
 
-        :param light: Lightness value
+        :param light: Lightness value (0-1)
         :return: New color (original isn't modified)
         """
         h, l, s = colorsys.rgb_to_hls(*[v / 255.0 for v in self])

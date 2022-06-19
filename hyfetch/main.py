@@ -148,7 +148,7 @@ def create_config() -> Config:
         print()
 
     print()
-    tmp = PRESETS['rainbow'].color_text('preset')
+    tmp = PRESETS['rainbow'].set_light(.5).color_text('preset')
     preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow', show_ops=False)
 
     # Create config

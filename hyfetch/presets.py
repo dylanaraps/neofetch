@@ -89,11 +89,11 @@ class ColorProfile:
         """
         return ColorProfile([c.lighten(multiplier) for c in self.colors])
 
-    def set_light(self, light: int):
+    def set_light(self, light: float):
         """
         Set HSL lightness value
 
-        :param light: Lightness value
+        :param light: Lightness value (0-1)
         :return: New color profile (original isn't modified)
         """
         return ColorProfile([c.set_light(light) for c in self.colors])
