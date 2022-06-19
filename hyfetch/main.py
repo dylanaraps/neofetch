@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
+from typing_extensions import Literal
+
 from . import constants
 from .color_util import AnsiMode, printc, color, clear_screen, RGB
 from .constants import CONFIG_PATH, VERSION
@@ -28,6 +30,7 @@ except Exception:
 class Config:
     preset: str
     mode: AnsiMode
+    light_dark: Literal['light', 'dark'] = 'dark'
 
     def save(self):
         CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
@@ -114,6 +117,11 @@ def create_config() -> Config:
     constants.COLOR_MODE = color_system
 
     ##############################
+    # 2. Select light/dark mode
+    light_dark = literal_input(f'1. Is your terminal in &gf(#85e7e9)light mode&r or &gf(#c471ed)dark mode&r?',
+                               ['light', 'dark'], 'dark')
+
+    ##############################
     # 3. Choose preset
     clear_screen(title)
     print('2. Let\'s choose a flag! Available flags:\n')
@@ -142,7 +150,7 @@ def create_config() -> Config:
     preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow')
 
     # Create config
-    c = Config(preset, color_system)
+    c = Config(preset, color_system, light_dark)
 
     # Save config
     save = literal_input(f'Save config?', ['y', 'n'], 'y')
