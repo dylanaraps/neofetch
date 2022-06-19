@@ -13,7 +13,7 @@ from typing_extensions import Literal
 
 from . import constants
 from .color_util import AnsiMode, printc, color, clear_screen, RGB
-from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH
+from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII
 from .neofetch_util import run_neofetch, replace_colors, get_custom_distro_ascii
 from .presets import PRESETS, ColorProfile
 from .serializer import json_stringify
@@ -24,6 +24,7 @@ class Config:
     preset: str
     mode: AnsiMode
     light_dark: Literal['light', 'dark'] = 'dark'
+    lightness: float | None = None
 
     def save(self):
         CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
@@ -131,15 +132,14 @@ def create_config() -> Config:
         flags = flags[flags_per_row:]
 
         # Print by row
-        for line in zip(*current):
-            printc('  '.join(line))
-
+        [printc('  '.join(line)) for line in zip(*current)]
         print()
 
     print()
     tmp = PRESETS['rainbow'].set_light(.7).color_text('preset')
     preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow', show_ops=False)
-    title += f'\n&e2. Selected flag:       &r{PRESETS[preset].color_text(preset)}'
+    _prs = PRESETS[preset]
+    title += f'\n&e2. Selected flag:       &r{_prs.color_text(preset)}'
 
     ##############################
     # 3. Select light/dark mode
@@ -149,10 +149,44 @@ def create_config() -> Config:
     is_light = light_dark == 'light'
     title += f'\n&e3. Light/Dark:          &r{light_dark}'
 
+    #############################
+    # 4. Dim/lighten colors
+    clear_screen(title)
+    printc(f'&a4. Let\'s adjust the color brightness!')
+    printc(f'The colors might be a little bit too {"bright" if is_light else "dark"} for {light_dark} mode.')
+    print()
+
+    # Print cats
+    num_cols = TERM_LEN // (TEST_ASCII_WIDTH + 2)
+    ratios = [col / (num_cols - 1) for col in range(num_cols)]
+    ratios = [r * 0.6 + 0.2 for r in ratios]
+    lines = [replace_colors(TEST_ASCII.replace('{txt}', f'{r * 100:.0f}%'.center(5)),
+                            _prs.set_light(r))[0].split('\n') for r in ratios]
+    [printc('  '.join(line)) for line in zip(*lines)]
+
+    while True:
+        print()
+        printc('Which brightness level look the best? (Default: unset)')
+        lightness = input('> ').strip().lower() or None
+
+        # Parse lightness
+        if not lightness or lightness in ['unset', 'none']:
+            lightness = None
+            break
+
+        try:
+            lightness = int(lightness[:-1]) / 100 if lightness.endswith('%') else float(lightness)
+            assert 0 <= lightness <= 1
+            break
+
+        except Exception:
+            printc('&cUnable to parse lightness value, please input it as a decimal or percentage (e.g. 0.5 or 50%)')
+
     # Create config
-    c = Config(preset, color_system, light_dark)
+    c = Config(preset, color_system, light_dark, lightness)
 
     # Save config
+    print()
     save = literal_input(f'Save config?', ['y', 'n'], 'y')
     if save == 'y':
         c.save()

@@ -11,6 +11,7 @@ from tempfile import TemporaryDirectory
 import pkg_resources
 
 from .color_util import AnsiMode
+from .constants import COLOR_MODE
 from .presets import ColorProfile
 
 
@@ -42,7 +43,7 @@ def get_custom_distro_ascii(distro: str) -> str:
     return check_output([get_command_path(), "print_custom_ascii"]).decode().strip()
 
 
-def replace_colors(asc: str, preset: ColorProfile, mode: AnsiMode):
+def replace_colors(asc: str, preset: ColorProfile, mode: AnsiMode = COLOR_MODE):
     # Remove existing colors
     asc = re.sub('\\${.*?}', '', asc)
 
