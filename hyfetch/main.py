@@ -13,17 +13,10 @@ from typing_extensions import Literal
 
 from . import constants
 from .color_util import AnsiMode, printc, color, clear_screen, RGB
-from .constants import CONFIG_PATH, VERSION
+from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH
 from .neofetch_util import run_neofetch, replace_colors, get_custom_distro_ascii
 from .presets import PRESETS, ColorProfile
 from .serializer import json_stringify
-
-
-# Obtain terminal size
-try:
-    term_len = os.get_terminal_size().columns
-except Exception:
-    term_len = 40
 
 
 @dataclass
@@ -86,7 +79,7 @@ def create_config() -> Config:
 
     :return: Config object (automatically stored)
     """
-    title = '\nWelcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.\n'
+    title = 'Welcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.'
     clear_screen(title)
 
     ##############################
@@ -96,14 +89,14 @@ def create_config() -> Config:
         from .color_scale import Scale
 
         scale2 = Scale(['#12c2e9', '#c471ed', '#f7797d'])
-        _8bit = [scale2(i / term_len).to_ansi_8bit(False) for i in range(term_len)]
-        _rgb = [scale2(i / term_len).to_ansi_rgb(False) for i in range(term_len)]
+        _8bit = [scale2(i / TERM_LEN).to_ansi_8bit(False) for i in range(TERM_LEN)]
+        _rgb = [scale2(i / TERM_LEN).to_ansi_rgb(False) for i in range(TERM_LEN)]
 
-        printc('&f' + ''.join(c + t for c, t in zip(_8bit, '8bit Color Testing'.center(term_len))))
-        printc('&f' + ''.join(c + t for c, t in zip(_rgb, 'RGB Color Testing'.center(term_len))))
+        printc('&f' + ''.join(c + t for c, t in zip(_8bit, '8bit Color Testing'.center(TERM_LEN))))
+        printc('&f' + ''.join(c + t for c, t in zip(_rgb, 'RGB Color Testing'.center(TERM_LEN))))
 
         print()
-        printc(f'1. Which &acolor &bsystem &rdo you want to use?')
+        printc(f'&a1. Which &bcolor system &ado you want to use?')
         printc(f'(If you can\'t see colors under "RGB Color Testing", please choose 8bit)')
         print()
         color_system = literal_input('Your choice?', ['8bit', 'rgb'], 'rgb')
@@ -115,12 +108,14 @@ def create_config() -> Config:
 
     # Override global color mode
     constants.COLOR_MODE = color_system
+    title += f'\n&e1. Selected color mode: &r{color_system}'
 
     ##############################
     # 2. Choose preset
     clear_screen(title)
-    print('2. Let\'s choose a flag!\n'
-          'Available flag presets:\n')
+    printc('&a2. Let\'s choose a flag!')
+    printc('Available flag presets:')
+    print()
 
     # Create flags = [[lines]]
     flags = []
@@ -130,7 +125,7 @@ def create_config() -> Config:
         flags.append([name.center(spacing), flag, flag, flag])
 
     # Calculate flags per row
-    flags_per_row = term_len // (spacing + 2)
+    flags_per_row = TERM_LEN // (spacing + 2)
     while flags:
         current = flags[:flags_per_row]
         flags = flags[flags_per_row:]
@@ -144,12 +139,15 @@ def create_config() -> Config:
     print()
     tmp = PRESETS['rainbow'].set_light(.7).color_text('preset')
     preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow', show_ops=False)
+    title += f'\n&e2. Selected flag:       &r{PRESETS[preset].color_text(preset)}'
 
     ##############################
     # 3. Select light/dark mode
     clear_screen(title)
     light_dark = literal_input(f'3. Is your terminal in &gf(#85e7e9)light mode&r or &gf(#c471ed)dark mode&r?',
                                ['light', 'dark'], 'dark')
+    is_light = light_dark == 'light'
+    title += f'\n&e3. Light/Dark:          &r{light_dark}'
 
     # Create config
     c = Config(preset, color_system, light_dark)

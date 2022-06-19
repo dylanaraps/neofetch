@@ -58,7 +58,9 @@ def clear_screen(title: str = ''):
     print('\033[2J\033[H', end='')
 
     if title:
+        print()
         printc(title)
+        print()
 
 
 def redistribute_rgb(r: int, g: int, b: int) -> tuple[int, int, int]:
