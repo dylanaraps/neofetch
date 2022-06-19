@@ -300,4 +300,12 @@ PRESETS: dict[str, ColorProfile] = {
         '#5276D4',
         '#5276D4',
     ]),
+
+    'beiyang': ColorProfile([
+        '#DF1B12',
+        '#FFC600',
+        '#01639D',
+        '#FFFFFF',
+        '#000000',
+    ]),
 }
