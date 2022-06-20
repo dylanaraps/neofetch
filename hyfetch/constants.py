@@ -35,6 +35,7 @@ class GlobalConfig:
     color_mode: str
     override_distro: str | None
     debug: bool
+    is_light: bool
 
 
-GLOBAL_CFG = GlobalConfig(color_mode='8bit', override_distro=None, debug=False)
+GLOBAL_CFG = GlobalConfig(color_mode='8bit', override_distro=None, debug=False, is_light=False)

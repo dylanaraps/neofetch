@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import colorsys
 from typing import NamedTuple
+
 from typing_extensions import Literal
 
 from .constants import GLOBAL_CFG
@@ -184,3 +185,7 @@ class RGB(NamedTuple):
         """
         h, l, s = colorsys.rgb_to_hls(*[v / 255.0 for v in self])
         return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(h, light, s)])
+
+    def set_min_light(self, light: float) -> 'RGB':
+        h, l, s = colorsys.rgb_to_hls(*[v / 255.0 for v in self])
+        return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(h, max(l, light), s)])

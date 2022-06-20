@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from . import main
 
-
 __version__ = main.VERSION
 
 

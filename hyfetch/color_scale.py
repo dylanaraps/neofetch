@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import numpy as np
-from .color_util import RGB
 from numpy import ndarray
+
+from .color_util import RGB
 
 
 def create_gradient_hex(colors: list[str], resolution: int = 300) -> ndarray:

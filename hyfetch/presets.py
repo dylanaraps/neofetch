@@ -109,6 +109,9 @@ class ColorProfile:
         """
         return ColorProfile([c.set_light(light) for c in self.colors])
 
+    def set_min_light(self, light: float):
+        return ColorProfile([c.set_min_light(light) for c in self.colors])
+
     def unique_colors(self) -> ColorProfile:
         """
         Create another color profile with only the unique colors

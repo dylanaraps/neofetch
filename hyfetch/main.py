@@ -5,30 +5,16 @@ import argparse
 import json
 import random
 import re
-from dataclasses import dataclass
 from itertools import permutations
 from typing import Iterable
 
-from typing_extensions import Literal
+from hyfetch import presets
 
-from .color_util import AnsiMode, printc, color, clear_screen
+from .color_util import printc, color, clear_screen
 from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII, GLOBAL_CFG
-from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size
+from .models import Config
+from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, color_alignments
 from .presets import PRESETS
-from .serializer import json_stringify
-
-
-@dataclass
-class Config:
-    preset: str
-    mode: AnsiMode
-    light_dark: Literal['light', 'dark'] = 'dark'
-    lightness: float | None = None
-    color_align: ColorAlignment = ColorAlignment('horizontal')
-
-    def save(self):
-        CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
-        CONFIG_PATH.write_text(json_stringify(self), 'utf-8')
 
 
 def check_config() -> Config:
@@ -147,6 +133,7 @@ def create_config() -> Config:
     light_dark = literal_input(f'3. Is your terminal in &gf(#85e7e9)light mode&r or &gf(#c471ed)dark mode&r?',
                                ['light', 'dark'], 'dark')
     is_light = light_dark == 'light'
+    GLOBAL_CFG.is_light = is_light
     title += f'\n&e3. Light/Dark:          &r{light_dark}'
 
     #############################
@@ -265,7 +252,9 @@ def run():
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
     parser.add_argument('--debug', action='store_true', help=color(f'Debug mode'))
-    parser.add_argument('--test-distro', help=color(f'Test print a specific distro\'s ascii art'))
+    parser.add_argument('--debug-list', help=color(f'Debug recommendations'))
+    parser.add_argument('--test-distro', help=color(f'Test for a specific distro'))
+    parser.add_argument('--test-print', action='store_true', help=color(f'Test print distro ascii art only'))
 
     args = parser.parse_args()
 
@@ -280,6 +269,10 @@ def run():
 
     if args.debug:
         GLOBAL_CFG.debug = True
+
+    if args.test_print:
+        print(get_distro_ascii())
+        return
 
     # Load config
     config = check_config()
@@ -296,6 +289,7 @@ def run():
 
     # Override global color mode
     GLOBAL_CFG.color_mode = config.mode
+    GLOBAL_CFG.is_light = config.light_dark == 'light'
 
     # Get preset
     preset = PRESETS.get(config.preset)
@@ -307,6 +301,17 @@ def run():
         preset = preset.set_light(args.light)
     if config.lightness:
         preset = preset.set_light(config.lightness)
+
+    # Debug recommendations
+    if args.debug_list:
+        distro = args.debug_list
+        ca = color_alignments[distro]
+
+        print(distro)
+        GLOBAL_CFG.override_distro = distro
+        asciis = [ca.recolor_ascii(get_distro_ascii(distro), p).split('\n') for p in list(PRESETS.values())[:3]]
+        [printc('  '.join(line)) for line in zip(*asciis)]
+        return
 
     # Run
     run_neofetch(preset, config.color_align)
