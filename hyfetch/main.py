@@ -4,15 +4,15 @@ from __future__ import annotations
 import argparse
 import json
 import random
+import re
 from dataclasses import dataclass
 from itertools import permutations
 from typing import Iterable
 
 from typing_extensions import Literal
 
-from . import constants
 from .color_util import AnsiMode, printc, color, clear_screen
-from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII
+from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII, GLOBAL_CFG
 from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size
 from .presets import PRESETS
 from .serializer import json_stringify
@@ -108,7 +108,7 @@ def create_config() -> Config:
                                      ['8bit', 'rgb'], 'rgb')
 
     # Override global color mode
-    constants.COLOR_MODE = color_system
+    GLOBAL_CFG.color_mode = color_system
     title += f'\n&e1. Selected color mode: &r{color_system}'
 
     ##############################
@@ -200,19 +200,20 @@ def create_config() -> Config:
             ['Horizontal'.center(asc_width), *ColorAlignment('horizontal').recolor_ascii(asc, _prs).split('\n')],
             ['Vertical'.center(asc_width), *ColorAlignment('vertical').recolor_ascii(asc, _prs).split('\n')],
         ]
+        ascii_per_row = TERM_LEN // (asc_width + 2)
 
         # Random color schemes
         # ascii_indices =
         pis = list(range(len(_prs.unique_colors().colors)))
-        while len(pis) < 6:
+        while len(pis) < len(set(re.findall('(?<=\\${c)[0-9](?=})', asc))):
             pis += pis
         perm = list(permutations(pis))
-        choices = random.sample(perm, 4)
+        random_count = ascii_per_row - 2
+        choices = random.sample(perm, random_count)
         choices = [{i: n for i, n in enumerate(c)} for c in choices]
-        asciis += [[f'Random {i}'.center(asc_width), *ColorAlignment('custom', r).recolor_ascii(asc, _prs).split('\n')]
+        asciis += [[f'random{i}'.center(asc_width), *ColorAlignment('custom', r).recolor_ascii(asc, _prs).split('\n')]
                    for i, r in enumerate(choices)]
 
-        ascii_per_row = TERM_LEN // (asc_width + 2)
         while asciis:
             current = asciis[:ascii_per_row]
             asciis = asciis[ascii_per_row:]
@@ -223,7 +224,7 @@ def create_config() -> Config:
 
         print('You can type "roll" to randomize again.')
         print()
-        choice = literal_input(f'Your choice?', ['horizontal', 'vertical', 'roll', 'random1', 'random2', 'random3', 'random4'], 'horizontal')
+        choice = literal_input(f'Your choice?', ['horizontal', 'vertical', 'roll'] + [f'random{i}' for i in range(random_count)], 'horizontal')
 
         if choice == 'roll':
             continue
@@ -272,6 +273,14 @@ def run():
         print(f'Version is {VERSION}')
         return
 
+    # Test distro ascii art
+    if args.test_distro:
+        print(f'Setting distro to {args.test_distro}')
+        GLOBAL_CFG.override_distro = args.test_distro
+
+    if args.debug:
+        GLOBAL_CFG.debug = True
+
     # Load config
     config = check_config()
 
@@ -286,7 +295,7 @@ def run():
         config.mode = args.mode
 
     # Override global color mode
-    constants.COLOR_MODE = config.mode
+    GLOBAL_CFG.color_mode = config.mode
 
     # Get preset
     preset = PRESETS.get(config.preset)
@@ -298,13 +307,6 @@ def run():
         preset = preset.set_light(args.light)
     if config.lightness:
         preset = preset.set_light(config.lightness)
-
-    # Test distro ascii art
-    if args.test_distro:
-        asc = get_distro_ascii(args.test_distro)
-        print(asc)
-        print(ColorAlignment('horizontal').recolor_ascii(asc, preset))
-        return
 
     # Run
     run_neofetch(preset, config.color_align)

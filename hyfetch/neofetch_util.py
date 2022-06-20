@@ -13,6 +13,7 @@ import pkg_resources
 from hyfetch.color_util import color
 from typing_extensions import Literal
 
+from .constants import GLOBAL_CFG
 from .presets import ColorProfile
 
 
@@ -108,6 +109,10 @@ def get_distro_ascii(distro: str | None = None) -> str:
 
     :return: Distro ascii
     """
+    if not distro and GLOBAL_CFG.override_distro:
+        distro = GLOBAL_CFG.override_distro
+    print(distro)
+    print(GLOBAL_CFG)
     cmd = 'print_ascii'
     if distro:
         os.environ['CUSTOM_DISTRO'] = distro
