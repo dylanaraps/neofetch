@@ -1,8 +1,19 @@
 from __future__ import annotations
 
+from typing import Iterable
+
 from typing_extensions import Literal
 
 from .color_util import RGB
+
+
+def remove_duplicates(seq: Iterable) -> list:
+    """
+    Remove duplicate items from a sequence while preserving the order
+    """
+    seen = set()
+    seen_add = seen.add
+    return [x for x in seq if not (x in seen or seen_add(x))]
 
 
 class ColorProfile:
@@ -97,6 +108,12 @@ class ColorProfile:
         :return: New color profile (original isn't modified)
         """
         return ColorProfile([c.set_light(light) for c in self.colors])
+
+    def unique_colors(self) -> ColorProfile:
+        """
+        Create another color profile with only the unique colors
+        """
+        return ColorProfile(remove_duplicates(self.colors))
 
 
 PRESETS: dict[str, ColorProfile] = {

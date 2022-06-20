@@ -2,20 +2,19 @@
 from __future__ import annotations
 
 import argparse
-import importlib
 import json
-import os
+import random
 from dataclasses import dataclass
-from pathlib import Path
+from itertools import permutations
 from typing import Iterable
 
 from typing_extensions import Literal
 
 from . import constants
-from .color_util import AnsiMode, printc, color, clear_screen, RGB
+from .color_util import AnsiMode, printc, color, clear_screen
 from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII
-from .neofetch_util import run_neofetch, replace_colors, get_custom_distro_ascii
-from .presets import PRESETS, ColorProfile
+from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size
+from .presets import PRESETS
 from .serializer import json_stringify
 
 
@@ -25,6 +24,7 @@ class Config:
     mode: AnsiMode
     light_dark: Literal['light', 'dark'] = 'dark'
     lightness: float | None = None
+    color_align: ColorAlignment = ColorAlignment('horizontal')
 
     def save(self):
         CONFIG_PATH.parent.mkdir(exist_ok=True, parents=True)
@@ -160,8 +160,8 @@ def create_config() -> Config:
     num_cols = TERM_LEN // (TEST_ASCII_WIDTH + 2)
     ratios = [col / (num_cols - 1) for col in range(num_cols)]
     ratios = [r * 0.6 + 0.2 for r in ratios]
-    lines = [replace_colors(TEST_ASCII.replace('{txt}', f'{r * 100:.0f}%'.center(5)),
-                            _prs.set_light(r))[0].split('\n') for r in ratios]
+    lines = [ColorAlignment('horizontal').recolor_ascii(TEST_ASCII.replace(
+        '{txt}', f'{r * 100:.0f}%'.center(5)), _prs.set_light(r)).split('\n') for r in ratios]
     [printc('  '.join(line)) for line in zip(*lines)]
 
     while True:
@@ -182,8 +182,66 @@ def create_config() -> Config:
         except Exception:
             printc('&cUnable to parse lightness value, please input it as a decimal or percentage (e.g. 0.5 or 50%)')
 
+    if lightness:
+        _prs = _prs.set_light(lightness)
+    title += f'\n&e4. Brightness:          &r{f"{lightness:.2f}" if lightness else "unset"}'
+
+    #############################
+    # 5. Color arrangement
+    while True:
+        clear_screen(title)
+        printc(f'&a5. Let\'s choose a color arrangement!')
+        printc(f'You can choose standard horizontal or vertical alignment, or use one of the random color schemes, or assign colors yourself (TODO).')
+        print()
+
+        asc = get_distro_ascii()
+        asc_width = ascii_size(asc)[0]
+        asciis = [
+            ['Horizontal'.center(asc_width), *ColorAlignment('horizontal').recolor_ascii(asc, _prs).split('\n')],
+            ['Vertical'.center(asc_width), *ColorAlignment('vertical').recolor_ascii(asc, _prs).split('\n')],
+        ]
+
+        # Random color schemes
+        # ascii_indices =
+        pis = list(range(len(_prs.unique_colors().colors)))
+        while len(pis) < 6:
+            pis += pis
+        perm = list(permutations(pis))
+        choices = random.sample(perm, 4)
+        choices = [{i: n for i, n in enumerate(c)} for c in choices]
+        asciis += [[f'Random {i}'.center(asc_width), *ColorAlignment('custom', r).recolor_ascii(asc, _prs).split('\n')]
+                   for i, r in enumerate(choices)]
+
+        ascii_per_row = TERM_LEN // (asc_width + 2)
+        while asciis:
+            current = asciis[:ascii_per_row]
+            asciis = asciis[ascii_per_row:]
+
+            # Print by row
+            [printc('  '.join(line)) for line in zip(*current)]
+            print()
+
+        print('You can type "roll" to randomize again.')
+        print()
+        choice = literal_input(f'Your choice?', ['horizontal', 'vertical', 'roll', 'random1', 'random2', 'random3', 'random4'], 'horizontal')
+
+        if choice == 'roll':
+            continue
+
+        if choice in ['horizontal', 'vertical']:
+            color_alignment = ColorAlignment(choice)
+        elif choice.startswith('random'):
+            color_alignment = ColorAlignment('custom', choices[int(choice[6]) - 1])
+        else:
+            raise NotImplementedError()
+
+        break
+
+    title += f'\n&e5. Color Alignment:     &r{color_alignment}'
+
     # Create config
-    c = Config(preset, color_system, light_dark, lightness)
+    clear_screen(title)
+    c = Config(preset, color_system, light_dark, lightness, color_alignment)
 
     # Save config
     print()
@@ -238,13 +296,15 @@ def run():
         preset = preset.lighten(args.scale)
     if args.light:
         preset = preset.set_light(args.light)
+    if config.lightness:
+        preset = preset.set_light(config.lightness)
 
     # Test distro ascii art
     if args.test_distro:
-        asc = get_custom_distro_ascii(args.test_distro)
+        asc = get_distro_ascii(args.test_distro)
         print(asc)
-        print(replace_colors(asc, preset, config.mode)[0])
+        print(ColorAlignment('horizontal').recolor_ascii(asc, preset))
         return
 
     # Run
-    run_neofetch(preset, config.mode)
+    run_neofetch(preset, config.color_align)
