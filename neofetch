@@ -1134,6 +1134,7 @@ get_distro() {
                     *"Lubuntu"*)  distro=${distro/Ubuntu/Lubuntu} ;;
                     *"budgie"*)   distro=${distro/Ubuntu/Ubuntu Budgie} ;;
                     *"cinnamon"*) distro=${distro/Ubuntu/Ubuntu Cinnamon} ;;
+                    *"ubuntusway"*) distro=${distro/Ubuntu/Ubuntu Sway} ;;
                 esac
             fi
         ;;
