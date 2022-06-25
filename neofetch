@@ -2206,6 +2206,10 @@ get_cpu() {
                     [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
                 ;;
 
+                "arm"* | "aarch64")
+                    cpu="$(lscpu | grep "Vendor ID" | sed "s/.*: *//g") $(lscpu | grep "Model name" | sed "s/.*: *//g")"
+                ;;
+		
                 *)
                     cpu="$(awk -F '\\s*: | @' \
                             '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
