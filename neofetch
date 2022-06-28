@@ -786,8 +786,8 @@ image_source="auto"
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
-#       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
-#       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
+#       Container_Linux, Crystal Linux, CRUX, CurtainOS, Cucumber, dahlia, Debian,
+#       Deepin, DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
@@ -945,6 +945,9 @@ get_os() {
         AIX)      os=AIX ;;
         IRIX*)    os=IRIX ;;
         FreeMiNT) os=FreeMiNT ;;
+        CurtainOS)
+            os=CurtainOS
+        ;;
 
         Linux|GNU*)
             os=Linux
@@ -1210,6 +1213,10 @@ get_distro() {
         FreeMiNT)
             distro=FreeMiNT
         ;;
+        
+        CurtainOS)
+            distro=CurtainOS
+        ;;
     esac
 
     distro=${distro//Enterprise Server}
@@ -1218,7 +1225,7 @@ get_distro() {
 
     # Get OS architecture.
     case $os in
-        Solaris|AIX|Haiku|IRIX|FreeMiNT)
+        Solaris|AIX|Haiku|IRIX|FreeMiNT|CurtainOS)
             machine_arch=$(uname -p)
         ;;
 
@@ -1234,7 +1241,7 @@ get_distro() {
 
 get_model() {
     case $os in
-        Linux)
+        Linux|CurtainOS)
             if [[ -d /system/app/ && -d /system/priv-app ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
@@ -1424,7 +1431,7 @@ get_kernel() {
 get_uptime() {
     # Get uptime in seconds.
     case $os in
-        Linux|Windows|MINIX)
+        Linux|Windows|MINIX|CurtainOS)
             if [[ -r /proc/uptime ]]; then
                 s=$(< /proc/uptime)
                 s=${s/.*}
@@ -2188,7 +2195,7 @@ get_wm_theme() {
 
 get_cpu() {
     case $os in
-        "Linux" | "MINIX" | "Windows")
+        "Linux" | "MINIX" | "Windows" | "CurtainOS")
             # Get CPU name.
             cpu_file="/proc/cpuinfo"
 
@@ -5146,7 +5153,7 @@ ASCII:
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
-                                Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
+                                Crystal Linux, CRUX, Cucumber, CurtainOS, dahlia, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
@@ -5179,8 +5186,8 @@ ASCII:
                                 Ubuntu-Studio, Ubuntu-Mate  or Ubuntu-Budgie to use the flavors.
 
                                 NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
-                                CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android,
-                                Artix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
+                                CRUX, CurtainOS, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD,
+                                android, Artix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
                                 Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
                                 Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
                                 postmarketOS, and Void have a smaller logo variant.
@@ -6974,6 +6981,33 @@ o/${c2}--...::-:/::/:-......-::::::-/-...-${c1}:/o
       -/+/:${c2}----..........----${c1}:/+/-
         `:/+//${c2}::--------:::${c1}/+/:`
            `.-://++++++//:-.`
+EOF
+        ;;
+        
+        "CurtainOS"*)
+            set_colors 1 3
+            read -rd '' ascii_data <<'EOF'
+${c2} ==========================================
+${c1}   |     \             |     /
+   |      |       /  / |    /
+   |   |    /       / /    /
+   |   |    | |   /        |
+   |   ' , /  /  /        /
+   |     |   / /  /  ,   /
+   |     |   Y   /  /   /
+   |    /   /   /    ,/
+   |   |    '  /  ,/
+   | |    /  ,  ,/
+${c2}   :--_____---;${c1}'
+${c2}   :---____--;
+${c1}   | \       |   ${c2}C U R T A I N   O S
+${c1}   | , |   ' |
+   | | ', | ||   ${c2}uncover  the  light
+${c1}   | | /  | ||
+   | , |/    |
+   | ' '     |
+   |/--___/^\/
+   \ ${c2} '   '' '
 EOF
         ;;
 
