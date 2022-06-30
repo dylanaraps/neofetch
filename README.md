@@ -24,7 +24,7 @@ Currently, these distributions have existing packages for HyFetch:
 * Guix: [In progress](https://issues.guix.gnu.org/54847#8-lineno27)
 
 Currently, if you're using Nix the package manager or NixOS, you can use HyFetch with `nix-env -if https://github.com/hykilpikonna/hyfetch/tarball/master -A hyfetch`
-> Now `hyfetch` is available in our NixOS-CN's flake. You can add ([NixOS-CN](https://github.com/nixos-cn/flakes)) in your ([Nix Flake] (https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html)) at first, then install package `hyfetch`.
+> Now `hyfetch` is available in our NixOS-CN's flake. You can add [NixOS-CN](https://github.com/nixos-cn/flakes) in your [Nix Flake](https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html) at first, then install package `hyfetch`.
 > ```
 > #flake.nix
 > 
