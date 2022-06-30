@@ -29,7 +29,7 @@ Currently, if you're using Nix the package manager or NixOS, you can use HyFetch
 > #flake.nix
 > 
 >             environment.systemPackages =
->               [ nixos-cn.legacyPackages.${system}.netease-cloud-music ];
+>               [ nixos-cn.legacyPackages.${system}.hyfetch ];
 >               
 > ```              
 > (Thanks to @ YisuiDenghua and @ linyinfeng )
