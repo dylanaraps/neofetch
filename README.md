@@ -24,15 +24,15 @@ Currently, these distributions have existing packages for HyFetch:
 * Guix: [In progress](https://issues.guix.gnu.org/54847#8-lineno27)
 
 Currently, if you're using Nix the package manager or NixOS, you can use HyFetch with `nix-env -if https://github.com/hykilpikonna/hyfetch/tarball/master -A hyfetch`
-> Now `hyfetch` is available in our NixOS-CN's flake. You can add ([NixOS-CN](https://github.com/nixos-cn/flakes)) in your ([Nix Flake](https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html)) at first, then install package `hyfetch`.
-```
-#flake.nix
-
-            environment.systemPackages =
-              [ nixos-cn.legacyPackages.${system}.netease-cloud-music ];
-              
-```              
-
+> Now `hyfetch` is available in our NixOS-CN's flake. You can add ([NixOS-CN](https://github.com/nixos-cn/flakes)) in your ([Nix Flake (https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html)) at first, then install package `hyfetch`.
+> ```
+> #flake.nix
+> 
+>             environment.systemPackages =
+>               [ nixos-cn.legacyPackages.${system}.netease-cloud-music ];
+>               
+> ```              
+> (Thanks to @ YisuiDenghua and @ linyinfeng )
 ## Usage
 
 When you run `hyfetch` for the first time, it will prompt you to choose a color system and a preset. Just follow the prompt, and everything should work (hopefully). If something doesn't work, feel free to submit an issue!
