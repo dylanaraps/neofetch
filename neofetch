@@ -790,8 +790,8 @@ image_source="auto"
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
-#       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
-#       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
+#       gNewSense, GNOME, GNU, GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra,
+#       HydroOS, Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
 #       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
@@ -5150,7 +5150,7 @@ ASCII:
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
-                                GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
+                                GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
                                 LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
                                 Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, LinuxMint,
@@ -7801,6 +7801,35 @@ ${c1}  _____       _
 | | |_ |/ _ \| '_ \ / _ \
 | |__| | (_) | |_) | (_) |
  \_____|\___/|_.__/ \___/
+EOF
+        ;;
+
+        "GrapheneOS"*)
+            set_colors 7 4
+            read -rd '' ascii_data <<'EOF'
+${c1}                   B?
+                        G~
+                        G~&
+                      G!^:^?#
+                     &^.:::.J
+    &PG&          #G5JJ7~^~?JY5B&          #PG
+     B5JJPGJ77YG5JYP#   &&   &B5JYPGJ7?YG5JYP#
+        &Y..::.:P&               &?..::.:G
+         #!::::?                  B~::::J
+           B~J#                     B!?#
+            !P                       75
+            !P                       75
+            !5                       7Y
+         &Y~:^!P                  &J~:^!P
+         P..::.:B                 Y..::.:#
+      #PYJJ~^^!JJYP#          &B5YJ?~^^!JJYG#
+    &YYG#   &&   #PYJ5G5??JGGYJ5G&   &&   #PYP
+                     B^.::..7&
+                      J::::^G
+                       #Y^G&
+                        B~
+                        G!
+                        #
 EOF
         ;;
 
