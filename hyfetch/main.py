@@ -299,9 +299,9 @@ def run():
     if args.scale:
         preset = preset.lighten(args.scale)
     if args.light:
-        preset = preset.set_light(args.light)
+        preset = preset.set_light_raw(args.light)
     if config.lightness:
-        preset = preset.set_light(config.lightness)
+        preset = preset.set_light_dl(config.lightness)
 
     # Debug recommendations
     if args.debug_list:
