@@ -104,12 +104,12 @@ def create_config() -> Config:
                                ['light', 'dark'], 'dark')
     is_light = light_dark == 'light'
     GLOBAL_CFG.is_light = is_light
-    title += f'\n&e3. Light/Dark:          &r{light_dark}'
+    title += f'\n&e2. Light/Dark:          &r{light_dark}'
 
     ##############################
     # 3. Choose preset
     clear_screen(title)
-    printc('&a2. Let\'s choose a flag!')
+    printc('&a3. Let\'s choose a flag!')
     printc('Available flag presets:')
     print()
 
