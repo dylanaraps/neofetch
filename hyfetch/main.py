@@ -27,7 +27,7 @@ def check_config() -> Config:
     :return: Config object
     """
     if CONFIG_PATH.is_file():
-        return Config(**json.loads(CONFIG_PATH.read_text('utf-8')))
+        return Config.from_dict(json.loads(CONFIG_PATH.read_text('utf-8')))
 
     return create_config()
 

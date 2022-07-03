@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
+import inspect
 import json
 from datetime import datetime, date
 
@@ -41,3 +42,7 @@ def json_stringify(obj: object, indent: int | None = None) -> str:
     :return: Json strings
     """
     return json.dumps(obj, indent=indent, cls=EnhancedJSONEncoder, ensure_ascii=False)
+
+
+def from_dict(cls, d: dict):
+    return cls(**{k: v for k, v in d.items() if k in inspect.signature(cls).parameters})
