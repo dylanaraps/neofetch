@@ -4,6 +4,8 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
+from typing_extensions import Literal
+
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
 VERSION = '1.0.7'
 
@@ -36,6 +38,9 @@ class GlobalConfig:
     override_distro: str | None
     debug: bool
     is_light: bool
+
+    def light_dark(self) -> Literal['light', 'dark']:
+        return 'light' if self.is_light else 'dark'
 
 
 GLOBAL_CFG = GlobalConfig(color_mode='8bit', override_distro=None, debug=False, is_light=False)

@@ -10,7 +10,7 @@ from typing import Iterable
 
 from hyfetch import presets
 
-from .color_util import printc, color, clear_screen
+from .color_util import printc, color, clear_screen, LightDark
 from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII, GLOBAL_CFG
 from .models import Config
 from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, color_alignments
@@ -98,7 +98,16 @@ def create_config() -> Config:
     title += f'\n&e1. Selected color mode: &r{color_system}'
 
     ##############################
-    # 2. Choose preset
+    # 2. Select light/dark mode
+    clear_screen(title)
+    light_dark = literal_input(f'2. Is your terminal in &gf(#85e7e9)light mode&r or &gf(#c471ed)dark mode&r?',
+                               ['light', 'dark'], 'dark')
+    is_light = light_dark == 'light'
+    GLOBAL_CFG.is_light = is_light
+    title += f'\n&e3. Light/Dark:          &r{light_dark}'
+
+    ##############################
+    # 3. Choose preset
     clear_screen(title)
     printc('&a2. Let\'s choose a flag!')
     printc('Available flag presets:')
@@ -122,19 +131,10 @@ def create_config() -> Config:
         print()
 
     print()
-    tmp = PRESETS['rainbow'].set_light(.7).color_text('preset')
+    tmp = PRESETS['rainbow'].set_light_dl_def(light_dark).color_text('preset')
     preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow', show_ops=False)
     _prs = PRESETS[preset]
-    title += f'\n&e2. Selected flag:       &r{_prs.color_text(preset)}'
-
-    ##############################
-    # 3. Select light/dark mode
-    clear_screen(title)
-    light_dark = literal_input(f'3. Is your terminal in &gf(#85e7e9)light mode&r or &gf(#c471ed)dark mode&r?',
-                               ['light', 'dark'], 'dark')
-    is_light = light_dark == 'light'
-    GLOBAL_CFG.is_light = is_light
-    title += f'\n&e3. Light/Dark:          &r{light_dark}'
+    title += f'\n&e3. Selected flag:       &r{_prs.color_text(preset)}'
 
     #############################
     # 4. Dim/lighten colors
@@ -148,7 +148,7 @@ def create_config() -> Config:
     ratios = [col / (num_cols - 1) for col in range(num_cols)]
     ratios = [r * 0.6 + 0.2 for r in ratios]
     lines = [ColorAlignment('horizontal').recolor_ascii(TEST_ASCII.replace(
-        '{txt}', f'{r * 100:.0f}%'.center(5)), _prs.set_light(r)).split('\n') for r in ratios]
+        '{txt}', f'{r * 100:.0f}%'.center(5)), _prs.set_light_dl(r, light_dark)).split('\n') for r in ratios]
     [printc('  '.join(line)) for line in zip(*lines)]
 
     while True:
@@ -170,11 +170,12 @@ def create_config() -> Config:
             printc('&cUnable to parse lightness value, please input it as a decimal or percentage (e.g. 0.5 or 50%)')
 
     if lightness:
-        _prs = _prs.set_light(lightness)
+        _prs = _prs.set_light_dl(lightness, light_dark)
     title += f'\n&e4. Brightness:          &r{f"{lightness:.2f}" if lightness else "unset"}'
 
     #############################
     # 5. Color arrangement
+    color_alignment = None
     while True:
         clear_screen(title)
         printc(f'&a5. Let\'s choose a color arrangement!')
