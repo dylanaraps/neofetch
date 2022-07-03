@@ -124,15 +124,14 @@ class ColorProfile:
         at_least, at_most = (True, None) if term.lower() == 'dark' else (None, True)
         return self.set_light_raw(light, at_least, at_most)
 
-    def set_light_dl_def(self, term: LightDark = GLOBAL_CFG.light_dark()):
+    def set_light_dl_def(self, term: LightDark | None = None):
         """
         Set default lightness with respect to dark/light terminals
 
         :param term: Terminal color (can be "dark" or "light")
         :return: New color profile (original isn't modified)
         """
-        light = 0.65 if term.lower() == 'dark' else 0.4
-        return self.set_light_dl(light, term)
+        return self.set_light_dl(GLOBAL_CFG.default_lightness(term), term)
 
     def unique_colors(self) -> ColorProfile:
         """

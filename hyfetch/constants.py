@@ -30,6 +30,7 @@ _/\_\_   _/_/\_
 |##|  (_(  |##|""".strip('\n')
 
 TEST_ASCII_WIDTH = max(len(line) for line in TEST_ASCII.split('\n'))
+DEFAULT_DARK_L = 0.
 
 @dataclass
 class GlobalConfig:
@@ -41,6 +42,11 @@ class GlobalConfig:
 
     def light_dark(self) -> Literal['light', 'dark']:
         return 'light' if self.is_light else 'dark'
+
+    def default_lightness(self, term: Literal['light', 'dark'] | None = None) -> float:
+        if term is None:
+            term = self.light_dark()
+        return 0.65 if term.lower() == 'dark' else 0.4
 
 
 GLOBAL_CFG = GlobalConfig(color_mode='8bit', override_distro=None, debug=False, is_light=False)

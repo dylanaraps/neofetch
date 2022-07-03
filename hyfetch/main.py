@@ -146,14 +146,14 @@ def create_config() -> Config:
     # Print cats
     num_cols = TERM_LEN // (TEST_ASCII_WIDTH + 2)
     ratios = [col / (num_cols - 1) for col in range(num_cols)]
-    ratios = [r * 0.6 + 0.2 for r in ratios]
+    ratios = [(r * 0.4 + 0.1) if is_light else (r * 0.4 + 0.5) for r in ratios]
     lines = [ColorAlignment('horizontal').recolor_ascii(TEST_ASCII.replace(
         '{txt}', f'{r * 100:.0f}%'.center(5)), _prs.set_light_dl(r, light_dark)).split('\n') for r in ratios]
     [printc('  '.join(line)) for line in zip(*lines)]
 
     while True:
         print()
-        printc('Which brightness level look the best? (Default: unset)')
+        printc(f'Which brightness level look the best? (Default: left blank = {GLOBAL_CFG.default_lightness(light_dark):.2f} for {light_dark} mode)')
         lightness = input('> ').strip().lower() or None
 
         # Parse lightness
