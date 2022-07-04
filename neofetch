@@ -10323,6 +10323,31 @@ ${c2}             `:smMM${c4}yy${c3}MMNy/`
 EOF
         ;;
 
+        "ShastraOS"*)
+            set_colors 6
+            read -rd '' ascii_data <<'EOF'
+${c1}                          ..,;;,'.              
+                       ':oo.     ;o:            
+                     :o,           ol           
+                   .oo        ..';co:           
+                   ooo',;:looo;                 
+               .;lddl                           
+             cx   .xl     .c:'                  
+            dd     xx     xx ,d;                
+           .xd     cx.    xx   dd.              
+            cx:    .xo    xx    ,x:             
+             'xl    xx    cx'    .xl            
+               xd,  xx    .xd     dx.           
+                .xo:xx     xx    .xx            
+                   'c      xx:.'lx:             
+                      ..,;cxxxo                 
+             .';:codxxl   lxo                   
+           cd.           'xo                    
+           :o,         'ld                      
+            .oc'...';lo      
+EOF
+        ;;
+
         "Scientific"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
