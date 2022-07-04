@@ -1035,7 +1035,7 @@ get_distro() {
                 esac
 
                 # Workaround for NomadBSD.
-                [[ $NAME = FreeBSD ]] && [[ -f /usr/bin/nomadbsd-sysinfo ]] && distro=NomadBSD
+                [[ $distro = FreeBSD* ]] && [[ -f /usr/bin/nomadbsd-sysinfo ]] && distro=NomadBSD
 
             elif [[ -f /etc/GoboLinuxVersion ]]; then
                 case $distro_shorthand in
