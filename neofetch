@@ -2292,6 +2292,12 @@ get_cpu() {
             if [[ $osx_version =~ "10.4" ]]; then
                 cpu="$(system_profiler SPHardwareDataType | grep CPU\ Type)"
                 cpu="${cpu/CPU\ Type\:/}"
+                
+                speed="$(system_profiler SPHardwareDataTypes | grep CPU\ Speed)"
+                speed="${speed/CPU\ Speed\:/}"
+
+                cores="$(system_profiler SPHardwareDataType | grep Number\ Of\ CPUs)"
+                cores="${cores/Number\ Of\ CPUs\:/}"
             else
                 cpu="$(sysctl -n machdep.cpu.brand_string)"
             fi
