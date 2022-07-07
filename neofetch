@@ -1260,7 +1260,7 @@ get_model() {
             if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC") != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
-                if [[ $osx_version =~ "10.4" ]]; then
+                if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
                     model="$(system_profiler SPHardwareDataType | grep Machine\ Name\:)"
                     model=${model/Machine\ Name\:/}
 
@@ -2289,12 +2289,14 @@ get_cpu() {
         ;;
 
         "Mac OS X"|"macOS")
-            if [[ $osx_version =~ "10.4" ]]; then
+            if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
                 cpu="$(system_profiler SPHardwareDataType | grep CPU\ Type)"
                 cpu="${cpu/CPU\ Type\:/}"
                 
-                speed="$(system_profiler SPHardwareDataTypes | grep CPU\ Speed)"
+                speed="$(system_profiler SPHardwareDataType | grep CPU\ Speed)"
                 speed="${speed/CPU\ Speed\:/}"
+		speed="${speed/ MHz/}"
+		speed="${speed/ GHz/}"
 
                 cores="$(system_profiler SPHardwareDataType | grep Number\ Of\ CPUs)"
                 cores="${cores/Number\ Of\ CPUs\:/}"
@@ -2722,7 +2724,7 @@ get_memory() {
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
-            if [[ $osx_version =~ "10.4" ]]; then
+            if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
                 mem_total="$(system_profiler SPHardwareDataType | grep Memory:)"
                 mem_total="${mem_total/Memory\: /}"
                 mem_total="${mem_total/ MB/}"
