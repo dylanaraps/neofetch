@@ -1260,7 +1260,14 @@ get_model() {
             if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC") != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
-                model=$(sysctl -n hw.model)
+                if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
+                    model="$(system_profiler SPHardwareDataType | grep Machine\ Name\:)"
+                    model=${model/Machine\ Name\:/}
+
+                    model="$model ($(sysctl -n hw.model))"
+                else
+                    model=$(sysctl -n hw.model)  
+                fi
             fi
         ;;
 
@@ -2282,7 +2289,20 @@ get_cpu() {
         ;;
 
         "Mac OS X"|"macOS")
-            cpu="$(sysctl -n machdep.cpu.brand_string)"
+            if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
+                cpu="$(system_profiler SPHardwareDataType | grep CPU\ Type)"
+                cpu="${cpu/CPU\ Type\:/}"
+                
+                speed="$(system_profiler SPHardwareDataType | grep CPU\ Speed)"
+                speed="${speed/CPU\ Speed\:/}"
+		speed="${speed/ MHz/}"
+		speed="${speed/ GHz/}"
+
+                cores="$(system_profiler SPHardwareDataType | grep Number\ Of\ CPUs)"
+                cores="${cores/Number\ Of\ CPUs\:/}"
+            else
+                cpu="$(sysctl -n machdep.cpu.brand_string)"
+            fi
 
             # Get CPU cores.
             case $cpu_cores in
@@ -2704,13 +2724,30 @@ get_memory() {
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
-            hw_pagesize="$(sysctl -n hw.pagesize)"
-            mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
-            pages_app="$(($(sysctl -n vm.page_pageable_internal_count) - $(sysctl -n vm.page_purgeable_count)))"
-            pages_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
-            pages_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
-            pages_compressed="${pages_compressed:-0}"
-            mem_used="$(((${pages_app} + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
+            if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
+                mem_total="$(system_profiler SPHardwareDataType | grep Memory:)"
+                mem_total="${mem_total/Memory\: /}"
+                mem_total="${mem_total/ MB/}"
+
+                mem_used="$(vm_stat | grep Pages\ active\:)"
+                mem_used="${mem_used/Pages active\: /}"
+                mem_used="${mem_used/\./}"
+
+		pages_inactive=$(vm_stat | grep "Pages inactive")
+		pages_inactive=${pages_inactive/Pages inactive\: /}
+		pages_inactive=${pages_inactive/\./}
+
+		mem_used=$((mem_used + pages_inactive))
+                mem_used=$((mem_used * 4096 / 1048576))
+            else
+                hw_pagesize="$(sysctl -n hw.pagesize)"
+                mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
+                pages_app="$(($(sysctl -n vm.page_pageable_internal_count) - $(sysctl -n vm.page_purgeable_count)))"
+                pages_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
+                pages_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
+                pages_compressed="${pages_compressed:-0}"
+                mem_used="$(((${pages_app} + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
+            fi
         ;;
 
         "BSD" | "MINIX")
