@@ -2731,6 +2731,11 @@ get_memory() {
                 mem_used="${mem_used/Pages active\: /}"
                 mem_used="${mem_used/\./}"
 
+		pages_inactive=$(vm_stat | grep "Pages inactive")
+		pages_inactive=${pages_inactive/Pages inactive\: /}
+		pages_inactive=${pages_inactive/\./}
+
+		mem_used=$((mem_used + pages_inactive))
                 mem_used=$((mem_used * 4096 / 1048576))
             else
                 hw_pagesize="$(sysctl -n hw.pagesize)"
