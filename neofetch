@@ -999,6 +999,13 @@ get_distro() {
                     *) distro="OS Elbrus $(< /etc/mcst_version)"
                 esac
 
+            elif [[ -f /etc/NIXOS ]]; then
+                case $distro_shorthand in
+                    on) distro="NixOS $(nixos-version | awk '{print substr($1,0,5),$2}')" ;;
+                    tiny) distro="NixOS" ;;
+                    *) distro="NixOS $(nixos-version)" ;;
+                esac
+
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
                     on|tiny) distro="Proxmox VE" ;;
