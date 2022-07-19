@@ -7326,7 +7326,7 @@ EOF
 	        "EncryptOS"*)
             set_colors 2 5 6
             read -rd '' ascii_data <<'EOF'
-${c2}                 *******                     
+${c2}                  *******                     
 ${c2}                ***       **.                  
 ${c2}                **         **                  
 ${c2}                **         **                  
