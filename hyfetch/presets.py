@@ -289,6 +289,40 @@ PRESETS: dict[str, ColorProfile] = {
         '#000000',
     ]),
 
+    # demigender yellow sourced from https://lgbtqia.fandom.com/f/p/4400000000000041031
+    # other colors sourced from demiboy and demigirl flags
+    'demigender': ColorProfile([
+        '#7F7F7F',
+        '#C4C4C4',
+        '#FBFF75',
+        '#FFFFFF',
+        '#FBFF75',
+        '#C4C4C4',
+        '#7F7F7F',
+    ]),
+
+    # demiboy sourced from https://www.flagcolorcodes.com/demiboy
+    'demiboy': ColorProfile([
+        '#7F7F7F',
+        '#C4C4C4',
+        '#9DD7EA',
+        '#FFFFFF',
+        '#9DD7EA',
+        '#C4C4C4',
+        '#7F7F7F',
+    ]),
+
+    # demigirl sourced from https://www.flagcolorcodes.com/demigirl
+    'demigirl': ColorProfile([
+        '#7F7F7F',
+        '#C4C4C4',
+        '#FDADC8',
+        '#FFFFFF',
+        '#FDADC8',
+        '#C4C4C4',
+        '#7F7F7F',
+    ]),
+
     'transmasculine': ColorProfile([
         '#FF8ABD',
         '#CDF5FE',
