@@ -338,6 +338,34 @@ PRESETS: dict[str, ColorProfile] = {
         '#7F7F7F',
     ]),
 
+    # genderfae sourced from https://www.flagcolorcodes.com/genderfae
+    'genderfae': ColorProfile([
+        '#97C3A5',
+        '#C3DEAE',
+        '#F9FACD',
+        '#FFFFFF',
+        '#FCA2C4',
+        '#DB8AE4',
+        '#A97EDD',
+    ]),
+
+    # demifae used colorpicker to source form https://www.deviantart.com/pride-flags/art/Demifae-870194777
+    'demifae': ColorProfile([
+        '#7F7F7F',
+        '#7F7F7F',
+        '#C5C5C5',
+        '#C5C5C5',
+        '#97C3A4',
+        '#C4DEAE',
+        '#FFFFFF',
+        '#FCA2C5',
+        '#AB7EDF',
+        '#C5C5C5',
+        '#C5C5C5',
+        '#7F7F7F',
+        '#7F7F7F',
+    ]),
+
     'neutrois': ColorProfile([
         '#FFFFFF',
         '#1F9F00',
