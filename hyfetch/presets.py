@@ -224,6 +224,35 @@ PRESETS: dict[str, ColorProfile] = {
         '#000000'
     ]),
 
+    # aroace1 sourced from https://flag.library.lgbt/flags/aroace/
+    'aroace1': ColorProfile([
+        '#E28C00',
+        '#ECCD00',
+        '#FFFFFF',
+        '#62AEDC',
+        '#203856'
+    ]),
+
+    'aroace2': ColorProfile([
+        '#000000',
+        '#810081',
+        '#A4A4A4',
+        '#FFFFFF',
+        '#A8D47A',
+        '#3BA740'
+    ]),
+
+    'aroace3': ColorProfile([
+        '#3BA740',
+        '#A8D47A',
+        '#FFFFFF',
+        '#ABABAB',
+        '#000000',
+        '#A4A4A4',
+        '#FFFFFF',
+        '#810081'
+    ]),
+
     # below sourced from https://www.flagcolorcodes.com/flags/pride
     # goto f"https://www.flagcolorcodes.com/{preset}" for info
     # todo: sane sorting
