@@ -201,6 +201,12 @@ PRESETS: dict[str, ColorProfile] = {
         '#1AB3FF'
     ]),
 
+    'polysexual': ColorProfile([
+        '#F714BA',
+        '#01D66A',
+        '#1594F6',
+    ]),
+
     'lesbian': ColorProfile([
         '#D62800',
         '#FF9B56',
