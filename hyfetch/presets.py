@@ -311,6 +311,17 @@ PRESETS: dict[str, ColorProfile] = {
         '#73DEFF',
     ]),
 
+    # genderfaun sourced from https://www.flagcolorcodes.com/genderfaun
+    'genderfaun': ColorProfile([
+        '#FCD689',
+        '#FFF09B',
+        '#FAF9CD',
+        '#FFFFFF',
+        '#8EDED9',
+        '#8CACDE',
+        '#9782EC',
+    ]),
+
     'demifaun': ColorProfile([
         '#7F7F7F',
         '#7F7F7F',
