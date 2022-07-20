@@ -299,6 +299,18 @@ PRESETS: dict[str, ColorProfile] = {
         '#FF8ABD',
     ]),
 
+    # transfeminine used colorpicker to source from https://www.deviantart.com/pride-flags/art/Trans-Woman-Transfeminine-1-543925985
+    # linked from https://gender.fandom.com/wiki/Transfeminine
+    'transfeminine': ColorProfile([
+        '#73DEFF',
+        '#FFE2EE',
+        '#FFB5D6',
+        '#FF8DC0',
+        '#FFB5D6',
+        '#FFE2EE',
+        '#73DEFF',
+    ]),
+
     'demifaun': ColorProfile([
         '#7F7F7F',
         '#7F7F7F',
