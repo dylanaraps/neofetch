@@ -207,6 +207,15 @@ PRESETS: dict[str, ColorProfile] = {
         '#1594F6',
     ]),
 
+    # gay men sourced from https://www.flagcolorcodes.com/gay-men
+    'gay-men': ColorProfile([
+        '#078D70',
+        '#98E8C1',
+        '#FFFFFF',
+        '#7BADE2',
+        '#3D1A78'
+    ]),
+
     'lesbian': ColorProfile([
         '#D62800',
         '#FF9B56',
