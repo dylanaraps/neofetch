@@ -224,6 +224,16 @@ PRESETS: dict[str, ColorProfile] = {
         '#A40062'
     ]),
 
+    # abrosexual used colorpicker to source from
+    # https://fyeahaltpride.tumblr.com/post/151704251345/could-you-guys-possibly-make-an-abrosexual-pride
+    'abrosexual': ColorProfile([
+        '#46D294',
+        '#A3E9CA',
+        '#FFFFFF',
+        '#F78BB3',
+        '#EE1766',
+    ]),
+
     'asexual': ColorProfile([
         '#000000',
         '#A4A4A4',
