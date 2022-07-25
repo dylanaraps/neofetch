@@ -323,6 +323,16 @@ PRESETS: dict[str, ColorProfile] = {
         '#000000',
     ]),
 
+    # bigender sourced from https://www.flagcolorcodes.com/bigender
+    'bigender': ColorProfile([
+        '#C479A2',
+        '#EDA5CD',
+        '#D6C7E8',
+        '#FFFFFF',
+        '#9AC7E8',
+        '#6D82D1',
+    ]),
+
     # demigender yellow sourced from https://lgbtqia.fandom.com/f/p/4400000000000041031
     # other colors sourced from demiboy and demigirl flags
     'demigender': ColorProfile([
