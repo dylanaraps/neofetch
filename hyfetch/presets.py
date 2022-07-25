@@ -329,6 +329,7 @@ PRESETS: dict[str, ColorProfile] = {
         '#EDA5CD',
         '#D6C7E8',
         '#FFFFFF',
+        '#D6C7E8',
         '#9AC7E8',
         '#6D82D1',
     ]),
