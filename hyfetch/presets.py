@@ -207,6 +207,15 @@ PRESETS: dict[str, ColorProfile] = {
         '#1594F6',
     ]),
 
+    # omnisexual sorced from https://www.flagcolorcodes.com/omnisexual
+    'omnisexual': ColorProfile([
+        '#FE9ACE',
+        '#FF53BF',
+        '#200044',
+        '#6760FE',
+        '#8EA6FF',
+    ]),
+
     # gay men sourced from https://www.flagcolorcodes.com/gay-men
     'gay-men': ColorProfile([
         '#078D70',
