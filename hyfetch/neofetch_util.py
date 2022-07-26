@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import os
 import platform
 import re
@@ -15,6 +16,7 @@ from typing_extensions import Literal
 from hyfetch.color_util import color
 from .constants import GLOBAL_CFG
 from .presets import ColorProfile
+from .serializer import from_dict
 
 RE_NEOFETCH_COLOR = re.compile('\\${c[0-9]}')
 
@@ -66,6 +68,10 @@ class ColorAlignment:
 
     # Foreground/background ascii color index
     fore_back: tuple[int, int] = ()
+
+    @classmethod
+    def from_dict(cls, d: dict):
+        return from_dict(cls, d)
 
     def recolor_ascii(self, asc: str, preset: ColorProfile) -> str:
         """
@@ -177,7 +183,7 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
 color_alignments = {
     'fedora': ColorAlignment('horizontal', fore_back=(2, 1)),
     'ubuntu': ColorAlignment('horizontal', fore_back=(2, 1)),
-    'nixos': ColorAlignment('custom', {1: 1, 2: 0}),
+    'NixOS.*': ColorAlignment('custom', {1: 1, 2: 0}),
     # 'arch': ColorAlignment('horizontal'),
     # 'centos': ColorAlignment('horizontal'),
 }

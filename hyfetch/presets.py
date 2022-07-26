@@ -4,7 +4,8 @@ from typing import Iterable
 
 from typing_extensions import Literal
 
-from .color_util import RGB
+from .color_util import RGB, LightDark
+from .constants import GLOBAL_CFG
 
 
 def remove_duplicates(seq: Iterable) -> list:
@@ -100,17 +101,37 @@ class ColorProfile:
         """
         return ColorProfile([c.lighten(multiplier) for c in self.colors])
 
-    def set_light(self, light: float):
+    def set_light_raw(self, light: float, at_least: bool | None = None, at_most: bool | None = None) -> 'ColorProfile':
         """
         Set HSL lightness value
 
         :param light: Lightness value (0-1)
+        :param at_least: Set the lightness to at least this value (no change if greater)
+        :param at_most: Set the lightness to at most this value (no change if lesser)
         :return: New color profile (original isn't modified)
         """
-        return ColorProfile([c.set_light(light) for c in self.colors])
+        return ColorProfile([c.set_light(light, at_least, at_most) for c in self.colors])
 
-    def set_min_light(self, light: float):
-        return ColorProfile([c.set_min_light(light) for c in self.colors])
+    def set_light_dl(self, light: float, term: LightDark = GLOBAL_CFG.light_dark()):
+        """
+        Set HSL lightness value with respect to dark/light terminals
+
+        :param light: Lightness value (0-1)
+        :param term: Terminal color (can be "dark" or "light")
+        :return: New color profile (original isn't modified)
+        """
+        assert term.lower() in ['light', 'dark']
+        at_least, at_most = (True, None) if term.lower() == 'dark' else (None, True)
+        return self.set_light_raw(light, at_least, at_most)
+
+    def set_light_dl_def(self, term: LightDark | None = None):
+        """
+        Set default lightness with respect to dark/light terminals
+
+        :param term: Terminal color (can be "dark" or "light")
+        :return: New color profile (original isn't modified)
+        """
+        return self.set_light_dl(GLOBAL_CFG.default_lightness(term), term)
 
     def unique_colors(self) -> ColorProfile:
         """

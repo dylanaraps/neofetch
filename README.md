@@ -21,9 +21,10 @@ Currently, these distributions have existing packages for HyFetch:
 * ArchLinux: `yay -S hyfetch` (Thanks to @ Aleksana)
 * Nix (Nixpkgs): `nix-env -i hyfetch` ([In Progress](https://github.com/NixOS/nixpkgs/pull/170309))
 * Nix (NUR): ([In Progress](https://github.com/nix-community/NUR/pull/467))
-* Guix: [In progress](https://issues.guix.gnu.org/54847#8-lineno27)
+* Guix: `guix install hyfetch` (Thanks to @ WammKD)
 
 Currently, if you're using Nix the package manager or NixOS, you can use HyFetch with `nix-env -if https://github.com/hykilpikonna/hyfetch/tarball/master -A hyfetch`
+
 > Now `hyfetch` is available in our NixOS-CN's flake. You can add [NixOS-CN](https://github.com/nixos-cn/flakes) in your [Nix Flake](https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html) at first, then install package `hyfetch`.
 > ```
 > #flake.nix
@@ -33,6 +34,7 @@ Currently, if you're using Nix the package manager or NixOS, you can use HyFetch
 >               
 > ```              
 > (Thanks to @ YisuiDenghua and @ linyinfeng )
+
 ## Usage
 
 When you run `hyfetch` for the first time, it will prompt you to choose a color system and a preset. Just follow the prompt, and everything should work (hopefully). If something doesn't work, feel free to submit an issue!

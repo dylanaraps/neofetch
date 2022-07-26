@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import colorsys
-from typing import NamedTuple
+from typing import NamedTuple, Callable, Optional
 
 from typing_extensions import Literal
 
 from .constants import GLOBAL_CFG
 
 AnsiMode = Literal['default', 'ansi', '8bit', 'rgb']
+LightDark = Literal['light', 'dark']
 
 
 MINECRAFT_COLORS = ["&0/\033[0;30m", "&1/\033[0;34m", "&2/\033[0;32m", "&3/\033[0;36m", "&4/\033[0;31m",
@@ -176,16 +177,26 @@ class RGB(NamedTuple):
         """
         return RGB(*redistribute_rgb(*[v * multiplier for v in self]))
 
-    def set_light(self, light: float) -> 'RGB':
+    def set_light(self, light: float, at_least: bool | None = None, at_most: bool | None = None) -> 'RGB':
         """
         Set HSL lightness value
 
         :param light: Lightness value (0-1)
+        :param at_least: Set the lightness to at least this value (no change if greater)
+        :param at_most: Set the lightness to at most this value (no change if lesser)
         :return: New color (original isn't modified)
         """
+        # Convert to HSL
         h, l, s = colorsys.rgb_to_hls(*[v / 255.0 for v in self])
-        return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(h, light, s)])
 
-    def set_min_light(self, light: float) -> 'RGB':
-        h, l, s = colorsys.rgb_to_hls(*[v / 255.0 for v in self])
-        return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(h, max(l, light), s)])
+        # Modify light value
+        if at_least is None and at_most is None:
+            l = light
+        else:
+            if at_most:
+                l = min(l, light)
+            if at_least:
+                l = max(l, light)
+
+        # Convert back to RGB
+        return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(h, l, s)])

@@ -11598,6 +11598,11 @@ main() {
     return 0
 }
 
+get_ascii_distro_name() {
+    get_distro
+    echo "$ascii_distro"
+}
+
 get_print_ascii() {
     cache_uname
     get_os
