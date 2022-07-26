@@ -60,6 +60,11 @@ Feel free to experiment with it!
 ### TODO
 
 * [ ] Add configuration to emphasize certain parts of the original ASCII art (to make icons like Fedora and Ubuntu look nicer)
+* [ ] Paginate flags
+
+### Unpublished Beta (git master)
+
+* Add more flags ([#5](https://github.com/hykilpikonna/hyfetch/pull/5))
 
 ### 1.1.1
 
