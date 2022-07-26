@@ -59,8 +59,20 @@ Feel free to experiment with it!
 
 ### TODO
 
-* [ ] Add interactive configurator for adjusting brightness
 * [ ] Add configuration to emphasize certain parts of the original ASCII art (to make icons like Fedora and Ubuntu look nicer)
+
+### 1.1.1
+
+* Removed `numpy` dependency that was used in 1.1.0
+
+### 1.1.0
+
+* Refactored a lot of things
+* Added Beiyang flag xD
+* Added interactive configurator for brightness adjustment
+* Added dark/light mode selection
+* Added color bar preview for RGB/8bit mode selection
+* Added random color arrangement feature (for NixOS)
 
 ### 1.0.7
 
