@@ -62,12 +62,9 @@ Feel free to experiment with it!
 * [ ] Add configuration to emphasize certain parts of the original ASCII art (to make icons like Fedora and Ubuntu look nicer)
 * [ ] Paginate flags
 
-### Unpublished Beta (git master)
+### 1.1.2
 
 * Add more flags ([#5](https://github.com/hykilpikonna/hyfetch/pull/5))
-
-### 1.1.1
-
 * Removed `numpy` dependency that was used in 1.1.0
 
 ### 1.1.0
