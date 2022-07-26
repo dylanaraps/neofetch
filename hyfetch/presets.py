@@ -201,12 +201,46 @@ PRESETS: dict[str, ColorProfile] = {
         '#1AB3FF'
     ]),
 
+    'polysexual': ColorProfile([
+        '#F714BA',
+        '#01D66A',
+        '#1594F6',
+    ]),
+
+    # omnisexual sorced from https://www.flagcolorcodes.com/omnisexual
+    'omnisexual': ColorProfile([
+        '#FE9ACE',
+        '#FF53BF',
+        '#200044',
+        '#6760FE',
+        '#8EA6FF',
+    ]),
+
+    # gay men sourced from https://www.flagcolorcodes.com/gay-men
+    'gay-men': ColorProfile([
+        '#078D70',
+        '#98E8C1',
+        '#FFFFFF',
+        '#7BADE2',
+        '#3D1A78'
+    ]),
+
     'lesbian': ColorProfile([
         '#D62800',
         '#FF9B56',
         '#FFFFFF',
         '#D462A6',
         '#A40062'
+    ]),
+
+    # abrosexual used colorpicker to source from
+    # https://fyeahaltpride.tumblr.com/post/151704251345/could-you-guys-possibly-make-an-abrosexual-pride
+    'abrosexual': ColorProfile([
+        '#46D294',
+        '#A3E9CA',
+        '#FFFFFF',
+        '#F78BB3',
+        '#EE1766',
     ]),
 
     'asexual': ColorProfile([
@@ -222,6 +256,35 @@ PRESETS: dict[str, ColorProfile] = {
         '#FFFFFF',
         '#ABABAB',
         '#000000'
+    ]),
+
+    # aroace1 sourced from https://flag.library.lgbt/flags/aroace/
+    'aroace1': ColorProfile([
+        '#E28C00',
+        '#ECCD00',
+        '#FFFFFF',
+        '#62AEDC',
+        '#203856'
+    ]),
+
+    'aroace2': ColorProfile([
+        '#000000',
+        '#810081',
+        '#A4A4A4',
+        '#FFFFFF',
+        '#A8D47A',
+        '#3BA740'
+    ]),
+
+    'aroace3': ColorProfile([
+        '#3BA740',
+        '#A8D47A',
+        '#FFFFFF',
+        '#ABABAB',
+        '#000000',
+        '#A4A4A4',
+        '#FFFFFF',
+        '#810081'
     ]),
 
     # below sourced from https://www.flagcolorcodes.com/flags/pride
@@ -260,6 +323,51 @@ PRESETS: dict[str, ColorProfile] = {
         '#000000',
     ]),
 
+    # bigender sourced from https://www.flagcolorcodes.com/bigender
+    'bigender': ColorProfile([
+        '#C479A2',
+        '#EDA5CD',
+        '#D6C7E8',
+        '#FFFFFF',
+        '#D6C7E8',
+        '#9AC7E8',
+        '#6D82D1',
+    ]),
+
+    # demigender yellow sourced from https://lgbtqia.fandom.com/f/p/4400000000000041031
+    # other colors sourced from demiboy and demigirl flags
+    'demigender': ColorProfile([
+        '#7F7F7F',
+        '#C4C4C4',
+        '#FBFF75',
+        '#FFFFFF',
+        '#FBFF75',
+        '#C4C4C4',
+        '#7F7F7F',
+    ]),
+
+    # demiboy sourced from https://www.flagcolorcodes.com/demiboy
+    'demiboy': ColorProfile([
+        '#7F7F7F',
+        '#C4C4C4',
+        '#9DD7EA',
+        '#FFFFFF',
+        '#9DD7EA',
+        '#C4C4C4',
+        '#7F7F7F',
+    ]),
+
+    # demigirl sourced from https://www.flagcolorcodes.com/demigirl
+    'demigirl': ColorProfile([
+        '#7F7F7F',
+        '#C4C4C4',
+        '#FDADC8',
+        '#FFFFFF',
+        '#FDADC8',
+        '#C4C4C4',
+        '#7F7F7F',
+    ]),
+
     'transmasculine': ColorProfile([
         '#FF8ABD',
         '#CDF5FE',
@@ -268,6 +376,29 @@ PRESETS: dict[str, ColorProfile] = {
         '#9AEBFF',
         '#CDF5FE',
         '#FF8ABD',
+    ]),
+
+    # transfeminine used colorpicker to source from https://www.deviantart.com/pride-flags/art/Trans-Woman-Transfeminine-1-543925985
+    # linked from https://gender.fandom.com/wiki/Transfeminine
+    'transfeminine': ColorProfile([
+        '#73DEFF',
+        '#FFE2EE',
+        '#FFB5D6',
+        '#FF8DC0',
+        '#FFB5D6',
+        '#FFE2EE',
+        '#73DEFF',
+    ]),
+
+    # genderfaun sourced from https://www.flagcolorcodes.com/genderfaun
+    'genderfaun': ColorProfile([
+        '#FCD689',
+        '#FFF09B',
+        '#FAF9CD',
+        '#FFFFFF',
+        '#8EDED9',
+        '#8CACDE',
+        '#9782EC',
     ]),
 
     'demifaun': ColorProfile([
@@ -282,6 +413,34 @@ PRESETS: dict[str, ColorProfile] = {
         '#9682EC',
         '#C6C6C6',
         '#C6C6C6',
+        '#7F7F7F',
+        '#7F7F7F',
+    ]),
+
+    # genderfae sourced from https://www.flagcolorcodes.com/genderfae
+    'genderfae': ColorProfile([
+        '#97C3A5',
+        '#C3DEAE',
+        '#F9FACD',
+        '#FFFFFF',
+        '#FCA2C4',
+        '#DB8AE4',
+        '#A97EDD',
+    ]),
+
+    # demifae used colorpicker to source form https://www.deviantart.com/pride-flags/art/Demifae-870194777
+    'demifae': ColorProfile([
+        '#7F7F7F',
+        '#7F7F7F',
+        '#C5C5C5',
+        '#C5C5C5',
+        '#97C3A4',
+        '#C4DEAE',
+        '#FFFFFF',
+        '#FCA2C5',
+        '#AB7EDF',
+        '#C5C5C5',
+        '#C5C5C5',
         '#7F7F7F',
         '#7F7F7F',
     ]),
