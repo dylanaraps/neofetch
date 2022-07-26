@@ -79,6 +79,8 @@ Feel free to experiment with it!
 * Added color bar preview for RGB/8bit mode selection
 * Added random color arrangement feature (for NixOS)
 
+<img src="https://user-images.githubusercontent.com/22280294/180901539-014f036e-c926-4470-ac72-a6d6dcf30672.png" width="100px" />
+
 ### 1.0.7
 
 * Fix: Make config path not on init but when it's actually needed.
