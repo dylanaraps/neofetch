@@ -185,8 +185,8 @@ def create_config() -> Config:
         asc = get_distro_ascii()
         asc_width = ascii_size(asc)[0]
         asciis = [
-            ['Horizontal'.center(asc_width), *ColorAlignment('horizontal').recolor_ascii(asc, _prs).split('\n')],
-            ['Vertical'.center(asc_width), *ColorAlignment('vertical').recolor_ascii(asc, _prs).split('\n')],
+            [*ColorAlignment('horizontal').recolor_ascii(asc, _prs).split('\n'), 'Horizontal'.center(asc_width)],
+            [*ColorAlignment('vertical').recolor_ascii(asc, _prs).split('\n'), 'Vertical'.center(asc_width)],
         ]
         ascii_per_row = TERM_LEN // (asc_width + 2)
 
@@ -196,10 +196,10 @@ def create_config() -> Config:
         while len(pis) < len(set(re.findall('(?<=\\${c)[0-9](?=})', asc))):
             pis += pis
         perm = list(permutations(pis))
-        random_count = ascii_per_row - 2
+        random_count = ascii_per_row * 2 - 2
         choices = random.sample(perm, random_count)
         choices = [{i: n for i, n in enumerate(c)} for c in choices]
-        asciis += [[f'random{i}'.center(asc_width), *ColorAlignment('custom', r).recolor_ascii(asc, _prs).split('\n')]
+        asciis += [[*ColorAlignment('custom', r).recolor_ascii(asc, _prs).split('\n'), f'random{i}'.center(asc_width)]
                    for i, r in enumerate(choices)]
 
         while asciis:
@@ -220,7 +220,7 @@ def create_config() -> Config:
         if choice in ['horizontal', 'vertical']:
             color_alignment = ColorAlignment(choice)
         elif choice.startswith('random'):
-            color_alignment = ColorAlignment('custom', choices[int(choice[6]) - 1])
+            color_alignment = ColorAlignment('custom', choices[int(choice[6])])
         else:
             raise NotImplementedError()
 
@@ -243,7 +243,7 @@ def create_config() -> Config:
 
 def run():
     # Create CLI
-    hyfetch = color('&b&lhy&f&lfetch&r')
+    hyfetch = color('&b&lhyfetch&r')
     parser = argparse.ArgumentParser(description=color(f'{hyfetch} - neofetch with flags <3'))
 
     parser.add_argument('-c', '--config', action='store_true', help=color(f'Configure {hyfetch}'))
