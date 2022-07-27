@@ -3598,6 +3598,9 @@ END
                          "$termite_config")"
         ;;
 
+        "Termux $TERMUX_VERSION")
+            term_font=$(fc-scan /data/data/com.termux/files/home/.termux/font.ttf|grep fullname:|cut -d '"' -f2)
+
         urxvt|urxvtd|rxvt-unicode|xterm)
             xrdb=$(xrdb -query)
             term_font=$(grep -im 1 -e "^${term/d}"'\**\.*font:' -e '^\*font:' <<< "$xrdb")
