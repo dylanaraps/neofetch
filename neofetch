@@ -1125,11 +1125,11 @@ get_distro() {
             distro=${distro/NAME=}
 
             if [[ -f /usr/bin/system-image-cli ]]; then
-                export ut_ota = $(system-image-cli -i | awk '/version tag:/ { print $3 }');
+                export ut_ota=$(system-image-cli -i | awk '/version tag:/ { print $3 }');
                 distro="Ubuntu Touch $ut_ota";
 
                 # There's a weird UT bug where the HOSTNAME is set to android.
-                export HOSTNAME=$(hostname);
+                HOSTNAME=$(hostname);
             fi
 
             # Get Ubuntu flavor.
