@@ -52,6 +52,7 @@ Feel free to experiment with it!
 ### TODO
 
 * [ ] Paginate flags
+* [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
 <img width="200px" src="https://user-images.githubusercontent.com/22280294/181790059-47aa6f80-be99-4e67-8fa5-5c02b02842c6.png" align="right">
 
