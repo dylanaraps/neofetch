@@ -51,8 +51,14 @@ Feel free to experiment with it!
 
 ### TODO
 
-* [ ] Add configuration to emphasize certain parts of the original ASCII art (to make icons like Fedora and Ubuntu look nicer)
 * [ ] Paginate flags
+
+### 1.1.3
+
+* Add foreground-background color arrangement to make Fedora and Ubuntu look nicer
+* Allow typing abbreviations in flag selection
+* Fix: Duplicate random color arrangements are appearing in selection screen
+* Fix: Inconsistant color arrangement when saved to config file
 
 ### 1.1.2
 
