@@ -55,13 +55,29 @@ def literal_input(prompt: str, options: Iterable[str], default: str, show_ops: b
     else:
         printc(f'{prompt} (default: {default})')
 
-    selection = input('> ') or default
-    while not selection.lower() in lows:
+    def find_selection(sel: str):
+        if not sel:
+            return None
+
+        # Find exact match
+        if sel in lows:
+            return options[lows.index(sel)]
+
+        # Find starting abbreviation
+        for i, op in enumerate(lows):
+            if op.startswith(sel):
+                return options[i]
+
+        return None
+
+    selection = input('> ').lower() or default
+    while not find_selection(selection):
         print(f'Invalid selection! {selection} is not one of {"|".join(options)}')
-        selection = input('> ') or default
+        selection = input('> ').lower() or default
+
     print()
 
-    return options[lows.index(selection)]
+    return find_selection(selection)
 
 
 def create_config() -> Config:
