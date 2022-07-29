@@ -53,7 +53,9 @@ Feel free to experiment with it!
 
 * [ ] Paginate flags
 
-### 1.1.3
+<img width="200px" src="https://user-images.githubusercontent.com/22280294/181790059-47aa6f80-be99-4e67-8fa5-5c02b02842c6.png" align="right">
+
+### 1.1.3rc1
 
 * Add foreground-background color arrangement to make Fedora and Ubuntu look nicer
 * Allow typing abbreviations in flag selection
@@ -65,6 +67,8 @@ Feel free to experiment with it!
 * Add more flags ([#5](https://github.com/hykilpikonna/hyfetch/pull/5))
 * Removed `numpy` dependency that was used in 1.1.0
 
+<img width="200px" src="https://user-images.githubusercontent.com/22280294/180901539-014f036e-c926-4470-ac72-a6d6dcf30672.png" align="right">
+
 ### 1.1.0
 
 * Refactored a lot of things
@@ -73,8 +77,6 @@ Feel free to experiment with it!
 * Added dark/light mode selection
 * Added color bar preview for RGB/8bit mode selection
 * Added random color arrangement feature (for NixOS)
-
-<img src="https://user-images.githubusercontent.com/22280294/180901539-014f036e-c926-4470-ac72-a6d6dcf30672.png" width="100px" />
 
 ### 1.0.7
 
@@ -135,6 +137,7 @@ The information by default is displayed alongside your operating system's logo. 
 <img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" height="240px">
 
 You can further configure Neofetch to display exactly what you want it to. Through the use of command-line flags and the configuration file you can change existing information outputs or add your own custom ones.
+
 
 Neofetch supports almost 150 different operating systems. From Linux to Windows, all the way to more obscure operating systems like Minix, AIX and Haiku. If your favourite operating system is unsupported: Open up an issue and support will be added.
 
