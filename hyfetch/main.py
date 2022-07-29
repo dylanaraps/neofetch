@@ -186,9 +186,9 @@ def create_config() -> Config:
         asc = get_distro_ascii()
         asc_width = ascii_size(asc)[0]
         fore_back = get_fore_back()
-        asciis = [
-            [*ColorAlignment('horizontal', fore_back=fore_back).recolor_ascii(asc, _prs).split('\n'), 'Horizontal'.center(asc_width)],
-            [*ColorAlignment('vertical').recolor_ascii(asc, _prs).split('\n'), 'Vertical'.center(asc_width)],
+        arrangements = [
+            ('Horizontal', ColorAlignment('horizontal', fore_back=fore_back)),
+            ('Vertical', ColorAlignment('vertical'))
         ]
         ascii_per_row = TERM_LEN // (asc_width + 2)
 
@@ -204,8 +204,8 @@ def create_config() -> Config:
         else:
             choices = random.sample(perm, random_count)
         choices = [{i + 1: n for i, n in enumerate(c)} for c in choices]
-        asciis += [[*ColorAlignment('custom', r).recolor_ascii(asc, _prs).split('\n'), f'random{i}'.center(asc_width)]
-                   for i, r in enumerate(choices)]
+        arrangements += [(f'random{i}', ColorAlignment('custom', r)) for i, r in enumerate(choices)]
+        asciis = [[*ca.recolor_ascii(asc, _prs).split('\n'), k.center(asc_width)] for k, ca in arrangements]
 
         while asciis:
             current = asciis[:ascii_per_row]
@@ -224,12 +224,13 @@ def create_config() -> Config:
         if choice == 'roll':
             continue
 
-        if choice in ['horizontal', 'vertical']:
-            color_alignment = ColorAlignment(choice)
-        elif choice.startswith('random'):
-            color_alignment = ColorAlignment('custom', choices[int(choice[6])])
+        # Save choice
+        arrangement_index = {k.lower(): ca for k, ca in arrangements}
+        if choice in arrangement_index:
+            color_alignment = arrangement_index[choice]
         else:
-            raise NotImplementedError()
+            print('Invalid choice.')
+            continue
 
         break
 
