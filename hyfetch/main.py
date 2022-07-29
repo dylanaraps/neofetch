@@ -194,14 +194,17 @@ def create_config() -> Config:
         ascii_per_row = TERM_LEN // (asc_width + 2)
 
         # Random color schemes
-        # ascii_indices =
         pis = list(range(len(_prs.unique_colors().colors)))
-        while len(pis) < len(set(re.findall('(?<=\\${c)[0-9](?=})', asc))):
+        slots = len(set(re.findall('(?<=\\${c)[0-9](?=})', asc)))
+        while len(pis) < slots:
             pis += pis
-        perm = list(permutations(pis))
+        perm = {p[:slots] for p in permutations(pis)}
         random_count = ascii_per_row * 2 - 2
-        choices = random.sample(perm, random_count)
-        choices = [{i: n for i, n in enumerate(c)} for c in choices]
+        if random_count > len(perm):
+            choices = perm
+        else:
+            choices = random.sample(perm, random_count)
+        choices = [{i + 1: n for i, n in enumerate(c)} for c in choices]
         asciis += [[*ColorAlignment('custom', r).recolor_ascii(asc, _prs).split('\n'), f'random{i}'.center(asc_width)]
                    for i, r in enumerate(choices)]
 
@@ -213,7 +216,7 @@ def create_config() -> Config:
             [printc('  '.join(line)) for line in zip(*current)]
             print()
 
-        print('You can type "roll" to randomize again.')
+        print('Choose a color arrangement. You can type "roll" to randomize again.')
         print()
         choice = literal_input(f'Your choice?', ['horizontal', 'vertical', 'roll'] + [f'random{i}' for i in range(random_count)], 'horizontal')
 
