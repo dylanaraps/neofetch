@@ -5212,6 +5212,7 @@ OTHER:
     --stdout                    Turn off all colors and disables any ASCII/image backend.
     --help                      Print this text and exit
     --version                   Show neofetch version
+    --update                    Update to latest version
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
 
@@ -5484,6 +5485,13 @@ get_args() {
                 # Known implicit unused variables.
                 mpc_args=()
                 printf '%s\n' "$kernel $icons $font $battery $locale ${mpc_args[*]}"
+            ;;
+
+            "--update")
+                printf 'Updating...\n'
+                curl -s -o "$0" https://raw.githubusercontent.com/OldWorldOrdr/neofetch/master/neofetch
+                printf 'Done.\n'
+                exit
             ;;
         esac
 
