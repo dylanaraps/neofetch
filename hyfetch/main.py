@@ -13,7 +13,8 @@ from hyfetch import presets
 from .color_util import printc, color, clear_screen, LightDark
 from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII, GLOBAL_CFG
 from .models import Config
-from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, color_alignments
+from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, fore_back, \
+    get_fore_back
 from .presets import PRESETS
 
 
@@ -181,14 +182,12 @@ def create_config() -> Config:
     color_alignment = None
     while True:
         clear_screen(title)
-        printc(f'&a5. Let\'s choose a color arrangement!')
-        printc(f'You can choose standard horizontal or vertical alignment, or use one of the random color schemes, or assign colors yourself (TODO).')
-        print()
 
         asc = get_distro_ascii()
         asc_width = ascii_size(asc)[0]
+        fore_back = get_fore_back()
         asciis = [
-            [*ColorAlignment('horizontal').recolor_ascii(asc, _prs).split('\n'), 'Horizontal'.center(asc_width)],
+            [*ColorAlignment('horizontal', fore_back=fore_back).recolor_ascii(asc, _prs).split('\n'), 'Horizontal'.center(asc_width)],
             [*ColorAlignment('vertical').recolor_ascii(asc, _prs).split('\n'), 'Vertical'.center(asc_width)],
         ]
         ascii_per_row = TERM_LEN // (asc_width + 2)
@@ -216,7 +215,9 @@ def create_config() -> Config:
             [printc('  '.join(line)) for line in zip(*current)]
             print()
 
-        print('Choose a color arrangement. You can type "roll" to randomize again.')
+        printc(f'&a5. Let\'s choose a color arrangement!')
+        printc(f'You can choose standard horizontal or vertical alignment, or use one of the random color schemes.')
+        print('You can type "roll" to randomize again.')
         print()
         choice = literal_input(f'Your choice?', ['horizontal', 'vertical', 'roll'] + [f'random{i}' for i in range(random_count)], 'horizontal')
 
@@ -312,7 +313,7 @@ def run():
     # Debug recommendations
     if args.debug_list:
         distro = args.debug_list
-        ca = color_alignments[distro]
+        ca = fore_back[distro]
 
         print(distro)
         GLOBAL_CFG.override_distro = distro

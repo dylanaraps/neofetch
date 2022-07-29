@@ -150,6 +150,10 @@ def get_distro_ascii(distro: str | None = None) -> str:
     return normalize_ascii(check_output([get_command_path(), cmd]).decode().strip())
 
 
+def get_distro_name():
+    return check_output([get_command_path(), 'ascii_distro_name']).decode().strip()
+
+
 def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
     asc = get_distro_ascii()
     w, h = ascii_size(asc)
@@ -179,12 +183,26 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
             subprocess.run(full_cmd)
 
 
-# Color alignment recommendations
-color_alignments = {
-    'fedora': ColorAlignment('horizontal', fore_back=(2, 1)),
-    'ubuntu': ColorAlignment('horizontal', fore_back=(2, 1)),
-    'NixOS.*': ColorAlignment('custom', {1: 1, 2: 0}),
-    # 'arch': ColorAlignment('horizontal'),
-    # 'centos': ColorAlignment('horizontal'),
+def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:
+    """
+    Get recommended foreground-background configuration for distro, or None if the distro ascii is
+    not suitable for fore-back configuration.
+
+    :return:
+    """
+    if not distro and GLOBAL_CFG.override_distro:
+        distro = GLOBAL_CFG.override_distro
+    if not distro:
+        distro = get_distro_name().lower()
+    for k, v in fore_back.items():
+        if distro.startswith(k.lower()):
+            return v
+    return None
+
+
+# Foreground-background recommendation
+fore_back = {
+    'fedora': (2, 1),
+    'ubuntu': (2, 1),
 }
 
