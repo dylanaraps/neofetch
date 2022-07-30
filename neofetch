@@ -2211,7 +2211,7 @@ get_cpu() {
                 ;;
                 
                 "riscv"*)
-                    cpu="$(lscpu | awk -F': ' '/uarch/ {print $2; exit}' )"
+                    cpu="$(awk -F': ' '/uarch/ {print $2; exit}' "$cpu_file")"
                 ;;
 		
                 *)
