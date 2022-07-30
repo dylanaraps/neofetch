@@ -49,8 +49,9 @@ if __name__ == '__main__':
     # Merge head branch
     print()
     print('Merging fetch_head...')
+    title = info["title"].replace('"', '\\"')
     os.system(f'git merge FETCH_HEAD --no-ff --no-edit '
-              f'-m "[PR] {upstream}#{pr} from {user} - {info["title"]}" '
+              f'-m "[PR] {upstream}#{pr} from {user} - {title}" '
               f'-m "Upstream PR: https://github.com/{upstream}/pull/{pr}  \n'
               f'Thanks to @{user}\n\n'
               f'Co-authored-by: {author["name"]} <{author["email"]}>"')
