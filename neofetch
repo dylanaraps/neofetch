@@ -6697,7 +6697,7 @@ EOF
 
         "Center"*)
             read -rd '' ascii_data <<'EOF'
-${c2}                           .
+${c2}                    .
                     o,
             .       d,       .
             ';'   ..d;..  .cl'
