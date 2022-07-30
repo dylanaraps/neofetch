@@ -69,7 +69,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 </details>
 
 <details>
-  <summary>:framed_picture: Additional Distro/OS Support</summary><br>
+  <summary>:framed_picture: Distro/OS Support Changes</summary><br>
 
 * OS - Identify macOS 13 Ventura ([#8](https://github.com/hykilpikonna/hyfetch/pull/8))
 * Distro - Add Univalent (dylanaraps/neofetch#2162)
@@ -77,13 +77,20 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 * Distro - Add GrapheneOS (dylanaraps/neofetch#2146)
 * Distro - Add ShastraOS (dylanaraps/neofetch#2149)
 * Distro - Add Ubuntu Touch (dylanaraps/neofetch#2167)
+* Distro - Add Ubuntu Sway (dylanaraps/neofetch#2136)
+* Distro - Add Orchid Linux (dylanaraps/neofetch#2144)
+* Distro - Improve NixOS version detection (dylanaraps/neofetch#2157)
 
 </details>
 
 <details>
-  <summary>:framed_picture: Additional Terminal Support</summary><br>
+  <summary>:framed_picture: Device Support Changes</summary><br>
 
 * Terminal - Add Termux (dylanaraps/neofetch#2168)
+* CPU - Add loongarch64 (dylanaraps/neofetch#2140)
+* CPU - Identify CPU name for ARM / RISCV (dylanaraps/neofetch#2139)
+* Battery - Fix file not found (dylanaraps/neofetch#2130)
+* GPU - Identify open-kernal Nvidia driver version (dylanaraps/neofetch#2128)
 
 </details>
 
