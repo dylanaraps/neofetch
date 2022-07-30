@@ -61,7 +61,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 * :rocket: Take over `neofetch` with `neowofetch`
 
 <details>
-  <summary>:framed_picture: Ascii Art Changes</summary>
+  <summary>:framed_picture: Ascii Art Changes</summary><br>
 
 * Ascii - Add uwuntu (https://github.com/hykilpikonna/hyfetch/pull/9) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
 * Ascii - Better Void ascii art ([#10](https://github.com/hykilpikonna/hyfetch/pull/10))
@@ -69,11 +69,21 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 </details>
 
 <details>
-  <summary>:framed_picture: Additional Distro/OS Support</summary>
+  <summary>:framed_picture: Additional Distro/OS Support</summary><br>
 
 * OS - Identify macOS 13 Ventura ([#8](https://github.com/hykilpikonna/hyfetch/pull/8))
 * Distro - Add Univalent (dylanaraps/neofetch#2162)
 * Distro - Add NomadBSD (dylanaraps/neofetch#2147)
+* Distro - Add GrapheneOS (dylanaraps/neofetch#2146)
+* Distro - Add ShastraOS (dylanaraps/neofetch#2149)
+* Distro - Add Ubuntu Touch (dylanaraps/neofetch#2167)
+
+</details>
+
+<details>
+  <summary>:framed_picture: Additional Terminal Support</summary><br>
+
+* Terminal - Add Termux (dylanaraps/neofetch#2168)
 
 </details>
 
