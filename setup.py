@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import pathlib
 
 from setuptools import setup
@@ -38,4 +39,5 @@ setup(
             "hyfetch=hyfetch.main:run",
         ]
     },
+    scripts=['hyfetch/scripts/neowofetch']
 )
