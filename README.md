@@ -67,7 +67,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 <details>
   <summary>🖼️ Ascii Art Changes</summary><br>
 
-* Ascii - Add uwuntu (https://github.com/hykilpikonna/hyfetch/pull/9) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
+* Ascii - Add uwuntu ([#9](https://github.com/hykilpikonna/hyfetch/pull/9)) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
 * Ascii - Better Void ascii art ([#10](https://github.com/hykilpikonna/hyfetch/pull/10))
 * Ascii - Update old NixOS logo for compatibility (dylanaraps/neofetch#2114)
 
