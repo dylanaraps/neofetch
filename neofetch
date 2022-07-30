@@ -7820,7 +7820,7 @@ EOF
         "GrapheneOS"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
-${c1}                   B?
+${c1}                        B?
                         G~
                         G~&
                       G!^:^?#
