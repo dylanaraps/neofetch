@@ -43,7 +43,7 @@ if __name__ == '__main__':
     print()
     print('Merging fetch_head...')
     os.system(f'git merge FETCH_HEAD --no-ff --no-edit '
-              f'-m "[PR] Merge pull request {upstream}#{pr} from {user}:{head_br}" '
+              f'-m "[PR] {upstream}#{pr} from {user} - {info["title"]}" '
               f'-m "Upstream PR: https://github.com/{upstream}/pull/{pr}  \nThanks to @{user}"')
 
     # Create GitHub Pull Request
