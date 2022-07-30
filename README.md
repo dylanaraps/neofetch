@@ -52,20 +52,20 @@ Feel free to experiment with it!
 
 ### About Notation
 
-Updates to HyFetch begins with the emoji :rainbow:  
-Updates to `neowofetch` begins with the emoji :framed_picture:
+Updates to HyFetch begins with the emoji 🌈  
+Updates to `neowofetch` begins with the emoji 🖼️
 
 ### TODO
 
 * [ ] Paginate flags
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
-### Unpublished 1.2.0
+### 1.2.0
 
-* :rocket: Take over `neofetch` with `neowofetch`
+* 🚀 Take over `neofetch` with `neowofetch`
 
 <details>
-  <summary>:framed_picture: Ascii Art Changes</summary><br>
+  <summary>🖼️ Ascii Art Changes</summary><br>
 
 * Ascii - Add uwuntu (https://github.com/hykilpikonna/hyfetch/pull/9) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
 * Ascii - Better Void ascii art ([#10](https://github.com/hykilpikonna/hyfetch/pull/10))
@@ -74,7 +74,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 </details>
 
 <details>
-  <summary>:framed_picture: Distro/OS Support Changes</summary><br>
+  <summary>🖼️ Distro/OS Support Changes</summary><br>
 
 * OS - Identify macOS 13 Ventura ([#8](https://github.com/hykilpikonna/hyfetch/pull/8))
 * OS - Windows 11 Fluent (dylanaraps/neofetch#2109)
@@ -96,7 +96,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 </details>
 
 <details>
-  <summary>:framed_picture: Device Support Changes</summary><br>
+  <summary>🖼️ Device Support Changes</summary><br>
 
 * Terminal - Add Termux (dylanaraps/neofetch#2168)
 * CPU - Add loongarch64 (dylanaraps/neofetch#2140)
@@ -107,7 +107,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 </details>
 
 <details>
-  <summary>:framed_picture: Bug Fixes</summary><br>
+  <summary>🖼️ Bug Fixes</summary><br>
 
 * Bug Fix - Fix broken fedora output (dylanaraps/neofetch#2084)
 
@@ -117,10 +117,10 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 
 ### 1.1.3rc1
 
-* :rainbow: Add foreground-background color arrangement to make Fedora and Ubuntu look nicer
-* :rainbow: Allow typing abbreviations in flag selection
-* :rainbow: Fix: Duplicate random color arrangements are appearing in selection screen
-* :rainbow: Fix: Inconsistant color arrangement when saved to config file
+* 🌈 Add foreground-background color arrangement to make Fedora and Ubuntu look nicer
+* 🌈 Allow typing abbreviations in flag selection
+* 🌈 Fix: Duplicate random color arrangements are appearing in selection screen
+* 🌈 Fix: Inconsistant color arrangement when saved to config file
 
 ### 1.1.2
 
