@@ -3984,8 +3984,7 @@ get_gpu_driver() {
             gpu_driver="${gpu_driver%, }"
 
             if [[ "$gpu_driver" == *"nvidia"* ]]; then
-                gpu_driver="$(< /proc/driver/nvidia/version)"
-                gpu_driver="${gpu_driver/*Module  }"
+                gpu_driver="$(< /sys/module/nvidia/version)"
                 gpu_driver="NVIDIA ${gpu_driver/  *}"
             fi
         ;;
