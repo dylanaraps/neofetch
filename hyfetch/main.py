@@ -277,7 +277,6 @@ def run():
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
     parser.add_argument('--debug', action='store_true', help=color(f'Debug mode'))
-    parser.add_argument('--debug-list', help=color(f'Debug recommendations'))
     parser.add_argument('--test-distro', help=color(f'Test for a specific distro'))
     parser.add_argument('--test-print', action='store_true', help=color(f'Test print distro ascii art only'))
 
@@ -326,17 +325,6 @@ def run():
         preset = preset.set_light_raw(args.light)
     if config.lightness:
         preset = preset.set_light_dl(config.lightness)
-
-    # Debug recommendations
-    if args.debug_list:
-        distro = args.debug_list
-        ca = fore_back[distro]
-
-        print(distro)
-        GLOBAL_CFG.override_distro = distro
-        asciis = [ca.recolor_ascii(get_distro_ascii(distro), p).split('\n') for p in list(PRESETS.values())[:3]]
-        [printc('  '.join(line)) for line in zip(*asciis)]
-        return
 
     # Run
     run_neofetch(preset, config.color_align)
