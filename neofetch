@@ -11646,17 +11646,4 @@ get_print_custom_ascii() {
     echo "$ascii_data"
 }
 
-get_test_distro_ascii() {
-    # Load default config.
-    eval "$config"
-
-    distro="$CUSTOM_DISTRO"
-    ascii_distro=$distro
-    get_bold
-    get_distro_ascii
-
-    image_backend
-    dynamic_prompt
-}
-
 main "$@"

@@ -8,13 +8,10 @@ import re
 from itertools import permutations
 from typing import Iterable
 
-from hyfetch import presets
-
-from .color_util import printc, color, clear_screen, LightDark
+from .color_util import printc, color, clear_screen
 from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII, GLOBAL_CFG
 from .models import Config
-from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, fore_back, \
-    get_fore_back
+from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, get_fore_back
 from .presets import PRESETS
 
 
@@ -279,7 +276,6 @@ def run():
     parser.add_argument('--debug', action='store_true', help=f'Debug mode')
     parser.add_argument('--test-distro', help=f'Test for a specific distro')
     parser.add_argument('--test-print', action='store_true', help=f'Test print distro ascii art only')
-    parser.add_argument('--no-color', action='store_true', help=f'Use original neofetch without colors')
 
     args = parser.parse_args()
 
@@ -326,9 +322,6 @@ def run():
         preset = preset.set_light_raw(args.light)
     if config.lightness:
         preset = preset.set_light_dl(config.lightness)
-
-    if args.no_color:
-        preset = None
 
     # Run
     run_neofetch(preset, config.color_align)
