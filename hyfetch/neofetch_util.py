@@ -127,7 +127,7 @@ def get_command_path() -> str:
 
     :return: Command path
     """
-    return pkg_resources.resource_filename(__name__, 'scripts/neofetch_mod.sh')
+    return pkg_resources.resource_filename(__name__, 'scripts/neowofetch')
 
 
 def get_distro_ascii(distro: str | None = None) -> str:
