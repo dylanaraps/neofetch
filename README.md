@@ -56,7 +56,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 * [ ] Paginate flags
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
-### Unpublished 1.1.4
+### Unpublished 1.2.0
 
 * :rocket: Take over `neofetch` with `neowofetch`
 
@@ -65,6 +65,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 
 * Ascii - Add uwuntu (https://github.com/hykilpikonna/hyfetch/pull/9) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
 * Ascii - Better Void ascii art ([#10](https://github.com/hykilpikonna/hyfetch/pull/10))
+* Ascii - Update old NixOS logo for compatibility (dylanaraps/neofetch#2114)
 
 </details>
 
@@ -72,6 +73,11 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
   <summary>:framed_picture: Distro/OS Support Changes</summary><br>
 
 * OS - Identify macOS 13 Ventura ([#8](https://github.com/hykilpikonna/hyfetch/pull/8))
+* OS - Windows 11 Fluent (dylanaraps/neofetch#2109)
+* Distro - Add Asahi Linux (dylanaraps/neofetch#2079)
+* Distro - Add CenterOS (dylanaraps/neofetch#2097)
+* Distro - Add Finnix (dylanaraps/neofetch#2099)
+* Distro - Add Miracle Linux (dylanaraps/neofetch#2085)
 * Distro - Add Univalent (dylanaraps/neofetch#2162)
 * Distro - Add NomadBSD (dylanaraps/neofetch#2147)
 * Distro - Add GrapheneOS (dylanaraps/neofetch#2146)
@@ -79,6 +85,8 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 * Distro - Add Ubuntu Touch (dylanaraps/neofetch#2167)
 * Distro - Add Ubuntu Sway (dylanaraps/neofetch#2136)
 * Distro - Add Orchid Linux (dylanaraps/neofetch#2144)
+* Distro - Add AOSC OS/Retro (dylanaraps/neofetch#2124)
+* Distro - Add Ultramarine Linux (dylanaraps/neofetch#2115)
 * Distro - Improve NixOS version detection (dylanaraps/neofetch#2157)
 
 </details>
@@ -91,6 +99,13 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 * CPU - Identify CPU name for ARM / RISCV (dylanaraps/neofetch#2139)
 * Battery - Fix file not found (dylanaraps/neofetch#2130)
 * GPU - Identify open-kernal Nvidia driver version (dylanaraps/neofetch#2128)
+
+</details>
+
+<details>
+  <summary>:framed_picture: Bug Fixes</summary><br>
+
+* Bug Fix - Fix broken fedora output (dylanaraps/neofetch#2084)
 
 </details>
 
