@@ -60,7 +60,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 
 * :rocket: Take over `neofetch` with `neowofetch`
 * :framed_picture: Identify macOS 13 Ventura (https://github.com/hykilpikonna/hyfetch/pull/8)
-* :framed_picture: Add uwuntu (
+* :framed_picture: Ascii - Add uwuntu (https://github.com/hykilpikonna/hyfetch/pull/9) (test it with `hyfetch --test-distro uwuntu`)
 
 <img width="200px" src="https://user-images.githubusercontent.com/22280294/181790059-47aa6f80-be99-4e67-8fa5-5c02b02842c6.png" align="right">
 
