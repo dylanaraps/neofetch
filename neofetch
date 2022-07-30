@@ -3315,6 +3315,10 @@ get_term() {
     [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && term="TosWin2"
     [[ "$SSH_CONNECTION" ]] && term="$SSH_TTY"
     [[ "$WT_SESSION" ]]     && term="Windows Terminal"
+    
+    #I think i need Termux ()
+    #My Edge crashed 3 times when i want to commit
+    [[ "$TERMUX_VERSION" ]] && term="Termux $TERMUX_VERSION"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -3601,6 +3605,10 @@ END
                                       } END {print a}' "/etc/xdg/termite/config" \
                          "$termite_config")"
         ;;
+
+        "Termux $TERMUX_VERSION")
+            term_font=$(fc-scan /data/data/com.termux/files/home/.termux/font.ttf|grep fullname:|cut -d '"' -f2)
+            ;;
 
         urxvt|urxvtd|rxvt-unicode|xterm)
             xrdb=$(xrdb -query)
