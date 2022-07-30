@@ -58,6 +58,11 @@ if __name__ == '__main__':
     # Get commit SHA
     sha = check_output(shlex.split('git rev-parse --short HEAD')).decode().strip()
 
+    # Push
+    print()
+    print('Pushing...')
+    os.system('git push')
+
     # Copy comment to clipboard
     comment = f"""
 Thank you for your contribution! 
