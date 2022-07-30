@@ -37,6 +37,10 @@ if __name__ == '__main__':
     print('> Created:', info['created_at'])
     print('> Head:', head, head_br, head_lbl)
 
+    # Fetch commit information
+    commits = requests.get(f'https://api.github.com/repos/{upstream}/pulls/{pr}/commits').json()
+    author = commits[0]['commit']['author']
+
     # Fetch head branch
     print()
     print('Fetching head branch...')
@@ -47,7 +51,9 @@ if __name__ == '__main__':
     print('Merging fetch_head...')
     os.system(f'git merge FETCH_HEAD --no-ff --no-edit '
               f'-m "[PR] {upstream}#{pr} from {user} - {info["title"]}" '
-              f'-m "Upstream PR: https://github.com/{upstream}/pull/{pr}  \nThanks to @{user}"')
+              f'-m "Upstream PR: https://github.com/{upstream}/pull/{pr}  \n'
+              f'Thanks to @{user}\n\n'
+              f'Co-authored-by: {author["name"]} <{author["email"]}>"')
 
     # Get commit SHA
     sha = check_output(shlex.split('git rev-parse --short HEAD')).decode().strip()
