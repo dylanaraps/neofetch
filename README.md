@@ -19,13 +19,9 @@ pip install hyfetch
 Currently, these distributions have existing packages for HyFetch:
 
 * ArchLinux: `yay -S hyfetch` (Thanks to @ Aleksana)
-* Nix (Nixpkgs): `nix-env -i hyfetch` ([In Progress](https://github.com/NixOS/nixpkgs/pull/170309)) 
-* Nix ([NUR](nur.nix-community.org)): Install package `nur.repos.YisuiMilena.hyfetch`. (Thanks to @ YisuiDenghua)
+* Nix: `nix-env -i hyfetch` (Thanks to @ YisuiDenghua)
 * Guix: `guix install hyfetch` (Thanks to @ WammKD)
 
-Currently, if you're using Nix the package manager or NixOS, you can use HyFetch with `nix-env -if https://github.com/hykilpikonna/hyfetch/tarball/master -A hyfetch`
-
->  `hyfetch` is also available in our NixOS-CN's flake. You can add [NixOS-CN](https://github.com/nixos-cn/flakes) in your [Nix Flake](https://nixos.org/manual/nix/unstable/command-ref/new-cli/nix3-flake.html) at first, then install package `hyfetch`. (Thanks to @ YisuiDenghua and @ linyinfeng )
 
 ## Usage
 
@@ -51,13 +47,24 @@ Feel free to experiment with it!
 
 ### TODO
 
-* [ ] Add configuration to emphasize certain parts of the original ASCII art (to make icons like Fedora and Ubuntu look nicer)
 * [ ] Paginate flags
+* [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
+
+<img width="200px" src="https://user-images.githubusercontent.com/22280294/181790059-47aa6f80-be99-4e67-8fa5-5c02b02842c6.png" align="right">
+
+### 1.1.3rc1
+
+* Add foreground-background color arrangement to make Fedora and Ubuntu look nicer
+* Allow typing abbreviations in flag selection
+* Fix: Duplicate random color arrangements are appearing in selection screen
+* Fix: Inconsistant color arrangement when saved to config file
 
 ### 1.1.2
 
 * Add more flags ([#5](https://github.com/hykilpikonna/hyfetch/pull/5))
 * Removed `numpy` dependency that was used in 1.1.0
+
+<img width="200px" src="https://user-images.githubusercontent.com/22280294/180901539-014f036e-c926-4470-ac72-a6d6dcf30672.png" align="right">
 
 ### 1.1.0
 
@@ -67,8 +74,6 @@ Feel free to experiment with it!
 * Added dark/light mode selection
 * Added color bar preview for RGB/8bit mode selection
 * Added random color arrangement feature (for NixOS)
-
-<img src="https://user-images.githubusercontent.com/22280294/180901539-014f036e-c926-4470-ac72-a6d6dcf30672.png" width="100px" />
 
 ### 1.0.7
 
@@ -129,6 +134,7 @@ The information by default is displayed alongside your operating system's logo. 
 <img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" height="240px">
 
 You can further configure Neofetch to display exactly what you want it to. Through the use of command-line flags and the configuration file you can change existing information outputs or add your own custom ones.
+
 
 Neofetch supports almost 150 different operating systems. From Linux to Windows, all the way to more obscure operating systems like Minix, AIX and Haiku. If your favourite operating system is unsupported: Open up an issue and support will be added.
 
