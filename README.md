@@ -4,6 +4,10 @@ neofetch with pride flags <3
 
 ![image](https://user-images.githubusercontent.com/22280294/162614541-af2b4660-f1f7-4287-b978-1aa2266ac70f.png)
 
+### Note
+
+This repo also serves as an updated version of `neofetch` since the [original repo](https://github.com/dylanaraps/neofetch) doesn't seem to be maintained anymore (as of Jul 30, 2022, the original repo hasn't merged a pull request for 6 months). If you only want to use the updated neofetch without pride flags, you can install the python package and use `neowofetch` xD.
+
 ## Installation
 
 ### Method 1: Install using Python pip (Recommended)
@@ -21,7 +25,6 @@ Currently, these distributions have existing packages for HyFetch:
 * ArchLinux: `yay -S hyfetch` (Thanks to @ Aleksana)
 * Nix: `nix-env -i hyfetch` (Thanks to @ YisuiDenghua)
 * Guix: `guix install hyfetch` (Thanks to @ WammKD)
-
 
 ## Usage
 
