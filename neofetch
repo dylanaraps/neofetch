@@ -2207,7 +2207,11 @@ get_cpu() {
                 ;;
 
                 "arm"* | "aarch64")
-                    cpu="$(lscpu | grep "Vendor ID" | sed "s/.*: *//g") $(lscpu | grep "Model name" | sed "s/.*: *//g")"
+                    cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
+                ;;
+                
+                "riscv"*)
+                    cpu="$(lscpu | awk -F': ' '/uarch/ {print $2; exit}' )"
                 ;;
 		
                 *)
