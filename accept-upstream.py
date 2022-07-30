@@ -55,13 +55,13 @@ if __name__ == '__main__':
               f'Thanks to @{user}\n\n'
               f'Co-authored-by: {author["name"]} <{author["email"]}>"')
 
-    # Get commit SHA
-    sha = check_output(shlex.split('git rev-parse --short HEAD')).decode().strip()
-
     # Push
     print()
     print('Pushing...')
     os.system('git push')
+
+    # Get commit SHA
+    sha = check_output(shlex.split('git rev-parse --short HEAD')).decode().strip()
 
     # Copy comment to clipboard
     comment = f"""
