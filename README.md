@@ -8,6 +8,8 @@ neofetch with pride flags <3
 
 This repo also serves as an updated version of `neofetch` since the [original repo](https://github.com/dylanaraps/neofetch) doesn't seem to be maintained anymore (as of Jul 30, 2022, the original repo hasn't merged a pull request for 6 months). If you only want to use the updated neofetch without pride flags, you can install the python package and use `neowofetch` xD.
 
+If you installed `npm`, you can also run original neofetch using `npx neowofetch`
+
 ## Installation
 
 ### Method 1: Install using Python pip (Recommended)
