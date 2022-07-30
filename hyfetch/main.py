@@ -276,9 +276,10 @@ def run():
     parser.add_argument('--c-scale', dest='scale', help=f'Lighten colors by a multiplier', type=float)
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
-    parser.add_argument('--debug', action='store_true', help=color(f'Debug mode'))
-    parser.add_argument('--test-distro', help=color(f'Test for a specific distro'))
-    parser.add_argument('--test-print', action='store_true', help=color(f'Test print distro ascii art only'))
+    parser.add_argument('--debug', action='store_true', help=f'Debug mode')
+    parser.add_argument('--test-distro', help=f'Test for a specific distro')
+    parser.add_argument('--test-print', action='store_true', help=f'Test print distro ascii art only')
+    parser.add_argument('--no-color', action='store_true', help=f'Use original neofetch without colors')
 
     args = parser.parse_args()
 
@@ -325,6 +326,9 @@ def run():
         preset = preset.set_light_raw(args.light)
     if config.lightness:
         preset = preset.set_light_dl(config.lightness)
+
+    if args.no_color:
+        preset = None
 
     # Run
     run_neofetch(preset, config.color_align)

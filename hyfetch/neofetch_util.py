@@ -154,10 +154,11 @@ def get_distro_name():
     return check_output([get_command_path(), 'ascii_distro_name']).decode().strip()
 
 
-def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
+def run_neofetch(preset: ColorProfile | None, alignment: ColorAlignment):
     asc = get_distro_ascii()
     w, h = ascii_size(asc)
-    asc = alignment.recolor_ascii(asc, preset)
+    if preset is not None:
+        asc = alignment.recolor_ascii(asc, preset)
 
     # Write temp file
     with TemporaryDirectory() as tmp_dir:
