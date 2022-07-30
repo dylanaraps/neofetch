@@ -38,11 +38,7 @@ A: Use `hyfetch -c`
 
 #### Q: What do I do if the color is too dark/light for my theme?
 
-A: You can try setting the colors' "lightness" using the `--c-set-l` parameter. The value should be between 0 and 1. For example, if you are using dark theme and the rainbow flag is too dark to display, you can type:
-
-```sh
-hyfetch -p rainbow --c-set-l 0.8
-```
+A: You can try setting the colors' "lightness" in the configuration menu. The value should be between 0 and 1. For example, if you are using dark theme and the rainbow flag is too dark to display, you can set lightness to 0.7.
 
 Feel free to experiment with it!
 
@@ -64,6 +60,7 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 
 * :rocket: Take over `neofetch` with `neowofetch`
 * :framed_picture: Identify macOS 13 Ventura (https://github.com/hykilpikonna/hyfetch/pull/8)
+* :framed_picture: Add uwuntu (
 
 <img width="200px" src="https://user-images.githubusercontent.com/22280294/181790059-47aa6f80-be99-4e67-8fa5-5c02b02842c6.png" align="right">
 
