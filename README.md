@@ -50,19 +50,29 @@ Feel free to experiment with it!
 
 ## Change Log
 
+### About Notation
+
+Updates to HyFetch begins with the emoji :rainbow:  
+Updates to `neowofetch` begins with the emoji :framed_picture:
+
 ### TODO
 
 * [ ] Paginate flags
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
+### Unpublished 1.1.4
+
+* :rocket: Take over `neofetch` with `neowofetch`
+* :framed_picture: Identify macOS 13 Ventura (https://github.com/hykilpikonna/hyfetch/pull/8)
+
 <img width="200px" src="https://user-images.githubusercontent.com/22280294/181790059-47aa6f80-be99-4e67-8fa5-5c02b02842c6.png" align="right">
 
 ### 1.1.3rc1
 
-* Add foreground-background color arrangement to make Fedora and Ubuntu look nicer
-* Allow typing abbreviations in flag selection
-* Fix: Duplicate random color arrangements are appearing in selection screen
-* Fix: Inconsistant color arrangement when saved to config file
+* :rainbow: Add foreground-background color arrangement to make Fedora and Ubuntu look nicer
+* :rainbow: Allow typing abbreviations in flag selection
+* :rainbow: Fix: Duplicate random color arrangements are appearing in selection screen
+* :rainbow: Fix: Inconsistant color arrangement when saved to config file
 
 ### 1.1.2
 
