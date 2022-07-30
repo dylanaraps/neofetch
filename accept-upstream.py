@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 import argparse
 import os
+import shlex
+from subprocess import check_output
 
+import pyperclip
 import requests
 from github import Github
 
@@ -46,11 +49,18 @@ if __name__ == '__main__':
               f'-m "[PR] {upstream}#{pr} from {user} - {info["title"]}" '
               f'-m "Upstream PR: https://github.com/{upstream}/pull/{pr}  \nThanks to @{user}"')
 
-    # Create GitHub Pull Request
-    # print()
-    # print('Creating pull request...')
-    # g = Github(gh_token)
-    # repo = g.get_repo(my_fork)
-    # pr = repo.create_pull(title=info['title'], body=f"Upstream PR: https://github.com/{upstream}/pull/{pr}  \nThanks to: @{info['user']['login']}",
-    #                       base=my_base, head=head_lbl)
-    # print(pr)
+    # Get commit SHA
+    sha = check_output(shlex.split('git rev-parse --short HEAD')).decode().strip()
+
+    # Copy comment to clipboard
+    comment = f"""
+Thank you for your contribution! 
+
+This PR is [merged into hyfetch](https://github.com/hykilpikonna/hyfetch/commit/{sha}) since this repo (dylanaraps/neofetch) seems no longer maintained.
+
+[HyFetch](https://github.com/hykilpikonna/hyfetch) is a fork of neofetch with LGBTQ pride flags, but the repo also serves as an updated version of neofetch, addressing many pull requests that are not merged in the original repo.
+    """
+    pyperclip.copy(comment.strip())
+    print()
+    print('Done!')
+    print('Comment response copied to clipboard.')
