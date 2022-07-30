@@ -2235,6 +2235,14 @@ get_cpu() {
                     cpu="$(awk -F':' '/Model/ {print $2; exit}' "$cpu_file")"
                 ;;
 
+                "arm"* | "aarch64")
+                    cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
+                ;;
+                
+                "riscv"*)
+                    cpu="$(awk -F': ' '/uarch/ {print $2; exit}' "$cpu_file")"
+                ;;
+		
                 *)
                     cpu="$(awk -F '\\s*: | @' \
                             '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
@@ -2478,7 +2486,7 @@ get_cpu() {
     cpu="${cpu//, * Compute Cores}"
     cpu="${cpu//Core / }"
     cpu="${cpu//(\"AuthenticAMD\"*)}"
-    cpu="${cpu//with Radeon * Graphics}"
+    cpu="${cpu//with Radeon*Graphics}"
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
     cpu="${cpu//Chip Revision*}"
