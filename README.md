@@ -59,8 +59,23 @@ Updates to `neowofetch` begins with the emoji :framed_picture:
 ### Unpublished 1.1.4
 
 * :rocket: Take over `neofetch` with `neowofetch`
-* :framed_picture: Identify macOS 13 Ventura (https://github.com/hykilpikonna/hyfetch/pull/8)
-* :framed_picture: Ascii - Add uwuntu (https://github.com/hykilpikonna/hyfetch/pull/9) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
+
+<details>
+  <summary>:framed_picture: Ascii Art Changes</summary>
+
+* Ascii - Add uwuntu (https://github.com/hykilpikonna/hyfetch/pull/9) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
+* Ascii - Better Void ascii art ([#10](https://github.com/hykilpikonna/hyfetch/pull/10))
+
+</details>
+
+<details>
+  <summary>:framed_picture: Additional Distro/OS Support</summary>
+
+* OS - Identify macOS 13 Ventura ([#8](https://github.com/hykilpikonna/hyfetch/pull/8))
+* Distro - Add Univalent (dylanaraps/neofetch#2162)
+* Distro - Add NomadBSD (dylanaraps/neofetch#2147)
+
+</details>
 
 <img width="200px" src="https://user-images.githubusercontent.com/22280294/181790059-47aa6f80-be99-4e67-8fa5-5c02b02842c6.png" align="right">
 
