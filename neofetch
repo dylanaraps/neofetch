@@ -1308,6 +1308,69 @@ get_model() {
                 else
                     model=$(sysctl -n hw.model)  
                 fi
+
+                case $model in
+                    MacBookPro18,[3-4]):    "MacBook Pro (14-inch, 2021)" ;;
+                    MacBookPro18,[1-2]):    "MacBook Pro (16-inch, 2021)" ;;
+                    MacBookPro17,1):        "MacBook Pro (13-inch, M1, 2020)" ;;
+                    MacBookPro16,4):        "MacBook Pro (16-inch, 2019)" ;;
+                    MacBookPro16,3):        "MacBook Pro (13-inch, 2020, Two Thunderbolt 3 ports)" ;;
+                    MacBookPro16,2):        "MacBook Pro (13-inch, 2020, Four Thunderbolt 3 ports)" ;;
+                    MacBookPro16,1):        "MacBook Pro (16-inch, 2019)" ;;
+                    MacBookPro15,4):        "MacBook Pro (13-inch, 2019, Two Thunderbolt 3 ports)" ;;
+                    MacBookPro15,3):        "MacBook Pro (15-inch, 2019)" ;;
+                    MacBookPro15,2):        "MacBook Pro (13-inch, 2018/2019, Four Thunderbolt 3 ports)" ;;
+                    MacBookPro15,1):        "MacBook Pro (15-inch, 2018/2019)" ;;
+                    MacBookPro14,3):        "MacBook Pro (15-inch, 2017)" ;;
+                    MacBookPro14,2):        "MacBook Pro (13-inch, 2017, Four Thunderbolt 3 ports)" ;;
+                    MacBookPro14,1):        "MacBook Pro (13-inch, 2017, Two Thunderbolt 3 ports)" ;;
+                    MacBookPro13,3):        "MacBook Pro (15-inch, 2016)" ;;
+                    MacBookPro13,2):        "MacBook Pro (13-inch, 2016, Four Thunderbolt 3 ports)" ;;
+                    MacBookPro13,1):        "MacBook Pro (13-inch, 2016, Two Thunderbolt 3 ports)" ;;
+                    MacBookPro12,1):        "MacBook Pro (Retina, 13-inch, Early 2015)" ;;
+                    MacBookPro11,[4-5]):    "MacBook Pro (Retina, 15-inch, Mid 2015)" ;;
+                    MacBookPro11,[2-3]):    "MacBook Pro (Retina, 15-inch, Late 2013/Mid 2014)" ;;
+                    MacBookPro11,1):        "MacBook Pro (Retina, 13-inch, Late 2013/Mid 2014)" ;;
+                    MacBookPro10,2):        "MacBook Pro (Retina, 13-inch, Late 2012/Early 2013)" ;;
+                    MacBookPro10,1):        "MacBook Pro (Retina, 15-inch, Mid 2012/Early 2013)" ;;
+                    MacBookPro9,2):         "MacBook Pro (13-inch, Mid 2012)" ;;
+                    MacBookPro9,1):         "MacBook Pro (15-inch, Mid 2012)" ;;
+                    MacBookPro8,3):         "MacBook Pro (17-inch, 2011)" ;;
+                    MacBookPro8,2):         "MacBook Pro (15-inch, 2011)" ;;
+                    MacBookPro8,1):         "MacBook Pro (13-inch, 2011)" ;;
+                    MacBookPro7,1):         "MacBook Pro (13-inch, Mid 2010)" ;;
+                    MacBookPro6,2):         "MacBook Pro (15-inch, Mid 2010)" ;;
+                    MacBookPro6,1):         "MacBook Pro (17-inch, Mid 2010)" ;;
+                    MacBookPro5,5):         "MacBook Pro (13-inch, Mid 2009)" ;;
+                    MacBookPro5,3):         "MacBook Pro (15-inch, Mid 2009)" ;;
+                    MacBookPro5,2):         "MacBook Pro (17-inch, Mid/Early 2009)" ;;
+                    MacBookPro5,1):         "MacBook Pro (15-inch, Late 2008)" ;;
+                    MacBookPro4,1):         "MacBook Pro (17/15-inch, Early 2008)" ;;
+                    MacBookAir10,1):        "MacBook Air (M1, 2020)" ;;
+                    MacBookAir9,1):         "MacBook Air (Retina, 13-inch, 2020)" ;;
+                    MacBookAir8,2):         "MacBook Air (Retina, 13-inch, 2019)" ;;
+                    MacBookAir8,1):         "MacBook Air (Retina, 13-inch, 2018)" ;;
+                    MacBookAir7,2):         "MacBook Air (13-inch, Early 2015/2017)" ;;
+                    MacBookAir7,1):         "MacBook Air (11-inch, Early 2015)" ;;
+                    MacBookAir6,2):         "MacBook Air (13-inch, Mid 2013/Early 2014)" ;;
+                    MacBookAir6,1):         "MacBook Air (11-inch, Mid 2013/Early 2014)" ;;
+                    MacBookAir5,2):         "MacBook Air (13-inch, Mid 2012)" ;;
+                    MacBookAir5,1):         "MacBook Air (11-inch, Mid 2012)" ;;
+                    MacBookAir4,2):         "MacBook Air (13-inch, Mid 2011)" ;;
+                    MacBookAir4,1):         "MacBook Air (11-inch, Mid 2011)" ;;
+                    MacBookAir3,2):         "MacBook Air (13-inch, Late 2010)" ;;
+                    MacBookAir3,1):         "MacBook Air (11-inch, Late 2010)" ;;
+                    MacBookAir2,1):         "MacBook Air (Mid 2009)" ;;
+                    MacBook10,1):           "MacBook (Retina, 12-inch, 2017)" ;;
+                    MacBook9,1):            "MacBook (Retina, 12-inch, Early 2016)" ;;
+                    MacBook8,1):            "MacBook (Retina, 12-inch, Early 2015)" ;;
+                    MacBook7,1):            "MacBook (13-inch, Mid 2010)" ;;
+                    MacBook6,1):            "MacBook (13-inch, Late 2009)" ;;
+                    MacBook5,2):            "MacBook (13-inch, Early/Mid 2009)" ;;
+                    *):                     "$model" ;;
+                esac
+
+                model=$_
             fi
         ;;
 
@@ -1317,10 +1380,11 @@ get_model() {
                 iPad2,[1-4]):        "iPad 2" ;;
                 iPad3,[1-3]):        "iPad 3" ;;
                 iPad3,[4-6]):        "iPad 4" ;;
-                iPad6,1[12]):        "iPad 5" ;;
+                iPad6,1[1-2]):       "iPad 5" ;;
                 iPad7,[5-6]):        "iPad 6" ;;
-                iPad7,1[12]):        "iPad 7" ;;
-                iPad11,[67]):        "iPad 8" ;;
+                iPad7,1[1-2]):       "iPad 7" ;;
+                iPad11,[6-7]):       "iPad 8" ;;
+                iPad12,[1-2]):       "iPad 9" ;;
                 iPad4,[1-3]):        "iPad Air" ;;
                 iPad5,[3-4]):        "iPad Air 2" ;;
                 iPad11,[3-4]):       "iPad Air 3" ;;
@@ -1333,11 +1397,14 @@ get_model() {
                 iPad8,[5-8]):        "iPad Pro 3 (12.9 Inch)" ;;
                 iPad8,9 | iPad8,10): "iPad Pro 4 (11 Inch)" ;;
                 iPad8,1[1-2]):       "iPad Pro 4 (12.9 Inch)" ;;
+                iPad13,[4-7]):       "iPad Pro 5 (11 Inch)" ;;
+                iPad13,8 | iPad13,11):"iPad Pro 5 (12.9 Inch)" ;;
                 iPad2,[5-7]):        "iPad mini" ;;
                 iPad4,[4-6]):        "iPad mini 2" ;;
                 iPad4,[7-9]):        "iPad mini 3" ;;
                 iPad5,[1-2]):        "iPad mini 4" ;;
                 iPad11,[1-2]):       "iPad mini 5" ;;
+                iPad14,[1-2]):       "iPad mini 6" ;;
 
                 iPhone1,1):     "iPhone" ;;
                 iPhone1,2):     "iPhone 3G" ;;
@@ -1368,6 +1435,10 @@ get_model() {
                 iPhone13,2):    "iPhone 12" ;;
                 iPhone13,3):    "iPhone 12 Pro" ;;
                 iPhone13,4):    "iPhone 12 Pro Max" ;;
+                iPhone14,2):    "iPhone 13 Pro" ;;
+                iPhone14,3):    "iPhone 13 Pro Max" ;;
+                iPhone14,4):    "iPhone 13 Mini" ;;
+                iPhone14,5):    "iPhone 13" ;;
 
                 iPod1,1): "iPod touch" ;;
                 ipod2,1): "iPod touch 2G" ;;
