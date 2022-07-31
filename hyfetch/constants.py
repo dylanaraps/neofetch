@@ -7,7 +7,7 @@ from pathlib import Path
 from typing_extensions import Literal
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
-VERSION = '1.2.0'
+VERSION = '1.3.0'
 
 # Obtain terminal size
 try:

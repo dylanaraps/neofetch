@@ -60,7 +60,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * [ ] Paginate flags
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
-### Unreleased 1.2.1
+### 1.3.0
 
 <details>
   <summary>🖼️ Ascii Art Changes</summary>  
