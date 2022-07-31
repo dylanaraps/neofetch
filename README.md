@@ -66,9 +66,9 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Ascii Art Changes</summary>  
 
 * Ascii - Improve Trisquel ([dylanaraps#1946](https://github.com/dylanaraps/neofetch/pull/1946))
-* Ascii - Improve LangitKetujuh (dylanaraps/neofetch#1948)
-* Ascii - Improve Artix small (dylanaraps/neofetch#1872)
-* Ascii - Update Archcraft (dylanaraps/neofetch#1919)
+* Ascii - Improve LangitKetujuh ([dylanaraps#1948](https://github.com/dylanaraps/neofetch/pull/1948))
+* Ascii - Improve Artix small ([dylanaraps#1872](https://github.com/dylanaraps/neofetch/pull/1872))
+* Ascii - Update Archcraft ([dylanaraps#1919](https://github.com/dylanaraps/neofetch/pull/1919))
 
 </details>
 
@@ -76,7 +76,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Distro/OS Support Changes</summary>  
 
 * OS - Support Old macOS 10.4 and 10.5 ([dylanaraps#2151](https://github.com/dylanaraps/neofetch/pull/2151))
-* OS - Identify Hackintosh VM (dylanaraps/neofetch#2005)
+* OS - Identify Hackintosh VM ([dylanaraps#2005](https://github.com/dylanaraps/neofetch/pull/2005))
 * Distro - Fix model detection for Ubuntu Touch ([dylanaraps#2167](https://github.com/dylanaraps/neofetch/pull/2167))
 * Distro - Add EncryptOS ([dylanaraps#2158](https://github.com/dylanaraps/neofetch/pull/2158))
 * Distro - Add BigLinux ([dylanaraps#2061](https://github.com/dylanaraps/neofetch/pull/2061))
@@ -88,18 +88,18 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * Distro - Add CachyOS ([dylanaraps#2026](https://github.com/dylanaraps/neofetch/pull/2026))
 * Distro - Add Soda Linux ([dylanaraps#2023](https://github.com/dylanaraps/neofetch/pull/2023))
 * Distro - Add Elive Linux ([dylanaraps#1957](https://github.com/dylanaraps/neofetch/pull/1957))
-* Distro - Add Uos (dylanaraps/neofetch#1991)
-* Distro - Add MassOS (dylanaraps/neofetch#1947)
-* Distro - Add CalinixOS (dylanaraps/neofetch#1988)
-* Distro - Add Kaisen Linux (dylanaraps/neofetch#1958)
-* Distro - Add yiffOS (dylanaraps/neofetch#1920)
-* Distro - Add Sulin (dylanaraps/neofetch#1896)
-* Distro - Add Wii Linux (dylanaraps/neofetch#1929)
-* Distro - Add Linspire (dylanaraps/neofetch#1905)
-* Distro - Add Ubuntu Kylin (dylanaraps/neofetch#1974)
-* Distro - Add OPNsense (dylanaraps/neofetch#1055)
-* Distro - Improve BSD machine arch detection (dylanaraps/neofetch#2015)
-* Distro - Improve Manjaro version detection (dylanaraps/neofetch#1879)
+* Distro - Add Uos ([dylanaraps#1991](https://github.com/dylanaraps/neofetch/pull/1991))
+* Distro - Add MassOS ([dylanaraps#1947](https://github.com/dylanaraps/neofetch/pull/1947))
+* Distro - Add CalinixOS ([dylanaraps#1988](https://github.com/dylanaraps/neofetch/pull/1988))
+* Distro - Add Kaisen Linux ([dylanaraps#1958](https://github.com/dylanaraps/neofetch/pull/1958))
+* Distro - Add yiffOS ([dylanaraps#1920](https://github.com/dylanaraps/neofetch/pull/1920))
+* Distro - Add Sulin ([dylanaraps#1896](https://github.com/dylanaraps/neofetch/pull/1896))
+* Distro - Add Wii Linux ([dylanaraps#1929](https://github.com/dylanaraps/neofetch/pull/1929))
+* Distro - Add Linspire ([dylanaraps#1905](https://github.com/dylanaraps/neofetch/pull/1905))
+* Distro - Add Ubuntu Kylin ([dylanaraps#1974](https://github.com/dylanaraps/neofetch/pull/1974))
+* Distro - Add OPNsense ([dylanaraps#1055](https://github.com/dylanaraps/neofetch/pull/1055))
+* Distro - Improve BSD machine arch detection ([dylanaraps#2015](https://github.com/dylanaraps/neofetch/pull/2015))
+* Distro - Improve Manjaro version detection ([dylanaraps#1879](https://github.com/dylanaraps/neofetch/pull/1879))
 
 </details>
 
@@ -107,15 +107,15 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Device Support Changes</summary>  
 
 * Terminal - Add Fig ([dylanaraps#2077](https://github.com/dylanaraps/neofetch/pull/2077))
-* Terminal - Identify font for Apple Terminal (dylanaraps/neofetch#2017)
+* Terminal - Identify font for Apple Terminal ([dylanaraps#2017](https://github.com/dylanaraps/neofetch/pull/2017))
 * CPU - Identify core count for Apple M1 ([dylanaraps#2038](https://github.com/dylanaraps/neofetch/pull/2038))
-* GPU - Identify OpenCL GPU without PCIe (dylanaraps/neofetch#1928)
-* Host - Identify MacBook & Update iDevice models (dylanaraps/neofetch#1944)
-* Battery - Identify power adapter for MacBooks (dylanaraps/neofetch#1945)
-* DE - Identify KF5 and Qt versions for Plasma (dylanaraps/neofetch#2019)
+* GPU - Identify OpenCL GPU without PCIe ([dylanaraps#1928](https://github.com/dylanaraps/neofetch/pull/1928))
+* Host - Identify MacBook & Update iDevice models ([dylanaraps#1944](https://github.com/dylanaraps/neofetch/pull/1944))
+* Battery - Identify power adapter for MacBooks ([dylanaraps#1945](https://github.com/dylanaraps/neofetch/pull/1945))
+* DE - Identify KF5 and Qt versions for Plasma ([dylanaraps#2019](https://github.com/dylanaraps/neofetch/pull/2019))
 * Packages - Improve GUIX package detection ([dylanaraps#2021](https://github.com/dylanaraps/neofetch/pull/2021))
-* Packages - Add `pm` and `cargo` (dylanaraps/neofetch#1876)
-* Network - Identify network capabilities (dylanaraps/neofetch#1511)
+* Packages - Add `pm` and `cargo` ([dylanaraps#1876](https://github.com/dylanaraps/neofetch/pull/1876))
+* Network - Identify network capabilities ([dylanaraps#1511](https://github.com/dylanaraps/neofetch/pull/1511))
 
 </details>
 
@@ -124,9 +124,9 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 * Bug Fix - Fix `col_offset` ([dylanaraps#2042](https://github.com/dylanaraps/neofetch/pull/2042))
 * Bug Fix - Prioritize `/etc/os-release` ([dylanaraps#2067](https://github.com/dylanaraps/neofetch/pull/2067))
-* Bug Fix - Ignore case when counting `.appimage` (dylanaraps/neofetch#2006)
-* Bug Fix - Fix BSD freezing if pkg is not bootstrapped (dylanaraps/neofetch#2014)
-* Bug Fix - Fix wrong icon theme (dylanaraps/neofetch#1873)
+* Bug Fix - Ignore case when counting `.appimage` ([dylanaraps#2006](https://github.com/dylanaraps/neofetch/pull/2006))
+* Bug Fix - Fix BSD freezing if pkg is not bootstrapped ([dylanaraps#2014](https://github.com/dylanaraps/neofetch/pull/2014))
+* Bug Fix - Fix wrong icon theme ([dylanaraps#1873](https://github.com/dylanaraps/neofetch/pull/1873))
 
 </details>
 
@@ -168,7 +168,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 <details>
   <summary>🖼️ Device/Program Support Changes</summary>
 
-* Terminal - Add Termux (dylanaraps/neofetch#1923)
+* Terminal - Add Termux ([dylanaraps#1923](https://github.com/dylanaraps/neofetch/pull/1923))
 * CPU - Add loongarch64 ([dylanaraps#2140](https://github.com/dylanaraps/neofetch/pull/2140))
 * CPU - Identify CPU name for ARM / RISCV ([dylanaraps#2139](https://github.com/dylanaraps/neofetch/pull/2139))
 * Battery - Fix file not found ([dylanaraps#2130](https://github.com/dylanaraps/neofetch/pull/2130))
