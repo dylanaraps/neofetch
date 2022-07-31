@@ -787,7 +787,7 @@ image_source="auto"
 #       Bodhi, bonsai, BSD, BunsenLabs, \"Cachy OS\", Calculate, Carbs, CentOS, CenterOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
-#       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
+#       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, Elive,
 #       EndeavourOS, EncryptOS, Endless, EuroLinux, Exherbo, Fedora, Feren, Finnix, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, FusionX, GalliumOS, Garuda, Gentoo, Pentoo,
 #       Glaucus, gNewSense, GNOME, GNU, GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra,
@@ -5279,7 +5279,7 @@ ASCII:
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 Crystal Linux, CRUX, Cucumber, CutefishOS, dahlia, Debian, Deepin, DesaOS, Devuan,
-                                DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, EncryptOS, Endless,
+                                DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, Elive, EndeavourOS, EncryptOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, Finnix, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, FusionX, GalliumOS, Garuda, Gentoo, Pentoo, Glaucus, gNewSense, GNOME, GNU,
                                 GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
@@ -7581,6 +7581,30 @@ eee    eeeeeeeeee     eeeeee    eee
     eeeee                 eeeee
       eeeeeee         eeeeeee
          eeeeeeeeeeeeeeeee
+EOF
+        ;;
+
+        "Elive"*)
+        set_colors 7 6 6
+            read -rd '' ascii_data <<'EOF'
+${c1}
+             *@${c2},,&(%%%..%*.
+         ${c1}(@${c2}&%/##############((/${c1}*,
+      ${c2}@${c1}@&${c2}#########${c1}*..../${c2}########%${c1}*..
+    ${c2}@${c1}&${c2}#%%%%%.              ${c3},.${c1},${c2}%%%%%%.
+  /%${c2}(%%%%.                      ${c1}(${c2}%%%%#.
+ /${c1}*${c2}%%##,.                       .,%%###,
+ ,####.   ,${c1}*${c2}#%${c1}#${c3}/,(/               ${c2}/${c1}#${c2}###,
+((###/   ,,##########${c1}(${c3}/(#          ${c2}%####,
+%#(((${c1}.   .${c1}./${c2}((((((((((((((${c1}(${c2}#/${c3}*..   ${c3}*.${c2}(((${c1}/
+${c2}%#///${c1}.        ${c3}***${c2}.*/////////////
+${c3}#${c2}#////*              ${c3}***${c2}.*/////.
+ ${c3}(${c2}(*****                   ${c3}***
+  ${c2},*****..
+   ..${c1}*${c2}*****..                 *${c1}%${c2}/****.
+     .,,*******,${c3},,../##(${c2}%&${c1}&${c2}#******${c1},${c2}.
+        ,*${c1},${c2},,,,,,,,,,,,,,,,,,,${c1},${c2}..
+            *//${c1}/,,${c2},,,,,,,${c1},..${c2}
 EOF
         ;;
 
