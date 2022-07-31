@@ -793,7 +793,7 @@ image_source="auto"
 #       FreeMiNT, Frugalware, Funtoo, FusionX, GalliumOS, Garuda, Gentoo, Pentoo,
 #       Glaucus, gNewSense, GNOME, GNU, GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra,
 #       HydroOS, Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
-#       KSLinux, Kaisen_Linux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
+#       KSLinux, Kaisen_Linux, Kubuntu, LEDE, LangitKetujuh, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
 #       Mer, Minix, MIRACLE_LINUX, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
 #       Netrunner, Nitrux, NixOS, NomadBSD, Nurunner, NuTyX, OBRevenge, OpenBSD,
@@ -807,7 +807,7 @@ image_source="auto"
 #       Solus, Soda, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu Touch, Ubuntu-MATE,
-#       Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Univention, Uos, Venom, Void, VNux, LangitKetujuh, semc,
+#       Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Univention, Uos, Venom, Void, VNux, semc,
 #       Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
@@ -5308,7 +5308,7 @@ ASCII:
                                 EuroLinux, Exherbo, Fedora, Feren, Finnix, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, FusionX, GalliumOS, Garuda, Gentoo, Pentoo, Glaucus, gNewSense, GNOME, GNU,
                                 GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
-                                KaOS, Kaisen_Linux, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
+                                KaOS, Kaisen_Linux, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE, LangitKetujuh,
                                 LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
                                 Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, MIRACLE_LINUX, LinuxMint,
                                 Live_Raizo, MX_Linux, Namib, Neptune, NetBSD, Netrunner, Nitrux,
@@ -5323,7 +5323,7 @@ ASCII:
                                 Solus, Soda, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
-                                Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Uos, Univention, Venom, Void, VNux, LangitKetujuh, semc,
+                                Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Uos, Univention, Venom, Void, VNux, semc,
                                 Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 
                                 NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
@@ -8722,6 +8722,26 @@ EOF
 EOF
         ;;
 
+        "LangitKetujuh"*)
+            set_colors 4 2
+            read -rd '' ascii_data <<'EOF'
+${c1}
+. 'MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMML7
+MM.   'MMMMMMMMMMMMMMMMMMMMMMMMMMML7L7
+MMMMMM     MMMMMMML7L7L7L7L7L7L7L7L7L7
+L7MMMM                          L7L7L7
+L7L7MM           'L7L7L7L7L7L7L7L7L7L:
+L7L7L7               'L7L7L7L7L7L7L:::
+L7L7L7                   'L7L7L7::::::
+:7L7L7                          ::::::
+::L7L7L7L7L7L7L7L7L7L::::::.    ::::::
+:::::7L7L7L7L7L7:::::::::::::::.   '::
+:::::::::::::::::::::::::::::::::::. '
+${c2}
+
+EOF
+        ;;
+
         "LaxerOS"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
@@ -12021,27 +12041,6 @@ ${c1} 'ljmwn${c2}~tk8${c5}MWWWWM8O${c2}X${c1}r${c2}+]nC${c1}[
                    ^"
 EOF
 
-        ;;
-
-        "LangitKetujuh"*)
-            set_colors 7 4
-            read -rd '' ascii_data <<'EOF'
-${c1}
-   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
-      'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
-   L7L.   'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
-   L7L7L7L                             L7L7L7L
-   L7L7L7L                             L7L7L7L
-   L7L7L7L             L7L7L7L7L7L7L7L7L7L7L7L
-   L7L7L7L                'L7L7L7L7L7L7L7L7L7L
-   L7L7L7L                    'L7L7L7L7L7L7L7L
-   L7L7L7L                             L7L7L7L
-   L7L7L7L                             L7L7L7L
-   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.   'L7L
-   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.
-   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
-${c2}
-EOF
         ;;
 
        "semc"*)
