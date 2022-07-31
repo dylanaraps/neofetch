@@ -6,7 +6,11 @@ neofetch with pride flags <3
 
 ### Running Updated Original Neofetch
 
-This repo also serves as an updated version of the original `neofetch` since the upstream [dylanaraps/neofetch](https://github.com/dylanaraps/neofetch) doesn't seem to be maintained anymore (as of Jul 30, 2022, the original repo hasn't merged a pull request for 6 months). If you only want to use the updated neofetch without pride flags, you can install the python package and use `neowofetch` xD.
+This repo also serves as an updated version of the original `neofetch` since the upstream [dylanaraps/neofetch](https://github.com/dylanaraps/neofetch) doesn't seem to be maintained anymore (as of Jul 30, 2022, the original repo hasn't merged a pull request for 6 months). If you only want to use the updated neofetch without pride flags, you can use the `neofetch` script from this repo. To prevent command name conflict, I call it `neowofetch` :)
+
+* Method 1: `pip install hyfetch` then run `neowofetch`
+* Method 2: `npx neowofetch`
+* Method 3: `bash <(curl -sL neowofetch.hydev.org)`
 
 If you installed `npm`, you can also run the updated original neofetch using `npx neowofetch`. If not, you can also do this:
 
