@@ -793,7 +793,7 @@ image_source="auto"
 #       FreeMiNT, Frugalware, Funtoo, FusionX, GalliumOS, Garuda, Gentoo, Pentoo,
 #       Glaucus, gNewSense, GNOME, GNU, GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra,
 #       HydroOS, Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
-#       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
+#       KSLinux, Kaisen_Linux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
 #       Mer, Minix, MIRACLE_LINUX, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
 #       Netrunner, Nitrux, NixOS, NomadBSD, Nurunner, NuTyX, OBRevenge, OpenBSD,
@@ -5308,7 +5308,7 @@ ASCII:
                                 EuroLinux, Exherbo, Fedora, Feren, Finnix, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, FusionX, GalliumOS, Garuda, Gentoo, Pentoo, Glaucus, gNewSense, GNOME, GNU,
                                 GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
-                                KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
+                                KaOS, Kaisen_Linux, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
                                 LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
                                 Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, MIRACLE_LINUX, LinuxMint,
                                 Live_Raizo, MX_Linux, Namib, Neptune, NetBSD, Netrunner, Nitrux,
@@ -8749,6 +8749,31 @@ ${c2}
 
 EOF
         ;;
+        
+        "Kaisen"*)
+            set_colors 1 7 3
+            read -rd '' ascii_data <<'EOF'
+${c1}                          `
+                  `:+oyyho.
+             `+:`sdddddd/
+        `+` :ho oyo++ohds-`
+       .ho :dd.  .: `sddddddhhyso+/-
+       ody.ddd-:yd- +hysssyhddddddddho`
+       yddddddhddd` ` `--`   -+hddddddh.
+       hddy-+dddddy+ohh/..+sddddy/:::+ys
+      :ddd/sdddddddddd- oddddddd       `
+     `yddddddddddddddd/ /ddddddd/
+:.  :ydddddddddddddddddo..sddddddy/`
+odhdddddddo- `ddddh+-``....-+hdddddds.
+-ddddddhd:   /dddo  -ydddddddhdddddddd-
+ /hdy:o - `:sddds   .`./hdddddddddddddo
+  `/-  `+hddyosy+       :dddddddy-.-od/
+      :sydds           -hddddddd`    /
+       .+shd-      `:ohddddddddd`
+                `:+ooooooooooooo:
+EOF
+        ;;
+
 
         "LibreELEC"*)
             set_colors 2 3 7 14 13
