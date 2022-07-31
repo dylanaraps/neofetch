@@ -1896,6 +1896,7 @@ get_de() {
             Cinnamon*) de_ver=$(cinnamon --version) ;;
             Deepin*)   de_ver=$(awk -F'=' '/MajorVersion/ {print $2}' /etc/os-version) ;;
             Budgie*)   de_ver=$(budgie-desktop --version) ;;
+            Cutefish*) de_ver=$(awk -F'=' '/Version/ {print $2}' /etc/cutefish) ;;
             LXQt*)     de_ver=$(lxqt-session --version) ;;
             Lumina*)   de_ver=$(lumina-desktop --version 2>&1) ;;
             Trinity*)  de_ver=$(tde-config --version) ;;
@@ -3411,6 +3412,7 @@ get_term() {
             ;;
 
             "gnome-terminal-") term="gnome-terminal" ;;
+            "cutefish-termin") term="cutefish-terminal" ;;
             "urxvtd")          term="urxvt" ;;
             *"nvim")           term="Neovim Terminal" ;;
             *"NeoVimServer"*)  term="VimR Terminal" ;;
@@ -3458,6 +3460,11 @@ get_term_font() {
                          tell application "Terminal" to font name of window frontmost
 END
 )"
+        ;;
+
+        "cutefish-terminal")
+            term_font="$(awk -F '=' '/fontName=/ {a=$2} /fontPointSize=/ {b=$2} END {print a,b}' \
+                         "${XDG_CONFIG_HOME}/cutefishos/cutefish-terminal.conf")"
         ;;
 
         "iTerm2")
@@ -4268,6 +4275,11 @@ END
                 "Plasma"*)
                     image=$XDG_CONFIG_HOME/plasma-org.kde.plasma.desktop-appletsrc
                     image=$(awk -F '=' '$1 == "Image" { print $2 }' "$image")
+                ;;
+
+                "Cutefish"*)
+                    image="$XDG_CONFIG_HOME/cutefishos/theme.conf"
+                    image="$(awk -F '=' '$1 == "Wallpaper" {print $2}' "$image")"
                 ;;
 
                 "LXQt"*)
@@ -5239,7 +5251,7 @@ ASCII:
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
-                                Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
+                                Crystal Linux, CRUX, Cucumber, CutefishOS, dahlia, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, EncryptOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, Finnix, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
@@ -7175,6 +7187,21 @@ o/${c2}--...::-:/::/:-......-::::::-/-...-${c1}:/o
       -/+/:${c2}----..........----${c1}:/+/-
         `:/+//${c2}::--------:::${c1}/+/:`
            `.-://++++++//:-.`
+EOF
+        ;;
+
+        "CutefishOS"*)
+            set_colors 6 7 4
+            read -rd '' ascii_data <<'EOF'
+${c1}                     ___ww___
+_              _wwMMM@M^^^^MMMMww_
+M0w_       _wMMM~~             ~~MMm_
+  ~MMy _ww0M~                      ~MMy
+    ~MMMM~                      o    "MM
+${c3}  jw0M~~MMMw_                      _wMM'
+wMM~      ~~MMmw__             __w0M~
+~             ~~MM0MmwwwwwwwwwMMM~
+                    ~~~~^^~~~
 EOF
         ;;
 
