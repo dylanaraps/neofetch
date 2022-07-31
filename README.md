@@ -65,7 +65,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 <details>
   <summary>🖼️ Ascii Art Changes</summary>  
 
-* Ascii - Improve Trisquel (dylanaraps/neofetch#1946)
+* Ascii - Improve Trisquel ([dylanaraps#1946](https://github.com/dylanaraps/neofetch/pull/1946))
 * 
 
 </details>
@@ -73,35 +73,35 @@ Updates to `neowofetch` begins with the emoji 🖼️
 <details>
   <summary>🖼️ Distro/OS Support Changes</summary>  
 
-* OS - Support Old macOS 10.4 and 10.5 (dylanaraps/neofetch#2151)
-* Distro - Fix model detection for Ubuntu Touch (dylanaraps/neofetch#2167)
-* Distro - Add EncryptOS (dylanaraps/neofetch#2158)
-* Distro - Add BigLinux (dylanaraps/neofetch#2061)
-* Distro - Add AmogOS (dylanaraps/neofetch#1904)
-* Distro - Add CutefishOS (dylanaraps/neofetch#2054)
-* Distro - Add PearOS (dylanaraps/neofetch#2049)
-* Distro - Add FusionX (dylanaraps/neofetch#2011)
-* Distro - Add Q4OS (dylanaraps/neofetch#1973)
-* Distro - Add CachyOS (dylanaraps/neofetch#2026)
-* Distro - Add Soda Linux (dylanaraps/neofetch#2023)
-* Distro - Add Elive Linux (dylanaraps/neofetch#1957)
-* Distro - Improve GUIX package detection (dylanaraps/neofetch#2021)
+* OS - Support Old macOS 10.4 and 10.5 ([dylanaraps#2151](https://github.com/dylanaraps/neofetch/pull/2151))
+* Distro - Fix model detection for Ubuntu Touch ([dylanaraps#2167](https://github.com/dylanaraps/neofetch/pull/2167))
+* Distro - Add EncryptOS ([dylanaraps#2158](https://github.com/dylanaraps/neofetch/pull/2158))
+* Distro - Add BigLinux ([dylanaraps#2061](https://github.com/dylanaraps/neofetch/pull/2061))
+* Distro - Add AmogOS ([dylanaraps#1904](https://github.com/dylanaraps/neofetch/pull/1904))
+* Distro - Add CutefishOS ([dylanaraps#2054](https://github.com/dylanaraps/neofetch/pull/2054))
+* Distro - Add PearOS ([dylanaraps#2049](https://github.com/dylanaraps/neofetch/pull/2049))
+* Distro - Add FusionX ([dylanaraps#2011](https://github.com/dylanaraps/neofetch/pull/2011))
+* Distro - Add Q4OS ([dylanaraps#1973](https://github.com/dylanaraps/neofetch/pull/1973))
+* Distro - Add CachyOS ([dylanaraps#2026](https://github.com/dylanaraps/neofetch/pull/2026))
+* Distro - Add Soda Linux ([dylanaraps#2023](https://github.com/dylanaraps/neofetch/pull/2023))
+* Distro - Add Elive Linux ([dylanaraps#1957](https://github.com/dylanaraps/neofetch/pull/1957))
+* Distro - Improve GUIX package detection ([dylanaraps#2021](https://github.com/dylanaraps/neofetch/pull/2021))
 
 </details>
 
 <details>
   <summary>🖼️ Device Support Changes</summary>  
 
-* Terminal - Add Fig (dylanaraps/neofetch#2077)
-* CPU - Identify core count for Apple M1 (dylanaraps/neofetch#2038)
+* Terminal - Add Fig ([dylanaraps#2077](https://github.com/dylanaraps/neofetch/pull/2077))
+* CPU - Identify core count for Apple M1 ([dylanaraps#2038](https://github.com/dylanaraps/neofetch/pull/2038))
 
 </details>
 
 <details>
   <summary>🖼️ Bug Fixes</summary><br>
 
-* Bug Fix - Fix `col_offset` (dylanaraps/neofetch#2042)
-* Bug Fix - Prioritize `/etc/os-release` (dylanaraps/neofetch#2067)
+* Bug Fix - Fix `col_offset` ([dylanaraps#2042](https://github.com/dylanaraps/neofetch/pull/2042))
+* Bug Fix - Prioritize `/etc/os-release` ([dylanaraps#2067](https://github.com/dylanaraps/neofetch/pull/2067))
 
 </details>
 
@@ -114,7 +114,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 * Ascii - Add uwuntu ([#9](https://github.com/hykilpikonna/hyfetch/pull/9)) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
 * Ascii - Better Void ascii art ([#10](https://github.com/hykilpikonna/hyfetch/pull/10))
-* Ascii - Update old NixOS logo for compatibility (dylanaraps/neofetch#2114)
+* Ascii - Update old NixOS logo for compatibility ([dylanaraps#2114](https://github.com/dylanaraps/neofetch/pull/2114))
 
 </details>
 
@@ -122,39 +122,39 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Distro/OS Support Changes</summary><br>
 
 * OS - Identify macOS 13 Ventura ([#8](https://github.com/hykilpikonna/hyfetch/pull/8))
-* OS - Windows 11 Fluent (dylanaraps/neofetch#2109)
-* Distro - Add Asahi Linux (dylanaraps/neofetch#2079)
-* Distro - Add CenterOS (dylanaraps/neofetch#2097)
-* Distro - Add Finnix (dylanaraps/neofetch#2099)
-* Distro - Add Miracle Linux (dylanaraps/neofetch#2085)
-* Distro - Add Univalent (dylanaraps/neofetch#2162)
-* Distro - Add NomadBSD (dylanaraps/neofetch#2147)
-* Distro - Add GrapheneOS (dylanaraps/neofetch#2146)
-* Distro - Add ShastraOS (dylanaraps/neofetch#2149)
-* Distro - Add Ubuntu Touch (dylanaraps/neofetch#2167)
-* Distro - Add Ubuntu Sway (dylanaraps/neofetch#2136)
-* Distro - Add Orchid Linux (dylanaraps/neofetch#2144)
-* Distro - Add AOSC OS/Retro (dylanaraps/neofetch#2124)
-* Distro - Add Ultramarine Linux (dylanaraps/neofetch#2115)
-* Distro - Improve NixOS version detection (dylanaraps/neofetch#2157)
+* OS - Windows 11 Fluent ([dylanaraps#2109](https://github.com/dylanaraps/neofetch/pull/2109))
+* Distro - Add Asahi Linux ([dylanaraps#2079](https://github.com/dylanaraps/neofetch/pull/2079))
+* Distro - Add CenterOS ([dylanaraps#2097](https://github.com/dylanaraps/neofetch/pull/2097))
+* Distro - Add Finnix ([dylanaraps#2099](https://github.com/dylanaraps/neofetch/pull/2099))
+* Distro - Add Miracle Linux ([dylanaraps#2085](https://github.com/dylanaraps/neofetch/pull/2085))
+* Distro - Add Univalent ([dylanaraps#2162](https://github.com/dylanaraps/neofetch/pull/2162))
+* Distro - Add NomadBSD ([dylanaraps#2147](https://github.com/dylanaraps/neofetch/pull/2147))
+* Distro - Add GrapheneOS ([dylanaraps#2146](https://github.com/dylanaraps/neofetch/pull/2146))
+* Distro - Add ShastraOS ([dylanaraps#2149](https://github.com/dylanaraps/neofetch/pull/2149))
+* Distro - Add Ubuntu Touch ([dylanaraps#2167](https://github.com/dylanaraps/neofetch/pull/2167))
+* Distro - Add Ubuntu Sway ([dylanaraps#2136](https://github.com/dylanaraps/neofetch/pull/2136))
+* Distro - Add Orchid Linux ([dylanaraps#2144](https://github.com/dylanaraps/neofetch/pull/2144))
+* Distro - Add AOSC OS/Retro ([dylanaraps#2124](https://github.com/dylanaraps/neofetch/pull/2124))
+* Distro - Add Ultramarine Linux ([dylanaraps#2115](https://github.com/dylanaraps/neofetch/pull/2115))
+* Distro - Improve NixOS version detection ([dylanaraps#2157](https://github.com/dylanaraps/neofetch/pull/2157))
 
 </details>
 
 <details>
   <summary>🖼️ Device Support Changes</summary><br>
 
-* Terminal - Add Termux (dylanaraps/neofetch#2168)
-* CPU - Add loongarch64 (dylanaraps/neofetch#2140)
-* CPU - Identify CPU name for ARM / RISCV (dylanaraps/neofetch#2139)
-* Battery - Fix file not found (dylanaraps/neofetch#2130)
-* GPU - Identify open-kernal Nvidia driver version (dylanaraps/neofetch#2128)
+* Terminal - Add Termux ([dylanaraps#2168](https://github.com/dylanaraps/neofetch/pull/2168))
+* CPU - Add loongarch64 ([dylanaraps#2140](https://github.com/dylanaraps/neofetch/pull/2140))
+* CPU - Identify CPU name for ARM / RISCV ([dylanaraps#2139](https://github.com/dylanaraps/neofetch/pull/2139))
+* Battery - Fix file not found ([dylanaraps#2130](https://github.com/dylanaraps/neofetch/pull/2130))
+* GPU - Identify open-kernal Nvidia driver version ([dylanaraps#2128](https://github.com/dylanaraps/neofetch/pull/2128))
 
 </details>
 
 <details>
   <summary>🖼️ Bug Fixes</summary><br>
 
-* Bug Fix - Fix broken fedora output (dylanaraps/neofetch#2084)
+* Bug Fix - Fix broken fedora output ([dylanaraps#2084](https://github.com/dylanaraps/neofetch/pull/2084))
 
 </details>
 
