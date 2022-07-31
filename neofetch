@@ -1284,7 +1284,7 @@ get_model() {
         ;;
 
         "Mac OS X"|"macOS")
-            if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC") != "" ]]; then
+            if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC" -e "Lilu") != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
                 if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
