@@ -3479,7 +3479,7 @@ get_term_font() {
             term_font="${term_font//\"}"
         ;;
 
-        "Apple_Terminal")
+        "Apple_Terminal"*)
             term_font="$(osascript <<END
                          tell application "Terminal" to font name of window frontmost \
                          & " " & font size of window frontmost
@@ -3492,7 +3492,7 @@ END
                          "${XDG_CONFIG_HOME}/cutefishos/cutefish-terminal.conf")"
         ;;
 
-        "iTerm2")
+        "iTerm2"*)
             # Unfortunately the profile name is not unique, but it seems to be the only thing
             # that identifies an active profile. There is the "id of current session of current win-
             # dow" though, but that does not match to a guid in the plist.
