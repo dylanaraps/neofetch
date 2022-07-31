@@ -60,6 +60,51 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * [ ] Paginate flags
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
+### Unreleased 1.2.1
+
+<details>
+  <summary>🖼️ Ascii Art Changes</summary>  
+
+* Ascii - Improve Trisquel (dylanaraps/neofetch#1946)
+* 
+
+</details>
+
+<details>
+  <summary>🖼️ Distro/OS Support Changes</summary>  
+
+* OS - Support Old macOS 10.4 and 10.5 (dylanaraps/neofetch#2151)
+* Distro - Fix model detection for Ubuntu Touch (dylanaraps/neofetch#2167)
+* Distro - Add EncryptOS (dylanaraps/neofetch#2158)
+* Distro - Add BigLinux (dylanaraps/neofetch#2061)
+* Distro - Add AmogOS (dylanaraps/neofetch#1904)
+* Distro - Add CutefishOS (dylanaraps/neofetch#2054)
+* Distro - Add PearOS (dylanaraps/neofetch#2049)
+* Distro - Add FusionX (dylanaraps/neofetch#2011)
+* Distro - Add Q4OS (dylanaraps/neofetch#1973)
+* Distro - Add CachyOS (dylanaraps/neofetch#2026)
+* Distro - Add Soda Linux (dylanaraps/neofetch#2023)
+* Distro - Add Elive Linux (dylanaraps/neofetch#1957)
+* Distro - Improve GUIX package detection (dylanaraps/neofetch#2021)
+
+</details>
+
+<details>
+  <summary>🖼️ Device Support Changes</summary>  
+
+* Terminal - Add Fig (dylanaraps/neofetch#2077)
+* CPU - Identify core count for Apple M1 (dylanaraps/neofetch#2038)
+
+</details>
+
+<details>
+  <summary>🖼️ Bug Fixes</summary><br>
+
+* Bug Fix - Fix `col_offset` (dylanaraps/neofetch#2042)
+* Bug Fix - Prioritize `/etc/os-release` (dylanaraps/neofetch#2067)
+
+</details>
+
 ### 1.2.0
 
 * 🚀 Take over `neofetch` with `neowofetch`
