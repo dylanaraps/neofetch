@@ -12,12 +12,6 @@ This repo also serves as an updated version of the original `neofetch` since the
 * Method 2: `npx neowofetch`
 * Method 3: `bash <(curl -sL neowofetch.hydev.org)`
 
-If you installed `npm`, you can also run the updated original neofetch using `npx neowofetch`. If not, you can also do this:
-
-```sh
-bash <(curl -s "https://raw.githubusercontent.com/Hykilpikonna/HyFetch/HEAD/neofetch")
-```
-
 ## Installation
 
 ### Method 1: Install using Python pip (Recommended)
