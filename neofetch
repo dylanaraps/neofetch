@@ -807,7 +807,7 @@ image_source="auto"
 #       Solus, Soda, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu Touch, Ubuntu-MATE,
-#       Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Univention, Uos, Venom, Void, VNux, semc,
+#       Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Univention, Uos, Venom, Void, yiffOS, VNux, semc,
 #       Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
@@ -1604,6 +1604,7 @@ get_packages() {
             has swupd      && tot swupd bundle-list --quiet
             has pisi       && tot pisi li
             has pacstall   && tot pacstall -L
+            has bulge      && tot bulge list
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -12017,7 +12018,7 @@ EOF
         ;;
 
         "VNux"*)
-        set_colors 11 8 15 1 7
+            set_colors 11 8 15 1 7
             read -rd '' ascii_data <<'EOF'
 ${c1}              `
            ^[XOx~.
@@ -12041,6 +12042,52 @@ ${c1} 'ljmwn${c2}~tk8${c5}MWWWWM8O${c2}X${c1}r${c2}+]nC${c1}[
                    ^"
 EOF
 
+        ;;
+
+        "yiffOS"*)
+            set_colors 93 92
+            read -rd '' ascii_data <<'EOF'
+${c1}            NK
+             NxKXW
+             WOlcoXW
+             0olccloxNW
+             XxllllllloxOKNW
+             Nklllllllllllodk0XWW
+            N0dllllllllllllllodxOKNW
+          WKxlllllllllllllllllllooxOKN
+        WKdllllllllllllllooooooooooooo
+       Nxllllllllllllllloooooooooo${c2}oooo
+${c1}     XXNOolllllllllllloooooooooo${c2}oooooo
+${c1}   WX0xolllllllllllooooooooooo${c2}oooooooo
+${c1} XWN0xolllllllllloooooooo${c2}ooooooooooooo
+${c1}   Kkdolllllllooooddddd${c2}doooooooooooddo
+${c1}        K00XNW${c2}      WX0xdooooooddddddd
+                       WXOxdoooooodddd
+                          WXOxdddddddd
+                                NX0ddd
+                                  WN0d
+EOF
+        ;;
+
+        "LangitKetujuh"*)
+            set_colors 7 4
+            read -rd '' ascii_data <<'EOF'
+${c1}
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+      'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+   L7L.   'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L             L7L7L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                'L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                    'L7L7L7L7L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.   'L7L
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+${c2}
+EOF
         ;;
 
        "semc"*)
@@ -12404,7 +12451,7 @@ oMMMMmMMMMNds:.+MMMmmMMN/.-odNMMMMmMMMM+
              .odNm+  /dNms.
 EOF
                 ;;
-
+                
             esac
         ;;
     esac
