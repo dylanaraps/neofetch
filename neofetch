@@ -795,7 +795,7 @@ image_source="auto"
 #       HydroOS, Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kaisen_Linux, Kubuntu, LEDE, LangitKetujuh, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
-#       Mer, Minix, MIRACLE_LINUX, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
+#       Mer, Minix, MIRACLE_LINUX, Linspire, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
 #       Netrunner, Nitrux, NixOS, NomadBSD, Nurunner, NuTyX, OBRevenge, OpenBSD,
 #       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
 #       osmc, Oracle, Orchid, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
@@ -1012,7 +1012,19 @@ get_distro() {
                     tiny) distro="NixOS" ;;
                     *) distro="NixOS $(nixos-version)" ;;
                 esac
-
+				
+            elif [[ -f /etc/linspire-version ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="Linspire" ;;
+                    *) distro="Linspire $(awk '/Version/ {print $2}' /etc/linspire-version)"
+                esac
+				
+            elif [[ -f /etc/lindowsos-version ]]; then
+                case $distro_shorthand in
+                    on|tiny) distro="LindowsOS" ;;
+                    *) distro="$(awk '/Version/ {print $2,$3}' /etc/lindowsos-version)"
+                esac
+				
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
                     on|tiny) distro="Proxmox VE" ;;
@@ -5313,7 +5325,7 @@ ASCII:
                                 GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
                                 KaOS, Kaisen_Linux, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE, LangitKetujuh,
                                 LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE, Lubuntu, Lunar, macos,
-                                Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, MIRACLE_LINUX, LinuxMint,
+                                Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui, Mer, Minix, MIRACLE_LINUX, Linspire, LinuxMint,
                                 Live_Raizo, MX_Linux, Namib, Neptune, NetBSD, Netrunner, Nitrux,
                                 NixOS, NomadBSD, Nurunner, NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana,
                                 openmamba, OpenMandriva, OpenStage, OpenWrt, osmc, Oracle, Orchid,
@@ -8034,30 +8046,6 @@ xXXXXXX, cXXXNNNXXXXNNXXXXXXXXNNNNKOOK; d0O .k
 EOF
         ;;
 
-        "FusionX"*)
-            set_colors 4 4 7
-            read -rd '' ascii_data <<'EOF'
-${c2}   
-	          .
-                 kXNNX
-                 0XXXXXNNk
-                 XXXXXXXXXNK
-                .XXXXXXXXXXXNx
- xXNW.          'XXXXXXXXXX.
-'XXXXXNW0       ;XXXXXX
-kXXXXXXXXXNW.${c3}  MW.
-${c2}0XXXXXXXXXXX.${c3}cXXXX;
-${c2}lXXXXXXXXXd   ${c3} ol .
-${c2}.XXXXXk         ONXXNW:
- .K             OXXXXXXNWK
-                0XXXXXXXXXXNW.
-                KXXXXXXXXXXc
-                KXXXXXXXX
-                KXXXd
-                .
-EOF
-        ;;
-
         "GalliumOS"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
@@ -9267,6 +9255,25 @@ ${c1}            ,A
 EOF
         ;;
 
+		
+        "Linspire"* | "Freespire"* | "Lindows"*)
+            set_colors 4 2
+            read -rd '' ascii_data <<'EOF'
+${c2}                                                   __^ 	
+${c2}                                                __/    \\
+${c2}   MMy        dMy                            __/        \\ 
+${c2}  dMMy        MMy                            ${c1}MM${c2}          \\
+${c2}  MMMy            ,,        ${c1}dMMMMn                        ${c2}\\
+${c2} dMMy        dMM dMMMMMMy  ${c1}dMM  MM dMMMMMy  dMM MM.nMMM dMMMMMM
+${c1}MMM          ${c2}MMy MMy  MMy ${c1}dMM      MMy  MMy MMy MMy    dy   dMy 
+${c1}MMM         ${c2}dMM dMM   MMy  ${c1}dMMMMy dMM  dMM dMM dMM    dMMMMMMM  
+${c2} dMMy       MMy MMy  MMy     ${c1}dMMy MM  MMy MMy  MMy    dMM
+${c2}dMMy       dMM dMM  dMM ${c1}dMM  MMy dMMMMMy dMM  dMM     MMy   MM
+${c2}MMMMMMMMMM MMy MMy  MMy ${c1}dMMMyyy MMy     MMy  MMy      dMMMMMMy
+${c2}                                ${c1}dy
+EOF
+        ;;
+		
         "linuxmint_small"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
