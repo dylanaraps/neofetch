@@ -788,7 +788,7 @@ image_source="auto"
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
-#       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
+#       EndeavourOS, EncryptOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
 #       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
@@ -5147,7 +5147,7 @@ ASCII:
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
-                                DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
+                                DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, EncryptOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
@@ -7320,6 +7320,26 @@ ${c1}`-////+${c2}ssssssssssssssssssssssssssso${c3}++++-
 ${c1} `..-+${c2}oosssssssssssssssssssssssso${c3}+++++/`
    ./++++++++++++++++++++++++++++++/:.
   `:::::::::::::::::::::::::------``
+EOF
+        ;;
+	
+	        "EncryptOS"*)
+            set_colors 2 5 6
+            read -rd '' ascii_data <<'EOF'
+${c2}                  *******                     
+${c2}                ***       **.                  
+${c2}                **         **                  
+${c2}                **         **                  
+                              
+${c2}              *****************                
+${c2}             ,,,,,,,,,,,,,,,,***               
+${c2}             ,,,,,,,     ,,,,,,,               
+${c2}             ,,,,,,,     ,,,,,,,               
+${c2}             ,,,,,,,     ,,,,,,,               
+${c2}             ,,,,,,,     ,,,,,,,               
+${c2}             ,,,,,,,,,,,,,,,,,,,               
+${c2}                 ,,,,,,,,,,,,.                  
+                                   
 EOF
         ;;
 
