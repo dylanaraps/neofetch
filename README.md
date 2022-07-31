@@ -36,6 +36,8 @@ Currently, these distributions have existing packages for HyFetch:
 
 When you run `hyfetch` for the first time, it will prompt you to choose a color system and a preset. Just follow the prompt, and everything should work (hopefully). If something doesn't work, feel free to submit an issue!
 
+If you want to use the updated `neofetch` without LGBTQ flags, check out [this section](https://github.com/hykilpikonna/hyfetch#running-updated-original-neofetch)
+
 #### Q: How do I change my config?
 
 A: Use `hyfetch -c`
