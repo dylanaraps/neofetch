@@ -808,7 +808,7 @@ image_source="auto"
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu Touch, Ubuntu-MATE,
 #       Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Univention, Uos, Venom, Void, yiffOS, VNux, semc,
-#       Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
+#       Obarun, wii-linux-ngx, whiite-linux, gc-linux, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
 # NOTE: Ubuntu has flavor variants.
@@ -5327,7 +5327,7 @@ ASCII:
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
                                 Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Uos, Univention, Venom, Void, VNux, semc,
-                                Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
+                                Obarun, wii-linux-ngx, whiite-linux, gc-linux, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 
                                 NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 
@@ -12159,6 +12159,29 @@ ${c1}                    ,;::::;
     cooooooooooooloooooc
      ;ooooooooooooool;
        ;looooooolc;
+EOF
+        ;;
+
+        *"wii-linux-ngx"*|*"whiite-linux"*|\
+        *"gc-linux"*)
+            set_colors 6 7
+            read -rd '' ascii_data <<'EOF'
+${c1}'''''''            `~;:`            -''''''   ~kQ@@g\      ,EQ@@g/
+h@@@@@@'          o@@@@@9`         `@@@@@@D  `@@@@@@@=     @@@@@@@?
+'@@@@@@X         o@@@@@@@D         v@@@@@@:   R@@@@@@,     D@@@@@@_
+ t@@@@@@'       _@@@@@@@@@;       `Q@@@@@U     ;fmo/-       ;fmo/-
+ `Q@@@@@m       d@@@@@@@@@N       7@@@@@@'
+  L@@@@@@'     :@@@@@&@@@@@|     `Q@@@@@Z     :]]]]]v      :]]]]]v
+   Q@@@@@X     R@@@@Q`g@@@@Q     f@@@@@Q-     z@@@@@Q      v@@@@@Q
+   r@@@@@@~   ;@@@@@/ ;@@@@@L   `@@@@@@/      z@@@@@Q      v@@@@@Q
+    d@@@@@q   M@@@@#   H@@@@Q   ]@@@@@Q       z@@@@@Q      v@@@@@Q
+    ,@@@@@@, >@@@@@;   _@@@@@c `@@@@@@>       z@@@@@Q      v@@@@@Q
+     X@@@@@U Q@@@@R     Z@@@@Q`{@@@@@N        z@@@@@Q      v@@@@@Q
+     .@@@@@@S@@@@@:     -@@@@@e@@@@@@:        z@@@@@Q      v@@@@@Q
+      {@@@@@@@@@@U       t@@@@@@@@@@e         z@@@@@Q      v@@@@@Q
+      `Q@@@@@@@@@'       `Q@@@@@@@@@-         z@@@@@Q      v@@@@@Q
+       :@@@@@@@@|         ;@@@@@@@@=          z@@@@@Q      v@@@@@Q
+        '2#@@Q6:           ,eQ@@QZ~           /QQQQQg      \QQQQQN
 EOF
         ;;
 
