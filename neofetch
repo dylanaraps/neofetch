@@ -1515,6 +1515,9 @@ get_uptime() {
     ((${h/ *} == 0)) && unset h
     ((${m/ *} == 0)) && unset m
 
+    # Add "(!)" if more than 100 days
+    ((${d/ *} > 100)) && d="${d}(!)"
+
     uptime=${d:+$d, }${h:+$h, }$m
     uptime=${uptime%', '}
     uptime=${uptime:-$s seconds}
