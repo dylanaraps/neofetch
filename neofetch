@@ -1683,7 +1683,7 @@ get_packages() {
 
             # This is the only standard location for appimages.
             # See: https://github.com/AppImage/AppImageKit/wiki
-            manager=appimage && has appimaged && dir ~/.local/bin/*.appimage
+            manager=appimage && has appimaged && dir ~/.local/bin/*.[Aa]pp[Ii]mage
         ;;
 
         "Mac OS X"|"macOS"|MINIX)
