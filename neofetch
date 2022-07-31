@@ -1244,7 +1244,7 @@ get_distro() {
 get_model() {
     case $os in
         Linux)
-            if [[ -d /usr/bin/system-image-cli || -d /system/app/ ]]; then
+            if [[ -d /android/system/ || -d /system/app/ ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
             elif [[ -f /sys/devices/virtual/dmi/id/board_vendor ||
