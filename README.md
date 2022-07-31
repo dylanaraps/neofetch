@@ -98,7 +98,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 </details>
 
 <details>
-  <summary>🖼️ Bug Fixes</summary><br>
+  <summary>🖼️ Bug Fixes</summary>
 
 * Bug Fix - Fix `col_offset` ([dylanaraps#2042](https://github.com/dylanaraps/neofetch/pull/2042))
 * Bug Fix - Prioritize `/etc/os-release` ([dylanaraps#2067](https://github.com/dylanaraps/neofetch/pull/2067))
@@ -110,7 +110,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * 🚀 Take over `neofetch` with `neowofetch`
 
 <details>
-  <summary>🖼️ Ascii Art Changes</summary><br>
+  <summary>🖼️ Ascii Art Changes</summary>
 
 * Ascii - Add uwuntu ([#9](https://github.com/hykilpikonna/hyfetch/pull/9)) (use it with `hyfetch --test-distro uwuntu` or `neowofetch --ascii_distro uwuntu`)
 * Ascii - Better Void ascii art ([#10](https://github.com/hykilpikonna/hyfetch/pull/10))
@@ -119,7 +119,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 </details>
 
 <details>
-  <summary>🖼️ Distro/OS Support Changes</summary><br>
+  <summary>🖼️ Distro/OS Support Changes</summary>
 
 * OS - Identify macOS 13 Ventura ([#8](https://github.com/hykilpikonna/hyfetch/pull/8))
 * OS - Windows 11 Fluent ([dylanaraps#2109](https://github.com/dylanaraps/neofetch/pull/2109))
@@ -141,7 +141,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 </details>
 
 <details>
-  <summary>🖼️ Device Support Changes</summary><br>
+  <summary>🖼️ Device Support Changes</summary>
 
 * Terminal - Add Termux ([dylanaraps#2168](https://github.com/dylanaraps/neofetch/pull/2168))
 * CPU - Add loongarch64 ([dylanaraps#2140](https://github.com/dylanaraps/neofetch/pull/2140))
@@ -152,7 +152,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 </details>
 
 <details>
-  <summary>🖼️ Bug Fixes</summary><br>
+  <summary>🖼️ Bug Fixes</summary>
 
 * Bug Fix - Fix broken fedora output ([dylanaraps#2084](https://github.com/dylanaraps/neofetch/pull/2084))
 
