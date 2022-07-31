@@ -19,3 +19,11 @@ IgnoreList:
   2057: duplicate
   # [2051] Typo in comment for col_offset
   2051: incorrect
+  # [1936] Added PiluX logo.
+  1936: deleted
+  # [1927] improve/add model name for arm linux cpus
+  1927: duplicate
+  # [1850] neofetch: remove duplicate distro ASCII logo
+  1850: duplicate
+  # [1827] Improve manjaro logo
+  1827: deleted
