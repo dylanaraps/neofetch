@@ -71,6 +71,8 @@ Thank you for your contribution!
 This PR is [merged into hyfetch](https://github.com/hykilpikonna/hyfetch/commit/{sha}) since this repo (dylanaraps/neofetch) seems no longer maintained.
 
 [HyFetch](https://github.com/hykilpikonna/hyfetch) is a fork of neofetch with LGBTQ pride flags, but the repo also serves as an updated version of neofetch, addressing many pull requests that are not merged in the original repo.
+
+Read the ["Running Updated Original Neofetch" section](https://github.com/hykilpikonna/hyfetch#running-updated-original-neofetch) for more info!
     """
     pyperclip.copy(comment.strip())
     print()

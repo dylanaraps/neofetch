@@ -1,0 +1,13 @@
+# Pull request that I don't plan on merging, or already merged pull request that the script didn't
+# detect.
+IgnoreList:
+  # [2154] Added Support for Uwuntu
+  2154: merged
+  # [2156] Update neofetch (for macOS 13)
+  2156: duplicate
+  # [2152] created much cleaner void ascii art
+  2152: merged
+  # [2150] Add macOS 13 to version name list
+  2150: merged
+  # [2092] Update neofetch
+  2092: troll
