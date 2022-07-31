@@ -1695,6 +1695,7 @@ get_packages() {
             has pisi       && tot pisi li
             has pacstall   && tot pacstall -L
             has bulge      && tot bulge list
+            has pm         && tot pm list packages
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -1768,6 +1769,7 @@ get_packages() {
             has flatpak && tot flatpak list
             has spm     && tot spm list -i
             has puyo    && dir ~/.puyo/installed
+            has cargo   && dir ~/.cargo/bin/*
 
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
