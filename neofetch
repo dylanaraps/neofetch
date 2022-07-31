@@ -1635,8 +1635,9 @@ get_packages() {
             has kpm-pkg && ((packages+=$(kpm  --get-selections | grep -cv deinstall$)))
 
             has guix && {
-                manager=guix-system && tot guix package -p "/run/current-system/profile" -I
+                manager=guix-system && tot guix package -p /run/current-system/profile -I
                 manager=guix-user   && tot guix package -I
+                manager=guix-home   && tot guix package -p ~/.guix-home/profile -I
             }
 
             has nix-store && {
