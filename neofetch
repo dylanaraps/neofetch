@@ -3484,7 +3484,7 @@ get_term() {
     
     # Termux sets TERMUX_VERSION. Put this after the PPID check because this is
     # also set if using a terminal on an X server.
-    [[ -z "$term" && "$TERMUX_VERSION" ]] && term="Termux ${TERMUX_VERSION}"
+    [[ (-z "$term" && "$TERMUX_VERSION") || $term == "com.termux" ]] && term="Termux ${TERMUX_VERSION}"
 
     # Log that the function was run.
     term_run=1
