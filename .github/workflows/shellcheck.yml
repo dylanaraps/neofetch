@@ -15,10 +15,10 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Install shellcheck
-        run: sudo apt-get install -y shellcheck
+        run: sudo apt-get update && apt-get install -y shellcheck
       
       - name: Run shellcheck
         run: |
           shellcheck -V
-          shellcheck -e SC2244 -e SC2243 neofetch
+          shellcheck -e SC2244 -e SC2243 -e SC2154 neofetch
           ./neofetch
