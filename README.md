@@ -60,6 +60,11 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * [ ] Paginate flags
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
+### Unpublished 1.3.1
+
+* 🌈 Add finsexual flag (#12)
+* 🖼️ Fixed shellcheck warnings in `neowofetch`
+
 ### 1.3.0
 
 <details>
