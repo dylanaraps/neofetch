@@ -6050,9 +6050,10 @@ dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
             `-+shy    shs+:`
 EOF
         ;;
-                "AmogOS"*)
-                                set_colors 15 6
-                                            read -rd '' ascii_data <<'EOF'
+
+        "AmogOS"*)
+            set_colors 15 6
+            read -rd '' ascii_data <<'EOF'
 ${c1}             ___________      
             /           \      
            /   ${c2}______${c1}    \    
@@ -6074,6 +6075,7 @@ ${c1}             ___________
                 \_______/   
 EOF
         ;;
+
         "Anarchy"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
@@ -6144,9 +6146,9 @@ ${c1}         -o          o-
 EOF
         ;;
 
-    "instantOS"*)
-        set_colors 4 6
-        read -rd '' ascii_data <<'EOF'
+        "instantOS"*)
+            set_colors 4 6
+            read -rd '' ascii_data <<'EOF'
 
 ${c1}
      'cx0XWWMMWNKOd:'.
@@ -6818,9 +6820,9 @@ ${c1}              oMMNMMMMMMMMMMMMMMMMMMMMMM
 EOF
         ;;
 
-       "Bodhi"*)
-           set_colors 7 11 2
-           read -rd '' ascii_data <<'EOF'
+        "Bodhi"*)
+            set_colors 7 11 2
+            read -rd '' ascii_data <<'EOF'
 ${c1}|           ${c2},,mmKKKKKKKKWm,,
  ${c1}'      ${c2},aKKP${c1}LL**********|L*${c2}TKp,
    ${c1}t  ${c2}aKP${c1}L**```          ```**L${c2}*Kp
@@ -6840,11 +6842,11 @@ TH${c1}L*     ${c3}TKKKKKK##KKKN@KKKK^         ${c1}|I${c2}M
         "Kpp${c1}LL++,.,    ,,|||$${c2}#K*   ${c1}'.
            ${c2}`"MKWpppppppp#KM"`        ${c1}`h,
 EOF
-       ;;
+        ;;
 
-       "bonsai"*)
-           set_colors 6 2 3
-           read -rd '' ascii_data <<'EOF'
+        "bonsai"*)
+            set_colors 6 2 3
+            read -rd '' ascii_data <<'EOF'
 ${c2}   ,####,
    ${c2}#######,  ${c2},#####,
    ${c2}#####',#  ${c2}'######
@@ -6864,7 +6866,7 @@ ${c1} #
 EOF
        ;;
 
-       "BSD")
+        "BSD")
             set_colors 1 7 4 3 6
             read -rd '' ascii_data <<'EOF'
 ${c1}             ,        ,
@@ -6914,9 +6916,10 @@ ${c1}        `++
          -/
 EOF
         ;;
-    "Cachy OS"*)
-        set_colors 2 8 6
-        read -rd '' ascii_data <<'EOF'
+
+        "Cachy OS"*)
+            set_colors 2 8 6
+            read -rd '' ascii_data <<'EOF'
 ${c3}           ${c2}.${c3}-------------------------:
 ${c3}          .${c1}+=${c3}========================.
 ${c3}         :${c1}++${c3}===${c1}++===${c3}===============-       :${c1}++${c3}-
@@ -6967,9 +6970,10 @@ ${c1}                              ......
      ${c2}.,,,,++++,..  .,,,,,.....,+++,.,,${c1}
 EOF
         ;;
-    "Carbs"*)
-        set_colors 4 5 4 4 4 4
-        read -rd '' ascii_data <<'EOF'
+
+        "Carbs"*)
+            set_colors 4 5 4 4 4 4
+            read -rd '' ascii_data <<'EOF'
 ${c2}             ..........
           ..,;:ccccccc:;'..
        ..,clllc:;;;;;:cllc,.
@@ -6992,10 +6996,10 @@ EOF
 
         ;;
 
-    "CalinixOS")
-        # set_colors 4 5 4 4 4 4
-        set_colors 5 4
-        read -rd '' ascii_data <<'EOF'
+        "CalinixOS")
+            # set_colors 4 5 4 4 4 4
+            set_colors 5 4
+            read -rd '' ascii_data <<'EOF'
 ${c2}
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⠤⠔⠒⠒⠋⠉⠉⠉⠉⠓⠒⠒⠦⠤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠤⠒⠉⣁⣠⣤⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣤⣄⣈⠙⠲⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -7026,10 +7030,10 @@ ${c2}
 EOF
         ;;
     
-    "CalinixOS_small"*)
-        # set_colors 4 5 4 4 4 4
-        set_colors 5 4
-        read -rd '' ascii_data <<'EOF'
+        "CalinixOS_small"*)
+            # set_colors 4 5 4 4 4 4
+            set_colors 5 4
+            read -rd '' ascii_data <<'EOF'
 ${c2}
 ⠀⠀⠀⠀⠀⠀⠀⠀⣀⠤⠐⣂⣈⣩⣭⣭⣍⣀⣐⠀⠄⡀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⡀⠔⣨⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣅⠢⡀⠀⠀⠀⠀⠀
@@ -7050,9 +7054,9 @@ ${c2}
 EOF
         ;;
 
-    "CBL-Mariner"*)
-        set_colors 6
-        read -rd '' ascii_data <<'EOF'
+        "CBL-Mariner"*)
+            set_colors 6
+            read -rd '' ascii_data <<'EOF'
 ${c1}                    .
                   :-  .
                 :==. .=:
@@ -7541,9 +7545,9 @@ ${c3}             !M$EEEEEEEEEEEP
 EOF
         ;;
 
-                "dahlia"*)
-                    set_colors 1 7 3
-                    read -rd '' ascii_data <<'EOF'
+        "dahlia"*)
+            set_colors 1 7 3
+            read -rd '' ascii_data <<'EOF'
 ${c1}
                   .#.
                 *%@@@%*
@@ -7563,7 +7567,7 @@ ${c1}
                ,/%@@@%/.
                   ,#,
 EOF
-                ;;
+        ;;
 
         "debian_small")
             set_colors 1 7 3
@@ -7846,7 +7850,7 @@ EOF
         ;;
 
         "Elive"*)
-        set_colors 7 6 6
+            set_colors 7 6 6
             read -rd '' ascii_data <<'EOF'
 ${c1}
              *@${c2},,&(%%%..%*.
@@ -7890,7 +7894,7 @@ ${c1} `..-+${c2}oosssssssssssssssssssssssso${c3}+++++/`
 EOF
         ;;
 	
-	        "EncryptOS"*)
+	      "EncryptOS"*)
             set_colors 2 5 6
             read -rd '' ascii_data <<'EOF'
 ${c2}                  *******                     
@@ -8248,7 +8252,6 @@ ${c3}
             .d988999889889899dd.
 
 EOF
-
         ;;
 
         "gentoo_small")
@@ -10374,9 +10377,9 @@ yyhh-   ${c2}ymm-       /dmdyosyd`  ${c1}`yhh+
 EOF
         ;;
 
-                "pearOS"*)
-                    set_colors 2 3 1 1 5 4
-                    read -rd '' ascii_data <<'EOF'
+        "pearOS"*)
+            set_colors 2 3 1 1 5 4
+            read -rd '' ascii_data <<'EOF'
 \e[0;32m                  .+yh
                  sMMMo
                 sMMN+
@@ -10399,7 +10402,7 @@ EOF
       `+hMMMMMMMMMMMMMms-
           -/osyhhyso:. \e[0m
 EOF
-                ;;
+        ;;
 
         "Pengwin"*)
             set_colors 5 5 13
@@ -11469,7 +11472,7 @@ ${c2}
             ${c1}`~=|||||||||||L"${c2}$@@@@@@@@@@@
                    ${c1}````'"""""""${c2}'""""""""
 EOF
-            ;;
+        ;;
 
         "Solus"*)
             set_colors 4 7 1
@@ -11495,7 +11498,7 @@ ${c2}            -```````````
          `-/+ssssssssssso+/-`
               `.-----..`
 EOF
-            ;;
+        ;;
 
         "Sulin"*)
             set_colors 4 7 1
@@ -12067,6 +12070,7 @@ oss${c2}yNMMMNyMMh${c1}sssssssssssssshmmmh${c1}ssssssso
             .-\+oossssoo+/-.
 EOF
         ;;
+
         "Ultramarine Linux"* | "ultramarine"*)
             set_colors 4 7
             read -rd '' ascii_data <<'EOF'
@@ -12315,7 +12319,7 @@ ${c1}        K00XNW${c2}      WX0xdooooooddddddd
 EOF
         ;;
 
-       "semc"*)
+        "semc"*)
             set_colors 2 8 1
             read -rd '' ascii_data <<'EOF'
 ${c1}            /\
@@ -12475,7 +12479,8 @@ yyyyyyy${c2}+MMMMMMMMMMMMMMMMMMMMMMMM/${c1}yyyyyyy
            `.:/oosyyyysso/:.`
 EOF
         ;;
-                "Soda"*) 
+
+        "Soda"*)
             set_colors 1 7
             read -rd '' ascii_data <<'EOF'
 ${c2}                 @&&&&${c1}        *'*,  
@@ -12494,11 +12499,11 @@ ${c2}                 @&&&&${c1}        *'*,
         @@@@@@@@@@@@                    
            @@@@@@@
 EOF
-               ;;
+        ;;
                
-                "IRIX"*)
-                    set_colors 4 7
-                    read -rd '' ascii_data <<'EOF'
+        "IRIX"*)
+            set_colors 4 7
+            read -rd '' ascii_data <<'EOF'
 ${c1}           ./ohmNd/  +dNmho/-
      `:+ydNMMMMMMMM.-MMMMMMMMMdyo:.
    `hMMMMMMNhs/sMMM-:MMM+/shNMMMMMMh`
@@ -12519,7 +12524,8 @@ oMMMMmMMMMNds:.+MMMmmMMN/.-odNMMMMmMMMM+
           `:hMMMMMM. NMMMMMh/`
              .odNm+  /dNms.
 EOF
-                ;;
+        ;;
+
         "Zorin"*)
             set_colors 4 6
             read -rd '' ascii_data <<'EOF'
@@ -12675,10 +12681,6 @@ ${c1}                 `-     `
     -/+`                      :.
 EOF
                 ;;
-
-#               "GhostBSD")
-#                   set_colors 4 7
-#                   read -rd '' ascii_data << 'EOF'
             esac
         ;;
     esac
