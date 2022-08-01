@@ -810,7 +810,7 @@ image_source="auto"
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-Kylin, Ubuntu Touch, Ubuntu-MATE,
 #       Ubuntu-Studio, Ubuntu-Sway, Ubuntu, Ultramarine, Univention, Uos, Venom, Void, yiffOS, VNux, semc,
 #       Obarun, wii-linux-ngx, whiite-linux, gc-linux, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
-# NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
+# NOTE: Arch, Ubuntu, Redhat, Fedora, LangitKetujuh, NixOS and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
 # NOTE: Ubuntu has flavor variants.
 #       Change this to Lubuntu, Kubuntu, Xubuntu, Ubuntu-GNOME, Ubuntu-Kylin
@@ -8874,6 +8874,27 @@ ${c1}     _________
 EOF
         ;;
 
+        "LangitKetujuh_old")
+            set_colors 7 4
+            read -rd '' ascii_data <<'EOF'
+${c1}
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+      'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+   L7L.   'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L             L7L7L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                'L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                    'L7L7L7L7L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.   'L7L
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+${c2}
+EOF
+        ;;
+
         "LangitKetujuh"*)
             set_colors 4 2
             read -rd '' ascii_data <<'EOF'
@@ -12291,27 +12312,6 @@ ${c1}        K00XNW${c2}      WX0xdooooooddddddd
                           WXOxdddddddd
                                 NX0ddd
                                   WN0d
-EOF
-        ;;
-
-        "LangitKetujuh"*)
-            set_colors 7 4
-            read -rd '' ascii_data <<'EOF'
-${c1}
-   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
-      'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
-   L7L.   'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
-   L7L7L7L                             L7L7L7L
-   L7L7L7L                             L7L7L7L
-   L7L7L7L             L7L7L7L7L7L7L7L7L7L7L7L
-   L7L7L7L                'L7L7L7L7L7L7L7L7L7L
-   L7L7L7L                    'L7L7L7L7L7L7L7L
-   L7L7L7L                             L7L7L7L
-   L7L7L7L                             L7L7L7L
-   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.   'L7L
-   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.
-   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
-${c2}
 EOF
         ;;
 
