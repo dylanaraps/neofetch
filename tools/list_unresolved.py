@@ -21,6 +21,7 @@ def obtain_resolved():
 if __name__ == '__main__':
     # Obtain a list of resolved issues
     resolved = set(obtain_resolved())
+    print(f'There are {len(resolved)} resolved PRs')
 
     # Read the ignore-list
     with open(Path(__file__).parent / "pull_request_markings.yaml") as stream:
