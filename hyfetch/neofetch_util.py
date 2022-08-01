@@ -178,7 +178,7 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
         if platform.system() != 'Windows':
             os.system(f'{get_command_path()} --ascii --source {path.absolute()} --ascii-colors')
 
-        if platform.system() == 'Windows':
+        else:
             cmd = get_command_path().replace("\\", "/").replace("C:/", "/c/")
             path_str = str(path.absolute()).replace('\\', '/').replace('C:/', '/c/')
 
