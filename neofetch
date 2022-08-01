@@ -7147,20 +7147,21 @@ EOF
         ;;
 
         "Center"*)
+            set_colors 7 7
             read -rd '' ascii_data <<'EOF'
-${c2}                    .
-                    o,
-            .       d,       .
-            ';'   ..d;..  .cl'
-              .:; 'oldO,.oo.
-              ..,:,xKXxoo;'.
-        ,;;;;;ldxkONMMMXxkxc;;;;;.
-        .....':oddXWMNOxlcl:......
-               .:dlxk0c;:. .
-              :d:.,xcld,.,:.
-            ;l,    .l;     ';'
-                   .o;
-                    l,
+${c2}                .
+                o,
+        .       d,       .
+        ';'   ..d;..  .cl'
+          .:; 'oldO,.oo.
+          ..,:,xKXxoo;'.
+    ,;;;;;ldxkONMMMXxkxc;;;;;.
+    .....':oddXWMNOxlcl:......
+           .:dlxk0c;:. .
+          :d:.,xcld,.,:.
+        ;l,    .l;     ';'
+               .o;
+                l,
 EOF
                 ;;
 
