@@ -525,4 +525,11 @@ PRESETS: dict[str, ColorProfile] = {
         '#FFFFFF',
         '#000000',
     ]),
+    "finsexual": ColorProfile([
+        "#B18EDF",
+        "#D7B1E2",
+        "#F7CDE9",
+        "#F39FCE",
+        "#EA7BB3",
+    ]),
 }
