@@ -84,13 +84,13 @@ def parse_ascii_distros() -> list[AsciiArt]:
     return [v for v in out if v]
 
 
-def wrap(text: str, max_len: int, leading_space: int):
-    length = max_len - leading_space
+def wrap(text: str, max_len: int, leading: str):
+    length = max_len - len(leading)
     lines = [line for raw in text.split('\n') for line in textwrap.wrap(raw, length) or ['']]
-    return '\n'.join(' ' * leading_space + line if line else line for line in lines)
+    return '\n'.join(leading + line if line else line for line in lines)
 
 
-def generate_help(max_len: int = 100, leading_space: int = 32):
+def generate_help(max_len: int, leading: str):
     distros = sorted(list({a.get_friendly_name() for a in parse_ascii_distros()}), key=str.casefold)
 
     smalls = [d.replace('_small', '') for d in distros if d.endswith('_small')]
@@ -101,9 +101,9 @@ def generate_help(max_len: int = 100, leading_space: int = 32):
           f"NOTE: {', '.join(olds)} have 'old' logo variants, use {{distro}}_old to use them.\n\n" \
           f"NOTE: {', '.join(smalls)} have 'small' logo variants, use {{distro}}_small to use them."
 
-    return wrap(out, max_len, leading_space)
+    return wrap(out, max_len, leading)
 
 
 if __name__ == '__main__':
-    print(generate_help(100, 0))
-    print(generate_help())
+    print(generate_help(100, ' ' * 32))
+    print(generate_help(100, '# '))
