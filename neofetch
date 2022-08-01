@@ -2392,7 +2392,7 @@ get_cpu() {
                 ;;
 		
                 *)
-                    cpu="$(awk -F '\\s*: | @' \
+                    [[ -z "$cpu" ]] && cpu="$(awk -F '\\s*: | @' \
                             '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
                             cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
                 ;;
@@ -2408,6 +2408,11 @@ get_cpu() {
                     break
                 }
             done
+	        
+            # If on a Raspberry Pi...
+            if grep -q "Raspberry Pi" /proc/device-tree/model; then
+                temp_dir=/sys/class/thermal/thermal_zone0/temp
+            fi
 
             # Get CPU speed.
             if [[ -d "$speed_dir" ]]; then
