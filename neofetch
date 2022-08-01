@@ -1321,8 +1321,8 @@ get_model() {
             if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC" -e "Lilu") != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
-                if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
-                    model="$(system_profiler SPHardwareDataType | grep Machine\ Name\:)"
+                if [[ $osx_version == 10.[4-5]* ]]; then
+                    model="$(system_profiler SPHardwareDataType | grep Machine\ Name:)"
                     model=${model/Machine\ Name\:/}
 
                     model="$model ($(sysctl -n hw.model))"
@@ -1419,7 +1419,7 @@ get_model() {
                 iPad8,9 | iPad8,10): "iPad Pro 4 (11 Inch)" ;;
                 iPad8,1[1-2]):       "iPad Pro 4 (12.9 Inch)" ;;
                 iPad13,[4-7]):       "iPad Pro 5 (11 Inch)" ;;
-                iPad13,8 | iPad13,11):"iPad Pro 5 (12.9 Inch)" ;;
+                iPad13,8 | iPad13,11): "iPad Pro 5 (12.9 Inch)" ;;
                 iPad2,[5-7]):        "iPad mini" ;;
                 iPad4,[4-6]):        "iPad mini 2" ;;
                 iPad4,[7-9]):        "iPad mini 3" ;;
@@ -2014,10 +2014,10 @@ get_de() {
                        kf_ver=$(kf5-config --version)
                        qt_ver=${kf_ver/KDE*}
                        qt_ver=${qt_ver/Qt:}
-                       qt_ver=$(trim $qt_ver)
+                       qt_ver=$(trim "$qt_ver")
                        kf_ver=${kf_ver/kf5*}
                        kf_ver=${kf_ver/*:}
-                       kf_ver=$(trim $kf_ver)
+                       kf_ver=$(trim "$kf_ver")
             ;;
             MATE*)     de_ver=$(mate-session --version) ;;
             Xfce*)     de_ver=$(xfce4-session --version) ;;
@@ -2472,7 +2472,7 @@ get_cpu() {
         ;;
 
         "Mac OS X"|"macOS")
-            if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
+            if [[ $osx_version == 10.[4-5]* ]]; then
                 cpu="$(system_profiler SPHardwareDataType | grep CPU\ Type)"
                 cpu="${cpu/CPU\ Type\:/}"
                 
@@ -2926,20 +2926,20 @@ get_memory() {
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
-            if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
+            if [[ $osx_version == 10.[4-5]* ]]; then
                 mem_total="$(system_profiler SPHardwareDataType | grep Memory:)"
                 mem_total="${mem_total/Memory\: /}"
                 mem_total="${mem_total/ MB/}"
 
-                mem_used="$(vm_stat | grep Pages\ active\:)"
+                mem_used="$(vm_stat | grep Pages\ active:)"
                 mem_used="${mem_used/Pages active\: /}"
                 mem_used="${mem_used/\./}"
 
-		pages_inactive=$(vm_stat | grep "Pages inactive")
-		pages_inactive=${pages_inactive/Pages inactive\: /}
-		pages_inactive=${pages_inactive/\./}
+                pages_inactive=$(vm_stat | grep "Pages inactive")
+                pages_inactive=${pages_inactive/Pages inactive\: /}
+                pages_inactive=${pages_inactive/\./}
 
-		mem_used=$((mem_used + pages_inactive))
+                mem_used=$((mem_used + pages_inactive))
                 mem_used=$((mem_used * 4096 / 1048576))
             else
                 hw_pagesize="$(sysctl -n hw.pagesize)"
