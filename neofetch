@@ -3310,7 +3310,8 @@ get_term() {
     
     #I think i need Termux ()
     #My Edge crashed 3 times when i want to commit
-    [[ "$TERMUX_VERSION" ]] && term="Termux $TERMUX_VERSION"
+    #rua~
+    [[ "$(ls /data/data/com.termux/files/)" || "$TERMUX_VERSION" || "$PREFIX" == "/data/data/com.termux/files/usr" ]] && term="Termux $TERMUX_VERSION"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
