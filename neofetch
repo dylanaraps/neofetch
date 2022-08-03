@@ -1262,6 +1262,7 @@ get_model() {
             else
                 mac_model=$(sysctl -n hw.model)
                 case $mac_model in
+                    Mac14,7):               "MacBook Pro (13-inch, M2, 2022)" ;;
                     MacBookPro18,[3-4]):    "MacBook Pro (14-inch, 2021)" ;;
                     MacBookPro18,[1-2]):    "MacBook Pro (16-inch, 2021)" ;;
                     MacBookPro17,1):        "MacBook Pro (13-inch, M1, 2020)" ;;
@@ -1298,6 +1299,7 @@ get_model() {
                     MacBookPro5,2):         "MacBook Pro (17-inch, Mid/Early 2009)" ;;
                     MacBookPro5,1):         "MacBook Pro (15-inch, Late 2008)" ;;
                     MacBookPro4,1):         "MacBook Pro (17/15-inch, Early 2008)" ;;
+                    Mac14,2):               "MacBook Air (M2, 2022)" ;;
                     MacBookAir10,1):        "MacBook Air (M1, 2020)" ;;
                     MacBookAir9,1):         "MacBook Air (Retina, 13-inch, 2020)" ;;
                     MacBookAir8,2):         "MacBook Air (Retina, 13-inch, 2019)" ;;
@@ -1319,6 +1321,19 @@ get_model() {
                     MacBook7,1):            "MacBook (13-inch, Mid 2010)" ;;
                     MacBook6,1):            "MacBook (13-inch, Late 2009)" ;;
                     MacBook5,2):            "MacBook (13-inch, Early/Mid 2009)" ;;
+                    Mac13,1):               "Mac Studio (2022, Two USB-C front ports)" ;;
+                    Mac13,2):               "Mac Studio (2022, Two Thunderbolt 4 front ports)" ;;
+                    Macmini9,1):            "Mac mini (M1, 2020)" ;;
+                    Macmini8,1):            "Mac mini (2018)" ;;
+                    Macmini7,1):            "Mac mini (Mid 2014)" ;;
+                    Macmini6,[1-2]):        "Mac mini (Late 2012)" ;;
+                    Macmini5,[1-2]):        "Mac mini (Mid 2011)" ;;
+                    Macmini4,1):            "Mac mini (Mid 2010)" ;;
+                    Macmini3,1):            "Mac mini (Early/Late 2009)" ;;
+                    MacPro7,1):             "Mac Pro (2019)" ;;
+                    MacPro6,1):             "Mac Pro (Late 2013)" ;;
+                    MacPro5,1):             "Mac Pro (Mid 2010 - Mid 2012)" ;;
+                    MacPro4,1):             "Mac Pro (Early 2009)" ;;
                     *):                     "$mac_model" ;;
                 esac
 
