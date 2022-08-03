@@ -8,7 +8,7 @@
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2015-2020 Dylan Araps
+# Copyright (c) 2015-2021 Dylan Araps
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -799,14 +799,14 @@ image_source="auto"
 #       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
 #       osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
 #       TrueOS, PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
-#       Proxmox, PuffOS, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian,
+#       Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian,
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith,
 #       Rocky, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
 #       SereneLinux, SharkLinux, Siduction, SkiffOS, Slackware, SliTaz, SmartOS,
 #       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
-#       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, LangitKetujuh, semc,
+#       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
 #       Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
@@ -1102,10 +1102,13 @@ get_distro() {
             fi
 
             if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
+                windows_version=$(wmic.exe os get Version)
+                windows_version=$(trim "${windows_version/Version}")
+
                 case $distro_shorthand in
-                    on)   distro+=" [Windows 10]" ;;
-                    tiny) distro="Windows 10" ;;
-                    *)    distro+=" on Windows 10" ;;
+                    on)   distro+=" [Windows $windows_version]" ;;
+                    tiny) distro="Windows ${windows_version::2}" ;;
+                    *)    distro+=" on Windows $windows_version" ;;
                 esac
 
             elif [[ $(< /proc/version) == *chrome-bot* || -f /dev/cros_ec ]]; then
@@ -1631,6 +1634,7 @@ get_packages() {
             has butch      && tot butch list
             has swupd      && tot swupd bundle-list --quiet
             has pisi       && tot pisi li
+            has pacstall   && tot pacstall -L
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -1814,6 +1818,12 @@ get_shell() {
             shell=${shell/ Yet another shell}
             shell=${shell/Copyright*}
         ;;
+
+        nu)
+            shell+=$("$SHELL" -c "version | get version")
+            shell=${shell/ $shell_name}
+        ;;
+
 
         *)
             shell+=$("$SHELL" --version 2>&1)
@@ -5219,14 +5229,14 @@ ASCII:
                                 openmamba, OpenMandriva, OpenStage, OpenWrt, osmc, Oracle,
                                 OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix, TrueOS,
                                 PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
-                                Proxmox, PuffOS, Puppy, PureOS, Qubes, Quibian, Radix, Raspbian, Reborn_OS,
+                                Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian, Reborn_OS,
                                 Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
                                 sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
                                 SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
                                 Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
-                                Ubuntu-Studio, Ubuntu, Univention, Venom, Void, LangitKetujuh, semc,
+                                Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
                                 Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
 
                                 NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
@@ -6600,6 +6610,29 @@ ${c2}             ..........
 EOF
         ;;
 
+    "CBL-Mariner"*)
+        set_colors 6
+        read -rd '' ascii_data <<'EOF'
+${c1}                    .
+                  :-  .
+                :==. .=:
+              :===:  -==:
+            :-===:  .====:
+          :-====-   -=====:
+         -======   :=======:
+        -======.  .=========:
+       -======:   -==========.
+      -======-    -===========.
+     :======-      :===========.
+    :=======.       .-==========.
+   :=======:          -==========.
+  :=======-            :==========.
+ :=======-              .-========-
+:--------.                :========-
+                    ..:::--=========-
+            ..::---================-=-
+EOF
+        ;;
 
         "CelOS"*)
             set_colors 4 6 0 5
@@ -9159,23 +9192,29 @@ EOF
         "openEuler"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}
-                       (#####
-                     (((########  #####
-                    (((        ##########    __...__
-             ((((((((           #######    /((((((###\
-           (((((((((((   .......           \(((((####/
-          ((((((    ((((#########            *******
-    %((((((#          ((########
- /////(((((              ###
-/////(((((((#   (((&
-         (((((((((((((
-          ((((((((((((
-           (((((((((     ((((((###
-                       /((((((######
-                      //((((((######
-                       /((((((#####
-                        *********/
+${c1}                 `.cc.`
+             ``.cccccccc..`
+          `.cccccccccccccccc.`
+      ``.cccccccccccccccccccccc.``
+   `..cccccccccccccccccccccccccccc..`
+`.ccccccccccccccc${c2}/++/${c1}ccccccccccccccccc.`
+.ccccccccccccccc${c2}mNMMNdo+oso+${c1}ccccccccccc.
+.cccccccccc${c2}/++odms+//+mMMMMm/:+syso/${c1}cccc
+.ccccccccc${c2}yNNMMMs:::/::+o+/:${c1}c${c2}dMMMMMm${c1}cccc
+.ccccccc${c2}:+NmdyyhNNmNNNd:${c1}ccccc${c1}${c2}:oyyyo:${c1}cccc
+.ccc${c2}:ohdmMs:${c1}cccc${c2}+mNMNmy${c1}ccccccccccccccccc
+.cc${c2}/NMMMMMo////:${c1}c${c2}:///:${c1}cccccccccccccccccc
+.cc${c2}:syysyNMNNNMNy${c1}ccccccccccccccccccccccc
+.cccccccc${c2}+MMMMMNy${c1}c${c2}:/+++/${c1}cccccccccccccccc
+.ccccccccc${c2}ohhhs/${c1}c${c2}omMMMMNh${c1}ccccccccccccccc
+.ccccccccccccccc${c2}:MMMMMMMM/${c1}cccccccccccccc
+.cccccccccccccccc${c2}sNNNNNd+${c1}cccccccccccccc.
+`..cccccccccccccccc${c2}/+/:${c1}cccccccccccccc..`
+   ``.cccccccccccccccccccccccccccc.``
+       `.cccccccccccccccccccccc.`
+          ``.cccccccccccccc.``
+              `.cccccccc.`
+                 `....`
 EOF
         ;;
 
@@ -9892,6 +9931,27 @@ ${c1}               `..--..`
          .-:///////ssssssssssssssssss/`
             `.:////ssss+/+ssssssssssss.
                 `--//-    `-/osssso/.
+EOF
+        ;;
+
+        "Qubyt"*)
+            set_colors 4 5 0 4
+            read -rd '' ascii_data <<'EOF'
+${c1}    ########################${c2}(${c3}ooo
+${c1}    ########################${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo                  ${c1}###${c2}(${c3}ooo
+${c1}###${c2}(${c3}ooo           ${c1}##${c3}o    ${c2}((((${c3}ooo
+${c1}###${c2}(${c3}ooo          o${c2}((${c1}###   ${c3}oooooo
+${c1}###${c2}(${c3}ooo           oo${c2}((${c1}###${c3}o
+${c1}###${c2}(${c3}ooo             ooo${c2}((${c1}###
+${c1}################${c2}(${c3}oo    oo${c2}((((${c3}o
+${c2}(((((((((((((((((${c3}ooo     ooooo
+  oooooooooooooooooo        o
 EOF
         ;;
 
@@ -11149,6 +11209,33 @@ EOF
 
         ;;
 
+        "VNux"*)
+        set_colors 11 8 15 1 7
+            read -rd '' ascii_data <<'EOF'
+${c1}              `
+           ^[XOx~.
+        ^_nwdbbkp0ti'
+        <vJCZw0LQ0Uj>
+${c2}          _j>!vC1,,
+     ${c4},${c2}   ,CY${c3}O${c2}t${c3}O${c2}1(l;"
+`${c4}~-{r(1I${c2} ^${c1}/zmwJuc:${c2}I^
+'${c4}?)|${c1}U${c4}/}-${c2} ^${c3}f${c1}OCLLOw${c3}_${c2},;
+ ,${c4}i,``. ${c2}",${c3}k%ooW@$d"${c2}I,'
+  '    ;^${c3}u$$$$$$$$^<${c2}:^
+   ` .>>${c3}($$${c5}$@@@@$$${c3}$nl${c2}[::
+    `!}?${c3}B$${c5}%&WMMW&%$${c3}$1}-${c2}}":
+    ^?j${c3}Z$${c5}WMMWWWWMMW$${c3}ofc${c2};;`
+    <~x&${c3}$${c5}&MWWWWWWWWp${c3}-${c5}l>[<
+${c1} 'ljmwn${c2}~tk8${c5}MWWWWM8O${c2}X${c1}r${c2}+]nC${c1}[
+!JZqwwdX${c2}:^C8${c5}#MMMM@${c2}X${c1}Odpdpq0<
+<wwwwmmpO${c2}1${c3}0@%%%%8${c2}d${c1}nqmwmqqqJl
+?QOZmqqqpb${c2}t[run/?!${c1}0pwqqQj-,
+ ^:l<{nUUv>      ^x00J("
+                   ^"
+EOF
+
+        ;;
+
         "LangitKetujuh"*)
             set_colors 7 4
             read -rd '' ascii_data <<'EOF'
@@ -11561,7 +11648,7 @@ main() {
     err "Neofetch command: $0 $*"
     err "Neofetch version: $version"
 
-    [[ $verbose == on ]] && printf %b "$err" >&2
+    [[ $verbose == on ]] && printf '%b\033[m' "$err" >&2
 
     # If `--loop` was used, constantly redraw the image.
     while [[ $image_loop == on && $image_backend == w3m ]]; do
