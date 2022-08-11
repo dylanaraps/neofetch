@@ -3536,6 +3536,9 @@ get_style() {
         fi
 
         # Check for general GTK3 Theme.
+        if [[ -z "$gtk3_theme" ]] && type -p dump_xsettings >/dev/null; then
+            gtk3_theme="$(dump_xsettings | sed -n "s,^${xfconf#/} ,,p")"
+        fi
         if [[ -z "$gtk3_theme" ]]; then
             if [[ -f "${XDG_CONFIG_HOME}/gtk-3.0/settings.ini" ]]; then
                 gtk3_theme="$(grep "^[^#]*$name" "${XDG_CONFIG_HOME}/gtk-3.0/settings.ini")"
