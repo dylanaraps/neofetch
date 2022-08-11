@@ -9,6 +9,8 @@ IgnoreList:
   2152: merged
   # [2150] Add macOS 13 to version name list
   2150: merged
+  # [2113] Updated Ubuntu logo
+  2113: duplicate
   # [2104] Make DE Fluent on Windows 11
   2104: duplicate
   # [2092] Update neofetch
@@ -23,7 +25,19 @@ IgnoreList:
   1936: deleted
   # [1927] improve/add model name for arm linux cpus
   1927: duplicate
+  # [1925] New OS added: CBL-Mariner
+  1925: duplicate
+  # [1897] Change source_mage's colors.
+  1897: deleted
+  # [1889] Fix Windows 11 detection
+  1889: duplicate
+  # [1857] Speed up `get_packages`
+  1857: disagree
+  # [1852] Added Aravalli Logo
+  1852: deleted
   # [1850] neofetch: remove duplicate distro ASCII logo
   1850: duplicate
+  # [1830] Replace non-posix use of 'hostname' command with 'uname -n'
+  1830: deleted
   # [1827] Improve manjaro logo
   1827: deleted
