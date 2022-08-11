@@ -4631,14 +4631,12 @@ get_window_size() {
     # The escape codes above print the desired output as
     # user input so we have to use read to store the out
     # -put as a variable.
-    # The 1 second timeout is required for older bash
+    # The 3 second timeout is required for slow/remote
+    # sessions.
     #
     # False positive.
     # shellcheck disable=2141
-    case $bash_version in
-        4|5) IFS=';t' read -d t -t 0.05 -sra term_size ;;
-        *)   IFS=';t' read -d t -t 1 -sra term_size ;;
-    esac
+    IFS=';t' read -d t -t 3 -sra term_size
     unset IFS
 
     # Split the string into height/width.
