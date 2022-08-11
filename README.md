@@ -78,6 +78,11 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 * Distro - Update Ubuntu logo ([dylanaraps#2125](https://github.com/dylanaraps/neofetch/pull/2125))
 * Distro - Add Exodia OS Predator ([dylanaraps#2174](https://github.com/dylanaraps/neofetch/pull/2174))
+* Distro - Add Parch (dylanaraps/neofetch#2045)
+* Distro - Add VzLinux (dylanaraps/neofetch#1971)
+* Distro - Add Twister OS (dylanaraps/neofetch#1890)
+* Distro - Add BlackPantherOS (dylanaraps/neofetch#1761)
+* Distro - Add TorizonCore (dylanaraps/neofetch#1744)
 
 </details>
 
@@ -85,6 +90,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Device Support Changes</summary>
 
 * Host - Identify iMac, Mac mini, Mac Pro Models ([dylanaraps#1944](https://github.com/dylanaraps/neofetch/pull/1944))
+* Theme - Use XSETTINGS to get theme without a DE (dylanaraps/neofetch#1831)
 
 </details>
 
@@ -92,6 +98,8 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Bug Fixes</summary>
 
 * Bug Fix - Fix prepended `=` for kitty ([dylanaraps#2116](https://github.com/dylanaraps/neofetch/pull/2116))
+* Bug Fix - Hide domain in hostname by default (dylanaraps/neofetch#2095)
+* Bug Fix - Respect TMPDIR if it exists (dylanaraps/neofetch#1891)
 
 </details>
 
