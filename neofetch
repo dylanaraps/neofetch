@@ -11991,7 +11991,7 @@ sssss${c2}yMMMMMmhy${c1}ssssssssssss${c2}NM${c1}ss${c2}dMy${c1}sssssss
 EOF
         ;;
 
-        "ubuntu_old")
+        "ubuntu_old02")
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}                         ./+o+-
@@ -12068,18 +12068,23 @@ EOF
         ;;
 
         "ubuntu_small")
-            set_colors 1 7 3
+            set_colors 1
             read -rd '' ascii_data <<'EOF'
-${c1}         _
-     ---(_)
- _/  ---  \\
-(_) |   |
-  \\  --- _/
-     ---(_)
+${c1}       ..;,; .,;,.
+    .,lool: .ooooo,
+   ;oo;:    .coool.
+ ....         ''' ,l;
+:oooo,            'oo.
+looooc            :oo'
+ '::'             ,oo:
+   ,.,       .... co,
+    lo:;.   :oooo; .
+     ':ooo; cooooc
+        '''  ''''
 EOF
         ;;
 
-        "Ubuntu"* | "i3buntu"*)
+        "Ubuntu_old"* | "i3buntu"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
 ${c1}            .-/+oossssoo+\-.
@@ -12102,6 +12107,33 @@ oss${c2}yNMMMNyMMh${c1}sssssssssssssshmmmh${c1}ssssssso
       -+sssssssssssssssss${c2}yyy${c1}ssss+-
         `:+ssssssssssssssssss+:`
             .-\+oossssoo+/-.
+EOF
+        ;;
+        
+         "Ubuntu"*)
+            set_colors 1
+            read -rd '' ascii_data <<'EOF'
+${c1}                             ....
+              .',:clooo:  .:looooo:.
+           .;looooooooc  .oooooooooo'
+        .;looooool:,''.  :ooooooooooc
+       ;looool;.         'oooooooooo,
+      ;clool'             .cooooooc.  ,,
+         ...                ......  .:oo,
+  .;clol:,.                        .loooo'
+ :ooooooooo,                        'ooool
+'ooooooooooo.                        loooo.
+'ooooooooool                         coooo.
+ ,loooooooc.                        .loooo.
+   .,;;;'.                          ;ooooc
+       ...                         ,ooool.
+    .cooooc.              ..',,'.  .cooo.
+      ;ooooo:.           ;oooooooc.  :l.
+       .coooooc,..      coooooooooo.
+         .:ooooooolc:. .ooooooooooo'
+           .':loooooo;  ,oooooooooc
+               ..';::c'  .;loooo:'
+                             .
 EOF
         ;;
 
