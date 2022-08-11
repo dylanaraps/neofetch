@@ -12110,7 +12110,7 @@ oss${c2}yNMMMNyMMh${c1}sssssssssssssshmmmh${c1}ssssssso
 EOF
         ;;
         
-         "Ubuntu"*)
+        "Ubuntu"*)
             set_colors 1
             read -rd '' ascii_data <<'EOF'
 ${c1}                             ....
