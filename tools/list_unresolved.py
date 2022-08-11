@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import shlex
 from pathlib import Path
 from subprocess import check_output

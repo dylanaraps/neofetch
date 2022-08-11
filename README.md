@@ -63,7 +63,37 @@ Updates to `neowofetch` begins with the emoji 🖼️
 ### Unpublished 1.3.1
 
 * 🌈 Add finsexual flag (#12)
-* 🖼️ Fixed shellcheck warnings in `neowofetch`
+
+<details>
+  <summary>🖼️ Meta Changes</summary>  
+
+* Meta - Fixed shellcheck warnings in `neowofetch`
+* Meta - Moved shellcheck from travis to GitHub Actions
+* Meta - Created a script to automatically generate distro list
+
+</details>
+
+<details>
+  <summary>🖼️ Distro/OS Support Changes</summary>  
+
+* Distro - Update Ubuntu logo ([dylanaraps#2125](https://github.com/dylanaraps/neofetch/pull/2125))
+* Distro - Add Exodia OS Predator ([dylanaraps#2174](https://github.com/dylanaraps/neofetch/pull/2174))
+
+</details>
+
+<details>
+  <summary>🖼️ Device Support Changes</summary>
+
+* Host - Identify iMac, Mac mini, Mac Pro Models ([dylanaraps#1944](https://github.com/dylanaraps/neofetch/pull/1944))
+
+</details>
+
+<details>
+  <summary>🖼️ Bug Fixes</summary>
+
+* Bug Fix - Fix prepended `=` for kitty ([dylanaraps#2116](https://github.com/dylanaraps/neofetch/pull/2116))
+
+</details>
 
 ### 1.3.0
 
