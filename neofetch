@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vim: noai:ts=4:sw=4:expandtab
 # shellcheck source=/dev/null
-# shellcheck disable=2009
+# shellcheck disable=2009 disable=2153
 #
 # Neofetch: A command-line system information tool written in bash 3.2+.
 # https://github.com/dylanaraps/neofetch
@@ -1048,8 +1048,8 @@ get_distro() {
                 else
                     . /etc/os-release
                     case $distro_shorthand in
-                        on)   distro="$( twistver ) (${NAME} ${VERSION_ID})" ;;
-                        tiny) distro="$( twistver ) (${NAME})" ;;
+                        on)   distro="$( twistver ) ($NAME ${VERSION_ID})" ;;
+                        tiny) distro="$( twistver ) ($NAME)" ;;
                         off)  distro="$( twistver ) (${PRETTY_NAME}})" ;;
                     esac
                 fi
