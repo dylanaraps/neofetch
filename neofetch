@@ -1545,7 +1545,7 @@ get_model() {
         ;;
 
         BSD|MINIX)
-            if [[ $(uname -s) = "FreeBSD" ]]; then
+            if [[ $kernel_name = "FreeBSD" ]]; then
                 model=$(kenv smbios.system.version)
             else
                 model=$(sysctl -n hw.vendor hw.product)
