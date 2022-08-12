@@ -2758,7 +2758,7 @@ get_cpu() {
             *)
                 # If socket information is present and more than 1, display cpu count first
                 if [[ $sockets ]] && [[ $sockets -gt 1 ]]; then
-                    cpu="${sockets}x $cpu $((cores / sockets))"
+                    cpu="${sockets}x $cpu ($((cores / sockets)))"
                 else
                     cpu="$cpu ($cores)"
                 fi
