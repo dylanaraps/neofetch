@@ -2531,6 +2531,8 @@ get_cpu() {
                 ;;
 
                 *)
+                    sockets="$(grep "physical id" /proc/cpuinfo | sort -u | wc -l)"
+
                     case $cpu_cores in
                         "logical" | "on")
                             cores="$(grep -c "^processor" "$cpu_file")"
@@ -2550,8 +2552,8 @@ get_cpu() {
 
                 speed="$(system_profiler SPHardwareDataType | grep CPU\ Speed)"
                 speed="${speed/CPU\ Speed\:/}"
-		speed="${speed/ MHz/}"
-		speed="${speed/ GHz/}"
+                speed="${speed/ MHz/}"
+                speed="${speed/ GHz/}"
 
                 cores="$(system_profiler SPHardwareDataType | grep Number\ Of\ CPUs)"
                 cores="${cores/Number\ Of\ CPUs\:/}"
@@ -2753,7 +2755,14 @@ get_cpu() {
                     cpu="${cpu/@/(${cores}) @}"
                 fi
             ;;
-            *) cpu="$cpu ($cores)" ;;
+            *)
+                # If socket information is present and more than 1, display cpu count first
+                if [[ $sockets ]] && [[ $sockets -gt 1 ]]; then
+                    cpu="${sockets}x $cpu $((cores / sockets))"
+                else
+                    cpu="$cpu ($cores)"
+                fi
+            ;;
         esac
 
     # Add CPU speed to the output.
