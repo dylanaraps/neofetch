@@ -34,7 +34,7 @@ IgnoreList:
   # [1861] Added FriendlyOS
   1861: bad
   # [1857] Speed up `get_packages`
-  1857: disagree
+  1857: bad
   # [1852] Added Aravalli Logo
   1852: deleted
   # [1850] neofetch: remove duplicate distro ASCII logo
@@ -43,3 +43,5 @@ IgnoreList:
   1830: deleted
   # [1827] Improve manjaro logo
   1827: deleted
+  # [1585] Fix for Improvement idea for multiprocessor systems, current output is unclear
+  1585: incorrect
