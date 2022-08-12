@@ -4052,7 +4052,6 @@ END
                 termite_config="${XDG_CONFIG_HOME}/termite/config"
                 
             XDG_DIR="/etc/xdg"
-            OLD_IFS=$IFS
             IFS=":"
             for directory in $XDG_CONFIG_DIRS; do
                 if [[ -f "$directory/termite/config" ]]; then
