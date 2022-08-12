@@ -21,12 +21,16 @@ IgnoreList:
   2057: duplicate
   # [2051] Typo in comment for col_offset
   2051: incorrect
+  # [1940] Added code to display battery percentage and resolution in termux on android devices
+  1940: bad
   # [1936] Added PiluX logo.
   1936: deleted
   # [1927] improve/add model name for arm linux cpus
   1927: duplicate
   # [1925] New OS added: CBL-Mariner
   1925: duplicate
+  # [1922] Added BugTrack asciiart
+  1922: bad
   # [1897] Change source_mage's colors.
   1897: deleted
   # [1889] Fix Windows 11 detection
@@ -43,5 +47,9 @@ IgnoreList:
   1830: deleted
   # [1827] Improve manjaro logo
   1827: deleted
+  # [1700] Added Xeonix by Xinux Uzbekistan support
+  1700: deleted
   # [1585] Fix for Improvement idea for multiprocessor systems, current output is unclear
   1585: incorrect
+  # [1031] Use nvidia-smi for NVIDIA GPUs
+  1031: incorrect

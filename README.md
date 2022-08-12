@@ -70,6 +70,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * Meta - Fixed shellcheck warnings in `neowofetch`
 * Meta - Moved shellcheck from travis to GitHub Actions
 * Meta - Created a script to automatically generate distro list
+* Colors - Allow RGB colors in neofetch `--ascii_colors` argument ([dylanaraps#1726](https://github.com/dylanaraps/neofetch/pull/1726))
 
 </details>
 
@@ -78,11 +79,15 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 * Distro - Update Ubuntu logo ([dylanaraps#2125](https://github.com/dylanaraps/neofetch/pull/2125))
 * Distro - Add Exodia OS Predator ([dylanaraps#2174](https://github.com/dylanaraps/neofetch/pull/2174))
-* Distro - Add Parch (dylanaraps/neofetch#2045)
-* Distro - Add VzLinux (dylanaraps/neofetch#1971)
-* Distro - Add Twister OS (dylanaraps/neofetch#1890)
-* Distro - Add BlackPantherOS (dylanaraps/neofetch#1761)
-* Distro - Add TorizonCore (dylanaraps/neofetch#1744)
+* Distro - Add Parch ([dylanaraps#2045](https://github.com/dylanaraps/neofetch/pull/2045))
+* Distro - Add VzLinux ([dylanaraps#1971](https://github.com/dylanaraps/neofetch/pull/1971))
+* Distro - Add Twister OS ([dylanaraps#1890](https://github.com/dylanaraps/neofetch/pull/1890))
+* Distro - Add BlackPantherOS ([dylanaraps#1761](https://github.com/dylanaraps/neofetch/pull/1761))
+* Distro - Add TorizonCore ([dylanaraps#1744](https://github.com/dylanaraps/neofetch/pull/1744))
+* Distro - Add KrassOS ([dylanaraps#1631](https://github.com/dylanaraps/neofetch/pull/1631))
+* Distro - Add Synology DSM ([dylanaraps#1666](https://github.com/dylanaraps/neofetch/pull/1666))
+* Distro - Add MatuusOS ([dylanaraps#1902](https://github.com/dylanaraps/neofetch/pull/1902))
+* Distro - Add HarDClanZ Linux ([dylanaraps#1797](https://github.com/dylanaraps/neofetch/pull/1797))
 
 </details>
 
@@ -90,7 +95,13 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Device Support Changes</summary>
 
 * Host - Identify iMac, Mac mini, Mac Pro Models ([dylanaraps#1944](https://github.com/dylanaraps/neofetch/pull/1944))
-* Theme - Use XSETTINGS to get theme without a DE (dylanaraps/neofetch#1831)
+* Host - Identify FreeBSD host model ([dylanaraps#1588](https://github.com/dylanaraps/neofetch/pull/1588))
+* Theme - Use XSETTINGS to get theme without a DE ([dylanaraps#1831](https://github.com/dylanaraps/neofetch/pull/1831))
+* Theme - Add QT theme detection ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
+* Theme - Add LeftWM theme detection ([dylanaraps#1963](https://github.com/dylanaraps/neofetch/pull/1963))
+* Terminal - Improve NixOS terminal identification ([dylanaraps#1134](https://github.com/dylanaraps/neofetch/pull/1134))
+* Cursor - Add cursor theme detection ([dylanaraps#1149](https://github.com/dylanaraps/neofetch/pull/1149))
+* Packages - Improve scoop/choco package count ([dylanaraps#1642](https://github.com/dylanaraps/neofetch/pull/1642))
 
 </details>
 
@@ -98,8 +109,11 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Bug Fixes</summary>
 
 * Bug Fix - Fix prepended `=` for kitty ([dylanaraps#2116](https://github.com/dylanaraps/neofetch/pull/2116))
-* Bug Fix - Hide domain in hostname by default (dylanaraps/neofetch#2095)
-* Bug Fix - Respect TMPDIR if it exists (dylanaraps/neofetch#1891)
+* Bug Fix - Hide domain in hostname by default ([dylanaraps#2095](https://github.com/dylanaraps/neofetch/pull/2095))
+* Bug Fix - Respect TMPDIR if it exists ([dylanaraps#1891](https://github.com/dylanaraps/neofetch/pull/1891))
+* Bug Fix - Fix terminal size over slow connection ([dylanaraps#1895](https://github.com/dylanaraps/neofetch/pull/1895))
+* Bug Fix - Fix GPU detection for bumblebee dual-GPU ([dylanaraps#1131](https://github.com/dylanaraps/neofetch/pull/1131))
+* Bug Fix - Strip colors in ASCII length calculation ([dylanaraps#1543](https://github.com/dylanaraps/neofetch/pull/1543))
 
 </details>
 
