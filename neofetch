@@ -2443,6 +2443,13 @@ get_wm_theme() {
             wm_theme=${wm_theme##*\\}
             wm_theme=${wm_theme%.*}
         ;;
+
+        LeftWM*)
+			if command -v leftwm-theme &> /dev/null
+			then
+				wm_theme=$(leftwm-theme status | grep "Your current theme" | sed -e 's/Your current theme is //g' -e 's/\,.*$//g')
+			fi
+        ;;
     esac
 
     wm_theme=$(trim_quotes "$wm_theme")
