@@ -31,6 +31,8 @@ IgnoreList:
   1897: deleted
   # [1889] Fix Windows 11 detection
   1889: duplicate
+  # [1861] Added FriendlyOS
+  1861: bad
   # [1857] Speed up `get_packages`
   1857: disagree
   # [1852] Added Aravalli Logo
