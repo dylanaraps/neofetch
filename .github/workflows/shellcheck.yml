@@ -20,5 +20,5 @@ jobs:
       - name: Run shellcheck
         run: |
           shellcheck -V
-          shellcheck -e SC2244 -e SC2243 -e SC2154 neofetch
+          shellcheck neofetch
           ./neofetch
