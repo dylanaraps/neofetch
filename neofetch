@@ -5564,7 +5564,7 @@ get_process_name() {
         ;;
 
         "Linux")
-            name="$(< "/proc/${1:-$PPID}/comm")"
+            read -rd $'\00' name < "/proc/${1:-$PPID}/cmdline"
         ;;
 
         *)
