@@ -3619,7 +3619,7 @@ get_style() {
                 local pre_size="${pre_size#*@}"
                 # Need to declare array and manually handle the second byte
                 # (workaround for `od` without --endian)
-                IFS=' ' local raw_size=( $(printf "%b" "${pre_size}" | od -An -tu1 -N2) )
+                IFS=' ' local raw_size=( "$(printf "%b" "${pre_size}" | od -An -tu1 -N2)" )
                 # Split the upper 4 bits (exponent) the lower 12.
                 local lowers=$(( ((raw_size[0]%16)<<8) + (raw_size[1]) ))
                 local upper4=$((raw_size[0]>>4 ))
@@ -5219,7 +5219,7 @@ color() {
         "#"*)
             local rgb="${1//#}"
             rgb="$((0x$rgb))"
-            printf '\e[38;2;%b;%b;%bm' "$(($rgb >> 16))" "$((($rgb >> 8) & 0xff))" "$(($rgb & 0xff))"
+            printf '\e[38;2;%b;%b;%bm' "$((rgb >> 16))" "$(((rgb >> 8) & 0xff))" "$((rgb & 0xff))"
         ;;
 
         *)        printf '\e[38;5;%bm' "$1" ;;
