@@ -60,7 +60,16 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * [ ] Paginate flags
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
-### Unpublished 1.4.0
+### Unpublished 1.4.1
+
+<details>
+  <summary>🖼️ Bug Fixes</summary>
+
+* Bug Fix - Fix hostname detection when `inetutils` is not installed
+
+</details>
+
+### 1.4.0
 
 * 🌈 Add finsexual flag (#12)
 * 🚀 Addressed a total of 128 currently open pull requests from neofetch
