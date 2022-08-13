@@ -54,7 +54,7 @@ jobs:
 
     - name: set git info
       run:  |
-            git config --global user.name "Aleksana QwQ"
+            git config --global user.name "Aleksana BOT"
             git config --global user.email "me@aleksana.moe"
 
     - name: Update PKGBUILD to AUR
