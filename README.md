@@ -57,10 +57,12 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 ### TODO
 
-* [ ] Paginate flags
+* [ ] Allow left-right arrow keys ffor pagination
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
 ### Unpublished 1.4.1
+
+* 🌈 Paginate flags (#14)
 
 <details>
   <summary>🖼️ Bug Fixes</summary>

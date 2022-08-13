@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+# Do not delete import readline. Even though it's not used in the code, importing it would allow
+# arrow keys to be used in input() functions.
+import readline
+
 import argparse
 import json
 import random
