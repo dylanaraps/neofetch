@@ -63,6 +63,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 ### Unpublished 1.4.0
 
 * 🌈 Add finsexual flag (#12)
+* 🚀 Addressed a total of 128 currently open pull requests from neofetch
 
 <details>
   <summary>🖼️ Meta Changes</summary>  
