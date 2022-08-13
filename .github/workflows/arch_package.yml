@@ -17,7 +17,7 @@ jobs:
     - name: Prepare environment
       run:  |
             pacman -Syu --needed --noconfirm base-devel git openssh
-            sed -i '/E_ROOT/d' /usr/bin/makepkg
+            useradd buildbot
 
     - name: Import AUR key
       run:  |
@@ -40,11 +40,11 @@ jobs:
     - name: Makepkg
       run:  |
             cd hyfetch
-            yes | makepkg -si
+            su buildbot -c "yes | makepkg -si"
 
     - name: Test hyfetch
       run:  |
-            hyfetch --test-print
+            su buildbot -c "hyfetch --test-print"
 
     - name: Upload binaries to release
       uses: shogo82148/actions-upload-release-asset@v1
