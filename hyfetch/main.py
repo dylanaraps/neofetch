@@ -7,9 +7,10 @@ import random
 import re
 from itertools import permutations
 from typing import Iterable
+from math import ceil
 
 from .color_util import printc, color, clear_screen
-from .constants import CONFIG_PATH, VERSION, TERM_LEN, TEST_ASCII_WIDTH, TEST_ASCII, GLOBAL_CFG
+from .constants import CONFIG_PATH, VERSION, TERM_LEN, TERM_LINES, TEST_ASCII_WIDTH, TEST_ASCII, GLOBAL_CFG
 from .models import Config
 from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, get_fore_back
 from .presets import PRESETS
@@ -125,11 +126,6 @@ def create_config() -> Config:
 
     ##############################
     # 3. Choose preset
-    clear_screen(title)
-    printc('&a3. Let\'s choose a flag!')
-    printc('Available flag presets:')
-    print()
-
     # Create flags = [[lines]]
     flags = []
     spacing = max(max(len(k) for k in PRESETS.keys()), 20)
@@ -139,19 +135,64 @@ def create_config() -> Config:
 
     # Calculate flags per row
     flags_per_row = TERM_LEN // (spacing + 2)
-    while flags:
-        current = flags[:flags_per_row]
-        flags = flags[flags_per_row:]
+    row_per_page = (TERM_LINES - 13) // 5
+    num_pages = ceil(len(flags) / (flags_per_row * row_per_page))
+    print(num_pages)
 
-        # Print by row
+    pages = []
+    done = False
+    for i in range(0, num_pages):
+        page = []
+        for j in range(0, row_per_page):
+            row = []
+            for k in range(0, flags_per_row):
+                try:
+                    row.append(flags[0])
+                    flags = flags[1:]
+                except IndexError:
+                    done = True
+                    break
+            page.append(row)
+            if done:
+                break
+        pages.append(page)
+
+    def print_flag_page(page, page_num):
+        clear_screen(title)
+        printc('&a3. Let\'s choose a flag!')
+        printc('Available flag presets:')
+        print('Page: ' + str(page_num + 1) + ' of ' + str(num_pages))
+        print()
+
+        for i in page:
+            print_flag_row(i)
+
+        print()
+
+    def print_flag_row(current):
         [printc('  '.join(line)) for line in zip(*current)]
         print()
 
-    print()
-    tmp = PRESETS['rainbow'].set_light_dl_def(light_dark).color_text('preset')
-    preset = literal_input(f'Which {tmp} do you want to use?', PRESETS.keys(), 'rainbow', show_ops=False)
-    _prs = PRESETS[preset]
-    title += f'\n&e3. Selected flag:       &r{_prs.color_text(preset)}'
+    page = 0
+    while True:
+        print_flag_page(pages[page], page)
+
+        tmp = PRESETS['rainbow'].set_light_dl_def(light_dark).color_text('preset')
+        opts = list(PRESETS.keys())
+        if page < num_pages - 1:
+            opts.append('next')
+        if page > 0:
+            opts.append('prev')
+        print("Enter \'next\' to go to the next page and \'prev\' to go to the previous page.")
+        preset = literal_input(f'Which {tmp} do you want to use? ', opts, 'rainbow', show_ops=False)
+        if preset == 'next':
+            page += 1
+        elif preset == 'prev':
+            page -= 1
+        else:
+            _prs = PRESETS[preset]
+            title += f'\n&e3. Selected flag:       &r{_prs.color_text(preset)}'
+            break;
 
     #############################
     # 4. Dim/lighten colors

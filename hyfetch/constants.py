@@ -12,8 +12,10 @@ VERSION = '1.4.0'
 # Obtain terminal size
 try:
     TERM_LEN = os.get_terminal_size().columns
+    TERM_LINES = os.get_terminal_size().lines
 except Exception:
     TERM_LEN = 40
+    TERM_LINES = 10
 
 TEST_ASCII = r"""
 ### |\___/| ###
