@@ -60,7 +60,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * [ ] Paginate flags
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
-### Unpublished 1.3.1
+### Unpublished 1.4.0
 
 * 🌈 Add finsexual flag (#12)
 
@@ -96,11 +96,13 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 * Host - Identify iMac, Mac mini, Mac Pro Models ([dylanaraps#1944](https://github.com/dylanaraps/neofetch/pull/1944))
 * Host - Identify FreeBSD host model ([dylanaraps#1588](https://github.com/dylanaraps/neofetch/pull/1588))
+* Font - Better font matching for st ([dylanaraps#1877](https://github.com/dylanaraps/neofetch/pull/1877))
 * Theme - Use XSETTINGS to get theme without a DE ([dylanaraps#1831](https://github.com/dylanaraps/neofetch/pull/1831))
 * Theme - Add QT theme detection ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
 * Theme - Add LeftWM theme detection ([dylanaraps#1963](https://github.com/dylanaraps/neofetch/pull/1963))
-* Terminal - Improve NixOS terminal identification ([dylanaraps#1134](https://github.com/dylanaraps/neofetch/pull/1134))
 * Cursor - Add cursor theme detection ([dylanaraps#1149](https://github.com/dylanaraps/neofetch/pull/1149))
+* Terminal - Improve NixOS terminal identification ([dylanaraps#1134](https://github.com/dylanaraps/neofetch/pull/1134))
+* Terminal - Use `/proc/.../cmdline` instead of `.../comm` ([dylanaraps#2034](https://github.com/dylanaraps/neofetch/pull/2034))
 * Packages - Improve scoop/choco package count ([dylanaraps#1642](https://github.com/dylanaraps/neofetch/pull/1642))
 
 </details>

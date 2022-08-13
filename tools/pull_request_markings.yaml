@@ -17,10 +17,14 @@ IgnoreList:
   2092: troll
   # [2081] added a q4os ascii
   2081: duplicate
+  # [2078] Fixed distro detection on CentOS 6
+  2078: incorrect
   # [2057] add AmogOS (Duplicate of 1904)
   2057: duplicate
   # [2051] Typo in comment for col_offset
   2051: incorrect
+  # [1996] set_text_color: fix color code for multi-digit ones
+  1996: duplicate
   # [1940] Added code to display battery percentage and resolution in termux on android devices
   1940: bad
   # [1936] Added PiluX logo.
