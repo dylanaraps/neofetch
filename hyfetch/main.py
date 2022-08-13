@@ -10,7 +10,7 @@ from typing import Iterable
 from math import ceil
 
 from .color_util import printc, color, clear_screen
-from .constants import CONFIG_PATH, VERSION, TERM_LEN, TERM_LINES, TEST_ASCII_WIDTH, TEST_ASCII, GLOBAL_CFG
+from .constants import *
 from .models import Config
 from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, get_fore_back
 from .presets import PRESETS
@@ -137,39 +137,29 @@ def create_config() -> Config:
     flags_per_row = TERM_LEN // (spacing + 2)
     row_per_page = (TERM_LINES - 13) // 5
     num_pages = ceil(len(flags) / (flags_per_row * row_per_page))
-    print(num_pages)
 
+    # Create pages
     pages = []
-    done = False
-    for i in range(0, num_pages):
+    for i in range(num_pages):
         page = []
-        for j in range(0, row_per_page):
-            row = []
-            for k in range(0, flags_per_row):
-                try:
-                    row.append(flags[0])
-                    flags = flags[1:]
-                except IndexError:
-                    done = True
-                    break
-            page.append(row)
-            if done:
+        for j in range(row_per_page):
+            page.append(flags[:flags_per_row])
+            flags = flags[flags_per_row:]
+            if not flags:
                 break
         pages.append(page)
 
-    def print_flag_page(page, page_num):
+    def print_flag_page(page: list[list[list[str]]], page_num: int):
         clear_screen(title)
         printc('&a3. Let\'s choose a flag!')
         printc('Available flag presets:')
-        print('Page: ' + str(page_num + 1) + ' of ' + str(num_pages))
+        print(f'Page: {page_num + 1} of {num_pages}')
         print()
-
         for i in page:
             print_flag_row(i)
-
         print()
 
-    def print_flag_row(current):
+    def print_flag_row(current: list[list[str]]):
         [printc('  '.join(line)) for line in zip(*current)]
         print()
 
@@ -183,7 +173,7 @@ def create_config() -> Config:
             opts.append('next')
         if page > 0:
             opts.append('prev')
-        print("Enter \'next\' to go to the next page and \'prev\' to go to the previous page.")
+        print("Enter 'next' to go to the next page and 'prev' to go to the previous page.")
         preset = literal_input(f'Which {tmp} do you want to use? ', opts, 'rainbow', show_ops=False)
         if preset == 'next':
             page += 1
@@ -192,7 +182,7 @@ def create_config() -> Config:
         else:
             _prs = PRESETS[preset]
             title += f'\n&e3. Selected flag:       &r{_prs.color_text(preset)}'
-            break;
+            break
 
     #############################
     # 4. Dim/lighten colors
