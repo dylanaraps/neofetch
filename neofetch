@@ -3751,10 +3751,12 @@ get_style() {
         append_theme "$gtk3_theme" 'GTK3'
 
         # Final string.
-        theme+=']'
-        theme="${theme#'], '}"
-        theme="${theme/'GTK2/GTK3'/'GTK2/3'}"
-        theme="${theme%, }"
+        if [[ -n "$theme" ]]; then
+          theme+=']'
+          theme="${theme#'], '}"
+          theme="${theme/'GTK2/GTK3'/'GTK2/3'}"
+          theme="${theme%, }"
+        fi
 
         # Make the output shorter by removing "[GTKX]" from the string.
         if [[ "$gtk_shorthand" == "on" ]]; then
