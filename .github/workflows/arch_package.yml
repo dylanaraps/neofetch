@@ -60,7 +60,7 @@ jobs:
     - name: Update PKGBUILD to AUR
       run:  |
             cd hyfetch
-            rm -r .SRCINFO && makepkg --srcinfo >.SRCINFO
+            rm -r .SRCINFO && makepkg --printsrcinfo >.SRCINFO
             git stage . && git commit -m "BOT: upgrade to ${{github.ref_name}}"
             export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa'
             git push
