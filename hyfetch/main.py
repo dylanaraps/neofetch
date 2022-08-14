@@ -16,7 +16,7 @@ from math import ceil
 from .color_util import printc, color, clear_screen
 from .constants import *
 from .models import Config
-from .neofetch_util import run_neofetch, get_distro_ascii, ColorAlignment, ascii_size, get_fore_back
+from .neofetch_util import *
 from .presets import PRESETS
 
 
@@ -88,21 +88,36 @@ def create_config() -> Config:
 
     :return: Config object (automatically stored)
     """
+    asc = get_distro_ascii()
     title = 'Welcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.'
     clear_screen(title)
 
     ##############################
+    # 0. Check term size
+    try:
+        term_len, term_lines = os.get_terminal_size().columns, os.get_terminal_size().lines
+        if term_len < 110 or term_lines < 30:
+            printc(f'&cWarning: Your terminal is too small ({term_len} * {term_lines}). \n'
+                   f'Please resize it for better experience.')
+            input('Press any key to ignore...')
+    except:
+        # print('Warning: We cannot detect your terminal size.')
+        pass
+
+    ##############################
     # 1. Select color system
+    clear_screen(title)
+    term_len, term_lines = term_size()
     try:
         # Demonstrate RGB with a gradient. This requires numpy
         from .color_scale import Scale
 
         scale2 = Scale(['#12c2e9', '#c471ed', '#f7797d'])
-        _8bit = [scale2(i / TERM_LEN).to_ansi_8bit(False) for i in range(TERM_LEN)]
-        _rgb = [scale2(i / TERM_LEN).to_ansi_rgb(False) for i in range(TERM_LEN)]
+        _8bit = [scale2(i / term_len).to_ansi_8bit(False) for i in range(term_len)]
+        _rgb = [scale2(i / term_len).to_ansi_rgb(False) for i in range(term_len)]
 
-        printc('&f' + ''.join(c + t for c, t in zip(_8bit, '8bit Color Testing'.center(TERM_LEN))))
-        printc('&f' + ''.join(c + t for c, t in zip(_rgb, 'RGB Color Testing'.center(TERM_LEN))))
+        printc('&f' + ''.join(c + t for c, t in zip(_8bit, '8bit Color Testing'.center(term_len))))
+        printc('&f' + ''.join(c + t for c, t in zip(_rgb, 'RGB Color Testing'.center(term_len))))
 
         print()
         printc(f'&a1. Which &bcolor system &ado you want to use?')
@@ -138,8 +153,8 @@ def create_config() -> Config:
         flags.append([name.center(spacing), flag, flag, flag])
 
     # Calculate flags per row
-    flags_per_row = TERM_LEN // (spacing + 2)
-    row_per_page = (TERM_LINES - 13) // 5
+    flags_per_row = term_size()[0] // (spacing + 2)
+    row_per_page = max(1, (term_size()[1] - 13) // 5)
     num_pages = ceil(len(flags) / (flags_per_row * row_per_page))
 
     # Create pages
@@ -196,7 +211,7 @@ def create_config() -> Config:
     print()
 
     # Print cats
-    num_cols = TERM_LEN // (TEST_ASCII_WIDTH + 2)
+    num_cols = term_size()[0] // (TEST_ASCII_WIDTH + 2)
     ratios = [col / (num_cols - 1) for col in range(num_cols)]
     ratios = [(r * 0.4 + 0.1) if is_light else (r * 0.4 + 0.5) for r in ratios]
     lines = [ColorAlignment('horizontal').recolor_ascii(TEST_ASCII.replace(
@@ -231,7 +246,6 @@ def create_config() -> Config:
     while True:
         clear_screen(title)
 
-        asc = get_distro_ascii()
         asc_width = ascii_size(asc)[0]
         fore_back = get_fore_back()
         arrangements = [

@@ -21,6 +21,17 @@ from .serializer import from_dict
 RE_NEOFETCH_COLOR = re.compile('\\${c[0-9]}')
 
 
+def term_size() -> tuple[int, int]:
+    """
+    Get terminal size
+    :return:
+    """
+    try:
+        return os.get_terminal_size().columns, os.get_terminal_size().lines
+    except Exception:
+        return 100, 20
+
+
 def ascii_size(asc: str) -> tuple[int, int]:
     """
     Get distro ascii width, height ignoring color code

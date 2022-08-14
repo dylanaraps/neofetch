@@ -9,13 +9,6 @@ from typing_extensions import Literal
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
 VERSION = '1.4.0'
 
-# Obtain terminal size
-try:
-    TERM_LEN = os.get_terminal_size().columns
-    TERM_LINES = os.get_terminal_size().lines
-except Exception:
-    TERM_LEN = 40
-    TERM_LINES = 10
 
 TEST_ASCII = r"""
 ### |\___/| ###
@@ -33,6 +26,7 @@ _/\_\_   _/_/\_
 
 TEST_ASCII_WIDTH = max(len(line) for line in TEST_ASCII.split('\n'))
 DEFAULT_DARK_L = 0.
+
 
 @dataclass
 class GlobalConfig:
