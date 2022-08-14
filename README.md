@@ -57,7 +57,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 ### TODO
 
-* [ ] Allow left-right arrow keys ffor pagination
+* [ ] Allow left-right arrow keys for pagination
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
 ### Unpublished 1.4.1
@@ -68,6 +68,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
   <summary>🖼️ Bug Fixes</summary>
 
 * Bug Fix - Fix hostname detection when `inetutils` is not installed
+* Bug Fix - Fix empty brackets displayed when no theme is found ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
 
 </details>
 
