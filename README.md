@@ -63,14 +63,10 @@ Updates to `neowofetch` begins with the emoji 🖼️
 ### Unpublished 1.4.1
 
 * 🌈 Paginate flags (#14)
-
-<details>
-  <summary>🖼️ Bug Fixes</summary>
-
-* Bug Fix - Fix hostname detection when `inetutils` is not installed
-* Bug Fix - Fix empty brackets displayed when no theme is found ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
-
-</details>
+* 🌈 Config page - Give warning when terminal size is too small
+* 🌈 Config page - Optimize color arrangement selection on small screens
+* 🖼️ Bug Fix - Fix hostname detection when `inetutils` is not installed
+* 🖼️ Bug Fix - Fix empty brackets displayed when no theme is found ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
 
 ### 1.4.0
 
