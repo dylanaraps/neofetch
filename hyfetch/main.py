@@ -243,16 +243,24 @@ def create_config() -> Config:
     #############################
     # 5. Color arrangement
     color_alignment = None
+    fore_back = get_fore_back()
+
+    # Calculate amount of row/column that can be displayed on screen
+    asc_width, asc_lines = ascii_size(asc)
+    ascii_per_row = term_size()[0] // (asc_width + 2)
+    ascii_rows = max(1, (term_size()[1] - 8) // asc_lines)
+
+    # Displays horizontal and vertical arrangements in the first iteration, but hide them in
+    # later iterations
+    hv_arrangements = [
+        ('Horizontal', ColorAlignment('horizontal', fore_back=fore_back)),
+        ('Vertical', ColorAlignment('vertical'))
+    ]
+    arrangements = hv_arrangements.copy()
+
+    # Loop for random rolling
     while True:
         clear_screen(title)
-
-        asc_width = ascii_size(asc)[0]
-        fore_back = get_fore_back()
-        arrangements = [
-            ('Horizontal', ColorAlignment('horizontal', fore_back=fore_back)),
-            ('Vertical', ColorAlignment('vertical'))
-        ]
-        ascii_per_row = TERM_LEN // (asc_width + 2)
 
         # Random color schemes
         pis = list(range(len(_prs.unique_colors().colors)))
@@ -260,7 +268,7 @@ def create_config() -> Config:
         while len(pis) < slots:
             pis += pis
         perm = {p[:slots] for p in permutations(pis)}
-        random_count = ascii_per_row * 2 - 2
+        random_count = ascii_per_row * ascii_rows - len(arrangements)
         if random_count > len(perm):
             choices = perm
         else:
@@ -284,10 +292,11 @@ def create_config() -> Config:
         choice = literal_input(f'Your choice?', ['horizontal', 'vertical', 'roll'] + [f'random{i}' for i in range(random_count)], 'horizontal')
 
         if choice == 'roll':
+            arrangements = []
             continue
 
         # Save choice
-        arrangement_index = {k.lower(): ca for k, ca in arrangements}
+        arrangement_index = {k.lower(): ca for k, ca in hv_arrangements + arrangements}
         if choice in arrangement_index:
             color_alignment = arrangement_index[choice]
         else:
