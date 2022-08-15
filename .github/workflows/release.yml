@@ -112,4 +112,4 @@ jobs:
         with:
           bodyFile: "temp_CHANGELOG.md"
           tag: ${{ env.BUILDVER }}
-          token: ${{ secrets.GITHUB_API_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
