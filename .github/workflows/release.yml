@@ -102,7 +102,7 @@ jobs:
                       | sed 's/[\^~].*//')
               git checkout ${parent}
               git merge release/${{ env.BUILDVER }} --allow-unrelated-histories
-              git pull && git push && git push --tags
+              git pull --all && git push --all && git push --tags
 
       - name: Generate changelog from README
         run: (sed '0,/^ *### ${{ env.BUILDVER }}/d;/^ *#/,$d' <README.md)>temp_CHANGELOG.md
