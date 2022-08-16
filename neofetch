@@ -784,7 +784,7 @@ image_source="auto"
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
-#       Bodhi, bonsai, BSD, BunsenLabs, \"Cachy OS\", Calculate, Carbs, CentOS, Chakra, ChaletOS,
+#       Bodhi, bonsai, BSD, BunsenLabs, CachyOS, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
@@ -5143,7 +5143,7 @@ ASCII:
                                 instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
-                                BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs, \"Cachy OS\",
+                                BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs, CachyOS,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
@@ -6490,7 +6490,7 @@ ${c1}        `++
          -/
 EOF
         ;;
-    "Cachy OS"*)
+    "CachyOS"*)
         set_colors 2 8 6
         read -rd '' ascii_data <<'EOF'
 ${c3}           ${c2}.${c3}-------------------------:
