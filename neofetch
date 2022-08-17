@@ -1783,7 +1783,7 @@ get_de() {
     case $os in
         "Mac OS X"|"macOS") de=Aqua ;;
 
-        "ravynOS") de=Mizu ;;
+        "ravynOS") de=Magma ;;
 
         Windows)
             case $distro in
