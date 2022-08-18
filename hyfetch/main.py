@@ -89,6 +89,7 @@ def create_config() -> Config:
     :return: Config object (automatically stored)
     """
     asc = get_distro_ascii()
+    asc_width, asc_lines = ascii_size(asc)
     title = 'Welcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.'
     clear_screen(title)
 
@@ -96,7 +97,7 @@ def create_config() -> Config:
     # 0. Check term size
     try:
         term_len, term_lines = os.get_terminal_size().columns, os.get_terminal_size().lines
-        if term_len < 110 or term_lines < 30:
+        if term_len < 2 * asc_width + 4 or term_lines < 30:
             printc(f'&cWarning: Your terminal is too small ({term_len} * {term_lines}). \n'
                    f'Please resize it for better experience.')
             input('Press any key to ignore...')
@@ -246,7 +247,6 @@ def create_config() -> Config:
     fore_back = get_fore_back()
 
     # Calculate amount of row/column that can be displayed on screen
-    asc_width, asc_lines = ascii_size(asc)
     ascii_per_row = term_size()[0] // (asc_width + 2)
     ascii_rows = max(1, (term_size()[1] - 8) // asc_lines)
 
