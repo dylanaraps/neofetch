@@ -4,6 +4,7 @@ import inspect
 import os
 import platform
 import re
+import shlex
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -141,6 +142,27 @@ def get_command_path() -> str:
     return pkg_resources.resource_filename(__name__, 'scripts/neowofetch')
 
 
+def run_command(args: str, pipe: bool = False) -> str | None:
+    """
+    Run neofetch command
+    """
+    if platform.system() != 'Windows':
+        full_cmd = shlex.split(f'{get_command_path()} {args}')
+
+    else:
+        cmd = get_command_path().replace("\\", "/").replace("C:/", "/c/")
+        args = args.replace('\\', '/').replace('C:/', '/c/')
+
+        full_cmd = ['C:\\Program Files\\Git\\bin\\bash.exe', '-c', f'{cmd} {args}']
+    # print(full_cmd)
+
+    if pipe:
+        return check_output(full_cmd).decode().strip()
+    else:
+        subprocess.run(full_cmd)
+
+
+
 def get_distro_ascii(distro: str | None = None) -> str:
     """
     Get the distro ascii of the current distro. Or if distro is specified, get the specific distro's
@@ -158,11 +180,11 @@ def get_distro_ascii(distro: str | None = None) -> str:
         os.environ['CUSTOM_DISTRO'] = distro
         cmd = 'print_custom_ascii'
 
-    return normalize_ascii(check_output([get_command_path(), cmd]).decode().strip())
+    return normalize_ascii(run_command(cmd, True))
 
 
 def get_distro_name():
-    return check_output([get_command_path(), 'ascii_distro_name']).decode().strip()
+    return run_command('ascii_distro_name', True)
 
 
 def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
@@ -186,18 +208,7 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
         os.environ['ascii_len'] = str(w)
         os.environ['ascii_lines'] = str(h)
 
-        if platform.system() != 'Windows':
-            os.system(f'{get_command_path()} --ascii --source {path.absolute()} --ascii-colors')
-
-        else:
-            cmd = get_command_path().replace("\\", "/").replace("C:/", "/c/")
-            path_str = str(path.absolute()).replace('\\', '/').replace('C:/', '/c/')
-
-            cmd = f'ascii_len={w} ascii_lines={h} {cmd} --ascii --source {path_str} --ascii-colors'
-            full_cmd = ['C:\\Program Files\\Git\\bin\\bash.exe', '-c', cmd]
-            # print(full_cmd)
-
-            subprocess.run(full_cmd)
+        run_command(f'--ascii --source {path.absolute()} --ascii-colors')
 
 
 def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:
