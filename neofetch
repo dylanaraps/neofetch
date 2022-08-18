@@ -800,7 +800,7 @@ image_source="auto"
 #       osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
 #       TrueOS, PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
 #       Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian,
-#       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith,
+#       ravynOS, Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith,
 #       Rocky, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
 #       SereneLinux, SharkLinux, Siduction, SkiffOS, Slackware, SliTaz, SmartOS,
 #       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
@@ -977,6 +977,14 @@ get_distro() {
                     *) distro=$(< /bedrock/etc/bedrock-release)
                 esac
 
+            elif [[ -f /System/Library/CoreServices/SystemVersion.plist ]]; then
+                os=ravynOS
+                ascii_distro="ravynOS"
+                case $distro_shorthand in
+                    tiny) distro="$darwin_name" ;;
+                    on) distro="$darwin_name $osx_version" ;;
+                    *) distro="$darwin_name $darwin_family $osx_version"
+                esac
             elif [[ -f /etc/redstar-release ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="Red Star OS" ;;
@@ -1256,7 +1264,7 @@ get_model() {
             fi
         ;;
 
-        "Mac OS X"|"macOS")
+        "Mac OS X"|"macOS"|"ravynOS")
             if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC") != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
@@ -1435,7 +1443,7 @@ get_uptime() {
             fi
         ;;
 
-        "Mac OS X"|"macOS"|"iPhone OS"|BSD|FreeMiNT)
+        "Mac OS X"|"macOS"|"ravynOS"|"iPhone OS"|BSD|FreeMiNT)
             boot=$(sysctl -n kern.boottime)
             boot=${boot/\{ sec = }
             boot=${boot/,*}
@@ -1774,6 +1782,8 @@ get_de() {
 
     case $os in
         "Mac OS X"|"macOS") de=Aqua ;;
+
+        "ravynOS") de=Magma ;;
 
         Windows)
             case $distro in
@@ -2713,7 +2723,7 @@ get_memory() {
             mem_used="$(((${pages_app} + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
         ;;
 
-        "BSD" | "MINIX")
+        "BSD" | "MINIX" | "ravynOS")
             # Mem total.
             case $kernel_name in
                 "NetBSD"*) mem_total="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
@@ -4895,7 +4905,8 @@ cache_uname() {
     kernel_version="${uname[1]}"
     kernel_machine="${uname[2]}"
 
-    if [[ "$kernel_name" == "Darwin" ]]; then
+    if [[ "$kernel_name" == "Darwin" ]] ||
+       [[ "$kernel_name" == "FreeBSD" && -f /System/Library/CoreServices/SystemVersion.plist ]]; then
         # macOS can report incorrect versions unless this is 0.
         # https://github.com/dylanaraps/neofetch/issues/1607
         export SYSTEM_VERSION_COMPAT=0
@@ -4905,6 +4916,7 @@ cache_uname() {
         for ((i=0;i<${#sw_vers[@]};i+=2)) {
             case ${sw_vers[i]} in
                 ProductName)          darwin_name=${sw_vers[i+1]} ;;
+                ProductFamily)        darwin_family=${sw_vers[i+1]} ;;
                 ProductVersion)       osx_version=${sw_vers[i+1]} ;;
                 ProductBuildVersion)  osx_build=${sw_vers[i+1]}   ;;
             esac
@@ -5159,8 +5171,8 @@ ASCII:
                                 openmamba, OpenMandriva, OpenStage, OpenWrt, osmc, Oracle,
                                 OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix, TrueOS,
                                 PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
-                                Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian, Reborn_OS,
-                                Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
+                                Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian, ravynOS,
+                                Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
                                 sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
                                 SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
                                 Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
@@ -9974,6 +9986,32 @@ ${c1}  `.::///+:/-.        --///+//-:``
       `...`  `...--..`  `...`
             .::::::::::
              `.-::::-`
+EOF
+        ;;
+
+        "ravynOS")
+        set_colors 15
+        read -rd '' ascii_data <<'EOF'
+${c1}                ..oooo..                
+           .o$$$$$$$$$$$$$$o.           
+        od$$$$$$$$$$$$$$$$$$$$$o        
+      o$$$$$$$$$$$$$$$$$$$$$$$$$$o      
+    .$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$.    
+   d$$$$$$$$$********$$$$$$$$$$$$$$$b   
+  d$$$$$$$*            °****?$$$$$$$$b  
+  $$$$$$*                     °$$$$$$$  
+ d$$**                     .oo$$$$$$$$b 
+ *°                     o$$$$$$$$$$$$$$ 
+                      o$$$$$$$$$$$$$$$$ 
+                    o$$$$$$$$$$$$$$$$$P 
+                    *$$$$$$$$$$$$$$$$$  
+                      ?$$$$$$$$$$$$$$P  
+                       $$$$$$$$$$$$$P   
+                       $$$$$$$$$$$$P    
+                      ?$$$$$$$$$$*      
+                       $$$$$$$*°        
+                      d$$$$*°           
+                       °
 EOF
         ;;
 
