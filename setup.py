@@ -33,7 +33,7 @@ setup(
     packages=['hyfetch'],
     package_data={'hyfetch': ['hyfetch/*']},
     include_package_data=True,
-    install_requires=['setuptools', 'typing_extensions', 'pyreadline'],
+    install_requires=['setuptools', 'typing_extensions'],
     entry_points={
         "console_scripts": [
             "hyfetch=hyfetch.main:run",

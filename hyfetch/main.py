@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
-# Do not delete import readline. Even though it's not used in the code, importing it would allow
-# arrow keys to be used in input() functions.
-import readline
-
 import argparse
 import json
 import random
@@ -321,6 +317,12 @@ def create_config() -> Config:
 
 
 def run():
+    # Optional: Import readline
+    try:
+        import readline
+    except ModuleNotFoundError:
+        pass
+
     # Create CLI
     hyfetch = color('&b&lhyfetch&r')
     parser = argparse.ArgumentParser(description=color(f'{hyfetch} - neofetch with flags <3'))
