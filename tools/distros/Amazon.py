@@ -1,0 +1,25 @@
+
+from hyfetch.distro import AsciiArt
+
+Amazon = AsciiArt(match=""""Amazon"*""", color='3 7', ascii="""
+${c1}             `-/oydNNdyo:.`
+      `.:+shmMMMMMMMMMMMMMMmhs+:.`
+    -+hNNMMMMMMMMMMMMMMMMMMMMMMNNho-
+.``      -/+shmNNMMMMMMNNmhs+/-      ``.
+dNmhs+:.       `.:/oo/:.`       .:+shmNd
+dMMMMMMMNdhs+:..        ..:+shdNMMMMMMMd
+dMMMMMMMMMMMMMMNds    odNMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+dMMMMMMMMMMMMMMMMh    yMMMMMMMMMMMMMMMMd
+.:+ydNMMMMMMMMMMMh    yMMMMMMMMMMMNdy+:.
+     `.:+shNMMMMMh    yMMMMMNhs+:``
+            `-+shy    shs+:`
+""")
+    
