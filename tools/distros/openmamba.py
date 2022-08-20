@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-openmamba = AsciiArt(match=""""openmamba"*""", color='7 2', ascii="""
+openmamba = AsciiArt(match=r'''"openmamba"*''', color='7 2', ascii=r"""
 ${c1}                 `````
            .-/+ooooooooo+/:-`
         ./ooooooooooooooooooo+:.

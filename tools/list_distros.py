@@ -5,6 +5,7 @@ List distributions supported by neofetch
 """
 from __future__ import annotations
 
+import string
 import sys
 import textwrap
 from pathlib import Path
@@ -101,12 +102,14 @@ def export_distro(d: AsciiArt):
     """
     Export distro to a python script
     """
-    varname = d.name.replace(' ', '_').replace('/', '_')
+    varname = d.name.lower()
+    for s in string.punctuation + ' ':
+        varname = varname.replace(s, '_')
     ascii = d.ascii.replace('"""', '\\"""')
     script = f"""
 from hyfetch.distro import AsciiArt
 
-{varname} = AsciiArt(match=\"""{d.match}\""", color='{d.color}', ascii=\"""
+{varname} = AsciiArt(match=r'''{d.match}''', color='{d.color}', ascii=r\"""
 {ascii}
 \""")
     """
@@ -120,5 +123,6 @@ def export_distros():
 
 
 if __name__ == '__main__':
-    print(generate_help(100, ' ' * 32))
-    print(generate_help(100, '# '))
+    # print(generate_help(100, ' ' * 32))
+    # print(generate_help(100, '# '))
+    export_distros()

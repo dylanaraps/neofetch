@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-linuxmint_small = AsciiArt(match=""""linuxmint_small"*""", color='2 7', ascii="""
+linuxmint_small = AsciiArt(match=r'''"linuxmint_small"*''', color='2 7', ascii=r"""
 ${c1} ___________
 |_          \\
   | ${c2}| _____ ${c1}|

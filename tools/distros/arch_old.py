@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-arch_old = AsciiArt(match=""""arch_old"""", color='6 7 1', ascii="""
+arch_old = AsciiArt(match=r'''"arch_old"''', color='6 7 1', ascii=r"""
 ${c1}             __
          _=(SDGJT=_
        _GTDJHGGFCVS)

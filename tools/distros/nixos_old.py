@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-nixos_old = AsciiArt(match=""""nixos_old"*""", color='4 6', ascii="""
+nixos_old = AsciiArt(match=r'''"nixos_old"*''', color='4 6', ascii=r"""
 ${c1}              ____       ${c2}_______        ____
 ${c1}             /####\      ${c2}\######\      /####\
 ${c1}             ######\      ${c2}\######\    /#####/

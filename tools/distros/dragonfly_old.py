@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-dragonfly_old = AsciiArt(match=""""dragonfly_old"*""", color='1 7 3', ascii="""
+dragonfly_old = AsciiArt(match=r'''"dragonfly_old"*''', color='1 7 3', ascii=r"""
      ${c1}                   .-.
                  ${c3} ()${c1}I${c3}()
             ${c1} "==.__:-:__.=="

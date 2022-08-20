@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-mac_small = AsciiArt(match=""""mac"*"_small"""", color='2 3 1 5 4', ascii="""
+mac_small = AsciiArt(match=r'''"mac"*"_small"''', color='2 3 1 5 4', ascii=r"""
 ${c1}       .:'
     _ :'_
 ${c2} .'`_`-'_``.

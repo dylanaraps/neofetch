@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-semc = AsciiArt(match=""""semc"*""", color='2 8 1', ascii="""
+semc = AsciiArt(match=r'''"semc"*''', color='2 8 1', ascii=r"""
 ${c1}            /\
      ______/  \
     /      |()| ${c2}E M C

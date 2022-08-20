@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-orchid = AsciiArt(match=""""orchid"*""", color='255 127 127', ascii="""
+orchid = AsciiArt(match=r'''"orchid"*''', color='255 127 127', ascii=r"""
 ${c2}                  .==.
                 .-${c3}#${c1}@@${c3}#${c2}-.
               .-${c3}##${c1}@@@@${c3}##${c2}-.

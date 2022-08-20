@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-haiku_small = AsciiArt(match=""""haiku_small"*""", color='2 8', ascii="""
+haiku_small = AsciiArt(match=r'''"haiku_small"*''', color='2 8', ascii=r"""
 ${c1}       ,^,
       /   \\
 *--_ ;     ; _--*

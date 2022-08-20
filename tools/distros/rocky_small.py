@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-rocky_small = AsciiArt(match=""""rocky_small"*""", color='2', ascii="""
+rocky_small = AsciiArt(match=r'''"rocky_small"*''', color='2', ascii=r"""
 ${c1}    `-/+++++++++/-.`
  `-+++++++++++++++++-`
 .+++++++++++++++++++++.

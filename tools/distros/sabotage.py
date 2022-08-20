@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-sabotage = AsciiArt(match=""""sabotage"*""", color='4 7 1', ascii="""
+sabotage = AsciiArt(match=r'''"sabotage"*''', color='4 7 1', ascii=r"""
 ${c2} .|'''.|      |     '||''|.    ..|''||
  ||..  '     |||     ||   ||  .|'    ||
   ''|||.    |  ||    ||'''|.  ||      ||

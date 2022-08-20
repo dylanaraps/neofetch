@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-popos_small = AsciiArt(match=""""popos_small"* | "pop_os_small"*""", color='6 7', ascii="""
+popos_small = AsciiArt(match=r'''"popos_small"* | "pop_os_small"*''', color='6 7', ascii=r"""
 ${c1}______
 \\   _ \\        __
  \\ \\ \\ \\      / /

@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-pureos_small = AsciiArt(match=""""pureos_small"*""", color='2 7 7', ascii="""
+pureos_small = AsciiArt(match=r'''"pureos_small"*''', color='2 7 7', ascii=r"""
 ${c1} _____________
 |  _________  |
 | |         | |

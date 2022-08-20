@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-rocky = AsciiArt(match=""""rocky"*""", color='35', ascii="""
+rocky = AsciiArt(match=r'''"rocky"*''', color='35', ascii=r"""
 ${c1}          __wgliliiligw_,
        _williiiiiiliilililw,
      _%iiiiiilililiiiiiiiiiii_

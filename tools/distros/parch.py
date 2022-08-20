@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-parch = AsciiArt(match=""""parch"* | "Parch"* | "PARCH"*""", color='4 6', ascii="""
+parch = AsciiArt(match=r'''"parch"* | "Parch"* | "PARCH"*''', color='4 6', ascii=r"""
 
    ${c1} ,#/*%*
   ${c1} #. ..,..,*,,

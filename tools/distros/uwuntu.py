@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-uwuntu = AsciiArt(match=""""uwuntu"*""", color='225 206 52', ascii="""
+uwuntu = AsciiArt(match=r'''"uwuntu"*''', color='225 206 52', ascii=r"""
 ${c1}                                  &&
                                &&&&&&&&
    ,                  *&&&&&&  &&&&&&&&(

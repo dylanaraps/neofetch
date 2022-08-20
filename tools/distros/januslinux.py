@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-januslinux = AsciiArt(match=""""januslinux"*|"janus"*|"Ataraxia Linux"*|"Ataraxia"*""", color='4 5 6 2', ascii="""
+januslinux = AsciiArt(match=r'''"januslinux"*|"janus"*|"Ataraxia Linux"*|"Ataraxia"*''', color='4 5 6 2', ascii=r"""
 ${c1}               'l:
         loooooo
           loooo coooool

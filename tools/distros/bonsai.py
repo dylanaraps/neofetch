@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-bonsai = AsciiArt(match=""""bonsai"*""", color='6 2 3', ascii="""
+bonsai = AsciiArt(match=r'''"bonsai"*''', color='6 2 3', ascii=r"""
 ${c2}   ,####,
    ${c2}#######,  ${c2},#####,
    ${c2}#####',#  ${c2}'######

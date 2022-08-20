@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-ubuntu_old02 = AsciiArt(match=""""ubuntu_old02"""", color='1 7 3', ascii="""
+ubuntu_old02 = AsciiArt(match=r'''"ubuntu_old02"''', color='1 7 3', ascii=r"""
 ${c1}                         ./+o+-
 ${c2}                 yyyyy- ${c1}-yyyyyy+
 ${c2}              ${c2}://+//////${c1}-yyyyyyo

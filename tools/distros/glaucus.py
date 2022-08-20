@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-glaucus = AsciiArt(match=""""glaucus"*""", color='5', ascii="""
+glaucus = AsciiArt(match=r'''"glaucus"*''', color='5', ascii=r"""
 ${c1}             ,,        ,d88P
            ,d8P    ,ad8888*
          ,888P    d88888*     ,,ad8888P*

@@ -1,7 +1,7 @@
 
 from hyfetch.distro import AsciiArt
 
-redhat_old = AsciiArt(match=""""redhat_old" | "rhel_old"*""", color='1 7 3', ascii="""
+redhat_old = AsciiArt(match=r'''"redhat_old" | "rhel_old"*''', color='1 7 3', ascii=r"""
 ${c1}             `.-..........`
             `////////::.`-/.
             -: ....-////////.
