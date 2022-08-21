@@ -1,0 +1,21 @@
+
+from hyfetch.distro import AsciiArt
+
+langitketujuh_old = AsciiArt(match=r'''"LangitKetujuh_old"''', color='7 4', ascii=r"""
+${c1}
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+      'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+   L7L.   'L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L             L7L7L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                'L7L7L7L7L7L7L7L7L7L
+   L7L7L7L                    'L7L7L7L7L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L                             L7L7L7L
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.   'L7L
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L.
+   L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L7L
+${c2}
+""")
+    

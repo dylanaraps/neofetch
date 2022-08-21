@@ -6,26 +6,18 @@ List distributions supported by neofetch
 from __future__ import annotations
 
 import string
+import sys
 import textwrap
-from dataclasses import dataclass
-
 from pathlib import Path
 
 import regex
 
+sys.path.append(str(Path(__file__).parent.parent))
+
+from hyfetch.distro import AsciiArt
+
 RE_SPLIT = regex.compile('EOF[ \n]*?;;')
 RE_COLORS = regex.compile("""(?<=set_colors )[a-z\\d ]+(?=\n)""")
-
-
-@dataclass
-class AsciiArt:
-    match: str
-    color: str
-    ascii: str
-
-    def get_friendly_name(self) -> str:
-        return self.match.split("|")[0].strip(string.punctuation + '* ')\
-            .replace('"', '').replace('*', '')
 
 
 def substr(s: str, start: str, end: str | None = None):
@@ -106,6 +98,31 @@ def generate_help(max_len: int, leading: str):
     return wrap(out, max_len, leading)
 
 
+def export_distro(d: AsciiArt):
+    """
+    Export distro to a python script
+    """
+    varname = d.name.lower()
+    for s in string.punctuation + ' ':
+        varname = varname.replace(s, '_')
+    ascii = d.ascii.replace('"""', '\\"""')
+    script = f"""
+from hyfetch.distro import AsciiArt
+
+{varname} = AsciiArt(match=r'''{d.match}''', color='{d.color}', ascii=r\"""
+{ascii}
+\""")
+    """
+    Path('distros').mkdir(parents=True, exist_ok=True)
+    Path(f'distros/{varname}.py').write_text(script)
+
+
+def export_distros():
+    distros = parse_ascii_distros()
+    [export_distro(d) for d in distros]
+
+
 if __name__ == '__main__':
-    print(generate_help(100, ' ' * 32))
-    print(generate_help(100, '# '))
+    # print(generate_help(100, ' ' * 32))
+    # print(generate_help(100, '# '))
+    export_distros()
