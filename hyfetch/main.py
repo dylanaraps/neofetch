@@ -344,6 +344,9 @@ def run():
         print(f'Version is {VERSION}')
         return
 
+    # Ensure git bash for windows
+    ensure_git_bash()
+
     # Test distro ascii art
     if args.test_distro:
         print(f'Setting distro to {args.test_distro}')

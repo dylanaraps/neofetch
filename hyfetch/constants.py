@@ -46,3 +46,5 @@ class GlobalConfig:
 
 
 GLOBAL_CFG = GlobalConfig(color_mode='8bit', override_distro=None, debug=False, is_light=False)
+
+MINGIT_URL = 'https://github.com/git-for-windows/git/releases/download/v2.37.2.windows.2/MinGit-2.37.2.2-busybox-32-bit.zip'

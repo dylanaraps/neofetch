@@ -6,16 +6,19 @@ import platform
 import re
 import shlex
 import subprocess
+import zipfile
 from dataclasses import dataclass
 from pathlib import Path
 from subprocess import check_output
 from tempfile import TemporaryDirectory
+from urllib.request import urlretrieve
 
 import pkg_resources
+import psutil
 from typing_extensions import Literal
 
 from hyfetch.color_util import color
-from .constants import GLOBAL_CFG
+from .constants import GLOBAL_CFG, MINGIT_URL
 from .presets import ColorProfile
 from .serializer import from_dict
 
@@ -142,6 +145,40 @@ def get_command_path() -> str:
     return pkg_resources.resource_filename(__name__, 'scripts/neowofetch')
 
 
+def ensure_git_bash() -> Path:
+    """
+    Ensure git bash installation for windows
+
+    :returns git bash path
+    """
+    if platform.system() == 'Windows':
+        # Find installation in default path
+        def_path = Path(r'C:\Program Files\Git\bin\bash.exe')
+        if def_path.is_file():
+            return def_path
+
+        # Find installation in PATH (C:\Program Files\Git\cmd should be in path)
+        pth = (os.environ.get('PATH') or '').lower().split(';')
+        pth = [p for p in pth if p.endswith(r'\git\cmd')]
+        if pth:
+            return Path(pth[0]).parent / r'bin\bash.exe'
+
+        # Previously downloaded portable installation
+        path = Path(__file__).parent / 'min_git'
+        pkg_path = path / 'package.zip'
+        if path.is_dir():
+            return path / r'bin\bash.exe'
+
+        # No installation found, download a portable installation
+        print('Git installation not found. Git is required to use HyFetch/neofetch on Windows')
+        print('Downloading a minimal portable package for Git...')
+        urlretrieve(MINGIT_URL, pkg_path)
+        print('Download finished! Extracting...')
+        with zipfile.ZipFile(pkg_path, 'r') as zip_ref:
+            zip_ref.extractall(path)
+        print('Done!')
+        return path / r'bin\bash.exe'
+
 def run_command(args: str, pipe: bool = False) -> str | None:
     """
     Run neofetch command
@@ -153,14 +190,13 @@ def run_command(args: str, pipe: bool = False) -> str | None:
         cmd = get_command_path().replace("\\", "/").replace("C:/", "/c/")
         args = args.replace('\\', '/').replace('C:/', '/c/')
 
-        full_cmd = ['C:\\Program Files\\Git\\bin\\bash.exe', '-c', f'{cmd} {args}']
+        full_cmd = [ensure_git_bash(), '-c', f'{cmd} {args}']
     # print(full_cmd)
 
     if pipe:
         return check_output(full_cmd).decode().strip()
     else:
         subprocess.run(full_cmd)
-
 
 
 def get_distro_ascii(distro: str | None = None) -> str:
