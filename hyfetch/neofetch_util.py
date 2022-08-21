@@ -179,6 +179,19 @@ def ensure_git_bash() -> Path:
         print('Done!')
         return path / r'bin\bash.exe'
 
+
+def check_windows_cmd():
+    """
+    Check if this script is running under cmd.exe. If so, launch an external window with git bash
+    since cmd doesn't support RGB colors.
+    """
+    if psutil.Process(os.getppid()).name().lower().strip() == 'cmd.exe':
+        print("cmd.exe doesn't support RGB colors, restarting in MinTTY...")
+        cmd = f'"{ensure_git_bash().parent.parent / "usr/bin/mintty.exe"}" -s 110,40 -e python -m hyfetch --ask-exit'
+        os.system(cmd)
+        exit()
+
+
 def run_command(args: str, pipe: bool = False) -> str | None:
     """
     Run neofetch command

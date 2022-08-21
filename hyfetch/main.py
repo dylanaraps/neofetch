@@ -346,6 +346,7 @@ def run():
 
     # Ensure git bash for windows
     ensure_git_bash()
+    check_windows_cmd()
 
     # Test distro ascii art
     if args.test_distro:
