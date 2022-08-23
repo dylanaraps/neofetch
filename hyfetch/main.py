@@ -336,12 +336,17 @@ def run():
     parser.add_argument('--debug', action='store_true', help=f'Debug mode')
     parser.add_argument('--test-distro', help=f'Test for a specific distro')
     parser.add_argument('--test-print', action='store_true', help=f'Test print distro ascii art only')
+    parser.add_argument('--ask-exit', action='store_true', help=f'Ask before exitting')
 
     args = parser.parse_args()
 
     if args.version:
         print(f'Version is {VERSION}')
         return
+
+    # Ensure git bash for windows
+    ensure_git_bash()
+    check_windows_cmd()
 
     # Test distro ascii art
     if args.test_distro:
@@ -385,3 +390,6 @@ def run():
 
     # Run
     run_neofetch(preset, config.color_align)
+
+    if args.ask_exit:
+        input('Press any key to exit...')
