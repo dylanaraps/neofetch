@@ -4071,7 +4071,7 @@ strip_escape_codes() {
         fi
         output+="${char}"
     done
-    eval "$2=\"${output}\""
+    eval "$2='${output}'"
 }
 
 print_ascii() {
