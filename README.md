@@ -63,10 +63,16 @@ Updates to `neowofetch` begins with the emoji 🖼️
 ### Unpublished 1.4.1
 
 * 🌈 Paginate flags (#14)
+* 🌈 Add release workflow (#15)
 * 🌈 Config page - Give warning when terminal size is too small
 * 🌈 Config page - Optimize color arrangement selection on small screens
+* 🌈 Add Windows support
+* 🖼️ Distro - Add ravynOS (dylanaraps/neofetch#2182)
+* 🖼️ Distro - Add ChonkySealOS (dylanaraps/neofetch#2180)
+* 🖼️ Distro - Fix ChromeOS identification (dylanaraps/neofetch#1949)
 * 🖼️ Bug Fix - Fix hostname detection when `inetutils` is not installed
 * 🖼️ Bug Fix - Fix empty brackets displayed when no theme is found ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
+* 🖼️ Bug Fix - Fix `$` escape bug in `strip_escape_codes()` (dylanaraps/neofetch#1543)
 
 ### 1.4.0
 
