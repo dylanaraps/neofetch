@@ -782,7 +782,7 @@ image_source="auto"
 # Flag:    --ascii_distro
 # NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
-#       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
+#       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, astOS, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
@@ -5141,7 +5141,7 @@ ASCII:
 
                                 NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
                                 instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
-                                Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
+                                Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike, astOS, 
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
@@ -6088,6 +6088,35 @@ ${c1}                   *   
      ******${c2}/${c1}***  ${c2}////   ${c1}**${c2}/${c1}******
     ********${c2}/${c1}* ${c2}///      ${c1}*${c2}/${c1}********
   ,******     ${c2}// ______ /    ${c1}******,
+EOF
+        ;;
+	
+        "astOS"*)
+            set_colors 8
+            read -rd '' ascii_data <<'EOF'
+${c1}                oQA#$%UMn
+                H       9
+                G       #
+                6       %
+                ?#M#%KW3"
+                  // \\\
+                //     \\\
+              //         \\\
+            //             \\\
+        n%@$DK&ML       .0O3#@&M_
+        P       #       8       W
+        H       U       G       #
+        B       N       O       @
+        C&&#%HNAR       'WS3QMHB"
+          // \\\              \\\
+        //     \\\              \\\
+      //         \\\              \\\
+    //             \\\              \\\
+uURF$##Bv       nKWB$%ABc       aM@3R@D@b
+8       M       @       O       #       %
+%       &       G       U       @       @
+&       @       #       %       %       #
+!HGN@MNCf       t&$9#%HQr       ?@G#6S@QP
 EOF
         ;;
 
