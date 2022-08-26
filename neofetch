@@ -5768,6 +5768,35 @@ ${c1}         -o          o-
 EOF
         ;;
 
+        "astOS"*)
+            set_colors 8
+            read -rd '' ascii_data <<'EOF'
+${c1}                oQA#$%UMn
+                H       9
+                G       #
+                6       %
+                ?#M#%KW3"
+                  // \\\
+                //     \\\
+              //         \\\
+            //             \\\
+        n%@$DK&ML       .0O3#@&M_
+        P       #       8       W
+        H       U       G       #
+        B       N       O       @
+        C&&#%HNAR       'WS3QMHB"
+          // \\\              \\\
+        //     \\\              \\\
+      //         \\\              \\\
+    //             \\\              \\\
+uURF$##Bv       nKWB$%ABc       aM@3R@D@b
+8       M       @       O       #       %
+%       &       G       U       @       @
+&       @       #       %       %       #
+!HGN@MNCf       t&$9#%HQr       ?@G#6S@QP
+EOF
+        ;;
+
     "instantOS"*)
         set_colors 4 6
         read -rd '' ascii_data <<'EOF'
