@@ -6,6 +6,7 @@ import platform
 import re
 import shlex
 import subprocess
+import sys
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
@@ -145,7 +146,7 @@ def get_command_path() -> str:
 
     # Windows doesn't support symbolic links, but also I can't detect symbolic links... hard-code it here for now.
     if platform.system() == 'Windows':
-        return str(Path(cmd_path).parent.parent / 'neofetch')
+        return str(Path(cmd_path).parent.parent.parent / 'neofetch')
 
     return cmd_path
 
@@ -192,11 +193,12 @@ def check_windows_cmd():
     """
     if platform.system() == 'Windows':
         import psutil
+        # TODO: This line does not correctly identify cmd prompts...
         if psutil.Process(os.getppid()).name().lower().strip() == 'cmd.exe':
             print("cmd.exe doesn't support RGB colors, restarting in MinTTY...")
             cmd = f'"{ensure_git_bash().parent.parent / "usr/bin/mintty.exe"}" -s 110,40 -e python -m hyfetch --ask-exit'
             os.system(cmd)
-            exit()
+            sys.exit(0)
 
 
 def run_command(args: str, pipe: bool = False) -> str | None:

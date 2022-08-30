@@ -6,6 +6,7 @@ import json
 import random
 import re
 from itertools import permutations
+import traceback
 from typing import Iterable
 from math import ceil
 
@@ -389,7 +390,11 @@ def run():
         preset = preset.set_light_dl(config.lightness)
 
     # Run
-    run_neofetch(preset, config.color_align)
+    try:
+        run_neofetch(preset, config.color_align)
+    except Exception as e:
+        print(f'Error: {e}')
+        traceback.print_exc()
 
     if args.ask_exit:
         input('Press any key to exit...')
