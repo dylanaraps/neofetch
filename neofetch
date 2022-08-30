@@ -787,7 +787,7 @@ image_source="auto"
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
-#       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
+#       DesaOS, Devuan, DietPi, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
@@ -5146,7 +5146,7 @@ ASCII:
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
-                                Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
+                                Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan, DietPi
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
@@ -7121,6 +7121,36 @@ ${c1}   ..,,;;;::;,..
 :$$$$$$$$$$$$b:'`
  `$$$$$bd:''`
    `'''`
+EOF
+        ;;
+	
+	"DietPi"*)
+            set_colors 10 8 2 2 10 8
+            read -rd '' ascii_data <<'EOF'
+
+  'cdxkOxkkkxc'   :dkkxkkkxdc,
+  kO;.......'lO;,Ol;.......,dO
+  xk...',;....'00:....,;,...ok
+  ,K;....':l:..0N'.;lc'....'0;
+   :0:......:OKWWX0l......;Ol
+    ,xk:,..,oNWWWWWk;..';xx;
+     'dNNKXNWWWWWWWWWXKXNx'
+    ;KWWWWWWWWWWWWWWWWWWWWXc
+   'XWWWWWWWWWWWWWWWWWWWWWWN,
+   lWNNNNNNNNNNNNNNNNNNNNNNWl
+  lKNNNNNNNNNXXXXXXNNNNNNNNNXo
+ dNNNXXNNNNNNXXXXXXNNNNNNXXNNNk
+,NNNX:';lx0XXXXKKXXXX0dc,'cXNNN
+,NNNXo.....,cx0KK0dc,....'dXNNN
+ dNNNXkc:;'',oKXX0l,'';:cOXNNNk
+  dNNNXXXXKKXNKOOKNXKKXXXXNNNk
+  'KNNNNNNXNNXcollNNNXNNNNNNN,
+   oNNNNNNNXXXO000XXXNNNNNNNx
+    xNNNNNNNNNNNNNNNNNNNNNNO'
+      xXNNNNNNNNNNNNNNNNXk
+        ckXNNNNNNNNNNXOl'
+           :ONNNNNN0c
+             ;dOOd;
 EOF
         ;;
 
