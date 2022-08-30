@@ -9,7 +9,7 @@ import hyfetch
 HERE = pathlib.Path(__file__).parent
 
 # The text of the README file
-README = (HERE / "README.md").read_text()
+README = (HERE / "README.md").read_text('utf-8')
 
 # This call to setup() does all the work
 setup(
