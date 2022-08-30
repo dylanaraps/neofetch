@@ -1218,7 +1218,7 @@ get_distro() {
 
     # Get OS architecture.
     case $os in
-        Solaris|AIX|Haiku|IRIX|FreeMiNT)
+        Solaris|AIX|Haiku|IRIX|FreeMiNT|BSD)
             machine_arch=$(uname -p)
         ;;
 
