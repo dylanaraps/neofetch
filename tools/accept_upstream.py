@@ -12,6 +12,11 @@ upstream = 'dylanaraps/neofetch'
 my_fork = 'hykilpikonna/hyfetch'
 my_base = 'master'
 
+http = requests.Session()
+if 'GH_TOKEN' in os.environ:
+    print('Token loaded')
+    http.headers['Authorization'] = f'token {os.environ["GH_TOKEN"]}'
+
 
 def copy_comment():
     # Get commit SHA
@@ -42,11 +47,11 @@ if __name__ == '__main__':
     print(f'Accepting pull request {pr}...')
 
     # Fetch original pr's information
-    info = requests.get(f'https://api.github.com/repos/{upstream}/pulls/{pr}').json()
+    info = http.get(f'https://api.github.com/repos/{upstream}/pulls/{pr}').json()
     user = info['user']['login']
 
     # Fetch commit information
-    commits = requests.get(f'https://api.github.com/repos/{upstream}/pulls/{pr}/commits').json()
+    commits = http.get(f'https://api.github.com/repos/{upstream}/pulls/{pr}/commits').json()
     author = commits[0]['commit']['author']
 
     # Create commit message
