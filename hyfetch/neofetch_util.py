@@ -141,7 +141,13 @@ def get_command_path() -> str:
 
     :return: Command path
     """
-    return pkg_resources.resource_filename(__name__, 'scripts/neowofetch')
+    cmd_path = pkg_resources.resource_filename(__name__, 'scripts/neowofetch')
+
+    # Windows doesn't support symbolic links, but also I can't detect symbolic links... hard-code it here for now.
+    if platform.system() == 'Windows':
+        return str(Path(cmd_path).parent.parent / 'neofetch')
+
+    return cmd_path
 
 
 def ensure_git_bash() -> Path:

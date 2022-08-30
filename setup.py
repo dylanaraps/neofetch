@@ -35,10 +35,10 @@ setup(
     include_package_data=True,
     install_requires=[
         # Universal dependencies
-        'setuptools', 'typing_extensions'
+        'setuptools', 'typing_extensions',
         
         # Windows dependencies
-        'psutil ; platform_system=="Windows"'
+        'psutil ; platform_system=="Windows"',
     ],
     entry_points={
         "console_scripts": [
