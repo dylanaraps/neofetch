@@ -33,7 +33,13 @@ setup(
     packages=['hyfetch'],
     package_data={'hyfetch': ['hyfetch/*']},
     include_package_data=True,
-    install_requires=['setuptools', 'typing_extensions'],
+    install_requires=[
+        # Universal dependencies
+        'setuptools', 'typing_extensions'
+        
+        # Windows dependencies
+        'psutil ; platform_system=="Windows"'
+    ],
     entry_points={
         "console_scripts": [
             "hyfetch=hyfetch.main:run",
