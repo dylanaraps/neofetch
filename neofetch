@@ -88,6 +88,10 @@ print_info() {
     # info "Users" users
     # info "Locale" locale  # This only works on glibc systems.
 
+    # info "Java" java_ver
+    # info "Python" python_ver
+    # info "Node" node_ver
+
     info cols
 }
 
@@ -3824,6 +3828,30 @@ get_cursor() {
 
     get_style
     cursor="$theme"
+}
+
+get_java_ver() {
+    if command -v java &> /dev/null; then
+        java_ver=$(java -version 2>&1)
+        java_ver=${java_ver%\"*}
+        java_ver=${java_ver#*\"}
+    fi
+}
+
+get_python_ver() {
+    if command -v python &> /dev/null; then
+        python_ver=$(python -VVV)
+        python_ver=${python_ver//$'\n'/}
+        python_ver=${python_ver//\(+([^\)])\)}
+        python_ver=$(echo "$python_ver" | awk '$1=$1')
+    fi
+}
+
+get_node_ver() {
+    if command -v node &> /dev/null; then
+        node_ver=$(node --version)
+        node_ver=${node_ver#v}
+    fi
 }
 
 get_term() {
