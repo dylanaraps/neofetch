@@ -3991,8 +3991,8 @@ get_cols() {
         printf -v block_spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
-        [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}[mnl}"
-        [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}[mnl}"
+        [[ "$blocks"  ]] && cols+="${block_spaces} ${blocks}[mnl"
+        [[ "$blocks2" ]] && cols+="${block_spaces} ${blocks2}[mnl"
 
         # Add newlines to the string.
         cols=${cols%%nl}
