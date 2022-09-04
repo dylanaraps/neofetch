@@ -7125,31 +7125,31 @@ EOF
         ;;
 	
 	"DietPi"*)
-            set_colors 10 8 2 2 10 8
+            set_colors 2 10 8
             read -rd '' ascii_data <<'EOF'
 
-${c2}  'cdxkOxkkkxc'   :dkkxkkkxdc,
-${c2}  kO${c1}█████████${c2}lO;,Ol;${c1}████████${c2}dO
-${c2}  xk${c1}███${c2}',;${c1}█████${c2}00${c1}█████${c2},;,${c1}███${c2}ok
-${c2}  ,K${c1}██████${c2}:l:${c1}██${c2}0N'${c1}██${c2}lc${c1}██████${c2}0;
-${c2}   :0${c1}████████${c2}OKWWX0l${c1}███████${c2}Ol
-${c2}    ,xk${c1}█████${c2}oNWWWWWk${c1}█████${c2}xx;
+${c3}  'cdxkOxkkkxc'   :dkkxkkkxdc,
+  kO${c1}@@@@@@@@@${c3}lO;Ol;${c1}@@@@@@@@@${c3}dO
+  xk${c1}@@@${c3}';,${c1}@@@@@${c3}00${c1}@@@@@${c3},;'${c1}@@@${c3}ok
+  ,K${c1}@@@@@@${c3}'l,${c1}@@${c2}0N${c1}@@${c3},l'${c1}@@@@@@${c3}0;
+   :0${c1}@@@@@@@@${c3}OKWWX0${c1}@@@@@@@@${c3}Ol
+    ,xk${c1}@@@@@${c3}oNWWWWWk${c1}@@@@@${c3}xx;
      'dNNKXNWWWWWWWWWXKXNx'
     ;KWWWWWWWWWWWWWWWWWWWWXc
    'XWWWWWWWWWWWWWWWWWWWWWWN,
    lWNNNNNNNNNNNNNNNNNNNNNNWl
   lKNNNNNNNNNXXXXXXNNNNNNNNNXo
  dNNNXXNNNNNNXXXXXXNNNNNNXXNNNk
-${c2},NNNX${c1}:';${c2}lx0XXXXKKXXXX0dc${c1},'c${c2}XNNN
-${c2},NNNXo${c1}.....,${c2}cx0KK0dc${c1},....'${c2}dXNNN
-${c2} dNNNXkc${c1}:;'',${c2}oKXX0l${c1},'';:${c2}cOXNNNk
+${c3},NNNX${c1}c',${c3}lx0XXXXKKXXXX0dc${c1},'c${c3}XNNN
+${c3},NNNXo${c1}'....,${c3}cx0KK0dc${c1},....'${c3}dXNNN
+${c3} dNNNXkc${c1}:;'',${c3}oKXX0l${c1},'';:${c3}cOXNNNk
   dNNNXXXXKKXNK${c1}**${c2}KNXKKXXXXNNNk
-  'KNNNNNNXNNX${c1}*${c2},,${c1}*${c2}NNNXNNNNNNN,
+  'KNNNNNNXNNX${c1}@${c3},,${c1}@${c3}NNNXNNNNNNN,
    oNNNNNNNXXXO000XXXNNNNNNNx
     xNNNNNNNNNNNNNNNNNNNNNNO'
       xXNNNNNNNNNNNNNNNNXk
         ckXNNNNNNNNNNXOl'
-           :ONNNNNN0c
+           :ONNNNNN0:
              ;dOOd;
 EOF
         ;;
