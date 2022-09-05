@@ -4712,7 +4712,7 @@ print_ascii() {
     then
         lines=$ascii_lines
     else
-        while IFS=$'\n' read -r line; do
+        while IFS=$'\n' read line; do
             line=${line//█/ }
             # Fast method to strip codes
             strip_escape_codes "${line}" line
