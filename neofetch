@@ -4087,7 +4087,7 @@ print_ascii() {
     LC_ALL="$sys_locale"
 
     # Calculate size of ascii file in line length / line count.
-    while IFS=$'\n' read -r line; do
+    while IFS=$'\n' read line; do
         line=${line//█/ }
         # Fast method to strip codes
         strip_escape_codes "${line}" line
