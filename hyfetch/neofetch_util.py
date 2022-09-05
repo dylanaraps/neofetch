@@ -238,7 +238,12 @@ def get_distro_ascii(distro: str | None = None) -> str:
         os.environ['CUSTOM_DISTRO'] = distro
         cmd = 'print_custom_ascii'
 
-    return normalize_ascii(run_command(cmd, True))
+    asc = run_command(cmd, True)
+
+    # Unescape backslashes here because backslashes are escaped in neofetch for printf
+    asc = asc.replace('\\\\', '\\')
+
+    return normalize_ascii(asc)
 
 
 def get_distro_name():
@@ -255,6 +260,9 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
     asc = get_distro_ascii()
     w, h = ascii_size(asc)
     asc = alignment.recolor_ascii(asc, preset)
+
+    # Escape backslashes here because backslashes are escaped in neofetch for printf
+    asc = asc.replace('\\', '\\\\')
 
     # Write temp file
     with TemporaryDirectory() as tmp_dir:
