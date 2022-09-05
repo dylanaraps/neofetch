@@ -4712,6 +4712,8 @@ print_ascii() {
     then
         lines=$ascii_lines
     else
+        # shellcheck disable=SC2162
+        # Reading without -r here is intentional. See https://github.com/dylanaraps/neofetch/pull/1543
         while IFS=$'\n' read line; do
             line=${line//█/ }
             # Fast method to strip codes
