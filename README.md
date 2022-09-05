@@ -66,13 +66,19 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * 🌈 Add release workflow (#15)
 * 🌈 Config page - Give warning when terminal size is too small
 * 🌈 Config page - Optimize color arrangement selection on small screens
-* 🌈 Add Windows support
+* 🌈 Add experimental Windows support (very unstable at the moment)
 * 🖼️ Distro - Add ravynOS (dylanaraps/neofetch#2182)
 * 🖼️ Distro - Add ChonkySealOS (dylanaraps/neofetch#2180)
+* 🖼️ Distro - Add GhostBSD (dylanaraps/neofetch#2180)
+* 🖼️ Distro - Add NekOS (dylanaraps/neofetch#2186)
+* 🖼️ Distro - Add astOS (dylanaraps/neofetch#2185)
 * 🖼️ Distro - Fix ChromeOS identification (dylanaraps/neofetch#1949)
+* 🖼️ WM - Add Hyprland to the list of wayland wms (dylanaraps/neofetch#2190)
+* 🖼️ Env - Add Java, Python, Node version detection (can be enabled in config)
 * 🖼️ Bug Fix - Fix hostname detection when `inetutils` is not installed
 * 🖼️ Bug Fix - Fix empty brackets displayed when no theme is found ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
 * 🖼️ Bug Fix - Fix `$` escape bug in `strip_escape_codes()` (dylanaraps/neofetch#1543)
+* 🖼️ Bug Fix - Fix backslash escape bug in `strip_escape_codes()` (dylanaraps/neofetch#1543)
 
 ### 1.4.0
 
