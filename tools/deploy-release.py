@@ -37,6 +37,7 @@ def edit_versions(version: str):
     :param version: Version to release
     """
     # 1. package.json
+    print('Editing package.json...')
     path = Path('package.json')
     content = json.loads(path.read_text())
     cur = pv.parse(content['version'])
@@ -45,11 +46,13 @@ def edit_versions(version: str):
     path.write_text(json.dumps(content, ensure_ascii=False, indent=2))
 
     # 2. hyfetch/constants.py
+    print('Editing hyfetch/constants.py...')
     path = Path('hyfetch/constants.py')
     content = [f"VERSION = '{version}'" if l.startswith('VERSION = ') else l for l in path.read_text().split('\n')]
     path.write_text('\n'.join(content))
 
     # 3. README.md
+    print('Editing README.md...')
     path = Path('README.md')
     content = path.read_text()
     changelog_i = content.index('<!-- CHANGELOG STARTS HERE --->')
@@ -59,6 +62,7 @@ def edit_versions(version: str):
     path.write_text(content)
 
     # 4. neofetch script
+    print('Editing neofetch...')
     path = Path('neofetch')
     lines = path.read_text().split('\n')
     version_i = next(i for i, l in enumerate(lines) if l.startswith('version='))
@@ -74,6 +78,7 @@ def finalize_neofetch():
     Finalize current version
     """
     # 1. Update distro list
+    print('Updating distro list in neofetch...')
     path = Path('neofetch')
     content = path.read_text()
     content = re.compile(r'(?<=# Flag:    --ascii_distro\n#\n).*?(?=ascii_distro=)', re.DOTALL)\
@@ -83,10 +88,57 @@ def finalize_neofetch():
     path.write_text(content)
 
     # 2. Regenerate man page
+    print('Regenerating neofetch man page...')
     Path('neofetch.1').write_text(subprocess.check_output(['help2man', './neofetch']).decode())
 
     # 3. Reformat readme links
+    print('Reformatting readme links...')
     reformat_readme()
+
+
+def post_check():
+    """
+    Check after changes are made
+    """
+    subprocess.check_call(shlex.split('shellcheck neofetch'))
+
+
+def create_release(v: str):
+    """
+    Create release commit and tag
+    """
+    print('Committing changes...')
+
+    # 1. Add files
+    subprocess.check_call(['git', 'add', 'hyfetch/constants.py', 'neofetch', 'neofetch.1', 'package.json', 'README.md'])
+
+    # 2. Commit
+    subprocess.check_call(['git', 'commit', '-m', f'[U] Release {v}'])
+
+    # 3. Create tag
+    subprocess.check_call(['git', 'tag', v])
+
+    i = input('Please check the commit is correct. Press y to continue or any other key to cancel.')
+    assert i == 'y'
+
+    # 4. Push
+    print('Pushing commits...')
+    subprocess.check_call(['git', 'push'])
+
+
+def deploy():
+    """
+    Deploy release to pip and npm
+    """
+    print('Deploying to pypi...')
+    subprocess.check_call(['bash', './deploy.sh'])
+    print('Done!')
+
+    print('Deploying to npm...')
+    otp = input('Please provide 2FA OTP for NPM: ')
+    subprocess.check_call(['npm', 'publish', '--otp', otp])
+    print('Done!')
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='HyFetch Release Utility')
@@ -97,4 +149,7 @@ if __name__ == '__main__':
     pre_check()
     edit_versions(args.version)
     finalize_neofetch()
+    post_check()
+    create_release(args.version)
+    deploy()
 
