@@ -124,6 +124,7 @@ def create_release(v: str):
     # 4. Push
     print('Pushing commits...')
     subprocess.check_call(['git', 'push'])
+    subprocess.check_call(['git', 'push', 'origin', v])
 
 
 def deploy():
