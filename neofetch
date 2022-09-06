@@ -2511,15 +2511,15 @@ get_cpu() {
                 ;;
 
                 "riscv"*)
+                    # This will fail to detect cpu on qemu
                     cpu="$(awk -F': ' '/uarch/ {print $2; exit}' "$cpu_file")"
                 ;;
-		
-                *)
-                    [[ -z "$cpu" ]] && cpu="$(awk -F '\\s*: | @' \
-                            '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
-                            cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
-                ;;
             esac
+
+            # If cpu is not detected on a platform-specific bases, fallback to cpuinfo method
+            [[ -z "$cpu" ]] && cpu="$(awk -F '\\s*: | @' \
+                    '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
+                    cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
 
