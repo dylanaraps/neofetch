@@ -66,6 +66,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 * 🌈 Paginate flags (#14)
 * 🌈 Add release workflow (#15)
+* 🌈 Create automatic release script
 * 🌈 Config page - Give warning when terminal size is too small
 * 🌈 Config page - Optimize color arrangement selection on small screens
 * 🌈 Add experimental Windows support (very unstable at the moment)
@@ -81,6 +82,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * 🖼️ Bug Fix - Fix empty brackets displayed when no theme is found ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
 * 🖼️ Bug Fix - Fix `$` escape bug in `strip_escape_codes()` (dylanaraps/neofetch#1543)
 * 🖼️ Bug Fix - Fix backslash escape bug in `strip_escape_codes()` (dylanaraps/neofetch#1543)
+* 🖼️ Bug Fix - Fix CPU detection on ARM QEMU
 
 ### 1.4.0
 
