@@ -131,7 +131,7 @@ def deploy():
     Deploy release to pip and npm
     """
     print('Deploying to pypi...')
-    subprocess.check_call(['bash', './deploy.sh'])
+    subprocess.check_call(['bash', 'tools/deploy.sh'])
     print('Done!')
 
     print('Deploying to npm...')
