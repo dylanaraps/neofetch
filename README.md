@@ -62,7 +62,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 <!-- CHANGELOG STARTS HERE --->
 
-### Unpublished 1.4.1
+### 1.4.1
 
 * 🌈 Paginate flags (#14)
 * 🌈 Add release workflow (#15)
@@ -70,18 +70,18 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * 🌈 Config page - Give warning when terminal size is too small
 * 🌈 Config page - Optimize color arrangement selection on small screens
 * 🌈 Add experimental Windows support (very unstable at the moment)
-* 🖼️ Distro - Add ravynOS (dylanaraps/neofetch#2182)
-* 🖼️ Distro - Add ChonkySealOS (dylanaraps/neofetch#2180)
-* 🖼️ Distro - Add GhostBSD (dylanaraps/neofetch#2180)
-* 🖼️ Distro - Add NekOS (dylanaraps/neofetch#2186)
-* 🖼️ Distro - Add astOS (dylanaraps/neofetch#2185)
-* 🖼️ Distro - Fix ChromeOS identification (dylanaraps/neofetch#1949)
-* 🖼️ WM - Add Hyprland to the list of wayland wms (dylanaraps/neofetch#2190)
+* 🖼️ Distro - Add ravynOS ([dylanaraps#2182](https://github.com/dylanaraps/neofetch/pull/2182))
+* 🖼️ Distro - Add ChonkySealOS ([dylanaraps#2180](https://github.com/dylanaraps/neofetch/pull/2180))
+* 🖼️ Distro - Add GhostBSD ([dylanaraps#2180](https://github.com/dylanaraps/neofetch/pull/2180))
+* 🖼️ Distro - Add NekOS ([dylanaraps#2186](https://github.com/dylanaraps/neofetch/pull/2186))
+* 🖼️ Distro - Add astOS ([dylanaraps#2185](https://github.com/dylanaraps/neofetch/pull/2185))
+* 🖼️ Distro - Fix ChromeOS identification ([dylanaraps#1949](https://github.com/dylanaraps/neofetch/pull/1949))
+* 🖼️ WM - Add Hyprland to the list of wayland wms ([dylanaraps#2190](https://github.com/dylanaraps/neofetch/pull/2190))
 * 🖼️ Env - Add Java, Python, Node version detection (can be enabled in config)
 * 🖼️ Bug Fix - Fix hostname detection when `inetutils` is not installed
 * 🖼️ Bug Fix - Fix empty brackets displayed when no theme is found ([dylanaraps#1713](https://github.com/dylanaraps/neofetch/pull/1713))
-* 🖼️ Bug Fix - Fix `$` escape bug in `strip_escape_codes()` (dylanaraps/neofetch#1543)
-* 🖼️ Bug Fix - Fix backslash escape bug in `strip_escape_codes()` (dylanaraps/neofetch#1543)
+* 🖼️ Bug Fix - Fix `$` escape bug in `strip_escape_codes()` ([dylanaraps#1543](https://github.com/dylanaraps/neofetch/pull/1543))
+* 🖼️ Bug Fix - Fix backslash escape bug in `strip_escape_codes()` ([dylanaraps#1543](https://github.com/dylanaraps/neofetch/pull/1543))
 * 🖼️ Bug Fix - Fix CPU detection on ARM QEMU
 
 ### 1.4.0
