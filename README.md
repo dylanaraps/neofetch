@@ -60,6 +60,8 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * [ ] Allow left-right arrow keys for pagination
 * [ ] Implement light/dark background detection based on https://github.com/muesli/termenv
 
+<!-- CHANGELOG STARTS HERE --->
+
 ### Unpublished 1.4.1
 
 * 🌈 Paginate flags (#14)
