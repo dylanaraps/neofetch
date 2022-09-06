@@ -69,6 +69,25 @@ def edit_versions(version: str):
     path.write_text('\n'.join(lines))
 
 
+def finalize_neofetch():
+    """
+    Finalize current version
+    """
+    # 1. Update distro list
+    path = Path('neofetch')
+    content = path.read_text()
+    content = re.compile(r'(?<=# Flag:    --ascii_distro\n#\n).*?(?=ascii_distro=)', re.DOTALL)\
+        .sub(generate_help(100, '# ') + '\n', content)
+    content = re.compile(r"""(?<=Which Distro's ascii art to print\n\n).*?{distro}_small to use them\.""", re.DOTALL)\
+        .sub(generate_help(100, ' ' * 32), content)
+    path.write_text(content)
+
+    # 2. Regenerate man page
+    Path('neofetch.1').write_text(subprocess.check_output(['help2man', './neofetch']).decode())
+
+    # 3. Reformat readme links
+    reformat_readme()
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='HyFetch Release Utility')
     parser.add_argument('version', help='Version to release')
@@ -77,4 +96,5 @@ if __name__ == '__main__':
 
     pre_check()
     edit_versions(args.version)
+    finalize_neofetch()
 

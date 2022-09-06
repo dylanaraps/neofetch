@@ -10,7 +10,7 @@ from pathlib import Path
 RE_SHORTHAND = re.compile(r"""[a-z0-9]+?/[a-z0-9]+?#[0-9]+""")
 
 
-if __name__ == '__main__':
+def reformat_readme():
     readme = Path('README.md').read_text()
 
     for shorthand in RE_SHORTHAND.findall(readme):
@@ -19,3 +19,7 @@ if __name__ == '__main__':
         readme = readme.replace(shorthand, f'[{user}#{pull}](https://github.com/{user}/{repo}/pull/{pull})')
 
     Path('README.md').write_text(readme)
+
+
+if __name__ == '__main__':
+    reformat_readme()
