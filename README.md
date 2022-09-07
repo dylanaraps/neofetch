@@ -72,7 +72,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * 🌈 Add experimental Windows support (very unstable at the moment)
 * 🖼️ Distro - Add ravynOS ([dylanaraps#2182](https://github.com/dylanaraps/neofetch/pull/2182))
 * 🖼️ Distro - Add ChonkySealOS ([dylanaraps#2180](https://github.com/dylanaraps/neofetch/pull/2180))
-* 🖼️ Distro - Add GhostBSD ([dylanaraps#2180](https://github.com/dylanaraps/neofetch/pull/2180))
+* 🖼️ Distro - Add GhostBSD ([TheSudoer#18](https://github.com/hykilpikonna/hyfetch/pull/18))
 * 🖼️ Distro - Add NekOS ([dylanaraps#2186](https://github.com/dylanaraps/neofetch/pull/2186))
 * 🖼️ Distro - Add astOS ([dylanaraps#2185](https://github.com/dylanaraps/neofetch/pull/2185))
 * 🖼️ Distro - Fix ChromeOS identification ([dylanaraps#1949](https://github.com/dylanaraps/neofetch/pull/1949))
