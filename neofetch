@@ -2206,9 +2206,18 @@ get_cpu() {
                     [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
                 ;;
 
+                "arm"* | "aarch64")
+                    if [[ $(trim "$distro") == Android* ]]; then
+                    # Android roms have modified cpuinfo that shows CPU model as a string
+                        cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
+                    else
+                        cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
+                    fi
+                ;;
+
                 *)
                     cpu="$(awk -F '\\s*: | @' \
-                            '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
+                            '/model name|Model|uarch|Hardware|Processor|^cpu model|chip type|^cpu type/ {
                             cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
                 ;;
             esac
@@ -2449,7 +2458,7 @@ get_cpu() {
     cpu="${cpu//, * Compute Cores}"
     cpu="${cpu//Core / }"
     cpu="${cpu//(\"AuthenticAMD\"*)}"
-    cpu="${cpu//with Radeon * Graphics}"
+    cpu="${cpu//with Radeon*Graphics}"
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
     cpu="${cpu//Chip Revision*}"
