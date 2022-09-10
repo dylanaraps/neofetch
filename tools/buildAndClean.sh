@@ -10,9 +10,3 @@ rm -rf ../build/*
 # Build
 cd ..
 python setup.py sdist bdist_wheel
-
-# Check built files
-twine check dist/*
-
-# Upload
-twine upload dist/*

@@ -12,6 +12,7 @@ This repo also serves as an updated version of the original `neofetch` since the
 * Method 2: `npx neowofetch`
 * Method 3: `bash <(curl -sL neowofetch.hydev.org)`
 
+
 ## Installation
 
 ### Method 1: Install using Python pip (Recommended)
@@ -26,15 +27,29 @@ pip install hyfetch
 
 Currently, these distributions have existing packages for HyFetch:
 
-* ArchLinux: `yay -S hyfetch` (Thanks to @ Aleksana)
-* Nix: `nix-env -i hyfetch` (Thanks to @ YisuiDenghua)
-* Guix: `guix install hyfetch` (Thanks to @ WammKD)
+* ArchLinux: `yay -S hyfetch` (Thanks to [@Aleksana](https://github.com/Aleksanaa))
+* Nix: `nix-env -i hyfetch` (Thanks to [@YisuiDenghua](https://github.com/YisuiDenghua))
+* Guix: `guix install hyfetch` (Thanks to [@WammKD](https://github.com/WammKD))
+
+### Method 3: Install the latest developmental version using git
+
+Install Python >= 3.7 first. Then run the following commands:
+
+```sh
+git clone https://github.com/hykilpikonna/hyfetch.git
+cd hyfetch
+pip install .
+```
+
 
 ## Usage
 
 When you run `hyfetch` for the first time, it will prompt you to choose a color system and a preset. Just follow the prompt, and everything should work (hopefully). If something doesn't work, feel free to submit an issue!
 
 If you want to use the updated `neofetch` without LGBTQ flags, check out [this section](https://github.com/hykilpikonna/hyfetch#running-updated-original-neofetch)
+
+
+## Questions and answers
 
 #### Q: How do I change my config?
 
@@ -47,6 +62,18 @@ A: You can try setting the colors' "lightness" in the configuration menu. The va
 Feel free to experiment with it!
 
 ![image](https://user-images.githubusercontent.com/22280294/162614553-eb758e4e-1936-472c-8ca7-b601c696c6eb.png)
+
+
+## Contributing
+
+To make changes to our codebase, you first need to create a fork by clicking the "Fork" button on the top right. Then, you can clone your fork of the source code using `git clone https://github.com/{your username}/hyfetch.git`.
+
+After making changes to the source code, you can run `python -m hyfetch` in the root directory of your repo to test out your changes.
+
+If they work correctly, you can commit and push these changes using git command or Github Desktop. Then, you can create a pull request on Github so that it can go into our next release!
+
+You can also install your version locally by running `pip install .` in the repo root.
+
 
 ## Change Log
 
