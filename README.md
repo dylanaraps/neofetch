@@ -32,6 +32,13 @@ Currently, these distributions have existing packages for HyFetch:
 
 ### Method 3: Install using git and python
 
+Run the following commands:
+```sh
+git clone https://github.com/hykilpikonna/hyfetch.git
+cd hyfetch
+sudo python setup.py install
+```
+
 ## Usage
 
 When you run `hyfetch` for the first time, it will prompt you to choose a color system and a preset. Just follow the prompt, and everything should work (hopefully). If something doesn't work, feel free to submit an issue!
@@ -40,28 +47,22 @@ If you want to use the updated `neofetch` without LGBTQ flags, check out [this s
 
 ## Contributing
 
-### Build Dependencies:
-
-Ubuntu/Pop!_OS:
-  python-is-python3 
-  twine
-
 ### Building Hyfetch
 
 clone the git repository using:
-  `git clone https://github.com/hykilpikonna/hyfetch.git`
+`git clone https://github.com/hykilpikonna/hyfetch.git`
 
 cd into the repository's directory
 
 cd into the "tools" directory
 
 run the following command:
-  `./buildAndClean.sh`
+`./buildAndClean.sh`
 
 ### Running the build
 
 go into the root of the hyfetch directory and run the following command:
-  `python runner.py`
+`python runner.py`
 
 #### Q: How do I change my config?
 
