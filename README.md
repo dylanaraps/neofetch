@@ -64,6 +64,8 @@ run the following command:
 go into the root of the hyfetch directory and run the following command:
 `python runner.py`
 
+## Questions and answers
+
 #### Q: How do I change my config?
 
 A: Use `hyfetch -c`
