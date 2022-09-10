@@ -9077,6 +9077,22 @@ Q@@@@@ggg@@f@   @@@@@@L
 EOF
         ;;
 
+        "OmniOS"*)
+            set_colors 15 3 8
+            read -rd '' ascii_data <<'EOF'
+${c1}
+    ____   __  __  _   _  _
+   / __ \ |  \/  || \ | || |
+  | |  | ||      ||  \| || |
+  | |__| || |\/| || , `${c2}_${c1}||${c2}_${c1}|  ${c2}____${c1}
+   \____/ |_|  |_||_|\${c2}/ __ \ / ___|
+                     | |  | ||(__
+         ${c3}community${c2}   | |__| | ___)|
+              ${c3}edition${c2} \____/ |____/
+
+EOF
+        ;;
+
         "openbsd_small")
             set_colors 3 7 6 1 8
             read -rd '' ascii_data <<'EOF'
