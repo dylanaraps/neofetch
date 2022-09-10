@@ -1807,6 +1807,7 @@ get_packages() {
             has pacstall   && tot pacstall -L
             has bulge      && tot bulge list
             has pm         && tot pm list packages
+	        has squirrel   && tot cat /var/squirrel/repos/local/INDEX
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
