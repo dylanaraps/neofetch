@@ -2496,31 +2496,20 @@ get_cpu() {
                     [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
                 ;;
 
-                "loongarch64")
-                    cpu="$(awk -F':' '/Model/ {print $2; exit}' "$cpu_file")"
-                ;;
-
                 "arm"* | "aarch64")
-                    if [[ $(trim "$ascii_distro") == Android* ]]; then
-                      # Android roms have modified cpuinfo that shows CPU model as a string
-                      cpu="$(awk -F '\\s*: | @' \
-                             '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
-                             cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
+                    if [[ $(trim "$distro") == Android* ]]; then
+                        # Android roms have modified cpuinfo that shows CPU model as a string
+                        cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
                     else
-                      # ARM linux displays binary model code in cpuinfo, which needs to be decoded with lscpu
-                      cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}') $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
+                        # ARM linux displays binary model code in cpuinfo, which needs to be decoded with lscpu
+                        cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
                     fi
-                ;;
-
-                "riscv"*)
-                    # This will fail to detect cpu on qemu
-                    cpu="$(awk -F': ' '/uarch/ {print $2; exit}' "$cpu_file")"
                 ;;
             esac
 
             # If cpu is not detected on a platform-specific bases, fallback to cpuinfo method
             [[ -z "$cpu" ]] && cpu="$(awk -F '\\s*: | @' \
-                    '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
+                    '/model name|Model|uarch|Hardware|Processor|^cpu model|chip type|^cpu type/ {
                     cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
