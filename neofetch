@@ -939,7 +939,10 @@ get_os() {
     # just the output of "uname -s".
     case $kernel_name in
         Darwin)   os=$darwin_name ;;
-        SunOS)    os=Solaris ;;
+        SunOS)    case $(uname -o 2>/dev/null) in
+                      illumos)  os=illumos ;;
+                      *)        os=Solaris ;;
+                  esac ;;
         Haiku)    os=Haiku ;;
         MINIX)    os=MINIX ;;
         AIX)      os=AIX ;;
@@ -1187,7 +1190,7 @@ get_distro() {
             distro=${distro/Microsoft }
         ;;
 
-        Solaris)
+        Solaris|illumos)
             case $distro_shorthand in
                 on|tiny) distro=$(awk 'NR==1 {print $1,$3}' /etc/release) ;;
                 *)       distro=$(awk 'NR==1 {print $1,$2,$3}' /etc/release) ;;
@@ -1218,7 +1221,7 @@ get_distro() {
 
     # Get OS architecture.
     case $os in
-        Solaris|AIX|Haiku|IRIX|FreeMiNT)
+        Solaris|illumos|AIX|Haiku|IRIX|FreeMiNT)
             machine_arch=$(uname -p)
         ;;
 
@@ -1344,7 +1347,7 @@ get_model() {
             model=${model/Model}
         ;;
 
-        Solaris)
+        Solaris|illumos)
             model=$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')
         ;;
 
@@ -1445,7 +1448,7 @@ get_uptime() {
             s=$((now - boot))
         ;;
 
-        Solaris)
+        Solaris|illumos)
             boot=$(kstat -p unix:0:system_misc:boot_time | awk '{print $2}')
             now=$(date +%s)
 
@@ -1546,7 +1549,7 @@ get_packages() {
     }
 
     case $os in
-        Linux|BSD|"iPhone OS"|Solaris)
+        Linux|BSD|"iPhone OS"|Solaris|illumos)
             # Package Manager Programs.
             has kiss       && tot kiss l
             has cpt-list   && tot cpt-list
@@ -2367,7 +2370,7 @@ get_cpu() {
             esac
         ;;
 
-        "Solaris")
+        "Solaris" | "illumos")
             # Get CPU name.
             cpu="$(psrinfo -pv)"
             cpu="${cpu//*$'\n'}"
@@ -2756,10 +2759,10 @@ get_memory() {
             esac
         ;;
 
-        "Solaris" | "AIX")
+        "Solaris" | "illumos" | "AIX")
             hw_pagesize="$(pagesize)"
             case $os in
-                "Solaris")
+                "Solaris" | "illumos")
                     pages_total="$(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}')"
                     pages_free="$(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}')"
                 ;;
@@ -3851,7 +3854,7 @@ get_battery() {
 
 get_local_ip() {
     case $os in
-        "Linux" | "BSD" | "Solaris" | "AIX" | "IRIX")
+        "Linux" | "BSD" | "Solaris" | "illumos" | "AIX" | "IRIX")
             if [[ "${local_ip_interface[0]}" == "auto" ]]; then
                 local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
                 local_ip="${local_ip/uid*}"
