@@ -1639,6 +1639,10 @@ get_packages() {
                     ((packages == 0)) &&
                         has pkg && tot pkg list
                 ;;
+
+                illumos-*)
+                    has pkg && tot pkg list
+                ;;
             esac
 
             # List these last as they accompany regular package managers.
