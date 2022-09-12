@@ -1385,8 +1385,13 @@ get_model() {
 get_title() {
     user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
 
-    case $title_fqdn in
-        on) hostname=$(hostname -f) ;;
+    case $os-$title_fqdn in
+        illumos-on|Solaris-on)
+            hostname=$(hostname)
+            domainname=$(domainname)
+            [[ -n "$domainname" ]] && hostname+=".$domainname"
+            ;;
+        *-on) hostname=$(hostname -f) ;;
         *)  hostname=${HOSTNAME:-$(hostname)} ;;
     esac
 
