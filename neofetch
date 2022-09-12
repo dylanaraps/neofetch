@@ -1446,8 +1446,10 @@ get_uptime() {
         ;;
 
         Solaris)
-            s=$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')
-            s=${s/.*}
+            boot=$(kstat -p unix:0:system_misc:boot_time | awk '{print $2}')
+            now=$(date +%s)
+
+            s=$((now - boot))
         ;;
 
         AIX|IRIX)
