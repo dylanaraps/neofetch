@@ -7058,7 +7058,7 @@ EOF
         ;;
 
         "Droidian"*)
-            set_colors 2 7
+            set_colors 2 10
             read -rd '' ascii_data <<'EOF'
 ${c2}       _,met$$$$$gg.
    ,g$$$$$$$$$$$$$$$$P.
