@@ -787,7 +787,7 @@ image_source="auto"
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
-#       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
+#       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Droidian, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
@@ -5147,7 +5147,7 @@ ASCII:
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
-                                DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
+                                DracOS, DarkOs, Itc, DragonFly, Drauger, Droidian, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
@@ -7054,6 +7054,27 @@ ${c2}  `Y$$
        `Y$$b.
           `"Y$b._
               `"""
+EOF
+        ;;
+
+        "Droidian"*)
+            set_colors 2 7
+            read -rd '' ascii_data <<'EOF'
+${c2}       _,met$$$$$gg.
+   ,g$$$$$$$$$$$$$$$$P.
+ ,$$P'              `$$$.
+',$$P       ,ggs.     `$$b:
+`d$$'     ,$P"'   ${c1}.${c2}    $$$
+ $$P      d$'     ${c1},${c2}    $$P
+ $$:      $$.   ${c1}-${c2}    ,d$$'
+ $$;      Y$b._   _,d$P'
+ Y$$.    ${c1}`.${c2}`"Y$$$$P"'
+${c2} `$$b      ${c1}"-.__
+${c2}  `Y$$
+  `Y$$.
+     `$$b.
+       `Y$$b.
+          `"Y$b._
 EOF
         ;;
 
