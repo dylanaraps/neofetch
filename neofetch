@@ -2502,7 +2502,52 @@ get_cpu() {
                         cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
                     else
                         # ARM linux displays binary model code in cpuinfo, which needs to be decoded with lscpu
-                        cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
+                        if ! [[ -x "$(command -v python)" ]]; then
+                            cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
+                        else
+                            # Sometimes there are multiple CPU models (e.g. RK3399 has 4 A53 and 2 A72 cores)
+                            # However, I don't know how to implement this in awk, so I'll use python for now
+                            read -r -d '' py_script << END
+from subprocess import check_output
+
+
+def find(lines, label):
+    for ln in lines:
+        if ln.strip().startswith(label):
+            return ln.split(label)[-1].strip()
+
+    return None
+
+
+if __name__ == '__main__':
+    lscpu = check_output('lscpu').decode()
+
+    vendor_id = find(lscpu.split('\n'), 'Vendor ID:') or None
+
+    cpus = []
+
+    for model_desc in lscpu.split('Model name:'):
+        lines = model_desc.split('\n')
+        model = lines[0].strip()
+        cores = int(find(lines, 'Core(s) per socket:') or "-1")
+        cores *= int(find(lines, 'Socket(s):') or "1")
+        if cores == -1:
+            continue
+
+        mhz = float(find(lines, 'CPU max MHz:') or find(lines, 'CPU min MHz:') or "0")
+        speed = f'@ {mhz / 1000:.2f} GHz' if mhz > 0 else ''
+
+        cpus.append(f'{vendor_id} {model} ({cores}) {speed}')
+
+    print('\n'.join(cpus))
+END
+                            tmp_cpus=$(python -c "$py_script")
+                            while IFS= read -r line; do
+                                prin "${subtitle:+${subtitle}}" "$line"
+                            done <<< "$tmp_cpus"
+
+                            return
+                        fi
                     fi
                 ;;
             esac
