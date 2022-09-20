@@ -186,7 +186,7 @@ memory_percent="off"
 # kib  '1020928KiB / 7117824KiB'
 # mib  '1042MiB / 6951MiB'
 # gib: ' 0.98GiB / 6.79GiB'
-memory_unit="mib"
+memory_unit="gib"
 
 
 # Packages
@@ -3165,8 +3165,8 @@ get_memory() {
 
     case $memory_unit in
         gib)
-            mem_used=$(awk '{printf "%.2f", $1 / $2}' <<< "$mem_used 1024")
-            mem_total=$(awk '{printf "%.2f", $1 / $2}' <<< "$mem_total 1024")
+            mem_used=$(awk '{printf "%.1f", $1 / $2}' <<< "$mem_used 1024")
+            mem_total=$(awk '{printf "%.1f", $1 / $2}' <<< "$mem_total 1024")
             mem_label=GiB
         ;;
 
@@ -3177,7 +3177,7 @@ get_memory() {
         ;;
     esac
 
-    memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
+    memory="${mem_used} ${mem_label:-MiB} / ${mem_total} ${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
 
     # Bars.
     case $memory_display in
