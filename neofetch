@@ -3223,9 +3223,7 @@ get_network() {
             fi
         fi
     done < <(sort -rn <<<"$networks" | uniq -c)
-    if [ -z "$network" ]; then
-        network="None"
-    else
+    if [ -n "$network" ]; then
         network="${network%; }"
     fi
 }
