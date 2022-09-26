@@ -89,6 +89,10 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 <!-- CHANGELOG STARTS HERE --->
 
+### Unpublished 1.4.2
+
+* 🖼️ Song - Add support for TIDAL HiFi (#22)
+
 ### 1.4.1
 
 * 🌈 Paginate flags (#14)
