@@ -3316,6 +3316,7 @@ get_song() {
         "strawberry"
         "tauonmb"
         "tomahawk"
+        "tidal-hifi"
         "vlc"
         "xmms2d"
         "xnoise"
@@ -3368,6 +3369,7 @@ get_song() {
         "gogglesmm"*)     get_song_dbus "gogglesmm" ;;
         "xnoise"*)        get_song_dbus "xnoise" ;;
         "tauonmb"*)       get_song_dbus "tauon" ;;
+        "tidal-hifi"*)    get_song_dbus "tidal-hifi" ;;
         "olivia"*)        get_song_dbus "olivia" ;;
         "exaile"*)        get_song_dbus "exaile" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
