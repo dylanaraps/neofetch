@@ -91,7 +91,11 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 ### Unpublished 1.4.2
 
+* 🌈 Detailed runnning/contributing instructions in README.md (#21)
+* 🖼️ Distro - Add Stock Linux (#23)
 * 🖼️ Song - Add support for TIDAL HiFi (#22)
+* 🖼️ CPU - Detect multiple CPU models for ARM
+* 🖼️ Memory - Display RAM capacity in GiB by default
 
 ### 1.4.1
 
