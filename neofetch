@@ -28,7 +28,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-version=7.1.0
+version=7.1.1
 
 # Fallback to a value of '5' for shells which support bash
 # but do not set the 'BASH_' shell variables (osh).
@@ -999,6 +999,13 @@ get_distro() {
                     *) distro="OS Elbrus $(< /etc/mcst_version)"
                 esac
 
+            elif [[ -f /etc/NIXOS ]]; then
+                case $distro_shorthand in
+                    on) distro="NixOS $(nixos-version | awk '{print substr($1,0,5),$2}')" ;;
+                    tiny) distro="NixOS" ;;
+                    *) distro="NixOS $(nixos-version)" ;;
+                esac
+
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
                     on|tiny) distro="Proxmox VE" ;;
@@ -1155,6 +1162,7 @@ get_distro() {
                 10.16*) codename="macOS Big Sur" ;;
                 11.*)  codename="macOS Big Sur" ;;
                 12.*)  codename="macOS Monterey" ;;
+                13.*)  codename="macOS Ventura" ;;
                 *)      codename=macOS ;;
             esac
 
@@ -1260,7 +1268,14 @@ get_model() {
             if [[ $(kextstat | grep -F -e "FakeSMC" -e "VirtualSMC") != "" ]]; then
                 model="Hackintosh (SMBIOS: $(sysctl -n hw.model))"
             else
-                model=$(sysctl -n hw.model)
+                if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
+                    model="$(system_profiler SPHardwareDataType | grep Machine\ Name\:)"
+                    model=${model/Machine\ Name\:/}
+
+                    model="$model ($(sysctl -n hw.model))"
+                else
+                    model=$(sysctl -n hw.model)  
+                fi
             fi
         ;;
 
@@ -1777,7 +1792,7 @@ get_de() {
 
         Windows)
             case $distro in
-                *"Windows 10"*)
+                *"Windows 10"*|*"Windows 11"*)
                     de=Fluent
                 ;;
 
@@ -2282,7 +2297,20 @@ get_cpu() {
         ;;
 
         "Mac OS X"|"macOS")
-            cpu="$(sysctl -n machdep.cpu.brand_string)"
+            if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
+                cpu="$(system_profiler SPHardwareDataType | grep CPU\ Type)"
+                cpu="${cpu/CPU\ Type\:/}"
+                
+                speed="$(system_profiler SPHardwareDataType | grep CPU\ Speed)"
+                speed="${speed/CPU\ Speed\:/}"
+		speed="${speed/ MHz/}"
+		speed="${speed/ GHz/}"
+
+                cores="$(system_profiler SPHardwareDataType | grep Number\ Of\ CPUs)"
+                cores="${cores/Number\ Of\ CPUs\:/}"
+            else
+                cpu="$(sysctl -n machdep.cpu.brand_string)"
+            fi
 
             # Get CPU cores.
             case $cpu_cores in
@@ -2685,32 +2713,38 @@ get_memory() {
                     "MemFree" | "Buffers" | "Cached" | "SReclaimable")
                         mem_used="$((mem_used-=${b/kB}))"
                     ;;
-
-                    # Available since Linux 3.14rc (34e431b0ae398fc54ea69ff85ec700722c9da773).
-                    # If detected this will be used over the above calculation for mem_used.
-                    "MemAvailable")
-                        mem_avail=${b/kB}
-                    ;;
                 esac
             done < /proc/meminfo
 
-            if [[ $mem_avail ]]; then
-                mem_used=$(((mem_total - mem_avail) / 1024))
-            else
-                mem_used="$((mem_used / 1024))"
-            fi
-
+            mem_used="$((mem_used / 1024))"
             mem_total="$((mem_total / 1024))"
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
-            hw_pagesize="$(sysctl -n hw.pagesize)"
-            mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
-            pages_app="$(($(sysctl -n vm.page_pageable_internal_count) - $(sysctl -n vm.page_purgeable_count)))"
-            pages_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
-            pages_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
-            pages_compressed="${pages_compressed:-0}"
-            mem_used="$(((${pages_app} + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
+            if [[ $osx_version =~ "10.4" || $osx_version =~ "10.5" ]]; then
+                mem_total="$(system_profiler SPHardwareDataType | grep Memory:)"
+                mem_total="${mem_total/Memory\: /}"
+                mem_total="${mem_total/ MB/}"
+
+                mem_used="$(vm_stat | grep Pages\ active\:)"
+                mem_used="${mem_used/Pages active\: /}"
+                mem_used="${mem_used/\./}"
+
+		pages_inactive=$(vm_stat | grep "Pages inactive")
+		pages_inactive=${pages_inactive/Pages inactive\: /}
+		pages_inactive=${pages_inactive/\./}
+
+		mem_used=$((mem_used + pages_inactive))
+                mem_used=$((mem_used * 4096 / 1048576))
+            else
+                hw_pagesize="$(sysctl -n hw.pagesize)"
+                mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
+                pages_app="$(($(sysctl -n vm.page_pageable_internal_count) - $(sysctl -n vm.page_purgeable_count)))"
+                pages_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
+                pages_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
+                pages_compressed="${pages_compressed:-0}"
+                mem_used="$(((${pages_app} + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
+            fi
         ;;
 
         "BSD" | "MINIX")
@@ -3307,6 +3341,10 @@ get_term() {
     [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && term="TosWin2"
     [[ "$SSH_CONNECTION" ]] && term="$SSH_TTY"
     [[ "$WT_SESSION" ]]     && term="Windows Terminal"
+    
+    #I think i need Termux ()
+    #My Edge crashed 3 times when i want to commit
+    [[ "$TERMUX_VERSION" ]] && term="Termux $TERMUX_VERSION"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -3593,6 +3631,10 @@ END
                                       } END {print a}' "/etc/xdg/termite/config" \
                          "$termite_config")"
         ;;
+
+        "Termux $TERMUX_VERSION")
+            term_font=$(fc-scan /data/data/com.termux/files/home/.termux/font.ttf|grep fullname:|cut -d '"' -f2)
+            ;;
 
         urxvt|urxvtd|rxvt-unicode|xterm)
             xrdb=$(xrdb -query)
@@ -5223,6 +5265,7 @@ OTHER:
     --stdout                    Turn off all colors and disables any ASCII/image backend.
     --help                      Print this text and exit
     --version                   Show neofetch version
+    --update                    Update to latest version
     -v                          Display error messages.
     -vv                         Display a verbose log for error reporting.
 
@@ -5495,6 +5538,13 @@ get_args() {
                 # Known implicit unused variables.
                 mpc_args=()
                 printf '%s\n' "$kernel $icons $font $battery $locale ${mpc_args[*]}"
+            ;;
+
+            "--update")
+                printf 'Updating...\n'
+                curl -s -o "$0" https://raw.githubusercontent.com/OldWorldOrdr/neofetch/master/neofetch
+                printf 'Done.\n'
+                exit
             ;;
         esac
 
