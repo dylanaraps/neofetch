@@ -186,7 +186,7 @@ memory_percent="off"
 # kib  '1020928KiB / 7117824KiB'
 # mib  '1042MiB / 6951MiB'
 # gib: ' 0.98GiB / 6.79GiB'
-memory_unit="mib"
+memory_unit="gib"
 
 
 # Packages
@@ -2502,7 +2502,52 @@ get_cpu() {
                         cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
                     else
                         # ARM linux displays binary model code in cpuinfo, which needs to be decoded with lscpu
-                        cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
+                        if ! [[ -x "$(command -v python)" ]]; then
+                            cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
+                        else
+                            # Sometimes there are multiple CPU models (e.g. RK3399 has 4 A53 and 2 A72 cores)
+                            # However, I don't know how to implement this in awk, so I'll use python for now
+                            read -r -d '' py_script << END
+from subprocess import check_output
+
+
+def find(lines, label):
+    for ln in lines:
+        if ln.strip().startswith(label):
+            return ln.split(label)[-1].strip()
+
+    return None
+
+
+if __name__ == '__main__':
+    lscpu = check_output('lscpu').decode()
+
+    vendor_id = find(lscpu.split('\n'), 'Vendor ID:') or None
+
+    cpus = []
+
+    for model_desc in lscpu.split('Model name:'):
+        lines = model_desc.split('\n')
+        model = lines[0].strip()
+        cores = int(find(lines, 'Core(s) per socket:') or "-1")
+        cores *= int(find(lines, 'Socket(s):') or "1")
+        if cores == -1:
+            continue
+
+        mhz = float(find(lines, 'CPU max MHz:') or find(lines, 'CPU min MHz:') or "0")
+        speed = f'@ {mhz / 1000:.2f} GHz' if mhz > 0 else ''
+
+        cpus.append(f'{vendor_id} {model} ({cores}) {speed}')
+
+    print('\n'.join(cpus))
+END
+                            tmp_cpus=$(python -c "$py_script")
+                            while IFS= read -r line; do
+                                prin "${subtitle:+${subtitle}}" "$line"
+                            done <<< "$tmp_cpus"
+
+                            return
+                        fi
                     fi
                 ;;
             esac
@@ -3165,8 +3210,8 @@ get_memory() {
 
     case $memory_unit in
         gib)
-            mem_used=$(awk '{printf "%.2f", $1 / $2}' <<< "$mem_used 1024")
-            mem_total=$(awk '{printf "%.2f", $1 / $2}' <<< "$mem_total 1024")
+            mem_used=$(awk '{printf "%.1f", $1 / $2}' <<< "$mem_used 1024")
+            mem_total=$(awk '{printf "%.1f", $1 / $2}' <<< "$mem_total 1024")
             mem_label=GiB
         ;;
 
@@ -3177,7 +3222,7 @@ get_memory() {
         ;;
     esac
 
-    memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
+    memory="${mem_used} ${mem_label:-MiB} / ${mem_total} ${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
 
     # Bars.
     case $memory_display in
@@ -3223,9 +3268,7 @@ get_network() {
             fi
         fi
     done < <(sort -rn <<<"$networks" | uniq -c)
-    if [ -z "$network" ]; then
-        network="None"
-    else
+    if [ -n "$network" ]; then
         network="${network%; }"
     fi
 }
@@ -3273,6 +3316,7 @@ get_song() {
         "strawberry"
         "tauonmb"
         "tomahawk"
+        "tidal-hifi"
         "vlc"
         "xmms2d"
         "xnoise"
@@ -3325,6 +3369,7 @@ get_song() {
         "gogglesmm"*)     get_song_dbus "gogglesmm" ;;
         "xnoise"*)        get_song_dbus "xnoise" ;;
         "tauonmb"*)       get_song_dbus "tauon" ;;
+        "tidal-hifi"*)    get_song_dbus "tidal-hifi" ;;
         "olivia"*)        get_song_dbus "olivia" ;;
         "exaile"*)        get_song_dbus "exaile" ;;
         "netease-cloud-music"*)        get_song_dbus "netease-cloud-music" ;;
@@ -6945,6 +6990,34 @@ ${c1}           ``--:::::::-.`
                ``````
 EOF
         ;;
+
+	"Stock Linux"*)
+	    set_colors 4 7
+            read -rd '' ascii_data << 'EOF'
+${c1}
+
+              #G5J5G#              
+          &BPYJJJJJJJYPB&          
+      &#G5JJJJJJY5YJJJJJJ5G#&      
+   #G5YJJJJJY5G#& &#G5YJJJJJY5G#   
+BPYJJJJJJJ5B&         &BPYJJJJJJYPB
+JJJJJJJJJJY5G#&           &BPYJJJJJ
+JJJJJJJJJJJJJJY5G#           &JJJJJ
+PYJJJJJJJJJJJJJJJJYPB&        GYJJJ
+  &BPYJJJJJJJJJJJJJJJJ5PB&      &BP
+      #G5YJJJJJJJJJJJJJJJY5G#      
+PB&      &BP5JJJJJJJJJJJJJJJJYPB&  
+JJJYG        &BPYJJJJJJJJJJJJJJJJYP
+JJJJJ&           #G5YJJJJJJJJJJJJJJ
+JJJJJYPB&           &#G5YJJJJJJJJJJ
+BPYJJJJJJYPB&         &B5JJJJJJJYPB
+   #G5YJJJJJY5G#& &#G5YJJJJJY5G#   
+      &#G5JJJJJJY5YJJJJJJ5G#&      
+          &BPYJJJJJJJYPB&          
+              #G5J5G#              
+
+EOF
+	;;
 
         "ArchMerge"*)
             set_colors 6 6 7 1
