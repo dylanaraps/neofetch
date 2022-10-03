@@ -1,0 +1,26 @@
+{
+  "name": "unifetch",
+  "version": "1.0.1",
+  "description": "Updated neofetch",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jin-asanami/unifetch.git"
+  },
+  "bin": {
+    "unifetch"
+  },
+  "keywords": [
+    "neofetch",
+    "screenfetch",
+    "univalent",
+  ],
+  "author": "dylanaraps",
+  "contributors": [
+    "Jin Asanami <is01.njb@gmail.com> (https://github.com/jin-asanami)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jin-asanami/unifetch/issues"
+  },
+  "homepage": "https://github.com/jin-asanami/unifetch#readme"
+}

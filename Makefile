@@ -2,7 +2,7 @@ PREFIX = /usr
 MANDIR = $(PREFIX)/share/man
 
 all:
-	@echo Run \'make install\' to install Neofetch.
+	@echo Run \'make install\' to install Unifetch.
 
 install:
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin
