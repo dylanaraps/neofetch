@@ -809,7 +809,7 @@ image_source="auto"
 # Endless, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
 # Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
 # GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, HydroOS, Hyperbola,
-# iglunix, instantOS, IRIX, Itc, januslinux, Kaisen, Kali, KaOS, KDE, Kibojoe, Kogaion, Korora,
+# iglunix, instantOS, IRIX, Itc, januslinux, Kaisen, Kali, Kamuriki, KaOS, KDE, Kibojoe, Kogaion, Korora,
 # KrassOS, KSLinux, Kubuntu, LangitKetujuh, LaxerOS, LEDE, LibreELEC, Linspire, Linux, Linux Lite,
 # Linux Mint, Linux Mint Old, Live Raizo, LMDE, Lubuntu, Lunar, mac, Mageia, MagpieOS, Mandriva,
 # Manjaro, MassOS, MatuusOS, Maui, Mer, Minix, MIRACLE LINUX, MX, Namib, Neptune, NetBSD, Netrunner,
@@ -5870,7 +5870,7 @@ ASCII:
                                 GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
                                 GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash,
                                 Huayra, HydroOS, Hyperbola, iglunix, instantOS, IRIX, Itc,
-                                januslinux, Kaisen, Kali, KaOS, KDE, Kibojoe, Kogaion, Korora,
+                                januslinux, Kaisen, Kali, Kamuriki, KaOS, KDE, Kibojoe, Kogaion, Korora,
                                 KrassOS, KSLinux, Kubuntu, LangitKetujuh, LaxerOS, LEDE, LibreELEC,
                                 Linspire, Linux, Linux Lite, Linux Mint, Linux Mint Old, Live Raizo,
                                 LMDE, Lubuntu, Lunar, mac, Mageia, MagpieOS, Mandriva, Manjaro,
@@ -9325,6 +9325,22 @@ ${c1}..............
                                              .
 EOF
         ;;
+
+         "Kamuriki"*)
+            set_colors 2 10
+            read -rd '' ascii_data <<'EOF'
+${c1}
+           ......
+          / ____ \
+   ____  / /SIM \ \
+  /AAAA\/ /.HNA A\ \_ _,.,
+ /AAAAA/ /..I D AA\__'___ \
+/AAAAA/ /AA.N E AAAAAAAAA\ \
+AAAAA/ /AAA A  AAAAAAAAAAA\ \__
+AAAA/ /AAAA N AAAAAAAAAAAAA\   \
+AAA/ /AAAAA O AAAAAAAAAAAAAA\   \NJB
+EOF
+       ;;
 
         "KaOS"*)
             set_colors 4 7 1
