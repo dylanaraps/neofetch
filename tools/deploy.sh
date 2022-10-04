@@ -4,11 +4,10 @@
 set -e
 
 # Remove old build
-rm -rf ../dist/*
-rm -rf ../build/*
+rm -rf dist/*
+rm -rf build/*
 
 # Build
-cd ..
 python setup.py sdist bdist_wheel
 
 # Check built files
