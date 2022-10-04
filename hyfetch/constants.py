@@ -7,7 +7,7 @@ from pathlib import Path
 from typing_extensions import Literal
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
-VERSION = '1.4.1'
+VERSION = '1.4.2'
 
 
 TEST_ASCII = r"""

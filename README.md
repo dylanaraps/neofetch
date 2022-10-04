@@ -89,14 +89,14 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 <!-- CHANGELOG STARTS HERE --->
 
-### Unpublished 1.4.2
+### 1.4.2
 
 * 🌈 Detailed runnning/contributing instructions in README.md (#21)
 * 🖼️ Distro - Add Stock Linux (#23)
-* 🖼️ Distro - Add DietPi (dylanaraps/neofetch#1706)
-* 🖼️ Distro - Add OmniOS illumos (dylanaraps/neofetch#2196)
-* 🖼️ Distro - Add Droidian (dylanaraps/neofetch#2201)
-* 🖼️ Distro - Add HamoniKR (dylanaraps/neofetch#2210)
+* 🖼️ Distro - Add DietPi ([dylanaraps#1706](https://github.com/dylanaraps/neofetch/pull/1706))
+* 🖼️ Distro - Add OmniOS illumos ([dylanaraps#2196](https://github.com/dylanaraps/neofetch/pull/2196))
+* 🖼️ Distro - Add Droidian ([dylanaraps#2201](https://github.com/dylanaraps/neofetch/pull/2201))
+* 🖼️ Distro - Add HamoniKR ([dylanaraps#2210](https://github.com/dylanaraps/neofetch/pull/2210))
 * 🖼️ Song - Add support for TIDAL HiFi (#22)
 * 🖼️ CPU - Detect multiple CPU models for ARM
 * 🖼️ Misc - Better defaults: Show RAM in GiB, RAM percentage, CPU speed rounding, refresh rate
