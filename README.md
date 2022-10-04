@@ -93,9 +93,14 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 * 🌈 Detailed runnning/contributing instructions in README.md (#21)
 * 🖼️ Distro - Add Stock Linux (#23)
+* 🖼️ Distro - Add DietPi (dylanaraps/neofetch#1706)
+* 🖼️ Distro - Add OmniOS illumos (dylanaraps/neofetch#2196)
+* 🖼️ Distro - Add Droidian (dylanaraps/neofetch#2201)
+* 🖼️ Distro - Add HamoniKR (dylanaraps/neofetch#2210)
 * 🖼️ Song - Add support for TIDAL HiFi (#22)
 * 🖼️ CPU - Detect multiple CPU models for ARM
-* 🖼️ Memory - Display RAM capacity in GiB by default
+* 🖼️ Misc - Better defaults: Show RAM in GiB, RAM percentage, CPU speed rounding, refresh rate
+* 🖼️ Bug Fix - Fix bash 5.2 column cut off issue (#24)
 
 ### 1.4.1
 

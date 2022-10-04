@@ -1,6 +1,8 @@
 # Pull request that I don't plan on merging, or already merged pull request that the script didn't
 # detect.
 IgnoreList:
+  # [2193] Added DietPi os ASCII art
+  2193: duplicate
   # [2154] Added Support for Uwuntu
   2154: merged
   # [2156] Update neofetch (for macOS 13)
