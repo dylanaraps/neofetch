@@ -805,7 +805,7 @@ image_source="auto"
 # Calculate, CalinixOS, Carbs, CBL-Mariner, CelOS, Center, CentOS, Chakra, ChaletOS, Chapeau,
 # ChonkySealOS, Chrom, Cleanjaro, Clear Linux OS, ClearOS, Clover, Condres, Container Linux by
 # CoreOS, CRUX, Crystal Linux, Cucumber, CutefishOS, CyberOS, dahlia, DarkOs, Darwin, Debian,
-# Deepin, DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary, Elive, EncryptOS, EndeavourOS,
+# Deepin, DesaOS, Devuan, DracOS, DragonFly, Drauger, Droidian, Elementary, Elive, EncryptOS, EndeavourOS,
 # Endless, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
 # Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
 # GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, HydroOS, Hyperbola,
@@ -5864,7 +5864,7 @@ ASCII:
                                 ChonkySealOS, Chrom, Cleanjaro, Clear Linux OS, ClearOS, Clover,
                                 Condres, Container Linux by CoreOS, CRUX, Crystal Linux, Cucumber,
                                 CutefishOS, CyberOS, dahlia, DarkOs, Darwin, Debian, Deepin, DesaOS,
-                                Devuan, DracOS, DragonFly, Drauger, Elementary, Elive, EncryptOS,
+                                Devuan, DracOS, DragonFly, Drauger, Droidian, Elementary, Elive, EncryptOS,
                                 EndeavourOS, Endless, EuroLinux, Exherbo, Exodia Predator OS,
                                 Fedora, Feren, Finnix, FreeBSD, FreeMiNT, Frugalware, Funtoo,
                                 GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
@@ -8403,6 +8403,27 @@ ${c1}                  -``-
  `/++-                            -++/`
 .:-.`..............................`.-:.
 `.-/++++++++++++++++++++++++++++++++/-.`
+EOF
+        ;;
+
+        "Droidian"*)
+            set_colors 2 10
+            read -rd '' ascii_data <<'EOF'
+${c2}       _,met$$$$$gg.
+   ,g$$$$$$$$$$$$$$$$P.
+ ,$$P'              `$$$.
+',$$P       ,ggs.     `$$b:
+`d$$'     ,$P"'   ${c1}.${c2}    $$$
+ $$P      d$'     ${c1},${c2}    $$P
+ $$:      $$.   ${c1}-${c2}    ,d$$'
+ $$;      Y$b._   _,d$P'
+ Y$$.    ${c1}`.${c2}`"Y$$$$P"'
+${c2} `$$b      ${c1}"-.__
+${c2}  `Y$$
+  `Y$$.
+     `$$b.
+       `Y$$b.
+          `"Y$b._
 EOF
         ;;
 
