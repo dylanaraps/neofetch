@@ -805,8 +805,8 @@ image_source="auto"
 # Calculate, CalinixOS, Carbs, CBL-Mariner, CelOS, Center, CentOS, Chakra, ChaletOS, Chapeau,
 # ChonkySealOS, Chrom, Cleanjaro, Clear Linux OS, ClearOS, Clover, Condres, Container Linux by
 # CoreOS, CRUX, Crystal Linux, Cucumber, CutefishOS, CyberOS, dahlia, DarkOs, Darwin, Debian,
-# Deepin, DesaOS, Devuan, DracOS, DragonFly, Drauger, Droidian, Elementary, Elive, EncryptOS, EndeavourOS,
-# Endless, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
+# Deepin, DesaOS, Devuan, Dietpi, DracOS, DragonFly, Drauger, Droidian, Elementary, Elive, EncryptOS,
+# EndeavourOS, Endless, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
 # Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
 # GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, HydroOS, Hyperbola,
 # iglunix, instantOS, IRIX, Itc, januslinux, Kaisen, Kali, Kamuriki, KaOS, KDE, Kibojoe, Kogaion, Korora,
@@ -8260,6 +8260,35 @@ ${c1}   ..,,;;;::;,..
 :$$$$$$$$$$$$b:'`
  `$$$$$bd:''`
    `'''`
+EOF
+        ;;
+
+	"DietPi"*)
+            set_colors 10 8 2 2 10 8
+            read -rd '' ascii_data <<'EOF'
+  'cdxkOxkkkxc'   :dkkxkkkxdc,
+  kO;.......'lO;,Ol;.......,dO
+  xk...',;....'00:....,;,...ok
+  ,K;....':l:..0N'.;lc'....'0;
+   :0:......:OKWWX0l......;Ol
+    ,xk:,..,oNWWWWWk;..';xx;
+     'dNNKXNWWWWWWWWWXKXNx'
+    ;KWWWWWWWWWWWWWWWWWWWWXc
+   'XWWWWWWWWWWWWWWWWWWWWWWN,
+   lWNNNNNNNNNNNNNNNNNNNNNNWl
+  lKNNNNNNNNNXXXXXXNNNNNNNNNXo
+ dNNNXXNNNNNNXXXXXXNNNNNNXXNNNk
+,NNNX:';lx0XXXXKKXXXX0dc,'cXNNN
+,NNNXo.....,cx0KK0dc,....'dXNNN
+ dNNNXkc:;'',oKXX0l,'';:cOXNNNk
+  dNNNXXXXKKXNKOOKNXKKXXXXNNNk
+  'KNNNNNNXNNXcollNNNXNNNNNNN,
+   oNNNNNNNXXXO000XXXNNNNNNNx
+    xNNNNNNNNNNNNNNNNNNNNNNO'
+      xXNNNNNNNNNNNNNNNNXk
+        ckXNNNNNNNNNNXOl'
+           :ONNNNNN0c
+             ;dOOd;
 EOF
         ;;
 
