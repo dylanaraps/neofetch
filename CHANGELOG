@@ -1,10 +1,11 @@
 1.0.2
-Added Droidian (dylanaraps#2201)
-Fixed Univalent's colour (not belong anywhere else)
+Add Droidian (dylanaraps#2201)
+Fix Univalent's colour (own update)
+Add NNLinux (own update)
 
 1.0.1
-Added HamoniKR (dylanaraps#2210)
-Added Kamuriki (not belong anywhere else)
+Add HamoniKR (dylanaraps#2210)
+Add Kamuriki (own update)
 
 1.0
 Added the Univalent logo and modified the Makefile.
