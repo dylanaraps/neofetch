@@ -532,4 +532,21 @@ PRESETS: dict[str, ColorProfile] = {
         "#F39FCE",
         "#EA7BB3",
     ]),
+    
+    'unlabeled1': ColorProfile([
+        '#EAF8E4',
+        '#FDFDFB',
+        '#E1EFF7',
+        '#F4E2C4'
+    ]),
+
+    'unlabeled2': ColorProfile([
+        '#250548',
+        '#FFFFFF',
+        '#F7DCDA',
+        '#EC9BEE',
+        '#9541FA',
+        '#7D2557'
+    ]),
+
 }
