@@ -198,11 +198,11 @@ memory_unit="mib"
 package_managers="on"
 
 # Show/Hide total package count
-# Default: 'true'
-# Values:  'true', 'false'
+# Default: 'on'
+# Values:  'on', 'off'
 # Flag:    --show_package_total
 #
-show_package_total=true
+show_package_total="on"
 
 
 # Shell
@@ -1514,7 +1514,7 @@ get_uptime() {
 }
 
 get_packages() {
-    if [[ $show_package_total == true ]]; then
+    if [[ $show_package_total == "on" ]]; then
       # to adjust the number of pkgs per pkg manager
       pkgs_h=0
 
@@ -5008,6 +5008,7 @@ INFO:
 
     --title_fqdn on/off         Hide/Show Fully Qualified Domain Name in title.
     --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
+    --show_package_total on/off Hide/Show Package Manager names . (on, tiny, off)
     --os_arch on/off            Hide/Show OS architecture.
     --speed_type type           Change the type of cpu speed to display.
                                 Possible values: current, min, max, bios,
