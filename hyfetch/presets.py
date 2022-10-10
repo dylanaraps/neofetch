@@ -287,6 +287,22 @@ PRESETS: dict[str, ColorProfile] = {
         '#810081'
     ]),
 
+    'unlabeled1': ColorProfile([
+        '#EAF8E4',
+        '#FDFDFB',
+        '#E1EFF7',
+        '#F4E2C4'
+    ]),
+
+    'unlabeled2': ColorProfile([
+        '#250548',
+        '#FFFFFF',
+        '#F7DCDA',
+        '#EC9BEE',
+        '#9541FA',
+        '#7D2557'
+    ]),
+
     # below sourced from https://www.flagcolorcodes.com/flags/pride
     # goto f"https://www.flagcolorcodes.com/{preset}" for info
     # todo: sane sorting
