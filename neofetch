@@ -809,9 +809,9 @@ image_source="auto"
 # ArchStrike, ArcoLinux, Artix, Arya, Asahi, AsteroidOS, astOS, Bedrock, BigLinux, Bitrig,
 # BlackArch, blackPanther, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs, Cachy OS,
 # Calculate, CalinixOS, Carbs, CBL-Mariner, CelOS, Center, CentOS, Chakra, ChaletOS, Chapeau,
-# ChonkySealOS, Chrom, Cleanjaro, Clear Linux OS, ClearOS, Clover, Condres, Container Linux by
-# CoreOS, CRUX, Crystal Linux, Cucumber, CutefishOS, CyberOS, dahlia, DarkOs, Darwin, Debian,
-# Deepin, DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary, Elive, EncryptOS, EndeavourOS,
+# ChonkySealOS, Chrom, Cleanjaro, Clear Linux OS, ClearOS, Clover, Cobalt Linux, Condres, 
+# Container Linux by CoreOS, CRUX, Crystal Linux, Cucumber, CutefishOS, CyberOS, dahlia, DarkOs, Darwin,
+# Debian, Deepin, DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary, Elive, EncryptOS, EndeavourOS,
 # Endless, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
 # Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
 # GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, HydroOS, Hyperbola,
@@ -5843,8 +5843,8 @@ ASCII:
                                 bonsai, BSD, BunsenLabs, Cachy OS, Calculate, CalinixOS, Carbs, CBL-
                                 Mariner, CelOS, Center, CentOS, Chakra, ChaletOS, Chapeau,
                                 ChonkySealOS, Chrom, Cleanjaro, Clear Linux OS, ClearOS, Clover,
-                                Condres, Container Linux by CoreOS, CRUX, Crystal Linux, Cucumber,
-                                CutefishOS, CyberOS, dahlia, DarkOs, Darwin, Debian, Deepin, DesaOS,
+                                Cobalt Linux, Condres, Container Linux by CoreOS, CRUX, Crystal Linux,
+				Cucumber, CutefishOS, CyberOS, dahlia, DarkOs, Darwin, Debian, Deepin, DesaOS,
                                 Devuan, DracOS, DragonFly, Drauger, Droidian, Elementary, Elive, EncryptOS,
                                 EndeavourOS, Endless, EuroLinux, Exherbo, Exodia Predator OS,
                                 Fedora, Feren, Finnix, FreeBSD, FreeMiNT, Frugalware, Funtoo,
@@ -7942,6 +7942,28 @@ oNMMMMMMMMMMMNs`  `sy`  `oNMMMMMMMMMMMNo
            `oNMMMMMMMMMMMMNo`
              `oNMMMNNMMMNs`
                `omo``oNs`
+EOF
+        ;;
+
+        "Cobalt"*)
+            set_colors 33 33 59 31 8
+            read -rd '' ascii_data <<'EOF'
+${c1}                          ///
+${c1}                  ,//////////////
+${c1}    ///////////////////////////////
+${c1}    ///////////////${c5}***********${c1}//////
+    ////${c5}***********************${c1}/////
+    /////${c5}***********************${c1}////
+   //////${c5},,,,,,,,,,,,,,,,,,,,,,${c1}///
+ //////${c5},,,,,,,,,,,,,,,,,,,,,,,,,${c1}/////
+ /////${c5},,,,,,,,,,,,,,,,,,,,,,,,,,,,${c1}/////
+${c4} *****${c3},,,,,,,,,,,,,,,,,,,,,,,,,,,,,${c4}*****
+ ******${c3},,,,,,,,,,,,,,,,,,,,,,,,,,,,${c4}*****
+  *******${c3},,,,,,,,,,,,,,,,,,,,,,,,,${c4}******
+    *******${c3}......................${c4}*******
+      ******${c3}....${c4}***********************
+        ****************************
+         *****
 EOF
         ;;
 
