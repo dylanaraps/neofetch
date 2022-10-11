@@ -1,7 +1,9 @@
-1.0.2
+1.0.2 (under developing)
 Add Droidian (dylanaraps#2201)
 Fix Univalent's colour (own update)
 Add NNLinux (own update)
+Add show_package_total option (dylanaraps#2212)
+Add Cobalt Linux logo (dylanaraps#2213)
 
 1.0.1
 Add HamoniKR (dylanaraps#2210)
