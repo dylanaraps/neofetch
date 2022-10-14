@@ -27,7 +27,7 @@ pip install hyfetch
 
 Currently, these distributions have existing packages for HyFetch:
 
-* ArchLinux: `yay -S hyfetch` (Thanks to [@Aleksana](https://github.com/Aleksanaa))
+* Arch Linux: `paru -S hyfetch` or `yay -S hyfetch` (Thanks to [@Aleksana](https://github.com/Aleksanaa))
 * Nix: `nix-env -i hyfetch` (Thanks to [@YisuiDenghua](https://github.com/YisuiDenghua))
 * Guix: `guix install hyfetch` (Thanks to [@WammKD](https://github.com/WammKD))
 
