@@ -813,12 +813,11 @@ image_source="auto"
 # NOTE: Ubuntu has flavor variants.
 #       Change this to Lubuntu, Kubuntu, Xubuntu, Ubuntu-GNOME,
 #       Ubuntu-Studio, Ubuntu-Mate  or Ubuntu-Budgie to use the flavors.
-# NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
-#       CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android,
-#       Artix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
-#       Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
-#       Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
-#       postmarketOS, and Void have a smaller logo variant.
+# NOTE: Alpine, Android, Arch, Arcolinux, Artix, CRUX, CentOS, Cleanjaro,
+#       Debian, Dragonfly, ElementaryOS, Fedora, FreeBSD, GUIX, Garuda,
+#       Gentoo, Hyperbola, LinuxLite, MXLinux, Mac, Manjaro, NetBSD, NixOS, 
+#       OpenBSD, OpenSUSE, POP_OS, Parabola, PostMarketOS, PureOS, Raspbian,
+#       Slackware, SunOS, Ubuntu, and Void have a smaller logo variant.
 #       Use '{distro name}_small' to use the small variants.
 ascii_distro="auto"
 
@@ -5178,12 +5177,11 @@ ASCII:
                                 NOTE: Change this to Lubuntu, Kubuntu, Xubuntu, Ubuntu-GNOME,
                                 Ubuntu-Studio, Ubuntu-Mate  or Ubuntu-Budgie to use the flavors.
 
-                                NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
-                                CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android,
-                                Artix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
-                                Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
-                                Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
-                                postmarketOS, and Void have a smaller logo variant.
+                                NOTE: Alpine, Android, Arch, Arcolinux, Artix, CRUX, CentOS, Cleanjaro,
+                                Debian, Dragonfly, ElementaryOS, Fedora, FreeBSD, GUIX, Garuda,
+                                Gentoo, Hyperbola, LinuxLite, MXLinux, Mac, Manjaro, NetBSD, NixOS, 
+                                OpenBSD, OpenSUSE, POP_OS, Parabola, PostMarketOS, PureOS, Raspbian,
+                                Slackware, SunOS, Ubuntu, and Void have a smaller logo variant.
 
                                 NOTE: Use '{distro name}_small' to use the small variants.
 
@@ -7611,6 +7609,17 @@ yyyyyyyyyo+:-.....................-//:::
 yyyyyyo+:-..........................://:
 yyyo+:-..............................-//
 o/:-...................................:
+EOF
+        ;;
+
+        "garuda_small")
+            set_colors 7 7 3 7 2 4
+            read -rd '' ascii_data <<'EOF'
+${c3}     .----.
+   .'   ${c6},${c3}  '.
+${c4} .'    ${c6}'${c3}-----|
+'${c5}.   -----,
+  '.____.'
 EOF
         ;;
 
