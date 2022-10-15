@@ -837,7 +837,7 @@ image_source="auto"
 # {distro}_old to use them.
 
 # NOTE: alpine, android, aoscosretro, arch, arcolinux, artix, CalinixOS, centos, cleanjaro, crux,
-# debian, dragonfly, elementary, fedora, freebsd, gentoo, guix, haiku, hyperbola, linuxlite,
+# debian, dragonfly, elementary, fedora, freebsd, garuda, gentoo, guix, haiku, hyperbola, linuxlite,
 # linuxmint, mac, mageia, manjaro, mx, netbsd, nixos, openbsd, opensuse, orchid, parabola, popos,
 # postmarketos, pureos, Raspbian, rocky, slackware, sunos, ubuntu, void have 'small' logo variants,
 # use {distro}_small to use them.
@@ -5881,7 +5881,7 @@ ASCII:
 
                                 NOTE: alpine, android, aoscosretro, arch, arcolinux, artix,
                                 CalinixOS, centos, cleanjaro, crux, debian, dragonfly, elementary,
-                                fedora, freebsd, gentoo, guix, haiku, hyperbola, linuxlite,
+                                fedora, freebsd, garuda, gentoo, guix, haiku, hyperbola, linuxlite,
                                 linuxmint, mac, mageia, manjaro, mx, netbsd, nixos, openbsd,
                                 opensuse, orchid, parabola, popos, postmarketos, pureos, Raspbian,
                                 rocky, slackware, sunos, ubuntu, void have 'small' logo variants,
@@ -8869,6 +8869,17 @@ yyyyyyyyyo+:-.....................-//:::
 yyyyyyo+:-..........................://:
 yyyo+:-..............................-//
 o/:-...................................:
+EOF
+        ;;
+
+	"garuda_small")
+            set_colors 7 7 3 7 2 4
+            read -rd '' ascii_data <<'EOF'
+${c3}     .----.
+   .'   ${c6},${c3}  '.
+${c4} .'    ${c6}'${c3}-----|
+'${c5}.   -----,
+  '.____.'
 EOF
         ;;
 
