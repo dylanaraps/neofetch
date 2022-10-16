@@ -9392,18 +9392,18 @@ EOF
         ;;
 
          "Kamuriki"*)
-            set_colors 2 10
+            set_colors 2
             read -rd '' ascii_data <<'EOF'
 ${c1}
            ......
-          / ____ \
-   ____  / /SIM \ \
+          / ____ \.
+   ____  / /SIM \ \.
   /AAAA\/ /.HNA A\ \_ _,.,
- /AAAAA/ /..I D AA\__'___ \
-/AAAAA/ /AA.N E AAAAAAAAA\ \
-AAAAA/ /AAA A  AAAAAAAAAAA\ \__
-AAAA/ /AAAA N AAAAAAAAAAAAA\   \
-AAA/ /AAAAA O AAAAAAAAAAAAAA\   \NJB
+ /AAAAA/ /..I D AA\__'___ \.
+/AAAAA/ /AA.N E AAAAAAAAA\ \.
+AAAAA/ /AAA A  AAAAAAAAAAA\ \._
+AAAA/ /AAAA N AAAAAAAAAAAAA\   \.
+AAA/ /AAAAA O AAAAAAAAAAAAAA\   \.
 EOF
        ;;
 

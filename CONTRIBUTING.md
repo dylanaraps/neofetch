@@ -7,7 +7,7 @@
     * [No no's](#no-nos)
     * [If Statements](#if-statements)
     * [Case Statements](#case-statements)
-* [Making changes to Neofetch](#making-changes-to-neofetch)
+* [Making changes to Unifetch](#making-changes-to-unifetch)
     * [Adding support for a new Operating System / Distribution.](#adding-support-for-a-new-operating-system--distribution)
 
 <!-- vim-markdown-toc -->
@@ -31,7 +31,7 @@ For your contribution to be accepted, your changes need to pass
 ShellCheck.
 
 ```sh
-shellcheck neofetch
+shellcheck unifetch
 ```
 
 **Note**: If you have trouble installing ShellCheck. You can open a pull
@@ -98,7 +98,7 @@ case "$var" in
 esac
 ```
 
-## Making changes to Neofetch
+## Making changes to Unifetch
 
 ### Adding support for a new Operating System / Distribution.
 
