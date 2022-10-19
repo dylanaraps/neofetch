@@ -960,7 +960,10 @@ get_os() {
     # just the output of "uname -s".
     case $kernel_name in
         Darwin)   os=$darwin_name ;;
-        SunOS)    os=Solaris ;;
+        SunOS)    case $(uname -o 2>/dev/null) in
+                        illumos) os=illumos ;;
+                        *)       os=Solaris ;;
+                  esac ;;
         Haiku)    os=Haiku ;;
         MINIX)    os=MINIX ;;
         AIX)      os=AIX ;;
@@ -1307,7 +1310,7 @@ get_distro() {
             distro=${distro/Microsoft }
         ;;
 
-        Solaris)
+        Solaris|illumos)
             case $distro_shorthand in
                 on|tiny) distro=$(awk 'NR==1 {print $1,$3}' /etc/release) ;;
                 *)       distro=$(awk 'NR==1 {print $1,$2,$3}' /etc/release) ;;
@@ -1338,7 +1341,7 @@ get_distro() {
 
     # Get OS architecture.
     case $os in
-        Solaris|AIX|Haiku|IRIX|FreeMiNT|BSD)
+        Solaris|illumos|AIX|Haiku|IRIX|FreeMiNT|BSD)
             machine_arch=$(uname -p)
         ;;
 
@@ -1583,7 +1586,7 @@ get_model() {
             model=${model/Model}
         ;;
 
-        Solaris)
+        Solaris|illumos)
             model=$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')
         ;;
 
@@ -1622,12 +1625,23 @@ get_title() {
     user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
 
     case $title_fqdn in
-        on) hostname=$(hostname -f) ;;
-        *)
-            hostname=${HOSTNAME:-$(hostname)}
-            hostname=${hostname%.*}
-        ;;
-    esac
+        on)
+          case $os in
+             illumos|Solaris)
+                 hostname=$(hostname)
+                 domainname=$(domainname)
+                 [[ -n "$domainname" ]] && hostname+=".$domainname"
+             ;;
+             *)
+                 hostname=$(hostname -f) 
+             ;;
+          esac
+    ;;
+    *)
+        hostname=${HOSTNAME:-$(hostname)}
+        hostname=${hostname%.*}
+    ;;
+esac
 
     title=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
     length=$((${#user} + ${#hostname} + 1))
@@ -1687,9 +1701,11 @@ get_uptime() {
             s=$((now - boot))
         ;;
 
-        Solaris)
-            s=$(kstat -p unix:0:system_misc:snaptime | awk '{print $2}')
-            s=${s/.*}
+        Solaris|illumos)
+            boot=$(kstat -p unix:0:system_misc:boot_time | awk '{print $2}')
+            now=$(date +%s)
+
+            s=$((now - boot))
         ;;
 
         AIX|IRIX)
@@ -1790,7 +1806,7 @@ get_packages() {
       }
 
       case $os in
-          Linux|BSD|"iPhone OS"|Solaris)
+          Linux|BSD|"iPhone OS"|Solaris|illumos)
               # Package Manager Programs.
               has kiss       && tot kiss l
               has cpt-list   && tot cpt-list
@@ -1874,6 +1890,10 @@ get_packages() {
 
                       ((packages == 0)) &&
                           has pkg && tot pkg list
+                  ;;
+
+              illumos-*)
+                  has pkg && tot pkg list
                   ;;
               esac
 
@@ -2709,7 +2729,7 @@ END
             esac
         ;;
 
-        "Solaris")
+        "Solaris" | "illumos")
             # Get CPU name.
             cpu="$(psrinfo -pv)"
             cpu="${cpu//*$'\n'}"
@@ -3141,10 +3161,10 @@ get_memory() {
             esac
         ;;
 
-        "Solaris" | "AIX")
+        "Solaris" | "illumos" | "AIX")
             hw_pagesize="$(pagesize)"
             case $os in
-                "Solaris")
+                "Solaris" | "illumos")
                     pages_total="$(kstat -p unix:0:system_pages:pagestotal | awk '{print $2}')"
                     pages_free="$(kstat -p unix:0:system_pages:pagesfree | awk '{print $2}')"
                 ;;
@@ -4484,7 +4504,7 @@ get_battery() {
 
 get_local_ip() {
     case $os in
-        "Linux" | "BSD" | "Solaris" | "AIX" | "IRIX")
+        "Linux" | "BSD" | "Solaris" | "illumos" | "AIX" | "IRIX")
             if [[ "${local_ip_interface[0]}" == "auto" ]]; then
                 local_ip="$(ip route get 1 | awk -F'src' '{print $2; exit}')"
                 local_ip="${local_ip/uid*}"
@@ -10629,6 +10649,21 @@ Q@@@@@ggg@@f@   @@@@@@L
    @@@@@@@@@@@@@@@@l
     ^W@@@@@@@@@@@P
        ^TMMMMTll
+EOF
+        ;;
+
+        "OmniOS"*)
+            set_colors 15 3 8
+            read -rd '' ascii_data <<'EOF'
+${c1}
+    ____   __  __  _   _  _
+   / __ \ |  \/  || \ | || |
+  | |  | ||      ||  \| || |
+  | |__| || |\/| || , `${c2}_${c1}||${c2}_${c1}|  ${c2}____${c1}
+   \____/ |_|  |_||_|\${c2}/ __ \ / ___|
+                     | |  | ||(__
+         ${c3}community${c2}   | |__| | ___)|
+              ${c3}edition${c2} \____/ |____/
 EOF
         ;;
 
