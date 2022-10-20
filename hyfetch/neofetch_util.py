@@ -298,5 +298,6 @@ def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:
 fore_back = {
     'fedora': (2, 1),
     'ubuntu': (2, 1),
+    'kubuntu': (2, 1),
 }
 

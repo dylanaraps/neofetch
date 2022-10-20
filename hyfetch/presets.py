@@ -112,7 +112,7 @@ class ColorProfile:
         """
         return ColorProfile([c.set_light(light, at_least, at_most) for c in self.colors])
 
-    def set_light_dl(self, light: float, term: LightDark = GLOBAL_CFG.light_dark()):
+    def set_light_dl(self, light: float, term: LightDark | None = None):
         """
         Set HSL lightness value with respect to dark/light terminals
 
@@ -120,6 +120,7 @@ class ColorProfile:
         :param term: Terminal color (can be "dark" or "light")
         :return: New color profile (original isn't modified)
         """
+        term = term or GLOBAL_CFG.light_dark()
         assert term.lower() in ['light', 'dark']
         at_least, at_most = (True, None) if term.lower() == 'dark' else (None, True)
         return self.set_light_raw(light, at_least, at_most)
