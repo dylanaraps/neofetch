@@ -1275,7 +1275,7 @@ get_distro() {
                 *)      codename=macOS ;;
             esac
 
-            distro="$codename $osx_version $osx_build"
+            distro="$codename $osx_version ($osx_build)"
 
             case $distro_shorthand in
                 on) distro=${distro/ ${osx_build}} ;;
