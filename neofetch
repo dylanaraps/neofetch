@@ -8907,6 +8907,17 @@ o/:-...................................:
 EOF
         ;;
 
+        "garuda_small")
+            set_colors 7 7 3 7 2 4
+            read -rd '' ascii_data <<'EOF'
+${c3}     .----.
+   .'   ${c6},${c3}  '.
+${c4} .'    ${c6}'${c3}-----|
+'${c5}.   -----,
+  '.____.'
+EOF
+        ;;
+
         "Garuda"*)
             set_colors 7 7 3 7 2 4
             read -rd '' ascii_data <<'EOF'
