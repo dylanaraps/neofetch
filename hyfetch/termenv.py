@@ -6,7 +6,7 @@ import sys
 import termios
 import tty
 
-from hyfetch.color_util import RGB
+from .color_util import RGB
 
 
 class OSCException(Exception):
@@ -69,9 +69,5 @@ def get_background_color() -> RGB | None:
         return RGB.from_hex(''.join([v[:2] for v in osc.split('/')]))
     except Exception:
         return None
-
-
-if __name__ == '__main__':
-    print(get_background_color())
 
 
