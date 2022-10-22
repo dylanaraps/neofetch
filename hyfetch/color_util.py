@@ -100,9 +100,7 @@ class RGB(NamedTuple):
         :param hex: Hex color code
         :return: RGB object
         """
-        while hex.startswith('#'):
-            hex = hex[1:]
-
+        hex = hex.lstrip("#")
         r = int(hex[0:2], 16)
         g = int(hex[2:4], 16)
         b = int(hex[4:6], 16)

@@ -1,15 +1,19 @@
+from __future__ import annotations
+
 import os
 import signal
 import sys
 import termios
 import tty
 
+from hyfetch.color_util import RGB
+
 
 class OSCException(Exception):
     pass
 
 
-def read_osc(seq: int) -> str:
+def unix_read_osc(seq: int) -> str:
     # screen/tmux can't support OSC, because they can be connected to multiple
     # terminals concurrently.
     term = os.environ.get('TERM')
@@ -27,10 +31,7 @@ def read_osc(seq: int) -> str:
     tty.setraw(sys.stdin.fileno())
 
     # first, send OSC query, which is ignored by terminal which do not support it
-    t.write(f"\033]{seq};?\033\\")
-
-    # then, query cursor position, should be supported by all terminals
-    t.write("\033[6n")
+    t.write(f"\x1b]{seq};?\x1b\\")
     t.flush()
 
     # Since python's select.select is behaving differently than Unix.select, we can't use it to
@@ -50,10 +51,27 @@ def read_osc(seq: int) -> str:
     # Reset terminal back to normal mode (previously set to raw mode)
     termios.tcsetattr(fd, termios.TCSADRAIN, settings)
 
+    # Validate output
+    if not code:
+        raise OSCException("No response received")
+
+    start = f"\x1b]{seq};"
+    if not code.startswith(start):
+        raise OSCException("Received response is not an OSC response")
+    code = code.lstrip(start).rstrip("\x1b\\")
+
     return code
 
 
+def get_background_color() -> RGB | None:
+    try:
+        osc = unix_read_osc(11).lstrip("rgb:")
+        return RGB.from_hex(''.join([v[:2] for v in osc.split('/')]))
+    except Exception:
+        return None
+
+
 if __name__ == '__main__':
-    print(repr(read_osc(11)))
+    print(get_background_color())
 
 
