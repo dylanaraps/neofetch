@@ -33,14 +33,6 @@ def read_osc(seq: int) -> str:
     t.write("\033[6n")
     t.flush()
 
-    # code = ""
-    # while 1:
-    #     rlist, w, e = select.select([fd], [], [], 0.1)
-    #     print(rlist, w, e)
-    #     if not rlist:
-    #         break
-    #     code += sys.stdin.read(1)
-
     # Since python's select.select is behaving differently than Unix.select, we can't use it to
     # monitor if input is available (https://stackoverflow.com/q/74160774/7346633).
     # My temporary solution is to set a timeout of 0.01s and read as much as possible until the timeout.
