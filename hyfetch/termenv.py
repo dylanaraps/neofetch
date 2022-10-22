@@ -1,16 +1,83 @@
 from __future__ import annotations
 
 import os
+import platform
 import signal
 import sys
 import termios
 import tty
 
-from .color_util import RGB
+from .color_util import RGB, AnsiMode
 
 
 class OSCException(Exception):
     pass
+
+
+def unix_detect_ansi_mode() -> AnsiMode | None:
+    """
+    Translated from Termenv's ColorProfile():
+    https://github.com/muesli/termenv/blob/42ca574de3e99a262e1724d2fb8daa1aea68a5b9/termenv_unix.go#L23
+
+    :return: Ansi mode
+    """
+    if not sys.stdout.isatty():
+        return 'ansi'
+
+    term = os.environ.get('TERM')
+    color_term = os.environ.get('COLORTERM')
+
+    if color_term == 'truecolor' or color_term == '24bit':
+        if term.startswith('screen') and os.environ.get('TERM_PROGRAM') != 'tmux':
+            return '8bit'
+        return 'rgb'
+
+    elif color_term == 'true' or color_term == 'yes':
+        return '8bit'
+
+    if term == 'xterm-kitty':
+        return 'rgb'
+    elif term == 'linux':
+        return 'ansi'
+
+    if '256color' in term:
+        return 'rgb'
+    if 'color' in term:
+        return '8bit'
+    if 'ansi' in term:
+        return 'ansi'
+
+    return None
+
+
+def windows_detect_ansi_mode() -> AnsiMode | None:
+    """
+    Translated from Termenv's ColorProfile():
+    https://github.com/muesli/termenv/blob/42ca574de3e99a262e1724d2fb8daa1aea68a5b9/termenv_windows.go#L13
+
+    :return: Ansi mode
+    """
+    if not sys.stdout.isatty():
+        return 'ansi'
+
+    if os.environ.get("ConEmuANSI") == "ON":
+        return 'rgb'
+
+    release, _, build = map(int, platform.version().split('.'))
+    if build < 10586 or release < 10:
+        # No ANSI support before Windows 10 build 10586.
+        if os.environ.get('ANSICON'):
+            conv = os.environ.get('ANSICON_VER')
+            if int(conv) < 181:
+                return 'ansi'
+            return '8bit'
+        return 'ansi'
+
+    if build < 14931:
+        # No true color support before build 14931.
+        return '8bit'
+
+    return 'rgb'
 
 
 def unix_read_osc(seq: int) -> str:
