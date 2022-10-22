@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import colorsys
-from typing import NamedTuple, Callable, Optional
-
+from dataclasses import dataclass, astuple
 from typing_extensions import Literal
 
 from .constants import GLOBAL_CFG
@@ -84,10 +83,27 @@ def redistribute_rgb(r: int, g: int, b: int) -> tuple[int, int, int]:
     return int(gray + x * r), int(gray + x * g), int(gray + x * b)
 
 
-class RGB(NamedTuple):
+@dataclass
+class HSL:
+    h: float
+    s: float
+    l: float
+
+    def __iter__(self):
+        return iter(astuple(self))
+
+    def rgb(self) -> RGB:
+        return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(self.h, self.l, self.s)])
+
+
+@dataclass
+class RGB:
     r: int
     g: int
     b: int
+
+    def __iter__(self):
+        return iter(astuple(self))
 
     @classmethod
     def from_hex(cls, hex: str) -> "RGB":
@@ -175,6 +191,10 @@ class RGB(NamedTuple):
         """
         return RGB(*redistribute_rgb(*[v * multiplier for v in self]))
 
+    def hsl(self) -> HSL:
+        h, l, s = colorsys.rgb_to_hls(*[v / 255.0 for v in self])
+        return HSL(h, s, l)
+
     def set_light(self, light: float, at_least: bool | None = None, at_most: bool | None = None) -> 'RGB':
         """
         Set HSL lightness value
@@ -185,16 +205,16 @@ class RGB(NamedTuple):
         :return: New color (original isn't modified)
         """
         # Convert to HSL
-        h, l, s = colorsys.rgb_to_hls(*[v / 255.0 for v in self])
+        hsl = self.hsl()
 
         # Modify light value
         if at_least is None and at_most is None:
-            l = light
+            hsl.l = light
         else:
             if at_most:
-                l = min(l, light)
+                hsl.l = min(hsl.l, light)
             if at_least:
-                l = max(l, light)
+                hsl.l = max(hsl.l, light)
 
         # Convert back to RGB
-        return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(h, l, s)])
+        return hsl.rgb()
