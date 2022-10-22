@@ -218,3 +218,6 @@ class RGB:
 
         # Convert back to RGB
         return hsl.rgb()
+
+    def is_light(self):
+        return self.hsl().l > 0.5
