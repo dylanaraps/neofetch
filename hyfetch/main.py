@@ -242,7 +242,7 @@ def create_config() -> Config:
 
         while True:
             print()
-            printc(f'Which brightness level looks the best? (Default: left blank = {def_lightness * 100:.0f}% for {light_dark} mode)')
+            printc(f'Which brightness level looks the best? (Default: {def_lightness * 100:.0f}% for {light_dark} mode)')
             lightness = input('> ').strip().lower() or None
 
             # Parse lightness
