@@ -80,6 +80,15 @@ def windows_detect_ansi_mode() -> AnsiMode | None:
     return 'rgb'
 
 
+def detect_ansi_mode() -> AnsiMode | None:
+    system = platform.system().lower()
+    if system.startswith("linux") or system.startswith("darwin"):
+        return unix_detect_ansi_mode()
+    if system.startswith("windows"):
+        return windows_detect_ansi_mode()
+    return None
+
+
 def unix_read_osc(seq: int) -> str:
     # screen/tmux can't support OSC, because they can be connected to multiple
     # terminals concurrently.
