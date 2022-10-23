@@ -4,13 +4,14 @@ from __future__ import annotations
 import argparse
 import json
 import random
-import re
-from itertools import permutations
 import traceback
-from typing import Iterable
+from itertools import permutations
 from math import ceil
+from typing import Iterable
 
-from .color_util import printc, color, clear_screen
+from . import termenv
+from .color_scale import Scale
+from .color_util import printc, color, clear_screen, AnsiMode
 from .constants import *
 from .models import Config
 from .neofetch_util import *
@@ -85,10 +86,24 @@ def create_config() -> Config:
 
     :return: Config object (automatically stored)
     """
+    # Detect terminal environment
+    det_bg = termenv.get_background_color()
+    det_ansi = termenv.detect_ansi_mode()
+
     asc = get_distro_ascii()
     asc_width, asc_lines = ascii_size(asc)
-    title = 'Welcome to &b&lhy&f&lfetch&r! Let\'s set up some colors first.'
+    logo = color("&b&lhyfetch&r" if det_bg is None or det_bg.is_light() else "&b&lhy&f&lfetch&r")
+    title = f'Welcome to {logo} Let\'s set up some colors first.'
     clear_screen(title)
+
+    option_counter = 1
+
+    def update_title(k: str, v: str):
+        nonlocal title, option_counter
+        if not k.endswith(":"):
+            k += ':'
+        title += f"\n&e{option_counter}. {k.ljust(30)} &r{v}"
+        option_counter += 1
 
     ##############################
     # 0. Check term size
@@ -104,11 +119,12 @@ def create_config() -> Config:
 
     ##############################
     # 1. Select color system
-    clear_screen(title)
-    term_len, term_lines = term_size()
-    try:
-        # Demonstrate RGB with a gradient. This requires numpy
-        from .color_scale import Scale
+    def select_color_system():
+        if det_ansi == 'rgb':
+            return 'rgb', 'Detected color mode'
+
+        clear_screen(title)
+        term_len, term_lines = term_size()
 
         scale2 = Scale(['#12c2e9', '#c471ed', '#f7797d'])
         _8bit = [scale2(i / term_len).to_ansi_8bit(False) for i in range(term_len)]
@@ -121,25 +137,29 @@ def create_config() -> Config:
         printc(f'&a1. Which &bcolor system &ado you want to use?')
         printc(f'(If you can\'t see colors under "RGB Color Testing", please choose 8bit)')
         print()
-        color_system = literal_input('Your choice?', ['8bit', 'rgb'], 'rgb')
 
-    except ModuleNotFoundError:
-        # Numpy not found, skip gradient test, use fallback
-        color_system = literal_input('Which &acolor &bsystem &rdo you want to use?',
-                                     ['8bit', 'rgb'], 'rgb')
+        return literal_input('Your choice?', ['8bit', 'rgb'], 'rgb'), 'Selected color mode'
 
     # Override global color mode
+    color_system, ttl = select_color_system()
     GLOBAL_CFG.color_mode = color_system
-    title += f'\n&e1. Selected color mode: &r{color_system}'
+    update_title(ttl, color_system)
 
     ##############################
     # 2. Select light/dark mode
-    clear_screen(title)
-    light_dark = literal_input(f'2. Is your terminal in &gf(#85e7e9)light mode&r or &gf(#c471ed)dark mode&r?',
-                               ['light', 'dark'], 'dark')
-    is_light = light_dark == 'light'
+    def select_light_dark():
+        if det_bg is not None:
+            return det_bg.is_light(), 'Detected background color'
+
+        clear_screen(title)
+        inp = literal_input(f'2. Is your terminal in &blight mode&r or &4dark mode&r?',
+                            ['light', 'dark'], 'dark')
+        return inp == 'light', 'Selected background color'
+
+    is_light, ttl = select_light_dark()
+    light_dark = 'light' if is_light else 'dark'
     GLOBAL_CFG.is_light = is_light
-    title += f'\n&e2. Light/Dark:          &r{light_dark}'
+    update_title(ttl, light_dark)
 
     ##############################
     # 3. Choose preset
@@ -198,7 +218,7 @@ def create_config() -> Config:
             page -= 1
         else:
             _prs = PRESETS[preset]
-            title += f'\n&e3. Selected flag:       &r{_prs.color_text(preset)}'
+            update_title('Selected flag', _prs.set_light_dl_def(light_dark).color_text(preset))
             break
 
     #############################
@@ -236,7 +256,7 @@ def create_config() -> Config:
 
     if lightness:
         _prs = _prs.set_light_dl(lightness, light_dark)
-    title += f'\n&e4. Brightness:          &r{f"{lightness:.2f}" if lightness else "unset"}'
+    update_title('Selected Brightness', f"{lightness:.2f}" if lightness else f"unset = {def_lightness * 100:.0f}%")
 
     #############################
     # 5. Color arrangement
@@ -302,7 +322,7 @@ def create_config() -> Config:
 
         break
 
-    title += f'\n&e5. Color Alignment:     &r{color_alignment}'
+    update_title('Color alignment', color_alignment)
 
     # Create config
     clear_screen(title)
