@@ -288,7 +288,7 @@ def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:
         distro = GLOBAL_CFG.override_distro
     if not distro:
         distro = get_distro_name().lower()
-    distro = distro.lower()
+    distro = distro.lower().replace(' ', '-')
     for k, v in fore_back.items():
         if distro == k.lower():
             return v
