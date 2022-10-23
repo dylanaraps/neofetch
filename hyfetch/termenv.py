@@ -6,6 +6,7 @@ import signal
 import sys
 import termios
 import tty
+from select import select
 
 from .color_util import RGB, AnsiMode
 
@@ -110,17 +111,27 @@ def unix_read_osc(seq: int) -> str:
     t.write(f"\x1b]{seq};?\x1b\\")
     t.flush()
 
-    # Since python's select.select is behaving differently than Unix.select, we can't use it to
-    # monitor if input is available (https://stackoverflow.com/q/74160774/7346633).
-    # My temporary solution is to set a timeout of 0.01s and read as much as possible until the timeout.
+    # stdin response timeout should be higher for ssh sessions
+    timeout = 0.05 if (os.environ.get('SSH_TTY') or os.environ.get('SSH_SESSION')) is None else 0.5
+
+    # Wait for input to appear
+    if not select([sys.stdin], [], [], timeout)[0]:
+        raise OSCException("No response received")
+
+    # Read until termination, or if it doesn't terminate, read until 1 second passes
     def handler(signum, frame):
         raise IOError()
     signal.signal(signal.SIGALRM, handler)
-    signal.setitimer(signal.ITIMER_REAL, 0.01, 0.0)
+    signal.setitimer(signal.ITIMER_REAL, timeout, 1)
     code = ""
     try:
-        while 1:
+        for _ in range(28):
             code += sys.stdin.read(1)
+
+            # Terminate with sequence terminator [\ or bell ^G
+            if code.endswith('\x1b\\') or code.endswith('\a'):
+                break
+        signal.alarm(0)
     except IOError:
         pass
 
@@ -134,7 +145,9 @@ def unix_read_osc(seq: int) -> str:
     start = f"\x1b]{seq};"
     if not code.startswith(start):
         raise OSCException("Received response is not an OSC response")
-    code = code.lstrip(start).rstrip("\x1b\\")
+
+    # Strip starting code and termination code
+    code = code.lstrip(start).rstrip("\x1b\\").rstrip('\a')
 
     return code
 
