@@ -230,15 +230,17 @@ def create_config() -> Config:
 
     # Print cats
     num_cols = term_size()[0] // (TEST_ASCII_WIDTH + 2)
+    mn, mx = 0.15, 0.85
     ratios = [col / (num_cols - 1) for col in range(num_cols)]
-    ratios = [(r * 0.4 + 0.1) if is_light else (r * 0.4 + 0.5) for r in ratios]
+    ratios = [(r * (mx - mn) / 2 + mn) if is_light else (r * (mx - mn) / 2 + (mx - mn)) for r in ratios]
     lines = [ColorAlignment('horizontal').recolor_ascii(TEST_ASCII.replace(
         '{txt}', f'{r * 100:.0f}%'.center(5)), _prs.set_light_dl(r, light_dark)).split('\n') for r in ratios]
     [printc('  '.join(line)) for line in zip(*lines)]
 
+    def_lightness = GLOBAL_CFG.default_lightness(light_dark)
     while True:
         print()
-        printc(f'Which brightness level looks the best? (Default: left blank = {GLOBAL_CFG.default_lightness(light_dark):.2f} for {light_dark} mode)')
+        printc(f'Which brightness level looks the best? (Default: left blank = {def_lightness * 100:.0f}% for {light_dark} mode)')
         lightness = input('> ').strip().lower() or None
 
         # Parse lightness
@@ -254,8 +256,7 @@ def create_config() -> Config:
         except Exception:
             printc('&cUnable to parse lightness value, please input it as a decimal or percentage (e.g. 0.5 or 50%)')
 
-    if lightness:
-        _prs = _prs.set_light_dl(lightness, light_dark)
+    _prs = _prs.set_light_dl(lightness or def_lightness, light_dark)
     update_title('Selected Brightness', f"{lightness:.2f}" if lightness else f"unset = {def_lightness * 100:.0f}%")
 
     #############################
@@ -381,12 +382,8 @@ def run():
         print(get_distro_ascii())
         return
 
-    # Load config
-    config = check_config()
-
-    # Reset config
-    if args.config:
-        config = create_config()
+    # Load config or create config
+    config = create_config() if args.config else check_config()
 
     # Param overwrite config
     if args.preset:
@@ -401,13 +398,13 @@ def run():
     # Get preset
     preset = PRESETS.get(config.preset)
 
-    # Lighten
+    # Lighten (args > config)
     if args.scale:
         preset = preset.lighten(args.scale)
-    if args.light:
+    elif args.light:
         preset = preset.set_light_raw(args.light)
-    if config.lightness:
-        preset = preset.set_light_dl(config.lightness)
+    else:
+        preset = preset.set_light_dl(config.lightness or GLOBAL_CFG.default_lightness())
 
     # Run
     try:
