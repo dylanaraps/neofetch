@@ -105,6 +105,9 @@ def create_config() -> Config:
         title += f"\n&e{option_counter}. {k.ljust(30)} &r{v}"
         option_counter += 1
 
+    def print_title_prompt(prompt: str):
+        printc(f'&a{option_counter}. {prompt}')
+
     ##############################
     # 0. Check term size
     try:
@@ -134,7 +137,7 @@ def create_config() -> Config:
         printc('&f' + ''.join(c + t for c, t in zip(_rgb, 'RGB Color Testing'.center(term_len))))
 
         print()
-        printc(f'&a1. Which &bcolor system &ado you want to use?')
+        print_title_prompt('Which &bcolor system &ado you want to use?')
         printc(f'(If you can\'t see colors under "RGB Color Testing", please choose 8bit)')
         print()
 
@@ -188,7 +191,7 @@ def create_config() -> Config:
 
     def print_flag_page(page: list[list[list[str]]], page_num: int):
         clear_screen(title)
-        printc('&a3. Let\'s choose a flag!')
+        print_title_prompt("Let's choose a flag!")
         printc('Available flag presets:')
         print(f'Page: {page_num + 1} of {num_pages}')
         print()
@@ -225,7 +228,7 @@ def create_config() -> Config:
     # 4. Dim/lighten colors
     def select_lightness():
         clear_screen(title)
-        printc(f'&a4. Let\'s adjust the color brightness!')
+        print_title_prompt("Let's adjust the color brightness!")
         printc(f'The colors might be a little bit too {"bright" if is_light else "dark"} for {light_dark} mode.')
         print()
 
@@ -305,7 +308,7 @@ def create_config() -> Config:
             [printc('  '.join(line)) for line in zip(*current)]
             print()
 
-        printc(f'&a5. Let\'s choose a color arrangement!')
+        print_title_prompt("Let's choose a color arrangement!")
         printc(f'You can choose standard horizontal or vertical alignment, or use one of the random color schemes.')
         print('You can type "roll" to randomize again.')
         print()
