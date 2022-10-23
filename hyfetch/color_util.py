@@ -83,7 +83,7 @@ def redistribute_rgb(r: int, g: int, b: int) -> tuple[int, int, int]:
     return int(gray + x * r), int(gray + x * g), int(gray + x * b)
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class HSL:
     h: float
     s: float
@@ -96,7 +96,7 @@ class HSL:
         return RGB(*[round(v * 255.0) for v in colorsys.hls_to_rgb(self.h, self.l, self.s)])
 
 
-@dataclass
+@dataclass(unsafe_hash=True)
 class RGB:
     r: int
     g: int
