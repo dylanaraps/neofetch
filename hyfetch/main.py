@@ -284,16 +284,16 @@ def create_config() -> Config:
 
         # Random color schemes
         pis = list(range(len(_prs.unique_colors().colors)))
-        slots = len(set(re.findall('(?<=\\${c)[0-9](?=})', asc)))
-        while len(pis) < slots:
+        slots = list(set(re.findall('(?<=\\${c)[0-9](?=})', asc)))
+        while len(pis) < len(slots):
             pis += pis
-        perm = {p[:slots] for p in permutations(pis)}
+        perm = {p[:len(slots)] for p in permutations(pis)}
         random_count = ascii_per_row * ascii_rows - len(arrangements)
         if random_count > len(perm):
             choices = perm
         else:
             choices = random.sample(perm, random_count)
-        choices = [{i + 1: n for i, n in enumerate(c)} for c in choices]
+        choices = [{slots[i]: n for i, n in enumerate(c)} for c in choices]
         arrangements += [(f'random{i}', ColorAlignment('custom', r)) for i, r in enumerate(choices)]
         asciis = [[*ca.recolor_ascii(asc, _prs).split('\n'), k.center(asc_width)] for k, ca in arrangements]
 
