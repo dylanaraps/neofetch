@@ -223,41 +223,43 @@ def create_config() -> Config:
 
     #############################
     # 4. Dim/lighten colors
-    clear_screen(title)
-    printc(f'&a4. Let\'s adjust the color brightness!')
-    printc(f'The colors might be a little bit too {"bright" if is_light else "dark"} for {light_dark} mode.')
-    print()
-
-    # Print cats
-    num_cols = term_size()[0] // (TEST_ASCII_WIDTH + 2)
-    mn, mx = 0.15, 0.85
-    ratios = [col / (num_cols - 1) for col in range(num_cols)]
-    ratios = [(r * (mx - mn) / 2 + mn) if is_light else (r * (mx - mn) / 2 + (mx - mn)) for r in ratios]
-    lines = [ColorAlignment('horizontal').recolor_ascii(TEST_ASCII.replace(
-        '{txt}', f'{r * 100:.0f}%'.center(5)), _prs.set_light_dl(r, light_dark)).split('\n') for r in ratios]
-    [printc('  '.join(line)) for line in zip(*lines)]
-
-    def_lightness = GLOBAL_CFG.default_lightness(light_dark)
-    while True:
+    def select_lightness():
+        clear_screen(title)
+        printc(f'&a4. Let\'s adjust the color brightness!')
+        printc(f'The colors might be a little bit too {"bright" if is_light else "dark"} for {light_dark} mode.')
         print()
-        printc(f'Which brightness level looks the best? (Default: left blank = {def_lightness * 100:.0f}% for {light_dark} mode)')
-        lightness = input('> ').strip().lower() or None
 
-        # Parse lightness
-        if not lightness or lightness in ['unset', 'none']:
-            lightness = None
-            break
+        # Print cats
+        num_cols = term_size()[0] // (TEST_ASCII_WIDTH + 2)
+        mn, mx = 0.15, 0.85
+        ratios = [col / (num_cols - 1) for col in range(num_cols)]
+        ratios = [(r * (mx - mn) / 2 + mn) if is_light else ((r * (mx - mn) + (mx + mn)) / 2) for r in ratios]
+        lines = [ColorAlignment('horizontal').recolor_ascii(TEST_ASCII.replace(
+            '{txt}', f'{r * 100:.0f}%'.center(5)), _prs.set_light_dl(r, light_dark)).split('\n') for r in ratios]
+        [printc('  '.join(line)) for line in zip(*lines)]
 
-        try:
-            lightness = int(lightness[:-1]) / 100 if lightness.endswith('%') else float(lightness)
-            assert 0 <= lightness <= 1
-            break
+        def_lightness = GLOBAL_CFG.default_lightness(light_dark)
 
-        except Exception:
-            printc('&cUnable to parse lightness value, please input it as a decimal or percentage (e.g. 0.5 or 50%)')
+        while True:
+            print()
+            printc(f'Which brightness level looks the best? (Default: left blank = {def_lightness * 100:.0f}% for {light_dark} mode)')
+            lightness = input('> ').strip().lower() or None
 
-    _prs = _prs.set_light_dl(lightness or def_lightness, light_dark)
-    update_title('Selected Brightness', f"{lightness:.2f}" if lightness else f"unset = {def_lightness * 100:.0f}%")
+            # Parse lightness
+            if not lightness or lightness in ['unset', 'none']:
+                return def_lightness
+
+            try:
+                lightness = int(lightness[:-1]) / 100 if lightness.endswith('%') else float(lightness)
+                assert 0 <= lightness <= 1
+                return lightness
+
+            except Exception:
+                printc('&cUnable to parse lightness value, please input it as a decimal or percentage (e.g. 0.5 or 50%)')
+
+    lightness = select_lightness()
+    _prs = _prs.set_light_dl(lightness, light_dark)
+    update_title('Selected Brightness', f"{lightness:.2f}")
 
     #############################
     # 5. Color arrangement
