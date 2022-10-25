@@ -84,7 +84,8 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 ### TODO
 
-* [ ] Allow left-right arrow keys for pagination
+* [ ] (Important!) Refactor flag storage & coloring to support non-stride patterns
+* [ ] Config menu: Allow left-right arrow keys for pagination
 
 <!-- CHANGELOG STARTS HERE --->
 
