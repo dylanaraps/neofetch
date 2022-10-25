@@ -2,7 +2,7 @@
 
 neofetch with pride flags <3
 
-<img src="https://user-images.githubusercontent.com/22280294/162614541-af2b4660-f1f7-4287-b978-1aa2266ac70f.png" width="60%">
+<img alt="screenshot" src="https://user-images.githubusercontent.com/22280294/197708447-ddee6db2-1017-48f2-b507-8ddf85acef0d.png">
 
 ### Running Updated Original Neofetch
 
