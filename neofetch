@@ -13702,6 +13702,9 @@ main() {
     get_distro
     get_bold
     get_distro_ascii
+
+    # check if the output is a interactive terminal
+    [[ -t 1 ]] || stdout=on
     [[ $stdout == on ]] && stdout
 
     # Minix doesn't support these sequences.
