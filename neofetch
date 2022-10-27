@@ -11206,8 +11206,7 @@ EOF
        "Vanilla"*)
             set_colors 11 15
             read -rd '' ascii_data <<'EOF'                      
-${c1}                  
-                  .:.
+${c1}             .:.
                 .----:
                .-------.
               :---::----:
