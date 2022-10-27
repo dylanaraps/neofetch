@@ -940,11 +940,11 @@ background_color=
 # Misc Options
 
 # Stdout mode
-# Turn off all colors and disables image backend (ASCII/Image).
+# If enabled, turn off all colors and disables image backend (ASCII/Image).
 # Useful for piping into another command.
-# Default: 'off'
-# Values: 'on', 'off'
-stdout="off"
+# Default: 'auto'
+# Values: 'auto', 'on', 'off'
+stdout="auto"
 EOF
 
 # DETECT INFORMATION
@@ -5960,7 +5960,10 @@ OTHER:
     --config none               Launch the script without a config file
     --no_config                 Don't create the user config file.
     --print_config              Print the default config file to stdout.
-    --stdout                    Turn off all colors and disables any ASCII/image backend.
+    --stdout=on                 Turn off all colors and disables any ASCII/image backend.
+    --stdout=off                Enable the colored output and ASCII/image backend
+    --stdout=auto               Let the program decide basing on the output type (default behavior)
+    --stdout                    Equivalent to '--stdout=on', for backward compatibility
     --help                      Print this text and exit
     --version                   Show neofetch version
     -v                          Display error messages.
@@ -6158,6 +6161,9 @@ get_args() {
             ;;
             "--no_config") no_config="on" ;;
             "--stdout") stdout="on" ;;
+            "--stdout=on") stdout="on" ;;
+            "--stdout=off") stdout="off" ;;
+            "--stdout=auto") stdout="auto" ;;
             "-v") verbose="on" ;;
             "--print_config") printf '%s\n' "$config"; exit ;;
             "-vv") set -x; verbose="on" ;;
@@ -13702,6 +13708,12 @@ main() {
     get_distro
     get_bold
     get_distro_ascii
+
+    # check if the output is a interactive terminal
+    [[ $stdout == auto ]] && {
+        [[ -t 1 ]] && stdout=off || stdout=on
+    }
+
     [[ $stdout == on ]] && stdout
 
     # Minix doesn't support these sequences.
