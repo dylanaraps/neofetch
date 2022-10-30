@@ -550,4 +550,47 @@ PRESETS: dict[str, ColorProfile] = {
         '#7D2557'
     ]),
 
+    'gendernonconforming1': ColorProfile(
+        ColorProfile([
+            '#50284d',
+            '#96467b',
+            '#5c96f7',
+            '#ffe6f7',
+            '#5c96f7',
+            '#96467b',
+            '#50284d'
+        ]).with_weights([
+            4,1,1,1,1,1,4
+        ])
+    ),
+
+    'gendernonconforming2': ColorProfile([
+        '#50284d',
+        '#96467b',
+        '#5c96f7',
+        '#ffe6f7',
+        '#5c96f7',
+        '#96467b',
+        '#50284d'
+    ]),
+
+    'femboy': ColorProfile([
+        "#d260a5",
+        "#e4afcd",
+        "#fefefe",
+        "#57cef8",
+        "#fefefe",
+        "#e4afcd",
+        "#d260a5"
+    ]),
+
+    'tomboy': ColorProfile([
+        "#2f3fb9",
+        "#613a03",
+        "#fefefe",
+        "#f1a9b7",
+        "#fefefe",
+        "#613a03",
+        "#2f3fb9"
+    ]),
 }
