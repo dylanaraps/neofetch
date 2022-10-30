@@ -89,7 +89,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 <!-- CHANGELOG STARTS HERE --->
 
-### Unpublished 1.4.3
+### 1.4.3
 
 * 🌈 **Auto detect terminal background color & rgb support**
 * 🌈 **Optimize experience on light-themed terminals**
@@ -98,9 +98,9 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * 🌈 Add unlabeled flags (#25)
 * 🌈 Add gender nonconforming & femboy & tomboy flags (#32)
 * 🌈 Fix jailbreak iOS shell `killed: 9` issue caused by ld signature check.
-* 🖼️ Distro - Add garuda_small (dylanaraps/neofetch#2215)
-* 🖼️ Distro - Add Cobalt Linux (dylanaraps/neofetch#2213)
-* 🖼️ Distro - Add VanillaOS (dylanaraps/neofetch#2222)
+* 🖼️ Distro - Add garuda_small ([dylanaraps#2215](https://github.com/dylanaraps/neofetch/pull/2215))
+* 🖼️ Distro - Add Cobalt Linux ([dylanaraps#2213](https://github.com/dylanaraps/neofetch/pull/2213))
+* 🖼️ Distro - Add VanillaOS ([dylanaraps#2222](https://github.com/dylanaraps/neofetch/pull/2222))
 * 🖼️ Distro - Surround macOS build number in parentheses (#28)
 * 🖼️ Misc - Auto select stdout mode based on tty detection (#31)
 * 🖼️ Bug Fix - Fix cols coloring reset for bash 3.2 (#24)
