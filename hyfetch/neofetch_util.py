@@ -206,7 +206,7 @@ def run_command(args: str, pipe: bool = False) -> str | None:
     Run neofetch command
     """
     if platform.system() != 'Windows':
-        full_cmd = shlex.split(f'{get_command_path()} {args}')
+        full_cmd = shlex.split(f'/usr/bin/env bash {get_command_path()} {args}')
 
     else:
         cmd = get_command_path().replace("\\", "/").replace("C:/", "/c/")
