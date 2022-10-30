@@ -4656,8 +4656,13 @@ get_cols() {
         printf -v block_spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
-        [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}\[mnl}"
-        [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}\[mnl}"
+        if [[ $BASH_VERSION == 3* ]]; then
+            [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}[mnl}"
+            [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}[mnl}"
+        else
+            [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}\[mnl}"
+            [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}\[mnl}"
+        fi
 
         # Determine the horizontal offset of the blocks.
         case $col_offset in
