@@ -97,6 +97,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * 🌈 Fix color alignment for distros with first color ≠ `${c1}` (e.g. Ubuntu Budgie)
 * 🌈 Add unlabeled flags (#25)
 * 🌈 Add gender nonconforming & femboy & tomboy flags (#32)
+* 🌈 Fix jailbreak iOS shell `killed: 9` issue caused by ld signature check.
 * 🖼️ Distro - Add garuda_small (dylanaraps/neofetch#2215)
 * 🖼️ Distro - Add Cobalt Linux (dylanaraps/neofetch#2213)
 * 🖼️ Distro - Add VanillaOS (dylanaraps/neofetch#2222)
