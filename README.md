@@ -96,9 +96,13 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * 🌈 Fix bugs with lightness and light-mode config not applying
 * 🌈 Fix color alignment for distros with first color ≠ `${c1}` (e.g. Ubuntu Budgie)
 * 🌈 Add unlabeled flags (#25)
+* 🌈 Add gender nonconforming & femboy & tomboy flags (#32)
 * 🖼️ Distro - Add garuda_small (dylanaraps/neofetch#2215)
 * 🖼️ Distro - Add Cobalt Linux (dylanaraps/neofetch#2213)
+* 🖼️ Distro - Add VanillaOS (dylanaraps/neofetch#2222)
 * 🖼️ Distro - Surround macOS build number in parentheses (#28)
+* 🖼️ Misc - Auto select stdout mode based on tty detection (#31)
+* 🖼️ Bug Fix - Fix cols coloring reset for bash 3.2 (#24)
 
 ### 1.4.2
 
