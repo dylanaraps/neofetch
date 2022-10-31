@@ -179,7 +179,7 @@ memory_percent="on"
 # Change memory output unit.
 #
 # Default: 'mib'
-# Values:  'kib', 'mib', 'gib'
+# Values:  'kib', 'mib', 'gib', 'tib'
 # Flag:    --memory_unit
 #
 # Example:
