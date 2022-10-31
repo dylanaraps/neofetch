@@ -3229,10 +3229,26 @@ get_memory() {
     [[ "$memory_percent" == "on" ]] && ((mem_perc=mem_used * 100 / mem_total))
 
     case $memory_unit in
+        tib)
+            mem_label=TiB
+            memory_unit_divider=$((1024 * 1024))
+            printf -v mem_used "%'.*f" \
+                        ${mem_precision:-2} \
+                        $(($mem_used / $memory_unit_divider)).$(($mem_used % $memory_unit_divider))
+            printf -v mem_total "%'.*f" \
+                        ${mem_precision:-2} \
+                        $(($mem_total / $memory_unit_divider)).$(($mem_total % $memory_unit_divider))
+        ;;
+
         gib)
-            mem_used=$(awk '{printf "%.1f", $1 / $2}' <<< "$mem_used 1024")
-            mem_total=$(awk '{printf "%.1f", $1 / $2}' <<< "$mem_total 1024")
             mem_label=GiB
+            memory_unit_divider=1024
+            printf -v mem_used "%'.*f" \
+                        ${mem_precision:-2} \
+                        $(($mem_used / $memory_unit_divider)).$(($mem_used % $memory_unit_divider))
+            printf -v mem_total "%'.*f" \
+                        ${mem_precision:-2} \
+                        $(($mem_total / $memory_unit_divider)).$(($mem_total % $memory_unit_divider))
         ;;
 
         kib)
