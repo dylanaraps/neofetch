@@ -2812,22 +2812,22 @@ get_memory() {
             mem_label=TiB
             memory_unit_divider=$((1024 * 1024))
             printf -v mem_used "%'.*f" \
-                        ${mem_precision} \
-                        $(($mem_used / $memory_unit_divider)).$(($mem_used % $memory_unit_divider))
+                        "${mem_precision}" \
+                        $((mem_used / memory_unit_divider)).$((mem_used % memory_unit_divider))
             printf -v mem_total "%'.*f" \
-                        ${mem_precision} \
-                        $(($mem_total / $memory_unit_divider)).$(($mem_total % $memory_unit_divider))
+                        "${mem_precision}" \
+                        $((mem_total / memory_unit_divider)).$((mem_total % memory_unit_divider))
         ;;
 
         gib)
             mem_label=GiB
             memory_unit_divider=1024
             printf -v mem_used "%'.*f" \
-                        ${mem_precision} \
-                        $(($mem_used / $memory_unit_divider)).$(($mem_used % $memory_unit_divider))
+                        "${mem_precision}" \
+                        $((mem_used / memory_unit_divider)).$((mem_used % memory_unit_divider))
             printf -v mem_total "%'.*f" \
-                        ${mem_precision} \
-                        $(($mem_total / $memory_unit_divider)).$(($mem_total % $memory_unit_divider))
+                        "${mem_precision}" \
+                        $((mem_total / memory_unit_divider)).$((mem_total % memory_unit_divider))
         ;;
 
         kib)
