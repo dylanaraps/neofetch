@@ -5087,7 +5087,7 @@ INFO:
     --song_format format        Print the song data in a specific format (see config file).
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --memory_percent on/off     Display memory percentage.
-    --memory_unit kib/mib/gib   Memory output unit.
+    --memory_unit (k/m/g/t)ib   Memory output unit.
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
 
