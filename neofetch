@@ -181,6 +181,12 @@ memory_percent="off"
 # gib: ' 0.98GiB / 6.79GiB'
 memory_unit="mib"
 
+# Change memory output precision.
+#
+# Default: '2'
+# Values: integer ≥ 0
+# Flag:    --memory_precision
+mem_precision=2
 
 # Packages
 
@@ -2806,10 +2812,10 @@ get_memory() {
             mem_label=TiB
             memory_unit_divider=$((1024 * 1024))
             printf -v mem_used "%'.*f" \
-                        ${mem_precision:-2} \
+                        ${mem_precision} \
                         $(($mem_used / $memory_unit_divider)).$(($mem_used % $memory_unit_divider))
             printf -v mem_total "%'.*f" \
-                        ${mem_precision:-2} \
+                        ${mem_precision} \
                         $(($mem_total / $memory_unit_divider)).$(($mem_total % $memory_unit_divider))
         ;;
 
@@ -2817,10 +2823,10 @@ get_memory() {
             mem_label=GiB
             memory_unit_divider=1024
             printf -v mem_used "%'.*f" \
-                        ${mem_precision:-2} \
+                        ${mem_precision} \
                         $(($mem_used / $memory_unit_divider)).$(($mem_used % $memory_unit_divider))
             printf -v mem_total "%'.*f" \
-                        ${mem_precision:-2} \
+                        ${mem_precision} \
                         $(($mem_total / $memory_unit_divider)).$(($mem_total % $memory_unit_divider))
         ;;
 
@@ -5088,6 +5094,7 @@ INFO:
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --memory_percent on/off     Display memory percentage.
     --memory_unit (k/m/g/t)ib   Memory output unit.
+    --memory_precision integer  Change memory output precision. (≥0, default=2)
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
 
@@ -5297,6 +5304,7 @@ get_args() {
             "--music_player") music_player="$2" ;;
             "--memory_percent") memory_percent="$2" ;;
             "--memory_unit") memory_unit="$2" ;;
+	    "--memory_precision") mem_precision="$2" ;;
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
