@@ -2807,6 +2807,9 @@ get_memory() {
 
     [[ "$memory_percent" == "on" ]] && ((mem_perc=mem_used * 100 / mem_total))
 
+    # Creates temp variables: memory_unit_divider, memory_unit_multiplier
+    memory_unit_divider=1
+    memory_unit_multiplier=1
     case $memory_unit in
         tib)
             mem_label=TiB
@@ -2820,24 +2823,21 @@ get_memory() {
 
         kib)
             mem_label=KiB
+	    memory_unit_multiplier=1024
         ;;
     esac
-
-    case $mem_label in
-        GiB|TiB)
+    # Uses temp variables from above: memory_unit_divider, memory_unit_multiplier
+    if test "$memory_unit_divider" -ge 1; then
             printf -v mem_used "%'.*f" \
                         "${mem_precision}" \
                         $((mem_used / memory_unit_divider)).$((mem_used % memory_unit_divider))
             printf -v mem_total "%'.*f" \
                         "${mem_precision}" \
                         $((mem_total / memory_unit_divider)).$((mem_total % memory_unit_divider))
-        ;;
-
-        KiB)
-            mem_used=$((mem_used * 1024))
-            mem_total=$((mem_total * 1024))
-	;;
-    esac
+    elif test "$memory_unit_multiplier" -ge 1; then
+            mem_used=$((mem_used * memory_unit_multiplier))
+            mem_total=$((mem_total * memory_unit_multiplier))
+    fi
 
     memory="${mem_used}${mem_label:-MiB} / ${mem_total}${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
 
