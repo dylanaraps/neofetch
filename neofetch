@@ -2810,6 +2810,11 @@ get_memory() {
     # Creates temp variables: memory_unit_divider, memory_unit_multiplier
     memory_unit_divider=1
     memory_unit_multiplier=1
+
+    # Keep a copy of the original megabyte values because progress bar need them
+    mu_mb="$mem_used"
+    mt_mb="$mem_total"
+
     case $memory_unit in
         tib)
             mem_label=TiB
@@ -2823,9 +2828,10 @@ get_memory() {
 
         kib)
             mem_label=KiB
-	    memory_unit_multiplier=1024
+            memory_unit_multiplier=1024
         ;;
     esac
+
     # Uses temp variables from above: memory_unit_divider, memory_unit_multiplier
     if test "$memory_unit_divider" -ge 1; then
             printf -v mem_used "%'.*f" \
@@ -2843,9 +2849,9 @@ get_memory() {
 
     # Bars.
     case $memory_display in
-        "bar")     memory="$(bar "${mem_used}" "${mem_total}")" ;;
-        "infobar") memory="${memory} $(bar "${mem_used}" "${mem_total}")" ;;
-        "barinfo") memory="$(bar "${mem_used}" "${mem_total}")${info_color} ${memory}" ;;
+        "bar")     memory="$(bar "${mu_mb}" "${mt_mb}")" ;;
+        "infobar") memory="${memory} $(bar "${mu_mb}" "${mt_mb}")" ;;
+        "barinfo") memory="$(bar "${mu_mb}" "${mt_mb}")${info_color} ${memory}" ;;
     esac
 }
 
