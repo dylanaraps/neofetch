@@ -4,7 +4,7 @@
 <a href="./LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
 </p>
 
-<img src="https://c.fantia.jp/uploads/post/file/1507686/main_webp_5a1ca61e-6bfa-45d0-9c44-3ee6f28b4604.webp" alt="unifetch" align="right" height="240px">
+<img src="https://c.fantia.jp/uploads/post/file/1561402/main_webp_6667930e-77a6-4809-81bc-9e45f379e7f6.webp" alt="unifetch" align="right" height="240px">
 
 UniFetch is a command-line system information tool written in `bash 3.2+`, forked from Neofetch. UniFetch displays information about your operating system, software and hardware in an aesthetic and visually pleasing way.
 
