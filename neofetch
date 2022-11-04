@@ -2579,9 +2579,8 @@ END
             esac
 
             # If cpu is not detected on a platform-specific bases, fallback to cpuinfo method
-            [[ -z "$cpu" ]] && cpu="$(awk -F '\\s*: | @' \
-                    '/model name|Model|uarch|Hardware|Processor|^cpu model|chip type|^cpu type/ {
-                    cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
+            [[ -z "$cpu" ]] && cpu="$(awk -F '\\s*: | @' '/model name|Model|uarch|Hardware|Processor|^cpu model|chip type|^cpu type/ { print $2; exit}' "$cpu_file")"
+            [[ -z "$cpu" ]] && cpu="$(awk -F '\\s*: | @' '/Hardware/ {print $2; exit}' "$cpu_file")"
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
 
