@@ -3,7 +3,7 @@ import pathlib
 
 from setuptools import setup
 
-import hyfetch
+import hyfetch.constants
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -14,7 +14,7 @@ README = (HERE / "README.md").read_text('utf-8')
 # This call to setup() does all the work
 setup(
     name="HyFetch",
-    version=hyfetch.__version__,
+    version=hyfetch.constants.VERSION,
     description="neofetch with flags <3",
     long_description=README,
     long_description_content_type="text/markdown",

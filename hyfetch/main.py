@@ -295,7 +295,7 @@ def create_config() -> Config:
         if random_count > len(perm):
             choices = perm
         else:
-            choices = random.sample(perm, random_count)
+            choices = random.sample(sorted(perm), random_count)
         choices = [{slots[i]: n for i, n in enumerate(c)} for c in choices]
         arrangements += [(f'random{i}', ColorAlignment('custom', r)) for i, r in enumerate(choices)]
         asciis = [[*ca.recolor_ascii(asc, _prs).split('\n'), k.center(asc_width)] for k, ca in arrangements]

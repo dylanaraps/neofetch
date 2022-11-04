@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
-from typing_extensions import Literal
+from dataclasses import dataclass, field
 
 from .color_util import AnsiMode, LightDark
 from .constants import CONFIG_PATH
@@ -16,7 +14,7 @@ class Config:
     mode: AnsiMode
     light_dark: LightDark = 'dark'
     lightness: float | None = None
-    color_align: ColorAlignment = ColorAlignment('horizontal')
+    color_align: ColorAlignment = field(default_factory=lambda: ColorAlignment('horizontal'))
 
     @classmethod
     def from_dict(cls, d: dict):
