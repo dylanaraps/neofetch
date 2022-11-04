@@ -89,6 +89,12 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 <!-- CHANGELOG STARTS HERE --->
 
+### Unpublished 1.4.4
+
+* 🌈 Fix Python 3.11 compatibility (#35)
+* 🖼️ Memory - Optimize and fix memory unit conversion (dylanaraps/neofetch#2225)
+* 🖼️ CPU - Fix model detection for loongson (#34)
+
 ### 1.4.3
 
 * 🌈 **Auto detect terminal background color & rgb support**
