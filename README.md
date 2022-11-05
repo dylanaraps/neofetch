@@ -91,6 +91,12 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 ### Unpublished 1.4.4
 
+Note: You can install the latest nightly version by using:
+
+```sh
+pip install git+https://github.com/hykilpikonna/hyfetch.git@master
+```
+
 * 🌈 Fix Python 3.11 compatibility (#35)
 * 🖼️ Memory - Optimize and fix memory unit conversion (dylanaraps/neofetch#2225)
 * 🖼️ CPU - Fix model detection for loongson (#34)
