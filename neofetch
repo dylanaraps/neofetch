@@ -2189,29 +2189,36 @@ get_wm_theme() {
 get_cpu() {
     case $os in
         "Linux" | "MINIX" | "Windows")
-            # Get CPU name.
+            dt="/proc/device-tree"
             cpu_file="/proc/cpuinfo"
 
-            case $kernel_machine in
-                "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
-                    cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' "$cpu_file")"
-                ;;
-
-                "s390"*)
-                    cpu="$(awk -F'=' '/machine/ {print $4; exit}' "$cpu_file")"
-                ;;
-
-                "ia64" | "m32r")
-                    cpu="$(awk -F':' '/model/ {print $2; exit}' "$cpu_file")"
-                    [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
-                ;;
-
-                *)
-                    cpu="$(awk -F '\\s*: | @' \
-                            '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
-                            cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
-                ;;
-            esac
+            if [[ ! -r $dt ]]
+            then
+               # Get CPU name.
+    
+               case $kernel_machine in
+                   "frv" | "hppa" | "m68k" | "openrisc" | "or"* | "powerpc" | "ppc"* | "sparc"*)
+                       cpu="$(awk -F':' '/^cpu\t|^CPU/ {printf $2; exit}' "$cpu_file")"
+                   ;;
+    
+                   "s390"*)
+                       cpu="$(awk -F'=' '/machine/ {print $4; exit}' "$cpu_file")"
+                   ;;
+    
+                   "ia64" | "m32r")
+                       cpu="$(awk -F':' '/model/ {print $2; exit}' "$cpu_file")"
+                       [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
+                   ;;
+    
+                   *)
+                       cpu="$(awk -F '\\s*: | @' \
+                               '/model name|Hardware|Processor|^cpu model|chip type|^cpu type/ {
+                               cpu=$2; if ($1 == "Hardware") exit } END { print cpu }' "$cpu_file")"
+                   ;;
+               esac
+        else
+                cpu="$(cat $dt/model)"
+            fi
 
             speed_dir="/sys/devices/system/cpu/cpu0/cpufreq"
 
@@ -2271,7 +2278,12 @@ get_cpu() {
                 *)
                     case $cpu_cores in
                         "logical" | "on")
-                            cores="$(grep -c "^processor" "$cpu_file")"
+                            if [[ -r $dt ]] && [[ $cpu ]] 
+                            then
+                                cores="$(ls -1Ap $dt/cpus | awk '/cpu@.*/{count++}END{print count+0}')"
+                            else
+                                cores="$(grep -c "^processor" "$cpu_file")"
+                            fi
                         ;;
                         "physical")
                             cores="$(awk '/^core id/&&!a[$0]++{++i} END {print i}' "$cpu_file")"
@@ -2453,8 +2465,11 @@ get_cpu() {
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
     cpu="${cpu//Chip Revision*}"
+    cpu="${cpu//Technologies, Inc.}"
     cpu="${cpu//Technologies, Inc}"
     cpu="${cpu//Core2/Core 2}"
+    cpu="${cpu//v[0-9].[0-9]}"
+    cpu="${cpu//MTP*}"
 
     # Trim spaces from core and speed output
     cores="${cores//[[:space:]]}"
