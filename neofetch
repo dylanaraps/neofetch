@@ -1883,8 +1883,8 @@ get_de() {
     # TODO:
     #  - New config option + flag: --de_display_server on/off ?
     #  - Add display of X11, Arcan and anything else relevant.
-    [[ $de && $WAYLAND_DISPLAY ]] &&
-        de+=" (Wayland)"
+    [[ $de ]] &&
+        de+=" (${XDG_SESSION_TYPE})"
 
     de_run=1
 }
