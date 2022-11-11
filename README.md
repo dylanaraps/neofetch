@@ -10,7 +10,8 @@ This repo also serves as an updated version of the original `neofetch` since the
 
 * Method 1: `pip install hyfetch` then run `neowofetch`
 * Method 2: `npx neowofetch`
-* Method 3: `bash <(curl -sL neowofetch.hydev.org)`
+* Method 3: `P="$HOME/.local/bin/neowofetch" curl -L nf.hydev.org -o $P && chmod +x $P`
+* Method 4: Run without install `bash <(curl -sL nf.hydev.org)`
 
 
 ## Installation
