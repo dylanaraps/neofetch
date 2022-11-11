@@ -291,7 +291,7 @@ def create_config() -> Config:
         while len(pis) < len(slots):
             pis += pis
         perm = {p[:len(slots)] for p in permutations(pis)}
-        random_count = ascii_per_row * ascii_rows - len(arrangements)
+        random_count = max(0, ascii_per_row * ascii_rows - len(arrangements))
         if random_count > len(perm):
             choices = perm
         else:
