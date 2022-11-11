@@ -233,9 +233,9 @@ def create_config() -> Config:
         print()
 
         # Print cats
-        num_cols = term_size()[0] // (TEST_ASCII_WIDTH + 2)
+        num_cols = (term_size()[0] // (TEST_ASCII_WIDTH + 2)) or 1
         mn, mx = 0.15, 0.85
-        ratios = [col / (num_cols - 1) for col in range(num_cols)]
+        ratios = [col / num_cols for col in range(num_cols)]
         ratios = [(r * (mx - mn) / 2 + mn) if is_light else ((r * (mx - mn) + (mx + mn)) / 2) for r in ratios]
         lines = [ColorAlignment('horizontal').recolor_ascii(TEST_ASCII.replace(
             '{txt}', f'{r * 100:.0f}%'.center(5)), _prs.set_light_dl(r, light_dark)).split('\n') for r in ratios]
@@ -270,7 +270,7 @@ def create_config() -> Config:
     fore_back = get_fore_back()
 
     # Calculate amount of row/column that can be displayed on screen
-    ascii_per_row = term_size()[0] // (asc_width + 2)
+    ascii_per_row = max(1, term_size()[0] // (asc_width + 2))
     ascii_rows = max(1, (term_size()[1] - 8) // asc_lines)
 
     # Displays horizontal and vertical arrangements in the first iteration, but hide them in
