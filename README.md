@@ -99,6 +99,7 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 ```
 
 * 🌈 Fix Python 3.11 compatibility (#35)
+* 🌈 Fix many overflow problems when screen is too small 
 * 🖼️ Memory - Optimize and fix memory unit conversion (dylanaraps/neofetch#2225)
 * 🖼️ CPU - Fix model detection for loongson (#34)
 
