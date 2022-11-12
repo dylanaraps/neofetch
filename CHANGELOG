@@ -1,5 +1,7 @@
 1.0.3
 Add VanillaOS (dylanaraps#2222)
+Update Univalent' logo (own)
+Fix display of $XDG_SESSION_TYPE (dylanaraps#2232)
 
 1.0.2
 Add Droidian (dylanaraps#2201)
