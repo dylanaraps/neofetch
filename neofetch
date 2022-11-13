@@ -1094,9 +1094,9 @@ get_distro() {
                     distro=${distro/DragonFly/DragonFlyBSD}
 
                     # Workarounds for some BSD based distros.
+                    [[ -f /etc/os-release ]]       && distro=Enso
                     [[ -f /etc/pcbsd-lang ]]       && distro=PCBSD
                     [[ -f /etc/trueos-lang ]]      && distro=TrueOS
-                    [[ -f /etc/os-release ]]      && distro=Enso
                     [[ -f /etc/pacbsd-release ]]   && distro=PacBSD
                     [[ -f /etc/hbsd-update.conf ]] && distro=HardenedBSD
                 fi
