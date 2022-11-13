@@ -1187,6 +1187,7 @@ get_distro() {
                     distro=${distro/DragonFly/DragonFlyBSD}
 
                     # Workarounds for some BSD based distros.
+                    [[ -f /etc/os-release ]]       && distro=Enso
                     [[ -f /etc/pcbsd-lang ]]       && distro=PCBSD
                     [[ -f /etc/trueos-lang ]]      && distro=TrueOS
                     [[ -f /etc/pacbsd-release ]]   && distro=PacBSD
@@ -8643,6 +8644,32 @@ dMm     `/++/-``/yNNh+/sdNMNddMm-    mMd
       /dMMh+.              .+hMMd/
         -odMMNhso//////oshNMMdo-
            `:+yhmNMMMMNmhy+:`
+EOF
+        ;;
+
+        "Enso"*)
+            set_colors 8 7
+            read -rd '' ascii_data <<'EOF'
+${c1}                                                  
+                 .:--==--:.                
+            :=*#%%%%%%%#####*+-.           
+         .+%%%%%%%%%%%%###%%#*##*:         
+       .*%%%%%%%%%#+==-==++*####*##-       
+      =%%%%%%%#=:           .-+**#***.     
+     *%%%%%%#-                  ++*#**.    
+    +%%%%%%+                     -*+#**    
+   :%%%%%%*                       .*+**=   
+   *%%%%%%:                        --#*#   
+   %%%%%%%                          +++#.  
+   %%%%%%%.                         ++=*.  
+   *%%%%%%+                        .-+*+   
+   :%%%%%%%-                       -:*+:   
+    =%%%%%%%*.                    :.*+-    
+     +%%%%%%%%*-                  :*=-     
+      =%%%%%%%%%%#+=:            =+=:      
+       .+%%%%%%%%%%%%%.       .-==:        
+         .=#%%%%%%%%%%=   ..:--:.          
+            .-+#%%%%%+                     
 EOF
         ;;
 
