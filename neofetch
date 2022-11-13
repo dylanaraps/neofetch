@@ -788,7 +788,7 @@ image_source="auto"
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
-#       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
+#       EndeavourOS, Endless, Enso, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
 #       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
@@ -1096,6 +1096,7 @@ get_distro() {
                     # Workarounds for some BSD based distros.
                     [[ -f /etc/pcbsd-lang ]]       && distro=PCBSD
                     [[ -f /etc/trueos-lang ]]      && distro=TrueOS
+                    [[ -f /etc/os-release ]]      && distro=Enso
                     [[ -f /etc/pacbsd-release ]]   && distro=PacBSD
                     [[ -f /etc/hbsd-update.conf ]] && distro=HardenedBSD
                 fi
@@ -5148,7 +5149,7 @@ ASCII:
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
-                                EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
+                                Enso, EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
@@ -7346,6 +7347,32 @@ dMm     `/++/-``/yNNh+/sdNMNddMm-    mMd
       /dMMh+.              .+hMMd/
         -odMMNhso//////oshNMMdo-
            `:+yhmNMMMMNmhy+:`
+EOF
+        ;;
+
+        "Enso"*)
+            set_colors 8 7
+            read -rd '' ascii_data <<'EOF'
+${c1}                                                  
+                 .:--==--:.                
+            :=*#%%%%%%%#####*+-.           
+         .+%%%%%%%%%%%%###%%#*##*:         
+       .*%%%%%%%%%#+==-==++*####*##-       
+      =%%%%%%%#=:           .-+**#***.     
+     *%%%%%%#-                  ++*#**.    
+    +%%%%%%+                     -*+#**    
+   :%%%%%%*                       .*+**=   
+   *%%%%%%:                        --#*#   
+   %%%%%%%                          +++#.  
+   %%%%%%%.                         ++=*.  
+   *%%%%%%+                        .-+*+   
+   :%%%%%%%-                       -:*+:   
+    =%%%%%%%*.                    :.*+-    
+     +%%%%%%%%*-                  :*=-     
+      =%%%%%%%%%%#+=:            =+=:      
+       .+%%%%%%%%%%%%%.       .-==:        
+         .=#%%%%%%%%%%=   ..:--:.          
+            .-+#%%%%%+                     
 EOF
         ;;
 
