@@ -812,7 +812,7 @@ image_source="auto"
 # ChonkySealOS, Chrom, Cleanjaro, Clear Linux OS, ClearOS, Clover, Cobalt Linux, Condres, 
 # Container Linux by CoreOS, CRUX, Crystal Linux, Cucumber, CutefishOS, CyberOS, dahlia, DarkOs, Darwin,
 # Debian, Deepin, DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary, Elive, EncryptOS, EndeavourOS,
-# Endless, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
+# Endless, Enso, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
 # Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
 # GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, HydroOS, Hyperbola,
 # iglunix, instantOS, IRIX, Itc, januslinux, Kaisen, Kali, Kamuriki, KaOS, KDE, Kibojoe, Kogaion, Korora,
@@ -5866,7 +5866,7 @@ ASCII:
                                 Cobalt Linux, Condres, Container Linux by CoreOS, CRUX, Crystal Linux,
 				Cucumber, CutefishOS, CyberOS, dahlia, DarkOs, Darwin, Debian, Deepin, DesaOS,
                                 Devuan, DracOS, DragonFly, Drauger, Droidian, Elementary, Elive, EncryptOS,
-                                EndeavourOS, Endless, EuroLinux, Exherbo, Exodia Predator OS,
+                                EndeavourOS, Endless, Enso, EuroLinux, Exherbo, Exodia Predator OS,
                                 Fedora, Feren, Finnix, FreeBSD, FreeMiNT, Frugalware, Funtoo,
                                 GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
                                 GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash,
@@ -8603,6 +8603,32 @@ dMm     `/++/-``/yNNh+/sdNMNddMm-    mMd
       /dMMh+.              .+hMMd/
         -odMMNhso//////oshNMMdo-
            `:+yhmNMMMMNmhy+:`
+EOF
+        ;;
+
+	"Enso"*)
+            set_colors 8 7
+            read -rd '' ascii_data <<'EOF'
+${c1}                                                  
+                 .:--==--:.                
+            :=*#%%%%%%%#####*+-.           
+         .+%%%%%%%%%%%%###%%#*##*:         
+       .*%%%%%%%%%#+==-==++*####*##-       
+      =%%%%%%%#=:           .-+**#***.     
+     *%%%%%%#-                  ++*#**.    
+    +%%%%%%+                     -*+#**    
+   :%%%%%%*                       .*+**=   
+   *%%%%%%:                        --#*#   
+   %%%%%%%                          +++#.  
+   %%%%%%%.                         ++=*.  
+   *%%%%%%+                        .-+*+   
+   :%%%%%%%-                       -:*+:   
+    =%%%%%%%*.                    :.*+-    
+     +%%%%%%%%*-                  :*=-     
+      =%%%%%%%%%%#+=:            =+=:      
+       .+%%%%%%%%%%%%%.       .-==:        
+         .=#%%%%%%%%%%=   ..:--:.          
+            .-+#%%%%%+                     
 EOF
         ;;
 
