@@ -1911,6 +1911,7 @@ get_wm() {
                                -e asc \
                                -e clayland \
                                -e dwc \
+			       -e dwl \
                                -e fireplace \
                                -e gnome-shell \
                                -e greenfield \
