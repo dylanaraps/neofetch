@@ -1655,7 +1655,7 @@ esac
 
 get_kernel() {
     # Since these OS are integrated systems, it's better to skip this function altogether
-    [[ $os == (AIX|IRIX) ]] && return
+    [[ $os =~ (AIX|IRIX) ]] && return
 
     # Haiku uses 'uname -v' and not - 'uname -r'.
     [[ $os == Haiku ]] && {
