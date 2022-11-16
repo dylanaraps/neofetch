@@ -90,13 +90,15 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 <!-- CHANGELOG STARTS HERE --->
 
-### 1.4.4
+### Unpublished 1.4.5
 
 Note: You can install the latest nightly version by using:
 
 ```sh
 pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 ```
+
+### 1.4.4
 
 * 🌈 Fix Python 3.11 compatibility (#35)
 * 🌈 Fix many overflow problems when screen is too small 

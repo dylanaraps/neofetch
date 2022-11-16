@@ -96,7 +96,7 @@ if __name__ == '__main__':
 
     # Push
     print()
-    print('Pushing...')
+    assert input('Push? [Enter/N]') == ""
     os.system('git push')
 
     copy_comment()

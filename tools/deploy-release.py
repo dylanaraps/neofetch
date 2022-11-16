@@ -16,6 +16,9 @@ from tools.list_distros import generate_help
 from tools.reformat_readme import reformat_readme
 
 
+NEOFETCH_NEW_VERSION = ""
+
+
 def pre_check():
     """
     Check source code status before releasing.
@@ -72,6 +75,9 @@ def edit_versions(version: str):
     lines[version_i] = f"version={nf}"
     path.write_text('\n'.join(lines))
 
+    global NEOFETCH_NEW_VERSION
+    NEOFETCH_NEW_VERSION = nf
+
 
 def finalize_neofetch():
     """
@@ -117,6 +123,7 @@ def create_release(v: str):
 
     # 3. Create tag
     subprocess.check_call(['git', 'tag', v])
+    subprocess.check_call(['git', 'tag', f'neofetch-{NEOFETCH_NEW_VERSION}'])
 
     i = input('Please check the commit is correct. Press y to continue or any other key to cancel.')
     assert i == 'y'
