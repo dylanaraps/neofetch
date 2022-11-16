@@ -1,8 +1,18 @@
 # Pull request that I don't plan on merging, or already merged pull request that the script didn't
 # detect.
 IgnoreList:
+  # [2227] Fixes the broken progress bars that result from particular distro colors
+  2227: duplicate
+  # [2224] Added macOS Ventura to list of macOS versions
+  2224: duplicate
+  # [2205] ascii logo for jatayu
+  2205: bad
   # [2193] Added DietPi os ASCII art
   2193: duplicate
+  # [2184] Add support for redcatOS
+  2184: bad
+  # [2178] Show macOS Ventura name
+  2178: duplicate
   # [2154] Added Support for Uwuntu
   2154: merged
   # [2156] Update neofetch (for macOS 13)
@@ -11,6 +21,8 @@ IgnoreList:
   2152: merged
   # [2150] Add macOS 13 to version name list
   2150: merged
+  # [2141] Adding soviet linux support
+  2141: bad
   # [2113] Updated Ubuntu logo
   2113: duplicate
   # [2104] Make DE Fluent on Windows 11
