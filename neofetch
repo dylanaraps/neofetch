@@ -1831,7 +1831,7 @@ get_packages() {
             has pacstall   && tot pacstall -L
             has bulge      && tot bulge list
             has pm         && tot pm list packages
-            has squirrel   && tot cat /var/squirrel/repos/local/INDEX
+            has squirrel   && tot cat /var/squirrel/repos/local/*/INDEX
             has tea        && tot find "$HOME/.tea" -maxdepth 2 -mindepth 2 -type d
 
             # Using the dnf package cache is much faster than rpm.
