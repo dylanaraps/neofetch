@@ -992,7 +992,7 @@ get_os() {
 }
 
 get_distro() {
-    
+
     [[ $distro ]] && return
 
     case $os in
@@ -1058,19 +1058,19 @@ get_distro() {
                     tiny) distro="NixOS" ;;
                     *) distro="NixOS $(nixos-version)" ;;
                 esac
-				
+
             elif [[ -f /etc/linspire-version ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="Linspire" ;;
                     *) distro="Linspire $(awk '/Version/ {print $2}' /etc/linspire-version)"
                 esac
-				
+
             elif [[ -f /etc/lindowsos-version ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="LindowsOS" ;;
                     *) distro="$(awk '/Version/ {print $2,$3}' /etc/lindowsos-version)"
                 esac
-				
+
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
                     on|tiny) distro="Proxmox VE" ;;
@@ -1154,7 +1154,7 @@ get_distro() {
 
             elif [[ -d /system/app/ && -d /system/priv-app ]]; then
                 distro="Android $(getprop ro.build.version.release)"
-		
+
             elif [[ -f /etc/vzlinux-release ]]; then
                 distro='VzLinux'
 
@@ -1238,7 +1238,7 @@ get_distro() {
             distro=${distro/NAME=}
 
             if [[ -f /usr/bin/system-image-cli ]]; then
-            	local ut_ota
+                local ut_ota
                 ut_ota=$(system-image-cli -i | awk '/version tag:/ { print $3 }');
                 distro="Ubuntu Touch $ut_ota";
 
@@ -1635,7 +1635,7 @@ get_title() {
                     [[ -n "$domainname" ]] && hostname+=".$domainname"
                 ;;
                 *)
-                    hostname=$(hostname -f) 
+                    hostname=$(hostname -f)
                 ;;
             esac
         ;;
@@ -1831,7 +1831,7 @@ get_packages() {
             has pacstall   && tot pacstall -L
             has bulge      && tot bulge list
             has pm         && tot pm list packages
-	        has squirrel   && tot cat /var/squirrel/repos/local/INDEX
+            has squirrel   && tot cat /var/squirrel/repos/local/INDEX
             has tea        && tot find "$HOME/.tea" -maxdepth 2 -mindepth 2 -type d
 
             # Using the dnf package cache is much faster than rpm.
@@ -1864,7 +1864,7 @@ get_packages() {
             has cave    && dir "/var/db/paludis/repositories/cross-installed/*/data/*/ \
                                /var/db/paludis/repositories/installed/data/*/"
             has hardman && dir "/var/hpkg/packages/*"
-	        shopt -u nullglob
+            shopt -u nullglob
             }
 
             # Other (Needs complex command)
@@ -2223,7 +2223,7 @@ get_wm() {
                                -e asc \
                                -e clayland \
                                -e dwc \
-			       -e dwl \
+                               -e dwl \
                                -e fireplace \
                                -e gnome-shell \
                                -e greenfield \
@@ -2497,10 +2497,10 @@ get_wm_theme() {
         ;;
 
         LeftWM*)
-			if command -v leftwm-theme &> /dev/null
-			then
-				wm_theme=$(leftwm-theme status | grep "Your current theme" | sed -e 's/Your current theme is //g' -e 's/\,.*$//g')
-			fi
+            if command -v leftwm-theme &> /dev/null
+            then
+                wm_theme=$(leftwm-theme status | grep "Your current theme" | sed -e 's/Your current theme is //g' -e 's/\,.*$//g')
+            fi
         ;;
     esac
 
@@ -2597,7 +2597,7 @@ END
                     break
                 }
             done
-	
+
             # If on a Raspberry Pi...
             if grep -q "Raspberry Pi" /proc/device-tree/model; then
                 temp_dir=/sys/class/thermal/thermal_zone0/temp
@@ -6048,7 +6048,7 @@ get_args() {
             "--music_player") music_player="$2" ;;
             "--memory_percent") memory_percent="$2" ;;
             "--memory_unit") memory_unit="$2" ;;
-	    "--memory_precision") mem_precision="$2" ;;
+            "--memory_precision") mem_precision="$2" ;;
             "--cpu_temp")
                 cpu_temp="$2"
                 [[ "$cpu_temp" == "on" ]] && cpu_temp="C"
@@ -6333,7 +6333,7 @@ ${c2}
    |   GNU/Linux
 EOF
         ;;
-	
+
         "Asahi"*)
             set_colors 3 2 1 8 7 6 4
             read -rd '' ascii_data <<'EOF'
@@ -6461,7 +6461,7 @@ ${c1}         =-              -=
 ${c1}         :                :
 EOF
         ;;
-	
+
         "alpine_small")
             set_colors 4 7
             read -rd '' ascii_data <<'EOF'
@@ -6987,7 +6987,7 @@ ${c1}                   *
   ,******     ${c2}// ______ /    ${c1}******,
 EOF
         ;;
-	
+
         "astOS"*)
             set_colors 8
             read -rd '' ascii_data <<'EOF'
@@ -7042,33 +7042,33 @@ ${c1}           ``--:::::::-.`
 EOF
         ;;
 
-	"Stock Linux"*)
-	    set_colors 4 7
+        "Stock Linux"*)
+            set_colors 4 7
             read -rd '' ascii_data << 'EOF'
 ${c1}
 
-              #G5J5G#              
-          &BPYJJJJJJJYPB&          
-      &#G5JJJJJJY5YJJJJJJ5G#&      
-   #G5YJJJJJY5G#& &#G5YJJJJJY5G#   
+              #G5J5G#
+          &BPYJJJJJJJYPB&
+      &#G5JJJJJJY5YJJJJJJ5G#&
+   #G5YJJJJJY5G#& &#G5YJJJJJY5G#
 BPYJJJJJJJ5B&         &BPYJJJJJJYPB
 JJJJJJJJJJY5G#&           &BPYJJJJJ
 JJJJJJJJJJJJJJY5G#           &JJJJJ
 PYJJJJJJJJJJJJJJJJYPB&        GYJJJ
   &BPYJJJJJJJJJJJJJJJJ5PB&      &BP
-      #G5YJJJJJJJJJJJJJJJY5G#      
-PB&      &BP5JJJJJJJJJJJJJJJJYPB&  
+      #G5YJJJJJJJJJJJJJJJY5G#
+PB&      &BP5JJJJJJJJJJJJJJJJYPB&
 JJJYG        &BPYJJJJJJJJJJJJJJJJYP
 JJJJJ&           #G5YJJJJJJJJJJJJJJ
 JJJJJYPB&           &#G5YJJJJJJJJJJ
 BPYJJJJJJYPB&         &B5JJJJJJJYPB
-   #G5YJJJJJY5G#& &#G5YJJJJJY5G#   
-      &#G5JJJJJJY5YJJJJJJ5G#&      
-          &BPYJJJJJJJYPB&          
-              #G5J5G#              
+   #G5YJJJJJY5G#& &#G5YJJJJJY5G#
+      &#G5JJJJJJY5YJJJJJJ5G#&
+          &BPYJJJJJJJYPB&
+              #G5J5G#
 
 EOF
-	;;
+        ;;
 
         "ArchMerge"*)
             set_colors 6 6 7 1
@@ -7165,7 +7165,7 @@ ${c1}                   '
 '`                                   `'
 EOF
         ;;
-        
+
         "Cobalt"*)
             set_colors 33 33 59 31 8
             read -rd '' ascii_data <<'EOF'
@@ -8604,8 +8604,8 @@ ${c1} `..-+${c2}oosssssssssssssssssssssssso${c3}+++++/`
   `:::::::::::::::::::::::::------``
 EOF
         ;;
-	
-	      "EncryptOS"*)
+
+        "EncryptOS"*)
             set_colors 2 5 6
             read -rd '' ascii_data <<'EOF'
 ${c2}                  *******
@@ -8654,26 +8654,26 @@ EOF
         "Enso"*)
             set_colors 8 7
             read -rd '' ascii_data <<'EOF'
-${c1}                                                  
-                 .:--==--:.                
-            :=*#%%%%%%%#####*+-.           
-         .+%%%%%%%%%%%%###%%#*##*:         
-       .*%%%%%%%%%#+==-==++*####*##-       
-      =%%%%%%%#=:           .-+**#***.     
-     *%%%%%%#-                  ++*#**.    
-    +%%%%%%+                     -*+#**    
-   :%%%%%%*                       .*+**=   
-   *%%%%%%:                        --#*#   
-   %%%%%%%                          +++#.  
-   %%%%%%%.                         ++=*.  
-   *%%%%%%+                        .-+*+   
-   :%%%%%%%-                       -:*+:   
-    =%%%%%%%*.                    :.*+-    
-     +%%%%%%%%*-                  :*=-     
-      =%%%%%%%%%%#+=:            =+=:      
-       .+%%%%%%%%%%%%%.       .-==:        
-         .=#%%%%%%%%%%=   ..:--:.          
-            .-+#%%%%%+                     
+${c1}
+                 .:--==--:.
+            :=*#%%%%%%%#####*+-.
+         .+%%%%%%%%%%%%###%%#*##*:
+       .*%%%%%%%%%#+==-==++*####*##-
+      =%%%%%%%#=:           .-+**#***.
+     *%%%%%%#-                  ++*#**.
+    +%%%%%%+                     -*+#**
+   :%%%%%%*                       .*+**=
+   *%%%%%%:                        --#*#
+   %%%%%%%                          +++#.
+   %%%%%%%.                         ++=*.
+   *%%%%%%+                        .-+*+
+   :%%%%%%%-                       -:*+:
+    =%%%%%%%*.                    :.*+-
+     +%%%%%%%%*-                  :*=-
+      =%%%%%%%%%%#+=:            =+=:
+       .+%%%%%%%%%%%%%.       .-==:
+         .=#%%%%%%%%%%=   ..:--:.
+            .-+#%%%%%+
 EOF
         ;;
 
@@ -9282,34 +9282,33 @@ EOF
         "HamoniKR"*)
             set_colors 4 7 99 1 3 7
             read -rd '' ascii_data <<'EOF'
-${c1}            
-                     cO0Ox. 
-                  .ldddddddo.               
-                .lddddddddddo              
-              'lddddddddddddc              
-            ,oddddddddddddd;                   
-          'ldddddddddddddo.                    
-        .oddddddddddddddc.                     
-      ,dddddddddddddddo.                      
-    ,ccoooooooocoddooo:                       
+${c1}
+                     cO0Ox.
+                  .ldddddddo.
+                .lddddddddddo
+              'lddddddddddddc
+            ,oddddddddddddd;
+          'ldddddddddddddo.
+        .oddddddddddddddc.
+      ,dddddddddddddddo.
+    ,ccoooooooocoddooo:
   ,cooooooooooooooooop ${c3}                 c000x.
 ${c1}.cooooooooooooooopcllll${c3}              .cddddddo.
 ${c1}coooooooooooooop' .qlll.${c3}           .ddoooooooo;
 ${c1}cooooooooooc;        ${c3}'qlllp.     .ddoooooooooo;
 ${c1}.cooooooc;             ${c3}'lllbc...coooooooooooo;
-${c1}  .cooc'                ${c3}.llllcoooooooooooooo.  
-                         .coooooooooooooop:    
-                       .coooooooooooooop'      
-                      .cooooooooooooop.        
-                    .cooooooooooooop.          
-                   .coooooooooooop.            
-                  .cooooooooooop.              
-                  .cooooooooop.                
-                   .cooooop'                
-                                                                                           
+${c1}  .cooc'                ${c3}.llllcoooooooooooooo.
+                         .coooooooooooooop:
+                       .coooooooooooooop'
+                      .cooooooooooooop.
+                    .cooooooooooooop.
+                   .coooooooooooop.
+                  .cooooooooooop.
+                  .cooooooooop.
+                   .cooooop'
 EOF
         ;;
-        
+
         "Huayra"*)
             set_colors 4 7
             read -rd '' ascii_data <<'EOF'
@@ -10184,11 +10183,11 @@ ${c1}            ,A
 EOF
         ;;
 
-		
+
         "Linspire"* | "Freespire"* | "Lindows"*)
             set_colors 4 2
             read -rd '' ascii_data <<'EOF'
-${c2}                                                   __^ 	
+${c2}                                                   __^
 ${c2}                                                __/    \\
 ${c2}   MMy        dMy                            __/        \\
 ${c2}  dMMy        MMy                            ${c1}MM${c2}          \\
@@ -10202,7 +10201,7 @@ ${c2}MMMMMMMMMM MMy MMy  MMy ${c1}dMMMyyy MMy     MMy  MMy      dMMMMMMy
 ${c2}                                ${c1}dy
 EOF
         ;;
-		
+
         "linuxmint_small"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
@@ -10349,35 +10348,35 @@ sd yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy ds
        -/yyys              syyy/-
           .:+shysyhyhhysyhs+:.
 EOF
-	;;
+        ;;
 
         "NekOS"*)
             set_colors 3 7 1
             read -rd '' ascii_data <<'EOF'
-${c1}                                                    
-                        @@@@@               
-                     @@@@@@@@@.             
-                  @@@@@@@@    @@@           
-               @@@@@@@@@@@     @@.          
-              @@@@@@@@@@@@@      .          
-             @@@@@@@@@@@@@@@@@   ,          
-           @@@@@@@@@@@@@@@@@@@              
-          @@@@@${c2}///${c1}@@@@@@@${c2}///${c1}@@@             
-          @@@@${c2}/***${c1}@@@@@@@${c2}**//${c1}@@@@           
-       @@@@@@@@@@@@@@@@@@@@@@@@@@@@         
-          @@@@@@@@@@@@@@@@@@@@@@@           
-         @@@/   /@@@@@@@@@/   /@@@          
-      @@@@@@     @@@${c3}██${c1}@@@@     @@@@@@       
-      @@@@@@/   /@${c2}██${c3}██${c2}██${c1}@@/   /@@@@@@       
-       @@@@@@@@@@@@@@@@@@@@@@@@@@@@         
-                 ##########%%%%             
-                 ##########%%  %%           
-         @     @@@#######@@%%%              
-      @@@      @@@@####@@@@   %             
-   @@@        @@@@@@@#@@@@@@@               
-   @@@        @@@@@@@@@@@@@@@               
-   @@@@      @@@@@@@@@@@@@@@@@              
-      @@@@@@@@@@@@@@@@@@@@@@@@              
+${c1}
+                        @@@@@
+                     @@@@@@@@@.
+                  @@@@@@@@    @@@
+               @@@@@@@@@@@     @@.
+              @@@@@@@@@@@@@      .
+             @@@@@@@@@@@@@@@@@   ,
+           @@@@@@@@@@@@@@@@@@@
+          @@@@@${c2}///${c1}@@@@@@@${c2}///${c1}@@@
+          @@@@${c2}/***${c1}@@@@@@@${c2}**//${c1}@@@@
+       @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          @@@@@@@@@@@@@@@@@@@@@@@
+         @@@/   /@@@@@@@@@/   /@@@
+      @@@@@@     @@@${c3}██${c1}@@@@     @@@@@@
+      @@@@@@/   /@${c2}██${c3}██${c2}██${c1}@@/   /@@@@@@
+       @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                 ##########%%%%
+                 ##########%%  %%
+         @     @@@#######@@%%%
+      @@@      @@@@####@@@@   %
+   @@@        @@@@@@@#@@@@@@@
+   @@@        @@@@@@@@@@@@@@@
+   @@@@      @@@@@@@@@@@@@@@@@
+      @@@@@@@@@@@@@@@@@@@@@@@@
 
 EOF
         ;;
@@ -10586,7 +10585,7 @@ EOF
         "GhostBSD"*)
             set_colors 4
             read -rd '' ascii_data <<'EOF'
-${c1}           ,gggggg.     
+${c1}           ,gggggg.
         ,agg9*   .g)
       .agg* ._.,gg*
     ,gga*  (ggg*'
@@ -13360,10 +13359,10 @@ ${c1}   |   (-- |  |
 EOF
 
         ;;
-	
+
        "Vanilla"*)
             set_colors 11 15
-            read -rd '' ascii_data <<'EOF'                      
+            read -rd '' ascii_data <<'EOF'
 ${c1}
                 .----:
                .-------.
@@ -13382,7 +13381,7 @@ ${c1}
      -----::------:   :------::-----
     :--::--------:     .-------::---:
    :----------::         .:----------
-  
+
 EOF
         ;;
 
