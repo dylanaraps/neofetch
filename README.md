@@ -90,7 +90,7 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 <!-- CHANGELOG STARTS HERE --->
 
-### Unpublished 1.4.4
+### 1.4.4
 
 Note: You can install the latest nightly version by using:
 
@@ -100,10 +100,10 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 * 🌈 Fix Python 3.11 compatibility (#35)
 * 🌈 Fix many overflow problems when screen is too small 
-* 🖼️ Distro - Add Enso (dylanaraps/neofetch#2233)
-* 🖼️ Memory - Optimize and fix memory unit conversion (dylanaraps/neofetch#2225)
-* 🖼️ DE - Add dwl window manager (dylanaraps/neofetch#2234)
-* 🖼️ DE - Fix XDG session detection for X11 (dylanaraps/neofetch#2232)
+* 🖼️ Distro - Add Enso ([dylanaraps#2233](https://github.com/dylanaraps/neofetch/pull/2233))
+* 🖼️ Memory - Optimize and fix memory unit conversion ([dylanaraps#2225](https://github.com/dylanaraps/neofetch/pull/2225))
+* 🖼️ DE - Add dwl window manager ([dylanaraps#2234](https://github.com/dylanaraps/neofetch/pull/2234))
+* 🖼️ DE - Fix XDG session detection for X11 ([dylanaraps#2232](https://github.com/dylanaraps/neofetch/pull/2232))
 * 🖼️ CPU - Fix model detection for loongson (#34)
 
 ### 1.4.3
