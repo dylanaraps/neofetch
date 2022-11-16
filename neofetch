@@ -1832,6 +1832,7 @@ get_packages() {
             has bulge      && tot bulge list
             has pm         && tot pm list packages
 	        has squirrel   && tot cat /var/squirrel/repos/local/INDEX
+            has tea        && tot find "$HOME/.tea" -maxdepth 2 -mindepth 2 -type d
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -1863,7 +1864,7 @@ get_packages() {
             has cave    && dir "/var/db/paludis/repositories/cross-installed/*/data/*/ \
                                /var/db/paludis/repositories/installed/data/*/"
             has hardman && dir "/var/hpkg/packages/*"
-	    shopt -u nullglob
+	        shopt -u nullglob
             }
 
             # Other (Needs complex command)
@@ -1927,6 +1928,7 @@ get_packages() {
             has brew  && dir "$(brew --cellar)/* $(brew --caskroom)/*"
             has pkgin && tot pkgin list
             has dpkg  && tot dpkg-query -f '.\n' -W
+            has tea   && tot find "$HOME/.tea" -maxdepth 2 -mindepth 2 -type d
 
             has nix-store && {
                 nix-user-pkgs() {
