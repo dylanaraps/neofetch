@@ -7,7 +7,7 @@ Update Univalent' logo (own)
 Fix display of $XDG_SESSION_TYPE (dylanaraps#2232)
 Add Enso (dylanaraps#2232)
 Add dwl to Wayland WMs (dylanaraps#2234)
-Enhanced --memory_unit functionality (own)
+Enhanced --memory_unit functionality (dylanaraps#2225)
 
 1.0.2
 Add Droidian (dylanaraps#2201)
