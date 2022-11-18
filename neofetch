@@ -1363,15 +1363,15 @@ get_model() {
             if [[ -d /android/system/ || -d /system/app/ ]]; then
                 model="$(getprop ro.product.brand) $(getprop ro.product.model)"
 
-            elif [[ -f /sys/devices/virtual/dmi/id/board_vendor ||
-                    -f /sys/devices/virtual/dmi/id/board_name ]]; then
-                model=$(< /sys/devices/virtual/dmi/id/board_vendor)
-                model+=" $(< /sys/devices/virtual/dmi/id/board_name)"
-
             elif [[ -f /sys/devices/virtual/dmi/id/product_name ||
                     -f /sys/devices/virtual/dmi/id/product_version ]]; then
                 model=$(< /sys/devices/virtual/dmi/id/product_name)
                 model+=" $(< /sys/devices/virtual/dmi/id/product_version)"
+
+            elif [[ -f /sys/devices/virtual/dmi/id/board_vendor ||
+                    -f /sys/devices/virtual/dmi/id/board_name ]]; then
+                model=$(< /sys/devices/virtual/dmi/id/board_vendor)
+                model+=" $(< /sys/devices/virtual/dmi/id/board_name)"
 
             elif [[ -f /sys/firmware/devicetree/base/model ]]; then
                 model=$(< /sys/firmware/devicetree/base/model)
