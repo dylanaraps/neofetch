@@ -791,7 +791,7 @@ image_source="auto"
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
-#       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
+#       Hyperbola, Hybrid, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
 #       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
 #       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
@@ -7961,6 +7961,28 @@ ${c1}                     WW
    N00KNW                   KOW
  NKXN                       W0W
 WW                           W
+EOF
+        ;;
+
+        "Hybrid"*)
+            set_colors 4 12
+            read -rd '' ascii_data <<'EOF'
+   ${c1}   /                          ${c2}#
+   ${c1}////&                      ${c2}#####
+   ${c1}/////                      ${c2}######
+   ${c1}/////      //////////      ${c2}######
+   ${c1}///// //////////////////// ${c2}######
+   ${c1}////////////////////////// ${c2}######
+   ${c1}/////////              /// ${c2}######
+   ${c1}///////                  / ${c2}######
+   ${c1}//////                     ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}#########
+   ${c1}////&                       ${c2}########
 EOF
         ;;
 
