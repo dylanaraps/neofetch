@@ -821,7 +821,7 @@ image_source="auto"
 # Debian, Deepin, DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary, Elive, EncryptOS, EndeavourOS,
 # Endless, Enso, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
 # Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
-# GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, HydroOS, Hyperbola,
+# GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, Hybrid, HydroOS, Hyperbola,
 # iglunix, instantOS, IRIX, Itc, januslinux, Kaisen, Kali, Kamuriki, KaOS, KDE, Kibojoe, Kogaion, Korora,
 # KrassOS, KSLinux, Kubuntu, LangitKetujuh, LaxerOS, LEDE, LibreELEC, Linspire, Linux, Linux Lite,
 # Linux Mint, Linux Mint Old, Live Raizo, LMDE, Lubuntu, Lunar, mac, Mageia, MagpieOS, Mandriva,
@@ -5875,7 +5875,7 @@ ASCII:
                                 Debian, Deepin, DesaOS, Devuan, DracOS, DragonFly, Drauger, Elementary, Elive, EncryptOS, EndeavourOS,
                                 Endless, Enso, EuroLinux, Exherbo, Exodia Predator OS, Fedora, Feren, Finnix, FreeBSD, FreeMiNT,
                                 Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, GhostBSD, glaucus, gNewSense, GNOME, GNU,
-                                GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, HydroOS, Hyperbola,
+                                GoboLinux, GrapheneOS, Grombyang, Guix, Haiku, HarDClanZ, Hash, Huayra, Hybrid, HydroOS, Hyperbola,
                                 iglunix, instantOS, IRIX, Itc, januslinux, Kaisen, Kali, Kamuriki, KaOS, KDE, Kibojoe, Kogaion, Korora,
                                 KrassOS, KSLinux, Kubuntu, LangitKetujuh, LaxerOS, LEDE, LibreELEC, Linspire, Linux, Linux Lite,
                                 Linux Mint, Linux Mint Old, Live Raizo, LMDE, Lubuntu, Lunar, mac, Mageia, MagpieOS, Mandriva,
@@ -9282,6 +9282,28 @@ ${c2}                     `
 ::`                    `::`..`
                           .` `..
                                 ``
+EOF
+        ;;
+
+        "Hybrid"*)
+            set_colors 4 12
+            read -rd '' ascii_data <<'EOF'
+   ${c1}   /                          ${c2}#
+   ${c1}////&                      ${c2}#####
+   ${c1}/////                      ${c2}######
+   ${c1}/////      //////////      ${c2}######
+   ${c1}///// //////////////////// ${c2}######
+   ${c1}////////////////////////// ${c2}######
+   ${c1}/////////              /// ${c2}######
+   ${c1}///////                  / ${c2}######
+   ${c1}//////                     ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}######
+   ${c1}/////                      ${c2}#########
+   ${c1}////&                       ${c2}########
 EOF
         ;;
 
