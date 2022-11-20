@@ -193,7 +193,7 @@ memory_percent="off"
 # Default: '2'
 # Values: integer ≥ 0
 # Flag:    --memory_precision
-memory_unit="gib"
+memory_unit="mib"
 mem_precision=2
 
 # Packages
