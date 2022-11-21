@@ -116,6 +116,8 @@ def unix_read_osc(seq: int) -> str:
 
     # Wait for input to appear
     if not select([sys.stdin], [], [], timeout)[0]:
+        # Reset terminal back to normal mode (previously set to raw mode)
+        termios.tcsetattr(fd, termios.TCSADRAIN, settings)
         raise OSCException("No response received")
 
     # Read until termination, or if it doesn't terminate, read until 1 second passes
