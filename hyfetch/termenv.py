@@ -2,11 +2,7 @@ from __future__ import annotations
 
 import os
 import platform
-import signal
 import sys
-import termios
-import tty
-from select import select
 
 from .color_util import RGB, AnsiMode
 
@@ -91,6 +87,11 @@ def detect_ansi_mode() -> AnsiMode | None:
 
 
 def unix_read_osc(seq: int) -> str:
+    import termios
+    import tty
+    import signal
+    from select import select
+
     # screen/tmux can't support OSC, because they can be connected to multiple
     # terminals concurrently.
     term = os.environ.get('TERM')
@@ -155,10 +156,14 @@ def unix_read_osc(seq: int) -> str:
 
 
 def get_background_color() -> RGB | None:
-    try:
-        osc = unix_read_osc(11).lstrip("rgb:")
-        return RGB.from_hex(''.join([v[:2] for v in osc.split('/')]))
-    except Exception:
+    system = platform.system().lower()
+    if system.startswith("linux") or system.startswith("darwin"):
+        try:
+            osc = unix_read_osc(11).lstrip("rgb:")
+            return RGB.from_hex(''.join([v[:2] for v in osc.split('/')]))
+        except Exception:
+            return None
+    if system.startswith("windows"):
         return None
 
 
