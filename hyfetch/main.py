@@ -9,9 +9,8 @@ from itertools import permutations
 from math import ceil
 from typing import Iterable
 
-from . import termenv
 from .color_scale import Scale
-from .color_util import printc, color, clear_screen, AnsiMode
+from .color_util import printc, clear_screen
 from .constants import *
 from .models import Config
 from .neofetch_util import *
@@ -86,9 +85,12 @@ def create_config() -> Config:
 
     :return: Config object (automatically stored)
     """
-    # Detect terminal environment
-    det_bg = termenv.get_background_color()
-    det_ansi = termenv.detect_ansi_mode()
+    # Detect terminal environment (doesn't work on Windows)
+    det_bg, det_ansi = None, None
+    if platform.system() != 'Windows':
+        from . import termenv
+        det_bg = termenv.get_background_color()
+        det_ansi = termenv.detect_ansi_mode()
 
     asc = get_distro_ascii()
     asc_width, asc_lines = ascii_size(asc)
