@@ -7554,7 +7554,7 @@ ${c1}        `++
 EOF
         ;;
 
-        "Cachy OS"*)
+        "CachyOS"*)
             set_colors 2 8 6
             read -rd '' ascii_data <<'EOF'
 ${c3}           ${c2}.${c3}-------------------------:
