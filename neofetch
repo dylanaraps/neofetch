@@ -177,9 +177,8 @@ uptime_shorthand="on"
 # off:  '1801MiB / 7881MiB'
 memory_percent="off"
 
-# Change memory output unit & precision.
+# Change memory output unit.
 #
-# unit
 # Default: 'mib'
 # Values:  'kib', 'mib', 'gib'
 # Flag:    --memory_unit
@@ -188,13 +187,7 @@ memory_percent="off"
 # kib  '1020928KiB / 7117824KiB'
 # mib  '1042MiB / 6951MiB'
 # gib: ' 0.98GiB / 6.79GiB'
-#
-# precision
-# Default: '2'
-# Values: integer ≥ 0
-# Flag:    --memory_precision
 memory_unit="mib"
-mem_precision=2
 
 # Packages
 
@@ -3102,13 +3095,30 @@ get_memory() {
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
-            hw_pagesize="$(sysctl -n hw.pagesize)"
-            mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
-            pages_app="$(($(sysctl -n vm.page_pageable_internal_count) - $(sysctl -n vm.page_purgeable_count)))"
-            pages_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
-            pages_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
-            pages_compressed="${pages_compressed:-0}"
-            mem_used="$(((pages_app + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
+            if [[ $osx_version == 10.[4-5]* ]]; then
+                mem_total="$(system_profiler SPHardwareDataType | grep Memory:)"
+                mem_total="${mem_total/Memory\: /}"
+                mem_total="${mem_total/ MB/}"
+
+                mem_used="$(vm_stat | grep Pages\ active:)"
+                mem_used="${mem_used/Pages active\: /}"
+                mem_used="${mem_used/\./}"
+
+                pages_inactive=$(vm_stat | grep "Pages inactive")
+                pages_inactive=${pages_inactive/Pages inactive\: /}
+                pages_inactive=${pages_inactive/\./}
+
+                mem_used=$((mem_used + pages_inactive))
+                mem_used=$((mem_used * 4096 / 1048576))
+            else
+                hw_pagesize="$(sysctl -n hw.pagesize)"
+                mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
+                pages_app="$(($(sysctl -n vm.page_pageable_internal_count) - $(sysctl -n vm.page_purgeable_count)))"
+                pages_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
+                pages_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
+                pages_compressed="${pages_compressed:-0}"
+                mem_used="$(((pages_app + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
+            fi
         ;;
 
         "BSD" | "MINIX" | "ravynOS")
@@ -3199,11 +3209,6 @@ get_memory() {
 
     [[ "$memory_percent" == "on" ]] && ((mem_perc=mem_used * 100 / mem_total))
 
-    memory_unit_divider=1
-    memory_unit_multiplier=1
-    mem_used_megabyte="$mem_used"
-    mem_total_megabyte="$mem_total"
-
     case $memory_unit in
         gib)
             mem_used=$(awk '{printf "%.1f", $1 / $2}' <<< "$mem_used 1024")
@@ -3218,25 +3223,13 @@ get_memory() {
         ;;
     esac
 
-    if test "$memory_unit_divider" -ge 1; then
-            printf -v mem_used "%'.*f" \
-                        "${mem_precision}" \
-                        $((mem_used / memory_unit_divider)).$((mem_used % memory_unit_divider))
-            printf -v mem_total "%'.*f" \
-                        "${mem_precision}" \
-                        $((mem_total / memory_unit_divider)).$((mem_total % memory_unit_divider))
-    elif test "$memory_unit_multiplier" -ge 1; then
-            mem_used=$((mem_used * memory_unit_multiplier))
-            mem_total=$((mem_total * memory_unit_multiplier))
-    fi
-
     memory="${mem_used} ${mem_label:-MiB} / ${mem_total} ${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
 
     # Bars.
     case $memory_display in
-        "bar")     memory="$(bar "${mem_used_megabyte}" "${mem_total_megabyte}")" ;;
-        "infobar") memory="${memory} $(bar "${mem_used_megabyte}" "${mem_total_megabyte}")" ;;
-        "barinfo") memory="$(bar "${mem_used_megabyte}" "${mem_total_megabyte}")${info_color} ${memory}" ;;
+        "bar")     memory="$(bar "${mem_used}" "${mem_total}")" ;;
+        "infobar") memory="${memory} $(bar "${mem_used}" "${mem_total}")" ;;
+        "barinfo") memory="$(bar "${mem_used}" "${mem_total}")${info_color} ${memory}" ;;
     esac
 }
 
@@ -5795,8 +5788,7 @@ INFO:
     --song_format format        Print the song data in a specific format (see config file).
     --song_shorthand on/off     Print the Artist/Album/Title on separate lines.
     --memory_percent on/off     Display memory percentage.
-    --memory_unit kib/mib/gib/tib
-                                Memory output unit.
+    --memory_unit kib/mib/gib   Memory output unit.
     --memory_precision integer  Change memory output precision. (≥0, default=2)
     --music_player player-name  Manually specify a player to use.
                                 Available values are listed in the config file
