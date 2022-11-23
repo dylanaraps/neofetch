@@ -1,6 +1,6 @@
 1.1.1
 Add Hybrid Linux (dylanaraps#2239)
-Change memory_unit default (own)
+Revert 6462954 (own)
 
 1.1
 Add VanillaOS (dylanaraps#2222)
@@ -8,7 +8,7 @@ Update Univalent' logo (own)
 Fix display of $XDG_SESSION_TYPE (dylanaraps#2232)
 Add Enso (dylanaraps#2232)
 Add dwl to Wayland WMs (dylanaraps#2234)
-Enhanced --memory_unit functionality (dylanaraps#2225)
+Enhanced --memory_unit functionality (dylanaraps#2225) -> reverted
 
 1.0.2
 Add Droidian (dylanaraps#2201)
