@@ -3104,7 +3104,7 @@ get_memory() {
                     "MemTotal") ((mem_used+=${b/kB})); mem_total="${b/kB}" ;;
                     "Shmem") ((mem_used+=${b/kB}))  ;;
                     "MemFree" | "Buffers" | "Cached" | "SReclaimable")
-                        mem_used="$((mem_used-=${b/kB}))"
+                        mem_used="$((mem_used-${b/kB}))"
                     ;;
 
                     # Available since Linux 3.14rc (34e431b0ae398fc54ea69ff85ec700722c9da773).
@@ -3115,36 +3115,30 @@ get_memory() {
                 esac
             done < /proc/meminfo
 
-            if [[ $mem_avail ]]; then
-                mem_used=$(((mem_total - mem_avail) / 1024))
-            else
-                mem_used="$((mem_used / 1024))"
-            fi
-
-            mem_total="$((mem_total / 1024))"
+            [[ $mem_avail ]] && mem_used=$((mem_total - mem_avail))
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
             hw_pagesize="$(sysctl -n hw.pagesize)"
-            mem_total="$(($(sysctl -n hw.memsize) / 1024 / 1024))"
+            mem_total="$(($(sysctl -n hw.memsize) / 1024))"
             pages_app="$(($(sysctl -n vm.page_pageable_internal_count) - $(sysctl -n vm.page_purgeable_count)))"
             pages_wired="$(vm_stat | awk '/ wired/ { print $4 }')"
             pages_compressed="$(vm_stat | awk '/ occupied/ { printf $5 }')"
             pages_compressed="${pages_compressed:-0}"
-            mem_used="$(((pages_app + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024 / 1024))"
+            mem_used="$(((pages_app + ${pages_wired//.} + ${pages_compressed//.}) * hw_pagesize / 1024))"
         ;;
 
         "BSD" | "MINIX" | "ravynOS")
             # Mem total.
             case $kernel_name in
-                "NetBSD"*) mem_total="$(($(sysctl -n hw.physmem64) / 1024 / 1024))" ;;
-                *) mem_total="$(($(sysctl -n hw.physmem) / 1024 / 1024))" ;;
+                "NetBSD"*) mem_total="$(($(sysctl -n hw.physmem64) / 1024))" ;;
+                *) mem_total="$(($(sysctl -n hw.physmem) / 1024))" ;;
             esac
 
             # Mem free.
             case $kernel_name in
                 "NetBSD"*)
-                    mem_free="$(($(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo) / 1024))"
+                    mem_free="$(awk -F ':|kB' '/MemFree:/ {printf $2}' /proc/meminfo)"
                 ;;
 
                 "FreeBSD"* | "DragonFly"*)
@@ -3152,23 +3146,23 @@ get_memory() {
                     mem_inactive="$(($(sysctl -n vm.stats.vm.v_inactive_count) * hw_pagesize))"
                     mem_unused="$(($(sysctl -n vm.stats.vm.v_free_count) * hw_pagesize))"
                     mem_cache="$(($(sysctl -n vm.stats.vm.v_cache_count) * hw_pagesize))"
-                    mem_free="$(((mem_inactive + mem_unused + mem_cache) / 1024 / 1024))"
+                    mem_free="$(((mem_inactive + mem_unused + mem_cache) / 1024))"
                 ;;
 
                 "MINIX")
                     mem_free="$(top -d 1 | awk -F ',' '/^Memory:/ {print $2}')"
-                    mem_free="${mem_free/M Free}"
+                    mem_free=$(("${mem_free/M Free}" * 1024))
                 ;;
 
                 "OpenBSD"*) ;;
-                *) mem_free="$(($(vmstat | awk 'END {printf $5}') / 1024))" ;;
+                *) mem_free="$(vmstat | awk 'END {printf $5}')" ;;
             esac
 
             # Mem used.
             case $kernel_name in
                 "OpenBSD"*)
                     mem_used="$(vmstat | awk 'END {printf $3}')"
-                    mem_used="${mem_used/M}"
+                    mem_used=$(("${mem_used/M}" * 1024))
                 ;;
 
                 *) mem_used="$((mem_total - mem_free))" ;;
@@ -3189,23 +3183,23 @@ get_memory() {
                     pages_free="${mem_stat[16]}"
                 ;;
             esac
-            mem_total="$((pages_total * hw_pagesize / 1024 / 1024))"
-            mem_free="$((pages_free * hw_pagesize / 1024 / 1024))"
+            mem_total="$((pages_total * hw_pagesize / 1024))"
+            mem_free="$((pages_free * hw_pagesize / 1024))"
             mem_used="$((mem_total - mem_free))"
         ;;
 
         "Haiku")
-            mem_total="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024 / 1024))"
+            mem_total="$(($(sysinfo -mem | awk -F '\\/ |)' '{print $2; exit}') / 1024))"
             mem_used="$(sysinfo -mem | awk -F '\\/|)' '{print $2; exit}')"
-            mem_used="$((${mem_used/max} / 1024 / 1024))"
+            mem_used="$((${mem_used/max} / 1024))"
         ;;
 
         "IRIX")
             IFS=$'\n' read -d "" -ra mem_cmd <<< "$(pmem)"
             IFS=" " read -ra mem_stat <<< "${mem_cmd[0]}"
 
-            mem_total="$((mem_stat[3] / 1024))"
-            mem_free="$((mem_stat[5] / 1024))"
+            mem_total="${mem_stat[3]}"
+            mem_free="${mem_stat[5]}"
             mem_used="$((mem_total - mem_free))"
         ;;
 
@@ -3214,8 +3208,6 @@ get_memory() {
             mem_free="${mem/*  }"
             mem_total="${mem/$mem_free}"
             mem_used="$((mem_total - mem_free))"
-            mem_total="$((mem_total / 1024))"
-            mem_used="$((mem_used / 1024))"
         ;;
 
     esac
@@ -3224,49 +3216,53 @@ get_memory() {
 
     # Creates temp variables: memory_unit_divider, memory_unit_multiplier
     memory_unit_divider=1
-    memory_unit_multiplier=1
+    memory_unit_multiplier=$((10 ** mem_precision))
 
-    # Keep a copy of the original megabyte values because progress bar need them
-    mu_mb="$mem_used"
-    mt_mb="$mem_total"
+    # Keep a copy of the original kibibyte values because progress bar needs them
+    mu_kib="$mem_used"
+    mt_kib="$mem_total"
 
     case $memory_unit in
         tib)
             mem_label=TiB
-            memory_unit_divider=$((1024 * 1024))
+            memory_unit_divider=$((1024 * 1024 * 1024))
         ;;
 
         gib)
             mem_label=GiB
-            memory_unit_divider=1024
+            memory_unit_divider=$((1024 * 1024))
         ;;
 
-        kib)
-            mem_label=KiB
-            memory_unit_multiplier=1024
+        mib)
+            mem_label=MiB
+            memory_unit_divider=1024
         ;;
     esac
 
     # Uses temp variables from above: memory_unit_divider, memory_unit_multiplier
     if test "$memory_unit_divider" -ge 1; then
-            printf -v mem_used "%'.*f" \
-                        "${mem_precision}" \
-                        $((mem_used / memory_unit_divider)).$((mem_used % memory_unit_divider))
-            printf -v mem_total "%'.*f" \
-                        "${mem_precision}" \
-                        $((mem_total / memory_unit_divider)).$((mem_total % memory_unit_divider))
-    elif test "$memory_unit_multiplier" -ge 1; then
-            mem_used=$((mem_used * memory_unit_multiplier))
-            mem_total=$((mem_total * memory_unit_multiplier))
+        case ${mem_precision} in
+            0)
+                mem_used="$((mem_used / memory_unit_divider))"
+                mem_total="$((mem_total / memory_unit_divider))"
+            ;;
+            
+            *)
+                mem_used="$((mem_used / memory_unit_divider)).$(printf "%0*d" "${mem_precision}" \
+                    $((mem_used % memory_unit_divider * memory_unit_multiplier / memory_unit_divider)))"
+                mem_total="$((mem_total / memory_unit_divider)).$(printf "%0*d" "${mem_precision}" \
+                    $((mem_total % memory_unit_divider * memory_unit_multiplier / memory_unit_divider)))"
+            ;;
+        esac
     fi
 
-    memory="${mem_used} ${mem_label:-MiB} / ${mem_total} ${mem_label:-MiB} ${mem_perc:+(${mem_perc}%)}"
+    memory="${mem_used} ${mem_label:-KiB} / ${mem_total} ${mem_label:-KiB} ${mem_perc:+(${mem_perc}%)}"
 
     # Bars.
     case $memory_display in
-        "bar")     memory="$(bar "${mu_mb}" "${mt_mb}")" ;;
-        "infobar") memory="${memory} $(bar "${mu_mb}" "${mt_mb}")" ;;
-        "barinfo") memory="$(bar "${mu_mb}" "${mt_mb}")${info_color} ${memory}" ;;
+        "bar")     memory="$(bar "${mu_kib}" "${mt_kib}")" ;;
+        "infobar") memory="${memory} $(bar "${mu_kib}" "${mt_kib}")" ;;
+        "barinfo") memory="$(bar "${mu_kib}" "${mt_kib}")${info_color} ${memory}" ;;
     esac
 }
 
