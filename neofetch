@@ -818,7 +818,7 @@ image_source="auto"
 #       Artix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
 #       Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
 #       Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
-#       postmarketOS, and Void have a smaller logo variant.
+#       postmarketOS, Void and Kali have a smaller logo variant.
 #       Use '{distro name}_small' to use the small variants.
 ascii_distro="auto"
 
@@ -5183,7 +5183,7 @@ ASCII:
                                 Artix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
                                 Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
                                 Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
-                                postmarketOS, and Void have a smaller logo variant.
+                                postmarketOS, Void and Kali have a smaller logo variant.
 
                                 NOTE: Use '{distro name}_small' to use the small variants.
 
@@ -8033,6 +8033,28 @@ odhdddddddo- `ddddh+-``....-+hdddddds.
       :sydds           -hddddddd`    /
        .+shd-      `:ohddddddddd`
                 `:+ooooooooooooo:
+EOF
+        ;;
+
+        "kali_small" | "kalilinux_small" | "kali_linux_small")
+            set_colors 4 8
+            read -rd '' ascii_data <<'EOF'
+${c1}     -#. #
+      @###
+  -######
+ @#########
+=##.  .#####
+##      ## ##
+##       ## #
+##       @###
+##.        ###
+ ##%       ##-
+  -##%    -*
+   :*##+
+     :*#*
+       -#
+        @
+        :
 EOF
         ;;
 
