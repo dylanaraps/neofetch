@@ -29,7 +29,7 @@
 # SOFTWARE.
 
 version=1.1.1
-nf_version=7.4.0
+nf_version=7.4.0.1
 
 # Fallback to a value of '5' for shells which support bash
 # but do not set the 'BASH_' shell variables (osh).
