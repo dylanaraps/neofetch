@@ -29,7 +29,7 @@
 # SOFTWARE.
 
 version=1.1.1
-nf_version=7.4.0
+nf_version=7.4.0.1
 
 # Fallback to a value of '5' for shells which support bash
 # but do not set the 'BASH_' shell variables (osh).
@@ -838,7 +838,7 @@ image_source="auto"
 
 # NOTE: alpine, android, aoscosretro, arch, arcolinux, artix, CalinixOS, centos, cleanjaro, crux,
 # debian, dragonfly, elementary, fedora, freebsd, garuda, gentoo, guix, haiku, hyperbola, linuxlite,
-# linuxmint, mac, mageia, manjaro, mx, netbsd, nixos, openbsd, opensuse, orchid, parabola, popos,
+# linuxmint, kali, mac, mageia, manjaro, mx, netbsd, nixos, openbsd, opensuse, orchid, parabola, popos,
 # postmarketos, pureos, Raspbian, rocky, slackware, sunos, ubuntu, void have 'small' logo variants,
 # use {distro}_small to use them.
 ascii_distro="auto"
@@ -5891,7 +5891,7 @@ ASCII:
 
                                 NOTE: alpine, android, aoscosretro, arch, arcolinux, artix, CalinixOS, centos, cleanjaro, crux,
                                 debian, dragonfly, elementary, fedora, freebsd, garuda, gentoo, guix, haiku, hyperbola, linuxlite,
-                                linuxmint, mac, mageia, manjaro, mx, netbsd, nixos, openbsd, opensuse, orchid, parabola, popos,
+                                linuxmint, kali, mac, mageia, manjaro, mx, netbsd, nixos, openbsd, opensuse, orchid, parabola, popos,
                                 postmarketos, pureos, Raspbian, rocky, slackware, sunos, ubuntu, void have 'small' logo variants,
                                 use {distro}_small to use them.
 
@@ -9418,6 +9418,28 @@ odhdddddddo- `ddddh+-``....-+hdddddds.
       :sydds           -hddddddd`    /
        .+shd-      `:ohddddddddd`
                 `:+ooooooooooooo:
+EOF
+        ;;
+
+        "kali_small" | "kalilinux_small" | "kali_linux_small")
+            set_colors 4 8
+            read -rd '' ascii_data <<'EOF'
+${c1}     -#. #
+      @###
+  -######
+ @#########
+=##.  .#####
+##      ## ##
+##       ## #
+##       @###
+##.        ###
+ ##%       ##-
+  -##%    -*
+   :*##+
+     :*#*
+       -#
+        @
+        :
 EOF
         ;;
 
