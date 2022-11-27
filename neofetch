@@ -9454,6 +9454,28 @@ odhdddddddo- `ddddh+-``....-+hdddddds.
 EOF
         ;;
 
+        "kali_small" | "kalilinux_small" | "kali_linux_small")
+            set_colors 4 8
+            read -rd '' ascii_data <<'EOF'
+${c1}     -#. #
+      @###
+  -######
+ @#########
+=##.  .#####
+##      ## ##
+##       ## #
+##       @###
+##.        ###
+ ##%       ##-
+  -##%    -*
+   :*##+
+     :*#*
+       -#
+        @
+        :
+EOF
+        ;;
+
         "Kali"*)
             set_colors 4 8
             read -rd '' ascii_data <<'EOF'
