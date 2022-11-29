@@ -2,7 +2,7 @@ PREFIX = /usr
 MANDIR = $(PREFIX)/share/man
 
 all:
-	@echo Run \'make install\' to install Unifetch.
+	@printf "Run 'make install' to install UniFetch.\n"
 
 install:
 	@mkdir -p $(DESTDIR)$(PREFIX)/bin
