@@ -1,3 +1,6 @@
+1.1.2
+Update Makefile & CONTRIBUTING.md (dylanaraps#2245 & dylanaraps#2246)
+
 1.1.1
 Add Hybrid Linux (dylanaraps#2239)
 Revert 6462954 (own)
