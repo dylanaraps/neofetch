@@ -1,0 +1,68 @@
+name: arch_package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux
+      options: --privileged
+      volumes:
+        - /sys/fs/cgroup:/sys/fs/cgroup
+
+    steps:
+    - name: Prepare environment
+      run:  |
+            pacman -Syu --needed --noconfirm base-devel git openssh
+            sed -i '/E_ROOT/d' /usr/bin/makepkg
+
+    - name: Import AUR key
+      run:  |
+            mkdir ~/.ssh && chmod 700 ~/.ssh
+            echo '${{secrets.AUR_SSH_PRIVATE_KEY}}' >> ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan -H aur.archlinux.org >> /etc/ssh/ssh_known_hosts
+
+    - name: Clone from AUR
+      run:  |
+            export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa'
+            git clone ssh://aur@aur.archlinux.org/hyfetch.git
+
+    - name: Upgrade PKGBUILD
+      run:  |
+            cd hyfetch
+            sed -i "/^pkgver=/cpkgver=${{github.ref_name}}" PKGBUILD
+            sed -i "/^pkgrel=/cpkgrel=1" PKGBUILD
+
+    - name: Makepkg
+      run:  |
+            cd hyfetch
+            yes | makepkg -si
+
+    - name: Test hyfetch
+      run:  |
+            hyfetch --test-print
+
+    - name: Upload binaries to release
+      uses: shogo82148/actions-upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: hyfetch/hyfetch*.pkg.tar.*
+
+    - name: set git info
+      run:  |
+            git config --global user.name "Aleksana BOT"
+            git config --global user.email "me@aleksana.moe"
+
+    - name: Update PKGBUILD to AUR
+      run:  |
+            cd hyfetch
+            rm -r .SRCINFO && makepkg --printsrcinfo >.SRCINFO
+            git stage . && git commit -m "BOT: upgrade to ${{github.ref_name}}"
+            export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa'
+            git push
+
+

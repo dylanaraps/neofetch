@@ -1,0 +1,73 @@
+# Pull request that I don't plan on merging, or already merged pull request that the script didn't
+# detect.
+IgnoreList:
+  # [2227] Fixes the broken progress bars that result from particular distro colors
+  2227: duplicate
+  # [2224] Added macOS Ventura to list of macOS versions
+  2224: duplicate
+  # [2205] ascii logo for jatayu
+  2205: bad
+  # [2193] Added DietPi os ASCII art
+  2193: duplicate
+  # [2184] Add support for redcatOS
+  2184: bad
+  # [2178] Show macOS Ventura name
+  2178: duplicate
+  # [2154] Added Support for Uwuntu
+  2154: merged
+  # [2156] Update neofetch (for macOS 13)
+  2156: duplicate
+  # [2152] created much cleaner void ascii art
+  2152: merged
+  # [2150] Add macOS 13 to version name list
+  2150: merged
+  # [2141] Adding soviet linux support
+  2141: bad
+  # [2113] Updated Ubuntu logo
+  2113: duplicate
+  # [2104] Make DE Fluent on Windows 11
+  2104: duplicate
+  # [2092] Update neofetch
+  2092: troll
+  # [2081] added a q4os ascii
+  2081: duplicate
+  # [2078] Fixed distro detection on CentOS 6
+  2078: incorrect
+  # [2057] add AmogOS (Duplicate of 1904)
+  2057: duplicate
+  # [2051] Typo in comment for col_offset
+  2051: incorrect
+  # [1996] set_text_color: fix color code for multi-digit ones
+  1996: duplicate
+  # [1940] Added code to display battery percentage and resolution in termux on android devices
+  1940: bad
+  # [1936] Added PiluX logo.
+  1936: deleted
+  # [1927] improve/add model name for arm linux cpus
+  1927: duplicate
+  # [1925] New OS added: CBL-Mariner
+  1925: duplicate
+  # [1922] Added BugTrack asciiart
+  1922: bad
+  # [1897] Change source_mage's colors.
+  1897: deleted
+  # [1889] Fix Windows 11 detection
+  1889: duplicate
+  # [1861] Added FriendlyOS
+  1861: bad
+  # [1857] Speed up `get_packages`
+  1857: bad
+  # [1852] Added Aravalli Logo
+  1852: deleted
+  # [1850] neofetch: remove duplicate distro ASCII logo
+  1850: duplicate
+  # [1830] Replace non-posix use of 'hostname' command with 'uname -n'
+  1830: deleted
+  # [1827] Improve manjaro logo
+  1827: deleted
+  # [1700] Added Xeonix by Xinux Uzbekistan support
+  1700: deleted
+  # [1585] Fix for Improvement idea for multiprocessor systems, current output is unclear
+  1585: incorrect
+  # [1031] Use nvidia-smi for NVIDIA GPUs
+  1031: incorrect

@@ -1,0 +1,115 @@
+name: release
+on:
+  push:
+    branches:
+      - "release/*"
+
+jobs:
+  testing:
+    name: testing release
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.event.head_commit.message,'release') }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Get tags
+        run: git fetch --all --tags
+
+      - name: Get version
+        run: |
+              BRANCH=$(git symbolic-ref --short HEAD)
+              VER=${BRANCH#*release/}
+              if [[ $(git tag | grep ${VER}rc) ]];then
+                TAGS=$(git tag | grep ${VER}rc | awk 'END {print}')
+                REL=${TAGS##*rc}
+                let REL++
+              else
+                REL=1
+              fi
+              echo "BUILDVER=${VER}rc${REL}" >> $GITHUB_ENV
+
+      - name: Update versions
+        run: |
+              sed -i "/^ *VERSION = /cVERSION = '${{ env.BUILDVER }}'" hyfetch/constants.py
+
+      - name: Making tags
+        run: |
+              git config user.name github-actions
+              git config user.email github-actions@github.com
+              git stage .
+              git commit -m "tagged unstable ${{ env.BUILDVER }}"
+              git tag --force ${{ env.BUILDVER }}
+
+      - name: Upload changes
+        run: |
+              git pull && git push && git push --tags
+
+      - name: Deploy to PYPI
+        uses: casperdcl/deploy-pypi@v2
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          pip: wheel -w dist/ --no-deps .
+
+  release:
+    name: formal release
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.event.head_commit.message,'release') }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        run: |
+              BRANCH=$(git symbolic-ref --short HEAD)
+              echo "BUILDVER=${BRANCH#*release/}" >> $GITHUB_ENV
+
+      - name: Update package.json
+        uses: jossef/action-set-json-field@v2
+        with:
+          file: package.json
+          field: version
+          value: ${{ env.BUILDVER }}
+
+      - name: Update neofetch version
+        run: |
+              REVISION=$(expr $(git rev-list --count HEAD neofetch) - 2902)
+              sed -i "/^ *version=/cversion=7.4.0r${REVISION}" neofetch
+
+      - name: Update other versions
+        run: |
+              sed -i "/^ *VERSION = /cVERSION = '${{ env.BUILDVER }}'" hyfetch/constants.py
+              sed -i "/^ *### Unpublished/c### ${{ env.BUILDVER }}" README.md
+
+      - name: Make final tags
+        run: |
+              git config user.name github-actions
+              git config user.email github-actions@github.com
+              git stage . && git commit -m "tagged stable ${{ env.BUILDVER }}"
+              git tag --force ${{ env.BUILDVER }}
+
+      - name: Merge branch and push
+        run: |
+              parent=$(git show-branch \
+                      | grep -F '*' \
+                      | grep -v "$(git rev-parse --abbrev-ref HEAD)" \
+                      | head -n1 \
+                      | sed 's/.*\[\(.*\)\].*/\1/' \
+                      | sed 's/[\^~].*//')
+              git checkout ${parent}
+              git merge release/${{ env.BUILDVER }} --allow-unrelated-histories
+              git pull --all && git push --all && git push --tags
+
+      - name: Generate changelog from README
+        run: (sed '0,/^ *### ${{ env.BUILDVER }}/d;/^ *#/,$d' <README.md)>temp_CHANGELOG.md
+
+      - name: Publish release
+        uses: ncipollo/release-action@v1
+        with:
+          bodyFile: "temp_CHANGELOG.md"
+          tag: ${{ env.BUILDVER }}
+          token: ${{ secrets.GH_TOKEN }}

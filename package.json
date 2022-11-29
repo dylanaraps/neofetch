@@ -1,0 +1,25 @@
+{
+  "name": "neowofetch",
+  "version": "1.4.4",
+  "description": "Updated neofetch",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hykilpikonna/neofetch.git"
+  },
+  "bin": {
+    "neowofetch": "neofetch"
+  },
+  "keywords": [
+    "neofetch",
+    "screenfetch"
+  ],
+  "author": "dylanaraps",
+  "contributors": [
+    "Azalea Gui <me@hydev.org> (https://github.com/hykilpikonna)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hykilpikonna/neofetch/issues"
+  },
+  "homepage": "https://github.com/hykilpikonna/neofetch#readme"
+}
