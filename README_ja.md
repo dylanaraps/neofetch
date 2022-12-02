@@ -1,4 +1,4 @@
-<p align="center">A command-line system information tool written in bash 3.2+</p>
+<p align="center">bash 3.2+で書かれたコマンドライン情報ツール</p>
 
 <p align="center">
 <a href="./LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
