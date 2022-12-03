@@ -10323,29 +10323,29 @@ ${c2}             `:smMM${c4}yy${c3}MMNy/`
 EOF
         ;;
 
-        "SalientOS"*)
-            set_colors 2 4
+        "Salient OS"* | "SalientOS"* | "salientos"*)
+            set_colors 6 6 7 1
             read -rd '' ascii_data <<'EOF'
-${c2}              ooxxxxo
-          ooxxxxxxo
-       oxxxxxxxxx         oooooo
-     oxxxxxxxxxx        xxxxxxxxxxo
-   oxxxxxxxxxxxo       xxxxxxxxxxxxxo
-  oxxxxxxxxxxxxo      oxxxxxxxxxxxxxxo
- oxxxxxxxxxxxxxo      oxxxxxxxxxxxxxxxo
-oxxxxxxxxxxxxxxx       xxxxxxxxxxxxxxxxo
-xxxxxxxxxxxxxxxxo      oxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxx       oxxxxxxxxxxxxxxx
+${c1}              00xxxx0
+          00xxxxxx0
+       0xxxxxxxxx         000000
+     0xxxxxxxxxx        xxxxxxxxxx0
+   0xxxxxxxxxxx0       xxxxxxxxxxxxx0
+  0xxxxxxxxxxxx0      0xxxxxxxxxxxxxx0
+ 0xxxxxxxxxxxxx0      0xxxxxxxxxxxxxxx0
+0xxxxxxxxxxxxxxx       xxxxxxxxxxxxxxxx0
+xxxxxxxxxxxxxxxx0      0xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxx       0xxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxxx       xxxxxxxxxxxxxxx
-xxxxxxxxxxxxxxxxxxo       xxxxxxxxxxxxxx
-oxxxxxxxxxxxxxxxxxxo      oxxxxxxxxxxxxo
- oxxxxxxxxxxxxxxxxxx       xxxxxxxxxxxo
-  oxxxxxxxxxxxxxxxxx       xxxxxxxxxxo
-   oxxxxxxxxxxxxxxxx       xxxxxxxxxo
-     oxxxxxxxxxxxxo       0xxxxxxxo
-        oxxxxxxxo         xxxxxxo
-                        oxxxoo
-                      xoo
+xxxxxxxxxxxxxxxxxx0       xxxxxxxxxxxxxx
+0xxxxxxxxxxxxxxxxxx0      0xxxxxxxxxxxx0
+ 0xxxxxxxxxxxxxxxxxx       xxxxxxxxxxx0
+  0xxxxxxxxxxxxxxxxx       xxxxxxxxxx0
+   0xxxxxxxxxxxxxxxx       xxxxxxxxx0
+     0xxxxxxxxxxxx0       0xxxxxxx0
+        0xxxxxxx0         xxxxxx0
+                        0xxx00
+                      x00
 EOF
 		;;
 
