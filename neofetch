@@ -6251,7 +6251,6 @@ ${c1}            ,.
 EOF
       ;;
 
-
         "AsteroidOS"*)
             set_colors 160 208 202 214
             read -rd '' ascii_data <<'EOF'
