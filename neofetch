@@ -7232,7 +7232,7 @@ ${c4}                    %%%
 EOF
         ;;
 
-        "Aster")
+        "Aster"*)
             set_colors 6 6
             read -rd '' ascii_data <<'EOF'                                        
 ${c1}                      ...''...         
