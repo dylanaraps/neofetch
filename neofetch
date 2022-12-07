@@ -1911,7 +1911,7 @@ get_packages() {
             has flatpak && tot flatpak list
             has spm     && tot spm list -i
             has puyo    && dir ~/.puyo/installed
-            has cargo   && dir ~/.cargo/bin/*
+            has cargo   && dir "${CARGO_HOME:-$HOME/.cargo}/bin/"*
 
             # Snap hangs if the command is run without the daemon running.
             # Only run snap if the daemon is also running.
