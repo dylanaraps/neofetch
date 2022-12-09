@@ -10149,7 +10149,7 @@ oss${c2}yNMMMNyMMh${c1}sssssssssssssshmmmh${c1}ssssssso
 EOF
         ;;
 
-        "UrukOS"* | "Uruk"* | "Uruk GNU/Linux"*)
+        "UrukOS"*)
             set_colors 12 12 7 12 4
             read -rd '' ascii_data <<'EOF'
 ${c3}          :${c4}::::::::::::::    ${c5}.
