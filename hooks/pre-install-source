@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 log 'Making the baz plugin'
 mkdir -p -- commands/
