@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+log 'Making the baz plugin'
+mkdir -- commands
+ln -s "$PWD/neofetch" commands/
