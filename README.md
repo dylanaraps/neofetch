@@ -99,6 +99,15 @@ Note: You can install the latest nightly version by using:
 pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 ```
 
+* 🌈 **Support using FastFetch as a HyFetch backend** (`hyfetch -b fastfetch`)
+* 🌈 Add config file argument (#48)
+* 🌈 Fix problems caused by color detection on Windows (#16)
+* 🖼️ Distro - Add Aster Linux (dylanaraps/neofetch#2251)
+* 🖼️ Distro - Add Kali small variant (dylanaraps/neofetch#2242)
+* 🖼️ Distro - Fix CachyOS matching (dylanaraps/neofetch#2026)
+* 🖼 WM - Fix wm detection with `fuser` (#39)
+* 🖼 Packages - Fix squirrel (Stock Linux) package count detection (#39)
+* 🖼 Packages - Support cargo bin environment variable (#49)
 * 🖼 Packages - Add tea.xyz package manager (issue [dylanaraps#2235](https://github.com/dylanaraps/neofetch/pull/2235))
 
 ### 1.4.4
