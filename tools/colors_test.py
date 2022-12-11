@@ -1,6 +1,6 @@
 from hyfetch.color_scale import test_color_scale
 from hyfetch.color_util import RGB, printc
-from hyfetch.neofetch_util import get_command_path, run_neofetch
+from hyfetch.neofetch_util import get_command_path
 from hyfetch.presets import PRESETS
 
 

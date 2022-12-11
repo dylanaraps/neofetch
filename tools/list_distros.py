@@ -6,13 +6,10 @@ List distributions supported by neofetch
 from __future__ import annotations
 
 import string
-import sys
 import textwrap
 from pathlib import Path
 
 import regex
-
-sys.path.append(str(Path(__file__).parent.parent))
 
 from hyfetch.distro import AsciiArt
 
@@ -119,6 +116,7 @@ from hyfetch.distro import AsciiArt
 
 def export_distros():
     distros = parse_ascii_distros()
+    print(len(distros))
     [export_distro(d) for d in distros]
 
 

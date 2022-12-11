@@ -6,15 +6,12 @@ import re
 import shlex
 import stat
 import subprocess
-import sys
 from pathlib import Path
-from packaging import version as pv
 
-sys.path.append(str(Path(__file__).parent.parent))
+from packaging import version as pv
 
 from tools.list_distros import generate_help
 from tools.reformat_readme import reformat_readme
-
 
 NEOFETCH_NEW_VERSION = ""
 
