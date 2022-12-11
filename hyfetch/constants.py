@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass
 from pathlib import Path
 
-from typing_extensions import Literal
+from .types import LightDark
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
 VERSION = '1.4.4'
@@ -36,10 +35,10 @@ class GlobalConfig:
     debug: bool
     is_light: bool
 
-    def light_dark(self) -> Literal['light', 'dark']:
+    def light_dark(self) -> LightDark:
         return 'light' if self.is_light else 'dark'
 
-    def default_lightness(self, term: Literal['light', 'dark'] | None = None) -> float:
+    def default_lightness(self, term: LightDark | None = None) -> float:
         if term is None:
             term = self.light_dark()
         return 0.65 if term.lower() == 'dark' else 0.4

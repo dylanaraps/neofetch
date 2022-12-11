@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import inspect
 import os
 import platform
 import re
@@ -15,12 +14,12 @@ from tempfile import TemporaryDirectory
 from urllib.request import urlretrieve
 
 import pkg_resources
-from typing_extensions import Literal
 
 from hyfetch.color_util import color
 from .constants import GLOBAL_CFG, MINGIT_URL
 from .presets import ColorProfile
 from .serializer import from_dict
+from .types import BackendLiteral, ColorAlignMode
 
 RE_NEOFETCH_COLOR = re.compile('\\${c[0-9]}')
 
@@ -76,7 +75,7 @@ def fill_starting(asc: str) -> str:
 
 @dataclass
 class ColorAlignment:
-    mode: Literal['horizontal', 'vertical', 'custom']
+    mode: ColorAlignMode
 
     # custom_colors[ascii color index] = unique color index in preset
     custom_colors: dict[int, int] = ()
@@ -201,7 +200,7 @@ def check_windows_cmd():
             sys.exit(0)
 
 
-def run_command(args: str, pipe: bool = False) -> str | None:
+def run_neofetch_cmd(args: str, pipe: bool = False) -> str | None:
     """
     Run neofetch command
     """
@@ -237,7 +236,7 @@ def get_distro_ascii(distro: str | None = None) -> str:
     if distro:
         cmd += f' --ascii_distro {distro}'
 
-    asc = run_command(cmd, True)
+    asc = run_neofetch_cmd(cmd, True)
 
     # Unescape backslashes here because backslashes are escaped in neofetch for printf
     asc = asc.replace('\\\\', '\\')
@@ -246,7 +245,7 @@ def get_distro_ascii(distro: str | None = None) -> str:
 
 
 def get_distro_name():
-    return run_command('ascii_distro_name', True)
+    return run_neofetch_cmd('ascii_distro_name', True)
 
 
 def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
@@ -269,7 +268,7 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
         path.write_text(asc)
 
         # Call neofetch with the temp file
-        run_command(f'--ascii --source {path.absolute()} --ascii-colors')
+        run_neofetch_cmd(f'--ascii --source {path.absolute()} --ascii-colors')
 
 
 def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:

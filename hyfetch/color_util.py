@@ -2,13 +2,9 @@ from __future__ import annotations
 
 import colorsys
 from dataclasses import dataclass, astuple
-from typing_extensions import Literal
 
 from .constants import GLOBAL_CFG
-
-AnsiMode = Literal['default', 'ansi', '8bit', 'rgb']
-LightDark = Literal['light', 'dark']
-
+from .types import *
 
 MINECRAFT_COLORS = ["&0/\033[0;30m", "&1/\033[0;34m", "&2/\033[0;32m", "&3/\033[0;36m", "&4/\033[0;31m",
                     "&5/\033[0;35m", "&6/\033[0;33m", "&7/\033[0;37m", "&8/\033[1;30m", "&9/\033[1;34m",

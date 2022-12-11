@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from typing_extensions import Literal
-
-from .color_util import RGB, LightDark
+from .color_util import RGB
 from .constants import GLOBAL_CFG
+from .types import LightDark, ColorSpacing
 
 
 def remove_duplicates(seq: Iterable) -> list:
@@ -20,7 +19,7 @@ def remove_duplicates(seq: Iterable) -> list:
 class ColorProfile:
     raw: list[str]
     colors: list[RGB]
-    spacing: Literal['equal', 'weighted'] = 'equal'
+    spacing: ColorSpacing = 'equal'
 
     def __init__(self, colors: list[str] | list[RGB]):
         if isinstance(colors[0], str):

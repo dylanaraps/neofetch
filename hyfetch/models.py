@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from .color_util import AnsiMode, LightDark
 from .constants import CONFIG_PATH
 from .neofetch_util import ColorAlignment
 from .serializer import json_stringify, from_dict
+from .types import AnsiMode, LightDark, BackendLiteral
 
 
 @dataclass
@@ -15,6 +15,7 @@ class Config:
     light_dark: LightDark = 'dark'
     lightness: float | None = None
     color_align: ColorAlignment = field(default_factory=lambda: ColorAlignment('horizontal'))
+    backend: BackendLiteral = "neofetch"
 
     @classmethod
     def from_dict(cls, d: dict):
