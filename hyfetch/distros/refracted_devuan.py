@@ -4,8 +4,8 @@ from ..distro import AsciiArt
 refracted_devuan = AsciiArt(match=r'''"Refracted Devuan"* | "Refracted_Devuan"*''', color='8 7', ascii=r"""
 ${c2}                             A
                             VW
-                           VVW\\
-                         .yWWW\\
+                           VVW\
+                         .yWWW\
  ,;,,u,;yy;;v;uyyyyyyy  ,WWWWW^
     *WWWWWWWWWWWWWWWW/  $VWWWWw      ,
         ^*%WWWWWWVWWX  $WWWW**    ,yy

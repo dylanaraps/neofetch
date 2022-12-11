@@ -135,10 +135,14 @@ def export_distro(d: AsciiArt) -> str:
     """
     Export distro to a python script
     """
+    # Escape variable name
     varname = d.name.lower()
     for s in string.punctuation + ' ':
         varname = varname.replace(s, '_')
-    ascii = d.ascii.replace('"""', '\\"""')
+
+    # Escape/unescape ascii
+    ascii = d.ascii.replace('"""', '\\"""').replace("\\\\", "\\")
+
     script = f"""
 from ..distro import AsciiArt
 
