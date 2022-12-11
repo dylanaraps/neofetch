@@ -104,7 +104,9 @@ def match_condition(match: str) -> str:
     match = [s.strip() for s in match.split("|")]
     conds = []
     for m in match:
-        stripped = m.strip("*'\"")
+        stripped = m.strip("*'\"").lower()
+        if '*' in stripped or '"' in stripped:
+            print(f"TODO: Cannot properly parse: {m}")
 
         # Exact matches
         if m.strip("*") == m:
@@ -162,6 +164,7 @@ def export_distros():
 from ..distro import AsciiArt
 
 def detect(name: str) -> AsciiArt:
+    name = name.lower()
 """
     py += '\n'.join(export_distro(d).strip('\n') for d in distros)
     write(Path(__file__).parent.parent / f'hyfetch/distros/distro_detector.py', py)

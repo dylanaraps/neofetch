@@ -4,31 +4,32 @@
 from ..distro import AsciiArt
 
 def detect(name: str) -> AsciiArt:
-    if name.startswith('AIX'):
+    name = name.lower()
+    if name.startswith('aix'):
         from .aix import aix
         return aix
     
-    if name.startswith('Aperio GNU/Linux'):
+    if name.startswith('aperio gnu/linux'):
         from .aperio_gnu_linux import aperio_gnu_linux
         return aperio_gnu_linux
     
-    if name.startswith('Asahi'):
+    if name.startswith('asahi'):
         from .asahi import asahi
         return asahi
     
-    if name.startswith('Hash'):
+    if name.startswith('hash'):
         from .hash import hash
         return hash
     
-    if name.startswith('HarDClanZ'):
+    if name.startswith('hardclanz'):
         from .hardclanz import hardclanz
         return hardclanz
     
-    if name.startswith('AlmaLinux'):
+    if name.startswith('almalinux'):
         from .almalinux import almalinux
         return almalinux
     
-    if name.startswith('Exodia Predator OS') or name.startswith('exodia-predator') or name.startswith('Predator'):
+    if name.startswith('exodia predator os') or name.startswith('exodia-predator') or name.startswith('predator'):
         from .exodia_predator_os import exodia_predator_os
         return exodia_predator_os
     
@@ -36,23 +37,23 @@ def detect(name: str) -> AsciiArt:
         from .alpine_small import alpine_small
         return alpine_small
     
-    if name.startswith('Alpine'):
+    if name.startswith('alpine'):
         from .alpine import alpine
         return alpine
     
-    if name.startswith('Alter'):
+    if name.startswith('alter'):
         from .alter import alter
         return alter
     
-    if name.startswith('Amazon'):
+    if name.startswith('amazon'):
         from .amazon import amazon
         return amazon
     
-    if name.startswith('AmogOS'):
+    if name.startswith('amogos'):
         from .amogos import amogos
         return amogos
     
-    if name.startswith('Anarchy'):
+    if name.startswith('anarchy'):
         from .anarchy import anarchy
         return anarchy
     
@@ -60,23 +61,23 @@ def detect(name: str) -> AsciiArt:
         from .android_small import android_small
         return android_small
     
-    if name.startswith('Android'):
+    if name.startswith('android'):
         from .android import android
         return android
     
-    if name.startswith('instantOS'):
+    if name.startswith('instantos'):
         from .instantos import instantos
         return instantos
     
-    if name.startswith('Antergos'):
+    if name.startswith('antergos'):
         from .antergos import antergos
         return antergos
     
-    if name.startswith('antiX'):
+    if name.startswith('antix'):
         from .antix import antix
         return antix
     
-    if name.startswith('AOSC OS/Retro'):
+    if name.startswith('aosc os/retro'):
         from .aosc_os_retro import aosc_os_retro
         return aosc_os_retro
     
@@ -84,15 +85,15 @@ def detect(name: str) -> AsciiArt:
         from .aoscosretro_small import aoscosretro_small
         return aoscosretro_small
     
-    if name.startswith('AOSC OS'):
+    if name.startswith('aosc os'):
         from .aosc_os import aosc_os
         return aosc_os
     
-    if name.startswith('Apricity'):
+    if name.startswith('apricity'):
         from .apricity import apricity
         return apricity
     
-    if name.startswith('Archcraft'):
+    if name.startswith('archcraft'):
         from .archcraft import archcraft
         return archcraft
     
@@ -100,7 +101,7 @@ def detect(name: str) -> AsciiArt:
         from .arcolinux_small import arcolinux_small
         return arcolinux_small
     
-    if name.startswith('ArcoLinux'):
+    if name.startswith('arcolinux'):
         from .arcolinux import arcolinux
         return arcolinux
     
@@ -112,35 +113,35 @@ def detect(name: str) -> AsciiArt:
         from .arch_old import arch_old
         return arch_old
     
-    if name.startswith('ArchBox'):
+    if name.startswith('archbox'):
         from .archbox import archbox
         return archbox
     
-    if name.startswith('ARCHlabs'):
+    if name.startswith('archlabs'):
         from .archlabs import archlabs
         return archlabs
     
-    if name.startswith('ArchStrike'):
+    if name.startswith('archstrike'):
         from .archstrike import archstrike
         return archstrike
     
-    if name.startswith('astOS'):
+    if name.startswith('astos'):
         from .astos import astos
         return astos
     
-    if (name.startswith('XFerience') or name.endswith('XFerience')):
+    if (name.startswith('xferience') or name.endswith('xferience')):
         from .xferience import xferience
         return xferience
     
-    if name.startswith('Stock Linux'):
+    if name.startswith('stock linux'):
         from .stock_linux import stock_linux
         return stock_linux
     
-    if name.startswith('ArchMerge'):
+    if name.startswith('archmerge'):
         from .archmerge import archmerge
         return archmerge
     
-    if name.startswith('Arch'):
+    if name.startswith('arch'):
         from .arch import arch
         return arch
     
@@ -148,63 +149,63 @@ def detect(name: str) -> AsciiArt:
         from .artix_small import artix_small
         return artix_small
     
-    if name.startswith('Artix'):
+    if name.startswith('artix'):
         from .artix import artix
         return artix
     
-    if name.startswith('Cobalt'):
+    if name.startswith('cobalt'):
         from .cobalt import cobalt
         return cobalt
     
-    if name.startswith('Arya'):
+    if name.startswith('arya'):
         from .arya import arya
         return arya
     
-    if name.startswith('AsteroidOS'):
+    if name.startswith('asteroidos'):
         from .asteroidos import asteroidos
         return asteroidos
     
-    if name.startswith('Aster'):
+    if name.startswith('aster'):
         from .aster import aster
         return aster
     
-    if name.startswith('Bedrock'):
+    if name.startswith('bedrock'):
         from .bedrock import bedrock
         return bedrock
     
-    if name.startswith('BigLinux'):
+    if name.startswith('biglinux'):
         from .biglinux import biglinux
         return biglinux
     
-    if name.startswith('Bitrig'):
+    if name.startswith('bitrig'):
         from .bitrig import bitrig
         return bitrig
     
-    if name.startswith('BlackArch'):
+    if name.startswith('blackarch'):
         from .blackarch import blackarch
         return blackarch
     
-    if name.startswith('blackPanther') or name.startswith('blackpanther'):
+    if name.startswith('blackpanther') or name.startswith('blackpanther'):
         from .blackpanther import blackpanther
         return blackpanther
     
-    if name.startswith('MatuusOS'):
+    if name.startswith('matuusos'):
         from .matuusos import matuusos
         return matuusos
     
-    if name.startswith('BLAG'):
+    if name.startswith('blag'):
         from .blag import blag
         return blag
     
-    if name.startswith('BlankOn'):
+    if name.startswith('blankon'):
         from .blankon import blankon
         return blankon
     
-    if name.startswith('BlueLight'):
+    if name.startswith('bluelight'):
         from .bluelight import bluelight
         return bluelight
     
-    if name.startswith('Bodhi'):
+    if name.startswith('bodhi'):
         from .bodhi import bodhi
         return bodhi
     
@@ -212,39 +213,39 @@ def detect(name: str) -> AsciiArt:
         from .bonsai import bonsai
         return bonsai
     
-    if name == 'BSD':
+    if name == 'bsd':
         from .bsd import bsd
         return bsd
     
-    if name.startswith('BunsenLabs'):
+    if name.startswith('bunsenlabs'):
         from .bunsenlabs import bunsenlabs
         return bunsenlabs
     
-    if name.startswith('CachyOS'):
+    if name.startswith('cachyos'):
         from .cachyos import cachyos
         return cachyos
     
-    if name.startswith('Calculate'):
+    if name.startswith('calculate'):
         from .calculate import calculate
         return calculate
     
-    if name.startswith('Carbs'):
+    if name.startswith('carbs'):
         from .carbs import carbs
         return carbs
     
-    if name == 'CalinixOS':
+    if name == 'calinixos':
         from .calinixos import calinixos
         return calinixos
     
-    if name.startswith('CalinixOS_small'):
+    if name.startswith('calinixos_small'):
         from .calinixos_small import calinixos_small
         return calinixos_small
     
-    if name.startswith('CBL-Mariner'):
+    if name.startswith('cbl-mariner'):
         from .cbl_mariner import cbl_mariner
         return cbl_mariner
     
-    if name.startswith('CelOS'):
+    if name.startswith('celos'):
         from .celos import celos
         return celos
     
@@ -252,31 +253,31 @@ def detect(name: str) -> AsciiArt:
         from .centos_small import centos_small
         return centos_small
     
-    if name.startswith('CentOS'):
+    if name.startswith('centos'):
         from .centos import centos
         return centos
     
-    if name.startswith('Center'):
+    if name.startswith('center'):
         from .center import center
         return center
     
-    if name.startswith('Chakra'):
+    if name.startswith('chakra'):
         from .chakra import chakra
         return chakra
     
-    if name.startswith('ChaletOS'):
+    if name.startswith('chaletos'):
         from .chaletos import chaletos
         return chaletos
     
-    if name.startswith('Chapeau'):
+    if name.startswith('chapeau'):
         from .chapeau import chapeau
         return chapeau
     
-    if name.startswith('ChonkySealOS'):
+    if name.startswith('chonkysealos'):
         from .chonkysealos import chonkysealos
         return chonkysealos
     
-    if name.startswith('Chrom'):
+    if name.startswith('chrom'):
         from .chrom import chrom
         return chrom
     
@@ -284,51 +285,51 @@ def detect(name: str) -> AsciiArt:
         from .cleanjaro_small import cleanjaro_small
         return cleanjaro_small
     
-    if name.startswith('Cleanjaro'):
+    if name.startswith('cleanjaro'):
         from .cleanjaro import cleanjaro
         return cleanjaro
     
-    if name.startswith('ClearOS'):
+    if name.startswith('clearos'):
         from .clearos import clearos
         return clearos
     
-    if name.startswith('Clear Linux OS') or name.startswith('Clear_Linux'):
+    if name.startswith('clear linux os') or name.startswith('clear_linux'):
         from .clear_linux_os import clear_linux_os
         return clear_linux_os
     
-    if name.startswith('Clover'):
+    if name.startswith('clover'):
         from .clover import clover
         return clover
     
-    if name.startswith('Condres'):
+    if name.startswith('condres'):
         from .condres import condres
         return condres
     
-    if name.startswith('Container Linux by CoreOS') or name.startswith('Container_Linux'):
+    if name.startswith('container linux by coreos') or name.startswith('container_linux'):
         from .container_linux_by_coreos import container_linux_by_coreos
         return container_linux_by_coreos
     
-    if name == 'crux_small' or name.startswith('KISS'):
+    if name == 'crux_small' or name.startswith('kiss'):
         from .crux_small import crux_small
         return crux_small
     
-    if name.startswith('CRUX'):
+    if name.startswith('crux'):
         from .crux import crux
         return crux
     
-    if (name.startswith('Crystal Linux') or name.endswith('Crystal Linux')):
+    if (name.startswith('crystal linux') or name.endswith('crystal linux')):
         from .crystal_linux import crystal_linux
         return crystal_linux
     
-    if (name.startswith('Cucumber') or name.endswith('Cucumber')):
+    if (name.startswith('cucumber') or name.endswith('cucumber')):
         from .cucumber import cucumber
         return cucumber
     
-    if name.startswith('CutefishOS'):
+    if name.startswith('cutefishos'):
         from .cutefishos import cutefishos
         return cutefishos
     
-    if name.startswith('CyberOS'):
+    if name.startswith('cyberos'):
         from .cyberos import cyberos
         return cyberos
     
@@ -340,39 +341,39 @@ def detect(name: str) -> AsciiArt:
         from .debian_small import debian_small
         return debian_small
     
-    if name.startswith('Debian'):
+    if name.startswith('debian'):
         from .debian import debian
         return debian
     
-    if name.startswith('Droidian'):
+    if name.startswith('droidian'):
         from .droidian import droidian
         return droidian
     
-    if name.startswith('Deepin'):
+    if name.startswith('deepin'):
         from .deepin import deepin
         return deepin
     
-    if name == 'DesaOS':
+    if name == 'desaos':
         from .desaos import desaos
         return desaos
     
-    if name.startswith('Devuan'):
+    if name.startswith('devuan'):
         from .devuan import devuan
         return devuan
     
-    if name.startswith('DietPi'):
+    if name.startswith('dietpi'):
         from .dietpi import dietpi
         return dietpi
     
-    if name.startswith('DracOS'):
+    if name.startswith('dracos'):
         from .dracos import dracos
         return dracos
     
-    if name == 'DarkOs':
+    if name == 'darkos':
         from .darkos import darkos
         return darkos
     
-    if name.startswith('Itc'):
+    if name.startswith('itc'):
         from .itc import itc
         return itc
     
@@ -384,11 +385,11 @@ def detect(name: str) -> AsciiArt:
         from .dragonfly_small import dragonfly_small
         return dragonfly_small
     
-    if name.startswith('DragonFly'):
+    if name.startswith('dragonfly'):
         from .dragonfly import dragonfly
         return dragonfly
     
-    if name.startswith('Drauger'):
+    if name.startswith('drauger'):
         from .drauger import drauger
         return drauger
     
@@ -396,35 +397,35 @@ def detect(name: str) -> AsciiArt:
         from .elementary_small import elementary_small
         return elementary_small
     
-    if name.startswith('Elementary'):
+    if name.startswith('elementary'):
         from .elementary import elementary
         return elementary
     
-    if name.startswith('Elive'):
+    if name.startswith('elive'):
         from .elive import elive
         return elive
     
-    if name.startswith('EndeavourOS'):
+    if name.startswith('endeavouros'):
         from .endeavouros import endeavouros
         return endeavouros
     
-    if name.startswith('EncryptOS'):
+    if name.startswith('encryptos'):
         from .encryptos import encryptos
         return encryptos
     
-    if name.startswith('Endless'):
+    if name.startswith('endless'):
         from .endless import endless
         return endless
     
-    if name.startswith('Enso'):
+    if name.startswith('enso'):
         from .enso import enso
         return enso
     
-    if name.startswith('EuroLinux'):
+    if name.startswith('eurolinux'):
         from .eurolinux import eurolinux
         return eurolinux
     
-    if name.startswith('Exherbo'):
+    if name.startswith('exherbo'):
         from .exherbo import exherbo
         return exherbo
     
@@ -432,19 +433,19 @@ def detect(name: str) -> AsciiArt:
         from .fedora_small import fedora_small
         return fedora_small
     
-    if name.startswith('Fedora_old') or name.startswith('RFRemix'):
+    if name.startswith('fedora_old') or name.startswith('rfremix'):
         from .fedora_old import fedora_old
         return fedora_old
     
-    if name.startswith('Fedora'):
+    if name.startswith('fedora'):
         from .fedora import fedora
         return fedora
     
-    if name.startswith('Feren'):
+    if name.startswith('feren'):
         from .feren import feren
         return feren
     
-    if name.startswith('Finnix'):
+    if name.startswith('finnix'):
         from .finnix import finnix
         return finnix
     
@@ -452,23 +453,23 @@ def detect(name: str) -> AsciiArt:
         from .freebsd_small import freebsd_small
         return freebsd_small
     
-    if name.startswith('FreeBSD') or name.startswith('HardenedBSD'):
+    if name.startswith('freebsd') or name.startswith('hardenedbsd'):
         from .freebsd import freebsd
         return freebsd
     
-    if name.startswith('FreeMiNT'):
+    if name.startswith('freemint'):
         from .freemint import freemint
         return freemint
     
-    if name.startswith('Frugalware'):
+    if name.startswith('frugalware'):
         from .frugalware import frugalware
         return frugalware
     
-    if name.startswith('Funtoo'):
+    if name.startswith('funtoo'):
         from .funtoo import funtoo
         return funtoo
     
-    if name.startswith('GalliumOS'):
+    if name.startswith('galliumos'):
         from .galliumos import galliumos
         return galliumos
     
@@ -476,7 +477,7 @@ def detect(name: str) -> AsciiArt:
         from .garuda_small import garuda_small
         return garuda_small
     
-    if name.startswith('Garuda'):
+    if name.startswith('garuda'):
         from .garuda import garuda
         return garuda
     
@@ -484,11 +485,11 @@ def detect(name: str) -> AsciiArt:
         from .gentoo_small import gentoo_small
         return gentoo_small
     
-    if name.startswith('Gentoo'):
+    if name.startswith('gentoo'):
         from .gentoo import gentoo
         return gentoo
     
-    if name.startswith('Pentoo'):
+    if name.startswith('pentoo'):
         from .pentoo import pentoo
         return pentoo
     
@@ -496,27 +497,27 @@ def detect(name: str) -> AsciiArt:
         from .glaucus import glaucus
         return glaucus
     
-    if name.startswith('gNewSense'):
+    if name.startswith('gnewsense'):
         from .gnewsense import gnewsense
         return gnewsense
     
-    if name.startswith('GNOME'):
+    if name.startswith('gnome'):
         from .gnome import gnome
         return gnome
     
-    if name == 'GNU':
+    if name == 'gnu':
         from .gnu import gnu
         return gnu
     
-    if name.startswith('GoboLinux'):
+    if name.startswith('gobolinux'):
         from .gobolinux import gobolinux
         return gobolinux
     
-    if name.startswith('GrapheneOS'):
+    if name.startswith('grapheneos'):
         from .grapheneos import grapheneos
         return grapheneos
     
-    if name.startswith('Grombyang'):
+    if name.startswith('grombyang'):
         from .grombyang import grombyang
         return grombyang
     
@@ -524,7 +525,7 @@ def detect(name: str) -> AsciiArt:
         from .guix_small import guix_small
         return guix_small
     
-    if name.startswith('Guix'):
+    if name.startswith('guix'):
         from .guix import guix
         return guix
     
@@ -532,19 +533,19 @@ def detect(name: str) -> AsciiArt:
         from .haiku_small import haiku_small
         return haiku_small
     
-    if name.startswith('Haiku'):
+    if name.startswith('haiku'):
         from .haiku import haiku
         return haiku
     
-    if name.startswith('HamoniKR'):
+    if name.startswith('hamonikr'):
         from .hamonikr import hamonikr
         return hamonikr
     
-    if name.startswith('Huayra'):
+    if name.startswith('huayra'):
         from .huayra import huayra
         return huayra
     
-    if name.startswith('HydroOS'):
+    if name.startswith('hydroos'):
         from .hydroos import hydroos
         return hydroos
     
@@ -552,7 +553,7 @@ def detect(name: str) -> AsciiArt:
         from .hyperbola_small import hyperbola_small
         return hyperbola_small
     
-    if name.startswith('Hyperbola'):
+    if name.startswith('hyperbola'):
         from .hyperbola import hyperbola
         return hyperbola
     
@@ -560,11 +561,11 @@ def detect(name: str) -> AsciiArt:
         from .iglunix import iglunix
         return iglunix
     
-    if name.startswith('januslinux') or name.startswith('janus') or name.startswith('Ataraxia Linux') or name.startswith('Ataraxia'):
+    if name.startswith('januslinux') or name.startswith('janus') or name.startswith('ataraxia linux') or name.startswith('ataraxia'):
         from .januslinux import januslinux
         return januslinux
     
-    if name.startswith('Kaisen'):
+    if name.startswith('kaisen'):
         from .kaisen import kaisen
         return kaisen
     
@@ -572,59 +573,59 @@ def detect(name: str) -> AsciiArt:
         from .kali_small import kali_small
         return kali_small
     
-    if name.startswith('Kali'):
+    if name.startswith('kali'):
         from .kali import kali
         return kali
     
-    if name.startswith('KaOS'):
+    if name.startswith('kaos'):
         from .kaos import kaos
         return kaos
     
-    if name.startswith('KDE'):
+    if name.startswith('kde'):
         from .kde import kde
         return kde
     
-    if name.startswith('Kibojoe'):
+    if name.startswith('kibojoe'):
         from .kibojoe import kibojoe
         return kibojoe
     
-    if name.startswith('Kogaion'):
+    if name.startswith('kogaion'):
         from .kogaion import kogaion
         return kogaion
     
-    if name.startswith('Korora'):
+    if name.startswith('korora'):
         from .korora import korora
         return korora
     
-    if name.startswith('KSLinux'):
+    if name.startswith('kslinux'):
         from .kslinux import kslinux
         return kslinux
     
-    if name.startswith('Kubuntu'):
+    if name.startswith('kubuntu'):
         from .kubuntu import kubuntu
         return kubuntu
     
-    if name.startswith('LEDE'):
+    if name.startswith('lede'):
         from .lede import lede
         return lede
     
-    if name == 'LangitKetujuh_old':
+    if name == 'langitketujuh_old':
         from .langitketujuh_old import langitketujuh_old
         return langitketujuh_old
     
-    if name.startswith('LangitKetujuh'):
+    if name.startswith('langitketujuh'):
         from .langitketujuh import langitketujuh
         return langitketujuh
     
-    if name.startswith('LaxerOS'):
+    if name.startswith('laxeros'):
         from .laxeros import laxeros
         return laxeros
     
-    if name.startswith('LibreELEC'):
+    if name.startswith('libreelec'):
         from .libreelec import libreelec
         return libreelec
     
-    if name == 'Linux':
+    if name == 'linux':
         from .linux import linux
         return linux
     
@@ -632,19 +633,19 @@ def detect(name: str) -> AsciiArt:
         from .linuxlite_small import linuxlite_small
         return linuxlite_small
     
-    if name.startswith('Linux Lite') or name.startswith('Linux_Lite'):
+    if name.startswith('linux lite') or name.startswith('linux_lite'):
         from .linux_lite import linux_lite
         return linux_lite
     
-    if name.startswith('LMDE'):
+    if name.startswith('lmde'):
         from .lmde import lmde
         return lmde
     
-    if name.startswith('Lubuntu'):
+    if name.startswith('lubuntu'):
         from .lubuntu import lubuntu
         return lubuntu
     
-    if name.startswith('Lunar'):
+    if name.startswith('lunar'):
         from .lunar import lunar
         return lunar
     
@@ -652,7 +653,7 @@ def detect(name: str) -> AsciiArt:
         from .mac_small import mac_small
         return mac_small
     
-    if name.startswith('mac') or name == 'Darwin':
+    if name.startswith('mac') or name == 'darwin':
         from .mac import mac
         return mac
     
@@ -660,15 +661,15 @@ def detect(name: str) -> AsciiArt:
         from .mageia_small import mageia_small
         return mageia_small
     
-    if name.startswith('Mageia'):
+    if name.startswith('mageia'):
         from .mageia import mageia
         return mageia
     
-    if name.startswith('MagpieOS'):
+    if name.startswith('magpieos'):
         from .magpieos import magpieos
         return magpieos
     
-    if name.startswith('Mandriva') or name.startswith('Mandrake'):
+    if name.startswith('mandriva') or name.startswith('mandrake'):
         from .mandriva import mandriva
         return mandriva
     
@@ -676,35 +677,35 @@ def detect(name: str) -> AsciiArt:
         from .manjaro_small import manjaro_small
         return manjaro_small
     
-    if name.startswith('Manjaro'):
+    if name.startswith('manjaro'):
         from .manjaro import manjaro
         return manjaro
     
-    if name.startswith('MassOS'):
+    if name.startswith('massos'):
         from .massos import massos
         return massos
     
-    if name.startswith('TeArch'):
+    if name.startswith('tearch'):
         from .tearch import tearch
         return tearch
     
-    if name.startswith('Maui'):
+    if name.startswith('maui'):
         from .maui import maui
         return maui
     
-    if name.startswith('Mer'):
+    if name.startswith('mer'):
         from .mer import mer
         return mer
     
-    if name.startswith('Minix'):
+    if name.startswith('minix'):
         from .minix import minix
         return minix
     
-    if name.startswith('MIRACLE LINUX') or name.startswith('MIRACLE_LINUX'):
+    if name.startswith('miracle linux') or name.startswith('miracle_linux'):
         from .miracle_linux import miracle_linux
         return miracle_linux
     
-    if name.startswith('Linspire') or name.startswith('Freespire') or name.startswith('Lindows'):
+    if name.startswith('linspire') or name.startswith('freespire') or name.startswith('lindows'):
         from .linspire import linspire
         return linspire
     
@@ -712,15 +713,15 @@ def detect(name: str) -> AsciiArt:
         from .linuxmint_small import linuxmint_small
         return linuxmint_small
     
-    if name.startswith('Linux Mint Old') or name.startswith('LinuxMintOld') or name.startswith('mint_old'):
+    if name.startswith('linux mint old') or name.startswith('linuxmintold') or name.startswith('mint_old'):
         from .linux_mint_old import linux_mint_old
         return linux_mint_old
     
-    if name.startswith('Linux Mint') or name.startswith('LinuxMint') or name.startswith('mint'):
+    if name.startswith('linux mint') or name.startswith('linuxmint') or name.startswith('mint'):
         from .linux_mint import linux_mint
         return linux_mint
     
-    if name.startswith('Live Raizo') or name.startswith('Live_Raizo'):
+    if name.startswith('live raizo') or name.startswith('live_raizo'):
         from .live_raizo import live_raizo
         return live_raizo
     
@@ -728,19 +729,19 @@ def detect(name: str) -> AsciiArt:
         from .mx_small import mx_small
         return mx_small
     
-    if name.startswith('MX'):
+    if name.startswith('mx'):
         from .mx import mx
         return mx
     
-    if name.startswith('Namib'):
+    if name.startswith('namib'):
         from .namib import namib
         return namib
     
-    if name.startswith('NekOS'):
+    if name.startswith('nekos'):
         from .nekos import nekos
         return nekos
     
-    if name.startswith('Neptune'):
+    if name.startswith('neptune'):
         from .neptune import neptune
         return neptune
     
@@ -748,15 +749,15 @@ def detect(name: str) -> AsciiArt:
         from .netbsd_small import netbsd_small
         return netbsd_small
     
-    if name.startswith('NetBSD'):
+    if name.startswith('netbsd'):
         from .netbsd import netbsd
         return netbsd
     
-    if name.startswith('Netrunner'):
+    if name.startswith('netrunner'):
         from .netrunner import netrunner
         return netrunner
     
-    if name.startswith('Nitrux'):
+    if name.startswith('nitrux'):
         from .nitrux import nitrux
         return nitrux
     
@@ -768,31 +769,31 @@ def detect(name: str) -> AsciiArt:
         from .nixos_old import nixos_old
         return nixos_old
     
-    if name.startswith('NixOS'):
+    if name.startswith('nixos'):
         from .nixos import nixos
         return nixos
     
-    if name.startswith('NomadBSD'):
+    if name.startswith('nomadbsd'):
         from .nomadbsd import nomadbsd
         return nomadbsd
     
-    if name.startswith('GhostBSD'):
+    if name.startswith('ghostbsd'):
         from .ghostbsd import ghostbsd
         return ghostbsd
     
-    if name.startswith('Nurunner'):
+    if name.startswith('nurunner'):
         from .nurunner import nurunner
         return nurunner
     
-    if name.startswith('NuTyX'):
+    if name.startswith('nutyx'):
         from .nutyx import nutyx
         return nutyx
     
-    if name.startswith('OBRevenge'):
+    if name.startswith('obrevenge'):
         from .obrevenge import obrevenge
         return obrevenge
     
-    if name.startswith('OmniOS'):
+    if name.startswith('omnios'):
         from .omnios import omnios
         return omnios
     
@@ -800,15 +801,15 @@ def detect(name: str) -> AsciiArt:
         from .openbsd_small import openbsd_small
         return openbsd_small
     
-    if name.startswith('OpenBSD'):
+    if name.startswith('openbsd'):
         from .openbsd import openbsd
         return openbsd
     
-    if name.startswith('openEuler'):
+    if name.startswith('openeuler'):
         from .openeuler import openeuler
         return openeuler
     
-    if name.startswith('OpenIndiana'):
+    if name.startswith('openindiana'):
         from .openindiana import openindiana
         return openindiana
     
@@ -816,27 +817,27 @@ def detect(name: str) -> AsciiArt:
         from .openmamba import openmamba
         return openmamba
     
-    if name.startswith('OpenMandriva'):
+    if name.startswith('openmandriva'):
         from .openmandriva import openmandriva
         return openmandriva
     
-    if name.startswith('OpenStage'):
+    if name.startswith('openstage'):
         from .openstage import openstage
         return openstage
     
-    if name.startswith('OpenWrt'):
+    if name.startswith('openwrt'):
         from .openwrt import openwrt
         return openwrt
     
-    if name.startswith('Open Source Media Center') or name == 'osmc':
+    if name.startswith('open source media center') or name == 'osmc':
         from .open_source_media_center import open_source_media_center
         return open_source_media_center
     
-    if name.startswith('OPNsense'):
+    if name.startswith('opnsense'):
         from .opnsense import opnsense
         return opnsense
     
-    if name.startswith('Oracle'):
+    if name.startswith('oracle'):
         from .oracle import oracle
         return oracle
     
@@ -848,11 +849,11 @@ def detect(name: str) -> AsciiArt:
         from .orchid import orchid
         return orchid
     
-    if name.startswith('OS Elbrus'):
+    if name.startswith('os elbrus'):
         from .os_elbrus import os_elbrus
         return os_elbrus
     
-    if name.startswith('PacBSD'):
+    if name.startswith('pacbsd'):
         from .pacbsd import pacbsd
         return pacbsd
     
@@ -860,47 +861,47 @@ def detect(name: str) -> AsciiArt:
         from .parabola_small import parabola_small
         return parabola_small
     
-    if name.startswith('Parabola'):
+    if name.startswith('parabola'):
         from .parabola import parabola
         return parabola
     
-    if name.startswith('Pardus'):
+    if name.startswith('pardus'):
         from .pardus import pardus
         return pardus
     
-    if name.startswith('Parrot'):
+    if name.startswith('parrot'):
         from .parrot import parrot
         return parrot
     
-    if name.startswith('Parsix'):
+    if name.startswith('parsix'):
         from .parsix import parsix
         return parsix
     
-    if name.startswith('PCBSD') or name.startswith('TrueOS'):
+    if name.startswith('pcbsd') or name.startswith('trueos'):
         from .pcbsd import pcbsd
         return pcbsd
     
-    if name.startswith('PCLinuxOS'):
+    if name.startswith('pclinuxos'):
         from .pclinuxos import pclinuxos
         return pclinuxos
     
-    if name.startswith('pearOS'):
+    if name.startswith('pearos'):
         from .pearos import pearos
         return pearos
     
-    if name.startswith('Pengwin'):
+    if name.startswith('pengwin'):
         from .pengwin import pengwin
         return pengwin
     
-    if name.startswith('Peppermint'):
+    if name.startswith('peppermint'):
         from .peppermint import peppermint
         return peppermint
     
-    if name.startswith('Pisi'):
+    if name.startswith('pisi'):
         from .pisi import pisi
         return pisi
     
-    if name.startswith('PNM Linux') or name.startswith('WHPNM Linux'):
+    if name.startswith('pnm linux') or name.startswith('whpnm linux'):
         from .pnm_linux import pnm_linux
         return pnm_linux
     
@@ -908,11 +909,11 @@ def detect(name: str) -> AsciiArt:
         from .popos_small import popos_small
         return popos_small
     
-    if name.startswith('Pop!_OS') or name.startswith('popos') or name.startswith('pop_os'):
+    if name.startswith('pop!_os') or name.startswith('popos') or name.startswith('pop_os'):
         from .pop__os import pop__os
         return pop__os
     
-    if name.startswith('Porteus'):
+    if name.startswith('porteus'):
         from .porteus import porteus
         return porteus
     
@@ -920,19 +921,19 @@ def detect(name: str) -> AsciiArt:
         from .postmarketos_small import postmarketos_small
         return postmarketos_small
     
-    if name.startswith('PostMarketOS'):
+    if name.startswith('postmarketos'):
         from .postmarketos import postmarketos
         return postmarketos
     
-    if name.startswith('PuffOS'):
+    if name.startswith('puffos'):
         from .puffos import puffos
         return puffos
     
-    if name.startswith('Proxmox'):
+    if name.startswith('proxmox'):
         from .proxmox import proxmox
         return proxmox
     
-    if name.startswith('Puppy') or name.startswith('Quirky Werewolf') or name.startswith('Precise Puppy'):
+    if name.startswith('puppy') or name.startswith('quirky werewolf') or name.startswith('precise puppy'):
         from .puppy import puppy
         return puppy
     
@@ -940,51 +941,51 @@ def detect(name: str) -> AsciiArt:
         from .pureos_small import pureos_small
         return pureos_small
     
-    if name.startswith('PureOS'):
+    if name.startswith('pureos'):
         from .pureos import pureos
         return pureos
     
-    if name.startswith('Q4OS'):
+    if name.startswith('q4os'):
         from .q4os import q4os
         return q4os
     
-    if name.startswith('Qubes'):
+    if name.startswith('qubes'):
         from .qubes import qubes
         return qubes
     
-    if name.startswith('Qubyt'):
+    if name.startswith('qubyt'):
         from .qubyt import qubyt
         return qubyt
     
-    if name.startswith('Quibian'):
+    if name.startswith('quibian'):
         from .quibian import quibian
         return quibian
     
-    if name.startswith('Radix'):
+    if name.startswith('radix'):
         from .radix import radix
         return radix
     
-    if name.startswith('Raspbian_small'):
+    if name.startswith('raspbian_small'):
         from .raspbian_small import raspbian_small
         return raspbian_small
     
-    if name.startswith('Raspbian'):
+    if name.startswith('raspbian'):
         from .raspbian import raspbian
         return raspbian
     
-    if name == 'ravynOS':
+    if name == 'ravynos':
         from .ravynos import ravynos
         return ravynos
     
-    if name.startswith('Reborn OS') or name.startswith('Reborn'):
+    if name.startswith('reborn os') or name.startswith('reborn'):
         from .reborn_os import reborn_os
         return reborn_os
     
-    if name.startswith('Red Star') or name.startswith('Redstar'):
+    if name.startswith('red star') or name.startswith('redstar'):
         from .red_star import red_star
         return red_star
     
-    if name.startswith('Redcore'):
+    if name.startswith('redcore'):
         from .redcore import redcore
         return redcore
     
@@ -992,19 +993,19 @@ def detect(name: str) -> AsciiArt:
         from .redhat_old import redhat_old
         return redhat_old
     
-    if name.startswith('Redhat') or name.startswith('Red Hat') or name.startswith('rhel'):
+    if name.startswith('redhat') or name.startswith('red hat') or name.startswith('rhel'):
         from .redhat import redhat
         return redhat
     
-    if name.startswith('Refracted Devuan') or name.startswith('Refracted_Devuan'):
+    if name.startswith('refracted devuan') or name.startswith('refracted_devuan'):
         from .refracted_devuan import refracted_devuan
         return refracted_devuan
     
-    if name.startswith('Regata'):
+    if name.startswith('regata'):
         from .regata import regata
         return regata
     
-    if name.startswith('Regolith'):
+    if name.startswith('regolith'):
         from .regolith import regolith
         return regolith
     
@@ -1016,7 +1017,7 @@ def detect(name: str) -> AsciiArt:
         from .rocky import rocky
         return rocky
     
-    if name.startswith('Rosa'):
+    if name.startswith('rosa'):
         from .rosa import rosa
         return rosa
     
@@ -1024,39 +1025,39 @@ def detect(name: str) -> AsciiArt:
         from .sabotage import sabotage
         return sabotage
     
-    if name.startswith('Sabayon'):
+    if name.startswith('sabayon'):
         from .sabayon import sabayon
         return sabayon
     
-    if name.startswith('Sailfish'):
+    if name.startswith('sailfish'):
         from .sailfish import sailfish
         return sailfish
     
-    if name.startswith('SalentOS'):
+    if name.startswith('salentos'):
         from .salentos import salentos
         return salentos
     
-    if name.startswith('ShastraOS'):
+    if name.startswith('shastraos'):
         from .shastraos import shastraos
         return shastraos
     
-    if name.startswith('Scientific'):
+    if name.startswith('scientific'):
         from .scientific import scientific
         return scientific
     
-    if name.startswith('Septor'):
+    if name.startswith('septor'):
         from .septor import septor
         return septor
     
-    if name.startswith('Serene'):
+    if name.startswith('serene'):
         from .serene import serene
         return serene
     
-    if name.startswith('SharkLinux'):
+    if name.startswith('sharklinux'):
         from .sharklinux import sharklinux
         return sharklinux
     
-    if name.startswith('Siduction'):
+    if name.startswith('siduction'):
         from .siduction import siduction
         return siduction
     
@@ -1064,43 +1065,43 @@ def detect(name: str) -> AsciiArt:
         from .slackware_small import slackware_small
         return slackware_small
     
-    if name.startswith('Slackware'):
+    if name.startswith('slackware'):
         from .slackware import slackware
         return slackware
     
-    if name.startswith('SliTaz'):
+    if name.startswith('slitaz'):
         from .slitaz import slitaz
         return slitaz
     
-    if name.startswith('SmartOS'):
+    if name.startswith('smartos'):
         from .smartos import smartos
         return smartos
     
-    if name.startswith('SkiffOS'):
+    if name.startswith('skiffos'):
         from .skiffos import skiffos
         return skiffos
     
-    if name.startswith('Solus'):
+    if name.startswith('solus'):
         from .solus import solus
         return solus
     
-    if name.startswith('Sulin'):
+    if name.startswith('sulin'):
         from .sulin import sulin
         return sulin
     
-    if name.startswith('Source Mage') or name.startswith('Source_Mage'):
+    if name.startswith('source mage') or name.startswith('source_mage'):
         from .source_mage import source_mage
         return source_mage
     
-    if name.startswith('Sparky'):
+    if name.startswith('sparky'):
         from .sparky import sparky
         return sparky
     
-    if name.startswith('Star'):
+    if name.startswith('star'):
         from .star import star
         return star
     
-    if name.startswith('SteamOS'):
+    if name.startswith('steamos'):
         from .steamos import steamos
         return steamos
     
@@ -1108,11 +1109,11 @@ def detect(name: str) -> AsciiArt:
         from .sunos_small import sunos_small
         return sunos_small
     
-    if name == 'SunOS' or name == 'Solaris':
+    if name == 'sunos' or name == 'solaris':
         from .sunos import sunos
         return sunos
     
-    if name.startswith('openSUSE Leap') or name.startswith('openSUSE_Leap'):
+    if name.startswith('opensuse leap') or name.startswith('opensuse_leap'):
         from .opensuse_leap import opensuse_leap
         return opensuse_leap
     
@@ -1120,7 +1121,7 @@ def detect(name: str) -> AsciiArt:
         from .t2 import t2
         return t2
     
-    if name.startswith('openSUSE Tumbleweed') or name.startswith('openSUSE_Tumbleweed'):
+    if name.startswith('opensuse tumbleweed') or name.startswith('opensuse_tumbleweed'):
         from .opensuse_tumbleweed import opensuse_tumbleweed
         return opensuse_tumbleweed
     
@@ -1128,55 +1129,55 @@ def detect(name: str) -> AsciiArt:
         from .opensuse_small import opensuse_small
         return opensuse_small
     
-    if name.startswith('openSUSE') or name.startswith('open SUSE') or name.startswith('SUSE'):
+    if name.startswith('opensuse') or name.startswith('open suse') or name.startswith('suse'):
         from .opensuse import opensuse
         return opensuse
     
-    if name.startswith('parch') or name.startswith('Parch') or name.startswith('PARCH'):
+    if name.startswith('parch') or name.startswith('parch') or name.startswith('parch'):
         from .parch import parch
         return parch
     
-    if name.startswith('SwagArch'):
+    if name.startswith('swagarch'):
         from .swagarch import swagarch
         return swagarch
     
-    if name.startswith('Tails'):
+    if name.startswith('tails'):
         from .tails import tails
         return tails
     
-    if name.startswith('TorizonCore'):
+    if name.startswith('torizoncore'):
         from .torizoncore import torizoncore
         return torizoncore
     
-    if name.startswith('Trisquel'):
+    if name.startswith('trisquel'):
         from .trisquel import trisquel
         return trisquel
     
-    if name.startswith('Twister'):
+    if name.startswith('twister'):
         from .twister import twister
         return twister
     
-    if name.startswith('Ubuntu Cinnamon') or name.startswith('Ubuntu-Cinnamon'):
+    if name.startswith('ubuntu cinnamon') or name.startswith('ubuntu-cinnamon'):
         from .ubuntu_cinnamon import ubuntu_cinnamon
         return ubuntu_cinnamon
     
-    if name.startswith('Ubuntu Budgie') or name.startswith('Ubuntu-Budgie'):
+    if name.startswith('ubuntu budgie') or name.startswith('ubuntu-budgie'):
         from .ubuntu_budgie import ubuntu_budgie
         return ubuntu_budgie
     
-    if name.startswith('Ubuntu-GNOME'):
+    if name.startswith('ubuntu-gnome'):
         from .ubuntu_gnome import ubuntu_gnome
         return ubuntu_gnome
     
-    if name.startswith('Ubuntu Kylin') or name.startswith('Ubuntu-Kylin'):
+    if name.startswith('ubuntu kylin') or name.startswith('ubuntu-kylin'):
         from .ubuntu_kylin import ubuntu_kylin
         return ubuntu_kylin
     
-    if name.startswith('Ubuntu Touch'):
+    if name.startswith('ubuntu touch'):
         from .ubuntu_touch import ubuntu_touch
         return ubuntu_touch
     
-    if name.startswith('Ubuntu MATE') or name.startswith('Ubuntu-MATE'):
+    if name.startswith('ubuntu mate') or name.startswith('ubuntu-mate'):
         from .ubuntu_mate import ubuntu_mate
         return ubuntu_mate
     
@@ -1184,11 +1185,11 @@ def detect(name: str) -> AsciiArt:
         from .ubuntu_old02 import ubuntu_old02
         return ubuntu_old02
     
-    if name.startswith('Ubuntu Studio') or name == 'Ubuntu-Studio':
+    if name.startswith('ubuntu studio') or name == 'ubuntu-studio':
         from .ubuntu_studio import ubuntu_studio
         return ubuntu_studio
     
-    if name.startswith('Ubuntu Sway') or name == 'Ubuntu-Sway':
+    if name.startswith('ubuntu sway') or name == 'ubuntu-sway':
         from .ubuntu_sway import ubuntu_sway
         return ubuntu_sway
     
@@ -1196,27 +1197,27 @@ def detect(name: str) -> AsciiArt:
         from .ubuntu_small import ubuntu_small
         return ubuntu_small
     
-    if name.startswith('Ubuntu_old') or name.startswith('i3buntu'):
+    if name.startswith('ubuntu_old') or name.startswith('i3buntu'):
         from .ubuntu_old import ubuntu_old
         return ubuntu_old
     
-    if name.startswith('Ubuntu'):
+    if name.startswith('ubuntu'):
         from .ubuntu import ubuntu
         return ubuntu
     
-    if name.startswith('Ultramarine Linux') or name.startswith('ultramarine'):
+    if name.startswith('ultramarine linux') or name.startswith('ultramarine'):
         from .ultramarine_linux import ultramarine_linux
         return ultramarine_linux
     
-    if name.startswith('Univalent'):
+    if name.startswith('univalent'):
         from .univalent import univalent
         return univalent
     
-    if name.startswith('Uos'):
+    if name.startswith('uos'):
         from .uos import uos
         return uos
     
-    if name.startswith('Univention'):
+    if name.startswith('univention'):
         from .univention import univention
         return univention
     
@@ -1224,7 +1225,7 @@ def detect(name: str) -> AsciiArt:
         from .uwuntu import uwuntu
         return uwuntu
     
-    if name.startswith('Venom'):
+    if name.startswith('venom'):
         from .venom import venom
         return venom
     
@@ -1232,19 +1233,19 @@ def detect(name: str) -> AsciiArt:
         from .void_small import void_small
         return void_small
     
-    if name.startswith('Void'):
+    if name.startswith('void'):
         from .void import void
         return void
     
-    if name.startswith('VNux'):
+    if name.startswith('vnux'):
         from .vnux import vnux
         return vnux
     
-    if name.startswith('VzLinux'):
+    if name.startswith('vzlinux'):
         from .vzlinux import vzlinux
         return vzlinux
     
-    if name.startswith('yiffOS'):
+    if name.startswith('yiffos'):
         from .yiffos import yiffos
         return yiffos
     
@@ -1252,11 +1253,11 @@ def detect(name: str) -> AsciiArt:
         from .semc import semc
         return semc
     
-    if name.startswith('Vanilla'):
+    if name.startswith('vanilla'):
         from .vanilla import vanilla
         return vanilla
     
-    if name.startswith('Obarun'):
+    if name.startswith('obarun'):
         from .obarun import obarun
         return obarun
     
@@ -1264,59 +1265,59 @@ def detect(name: str) -> AsciiArt:
         from .wii_linux_ngx import wii_linux_ngx
         return wii_linux_ngx
     
-    if (name.startswith('[Windows 11]') or name.endswith('[Windows 11]')) or (name.startswith('on Windows 11') or name.endswith('on Windows 11')) or name.startswith('Windows 11') or name == 'windows11':
+    if (name.startswith('[windows 11]') or name.endswith('[windows 11]')) or (name.startswith('on windows 11') or name.endswith('on windows 11')) or name.startswith('windows 11') or name == 'windows11':
         from .windows_11 import windows_11
         return windows_11
     
-    if (name.startswith('[Windows 10]') or name.endswith('[Windows 10]')) or (name.startswith('on Windows 10') or name.endswith('on Windows 10')) or name.startswith('Windows 8') or name.startswith('Windows 10') or name == 'windows10' or name == 'windows8':
+    if (name.startswith('[windows 10]') or name.endswith('[windows 10]')) or (name.startswith('on windows 10') or name.endswith('on windows 10')) or name.startswith('windows 8') or name.startswith('windows 10') or name == 'windows10' or name == 'windows8':
         from .windows_10 import windows_10
         return windows_10
     
-    if name.startswith('Windows'):
+    if name.startswith('windows'):
         from .windows import windows
         return windows
     
-    if name.startswith('Xubuntu'):
+    if name.startswith('xubuntu'):
         from .xubuntu import xubuntu
         return xubuntu
     
-    if name.startswith('Soda'):
+    if name.startswith('soda'):
         from .soda import soda
         return soda
     
-    if name.startswith('KrassOS') or name.startswith('Krass'):
+    if name.startswith('krassos') or name.startswith('krass'):
         from .krassos import krassos
         return krassos
     
-    if name.startswith('IRIX'):
+    if name.startswith('irix'):
         from .irix import irix
         return irix
     
-    if name.startswith('Zorin'):
+    if name.startswith('zorin'):
         from .zorin import zorin
         return zorin
     
-    if name.endswith('BSD'):
+    if name.endswith('bsd'):
         from .bsd import bsd
         return bsd
     
-    if name == 'Darwin':
+    if name == 'darwin':
         from .darwin import darwin
         return darwin
     
-    if name.startswith('GNU'):
+    if name.startswith('gnu'):
         from .gnu import gnu
         return gnu
     
-    if name == 'Linux':
+    if name == 'linux':
         from .linux import linux
         return linux
     
-    if name.startswith('Profelis SambaBOX') or name.startswith('SambaBOX'):
+    if name.startswith('profelis sambabox') or name.startswith('sambabox'):
         from .profelis_sambabox import profelis_sambabox
         return profelis_sambabox
     
-    if name == 'SunOS':
+    if name == 'sunos':
         from .sunos import sunos
         return sunos
     
