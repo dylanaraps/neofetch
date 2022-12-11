@@ -11,15 +11,16 @@ from dataclasses import dataclass
 from pathlib import Path
 from subprocess import check_output
 from tempfile import TemporaryDirectory
-from urllib.request import urlretrieve
 
 import pkg_resources
 
-from hyfetch.color_util import color
+from .color_util import color, printc
 from .constants import GLOBAL_CFG, MINGIT_URL
+from .distros import distro_detector
 from .presets import ColorProfile
 from .serializer import from_dict
 from .types import BackendLiteral, ColorAlignMode
+
 
 RE_NEOFETCH_COLOR = re.compile('\\${c[0-9]}')
 
@@ -177,6 +178,7 @@ def ensure_git_bash() -> Path:
         # No installation found, download a portable installation
         print('Git installation not found. Git is required to use HyFetch/neofetch on Windows')
         print('Downloading a minimal portable package for Git...')
+        from urllib.request import urlretrieve
         urlretrieve(MINGIT_URL, pkg_path)
         print('Download finished! Extracting...')
         with zipfile.ZipFile(pkg_path, 'r') as zip_ref:
@@ -232,6 +234,16 @@ def get_distro_ascii(distro: str | None = None) -> str:
     if GLOBAL_CFG.debug:
         print(distro)
         print(GLOBAL_CFG)
+
+    # Try new pure-python detection method
+    det = distro_detector.detect(distro)
+    if det is not None:
+        return normalize_ascii(det.ascii)
+
+    if GLOBAL_CFG.debug:
+        printc(f"&cError: Cannot find distro {distro}")
+
+    # Old detection method that calls neofetch
     cmd = 'print_ascii'
     if distro:
         cmd += f' --ascii_distro {distro}'
