@@ -2,7 +2,7 @@
 from hyfetch.distro import AsciiArt
 
 lmde = AsciiArt(match=r'''"LMDE"*''', color='2 7', ascii=r"""
-${c2}         `.-::---..
+${c2}          `.-::---..
 ${c1}      .:++++ooooosssoo:.
     .+o++::.      `.:oos+.
 ${c1}   :oo:.`             -+oo${c2}:

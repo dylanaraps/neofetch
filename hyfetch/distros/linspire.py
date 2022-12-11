@@ -2,7 +2,7 @@
 from hyfetch.distro import AsciiArt
 
 linspire = AsciiArt(match=r'''"Linspire"* | "Freespire"* | "Lindows"*''', color='4 2', ascii=r"""
-${c2}                                                   __^ 	
+${c2}                                                   __^
 ${c2}                                                __/    \\
 ${c2}   MMy        dMy                            __/        \\
 ${c2}  dMMy        MMy                            ${c1}MM${c2}          \\
