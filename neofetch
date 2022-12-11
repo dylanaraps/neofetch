@@ -5938,7 +5938,7 @@ DEVELOPER:
     --gen-man                   Generate a manpage for unifetch in your PWD. (Requires GNU help2man)
 
 
-Report bugs to https://github.com/jin-asanami/unfietch/issues
+Report bugs to https://github.com/jin-asanami/unifetch/issues
 
 "
 exit 1
