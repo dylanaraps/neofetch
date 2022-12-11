@@ -829,7 +829,7 @@ image_source="auto"
 # SharkLinux, ShastraOS, Siduction, SkiffOS, Slackware, SliTaz, SmartOS, Soda, Solus, Source Mage,
 # Sparky, Star, SteamOS, Sulin, SunOS, SwagArch, t2, Tails, TeArch, TorizonCore, Trisquel, Twister,
 # Ubuntu, Ubuntu Budgie, Ubuntu Cinnamon, Ubuntu Kylin, Ubuntu MATE, Ubuntu Studio, Ubuntu Sway,
-# Ubuntu Touch, Ubuntu-GNOME, ubuntu_old02, Ultramarine Linux, Univalent, Univention, Uos, uwuntu,
+# Ubuntu Touch, Ubuntu-GNOME, ubuntu_old02, Ultramarine Linux, Univalent, Univention, Uos, UrukOS, uwuntu,
 # Vanilla, Venom, VNux, Void, VzLinux, wii-linux-ngx, Windows, Windows 10, Windows 11, XFerience, Xubuntu,
 # yiffOS, Zorin have ascii logos.
 
@@ -5882,7 +5882,7 @@ ASCII:
                                 SharkLinux, ShastraOS, Siduction, SkiffOS, Slackware, SliTaz, SmartOS, Soda, Solus, Source Mage,
                                 Sparky, Star, SteamOS, Sulin, SunOS, SwagArch, t2, Tails, TeArch, TorizonCore, Trisquel, Twister,
                                 Ubuntu, Ubuntu Budgie, Ubuntu Cinnamon, Ubuntu Kylin, Ubuntu MATE, Ubuntu Studio, Ubuntu Sway,
-                                Ubuntu Touch, Ubuntu-GNOME, ubuntu_old02, Ultramarine Linux, Univalent, Univention, Uos, uwuntu,
+                                Ubuntu Touch, Ubuntu-GNOME, ubuntu_old02, Ultramarine Linux, Univalent, Univention, Uos, UrukOS, uwuntu,
                                 Vanilla, Venom, VNux, Void, VzLinux, wii-linux-ngx, Windows, Windows 10, Windows 11, XFerience, Xubuntu,
                                 yiffOS, Zorin have ascii logos.
 
@@ -5938,7 +5938,7 @@ DEVELOPER:
     --gen-man                   Generate a manpage for unifetch in your PWD. (Requires GNU help2man)
 
 
-Report bugs to https://github.com/jin-asanami/unfietch/issues
+Report bugs to https://github.com/jin-asanami/unifetch/issues
 
 "
 exit 1
@@ -13224,6 +13224,33 @@ ${c1}         ./osssssssssssssssssssssso+-
 -hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhho
  :yhhhhhhhhhhhhhhhhhhhhhhhhhhhh+`
    -+ossssssssssssssssssssss+:`
+EOF
+        ;;
+
+        "UrukOS"*)
+            set_colors 12 12 7 12 4
+            read -rd '' ascii_data <<'EOF'
+${c3}          :${c4}::::::::::::::    ${c5}.
+         ${c3}=#${c4}*============.   ${c5}:#:         
+        ${c3}=##%${c4}+----------.   ${c5}.###:        
+       ${c3}=####.              ${c5}.####:       
+      ${c3}=####.                ${c5}.####:      
+     ${c3}=###*.   .=${c4}--------.     ${c5}####:     
+    ${c3}=####.   .*#+${c4}======-       ${c5}####:    
+   ${c3}=###*.   .*###+${c4}====-         ${c5}####:   
+  ${c3}=###*.   .*#####+${c4}==-           ${c5}####:  
+ ${c3}=###*.   .*#######+${c4}:             ${c5}####: 
+ ${c3}=###*.   .*#######+${c4}:             ${c5}####: 
+  ${c3}=###*.   .*#####+${c4}==-           ${c5}####:  
+   ${c3}=###*.   .*###+${c4}====-         ${c5}####:   
+    ${c3}=####.   .*#+${c4}======-       ${c5}####:    
+     ${c3}=###*.   .=${c4}--------.    ${c5}.####:     
+      ${c3}=####.                ${c5}.####:      
+       ${c3}=####.              ${c5}.####:       
+        ${c3}=###+${c4}--------------${c5}####:        
+         ${c3}=#+${c4}=================-${c5}:         
+          ${c3}:${c4}::::::::::::::::::.        
+          
 EOF
         ;;
 
