@@ -381,7 +381,7 @@ def run():
 
     # Use a custom distro
     if args.distro:
-        GLOBAL_CFG.override_distro = args.test_distro
+        GLOBAL_CFG.override_distro = args.distro
 
     if args.debug:
         GLOBAL_CFG.debug = True
