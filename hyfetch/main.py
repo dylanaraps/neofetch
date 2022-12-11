@@ -9,7 +9,7 @@ from itertools import permutations
 from math import ceil
 from typing import Iterable
 
-from . import termenv
+from . import termenv, neofetch_util
 from .color_scale import Scale
 from .color_util import printc, clear_screen
 from .constants import *
@@ -356,6 +356,7 @@ def run():
     parser.add_argument('-C', '--config-file', dest='config_file', default=CONFIG_PATH, help=f'Use another config file')
     parser.add_argument('-p', '--preset', help=f'Use preset', choices=PRESETS.keys())
     parser.add_argument('-m', '--mode', help=f'Color mode', choices=['8bit', 'rgb'])
+    parser.add_argument('-b', '--backend', help=f'Choose a *fetch backend', choices=['neofetch', 'fastfetch'])
     parser.add_argument('--c-scale', dest='scale', help=f'Lighten colors by a multiplier', type=float)
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
@@ -405,6 +406,8 @@ def run():
         config.preset = args.preset
     if args.mode:
         config.mode = args.mode
+    if args.backend:
+        config.backend = args.backend
 
     # Override global color mode
     GLOBAL_CFG.color_mode = config.mode
@@ -423,7 +426,7 @@ def run():
 
     # Run
     try:
-        run_neofetch(preset, config.color_align)
+        neofetch_util.run(preset, config.color_align, config.backend)
     except Exception as e:
         print(f'Error: {e}')
         traceback.print_exc()

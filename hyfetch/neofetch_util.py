@@ -248,6 +248,14 @@ def get_distro_name():
     return run_neofetch_cmd('ascii_distro_name', True)
 
 
+def run(preset: ColorProfile, alignment: ColorAlignment, backend: BackendLiteral):
+    print(backend)
+    if backend == "neofetch":
+        return run_neofetch(preset, alignment)
+    if backend == "fastfetch":
+        return run_fastfetch(preset, alignment)
+
+
 def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
     """
     Run neofetch with colors
@@ -269,6 +277,26 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
 
         # Call neofetch with the temp file
         run_neofetch_cmd(f'--ascii --source {path.absolute()} --ascii-colors')
+
+
+def run_fastfetch(preset: ColorProfile, alignment: ColorAlignment):
+    """
+    Run neofetch with colors
+
+    :param preset: Color palette
+    :param alignment: Color alignment settings
+    """
+    asc = get_distro_ascii()
+    asc = alignment.recolor_ascii(asc, preset)
+
+    # Write temp file
+    with TemporaryDirectory() as tmp_dir:
+        tmp_dir = Path(tmp_dir)
+        path = tmp_dir / 'ascii.txt'
+        path.write_text(asc)
+
+        # Call fastfetch with the temp file
+        subprocess.run(['fastfetch', '--raw', path.absolute()])
 
 
 def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:
