@@ -235,8 +235,7 @@ def get_distro_ascii(distro: str | None = None) -> str:
         print(GLOBAL_CFG)
     cmd = 'print_ascii'
     if distro:
-        os.environ['CUSTOM_DISTRO'] = distro
-        cmd = 'print_custom_ascii'
+        cmd += f' --ascii_distro {distro}'
 
     asc = run_command(cmd, True)
 
