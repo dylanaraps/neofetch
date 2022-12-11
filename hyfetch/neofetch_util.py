@@ -257,7 +257,6 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
     :param alignment: Color alignment settings
     """
     asc = get_distro_ascii()
-    w, h = ascii_size(asc)
     asc = alignment.recolor_ascii(asc, preset)
 
     # Escape backslashes here because backslashes are escaped in neofetch for printf
@@ -270,9 +269,6 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
         path.write_text(asc)
 
         # Call neofetch with the temp file
-        os.environ['ascii_len'] = str(w)
-        os.environ['ascii_lines'] = str(h)
-
         run_command(f'--ascii --source {path.absolute()} --ascii-colors')
 
 
