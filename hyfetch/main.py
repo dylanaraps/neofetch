@@ -360,9 +360,13 @@ def run():
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
     parser.add_argument('--debug', action='store_true', help=f'Debug mode')
-    parser.add_argument('--test-distro', help=f'Test for a specific distro')
-    parser.add_argument('--test-print', action='store_true', help=f'Test print distro ascii art only')
-    parser.add_argument('--ask-exit', action='store_true', help=f'Ask before exitting')
+    parser.add_argument('--distro', '--test-distro', dest='distro', help=f'Test for a specific distro')
+
+    # Hidden debug arguments
+    # --test-print: Print the ascii distro and exit
+    parser.add_argument('--test-print', action='store_true', help=argparse.SUPPRESS)
+    # --ask-exit: Ask for input before exiting
+    parser.add_argument('--ask-exit', action='store_true', help=argparse.SUPPRESS)
 
     args = parser.parse_args()
 
@@ -374,9 +378,8 @@ def run():
     ensure_git_bash()
     check_windows_cmd()
 
-    # Test distro ascii art
-    if args.test_distro:
-        print(f'Setting distro to {args.test_distro}')
+    # Use a custom distro
+    if args.distro:
         GLOBAL_CFG.override_distro = args.test_distro
 
     if args.debug:
