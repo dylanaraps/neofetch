@@ -249,7 +249,6 @@ def get_distro_name():
 
 
 def run(preset: ColorProfile, alignment: ColorAlignment, backend: BackendLiteral):
-    print(backend)
     if backend == "neofetch":
         return run_neofetch(preset, alignment)
     if backend == "fastfetch":
