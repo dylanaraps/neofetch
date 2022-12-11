@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 devuan = AsciiArt(match=r'''"Devuan"*''', color='5 7', ascii=r"""
 ${c1}   ..,,;;;::;,..

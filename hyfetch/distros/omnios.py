@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 omnios = AsciiArt(match=r'''"OmniOS"*''', color='15 3 8', ascii=r"""
 ${c1}

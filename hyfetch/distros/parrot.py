@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 parrot = AsciiArt(match=r'''"Parrot"*''', color='6 7', ascii=r"""
 ${c1}  `:oho/-`

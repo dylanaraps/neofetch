@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 matuusos = AsciiArt(match=r'''"MatuusOS"*''', color='9 11 0', ascii=r"""
 ${c2}

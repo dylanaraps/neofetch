@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 archmerge = AsciiArt(match=r'''"ArchMerge"*''', color='6 6 7 1', ascii=r"""
 ${c1}                    y:

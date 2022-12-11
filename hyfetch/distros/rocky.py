@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 rocky = AsciiArt(match=r'''"rocky"*''', color='35', ascii=r"""
 ${c1}          __wgliliiligw_,

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 semc = AsciiArt(match=r'''"semc"*''', color='2 8 1', ascii=r"""
 ${c1}            /\

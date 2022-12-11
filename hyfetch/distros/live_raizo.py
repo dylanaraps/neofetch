@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 live_raizo = AsciiArt(match=r'''"Live Raizo"* | "Live_Raizo"*''', color='3', ascii=r"""
 ${c1}             `......`

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 obarun = AsciiArt(match=r'''"Obarun"*''', color='6 6 7 1', ascii=r"""
 ${c1}                    ,;::::;

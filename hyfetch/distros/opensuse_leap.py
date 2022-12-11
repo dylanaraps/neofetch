@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 opensuse_leap = AsciiArt(match=r'''"openSUSE Leap"* | "openSUSE_Leap"*''', color='2 7', ascii=r"""
 ${c2}                 `-++:`

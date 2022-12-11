@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 ravynos = AsciiArt(match=r'''"ravynOS"''', color='15', ascii=r"""
 ${c1}                ..oooo..

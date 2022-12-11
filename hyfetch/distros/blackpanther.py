@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 blackpanther = AsciiArt(match=r'''"blackPanther"* | 'blackpanther'*''', color='1 11 12', ascii=r"""
 ${c3}                         ........

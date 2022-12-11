@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 shastraos = AsciiArt(match=r'''"ShastraOS"*''', color='6', ascii=r"""
 ${c1}                          ..,;;,'.

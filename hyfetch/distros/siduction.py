@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 siduction = AsciiArt(match=r'''"Siduction"*''', color='4 4', ascii=r"""
 ${c1}                _aass,

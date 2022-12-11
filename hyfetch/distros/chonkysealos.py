@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 chonkysealos = AsciiArt(match=r'''"ChonkySealOS"*''', color='7', ascii=r"""
 ${c1}                  .-/-.

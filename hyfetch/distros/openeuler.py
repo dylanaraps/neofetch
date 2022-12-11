@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 openeuler = AsciiArt(match=r'''"openEuler"*''', color='4 7 1', ascii=r"""
 ${c1}                 `.cc.`

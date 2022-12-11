@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 chrom = AsciiArt(match=r'''"Chrom"*''', color='2 1 3 4 7', ascii=r"""
 ${c2}            .,:loool:,.

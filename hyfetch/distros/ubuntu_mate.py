@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 ubuntu_mate = AsciiArt(match=r'''"Ubuntu MATE"* | "Ubuntu-MATE"*''', color='2 7', ascii=r"""
 ${c1}            .:/+oossssoo+/:.`

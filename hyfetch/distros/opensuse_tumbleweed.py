@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 opensuse_tumbleweed = AsciiArt(match=r'''"openSUSE Tumbleweed"* | "openSUSE_Tumbleweed"*''', color='2 7', ascii=r"""
 ${c2}                                     ......

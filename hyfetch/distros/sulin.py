@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 sulin = AsciiArt(match=r'''"Sulin"*''', color='4 7 1', ascii=r"""
 ${c2}

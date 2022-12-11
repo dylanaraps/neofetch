@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 minix = AsciiArt(match=r'''"Minix"*''', color='1 7 3', ascii=r"""
 ${c2}   -sdhyo+:-`                -/syymm:

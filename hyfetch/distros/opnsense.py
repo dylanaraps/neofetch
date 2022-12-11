@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 opnsense = AsciiArt(match=r'''"OPNsense"*''', color='7 202', ascii=r"""
 ${c1}    .'''''''''''''''''''''''''''''''''''

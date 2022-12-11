@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 regolith = AsciiArt(match=r'''"Regolith"*''', color='1', ascii=r"""
 ${c1}

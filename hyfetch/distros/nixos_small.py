@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 nixos_small = AsciiArt(match=r'''"nixos_small"''', color='4 6', ascii=r"""
   ${c1}  \\  \\ //

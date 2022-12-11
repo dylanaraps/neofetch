@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 fedora_small = AsciiArt(match=r'''"fedora_small"''', color='12', ascii=r"""
 ${c1}        ,'''''.

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 pureos = AsciiArt(match=r'''"PureOS"*''', color='2 7 7', ascii=r"""
 ${c1}dmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmd

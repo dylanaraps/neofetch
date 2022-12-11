@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 cyberos = AsciiArt(match=r'''"CyberOS"*''', color='50 32 57', ascii=r"""
 ${c3}             !M$EEEEEEEEEEEP

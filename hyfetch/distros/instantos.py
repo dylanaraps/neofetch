@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 instantos = AsciiArt(match=r'''"instantOS"*''', color='4 6', ascii=r"""
 

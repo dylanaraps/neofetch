@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 hardclanz = AsciiArt(match=r'''"HarDClanZ"*''', color='4 7 1', ascii=r"""
 ${c1}          ........::::....

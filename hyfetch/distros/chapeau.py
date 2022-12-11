@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 chapeau = AsciiArt(match=r'''"Chapeau"*''', color='2 7', ascii=r"""
 ${c1}               .-/-.

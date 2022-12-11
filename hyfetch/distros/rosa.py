@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 rosa = AsciiArt(match=r'''"Rosa"*''', color='4 7 1', ascii=r"""
 ${c1}           ROSAROSAROSAROSAR

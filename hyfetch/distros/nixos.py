@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 nixos = AsciiArt(match=r'''"NixOS"*''', color='4 6', ascii=r"""
 ${c1}          ▗▄▄▄       ${c2}▗▄▄▄▄    ▄▄▄▖

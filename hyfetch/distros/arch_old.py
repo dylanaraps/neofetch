@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 arch_old = AsciiArt(match=r'''"arch_old"''', color='6 7 1', ascii=r"""
 ${c1}             __

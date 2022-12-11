@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 gentoo_small = AsciiArt(match=r'''"gentoo_small"''', color='5 7', ascii=r"""
 ${c1} _-----_

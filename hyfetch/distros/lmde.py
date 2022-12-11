@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 lmde = AsciiArt(match=r'''"LMDE"*''', color='2 7', ascii=r"""
 ${c2}          `.-::---..

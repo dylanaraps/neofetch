@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 amazon = AsciiArt(match=r'''"Amazon"*''', color='3 7', ascii=r"""
 ${c1}             `-/oydNNdyo:.`

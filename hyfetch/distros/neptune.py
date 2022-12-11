@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 neptune = AsciiArt(match=r'''"Neptune"*''', color='7', ascii=r"""
 ${c1}            ./+sydddddddys/-.

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 crystal_linux = AsciiArt(match=r'''*"Crystal Linux"*''', color='13 5', ascii=r"""
 ${c1}                        mysssym

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 eurolinux = AsciiArt(match=r'''"EuroLinux"*''', color='4 7', ascii=r"""
 ${c1}                __

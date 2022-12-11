@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 blackarch = AsciiArt(match=r'''"BlackArch"*''', color='1 1 0 1', ascii=r"""
 ${c3}                   00

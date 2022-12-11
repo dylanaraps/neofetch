@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 openmamba = AsciiArt(match=r'''"openmamba"*''', color='7 2', ascii=r"""
 ${c1}                 `````

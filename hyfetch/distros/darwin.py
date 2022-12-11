@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 darwin = AsciiArt(match=r'''"Darwin"''', color='2 3 1 1 5 4', ascii=r"""
 ${c1}                    c.'

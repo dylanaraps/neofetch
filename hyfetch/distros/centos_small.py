@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 centos_small = AsciiArt(match=r'''"centos_small"*''', color='3 2 4 5 7', ascii=r"""
 ${c2} ____${c1}^${c4}____

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 pengwin = AsciiArt(match=r'''"Pengwin"*''', color='5 5 13', ascii=r"""
 ${c3}                     ...`

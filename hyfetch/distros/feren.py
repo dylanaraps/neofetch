@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 feren = AsciiArt(match=r'''"Feren"*''', color='4 7 1', ascii=r"""
 ${c1} `----------`

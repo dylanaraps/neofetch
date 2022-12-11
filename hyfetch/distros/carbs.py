@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 carbs = AsciiArt(match=r'''"Carbs"*''', color='4 5 4 4 4 4', ascii=r"""
 ${c2}             ..........

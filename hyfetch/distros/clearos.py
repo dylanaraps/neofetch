@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 clearos = AsciiArt(match=r'''"ClearOS"*''', color='2', ascii=r"""
 ${c1}             `.--::::::--.`

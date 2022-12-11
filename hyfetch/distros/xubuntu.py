@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 xubuntu = AsciiArt(match=r'''"Xubuntu"*''', color='4 7 1', ascii=r"""
 ${c1}           `.:/ossyyyysso/:.

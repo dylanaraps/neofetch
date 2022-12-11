@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 exodia_predator_os = AsciiArt(match=r'''"Exodia Predator OS"* | "exodia-predator"* | "Predator"*''', color='5 5', ascii=r"""
 ${c1}-                                  :

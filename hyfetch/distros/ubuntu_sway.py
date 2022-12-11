@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 ubuntu_sway = AsciiArt(match=r'''"Ubuntu Sway"* | "Ubuntu-Sway"''', color='6 7', ascii=r"""
 ${c1}            .-/+oossssoo+\-.

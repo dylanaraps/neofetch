@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 skiffos = AsciiArt(match=r'''"SkiffOS"*''', color='4 7', ascii=r"""
 ${c2}

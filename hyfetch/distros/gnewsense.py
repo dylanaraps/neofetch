@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 gnewsense = AsciiArt(match=r'''"gNewSense"*''', color='4 5 7 6', ascii=r"""
 ${c1}                     ..,,,,..

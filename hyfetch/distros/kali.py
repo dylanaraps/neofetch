@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 kali = AsciiArt(match=r'''"Kali"*''', color='4 8', ascii=r"""
 ${c1}..............

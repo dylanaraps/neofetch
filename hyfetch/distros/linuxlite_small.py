@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 linuxlite_small = AsciiArt(match=r'''"linuxlite_small"*''', color='3 7', ascii=r"""
 ${c1}   /\

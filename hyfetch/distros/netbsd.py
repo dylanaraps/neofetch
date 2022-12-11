@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 netbsd = AsciiArt(match=r'''"NetBSD"*''', color='5 7', ascii=r"""
 ${c1}                     `-/oshdmNMNdhyo+:-`

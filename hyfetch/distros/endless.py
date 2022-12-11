@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 endless = AsciiArt(match=r'''"Endless"*''', color='1 7', ascii=r"""
 ${c1}           `:+yhmNMMMMNmhy+:`

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 twister = AsciiArt(match=r'''"Twister"*''', color='2 1 4 5 7', ascii=r"""
 ${c3}.......................${c4}.......${c5}.,:ccllllcc:.${c4}...

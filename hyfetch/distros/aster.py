@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 aster = AsciiArt(match=r'''"Aster"*''', color='6 6', ascii=r"""
 ${c1}                      ...''...

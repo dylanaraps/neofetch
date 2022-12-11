@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 uos = AsciiArt(match=r'''"Uos"*''', color='1 7 3', ascii=r"""
 ${c1}

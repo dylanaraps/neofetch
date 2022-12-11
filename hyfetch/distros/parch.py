@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 parch = AsciiArt(match=r'''"parch"* | "Parch"* | "PARCH"*''', color='4 6', ascii=r"""
 

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 nekos = AsciiArt(match=r'''"NekOS"*''', color='3 7 1', ascii=r"""
 ${c1}

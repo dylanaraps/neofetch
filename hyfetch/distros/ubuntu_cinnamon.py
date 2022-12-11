@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 ubuntu_cinnamon = AsciiArt(match=r'''"Ubuntu Cinnamon"* | "Ubuntu-Cinnamon"*''', color='1 7', ascii=r"""
 ${c1}            .-/+oooooooo+/-.

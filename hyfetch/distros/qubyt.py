@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 qubyt = AsciiArt(match=r'''"Qubyt"*''', color='4 5 0 4', ascii=r"""
 ${c1}    ########################${c2}(${c3}ooo

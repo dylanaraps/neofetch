@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 raspbian = AsciiArt(match=r'''"Raspbian"*''', color='2 1', ascii=r"""
 ${c1}  `.::///+:/-.        --///+//-:``

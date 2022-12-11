@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 nomadbsd = AsciiArt(match=r'''"NomadBSD"*''', color='4', ascii=r"""
 ${c1}         _======__

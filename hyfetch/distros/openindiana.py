@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 openindiana = AsciiArt(match=r'''"OpenIndiana"*''', color='4 7 1', ascii=r"""
 ${c2}                         .sy/

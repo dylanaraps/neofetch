@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 nutyx = AsciiArt(match=r'''"NuTyX"*''', color='4 1', ascii=r"""
 ${c1}                                      .

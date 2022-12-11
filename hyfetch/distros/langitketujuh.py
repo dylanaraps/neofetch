@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 langitketujuh = AsciiArt(match=r'''"LangitKetujuh"*''', color='4 2', ascii=r"""
 ${c1}

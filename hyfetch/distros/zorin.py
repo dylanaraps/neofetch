@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 zorin = AsciiArt(match=r'''"Zorin"*''', color='4 6', ascii=r"""
 ${c1}        `osssssssssssssssssssso`

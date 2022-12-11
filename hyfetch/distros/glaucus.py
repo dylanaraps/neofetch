@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 glaucus = AsciiArt(match=r'''"glaucus"*''', color='5', ascii=r"""
 ${c1}             ,,        ,d88P

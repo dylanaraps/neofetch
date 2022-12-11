@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 itc = AsciiArt(match=r'''"Itc"*''', color='1', ascii=r"""
 ${c1}....................-==============+...

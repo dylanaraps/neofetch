@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 star = AsciiArt(match=r'''"Star"*''', color='7', ascii=r"""
 ${c1}                   ./

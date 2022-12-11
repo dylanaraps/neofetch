@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 hyperbola = AsciiArt(match=r'''"Hyperbola"*''', color='8', ascii=r"""
 ${c1}                     WW

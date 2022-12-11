@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 januslinux = AsciiArt(match=r'''"januslinux"*|"janus"*|"Ataraxia Linux"*|"Ataraxia"*''', color='4 5 6 2', ascii=r"""
 ${c1}               'l:

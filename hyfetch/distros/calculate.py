@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 calculate = AsciiArt(match=r'''"Calculate"*''', color='7 3', ascii=r"""
 ${c1}                              ......

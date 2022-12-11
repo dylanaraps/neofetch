@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 blag = AsciiArt(match=r'''"BLAG"*''', color='5 7', ascii=r"""
 ${c1}             d

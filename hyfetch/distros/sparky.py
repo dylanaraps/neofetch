@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 sparky = AsciiArt(match=r'''"Sparky"*''', color='1 7', ascii=r"""
 ${c1}

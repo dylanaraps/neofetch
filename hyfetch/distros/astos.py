@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 astos = AsciiArt(match=r'''"astOS"*''', color='8', ascii=r"""
 ${c1}                oQA#$%UMn

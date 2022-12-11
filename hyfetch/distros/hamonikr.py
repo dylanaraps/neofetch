@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 hamonikr = AsciiArt(match=r'''"HamoniKR"*''', color='4 7 99 1 3 7', ascii=r"""
 ${c1}

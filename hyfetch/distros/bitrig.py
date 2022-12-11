@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 bitrig = AsciiArt(match=r'''"Bitrig"*''', color='2 7', ascii=r"""
 ${c1}   `hMMMMN+

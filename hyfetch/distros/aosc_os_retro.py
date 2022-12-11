@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 aosc_os_retro = AsciiArt(match=r'''"AOSC OS/Retro"*''', color='4 7 1 3', ascii=r"""
 ${c2}          .........

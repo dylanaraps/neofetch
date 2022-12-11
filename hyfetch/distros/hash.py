@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 hash = AsciiArt(match=r'''"Hash"*''', color='123', ascii=r"""
 ${c1}

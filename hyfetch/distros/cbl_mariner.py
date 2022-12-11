@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 cbl_mariner = AsciiArt(match=r'''"CBL-Mariner"*''', color='6', ascii=r"""
 ${c1}                    .

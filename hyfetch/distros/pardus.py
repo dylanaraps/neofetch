@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 pardus = AsciiArt(match=r'''"Pardus"*''', color='3 7 6 1 8', ascii=r"""
 ${c1} .smNdy+-    `.:/osyyso+:.`    -+ydmNs.

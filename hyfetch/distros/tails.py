@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 tails = AsciiArt(match=r'''"Tails"*''', color='5 7', ascii=r"""
 ${c1}      ``

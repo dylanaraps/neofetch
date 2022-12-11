@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 maui = AsciiArt(match=r'''"Maui"*''', color='6 7', ascii=r"""
 ${c1}             `.-://////:--`

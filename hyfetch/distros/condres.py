@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 condres = AsciiArt(match=r'''"Condres"*''', color='2 3 6', ascii=r"""
 ${c1}syyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy+${c3}.+.

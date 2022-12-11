@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 haiku = AsciiArt(match=r'''"Haiku"*''', color='1 3 7 2', ascii=r"""
 ${c3}

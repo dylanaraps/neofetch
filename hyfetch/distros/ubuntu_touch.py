@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 ubuntu_touch = AsciiArt(match=r'''"Ubuntu Touch"*''', color='3 7', ascii=r"""
 ${c1}

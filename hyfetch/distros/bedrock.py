@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 bedrock = AsciiArt(match=r'''"Bedrock"*''', color='8 7', ascii=r"""
 ${c1}--------------------------------------

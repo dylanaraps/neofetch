@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 sabotage = AsciiArt(match=r'''"sabotage"*''', color='4 7 1', ascii=r"""
 ${c2} .|'''.|      |     '||''|.    ..|''||

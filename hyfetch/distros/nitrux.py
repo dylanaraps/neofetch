@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 nitrux = AsciiArt(match=r'''"Nitrux"*''', color='4', ascii=r"""
 ${c1}`:/.

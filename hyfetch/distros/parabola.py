@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 parabola = AsciiArt(match=r'''"Parabola"*''', color='5 7', ascii=r"""
 ${c1}                          `.-.    `.

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 lunar = AsciiArt(match=r'''"Lunar"*''', color='4 7 3', ascii=r"""
 ${c1}`-.                                 `-.

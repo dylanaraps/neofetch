@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 kibojoe = AsciiArt(match=r'''"Kibojoe"*''', color='2 7 4', ascii=r"""
             ${c3}           ./+oooooo+/.

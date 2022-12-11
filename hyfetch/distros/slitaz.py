@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 slitaz = AsciiArt(match=r'''"SliTaz"*''', color='3 3', ascii=r"""
 ${c1}        @    @(               @

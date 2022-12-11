@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 uwuntu = AsciiArt(match=r'''"uwuntu"*''', color='225 206 52', ascii=r"""
 ${c1}                                  &&

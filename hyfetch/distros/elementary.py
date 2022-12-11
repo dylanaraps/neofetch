@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 elementary = AsciiArt(match=r'''"Elementary"*''', color='4 7 1', ascii=r"""
 ${c2}         eeeeeeeeeeeeeeeee

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 cucumber = AsciiArt(match=r'''*"Cucumber"*''', color='2 3', ascii=r"""
 ${c1}           `.-://++++++//:-.`

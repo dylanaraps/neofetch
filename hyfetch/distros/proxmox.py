@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 proxmox = AsciiArt(match=r'''"Proxmox"*''', color='7 202', ascii=r"""
 ${c1}         .://:`              `://:.

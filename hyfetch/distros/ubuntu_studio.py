@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 ubuntu_studio = AsciiArt(match=r'''"Ubuntu Studio"* | "Ubuntu-Studio"''', color='6 7', ascii=r"""
 ${c1}              ..-::::::-.`

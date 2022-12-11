@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 pentoo = AsciiArt(match=r'''"Pentoo"*''', color='5 7', ascii=r"""
 ${c2}           `:oydNNMMMMNNdyo:`

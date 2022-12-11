@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 aoscosretro_small = AsciiArt(match=r'''"aoscosretro_small"''', color='4 7 1 3', ascii=r"""
 ${c2}    _____   ${c1}_____${c2}

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 radix = AsciiArt(match=r'''"Radix"*''', color='1 2', ascii=r"""
 ${c2}                .:oyhdmNo

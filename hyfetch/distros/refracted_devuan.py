@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 refracted_devuan = AsciiArt(match=r'''"Refracted Devuan"* | "Refracted_Devuan"*''', color='8 7', ascii=r"""
 ${c2}                             A

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 qubes = AsciiArt(match=r'''"Qubes"*''', color='4 5 7 6', ascii=r"""
 ${c1}               `..--..`

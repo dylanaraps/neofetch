@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 puppy = AsciiArt(match=r'''"Puppy"* | "Quirky Werewolf"* | "Precise Puppy"*''', color='4 7', ascii=r"""
 ${c1}           `-/osyyyysosyhhhhhyys+-

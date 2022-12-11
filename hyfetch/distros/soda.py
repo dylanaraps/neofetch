@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 soda = AsciiArt(match=r'''"Soda"*''', color='1 7', ascii=r"""
 ${c2}                 @&&&&${c1}        *'*,

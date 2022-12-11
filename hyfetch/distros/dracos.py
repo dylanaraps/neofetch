@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 dracos = AsciiArt(match=r'''"DracOS"*''', color='1 7 3', ascii=r"""
 ${c1}       `-:/-

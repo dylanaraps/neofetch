@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 finnix = AsciiArt(match=r'''"Finnix"*''', color='4 7 7', ascii=r"""
 ${c1}            ,,:;;;;:,,

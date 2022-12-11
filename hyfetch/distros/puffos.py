@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 puffos = AsciiArt(match=r'''"PuffOS"*''', color='3', ascii=r"""
 ${c1}

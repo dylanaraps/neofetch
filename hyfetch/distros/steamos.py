@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 steamos = AsciiArt(match=r'''"SteamOS"*''', color='5 7', ascii=r"""
 ${c1}              .,,,,.

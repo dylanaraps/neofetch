@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 hydroos = AsciiArt(match=r'''"HydroOS"*''', color='1 2 3 4 5', ascii=r"""
 ${c1}

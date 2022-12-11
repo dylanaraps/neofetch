@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 linux = AsciiArt(match=r'''"Linux"''', color='fg 8 3', ascii=r"""
 ${c2}        #####

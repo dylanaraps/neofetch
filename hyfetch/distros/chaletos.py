@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 chaletos = AsciiArt(match=r'''"ChaletOS"*''', color='4 7 1', ascii=r"""
 ${c1}             `.//+osso+/:``

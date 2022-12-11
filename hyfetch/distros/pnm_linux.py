@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 pnm_linux = AsciiArt(match=r'''"PNM Linux"* | "WHPNM Linux"*''', color='33 9 15 202', ascii=r"""
 

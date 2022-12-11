@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 massos = AsciiArt(match=r'''"MassOS"*''', color='7', ascii=r"""
 ${c1} -+++/+++osyyhdmNNMMMMNdy/

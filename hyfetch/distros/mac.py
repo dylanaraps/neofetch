@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 mac = AsciiArt(match=r'''"mac"* | "Darwin"''', color='2 3 1 1 5 4', ascii=r"""
 ${c1}                    c.'

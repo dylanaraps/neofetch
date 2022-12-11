@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 celos = AsciiArt(match=r'''"CelOS"*''', color='4 6 0 5', ascii=r"""
 

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 nurunner = AsciiArt(match=r'''"Nurunner"*''', color='4', ascii=r"""
 ${c1}                  ,xc

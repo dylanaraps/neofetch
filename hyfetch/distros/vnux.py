@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 vnux = AsciiArt(match=r'''"VNux"*''', color='11 8 15 1 7', ascii=r"""
 ${c1}              `

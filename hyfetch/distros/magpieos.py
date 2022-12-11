@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 magpieos = AsciiArt(match=r'''"MagpieOS"*''', color='2 1 3 5', ascii=r"""
 ${c1}        ;00000     :000Ol

@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import string
 
-asciis: list['AsciiArt'] = []
-
 
 class AsciiArt:
     name: str
@@ -16,10 +14,7 @@ class AsciiArt:
         self.color = color
         self.ascii = ascii
         self.name = name or self.get_friendly_name()
-        asciis.append(self)
 
     def get_friendly_name(self) -> str:
         return self.match.split("|")[0].strip(string.punctuation + '* ') \
             .replace('"', '').replace('*', '')
-
-

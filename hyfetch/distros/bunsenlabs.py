@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 bunsenlabs = AsciiArt(match=r'''"BunsenLabs"*''', color='fg 7', ascii=r"""
 ${c1}        `++

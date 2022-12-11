@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 sailfish = AsciiArt(match=r'''"Sailfish"*''', color='4 5 7 6', ascii=r"""
 ${c1}                 _a@b

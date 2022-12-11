@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 aix = AsciiArt(match=r'''"AIX"*''', color='2 7', ascii=r"""
 ${c1}           `:+ssssossossss+-`

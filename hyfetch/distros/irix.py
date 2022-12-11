@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 irix = AsciiArt(match=r'''"IRIX"*''', color='4 7', ascii=r"""
 ${c1}           ./ohmNd/  +dNmho/-

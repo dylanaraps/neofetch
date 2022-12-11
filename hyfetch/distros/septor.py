@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 septor = AsciiArt(match=r'''"Septor"*''', color='4 7 4', ascii=r"""
 ${c1}ssssssssssssssssssssssssssssssssssssssss

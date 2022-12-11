@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 yiffos = AsciiArt(match=r'''"yiffOS"*''', color='93 92', ascii=r"""
 ${c1}            NK

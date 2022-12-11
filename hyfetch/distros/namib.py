@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 namib = AsciiArt(match=r'''"Namib"*''', color='1', ascii=r"""
 ${c1}          .:+shysyhhhhysyhs+:.

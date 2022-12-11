@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 serene = AsciiArt(match=r'''"Serene"*''', color='6 6', ascii=r"""
 ${c1}              __---''''''---__

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 linspire = AsciiArt(match=r'''"Linspire"* | "Freespire"* | "Lindows"*''', color='4 2', ascii=r"""
 ${c2}                                                   __^

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 peppermint = AsciiArt(match=r'''"Peppermint"*''', color='1 15 3', ascii=r"""
 ${c1}               PPPPPPPPPPPPPP

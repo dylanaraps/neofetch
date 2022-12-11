@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 pop__os = AsciiArt(match=r'''"Pop!_OS"* | "popos"* | "pop_os"*''', color='6 7', ascii=r"""
 ${c1}             /////////////

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 gentoo = AsciiArt(match=r'''"Gentoo"*''', color='5 7', ascii=r"""
 ${c1}         -/oyddmdhs+:.

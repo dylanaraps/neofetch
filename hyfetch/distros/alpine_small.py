@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 alpine_small = AsciiArt(match=r'''"alpine_small"''', color='4 7', ascii=r"""
 ${c1}   /\ /\

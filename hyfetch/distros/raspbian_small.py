@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 raspbian_small = AsciiArt(match=r'''"Raspbian_small"*''', color='2 1', ascii=r"""
 ${c1}   ..    ,.

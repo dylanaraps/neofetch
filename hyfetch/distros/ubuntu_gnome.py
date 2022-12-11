@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 ubuntu_gnome = AsciiArt(match=r'''"Ubuntu-GNOME"*''', color='4 5 7 6', ascii=r"""
 ${c3}          ./o.

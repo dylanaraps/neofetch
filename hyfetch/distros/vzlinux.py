@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 vzlinux = AsciiArt(match=r'''"VzLinux"*''', color='1 7 3', ascii=r"""
 ${c2}                 ${c1}.::::::::.${c2}

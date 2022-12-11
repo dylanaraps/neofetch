@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 linuxmint_small = AsciiArt(match=r'''"linuxmint_small"*''', color='2 7', ascii=r"""
 ${c1} ___________

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 bluelight = AsciiArt(match=r'''"BlueLight"*''', color='7 4', ascii=r"""
 ${c1}              oMMNMMMMMMMMMMMMMMMMMMMMMM

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 orchid = AsciiArt(match=r'''"orchid"*''', color='255 127 127', ascii=r"""
 ${c2}                  .==.

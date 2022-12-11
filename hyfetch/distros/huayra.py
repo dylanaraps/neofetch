@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 huayra = AsciiArt(match=r'''"Huayra"*''', color='4 7', ascii=r"""
 ${c2}                     `

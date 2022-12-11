@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 crux_small = AsciiArt(match=r'''"crux_small" | KISS*''', color='4 5 7 6', ascii=r"""
 ${c1}    ___

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 windows = AsciiArt(match=r'''"Windows"*''', color='1 2 4 3', ascii=r"""
 ${c1}        ,.=:!!t3Z3z.,

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 mer = AsciiArt(match=r'''"Mer"*''', color='4 7 1', ascii=r"""
 ${c1}                         dMs

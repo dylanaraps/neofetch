@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 center = AsciiArt(match=r'''"Center"*''', color='7 7', ascii=r"""
 ${c2}                .

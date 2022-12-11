@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 gnome = AsciiArt(match=r'''"GNOME"*''', color='4', ascii=r"""
 ${c1}                               ,@@@@@@@@,

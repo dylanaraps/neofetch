@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 postmarketos_small = AsciiArt(match=r'''"postmarketos_small"''', color='2 7', ascii=r"""
 ${c1}        /\

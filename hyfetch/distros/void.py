@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 void = AsciiArt(match=r'''"Void"*''', color='8 2 7', ascii=r"""
 ${c1}                        ..........

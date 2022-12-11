@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 debian = AsciiArt(match=r'''"Debian"*''', color='1 7 3', ascii=r"""
 ${c2}       _,met$$$$$gg.

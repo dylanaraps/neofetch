@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 archstrike = AsciiArt(match=r'''"ArchStrike"*''', color='8 6', ascii=r"""
 ${c1}                   *

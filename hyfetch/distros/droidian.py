@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 droidian = AsciiArt(match=r'''"Droidian"*''', color='2 10', ascii=r"""
 ${c2}       _,met$$$$$gg.

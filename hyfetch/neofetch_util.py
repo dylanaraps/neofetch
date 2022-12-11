@@ -236,7 +236,7 @@ def get_distro_ascii(distro: str | None = None) -> str:
         print(GLOBAL_CFG)
 
     # Try new pure-python detection method
-    det = distro_detector.detect(distro)
+    det = distro_detector.detect(distro or get_distro_name())
     if det is not None:
         return normalize_ascii(det.ascii)
 

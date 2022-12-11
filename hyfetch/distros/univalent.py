@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 univalent = AsciiArt(match=r'''"Univalent"*''', color='6 6', ascii=r"""
 ${c1}

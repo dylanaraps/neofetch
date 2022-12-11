@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 mageia = AsciiArt(match=r'''"Mageia"*''', color='6 7', ascii=r"""
 ${c1}        .°°.

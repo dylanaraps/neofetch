@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 arya = AsciiArt(match=r'''"Arya"*''', color='2 1', ascii=r"""
 ${c1}                `oyyy/${c2}-yyyyyy+

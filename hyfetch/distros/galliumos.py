@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 galliumos = AsciiArt(match=r'''"GalliumOS"*''', color='4 7 1', ascii=r"""
 ${c1}sooooooooooooooooooooooooooooooooooooo+:

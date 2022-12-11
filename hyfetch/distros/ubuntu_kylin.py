@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 ubuntu_kylin = AsciiArt(match=r'''"Ubuntu Kylin"* | "Ubuntu-Kylin"*''', color='1 7 3', ascii=r"""
 ${c1}            .__=liiiiiii=__,

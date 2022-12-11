@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 deepin = AsciiArt(match=r'''"Deepin"*''', color='2 7', ascii=r"""
 ${c1}             ............

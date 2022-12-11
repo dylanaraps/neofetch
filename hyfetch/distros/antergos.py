@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 antergos = AsciiArt(match=r'''"Antergos"*''', color='4 6', ascii=r"""
 ${c2}              `.-/::/-``

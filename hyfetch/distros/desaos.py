@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 desaos = AsciiArt(match=r'''"DesaOS"''', color='2 7', ascii=r"""
 ${c1}███████████████████████

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 openbsd = AsciiArt(match=r'''"OpenBSD"*''', color='3 7 6 1 8', ascii=r"""
 ${c3}                                     _

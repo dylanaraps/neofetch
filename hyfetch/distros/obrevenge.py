@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 obrevenge = AsciiArt(match=r'''"OBRevenge"*''', color='1 7 3', ascii=r"""
 ${c1}   __   __

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 cutefishos = AsciiArt(match=r'''"CutefishOS"*''', color='6 7 4', ascii=r"""
 ${c1}                     ___ww___

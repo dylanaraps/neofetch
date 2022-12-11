@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 trisquel = AsciiArt(match=r'''"Trisquel"*''', color='4 6', ascii=r"""
 ${c1}                         ,o$$$o.

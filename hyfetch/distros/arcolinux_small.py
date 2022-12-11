@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 arcolinux_small = AsciiArt(match=r'''"arcolinux_small"*''', color='7 4', ascii=r"""
 ${c2}          A

@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 openwrt = AsciiArt(match=r'''"OpenWrt"*''', color='4 7 1', ascii=r"""
 ${c1} _______

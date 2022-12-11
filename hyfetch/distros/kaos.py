@@ -1,5 +1,5 @@
 
-from ..distro import AsciiArt
+from . import AsciiArt
 
 kaos = AsciiArt(match=r'''"KaOS"*''', color='4 7 1', ascii=r"""
 ${c1}                     ..
