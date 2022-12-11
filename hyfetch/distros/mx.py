@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 mx = AsciiArt(match=r'''"MX"*''', color='4 6 7', ascii=r"""
 ${c3}MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNMMMMMMMMM

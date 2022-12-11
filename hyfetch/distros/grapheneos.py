@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 grapheneos = AsciiArt(match=r'''"GrapheneOS"*''', color='7 4', ascii=r"""
 ${c1}                        B?

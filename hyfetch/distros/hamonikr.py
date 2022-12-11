@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 hamonikr = AsciiArt(match=r'''"HamoniKR"*''', color='4 7 99 1 3 7', ascii=r"""
 ${c1}

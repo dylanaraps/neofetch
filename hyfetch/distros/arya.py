@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 arya = AsciiArt(match=r'''"Arya"*''', color='2 1', ascii=r"""
 ${c1}                `oyyy/${c2}-yyyyyy+

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 calculate = AsciiArt(match=r'''"Calculate"*''', color='7 3', ascii=r"""
 ${c1}                              ......

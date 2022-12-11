@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 siduction = AsciiArt(match=r'''"Siduction"*''', color='4 4', ascii=r"""
 ${c1}                _aass,

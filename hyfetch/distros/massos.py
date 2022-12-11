@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 massos = AsciiArt(match=r'''"MassOS"*''', color='7', ascii=r"""
 ${c1} -+++/+++osyyhdmNNMMMMNdy/

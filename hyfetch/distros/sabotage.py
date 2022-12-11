@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 sabotage = AsciiArt(match=r'''"sabotage"*''', color='4 7 1', ascii=r"""
 ${c2} .|'''.|      |     '||''|.    ..|''||

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 clearos = AsciiArt(match=r'''"ClearOS"*''', color='2', ascii=r"""
 ${c1}             `.--::::::--.`

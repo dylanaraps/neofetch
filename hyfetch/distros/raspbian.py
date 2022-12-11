@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 raspbian = AsciiArt(match=r'''"Raspbian"*''', color='2 1', ascii=r"""
 ${c1}  `.::///+:/-.        --///+//-:``

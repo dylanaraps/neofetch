@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 deepin = AsciiArt(match=r'''"Deepin"*''', color='2 7', ascii=r"""
 ${c1}             ............

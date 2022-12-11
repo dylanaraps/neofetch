@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 radix = AsciiArt(match=r'''"Radix"*''', color='1 2', ascii=r"""
 ${c2}                .:oyhdmNo

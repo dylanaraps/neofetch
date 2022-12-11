@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 bedrock = AsciiArt(match=r'''"Bedrock"*''', color='8 7', ascii=r"""
 ${c1}--------------------------------------

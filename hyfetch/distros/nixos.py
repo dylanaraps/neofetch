@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 nixos = AsciiArt(match=r'''"NixOS"*''', color='4 6', ascii=r"""
 ${c1}          ▗▄▄▄       ${c2}▗▄▄▄▄    ▄▄▄▖

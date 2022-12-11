@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 droidian = AsciiArt(match=r'''"Droidian"*''', color='2 10', ascii=r"""
 ${c2}       _,met$$$$$gg.

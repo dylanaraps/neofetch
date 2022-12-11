@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 arcolinux_small = AsciiArt(match=r'''"arcolinux_small"*''', color='7 4', ascii=r"""
 ${c2}          A

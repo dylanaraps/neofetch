@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 opensuse_tumbleweed = AsciiArt(match=r'''"openSUSE Tumbleweed"* | "openSUSE_Tumbleweed"*''', color='2 7', ascii=r"""
 ${c2}                                     ......

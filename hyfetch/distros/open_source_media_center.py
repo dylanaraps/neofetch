@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 open_source_media_center = AsciiArt(match=r'''"Open Source Media Center"* | "osmc"''', color='4 7 1', ascii=r"""
 ${c1}            -+shdmNNNNmdhs+-

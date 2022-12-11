@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 opensuse = AsciiArt(match=r'''"openSUSE"* | "open SUSE"* | "SUSE"*''', color='2 7', ascii=r"""
 ${c2}           .;ldkO0000Okdl;.

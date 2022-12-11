@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 android = AsciiArt(match=r'''"Android"*''', color='2 7', ascii=r"""
 ${c1}         -o          o-

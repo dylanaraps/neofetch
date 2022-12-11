@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 finnix = AsciiArt(match=r'''"Finnix"*''', color='4 7 7', ascii=r"""
 ${c1}            ,,:;;;;:,,

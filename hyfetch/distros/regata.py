@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 regata = AsciiArt(match=r'''"Regata"*''', color='7 1 4 5 3 2', ascii=r"""
 ${c1}            ddhso+++++osydd

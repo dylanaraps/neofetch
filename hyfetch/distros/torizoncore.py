@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 torizoncore = AsciiArt(match=r'''"TorizonCore"*''', color='fg 3 4 8 5', ascii=r"""
 ${c2}                          `.::-.

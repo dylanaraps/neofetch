@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 devuan = AsciiArt(match=r'''"Devuan"*''', color='5 7', ascii=r"""
 ${c1}   ..,,;;;::;,..

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 antix = AsciiArt(match=r'''"antiX"*''', color='1 7 3', ascii=r"""
 ${c1}

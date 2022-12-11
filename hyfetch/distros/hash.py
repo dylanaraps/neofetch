@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 hash = AsciiArt(match=r'''"Hash"*''', color='123', ascii=r"""
 ${c1}

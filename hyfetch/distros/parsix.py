@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 parsix = AsciiArt(match=r'''"Parsix"*''', color='3 1 7 8', ascii=r"""
                  ${c2}-/+/:.

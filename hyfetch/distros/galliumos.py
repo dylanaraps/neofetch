@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 galliumos = AsciiArt(match=r'''"GalliumOS"*''', color='4 7 1', ascii=r"""
 ${c1}sooooooooooooooooooooooooooooooooooooo+:

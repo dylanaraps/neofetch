@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 wii_linux_ngx = AsciiArt(match=r'''*"wii-linux-ngx"*|*"whiite-linux"*|         *"gc-linux"*''', color='6 7', ascii=r"""
 ${c1}'''''''            `~;:`            -''''''   ~kQ@@g\      ,EQ@@g/

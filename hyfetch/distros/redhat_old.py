@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 redhat_old = AsciiArt(match=r'''"redhat_old" | "rhel_old"*''', color='1 7 3', ascii=r"""
 ${c1}             `.-..........`

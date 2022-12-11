@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 alter = AsciiArt(match=r'''"Alter"*''', color='6 6', ascii=r"""
 ${c1}                      %,

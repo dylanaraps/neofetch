@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 darkos = AsciiArt(match=r'''"DarkOs"''', color='1 6 5 3 2', ascii=r"""
 

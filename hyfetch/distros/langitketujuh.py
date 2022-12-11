@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 langitketujuh = AsciiArt(match=r'''"LangitKetujuh"*''', color='4 2', ascii=r"""
 ${c1}

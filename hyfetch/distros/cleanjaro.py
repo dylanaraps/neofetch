@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 cleanjaro = AsciiArt(match=r'''"Cleanjaro"*''', color='7 7', ascii=r"""
 ${c1}███████▌ ████████████████

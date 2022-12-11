@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 sparky = AsciiArt(match=r'''"Sparky"*''', color='1 7', ascii=r"""
 ${c1}

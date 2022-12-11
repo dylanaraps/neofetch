@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 raspbian_small = AsciiArt(match=r'''"Raspbian_small"*''', color='2 1', ascii=r"""
 ${c1}   ..    ,.

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 libreelec = AsciiArt(match=r'''"LibreELEC"*''', color='2 3 7 14 13', ascii=r"""
 ${c1}          :+ooo/.      ${c2}./ooo+:

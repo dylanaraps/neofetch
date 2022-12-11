@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 gnome = AsciiArt(match=r'''"GNOME"*''', color='4', ascii=r"""
 ${c1}                               ,@@@@@@@@,

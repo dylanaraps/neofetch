@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 openmandriva = AsciiArt(match=r'''"OpenMandriva"*''', color='4', ascii=r"""
 ${c1}                  ``````

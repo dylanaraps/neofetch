@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 pengwin = AsciiArt(match=r'''"Pengwin"*''', color='5 5 13', ascii=r"""
 ${c3}                     ...`

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 opnsense = AsciiArt(match=r'''"OPNsense"*''', color='7 202', ascii=r"""
 ${c1}    .'''''''''''''''''''''''''''''''''''

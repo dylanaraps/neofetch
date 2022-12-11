@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 pclinuxos = AsciiArt(match=r'''"PCLinuxOS"*''', color='4 7 1', ascii=r"""
 ${c1}            mhhhyyyyhhhdN

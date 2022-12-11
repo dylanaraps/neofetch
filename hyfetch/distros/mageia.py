@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 mageia = AsciiArt(match=r'''"Mageia"*''', color='6 7', ascii=r"""
 ${c1}        .°°.

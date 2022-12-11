@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 grombyang = AsciiArt(match=r'''"Grombyang"*''', color='4 2 1', ascii=r"""
 ${c1}            eeeeeeeeeeee

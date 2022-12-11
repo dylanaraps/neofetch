@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 antergos = AsciiArt(match=r'''"Antergos"*''', color='4 6', ascii=r"""
 ${c2}              `.-/::/-``

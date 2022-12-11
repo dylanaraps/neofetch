@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 archmerge = AsciiArt(match=r'''"ArchMerge"*''', color='6 6 7 1', ascii=r"""
 ${c1}                    y:

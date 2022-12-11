@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 gentoo = AsciiArt(match=r'''"Gentoo"*''', color='5 7', ascii=r"""
 ${c1}         -/oyddmdhs+:.

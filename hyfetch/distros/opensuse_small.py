@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 opensuse_small = AsciiArt(match=r'''"opensuse_small" | "suse_small"*''', color='2 7', ascii=r"""
 ${c1}  _______

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 pacbsd = AsciiArt(match=r'''"PacBSD"*''', color='1 7 3', ascii=r"""
 ${c1}      :+sMs.

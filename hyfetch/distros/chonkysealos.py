@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 chonkysealos = AsciiArt(match=r'''"ChonkySealOS"*''', color='7', ascii=r"""
 ${c1}                  .-/-.

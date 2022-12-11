@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 slackware_small = AsciiArt(match=r'''"slackware_small"*''', color='4 7 1', ascii=r"""
 ${c1}   ________

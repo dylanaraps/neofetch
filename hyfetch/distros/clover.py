@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 clover = AsciiArt(match=r'''"Clover"*''', color='2 6', ascii=r"""
 ${c1}               `omo``omo`

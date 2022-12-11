@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 dracos = AsciiArt(match=r'''"DracOS"*''', color='1 7 3', ascii=r"""
 ${c1}       `-:/-

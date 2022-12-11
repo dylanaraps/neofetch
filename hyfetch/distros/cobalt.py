@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 cobalt = AsciiArt(match=r'''"Cobalt"*''', color='33 33 59 31 8', ascii=r"""
 ${c1}                          ///

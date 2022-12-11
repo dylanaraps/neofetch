@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ubuntu_old = AsciiArt(match=r'''"Ubuntu_old"* | "i3buntu"*''', color='1 7 3', ascii=r"""
 ${c1}            .-/+oossssoo+\-.

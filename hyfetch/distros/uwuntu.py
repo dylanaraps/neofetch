@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 uwuntu = AsciiArt(match=r'''"uwuntu"*''', color='225 206 52', ascii=r"""
 ${c1}                                  &&

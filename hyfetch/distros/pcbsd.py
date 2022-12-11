@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 pcbsd = AsciiArt(match=r'''"PCBSD"* | "TrueOS"*''', color='1 7 3', ascii=r"""
 ${c1}                       ..

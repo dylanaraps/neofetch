@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 hyperbola = AsciiArt(match=r'''"Hyperbola"*''', color='8', ascii=r"""
 ${c1}                     WW

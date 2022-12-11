@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 frugalware = AsciiArt(match=r'''"Frugalware"*''', color='4 7 1', ascii=r"""
 ${c1}          `++/::-.`

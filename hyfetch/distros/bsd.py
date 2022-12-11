@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 bsd = AsciiArt(match=r'''*"BSD"''', color='1 7 4 3 6', ascii=r"""
 ${c1}             ,        ,

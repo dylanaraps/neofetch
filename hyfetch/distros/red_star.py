@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 red_star = AsciiArt(match=r'''"Red Star"* | "Redstar"*''', color='1 7 3', ascii=r"""
 ${c1}                    ..

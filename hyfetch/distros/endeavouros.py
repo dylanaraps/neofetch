@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 endeavouros = AsciiArt(match=r'''"EndeavourOS"*''', color='1 5 4', ascii=r"""
 ${c1}                     ./${c2}o${c3}.

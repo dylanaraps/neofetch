@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 bonsai = AsciiArt(match=r'''"bonsai"*''', color='6 2 3', ascii=r"""
 ${c2}   ,####,

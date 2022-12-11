@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 irix = AsciiArt(match=r'''"IRIX"*''', color='4 7', ascii=r"""
 ${c1}           ./ohmNd/  +dNmho/-

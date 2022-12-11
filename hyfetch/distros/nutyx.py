@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 nutyx = AsciiArt(match=r'''"NuTyX"*''', color='4 1', ascii=r"""
 ${c1}                                      .

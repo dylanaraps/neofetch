@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 nitrux = AsciiArt(match=r'''"Nitrux"*''', color='4', ascii=r"""
 ${c1}`:/.

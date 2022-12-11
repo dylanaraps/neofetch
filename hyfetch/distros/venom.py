@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 venom = AsciiArt(match=r'''"Venom"*''', color='8 4', ascii=r"""
 ${c1}   :::::::          :::::::

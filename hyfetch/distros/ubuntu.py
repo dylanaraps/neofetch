@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ubuntu = AsciiArt(match=r'''"Ubuntu"*''', color='1', ascii=r"""
 ${c1}                             ....

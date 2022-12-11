@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 nixos_old = AsciiArt(match=r'''"nixos_old"*''', color='4 6', ascii=r"""
 ${c1}              ____       ${c2}_______        ____

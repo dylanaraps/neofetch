@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 linux_mint_old = AsciiArt(match=r'''"Linux Mint Old"* | "LinuxMintOld"* | "mint_old"*''', color='2 7', ascii=r"""
 ${c1}MMMMMMMMMMMMMMMMMMMMMMMMMmds+.

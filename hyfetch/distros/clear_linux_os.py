@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 clear_linux_os = AsciiArt(match=r'''"Clear Linux OS"* | "Clear_Linux"*''', color='4 3 7 6', ascii=r"""
 ${c1}          BBB

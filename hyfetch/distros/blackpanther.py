@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 blackpanther = AsciiArt(match=r'''"blackPanther"* | 'blackpanther'*''', color='1 11 12', ascii=r"""
 ${c3}                         ........

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 pentoo = AsciiArt(match=r'''"Pentoo"*''', color='5 7', ascii=r"""
 ${c2}           `:oydNNMMMMNNdyo:`

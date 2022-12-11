@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 openmamba = AsciiArt(match=r'''"openmamba"*''', color='7 2', ascii=r"""
 ${c1}                 `````

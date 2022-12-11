@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ubuntu_cinnamon = AsciiArt(match=r'''"Ubuntu Cinnamon"* | "Ubuntu-Cinnamon"*''', color='1 7', ascii=r"""
 ${c1}            .-/+oooooooo+/-.

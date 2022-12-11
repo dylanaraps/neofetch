@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 dietpi = AsciiArt(match=r'''"DietPi"*''', color='2 0', ascii=r"""
 ${c1}  :=+******+-    -+******+=:

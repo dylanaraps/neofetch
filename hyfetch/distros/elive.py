@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 elive = AsciiArt(match=r'''"Elive"*''', color='7 6 6', ascii=r"""
 ${c1}

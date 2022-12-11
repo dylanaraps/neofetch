@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 zorin = AsciiArt(match=r'''"Zorin"*''', color='4 6', ascii=r"""
 ${c1}        `osssssssssssssssssssso`

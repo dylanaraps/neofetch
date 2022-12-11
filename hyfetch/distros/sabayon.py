@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 sabayon = AsciiArt(match=r'''"Sabayon"*''', color='4 7 1', ascii=r"""
 ${c1}            ...........

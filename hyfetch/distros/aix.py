@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 aix = AsciiArt(match=r'''"AIX"*''', color='2 7', ascii=r"""
 ${c1}           `:+ssssossossss+-`

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 darwin = AsciiArt(match=r'''"Darwin"''', color='2 3 1 1 5 4', ascii=r"""
 ${c1}                    c.'

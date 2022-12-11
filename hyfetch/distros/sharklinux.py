@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 sharklinux = AsciiArt(match=r'''"SharkLinux"*''', color='4 7', ascii=r"""
 ${c1}                              `:shd/

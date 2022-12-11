@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ravynos = AsciiArt(match=r'''"ravynOS"''', color='15', ascii=r"""
 ${c1}                ..oooo..

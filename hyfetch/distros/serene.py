@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 serene = AsciiArt(match=r'''"Serene"*''', color='6 6', ascii=r"""
 ${c1}              __---''''''---__

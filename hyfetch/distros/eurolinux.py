@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 eurolinux = AsciiArt(match=r'''"EuroLinux"*''', color='4 7', ascii=r"""
 ${c1}                __

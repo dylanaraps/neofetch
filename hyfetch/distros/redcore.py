@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 redcore = AsciiArt(match=r'''"Redcore"*''', color='1', ascii=r"""
 ${c1}                 RRRRRRRRR

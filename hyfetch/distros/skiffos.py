@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 skiffos = AsciiArt(match=r'''"SkiffOS"*''', color='4 7', ascii=r"""
 ${c2}

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 asahi = AsciiArt(match=r'''"Asahi"*''', color='3 2 1 8 7 6 4', ascii=r"""
 ${c1}                   ##  ${c2}**

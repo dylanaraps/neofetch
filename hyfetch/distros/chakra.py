@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 chakra = AsciiArt(match=r'''"Chakra"*''', color='4 5 7 6', ascii=r"""
 ${c1}     _ _ _        "kkkkkkkk.

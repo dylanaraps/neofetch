@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 pearos = AsciiArt(match=r'''"pearOS"*''', color='2 3 1 1 5 4', ascii=r"""
 \e[0;32m                  .+yh

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 parrot = AsciiArt(match=r'''"Parrot"*''', color='6 7', ascii=r"""
 ${c1}  `:oho/-`

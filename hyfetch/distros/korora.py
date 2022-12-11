@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 korora = AsciiArt(match=r'''"Korora"*''', color='4 7 1', ascii=r"""
 ${c2}                ____________

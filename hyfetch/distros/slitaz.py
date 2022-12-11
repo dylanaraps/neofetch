@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 slitaz = AsciiArt(match=r'''"SliTaz"*''', color='3 3', ascii=r"""
 ${c1}        @    @(               @

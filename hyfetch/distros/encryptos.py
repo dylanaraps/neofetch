@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 encryptos = AsciiArt(match=r'''"EncryptOS"*''', color='2 5 6', ascii=r"""
 ${c2}                  *******

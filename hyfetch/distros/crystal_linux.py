@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 crystal_linux = AsciiArt(match=r'''*"Crystal Linux"*''', color='13 5', ascii=r"""
 ${c1}                        mysssym

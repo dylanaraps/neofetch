@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 exherbo = AsciiArt(match=r'''"Exherbo"*''', color='4 7 1', ascii=r"""
 ${c2} ,

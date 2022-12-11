@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 semc = AsciiArt(match=r'''"semc"*''', color='2 8 1', ascii=r"""
 ${c1}            /\

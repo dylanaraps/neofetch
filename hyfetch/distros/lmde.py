@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 lmde = AsciiArt(match=r'''"LMDE"*''', color='2 7', ascii=r"""
 ${c2}          `.-::---..

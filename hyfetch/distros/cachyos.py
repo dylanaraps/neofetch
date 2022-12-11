@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 cachyos = AsciiArt(match=r'''"CachyOS"*''', color='2 8 6', ascii=r"""
 ${c3}           ${c2}.${c3}-------------------------:

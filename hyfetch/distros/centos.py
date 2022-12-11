@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 centos = AsciiArt(match=r'''"CentOS"*''', color='3 2 4 5 7', ascii=r"""
 ${c1}                 ..

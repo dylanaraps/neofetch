@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 container_linux_by_coreos = AsciiArt(match=r'''"Container Linux by CoreOS"* | "Container_Linux"*''', color='4 7 1', ascii=r"""
 ${c1}                .....

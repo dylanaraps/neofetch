@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 instantos = AsciiArt(match=r'''"instantOS"*''', color='4 6', ascii=r"""
 

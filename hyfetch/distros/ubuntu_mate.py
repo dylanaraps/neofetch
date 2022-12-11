@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ubuntu_mate = AsciiArt(match=r'''"Ubuntu MATE"* | "Ubuntu-MATE"*''', color='2 7', ascii=r"""
 ${c1}            .:/+oossssoo+/:.`

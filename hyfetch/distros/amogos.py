@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 amogos = AsciiArt(match=r'''"AmogOS"*''', color='15 6', ascii=r"""
 ${c1}             ___________

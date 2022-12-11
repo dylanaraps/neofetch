@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 namib = AsciiArt(match=r'''"Namib"*''', color='1', ascii=r"""
 ${c1}          .:+shysyhhhhysyhs+:.

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ubuntu_studio = AsciiArt(match=r'''"Ubuntu Studio"* | "Ubuntu-Studio"''', color='6 7', ascii=r"""
 ${c1}              ..-::::::-.`

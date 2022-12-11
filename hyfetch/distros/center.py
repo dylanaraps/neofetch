@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 center = AsciiArt(match=r'''"Center"*''', color='7 7', ascii=r"""
 ${c2}                .

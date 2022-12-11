@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 kali = AsciiArt(match=r'''"Kali"*''', color='4 8', ascii=r"""
 ${c1}..............

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 neptune = AsciiArt(match=r'''"Neptune"*''', color='7', ascii=r"""
 ${c1}            ./+sydddddddys/-.

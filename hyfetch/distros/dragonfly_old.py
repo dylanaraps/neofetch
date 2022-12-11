@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 dragonfly_old = AsciiArt(match=r'''"dragonfly_old"*''', color='1 7 3', ascii=r"""
      ${c1}                   .-.

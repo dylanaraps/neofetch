@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 nomadbsd = AsciiArt(match=r'''"NomadBSD"*''', color='4', ascii=r"""
 ${c1}         _======__

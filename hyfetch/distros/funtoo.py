@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 funtoo = AsciiArt(match=r'''"Funtoo"*''', color='5 7', ascii=r"""
 ${c1}   .dKXXd                         .

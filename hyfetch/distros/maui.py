@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 maui = AsciiArt(match=r'''"Maui"*''', color='6 7', ascii=r"""
 ${c1}             `.-://////:--`

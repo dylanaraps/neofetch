@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 bodhi = AsciiArt(match=r'''"Bodhi"*''', color='7 11 2', ascii=r"""
 ${c1}|           ${c2},,mmKKKKKKKKWm,,

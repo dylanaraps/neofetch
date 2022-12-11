@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 huayra = AsciiArt(match=r'''"Huayra"*''', color='4 7', ascii=r"""
 ${c2}                     `

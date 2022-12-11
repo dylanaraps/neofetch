@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 debian_small = AsciiArt(match=r'''"debian_small"''', color='1 7 3', ascii=r"""
 ${c1}  _____

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ghostbsd = AsciiArt(match=r'''"GhostBSD"*''', color='4', ascii=r"""
 ${c1}           ,gggggg.

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 aster = AsciiArt(match=r'''"Aster"*''', color='6 6', ascii=r"""
 ${c1}                      ...''...

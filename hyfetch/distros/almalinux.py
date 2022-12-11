@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 almalinux = AsciiArt(match=r'''"AlmaLinux"*''', color='1 3 4 2 6', ascii=r"""
 ${c1}         'c:.

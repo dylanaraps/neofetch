@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 freebsd = AsciiArt(match=r'''FreeBSD*|HardenedBSD*''', color='1 7 3', ascii=r"""
    ${c2}```                        ${c1}`

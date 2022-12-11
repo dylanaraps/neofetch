@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ubuntu_sway = AsciiArt(match=r'''"Ubuntu Sway"* | "Ubuntu-Sway"''', color='6 7', ascii=r"""
 ${c1}            .-/+oossssoo+\-.

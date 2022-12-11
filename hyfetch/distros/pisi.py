@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 pisi = AsciiArt(match=r'''"Pisi"*''', color='12 7 6 1 8', ascii=r"""
 ${c1}   \Fv/!-                      `:?lzC

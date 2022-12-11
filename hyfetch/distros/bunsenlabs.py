@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 bunsenlabs = AsciiArt(match=r'''"BunsenLabs"*''', color='fg 7', ascii=r"""
 ${c1}        `++

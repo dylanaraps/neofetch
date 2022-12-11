@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 kaisen = AsciiArt(match=r'''"Kaisen"*''', color='1 7 3', ascii=r"""
 ${c1}                          `

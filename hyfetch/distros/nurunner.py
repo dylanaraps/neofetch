@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 nurunner = AsciiArt(match=r'''"Nurunner"*''', color='4', ascii=r"""
 ${c1}                  ,xc

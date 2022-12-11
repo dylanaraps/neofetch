@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 smartos = AsciiArt(match=r'''"SmartOS"*''', color='6 7', ascii=r"""
 ${c1}yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy

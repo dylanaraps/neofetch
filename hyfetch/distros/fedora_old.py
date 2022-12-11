@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 fedora_old = AsciiArt(match=r'''"Fedora_old"* | "RFRemix"*''', color='4 7 1', ascii=r"""
 ${c1}          /:-------------:\\

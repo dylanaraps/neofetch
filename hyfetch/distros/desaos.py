@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 desaos = AsciiArt(match=r'''"DesaOS"''', color='2 7', ascii=r"""
 ${c1}███████████████████████

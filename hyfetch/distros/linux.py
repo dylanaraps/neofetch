@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 linux = AsciiArt(match=r'''"Linux"''', color='fg 8 3', ascii=r"""
 ${c2}        #####

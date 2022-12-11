@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 krassos = AsciiArt(match=r'''"KrassOS"* | "Krass"*''', color='4 7', ascii=r"""
 ${c1}                  ${c2}**@@@@@@@@@@@*

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 shastraos = AsciiArt(match=r'''"ShastraOS"*''', color='6', ascii=r"""
 ${c1}                          ..,;;,'.

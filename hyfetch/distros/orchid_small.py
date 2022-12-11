@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 orchid_small = AsciiArt(match=r'''"orchid_small"*''', color='255 127', ascii=r"""
 ${c2}                       :##:

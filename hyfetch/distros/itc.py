@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 itc = AsciiArt(match=r'''"Itc"*''', color='1', ascii=r"""
 ${c1}....................-==============+...

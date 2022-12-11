@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 aosc_os_retro = AsciiArt(match=r'''"AOSC OS/Retro"*''', color='4 7 1 3', ascii=r"""
 ${c2}          .........

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ubuntu_kylin = AsciiArt(match=r'''"Ubuntu Kylin"* | "Ubuntu-Kylin"*''', color='1 7 3', ascii=r"""
 ${c1}            .__=liiiiiii=__,

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 archbox = AsciiArt(match=r'''"ArchBox"*''', color='2 7 1', ascii=r"""
 ${c1}              ...:+oh/:::..

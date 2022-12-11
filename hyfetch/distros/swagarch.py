@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 swagarch = AsciiArt(match=r'''"SwagArch"*''', color='4 7 1', ascii=r"""
 ${c2}        .;ldkOKXXNNNNXXK0Oxoc,.

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 guix = AsciiArt(match=r'''"Guix"*''', color='3 7 6 1 8', ascii=r"""
 ${c1} ..                             `.

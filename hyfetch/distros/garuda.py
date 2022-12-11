@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 garuda = AsciiArt(match=r'''"Garuda"*''', color='7 7 3 7 2 4', ascii=r"""
 

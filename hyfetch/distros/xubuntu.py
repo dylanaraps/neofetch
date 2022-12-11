@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 xubuntu = AsciiArt(match=r'''"Xubuntu"*''', color='4 7 1', ascii=r"""
 ${c1}           `.:/ossyyyysso/:.

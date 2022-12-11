@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 endless = AsciiArt(match=r'''"Endless"*''', color='1 7', ascii=r"""
 ${c1}           `:+yhmNMMMMNmhy+:`

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 crux = AsciiArt(match=r'''"CRUX"*''', color='4 5 7 6', ascii=r"""
 ${c1}         odddd

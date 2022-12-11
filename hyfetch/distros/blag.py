@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 blag = AsciiArt(match=r'''"BLAG"*''', color='5 7', ascii=r"""
 ${c1}             d

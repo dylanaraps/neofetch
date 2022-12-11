@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 asteroidos = AsciiArt(match=r'''"AsteroidOS"*''', color='160 208 202 214', ascii=r"""
 ${c1}                    ***

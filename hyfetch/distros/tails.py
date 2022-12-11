@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 tails = AsciiArt(match=r'''"Tails"*''', color='5 7', ascii=r"""
 ${c1}      ``

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 univention = AsciiArt(match=r'''"Univention"*''', color='1 7', ascii=r"""
 ${c1}         ./osssssssssssssssssssssso+-

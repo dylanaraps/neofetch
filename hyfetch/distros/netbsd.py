@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 netbsd = AsciiArt(match=r'''"NetBSD"*''', color='5 7', ascii=r"""
 ${c1}                     `-/oshdmNMNdhyo+:-`

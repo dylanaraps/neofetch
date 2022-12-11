@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 reborn_os = AsciiArt(match=r'''"Reborn OS"* | "Reborn"*''', color='2 2 8', ascii=r"""
 ${c3}

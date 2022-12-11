@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 kslinux = AsciiArt(match=r'''"KSLinux"*''', color='4 7 1', ascii=r"""
 ${c1} K   K U   U RRRR   ooo

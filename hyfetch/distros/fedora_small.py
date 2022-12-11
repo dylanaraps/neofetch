@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 fedora_small = AsciiArt(match=r'''"fedora_small"''', color='12', ascii=r"""
 ${c1}        ,'''''.

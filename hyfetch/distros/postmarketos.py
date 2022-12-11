@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 postmarketos = AsciiArt(match=r'''"PostMarketOS"*''', color='2 7', ascii=r"""
 ${c1}                 /\\

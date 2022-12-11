@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 fedora = AsciiArt(match=r'''"Fedora"*''', color='12 7', ascii=r"""
 ${c1}             .',;::::;,'.

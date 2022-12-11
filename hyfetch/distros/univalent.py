@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 univalent = AsciiArt(match=r'''"Univalent"*''', color='6 6', ascii=r"""
 ${c1}

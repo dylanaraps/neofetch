@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 salentos = AsciiArt(match=r'''"SalentOS"*''', color='2 1 3 7', ascii=r"""
 ${c1}                 ``..``

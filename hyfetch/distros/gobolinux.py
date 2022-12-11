@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 gobolinux = AsciiArt(match=r'''"GoboLinux"*''', color='5 4 6 2', ascii=r"""
 ${c1}  _____       _

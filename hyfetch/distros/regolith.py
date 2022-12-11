@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 regolith = AsciiArt(match=r'''"Regolith"*''', color='1', ascii=r"""
 ${c1}

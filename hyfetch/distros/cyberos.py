@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 cyberos = AsciiArt(match=r'''"CyberOS"*''', color='50 32 57', ascii=r"""
 ${c3}             !M$EEEEEEEEEEEP

@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 steamos = AsciiArt(match=r'''"SteamOS"*''', color='5 7', ascii=r"""
 ${c1}              .,,,,.

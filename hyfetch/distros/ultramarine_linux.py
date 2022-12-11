@@ -1,5 +1,5 @@
 
-from hyfetch.distro import AsciiArt
+from ..distro import AsciiArt
 
 ultramarine_linux = AsciiArt(match=r'''"Ultramarine Linux"* | "ultramarine"*''', color='4 7', ascii=r"""
 ${c1}            .cd0NNNNNNNXOdc.
