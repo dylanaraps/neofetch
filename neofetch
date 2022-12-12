@@ -3214,9 +3214,9 @@ get_memory() {
 
     [[ "$memory_percent" == "on" ]] && ((mem_perc=mem_used * 100 / mem_total))
 
-    # Creates temp variables: memory_unit_divider, memory_unit_multiplier
-    memory_unit_divider=1
-    memory_unit_multiplier=$((10 ** mem_precision))
+    # Creates temp variables: mem_unit_divider, mem_unit_multiplier
+    mem_unit_divider=1
+    mem_unit_multiplier=$((10 ** mem_precision))
 
     # Keep a copy of the original kibibyte values because progress bar needs them
     mu_kib="$mem_used"
@@ -3225,12 +3225,12 @@ get_memory() {
     case $memory_unit in
         tib)
             mem_label=TiB
-            memory_unit_divider=$((1024 * 1024 * 1024))
+            mem_unit_divider=$((1024 * 1024 * 1024))
         ;;
 
         gib)
             mem_label=GiB
-            memory_unit_divider=$((1024 * 1024))
+            mem_unit_divider=$((1024 * 1024))
         ;;
 
         kib)
@@ -3238,23 +3238,23 @@ get_memory() {
 
         *)
             mem_label=MiB
-            memory_unit_divider=1024
+            mem_unit_divider=1024
         ;;
     esac
 
-    # Uses temp variables from above: memory_unit_divider, memory_unit_multiplier
-    if test "$memory_unit_divider" -ge 1; then
+    # Uses temp variables from above: mem_unit_divider, mem_unit_multiplier
+    if test "$mem_unit_divider" -ge 1; then
         case ${mem_precision} in
             0)
-                mem_used="$((mem_used / memory_unit_divider))"
-                mem_total="$((mem_total / memory_unit_divider))"
+                mem_used="$((mem_used / mem_unit_divider))"
+                mem_total="$((mem_total / mem_unit_divider))"
             ;;
             
             *)
-                mem_used="$((mem_used / memory_unit_divider)).$(printf "%0*d" "${mem_precision}" \
-                    $((mem_used % memory_unit_divider * memory_unit_multiplier / memory_unit_divider)))"
-                mem_total="$((mem_total / memory_unit_divider)).$(printf "%0*d" "${mem_precision}" \
-                    $((mem_total % memory_unit_divider * memory_unit_multiplier / memory_unit_divider)))"
+                mem_used="$((mem_used / mem_unit_divider)).$(printf "%0*d" "${mem_precision}" \
+                    $((mem_used % mem_unit_divider * mem_unit_multiplier / mem_unit_divider)))"
+                mem_total="$((mem_total / mem_unit_divider)).$(printf "%0*d" "${mem_precision}" \
+                    $((mem_total % mem_unit_divider * mem_unit_multiplier / mem_unit_divider)))"
             ;;
         esac
     fi
