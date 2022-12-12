@@ -3233,7 +3233,10 @@ get_memory() {
             memory_unit_divider=$((1024 * 1024))
         ;;
 
-        mib)
+        kib)
+        ;;
+
+        *)
             mem_label=MiB
             memory_unit_divider=1024
         ;;
