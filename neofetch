@@ -5675,7 +5675,7 @@ EOF
         ;;
 
         "Sasanqua"*)
-            set_colors 5 1 5
+            set_colors 5 1 1
             read -rd '' ascii_data <<'EOF'
 ${c1}
 
