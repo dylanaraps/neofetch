@@ -780,7 +780,7 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
+# NOTE: AIX, Hash, Alpine, AlterLinux, Project Sasanqua,Amazon, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
@@ -5139,7 +5139,7 @@ ASCII:
     --ascii_colors x x x x x x  Colors to print the ascii art
     --ascii_distro distro       Which Distro's ascii art to print
 
-                                NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android,
+                                NOTE: AIX, Hash, Alpine, AlterLinux, Project Sasanqua,Amazon, Anarchy, Android,
                                 instantOS, Antergos, antiX, \"AOSC OS\", \"AOSC OS/Retro\",
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
@@ -5674,6 +5674,31 @@ ${c1}                      %,
 EOF
         ;;
 
+        "Sasanqua"*)
+            set_colors 5 1 5
+            read -rd '' ascii_data <<'EOF'
+${c1}
+
+                     __,_
+             _╕⌐≡µ,√*    º≡,
+            ñ     "'       ░
+           ╞)         _,   ▒     __
+     _,,,_ _Ñ╜^≡µ   ≡'  1µ╕º^el    "%µ
+     ∩'     K      Yµ&          1l     ╞)
+  ▒     √"        ^Ü          1"     `1µ
+  Γ    ║h                  _¿▒∞√;,     ^≡,
+   K    ^u_              ⌐*      ╙¥     ╓Ñ
+  ⌠        º≡u,,                  ║I    Å
+  Ü     _∩"                       ║µ_¿╝"
+   Yu_ ▒               ╙º≡_       ║l1µ
+      ║l          ,        Y∞µ___≡ª  Γl
+       ╓hⁿ╖I     1l         Ñ        ╓Ñ
+       Ñ   ¥,___≡1l        ╓Ñ      ¿╕ª
+       Ü         ╙L     ¿¿∩ª     ╓P
+        ª≡,__      *ⁿ┤ⁿÑⁿ^µ     √ª
+              ⁿ≡,,__√╝*    "ⁿⁿ*"                                       
+EOF
+        ;;
         "Amazon"*)
             set_colors 3 7
             read -rd '' ascii_data <<'EOF'
