@@ -780,7 +780,7 @@ image_source="auto"
 # Default: 'auto'
 # Values:  'auto', 'distro_name'
 # Flag:    --ascii_distro
-# NOTE: AIX, Hash, Alpine, AlterLinux, Amazon, Anarchy, Android, instantOS,
+# NOTE: AIX, Hash, Alpine, AlterLinux, ,Amazon, Anarchy, Android, instantOS,
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
@@ -801,7 +801,7 @@ image_source="auto"
 #       TrueOS, PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
 #       Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian,
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith,
-#       Rocky, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
+#       Rocky, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Project Sasanqua,Scientific, Septor,
 #       SereneLinux, SharkLinux, Siduction, SkiffOS, Slackware, SliTaz, SmartOS,
 #       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
@@ -5161,7 +5161,7 @@ ASCII:
                                 PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
                                 Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian, Reborn_OS,
                                 Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
-                                sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
+                                sabotage, Sabayon, Sailfish, SalentOS, Project Sasanqua,Scientific, Septor,
                                 SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
                                 Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
@@ -5673,7 +5673,6 @@ ${c1}                      %,
  g~:~~:~~~:~~:~~:~:~~~~1q                N,
 EOF
         ;;
-
         "Amazon"*)
             set_colors 3 7
             read -rd '' ascii_data <<'EOF'
@@ -10320,6 +10319,32 @@ ${c2}      `:smMMMMMMMMM${c4}hh${c3}MMMMMMMMMNh+.
 ${c2}          .+hMMMMMM${c4}hh${c3}MMMMMMdo:
 ${c2}             `:smMM${c4}yy${c3}MMNy/`
                  ${c2}.- ${c4}`${c3}:.
+EOF
+        ;;
+
+        "Sasanqua"*)
+            set_colors 5 1 5
+            read -rd '' ascii_data <<'EOF'
+${c1}
+
+                     __,_
+             _╕⌐≡µ,√*    º≡,
+            ñ     "'       ░
+           ╞)         _,   ▒     __
+     _,,,_ _Ñ╜^≡µ   ≡'  1µ╕º^el    "%µ
+     ∩'     K      Yµ&          1l     ╞)
+  ▒     √"        ^Ü          1"     `1µ
+  Γ    ║h                  _¿▒∞√;,     ^≡,
+   K    ^u_              ⌐*      ╙¥     ╓Ñ
+  ⌠        º≡u,,                  ║I    Å
+  Ü     _∩"                       ║µ_¿╝"
+   Yu_ ▒               ╙º≡_       ║l1µ
+      ║l          ,        Y∞µ___≡ª  Γl
+       ╓hⁿ╖I     1l         Ñ        ╓Ñ
+       Ñ   ¥,___≡1l        ╓Ñ      ¿╕ª
+       Ü         ╙L     ¿¿∩ª     ╓P
+        ª≡,__      *ⁿ┤ⁿÑⁿ^µ     √ª
+              ⁿ≡,,__√╝*    "ⁿⁿ*"                                       
 EOF
         ;;
 
