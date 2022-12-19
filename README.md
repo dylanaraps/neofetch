@@ -91,13 +91,15 @@ Updates to `neowofetch` begins with the emoji 🖼️
 
 <!-- CHANGELOG STARTS HERE --->
 
-### Unpublished 1.4.5
+### Nightly
 
 Note: You can install the latest nightly version by using:
 
 ```sh
 pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 ```
+
+### Unpublished 1.4.5
 
 * 🌈 **Support using FastFetch as a HyFetch backend** (`hyfetch -b fastfetch`)
 * 🌈 Add config file argument (#48)
