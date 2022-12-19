@@ -89,8 +89,6 @@ Updates to `neowofetch` begins with the emoji 🖼️
 * [ ] Config menu: Allow left-right arrow keys for pagination
 * [ ] Neofetch argument pass through
 
-<!-- CHANGELOG STARTS HERE --->
-
 ### Nightly
 
 Note: You can install the latest nightly version by using:
@@ -98,6 +96,8 @@ Note: You can install the latest nightly version by using:
 ```sh
 pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 ```
+
+<!-- CHANGELOG STARTS HERE --->
 
 ### Unpublished 1.4.5
 
