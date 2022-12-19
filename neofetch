@@ -2213,7 +2213,7 @@ get_wm() {
     if [[ -O "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" ]]; then
         if tmp_pid="$(lsof -t "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" 2>&1)" ||
            tmp_pid="$(fuser   "${XDG_RUNTIME_DIR}/${WAYLAND_DISPLAY:-wayland-0}" 2>&1)"; then
-            tmp_pid="$(trim "${tmp_pid##*:}")" 
+            tmp_pid="$(trim "${tmp_pid##*:}")"
             wm="$(ps -p "${tmp_pid}" -ho comm=)"
         else
             # lsof may not exist, or may need root on some systems. Similarly fuser.
@@ -3249,7 +3249,7 @@ get_memory() {
                 mem_used="$((mem_used / mem_unit_divider))"
                 mem_total="$((mem_total / mem_unit_divider))"
             ;;
-            
+
             *)
                 mem_used="$((mem_used / mem_unit_divider)).$(printf "%0*d" "${mem_precision}" \
                     $((mem_used % mem_unit_divider * mem_unit_multiplier / mem_unit_divider)))"
@@ -6525,7 +6525,6 @@ ${c1}                      %,
  g~:~~:~~~:~~:~~:~:~~~~1q                N,
 EOF
         ;;
-
         "Amazon"*)
             set_colors 3 7
             read -rd '' ascii_data <<'EOF'
@@ -7234,25 +7233,25 @@ EOF
 
         "Aster"*)
             set_colors 6 6
-            read -rd '' ascii_data <<'EOF'                                        
-${c1}                      ...''...         
-${c1}                 .;oOXWMWNXXXNMMN0d:.   
-${c1}              .oXMWOo;..       ..:oO;   
-${c1}            ;KMWx,       co,            
-${c1}          'KMNl         dMMW.           
-${c1}         oMMx          xMMMMk           
-${c1}        xMM:          dMMMMMM;          
-${c1}       cMMl          dMMMMMMMW          
-${c1}       NMK          xMMMx::dXMx         
-${c1}      ,MMl         xMMN'     .o.        
-${c1}      cMM;        dMMW'                 
-${c1}      ;MMc       oMMW,                  
-${c1}       WMK      dMMW,  ccccccc.         
-${c1}       lMMl    oMMM;   ooooooo.         
-${c1}        OMMc   ...                      
-${c1}         xMMx                           
-${c1}          ;XMN:                         
-${c1}            ,.                          
+            read -rd '' ascii_data <<'EOF'
+${c1}                      ...''...
+${c1}                 .;oOXWMWNXXXNMMN0d:.
+${c1}              .oXMWOo;..       ..:oO;
+${c1}            ;KMWx,       co,
+${c1}          'KMNl         dMMW.
+${c1}         oMMx          xMMMMk
+${c1}        xMM:          dMMMMMM;
+${c1}       cMMl          dMMMMMMMW
+${c1}       NMK          xMMMx::dXMx
+${c1}      ,MMl         xMMN'     .o.
+${c1}      cMM;        dMMW'
+${c1}      ;MMc       oMMW,
+${c1}       WMK      dMMW,  ccccccc.
+${c1}       lMMl    oMMM;   ooooooo.
+${c1}        OMMc   ...
+${c1}         xMMx
+${c1}          ;XMN:
+${c1}            ,.
 EOF
         ;;
 
@@ -12158,6 +12157,32 @@ ${c1}                          ..,;;,'.
            cd.           'xo
            :o,         'ld
             .oc'...';lo
+EOF
+        ;;
+
+        "Sasanqua"*)
+            set_colors 5 1 5
+            read -rd '' ascii_data <<'EOF'
+${c1}
+
+                     __,_
+             _╕⌐≡µ,√*    º≡,
+            ñ     "'       ░
+           ╞)         _,   ▒     __
+     _,,,_ _Ñ╜^≡µ   ≡'  1µ╕º^el    "%µ
+     ∩'     K      Yµ&          1l     ╞)
+  ▒     √"        ^Ü          1"     `1µ
+  Γ    ║h                  _¿▒∞√;,     ^≡,
+   K    ^u_              ⌐*      ╙¥     ╓Ñ
+  ⌠        º≡u,,                  ║I    Å
+  Ü     _∩"                       ║µ_¿╝"
+   Yu_ ▒               ╙º≡_       ║l1µ
+      ║l          ,        Y∞µ___≡ª  Γl
+       ╓hⁿ╖I     1l         Ñ        ╓Ñ
+       Ñ   ¥,___≡1l        ╓Ñ      ¿╕ª
+       Ü         ╙L     ¿¿∩ª     ╓P
+        ª≡,__      *ⁿ┤ⁿÑⁿ^µ     √ª
+              ⁿ≡,,__√╝*    "ⁿⁿ*"
 EOF
         ;;
 
