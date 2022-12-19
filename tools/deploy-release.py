@@ -113,7 +113,8 @@ def create_release(v: str):
     print('Committing changes...')
 
     # 1. Add files
-    subprocess.check_call(['git', 'add', 'hyfetch/constants.py', 'neofetch', 'neofetch.1', 'package.json', 'README.md'])
+    subprocess.check_call(['git', 'add', 'hyfetch/constants.py', 'neofetch', 'neofetch.1', 'package.json', 'README.md',
+                           'hyfetch/distros/*'])
 
     # 2. Commit
     subprocess.check_call(['git', 'commit', '-m', f'[U] Release {v}'])
