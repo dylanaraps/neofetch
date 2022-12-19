@@ -4082,6 +4082,10 @@ print_ascii() {
         print_ascii
         return
     }
+    
+    if [[ $custom_ascii_len -gt 0 ]];then
+        ascii_len="$custom_ascii_len"
+    fi
 
     # Colors.
     ascii_data="${ascii_data//\$\{c1\}/$c1}"
@@ -5366,6 +5370,8 @@ get_args() {
                     *) image_source="$2" ;;
                 esac
             ;;
+	    
+           "--ascii-len") custom_ascii_len="$2";;
 
             # Image options
             "--loop") image_loop="on" ;;
