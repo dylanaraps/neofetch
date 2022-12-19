@@ -561,6 +561,10 @@ def detect(name: str) -> AsciiArt | None:
         from .hyperbola import hyperbola
         return hyperbola
     
+    if name.startswith('hybrid'):
+        from .hybrid import hybrid
+        return hybrid
+    
     if name.startswith('iglunix') or name.startswith('iglu'):
         from .iglunix import iglunix
         return iglunix
@@ -1045,6 +1049,10 @@ def detect(name: str) -> AsciiArt | None:
         from .shastraos import shastraos
         return shastraos
     
+    if name.startswith('sasanqua'):
+        from .sasanqua import sasanqua
+        return sasanqua
+    
     if name.startswith('scientific'):
         from .scientific import scientific
         return scientific
@@ -1228,6 +1236,10 @@ def detect(name: str) -> AsciiArt | None:
     if name.startswith('uwuntu'):
         from .uwuntu import uwuntu
         return uwuntu
+    
+    if name.startswith('urukos'):
+        from .urukos import urukos
+        return urukos
     
     if name.startswith('venom'):
         from .venom import venom

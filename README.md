@@ -99,18 +99,18 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 <!-- CHANGELOG STARTS HERE --->
 
-### Unpublished 1.4.5
+### 1.4.5
 
 * 🌈 **Support using FastFetch as a HyFetch backend** (`hyfetch -b fastfetch`)
 * 🌈 Add config file argument (#48)
 * 🌈 Fix problems caused by color detection on Windows (#16)
 * 🌈 Support pure-python distro detection for FastFetch
-* 🖼️ Distro - Add Aster Linux (dylanaraps/neofetch#2251)
-* 🖼️ Distro - Add Hybrid Linux (dylanaraps/neofetch#2239)
-* 🖼️ Distro - Add UrukOS (dylanaraps/neofetch#2258)
-* 🖼️ Distro - Add Project Sasanqua (dylanaraps/neofetch#2264)
-* 🖼️ Distro - Add Kali small variant (dylanaraps/neofetch#2242)
-* 🖼️ Distro - Fix CachyOS matching (dylanaraps/neofetch#2026)
+* 🖼️ Distro - Add Aster Linux ([dylanaraps#2251](https://github.com/dylanaraps/neofetch/pull/2251))
+* 🖼️ Distro - Add Hybrid Linux ([dylanaraps#2239](https://github.com/dylanaraps/neofetch/pull/2239))
+* 🖼️ Distro - Add UrukOS ([dylanaraps#2258](https://github.com/dylanaraps/neofetch/pull/2258))
+* 🖼️ Distro - Add Project Sasanqua ([dylanaraps#2264](https://github.com/dylanaraps/neofetch/pull/2264))
+* 🖼️ Distro - Add Kali small variant ([dylanaraps#2242](https://github.com/dylanaraps/neofetch/pull/2242))
+* 🖼️ Distro - Fix CachyOS matching ([dylanaraps#2026](https://github.com/dylanaraps/neofetch/pull/2026))
 * 🖼 WM - Fix wm detection with `fuser` (#39)
 * 🖼️ Memory - Make memory unit decimal calculation more accurate (#52)
 * 🖼 Packages - Fix squirrel (Stock Linux) package count detection (#39)
