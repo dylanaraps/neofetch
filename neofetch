@@ -3288,11 +3288,11 @@ get_network() {
         ;;
         "Mac OS X"|"macOS")
             ActiveNetwork=$(route get default | grep interface | awk '{print $2}')
-            ActiveNetworkName=$(networksetup -listallhardwareports | grep -B 1 "$ActiveNetwork" | awk '/Hardware Port/{ print }'|cut -d " " -f3-)
+            ActiveNetworkName=$(networksetup -listallhardwareports | grep -B 1 "$ActiveNetwork" | awk '/Hardware Port/{print}'| awk '{print $3}')
             if [[ $ActiveNetworkName == "Wi-Fi" ]]; then
-                LinkSpeed="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/maxRate/{ print }' | xargs | cut -d " " -f2)Mbps"
+                LinkSpeed="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/maxRate/{print}' | awk '{print $2}' )Mbps"
             else
-                LinkSpeed="$(ifconfig $ActiveNetwork | awk '/media/{ print }' | gsed -E "s/.*\((.*)\).*/\1/gm")"
+                LinkSpeed="$(ifconfig $ActiveNetwork | awk '/media/{print}' | sed -E "s/.*\((.*)\).*/\1/")"
             fi
             network="$ActiveNetwork: $ActiveNetworkName@$LinkSpeed"
         ;;
