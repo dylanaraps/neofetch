@@ -3292,9 +3292,9 @@ get_network() {
             if [[ "$ActiveNetworkName" == "Wi-Fi" ]]; then
                 LinkSpeed="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | awk '/maxRate/{print}' | awk '{print $2}' )Mbps"
             else
-                LinkSpeed="$(ifconfig "$ActiveNetwork" | awk '/media/{print}' | sed -E "s/.*\((.*)\).*/\1/")"
+                LinkSpeed="$(ifconfig \"$ActiveNetwork\" | awk '/media/{print}' | sed -E "s/.*\((.*)\).*/\1/")"
             fi
-            network=""$ActiveNetwork": "$ActiveNetworkName"@"$LinkSpeed""
+            network="\"$ActiveNetwork\": \"$ActiveNetworkName\"@\"$LinkSpeed\""
         ;;
     esac
     while IFS=' ' read -r n i; do
