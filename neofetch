@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vim: noai:ts=4:sw=4:expandtab
 # shellcheck source=/dev/null
-# shellcheck disable=2009 disable=2153 disable=2154 disable=2243 disable=2244
+# shellcheck disable=2009 disable=2153 disable=2154 disable=2243 disable=2244 disable=2317
 #
 # Neofetch: A command-line system information tool written in bash 3.2+.
 # https://github.com/dylanaraps/neofetch
