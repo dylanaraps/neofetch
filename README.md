@@ -99,6 +99,10 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 <!-- CHANGELOG STARTS HERE --->
 
+* 🖼 Editor - Add editor information detection ([dylanaraps#2271](https://github.com/dylanaraps/neofetch/pull/2271))
+* 🖼 Song - Fix CMUS player song detection on macOS (#55)
+* 🖼 Network - Fix macOS network detection (#56)
+
 ### 1.4.5
 
 * 🌈 **Support using FastFetch as a HyFetch backend** (`hyfetch -b fastfetch`)
