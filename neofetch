@@ -1253,6 +1253,9 @@ get_model() {
 
             elif [[ -f /tmp/sysinfo/model ]]; then
                 model=$(< /tmp/sysinfo/model)
+
+            elif [[ -f /etc/hostname ]]; then
+                model="$(< /etc/hostname)"
             fi
         ;;
 
