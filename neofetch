@@ -3841,9 +3841,9 @@ get_battery() {
     [[ "$battery_state" ]] && battery+=" Charging"
 
     case $battery_display in
-        "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
-        "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
-        "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
+        "bar")     battery="$(bar "$((100-${battery/\%*}))" 100)" ;;
+        "infobar") battery="${battery} $(bar "$((100-${battery/\%*}))" 100)" ;;
+        "barinfo") battery="$(bar "$((100-${battery/\%*}))" 100)${info_color} ${battery}" ;;
     esac
 }
 
