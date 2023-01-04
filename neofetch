@@ -1807,7 +1807,7 @@ get_packages() {
     has() { type -p "$1" >/dev/null && manager=$1; }
     # globbing is intentional here
     # shellcheck disable=SC2206
-    dir() { pkgs=($@); ((packages+=${#pkgs[@]})); pac "$((${#pkgs[@]}-pkgs_h))"; }
+    dir() { pkgs=($@); [[ ! -e ${pkgs[0]} ]] && return; ((packages+=${#pkgs[@]})); pac "$((${#pkgs[@]}-pkgs_h))"; }
     pac() { (($1 > 0)) && { managers+=("$1 (${manager})"); manager_string+="${manager}, "; }; }
     tot() {
         IFS=$'\n' read -d "" -ra pkgs <<< "$("$@")";
