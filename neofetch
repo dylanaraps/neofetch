@@ -4029,7 +4029,7 @@ get_term() {
         [[ -z "$parent" ]] && break
         name="$(get_process_name "$parent")"
 
-        case ${name// } in
+        case ${name##*/} in
             "${SHELL/*\/}"|*"sh"|"screen"|"su"*|"newgrp"|"hyfetch") ;;
 
             "login"*|*"Login"*|"init"|"(init)")
@@ -4045,12 +4045,12 @@ get_term() {
                 [[ $name =~ \.(.*)-wrap.* ]] && term=${BASH_REMATCH[1]}
             ;;
 
-            "gnome-terminal-") term="gnome-terminal" ;;
-            "kgx")             term="gnome-console" ;;
-            "cutefish-termin") term="cutefish-terminal" ;;
-            "urxvtd")          term="urxvt" ;;
-            *"nvim")           term="Neovim Terminal" ;;
-            *"NeoVimServer"*)  term="VimR Terminal" ;;
+            "gnome-terminal-"*)     term="gnome-terminal" ;;
+            "kgx")                  term="gnome-console" ;;
+            "cutefish-terminal"*)   term="cutefish-terminal" ;;
+            "urxvtd")               term="urxvt" ;;
+            *"nvim")                term="Neovim Terminal" ;;
+            *"NeoVimServer"*)       term="VimR Terminal" ;;
 
             *)
                 # Fix issues with long process names on Linux.
