@@ -4046,6 +4046,7 @@ get_term() {
             ;;
 
             "gnome-terminal-") term="gnome-terminal" ;;
+            "kgx")             term="gnome-console" ;;
             "cutefish-termin") term="cutefish-terminal" ;;
             "urxvtd")          term="urxvt" ;;
             *"nvim")           term="Neovim Terminal" ;;
