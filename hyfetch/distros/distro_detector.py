@@ -1336,4 +1336,8 @@ def detect(name: str) -> AsciiArt | None:
     if name == 'sunos':
         from .sunos import sunos
         return sunos
-    
+
+    if name == 'aperture':
+        from .aperture import aperture
+        return aperture
+
