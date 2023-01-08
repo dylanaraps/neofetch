@@ -2587,6 +2587,18 @@ get_cpu() {
                     [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
                 ;;
 
+                "riscv"* | "rv"*)
+                    cpu_uarch="$(awk -F':' '/uarch/ {print $2; exit}' "$cpu_file")"
+                    # RISC-V ISA string example: "rv64imafdch_zicsr_zifencei".
+                    cpu_isa="$(awk -F':' '/isa/ {print $2; exit}' "$cpu_file")"
+                    # The _z parts are not important for CPU showcasing, so we remove them.
+                    cpu_isa="${cpu_isa%%_*}"
+                    # Then we replace "imafd" with "g" since "g" is a shorthand.
+                    cpu_isa="${cpu_isa/imafd/g}"
+                    # The final ISA output of the above example is "rv64gch".
+                    cpu="$cpu_uarch $cpu_isa"
+                ;;
+
                 "arm"* | "aarch64")
                     if [[ $(trim "$distro") == Android* ]]; then
                         # Android roms have modified cpuinfo that shows CPU model as a string
