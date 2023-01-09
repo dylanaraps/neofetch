@@ -99,9 +99,16 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 <!-- CHANGELOG STARTS HERE --->
 
+* 🖼 Distro - Add Aperture Science ascii art (#61)
+* 🖼 Distro - Add RhaymOS (dylanaraps/neofetch#2274)
 * 🖼 Editor - Add editor information detection ([dylanaraps#2271](https://github.com/dylanaraps/neofetch/pull/2271))
+* 🖼 Packages - Fix empty cargo directory (#58)
+* 🖼 Terminal - Display gnome-console instead of kgx (dylanaraps/neofetch#2277)
+* 🖼 Terminal - Fix terminal detection with new get_process_name function
+* 🖼 CPU - Detect ISA string on RISC-V CPUs (#60)
 * 🖼 Song - Fix CMUS player song detection on macOS (#55)
 * 🖼 Network - Fix macOS network detection (#56)
+* 🖼 Misc - Change LICENSE year to 2023 (#59)
 
 ### 1.4.5
 
