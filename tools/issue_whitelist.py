@@ -9,14 +9,11 @@ if __name__ == '__main__':
     repo = gh.get_repo("hykilpikonna/hyfetch")
 
     while True:
-        iss = repo.get_issues()
+        iss = repo.get_issues(state='open')
 
         for i in iss:
-            if i.state == 'closed':
-                continue
-
             if i.user.login in ['Symbolic11']:
-                i.edit(body="[Redacted by Content Moderation Bot]", state="closed")
+                i.edit(title="[Redacted]", body="[Redacted by Content Moderation Bot]", state="closed")
                 i.create_comment("Issue closed by bot for offensive content.")
 
                 print(f"Closed {i.number}")
