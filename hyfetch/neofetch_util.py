@@ -307,7 +307,7 @@ def run_fastfetch(preset: ColorProfile, alignment: ColorAlignment):
         path.write_text(asc)
 
         # Call fastfetch with the temp file
-        subprocess.run(['fastfetch', '--raw', path.absolute()])
+        subprocess.run(['fastfetch', '--file-raw', path.absolute()])
 
 
 def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:
