@@ -356,7 +356,7 @@ def run():
     parser.add_argument('-C', '--config-file', dest='config_file', default=CONFIG_PATH, help=f'Use another config file')
     parser.add_argument('-p', '--preset', help=f'Use preset', choices=PRESETS.keys())
     parser.add_argument('-m', '--mode', help=f'Color mode', choices=['8bit', 'rgb'])
-    parser.add_argument('-b', '--backend', help=f'Choose a *fetch backend', choices=['neofetch', 'fastfetch'])
+    parser.add_argument('-b', '--backend', help=f'Choose a *fetch backend', choices=['neofetch', 'fastfetch', 'fastfetch-old'])
     parser.add_argument('--c-scale', dest='scale', help=f'Lighten colors by a multiplier', type=float)
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')

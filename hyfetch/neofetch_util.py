@@ -265,6 +265,8 @@ def run(preset: ColorProfile, alignment: ColorAlignment, backend: BackendLiteral
         return run_neofetch(preset, alignment)
     if backend == "fastfetch":
         return run_fastfetch(preset, alignment)
+    if backend == "fastfetch-old":
+        return run_fastfetch(preset, alignment, legacy=True)
 
 
 def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
@@ -290,12 +292,13 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
         run_neofetch_cmd(f'--ascii --source {path.absolute()} --ascii-colors')
 
 
-def run_fastfetch(preset: ColorProfile, alignment: ColorAlignment):
+def run_fastfetch(preset: ColorProfile, alignment: ColorAlignment, legacy: bool = False):
     """
     Run neofetch with colors
 
     :param preset: Color palette
     :param alignment: Color alignment settings
+    :param legacy: Set true when using fastfetch < 1.8.0
     """
     asc = get_distro_ascii()
     asc = alignment.recolor_ascii(asc, preset)
@@ -307,7 +310,9 @@ def run_fastfetch(preset: ColorProfile, alignment: ColorAlignment):
         path.write_text(asc)
 
         # Call fastfetch with the temp file
-        subprocess.run(['fastfetch', '--file-raw', path.absolute()])
+        proc = subprocess.run(['fastfetch', '--raw' if legacy else '--file-raw', path.absolute()])
+        if proc.returncode == 144:
+            printc("&6Error code 144 detected: Please upgrade fastfetch to >=1.8.0 or use the 'fastfetch-old' backend")
 
 
 def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:
