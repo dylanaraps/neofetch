@@ -17,6 +17,10 @@ def detect(name: str) -> AsciiArt | None:
         from .aperio_gnu_linux import aperio_gnu_linux
         return aperio_gnu_linux
     
+    if name.startswith('aperture'):
+        from .aperture import aperture
+        return aperture
+    
     if name.startswith('asahi'):
         from .asahi import asahi
         return asahi
@@ -1017,6 +1021,10 @@ def detect(name: str) -> AsciiArt | None:
         from .regolith import regolith
         return regolith
     
+    if name.startswith('rhaymos'):
+        from .rhaymos import rhaymos
+        return rhaymos
+    
     if name.startswith('rocky_small'):
         from .rocky_small import rocky_small
         return rocky_small
@@ -1336,8 +1344,4 @@ def detect(name: str) -> AsciiArt | None:
     if name == 'sunos':
         from .sunos import sunos
         return sunos
-
-    if name == 'aperture':
-        from .aperture import aperture
-        return aperture
-
+    
