@@ -55,10 +55,9 @@ def edit_versions(version: str):
     print('Editing README.md...')
     path = Path('README.md')
     content = path.read_text()
-    changelog_i = content.index('<!-- CHANGELOG STARTS HERE --->')
-    version_i = content.index('###', changelog_i)
-    version_end = content.index('\n', version_i)
-    content = content[:version_i] + f'### {version}' + content[version_end:]
+    changelog_token = '<!-- CHANGELOG STARTS HERE --->'
+    changelog_i = content.index(changelog_token) + len(changelog_token)
+    content = content[:changelog_i] + f'\n\n### {version}' + content[changelog_i:]
     path.write_text(content)
 
     # 4. neofetch script
