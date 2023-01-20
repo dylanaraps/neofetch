@@ -592,4 +592,29 @@ PRESETS: dict[str, ColorProfile] = {
         "#613a03",
         "#2f3fb9"
     ]),
+
+    # gendervoid and related flags sourced from: https://gender.fandom.com/wiki/Gendervoid
+    'gendervoid' : ColorProfile([
+        "#081149",
+        "#4B484B",
+        "#000000",
+        "#4B484B",
+        "#081149"
+    ]),
+
+    'voidgirl' : ColorProfile([
+        "#180827",
+        "#7A5A8B",
+        "#E09BED",
+        "#7A5A8B",
+        "#180827"
+    ]),
+
+    'voidboy' : ColorProfile([
+        "#0B130C",
+        "#547655",
+        "#66B969",
+        "#547655",
+        "#0B130C"
+    ])
 }
