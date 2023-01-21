@@ -76,6 +76,7 @@ print_info() {
     info "GPU" gpu
     info "Memory" memory
     info "Network" network
+    info "Bluetooth" bluetooth
     info "BIOS" bios
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
@@ -3413,6 +3414,16 @@ get_network() {
     fi
 }
 
+get_bluetooth() {
+    # Find bluetooth using lsusb
+    if command -v lsusb &> /dev/null; then
+        bluetooth="$(lsusb | cut -c34- | grep -i bluetooth)"
+    fi
+
+    # Remove "Bluetooth" suffix
+    bluetooth="${bluetooth%[Bb]luetooth}"
+}
+
 get_song() {
     players=(
         "amarok"
@@ -6354,6 +6365,7 @@ get_args() {
                     info "GPU Driver" gpu_driver
                     info "Memory" memory
                     info "Network" network
+                    info "Bluetooth" bluetooth
                     info "BIOS" bios
 
                     info "Disk" disk
