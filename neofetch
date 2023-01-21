@@ -1400,7 +1400,7 @@ get_bios() {
                 fi
 
                 if [[ -f "$DMI/bios_date" ]]; then
-                    bios+=" $(< $DMI/bios_date)"
+                    bios+=" ($(< $DMI/bios_date))"
                 fi
             fi
         ;;
