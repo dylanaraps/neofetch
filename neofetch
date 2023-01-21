@@ -76,6 +76,7 @@ print_info() {
     info "GPU" gpu
     info "Memory" memory
     info "Network" network
+    info "BIOS" bios
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "Disk" disk
@@ -1382,6 +1383,27 @@ get_distro() {
 
     [[ ${ascii_distro:-auto} == auto ]] && \
         ascii_distro=$(trim "$distro")
+}
+
+get_bios() {
+    DMI="/sys/devices/virtual/dmi/id"
+
+    # TODO: Add more platform support for bios detection
+    case $os in
+        Linux)
+            if [[ -f "$DMI/bios_vendor" ]]; then
+                bios="$(< $DMI/bios_vendor)"
+
+                if [[ -f "$DMI/bios_release" ]]; then
+                    bios+=" $(< $DMI/bios_release)"
+                fi
+
+                if [[ -f "$DMI/bios_date" ]]; then
+                    bios+=" $(< $DMI/bios_date)"
+                fi
+            fi
+        ;;
+    esac
 }
 
 get_model() {
@@ -6332,6 +6354,7 @@ get_args() {
                     info "GPU Driver" gpu_driver
                     info "Memory" memory
                     info "Network" network
+                    info "BIOS" bios
 
                     info "Disk" disk
                     info "Battery" battery
