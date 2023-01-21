@@ -518,13 +518,6 @@ PRESETS: dict[str, ColorProfile] = {
         '#5276D4',
     ]),
 
-    'beiyang': ColorProfile([
-        '#DF1B12',
-        '#FFC600',
-        '#01639D',
-        '#FFFFFF',
-        '#000000',
-    ]),
     "finsexual": ColorProfile([
         "#B18EDF",
         "#D7B1E2",
@@ -591,5 +584,21 @@ PRESETS: dict[str, ColorProfile] = {
         "#fefefe",
         "#613a03",
         "#2f3fb9"
+    ]),
+
+    'beiyang': ColorProfile([
+        '#DF1B12',
+        '#FFC600',
+        '#01639D',
+        '#FFFFFF',
+        '#000000',
+    ]),
+
+    'burger': ColorProfile([
+        '#F3A26A',
+        '#498701',
+        '#FD1C13',
+        '#7D3829',
+        '#F3A26A',
     ]),
 }
