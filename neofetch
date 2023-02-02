@@ -2502,6 +2502,12 @@ get_cpu() {
 get_gpu() {
     case $os in
         "Linux")
+            if [[ "$distro" == "Android"* ]]; then
+                gpu="$(/system/bin/getprop ro.hardware.vulkan)"
+                # I wanted to show up the detailed GPU model,but i can't show it up because vulkaninfo isn't fun.
+                # gpu="$(vulkaninfo|grep deviceName|cut -d = -f 2|cut -d " " -f 2-10)"
+                # (lazy
+            else
             # Read GPUs into array.
             gpu_cmd="$(lspci -mm |
                        awk -F '\"|\" \"|\\(' \
@@ -2584,6 +2590,7 @@ get_gpu() {
             done
 
             return
+            fi
         ;;
 
         "Mac OS X"|"macOS")
@@ -3079,6 +3086,9 @@ get_resolution() {
         ;;
 
         *)
+            if [[ "$distro" == "Android"* ]]; then
+                resolution="$(/system/bin/getprop persist.sys.rog.height)x$(/system/bin/getprop persist.sys.rog.width)"
+            else 
             if type -p xrandr >/dev/null && [[ $DISPLAY && -z $WAYLAND_DISPLAY ]]; then
                 case $refresh_rate in
                     "on")
@@ -3112,6 +3122,7 @@ get_resolution() {
 
                     [[ $single_resolution ]] && resolution="${single_resolution}, ${resolution}"
                 done
+            fi
             fi
         ;;
     esac
