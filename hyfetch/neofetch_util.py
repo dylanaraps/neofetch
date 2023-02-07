@@ -157,8 +157,11 @@ def get_command_path() -> str:
 
     # Windows doesn't support symbolic links, but also I can't detect symbolic links... hard-code it here for now.
     if platform.system() == 'Windows':
+        pkg = Path(__file__).parent
         pth = (shutil.which("neowofetch") or
                if_file(cmd_path) or
+               if_file(pkg / 'scripts/neowofetch') or
+               if_file(pkg.parent / 'neofetch') or
                if_file(Path(cmd_path).parent.parent.parent / 'neofetch'))
 
         if not pth:
