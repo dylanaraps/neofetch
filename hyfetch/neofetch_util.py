@@ -151,6 +151,7 @@ def get_command_path() -> str:
 
     return cmd_path
 
+
 def ensure_git_bash() -> Path:
     """
     Ensure git bash installation for windows
@@ -163,16 +164,14 @@ def ensure_git_bash() -> Path:
         if def_path.is_file():
             return def_path
 
-        # Labda expression that finds out if a command exists
-        cmd_exists = lambda x: shutil.which(x) is not None
-
-        # TEMP-FIX: Make git not hard-coded to being installed "officially" via the git-for-windows installer
-        if ( cmd_exists("git.exe") ):
-            pth = Path(shutil.which("git")).parent
-            if(os.path.isfile(pth / r'bash.exe')):
+        # Detect third-party git.exe in path
+        git_exe = shutil.which("git.exe") or shutil.which("git")
+        if git_exe is not None:
+            pth = Path(git_exe).parent
+            if (pth / r'bash.exe').is_file():
                 return pth / r'bash.exe'
-            elif ( os.path.isfile(pth / r'/bin/bash.exe')):
-                return pth / r'/bin/bash.exe'
+            elif (pth / r'bin\bash.exe').is_file():
+                return pth / r'bin\bash.exe'
 
         # Find installation in PATH (C:\Program Files\Git\cmd should be in path)
         pth = (os.environ.get('PATH') or '').lower().split(';')
