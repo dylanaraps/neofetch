@@ -137,6 +137,16 @@ class ColorAlignment:
         return asc
 
 
+def if_file(f: str | Path) -> Path | None:
+    """
+    Return the file if the file exists, or return none. Useful for chaining 'or's
+    """
+    f = Path(f)
+    if f.is_file():
+        return f
+    return None
+
+
 def get_command_path() -> str:
     """
     Get the absolute path of the neofetch command
@@ -147,7 +157,15 @@ def get_command_path() -> str:
 
     # Windows doesn't support symbolic links, but also I can't detect symbolic links... hard-code it here for now.
     if platform.system() == 'Windows':
-        return str(Path(cmd_path).parent.parent.parent / 'neofetch')
+        pth = (shutil.which("neowofetch") or
+               if_file(cmd_path) or
+               if_file(Path(cmd_path).parent.parent.parent / 'neofetch'))
+
+        if not pth:
+            printc("&cError: Neofetch script cannot be found")
+            exit(127)
+
+        return str(pth)
 
     return cmd_path
 
