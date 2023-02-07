@@ -4,10 +4,10 @@ import os
 import platform
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import zipfile
-import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from subprocess import check_output
@@ -16,12 +16,11 @@ from tempfile import TemporaryDirectory
 import pkg_resources
 
 from .color_util import color, printc
-from .constants import GLOBAL_CFG, MINGIT_URL
+from .constants import GLOBAL_CFG, MINGIT_URL, IS_WINDOWS
 from .distros import distro_detector
 from .presets import ColorProfile
 from .serializer import from_dict
 from .types import BackendLiteral, ColorAlignMode
-
 
 RE_NEOFETCH_COLOR = re.compile('\\${c[0-9]}')
 
@@ -156,7 +155,7 @@ def get_command_path() -> str:
     cmd_path = pkg_resources.resource_filename(__name__, 'scripts/neowofetch')
 
     # Windows doesn't support symbolic links, but also I can't detect symbolic links... hard-code it here for now.
-    if platform.system() == 'Windows':
+    if IS_WINDOWS:
         pkg = Path(__file__).parent
         pth = (shutil.which("neowofetch") or
                if_file(cmd_path) or
@@ -179,7 +178,7 @@ def ensure_git_bash() -> Path:
 
     :returns git bash path
     """
-    if platform.system() == 'Windows':
+    if IS_WINDOWS:
         # Find installation in default path
         def_path = Path(r'C:\Program Files\Git\bin\bash.exe')
         if def_path.is_file():
@@ -223,7 +222,7 @@ def check_windows_cmd():
     Check if this script is running under cmd.exe. If so, launch an external window with git bash
     since cmd doesn't support RGB colors.
     """
-    if platform.system() == 'Windows':
+    if IS_WINDOWS:
         import psutil
         # TODO: This line does not correctly identify cmd prompts...
         if psutil.Process(os.getppid()).name().lower().strip() == 'cmd.exe':

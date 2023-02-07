@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import platform
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -25,7 +26,7 @@ _/\_\_   _/_/\_
 
 TEST_ASCII_WIDTH = max(len(line) for line in TEST_ASCII.split('\n'))
 DEFAULT_DARK_L = 0.
-
+IS_WINDOWS = platform.system() == 'Windows'
 
 @dataclass
 class GlobalConfig:
