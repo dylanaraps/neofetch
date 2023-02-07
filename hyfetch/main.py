@@ -11,7 +11,7 @@ from typing import Iterable
 
 from . import termenv, neofetch_util
 from .color_scale import Scale
-from .color_util import printc, clear_screen
+from .color_util import clear_screen
 from .constants import *
 from .models import Config
 from .neofetch_util import *
@@ -347,6 +347,11 @@ def run():
         import readline
     except ModuleNotFoundError:
         pass
+
+    # On Windows: Try to fix color rendering if not in git bash
+    if IS_WINDOWS:
+        import colorama
+        colorama.just_fix_windows_console()
 
     # Create CLI
     hyfetch = color('&b&lhyfetch&r')
