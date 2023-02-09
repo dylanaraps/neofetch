@@ -237,13 +237,13 @@ def run_neofetch_cmd(args: str, pipe: bool = False) -> str | None:
     Run neofetch command
     """
     if platform.system() != 'Windows':
-        full_cmd = shlex.split(f'/usr/bin/env bash {get_command_path()} {args}')
+        full_cmd = ['/usr/bin/env', 'bash', get_command_path(), *shlex.split(args)]
 
     else:
         cmd = get_command_path().replace("\\", "/").replace("C:/", "/c/")
         args = args.replace('\\', '/').replace('C:/', '/c/')
 
-        full_cmd = [ensure_git_bash(), '-c', f'{cmd} {args}']
+        full_cmd = [ensure_git_bash(), '-c', f"'{cmd}' {args}"]
     # print(full_cmd)
 
     if pipe:

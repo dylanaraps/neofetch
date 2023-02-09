@@ -99,6 +99,10 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 <!-- CHANGELOG STARTS HERE --->
 
+* 🌈 Better Windows compatibility (#45, #84, #87)
+* 🌈 Add gendervoid flags (#81)
+* 🖼 Linux BIOS, bluetooth detection
+
 ### 1.4.6
 
 * 🌈 Add compatibility for FastFetch version `>1.8.0` (#62)
