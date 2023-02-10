@@ -2323,7 +2323,7 @@ get_wm() {
                                -e perceptia \
                                -e river \
                                -e rustland \
-                               -e sway \
+                               -e sway$ \
                                -e ulubis \
                                -e velox \
                                -e wavy \
