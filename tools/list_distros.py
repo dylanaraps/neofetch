@@ -140,7 +140,9 @@ def export_distro(d: AsciiArt) -> str:
         varname = varname.replace(s, '_')
 
     # Escape/unescape ascii
-    ascii = d.ascii.replace('"""', '\\"""').replace("\\\\", "\\")
+    ascii = d.ascii.replace("\\\\", "\\")
+    while '"""' in ascii:
+        ascii = ascii.replace('"""', '"\\""')
 
     script = f"""
 from . import AsciiArt

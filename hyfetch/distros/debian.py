@@ -4,7 +4,7 @@ from . import AsciiArt
 debian = AsciiArt(match=r'''"Debian"*''', color='1 7 3', ascii=r"""
 ${c2}       _,met$$$$$gg.
     ,g$$$$$$$$$$$$$$$P.
-  ,g$$P"        \"""Y$$.".
+  ,g$$P"        "\""Y$$.".
  ,$$P'              `$$$.
 ',$$P       ,ggs.     `$$b:
 `d$$'     ,$P"'   ${c1}.${c2}    $$$
@@ -18,6 +18,6 @@ ${c2}  `Y$$
      `$$b.
        `Y$$b.
           `"Y$b._
-              `\"""
+              `"\""
 """)
     

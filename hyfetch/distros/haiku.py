@@ -15,6 +15,6 @@ ${c3}           MMMM${c4}   .cOMMMMM|/MMMMM/`
            MM${c4}MMMMMMM/`:MMM/  ${c3}MMMM
            MMMM              MMMM
            MMMM              MMMM
-           \""""              \""""
+           "\"\""              "\"\""
 """)
     
