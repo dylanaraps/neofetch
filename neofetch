@@ -2007,7 +2007,8 @@ get_packages() {
                 ProgramData="${mount:-/cygdrive/c}/ProgramData"
             fi
 
-            scooplist() { scoop list | sed '1,4d' } # scoop list adds a few extra lines to be fancy, an easy fix is to just remove the first 4 lines. I dont know a better way to do this.
+            # scoop list adds a few extra lines to be fancy, an easy fix is to just remove the first 4 lines. I dont know a better way to do this.
+            scooplist() { scoop list | sed '1,4d'; }
             has scoop && tot scooplist
 
             # Count chocolatey packages.
