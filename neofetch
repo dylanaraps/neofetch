@@ -2007,16 +2007,8 @@ get_packages() {
                 ProgramData="${mount:-/cygdrive/c}/ProgramData"
             fi
 
-            # Scoop environment throws errors if `tot scoop list` is used
-            has scoop && {
-                sdir=$(cygpath "$SCOOP" 2>/dev/null)
-                sdir="${sdir:-$HOME/scoop}"
-                pkgs_h=1 dir "$sdir"/apps/* && ((packages-=1))
-                manager=scoop-global
-                sdir=$(cygpath "$SCOOP_GLOBAL" 2>/dev/null)
-                sdir="${sdir:-$ProgramData/scoop}"
-                dir "$sdir"/apps/*
-            }
+            # scoop list adds a few extra lines to be fancy, an easy fix is to just remove the first 4 lines. I dont know a better way to do this.
+            has scoop && pkgs_h=4 tot scoop list
 
             # Count chocolatey packages.
             # [[ -d /c/ProgramData/chocolatey/lib ]] && \
