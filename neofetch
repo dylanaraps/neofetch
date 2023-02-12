@@ -2008,8 +2008,7 @@ get_packages() {
             fi
 
             # scoop list adds a few extra lines to be fancy, an easy fix is to just remove the first 4 lines. I dont know a better way to do this.
-            scooplist() { scoop list | sed '1,4d'; }
-            has scoop && tot scooplist
+            has scoop && pkgs_h=4 tot scoop list
 
             # Count chocolatey packages.
             # [[ -d /c/ProgramData/chocolatey/lib ]] && \
