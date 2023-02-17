@@ -1643,6 +1643,10 @@ get_model() {
 
         Solaris|illumos)
             model=$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')
+            virt=$(/usr/bin/uname -V)
+            if [ $? == 0 ] && [ "$virt" != "non-virtualized" ]; then
+                model="${model:-$(uname -i)} (${virt})"
+            fi
         ;;
 
         AIX)
@@ -1718,6 +1722,15 @@ get_kernel() {
         kernel=${kernel/Version}
         return
     }
+
+    [[ $os == Solaris ]] && {
+        ver=$(uname -v)
+        case $ver in
+            11.[0123]) ;;
+            *) kernel=${ver} ;;
+        esac
+        return
+    }  
 
     case $kernel_shorthand in
         on)  kernel=$kernel_version ;;
