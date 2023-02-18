@@ -527,7 +527,7 @@ disk_percent="on"
 # pragha
 # qmmp
 # quodlibet
-# rhythmboxFF
+# rhythmbox
 # sayonara
 # smplayer
 # spotify
@@ -11548,8 +11548,6 @@ oMMMMmMMMMNds:.+MMMmmMMN/.-odNMMMMmMMMM+
              .odNm+  /dNms.
 EOF
                 ;;
-
-
 
             esac
         ;;
