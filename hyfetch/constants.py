@@ -7,7 +7,7 @@ from pathlib import Path
 from .types import LightDark
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
-VERSION = '1.4.6'
+VERSION = '1.4.7'
 
 
 TEST_ASCII = r"""

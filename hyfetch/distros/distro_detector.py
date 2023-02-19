@@ -72,6 +72,10 @@ def detect(name: str) -> AsciiArt | None:
         from .android import android
         return android
     
+    if name.startswith('arselinux'):
+        from .arselinux import arselinux
+        return arselinux
+    
     if name.startswith('instantos'):
         from .instantos import instantos
         return instantos
@@ -335,6 +339,10 @@ def detect(name: str) -> AsciiArt | None:
     if name.startswith('cutefishos'):
         from .cutefishos import cutefishos
         return cutefishos
+    
+    if name.startswith('cuteos'):
+        from .cuteos import cuteos
+        return cuteos
     
     if name.startswith('cyberos'):
         from .cyberos import cyberos
@@ -1219,6 +1227,10 @@ def detect(name: str) -> AsciiArt | None:
     if name.startswith('ubuntu_old') or name.startswith('i3buntu'):
         from .ubuntu_old import ubuntu_old
         return ubuntu_old
+    
+    if name.startswith('floflis'):
+        from .floflis import floflis
+        return floflis
     
     if name.startswith('ubuntu'):
         from .ubuntu import ubuntu

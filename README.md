@@ -99,13 +99,15 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 <!-- CHANGELOG STARTS HERE --->
 
+### 1.4.7
+
 * 🌈 Better Windows compatibility (#45, #84, #87, #89)
 * 🌈 Add gendervoid flags (#81)
 * 🌈 Fix ASCII extractor escape sequence generation (#90, #91)
-* 🖼 Distro - Add CuteOS (dylanaraps/neofetch#2291)
-* 🖼 Distro - Add Floflis (dylanaraps/neofetch#2289)
-* 🖼 Distro - Add ArseLinux (dylanaraps/neofetch#2295)
-* 🖼 Distro - Better Solaris support (dylanaraps/neofetch#2293)
+* 🖼 Distro - Add CuteOS ([dylanaraps#2291](https://github.com/dylanaraps/neofetch/pull/2291))
+* 🖼 Distro - Add Floflis ([dylanaraps#2289](https://github.com/dylanaraps/neofetch/pull/2289))
+* 🖼 Distro - Add ArseLinux ([dylanaraps#2295](https://github.com/dylanaraps/neofetch/pull/2295))
+* 🖼 Distro - Better Solaris support ([dylanaraps#2293](https://github.com/dylanaraps/neofetch/pull/2293))
 * 🖼 Packages - Fix scoop package manager for Windows (#93)
 * 🖼 Packages - Add Evox package manager for Stock Linux (#95)
 * 🖼 WM - Fix false positive wm process name detection (#88, #94)
