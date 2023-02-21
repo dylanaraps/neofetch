@@ -101,37 +101,37 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 ### 1.4.7
 
-* 🌈 Better Windows compatibility [#45](https://github.com/hykilpikonna/hyfetch/pull/45),[#84](https://github.com/hykilpikonna/hyfetch/pull/84),[#87](https://github.com/hykilpikonna/hyfetch/pull/87),[#89](https://github.com/hykilpikonna/hyfetch/pull/89))
-* 🌈 Add gendervoid flags [#81](https://github.com/hykilpikonna/hyfetch/pull/81))
-* 🌈 Fix ASCII extractor escape sequence generation [#90](https://github.com/hykilpikonna/hyfetch/pull/90),[#91](https://github.com/hykilpikonna/hyfetch/pull/91))
+* 🌈 Better Windows compatibility ([#45](https://github.com/hykilpikonna/hyfetch/pull/45), [#84](https://github.com/hykilpikonna/hyfetch/pull/84), [#87](https://github.com/hykilpikonna/hyfetch/pull/87), [#89](https://github.com/hykilpikonna/hyfetch/pull/89))
+* 🌈 Add gendervoid flags ([#81](https://github.com/hykilpikonna/hyfetch/pull/81))
+* 🌈 Fix ASCII extractor escape sequence generation ([#90](https://github.com/hykilpikonna/hyfetch/pull/90), [#91](https://github.com/hykilpikonna/hyfetch/pull/91))
 * 🖼 Distro - Add CuteOS ([dylanaraps#2291](https://github.com/dylanaraps/neofetch/pull/2291))
 * 🖼 Distro - Add Floflis ([dylanaraps#2289](https://github.com/dylanaraps/neofetch/pull/2289))
 * 🖼 Distro - Add ArseLinux ([dylanaraps#2295](https://github.com/dylanaraps/neofetch/pull/2295))
 * 🖼 Distro - Better Solaris support ([dylanaraps#2293](https://github.com/dylanaraps/neofetch/pull/2293))
-* 🖼 Packages - Fix scoop package manager for Windows [#93](https://github.com/hykilpikonna/hyfetch/pull/93))
-* 🖼 Packages - Add Evox package manager for Stock Linux [#95](https://github.com/hykilpikonna/hyfetch/pull/95))
-* 🖼 WM - Fix false positive wm process name detection [#88](https://github.com/hykilpikonna/hyfetch/pull/88),[#94](https://github.com/hykilpikonna/hyfetch/pull/94))
+* 🖼 Packages - Fix scoop package manager for Windows ([#93](https://github.com/hykilpikonna/hyfetch/pull/93))
+* 🖼 Packages - Add Evox package manager for Stock Linux ([#95](https://github.com/hykilpikonna/hyfetch/pull/95))
+* 🖼 WM - Fix false positive wm process name detection ([#88](https://github.com/hykilpikonna/hyfetch/pull/88), [#94](https://github.com/hykilpikonna/hyfetch/pull/94))
 * 🖼 Misc - Added BIOS and bluetooth detection
 
 ### 1.4.6
 
-* 🌈 Add compatibility for FastFetch version `>1.8.0` [#62](https://github.com/hykilpikonna/hyfetch/pull/62))
-* 🖼 Distro - Add Aperture Science ascii art [#61](https://github.com/hykilpikonna/hyfetch/pull/61))
+* 🌈 Add compatibility for FastFetch version `>1.8.0` ([#62](https://github.com/hykilpikonna/hyfetch/pull/62))
+* 🖼 Distro - Add Aperture Science ascii art ([#61](https://github.com/hykilpikonna/hyfetch/pull/61))
 * 🖼 Distro - Add RhaymOS ([dylanaraps#2274](https://github.com/dylanaraps/neofetch/pull/2274))
 * 🖼 Editor - Add editor information detection ([dylanaraps#2271](https://github.com/dylanaraps/neofetch/pull/2271))
-* 🖼 Packages - Fix empty cargo directory [#58](https://github.com/hykilpikonna/hyfetch/pull/58))
+* 🖼 Packages - Fix empty cargo directory ([#58](https://github.com/hykilpikonna/hyfetch/pull/58))
 * 🖼 Terminal - Display gnome-console instead of kgx ([dylanaraps#2277](https://github.com/dylanaraps/neofetch/pull/2277))
 * 🖼 Terminal - Fix terminal detection with new get_process_name function
-* 🖼 CPU - Detect ISA string on RISC-V CPUs [#60](https://github.com/hykilpikonna/hyfetch/pull/60))
-* 🖼 Song - Fix CMUS player song detection on macOS [#55](https://github.com/hykilpikonna/hyfetch/pull/55))
-* 🖼 Network - Fix macOS network detection [#56](https://github.com/hykilpikonna/hyfetch/pull/56))
-* 🖼 Misc - Change LICENSE year to 2023 [#59](https://github.com/hykilpikonna/hyfetch/pull/59))
+* 🖼 CPU - Detect ISA string on RISC-V CPUs ([#60](https://github.com/hykilpikonna/hyfetch/pull/60))
+* 🖼 Song - Fix CMUS player song detection on macOS ([#55](https://github.com/hykilpikonna/hyfetch/pull/55))
+* 🖼 Network - Fix macOS network detection ([#56](https://github.com/hykilpikonna/hyfetch/pull/56))
+* 🖼 Misc - Change LICENSE year to 2023 ([#59](https://github.com/hykilpikonna/hyfetch/pull/59))
 
 ### 1.4.5
 
 * 🌈 **Support using FastFetch as a HyFetch backend** (`hyfetch -b fastfetch`)
-* 🌈 Add config file argument [#48](https://github.com/hykilpikonna/hyfetch/pull/48))
-* 🌈 Fix problems caused by color detection on Windows [#16](https://github.com/hykilpikonna/hyfetch/pull/16))
+* 🌈 Add config file argument ([#48](https://github.com/hykilpikonna/hyfetch/pull/48))
+* 🌈 Fix problems caused by color detection on Windows ([#16](https://github.com/hykilpikonna/hyfetch/pull/16))
 * 🌈 Support pure-python distro detection for FastFetch
 * 🖼️ Distro - Add Aster Linux ([dylanaraps#2251](https://github.com/dylanaraps/neofetch/pull/2251))
 * 🖼️ Distro - Add Hybrid Linux ([dylanaraps#2239](https://github.com/dylanaraps/neofetch/pull/2239))
@@ -139,21 +139,21 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 * 🖼️ Distro - Add Project Sasanqua ([dylanaraps#2264](https://github.com/dylanaraps/neofetch/pull/2264))
 * 🖼️ Distro - Add Kali small variant ([dylanaraps#2242](https://github.com/dylanaraps/neofetch/pull/2242))
 * 🖼️ Distro - Fix CachyOS matching ([dylanaraps#2026](https://github.com/dylanaraps/neofetch/pull/2026))
-* 🖼 WM - Fix wm detection with `fuser` [#39](https://github.com/hykilpikonna/hyfetch/pull/39))
-* 🖼️ Memory - Make memory unit decimal calculation more accurate [#52](https://github.com/hykilpikonna/hyfetch/pull/52))
-* 🖼 Packages - Fix squirrel (Stock Linux) package count detection [#39](https://github.com/hykilpikonna/hyfetch/pull/39))
-* 🖼 Packages - Support cargo bin environment variable [#49](https://github.com/hykilpikonna/hyfetch/pull/49))
+* 🖼 WM - Fix wm detection with `fuser` ([#39](https://github.com/hykilpikonna/hyfetch/pull/39))
+* 🖼️ Memory - Make memory unit decimal calculation more accurate ([#52](https://github.com/hykilpikonna/hyfetch/pull/52))
+* 🖼 Packages - Fix squirrel (Stock Linux) package count detection ([#39](https://github.com/hykilpikonna/hyfetch/pull/39))
+* 🖼 Packages - Support cargo bin environment variable ([#49](https://github.com/hykilpikonna/hyfetch/pull/49))
 * 🖼 Packages - Add tea.xyz package manager (issue [dylanaraps#2235](https://github.com/dylanaraps/neofetch/pull/2235))
 
 ### 1.4.4
 
-* 🌈 Fix Python 3.11 compatibility [#35](https://github.com/hykilpikonna/hyfetch/pull/35))
+* 🌈 Fix Python 3.11 compatibility ([#35](https://github.com/hykilpikonna/hyfetch/pull/35))
 * 🌈 Fix many overflow problems when screen is too small 
 * 🖼️ Distro - Add Enso ([dylanaraps#2233](https://github.com/dylanaraps/neofetch/pull/2233))
 * 🖼️ Memory - Optimize and fix memory unit conversion ([dylanaraps#2225](https://github.com/dylanaraps/neofetch/pull/2225))
 * 🖼️ DE - Add dwl window manager ([dylanaraps#2234](https://github.com/dylanaraps/neofetch/pull/2234))
 * 🖼️ DE - Fix XDG session detection for X11 ([dylanaraps#2232](https://github.com/dylanaraps/neofetch/pull/2232))
-* 🖼️ CPU - Fix model detection for loongson [#34](https://github.com/hykilpikonna/hyfetch/pull/34))
+* 🖼️ CPU - Fix model detection for loongson ([#34](https://github.com/hykilpikonna/hyfetch/pull/34))
 
 ### 1.4.3
 
@@ -161,33 +161,33 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 * 🌈 **Optimize experience on light-themed terminals**
 * 🌈 Fix bugs with lightness and light-mode config not applying
 * 🌈 Fix color alignment for distros with first color ≠ `${c1}` (e.g. Ubuntu Budgie)
-* 🌈 Add unlabeled flags [#25](https://github.com/hykilpikonna/hyfetch/pull/25))
-* 🌈 Add gender nonconforming & femboy & tomboy flags [#32](https://github.com/hykilpikonna/hyfetch/pull/32))
+* 🌈 Add unlabeled flags ([#25](https://github.com/hykilpikonna/hyfetch/pull/25))
+* 🌈 Add gender nonconforming & femboy & tomboy flags ([#32](https://github.com/hykilpikonna/hyfetch/pull/32))
 * 🌈 Fix jailbreak iOS shell `killed: 9` issue caused by ld signature check.
 * 🖼️ Distro - Add garuda_small ([dylanaraps#2215](https://github.com/dylanaraps/neofetch/pull/2215))
 * 🖼️ Distro - Add Cobalt Linux ([dylanaraps#2213](https://github.com/dylanaraps/neofetch/pull/2213))
 * 🖼️ Distro - Add VanillaOS ([dylanaraps#2222](https://github.com/dylanaraps/neofetch/pull/2222))
-* 🖼️ Distro - Surround macOS build number in parentheses [#28](https://github.com/hykilpikonna/hyfetch/pull/28))
-* 🖼️ Misc - Auto select stdout mode based on tty detection [#31](https://github.com/hykilpikonna/hyfetch/pull/31))
-* 🖼️ Bug Fix - Fix cols coloring reset for bash 3.2 [#24](https://github.com/hykilpikonna/hyfetch/pull/24))
+* 🖼️ Distro - Surround macOS build number in parentheses ([#28](https://github.com/hykilpikonna/hyfetch/pull/28))
+* 🖼️ Misc - Auto select stdout mode based on tty detection ([#31](https://github.com/hykilpikonna/hyfetch/pull/31))
+* 🖼️ Bug Fix - Fix cols coloring reset for bash 3.2 ([#24](https://github.com/hykilpikonna/hyfetch/pull/24))
 
 ### 1.4.2
 
-* 🌈 Detailed runnning/contributing instructions in README.md [#21](https://github.com/hykilpikonna/hyfetch/pull/21))
-* 🖼️ Distro - Add Stock Linux [#23](https://github.com/hykilpikonna/hyfetch/pull/23))
+* 🌈 Detailed runnning/contributing instructions in README.md ([#21](https://github.com/hykilpikonna/hyfetch/pull/21))
+* 🖼️ Distro - Add Stock Linux ([#23](https://github.com/hykilpikonna/hyfetch/pull/23))
 * 🖼️ Distro - Add DietPi ([dylanaraps#1706](https://github.com/dylanaraps/neofetch/pull/1706))
 * 🖼️ Distro - Add OmniOS illumos ([dylanaraps#2196](https://github.com/dylanaraps/neofetch/pull/2196))
 * 🖼️ Distro - Add Droidian ([dylanaraps#2201](https://github.com/dylanaraps/neofetch/pull/2201))
 * 🖼️ Distro - Add HamoniKR ([dylanaraps#2210](https://github.com/dylanaraps/neofetch/pull/2210))
-* 🖼️ Song - Add support for TIDAL HiFi [#22](https://github.com/hykilpikonna/hyfetch/pull/22))
+* 🖼️ Song - Add support for TIDAL HiFi ([#22](https://github.com/hykilpikonna/hyfetch/pull/22))
 * 🖼️ CPU - Detect multiple CPU models for ARM
 * 🖼️ Misc - Better defaults: Show RAM in GiB, RAM percentage, CPU speed rounding, refresh rate
-* 🖼️ Bug Fix - Fix bash 5.2 column cut off issue [#24](https://github.com/hykilpikonna/hyfetch/pull/24))
+* 🖼️ Bug Fix - Fix bash 5.2 column cut off issue ([#24](https://github.com/hykilpikonna/hyfetch/pull/24))
 
 ### 1.4.1
 
-* 🌈 Paginate flags [#14](https://github.com/hykilpikonna/hyfetch/pull/14))
-* 🌈 Add release workflow [#15](https://github.com/hykilpikonna/hyfetch/pull/15))
+* 🌈 Paginate flags ([#14](https://github.com/hykilpikonna/hyfetch/pull/14))
+* 🌈 Add release workflow ([#15](https://github.com/hykilpikonna/hyfetch/pull/15))
 * 🌈 Create automatic release script
 * 🌈 Config page - Give warning when terminal size is too small
 * 🌈 Config page - Optimize color arrangement selection on small screens
@@ -208,7 +208,7 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 ### 1.4.0
 
-* 🌈 Add finsexual flag [#12](https://github.com/hykilpikonna/hyfetch/pull/12))
+* 🌈 Add finsexual flag ([#12](https://github.com/hykilpikonna/hyfetch/pull/12))
 * 🚀 Addressed a total of 128 currently open pull requests from neofetch
 
 <details>
@@ -424,11 +424,11 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 ### 1.0.5
 
-* Fix terminal emulator detection ([PR[#2](https://github.com/hykilpikonna/hyfetch/pull/2)](https://github.com/hykilpikonna/hyfetch/pull/2))
+* Fix terminal emulator detection ([PR [#2](https://github.com/hykilpikonna/hyfetch/pull/2)](https://github.com/hykilpikonna/hyfetch/pull/2))
 
 ### 1.0.4
 
-* Add more flags ([PR[#1](https://github.com/hykilpikonna/hyfetch/pull/1)](https://github.com/hykilpikonna/hyfetch/pull/1))
+* Add more flags ([PR [#1](https://github.com/hykilpikonna/hyfetch/pull/1)](https://github.com/hykilpikonna/hyfetch/pull/1))
 
 ### 1.0.3
 

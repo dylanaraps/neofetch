@@ -3,12 +3,12 @@
 This script turns readme shorthand pull request references (i.e. dylanaraps/neofetch#1946) into full
 GitHub pull request links.
 """
-import re
+import regex as re
 from pathlib import Path
 
 
 RE_SHORTHAND = re.compile(r"(\w+?)/(\w+?)#(\d+)")
-MY_RE = re.compile(r"[^\w\[]#(\d+)")
+MY_RE = re.compile(r"(?<=[^\w\[])#(\d+)")
 
 
 def reformat_readme():
