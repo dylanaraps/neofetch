@@ -7,16 +7,15 @@ import re
 from pathlib import Path
 
 
-RE_SHORTHAND = re.compile(r"""[a-z0-9]+?/[a-z0-9]+?#[0-9]+""")
+RE_SHORTHAND = re.compile(r"(\w+?)/(\w+?)#(\d+)")
+MY_RE = re.compile(r"[^\w\[]#(\d+)")
 
 
 def reformat_readme():
     readme = Path('README.md').read_text()
 
-    for shorthand in RE_SHORTHAND.findall(readme):
-        user, pull = shorthand.split('/')
-        repo, pull = pull.split('#')
-        readme = readme.replace(shorthand, f'[{user}#{pull}](https://github.com/{user}/{repo}/pull/{pull})')
+    readme = re.sub(RE_SHORTHAND, r'[\1#\3](https://github.com/\1/\2/pull/\3)', readme)
+    readme = re.sub(MY_RE, r'[#\1](https://github.com/hykilpikonna/hyfetch/pull/\1)', readme)
 
     Path('README.md').write_text(readme)
 
