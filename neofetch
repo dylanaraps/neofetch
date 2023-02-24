@@ -2635,7 +2635,7 @@ get_cpu() {
                         cpu="$(awk -F':' '/Hardware/ {print $2; exit}' "$cpu_file")"
                     else
                         # ARM linux displays binary model code in cpuinfo, which needs to be decoded with lscpu
-                        if ! [[ -x "$(command -v python)" ]]; then
+                        if ! command -v python3 &> /dev/null; then
                             cpu="$(lscpu | awk -F': ' '/Vendor ID/ {print $2; exit}' ) $(lscpu | awk -F': ' '/Model name/ {print $2; exit}')"
                         else
                             # Sometimes there are multiple CPU models (e.g. RK3399 has 4 A53 and 2 A72 cores)
@@ -2674,7 +2674,7 @@ if __name__ == '__main__':
 
     print('\n'.join(cpus))
 END
-                            tmp_cpus=$(python -c "$py_script")
+                            tmp_cpus=$(python3 -c "$py_script")
                             while IFS= read -r line; do
                                 prin "${subtitle:+${subtitle}}" "$line"
                             done <<< "$tmp_cpus"
