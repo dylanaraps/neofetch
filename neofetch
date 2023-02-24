@@ -2647,7 +2647,8 @@ from subprocess import check_output
 def find(lines, label):
     for ln in lines:
         if ln.strip().startswith(label):
-            return ln.split(label)[-1].strip()
+            t = ln.split(label)[-1].strip()
+            return None if t == '-' else t
 
     return None
 
@@ -2662,8 +2663,13 @@ if __name__ == '__main__':
     for model_desc in lscpu.split('Model name:'):
         lines = model_desc.split('\n')
         model = lines[0].strip()
-        cores = int(find(lines, 'Core(s) per socket:') or "-1")
-        cores *= int(find(lines, 'Socket(s):') or "1")
+
+        cores = find(lines, 'Core(s) per socket:') or find(lines, 'Core(s) per cluster:')
+        if cores is None:
+            continue
+
+        cores = int(cores)
+        cores *= int(find(lines, 'Socket(s):') or find(lines, 'Cluster(s):') or "1")
         if cores == -1:
             continue
 
