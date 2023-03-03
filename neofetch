@@ -1347,7 +1347,7 @@ get_model() {
         Solaris)
             model=$(prtconf -b | awk -F':' '/banner-name/ {printf $2}')
             virt=$(/usr/bin/uname -V)
-            if [ $? == 0 ] && [ "$virt" != "non-virtualized" ]; then
+            if virt=$(/usr/bin/uname -V) && [[ "$virt" != "non-virtualized" ]]; then
                 model="${model:-$(uname -i)} (${virt})"
             fi
         ;;
