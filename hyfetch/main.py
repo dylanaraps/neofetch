@@ -7,7 +7,6 @@ import random
 import traceback
 from itertools import permutations
 from math import ceil
-from typing import Iterable
 
 from . import termenv, neofetch_util
 from .color_scale import Scale
@@ -32,51 +31,6 @@ def check_config(path) -> Config:
             return create_config()
 
     return create_config()
-
-
-def literal_input(prompt: str, options: Iterable[str], default: str, show_ops: bool = True) -> str:
-    """
-    Ask the user to provide an input among a list of options
-
-    :param prompt: Input prompt
-    :param options: Options
-    :param default: Default option
-    :param show_ops: Show options
-    :return: Selection
-    """
-    options = list(options)
-    lows = [o.lower() for o in options]
-
-    if show_ops:
-        op_text = '|'.join([f'&l&n{o}&r' if o == default else o for o in options])
-        printc(f'{prompt} ({op_text})')
-    else:
-        printc(f'{prompt} (default: {default})')
-
-    def find_selection(sel: str):
-        if not sel:
-            return None
-
-        # Find exact match
-        if sel in lows:
-            return options[lows.index(sel)]
-
-        # Find starting abbreviation
-        for i, op in enumerate(lows):
-            if op.startswith(sel):
-                return options[i]
-
-        return None
-
-    selection = input('> ').lower() or default
-    while not find_selection(selection):
-        print(f'Invalid selection! {selection} is not one of {"|".join(options)}')
-        selection = input('> ').lower() or default
-
-    print()
-
-    return find_selection(selection)
-
 
 def create_config() -> Config:
     """
