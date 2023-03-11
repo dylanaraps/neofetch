@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from subprocess import check_output
 from tempfile import TemporaryDirectory
+from typing import Iterable
 
 import pkg_resources
 
@@ -24,6 +25,48 @@ from .types import BackendLiteral, ColorAlignMode
 
 RE_NEOFETCH_COLOR = re.compile('\\${c[0-9]}')
 
+def literal_input(prompt: str, options: Iterable[str], default: str, show_ops: bool = True) -> str:
+    """
+    Ask the user to provide an input among a list of options
+
+    :param prompt: Input prompt
+    :param options: Options
+    :param default: Default option
+    :param show_ops: Show options
+    :return: Selection
+    """
+    options = list(options)
+    lows = [o.lower() for o in options]
+
+    if show_ops:
+        op_text = '|'.join([f'&l&n{o}&r' if o == default else o for o in options])
+        printc(f'{prompt} ({op_text})')
+    else:
+        printc(f'{prompt} (default: {default})')
+
+    def find_selection(sel: str):
+        if not sel:
+            return None
+
+        # Find exact match
+        if sel in lows:
+            return options[lows.index(sel)]
+
+        # Find starting abbreviation
+        for i, op in enumerate(lows):
+            if op.startswith(sel):
+                return options[i]
+
+        return None
+
+    selection = input('> ').lower() or default
+    while not find_selection(selection):
+        print(f'Invalid selection! {selection} is not one of {"|".join(options)}')
+        selection = input('> ').lower() or default
+
+    print()
+
+    return find_selection(selection)
 
 def term_size() -> tuple[int, int]:
     """
@@ -185,7 +228,7 @@ def ensure_git_bash() -> Path:
             return def_path
 
         # Detect third-party git.exe in path
-        git_exe = shutil.which("git.exe") or shutil.which("git")
+        git_exe = shutil.which("bash") or shutil.which("git.exe") or shutil.which("git")
         if git_exe is not None:
             pth = Path(git_exe).parent
             if (pth / r'bash.exe').is_file():
@@ -207,14 +250,17 @@ def ensure_git_bash() -> Path:
 
         # No installation found, download a portable installation
         print('Git installation not found. Git is required to use HyFetch/neofetch on Windows')
-        print('Downloading a minimal portable package for Git...')
-        from urllib.request import urlretrieve
-        urlretrieve(MINGIT_URL, pkg_path)
-        print('Download finished! Extracting...')
-        with zipfile.ZipFile(pkg_path, 'r') as zip_ref:
-            zip_ref.extractall(path)
-        print('Done!')
-        return path / r'bin\bash.exe'
+        if literal_input('Would you like to install a minimal package for Git? (if no is selected colors almost certianly won\'t work)', ['yes', 'no'], 'yes', False) == 'yes':
+            print('Downloading a minimal portable package for Git...')
+            from urllib.request import urlretrieve
+            urlretrieve(MINGIT_URL, pkg_path)
+            print('Download finished! Extracting...')
+            with zipfile.ZipFile(pkg_path, 'r') as zip_ref:
+                zip_ref.extractall(path)
+            print('Done!')
+            return path / r'bin\bash.exe'
+        else:
+            sys.exit()
 
 
 def check_windows_cmd():
