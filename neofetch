@@ -4806,7 +4806,8 @@ get_cols() {
         done
 
         # Workaround for bright background colors in the Linux framebuffer console.
-        (( block_range[1] < 16 )) && printf -v blocks2 '\e[5m%b\e[25m' "$blocks2"
+        (( block_range[1] < 16 )) && [[ "$TERM" == "linux" ]] &&
+        printf -v blocks2 '\e[5m%b\e[25m' "$blocks2"
 
         # Convert height into spaces.
         printf -v block_spaces "%${block_height}s"
