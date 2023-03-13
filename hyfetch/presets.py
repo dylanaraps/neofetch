@@ -83,12 +83,12 @@ class ColorProfile:
         for i, t in enumerate(txt):
             if space_only and t != ' ':
                 if i > 0 and txt[i - 1] == ' ':
-                    result += '\033[0m'
+                    result += '\033[39;49m'
                 result += t
             else:
                 result += colors[i].to_ansi(foreground=foreground) + t
 
-        result += '\033[0m'
+        result += '\033[39;49m'
         return result
 
     def lighten(self, multiplier: float) -> ColorProfile:

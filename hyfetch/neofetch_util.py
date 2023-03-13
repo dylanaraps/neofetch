@@ -39,7 +39,7 @@ def literal_input(prompt: str, options: Iterable[str], default: str, show_ops: b
     lows = [o.lower() for o in options]
 
     if show_ops:
-        op_text = '|'.join([f'&l&n{o}&r' if o == default else o for o in options])
+        op_text = '|'.join([f'&l&n{o}&L&N' if o == default else o for o in options])
         printc(f'{prompt} ({op_text})')
     else:
         printc(f'{prompt} (default: {default})')
@@ -149,7 +149,7 @@ class ColorAlignment:
             # Add new colors
             if self.mode == 'horizontal':
                 colors = preset.with_length(len(lines))
-                asc = '\n'.join([l.replace(f'${{c{back}}}', colors[i].to_ansi()) + color('&r') for i, l in enumerate(lines)])
+                asc = '\n'.join([l.replace(f'${{c{back}}}', colors[i].to_ansi()) + color('&~&*') for i, l in enumerate(lines)])
             else:
                 raise NotImplementedError()
 
@@ -164,9 +164,9 @@ class ColorAlignment:
             # Add new colors
             if self.mode == 'horizontal':
                 colors = preset.with_length(len(lines))
-                asc = '\n'.join([colors[i].to_ansi() + l + color('&r') for i, l in enumerate(lines)])
+                asc = '\n'.join([colors[i].to_ansi() + l + color('&~&*') for i, l in enumerate(lines)])
             else:
-                asc = '\n'.join(preset.color_text(line) + color('&r') for line in lines)
+                asc = '\n'.join(preset.color_text(line) + color('&~&*') for line in lines)
 
         else:
             preset = preset.unique_colors()
