@@ -10323,7 +10323,7 @@ ${c2}             `:smMM${c4}yy${c3}MMNy/`
 EOF
         ;;
 
-        "Salient OS"* | "SalientOS"* | "salientos"*)
+        "SalientOS"*)
             set_colors 6 6 7 1
             read -rd '' ascii_data <<'EOF'
 ${c1}              00xxxx0
