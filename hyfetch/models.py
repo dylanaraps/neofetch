@@ -16,6 +16,7 @@ class Config:
     lightness: float | None = None
     color_align: ColorAlignment = field(default_factory=lambda: ColorAlignment('horizontal'))
     backend: BackendLiteral = "neofetch"
+    distro: str | None = None
 
     @classmethod
     def from_dict(cls, d: dict):

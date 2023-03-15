@@ -338,10 +338,6 @@ def run():
     ensure_git_bash()
     check_windows_cmd()
 
-    # Use a custom distro
-    if args.distro:
-        GLOBAL_CFG.override_distro = args.distro
-
     if args.debug:
         GLOBAL_CFG.debug = True
 
@@ -359,6 +355,9 @@ def run():
 
     # Load config or create config
     config = create_config() if args.config else check_config(args.config_file)
+
+    # Use a custom distro
+    GLOBAL_CFG.override_distro = args.distro or config.distro
 
     # Param overwrite config
     if args.preset:
