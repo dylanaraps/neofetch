@@ -6,11 +6,33 @@ from dataclasses import dataclass, astuple
 from .constants import GLOBAL_CFG
 from .types import *
 
-MINECRAFT_COLORS = ["&0/\033[0;30m", "&1/\033[0;34m", "&2/\033[0;32m", "&3/\033[0;36m", "&4/\033[0;31m",
-                    "&5/\033[0;35m", "&6/\033[0;33m", "&7/\033[0;37m", "&8/\033[1;30m", "&9/\033[1;34m",
-                    "&a/\033[1;32m", "&b/\033[1;36m", "&c/\033[1;31m", "&d/\033[1;35m", "&e/\033[1;33m",
-                    "&f/\033[1;37m",
-                    "&r/\033[0m", "&l/\033[1m", "&o/\033[3m", "&n/\033[4m", "&-/\n"]
+MINECRAFT_COLORS = [
+
+    # Minecraft formatting codes
+    # ==========================
+    "&0/\033[38;5;0m", "&1/\033[38;5;4m",  "&2/\033[38;5;2m",  "&3/\033[38;5;6m",
+    "&4/\033[38;5;1m", "&5/\033[38;5;5m",  "&6/\033[38;5;3m",  "&7/\033[38;5;7m",
+    "&8/\033[38;5;8m", "&9/\033[38;5;12m", "&a/\033[38;5;10m", "&b/\033[38;5;14m",
+    "&c/\033[38;5;9m", "&d/\033[38;5;13m", "&e/\033[38;5;11m", "&f/\033[38;5;15m",
+    "&l/\033[1m",   # Enable bold text
+    "&o/\033[3m",   # Enable italic text
+    "&n/\033[4m",   # Enable underlined text
+    "&k/\033[8m",   # Enable hidden text
+    "&m/\033[9m",   # Enable strikethrough text
+    "&r/\033[0m",   # Reset everything
+
+    # Extended codes (not officially in Minecraft)
+    # ============================================
+    "&-/\n",        # Line break
+    "&~/\033[39m",  # Reset text color
+    "&*/\033[49m",  # Reset background color
+    "&L/\033[22m",  # Disable bold text
+    "&O/\033[23m",  # Disable italic text
+    "&N/\033[24m",  # Disable underlined text
+    "&K/\033[28m",  # Disable hidden text
+    "&M/\033[29m",  # Disable strikethrough text
+
+]
 MINECRAFT_COLORS = [(r[:2], r[3:]) for r in MINECRAFT_COLORS]
 
 

@@ -44,7 +44,7 @@ def create_config() -> Config:
 
     asc = get_distro_ascii()
     asc_width, asc_lines = ascii_size(asc)
-    logo = color("&b&lhyfetch&r" if det_bg is None or det_bg.is_light() else "&b&lhy&f&lfetch&r")
+    logo = color("&l&bhyfetch&~&L" if det_bg is None or det_bg.is_light() else "&l&bhy&ffetch&~&L")
     title = f'Welcome to {logo} Let\'s set up some colors first.'
     clear_screen(title)
 
@@ -54,7 +54,7 @@ def create_config() -> Config:
         nonlocal title, option_counter
         if not k.endswith(":"):
             k += ':'
-        title += f"\n&e{option_counter}. {k.ljust(30)} &r{v}"
+        title += f"\n&e{option_counter}. {k.ljust(30)} &~{v}"
         option_counter += 1
 
     def print_title_prompt(prompt: str):
@@ -107,7 +107,7 @@ def create_config() -> Config:
             return det_bg.is_light(), 'Detected background color'
 
         clear_screen(title)
-        inp = literal_input(f'2. Is your terminal in &blight mode&r or &4dark mode&r?',
+        inp = literal_input(f'2. Is your terminal in &blight mode&~ or &4dark mode&~?',
                             ['light', 'dark'], 'dark')
         return inp == 'light', 'Selected background color'
 
@@ -308,7 +308,7 @@ def run():
         colorama.just_fix_windows_console()
 
     # Create CLI
-    hyfetch = color('&b&lhyfetch&r')
+    hyfetch = color('&l&bhyfetch&~&L')
     parser = argparse.ArgumentParser(description=color(f'{hyfetch} - neofetch with flags <3'))
 
     parser.add_argument('-c', '--config', action='store_true', help=color(f'Configure {hyfetch}'))

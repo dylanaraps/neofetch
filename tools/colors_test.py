@@ -25,12 +25,12 @@ def test_rgb_8bit_conversion():
     for r in range(0, 255, 16):
         for g in range(0, 255, 16):
             print(RGB(r, g, 0).to_ansi_rgb(False), end=' ')
-        printc('&r')
+        printc('&*')
     print()
     for r in range(0, 255, 16):
         for g in range(0, 255, 16):
             print(RGB(r, g, 0).to_ansi_8bit(False), end=' ')
-        printc('&r')
+        printc('&*')
     print()
 
 

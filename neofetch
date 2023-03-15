@@ -38,7 +38,7 @@ shopt -s eval_unsafe_arith &>/dev/null
 sys_locale=${LANG:-C}
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-${HOME}/.config}
 PATH=$PATH:/usr/xpg4/bin:/usr/sbin:/sbin:/usr/etc:/usr/libexec
-reset='\e[0m'
+reset='\e[39;22m'
 shopt -s nocasematch extglob
 
 # Speed up script by not using unicode.
@@ -4814,16 +4814,20 @@ get_cols() {
             esac
         done
 
+        # Workaround for bright background colors in the Linux framebuffer console.
+        (( block_range[1] < 16 )) && [[ "$TERM" == "linux" ]] &&
+        printf -v blocks2 '\e[5m%b\e[25m' "$blocks2"
+
         # Convert height into spaces.
         printf -v block_spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
         if [[ $BASH_VERSION == 3* ]]; then
-            [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}[mnl}"
-            [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}[mnl}"
+            [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}[39;49mnl}"
+            [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}[39;49mnl}"
         else
-            [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}\[mnl}"
-            [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}\[mnl}"
+            [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}\[39;49mnl}"
+            [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}\[39;49mnl}"
         fi
 
         # Determine the horizontal offset of the blocks.
@@ -5538,12 +5542,8 @@ trim_quotes() {
 }
 
 strip_sequences() {
-    strip="${1//$'\e['3[0-9]m}"
-    strip="${strip//$'\e['[0-9]m}"
-    strip="${strip//\\e\[[0-9]m}"
-    strip="${strip//$'\e['38\;5\;[0-9]m}"
-    strip="${strip//$'\e['38\;5\;[0-9][0-9]m}"
-    strip="${strip//$'\e['38\;5\;[0-9][0-9][0-9]m}"
+    strip="${1//$'\e'\[*([0-9])*(;*([0-9]))m}"
+    strip="${strip//\\e\[*([0-9])*(;*([0-9]))m}"
 
     printf '%s\n' "$strip"
 }
@@ -5602,8 +5602,8 @@ set_text_colors() {
 
 color() {
     case $1 in
-        [0-6])    printf '%b\e[3%sm'   "$reset" "$1" ;;
-        7 | "fg") printf '\e[37m%b'    "$reset" ;;
+        [0-7]) printf '%b\e[3%sm'   "$reset" "$1" ;;
+        "fg")  printf '%b'          "$reset" ;;
         "#"*)
             local rgb="${1//#}"
             rgb="$((0x$rgb))"
