@@ -1066,7 +1066,7 @@ get_distro() {
             # Chrome OS doesn't conform to the /etc/*-release standard.
             # While the file is a series of variables they can't be sourced
             # by the shell since the values aren't quoted.
-            elif [[ -f /etc/lsb-release && $(< /etc/lsb-release) == *CHROMEOS* ]]; then
+            elif grep -q CHROMEOS /etc/lsb-release; then
                 distro='Chrome OS'
 
             elif type -p guix >/dev/null; then
@@ -1112,11 +1112,14 @@ get_distro() {
                 esac
 
             elif [[ $(< /proc/version) == *chrome-bot* || -f /dev/cros_ec ]]; then
+                # gets chrome os version from /etc/lsb-release.
+                # totally not written by chatgpt :trolley:
+                cros_version=$(grep -oE 'CHROMEOS_RELEASE_CHROME_MILESTONE=([0-9]+)' /etc/lsb-release | cut -d= -f2)
                 [[ $distro != *Chrome* ]] &&
                     case $distro_shorthand in
-                        on)   distro+=" [Chrome OS]" ;;
-                        tiny) distro="Chrome OS" ;;
-                        *)    distro+=" on Chrome OS" ;;
+                        on)   distro+=" [Chrome OS $cros_version]" ;;
+                        tiny) distro="Chrome OS $cros_version" ;;
+                        *)    distro+="Chrome OS $cros_version" ;;
                     esac
                     distro=${distro## on }
             fi
