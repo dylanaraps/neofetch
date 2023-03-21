@@ -99,6 +99,16 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 <!-- CHANGELOG STARTS HERE --->
 
+* 🌈 Improved Windows git bash detection (#99)
+* 🌈 Improved color formatting codes (#101)
+* 🌈 Allow specifying distro in config (#102)
+* 🌈 Allow specifying custom ascii files (#104)
+* 🖼 Distro - Add Salient OS. (dylanaraps/neofetch#2301)
+* 🖼 Distro - Add PikaOS. (#105)
+* 🖼 Distro - Update Vanilla logo. (#98)
+* 🖼 Distro - ChromeOS version improvements. (dylanaraps/neofetch#2305)
+* 🖼 CPU - Improved multi-cpu ARM chip detection. (#97)
+
 ### 1.4.7
 
 * 🌈 Better Windows compatibility ([#45](https://github.com/hykilpikonna/hyfetch/pull/45), [#84](https://github.com/hykilpikonna/hyfetch/pull/84), [#87](https://github.com/hykilpikonna/hyfetch/pull/87), [#89](https://github.com/hykilpikonna/hyfetch/pull/89))
