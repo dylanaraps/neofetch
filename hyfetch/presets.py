@@ -216,6 +216,14 @@ PRESETS: dict[str, ColorProfile] = {
         '#8EA6FF',
     ]),
 
+    'omniromantic': ColorProfile([
+        '#FEC8E4',
+        '#FDA1DB',
+        '#89739A',
+        '#ABA7FE',
+        '#BFCEFF',
+    ]),
+
     # gay men sourced from https://www.flagcolorcodes.com/gay-men
     'gay-men': ColorProfile([
         '#078D70',
@@ -540,6 +548,16 @@ PRESETS: dict[str, ColorProfile] = {
         '#EC9BEE',
         '#9541FA',
         '#7D2557'
+    ]),
+
+    'pangender': ColorProfile([
+        '#FFF798',
+        '#FEDDCD',
+        '#FFEBFB',
+        '#FFFFFF',
+        '#FFEBFB',
+        '#FEDDCD',
+        '#FFF798',
     ]),
 
     'gendernonconforming1': ColorProfile(
