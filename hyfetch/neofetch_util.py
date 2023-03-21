@@ -336,25 +336,21 @@ def get_distro_name():
     return run_neofetch_cmd('ascii_distro_name', True)
 
 
-def run(preset: ColorProfile, alignment: ColorAlignment, backend: BackendLiteral):
+def run(asc: str, backend: BackendLiteral):
     if backend == "neofetch":
-        return run_neofetch(preset, alignment)
+        return run_neofetch(asc)
     if backend == "fastfetch":
-        return run_fastfetch(preset, alignment)
+        return run_fastfetch(asc)
     if backend == "fastfetch-old":
-        return run_fastfetch(preset, alignment, legacy=True)
+        return run_fastfetch(asc, legacy=True)
 
 
-def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
+def run_neofetch(asc: str):
     """
     Run neofetch with colors
 
-    :param preset: Color palette
-    :param alignment: Color alignment settings
+    :param asc: Ascii art
     """
-    asc = get_distro_ascii()
-    asc = alignment.recolor_ascii(asc, preset)
-
     # Escape backslashes here because backslashes are escaped in neofetch for printf
     asc = asc.replace('\\', '\\\\')
 
@@ -368,17 +364,13 @@ def run_neofetch(preset: ColorProfile, alignment: ColorAlignment):
         run_neofetch_cmd(f'--ascii --source {path.absolute()} --ascii-colors')
 
 
-def run_fastfetch(preset: ColorProfile, alignment: ColorAlignment, legacy: bool = False):
+def run_fastfetch(asc: str, legacy: bool = False):
     """
     Run neofetch with colors
 
-    :param preset: Color palette
-    :param alignment: Color alignment settings
+    :param asc: Ascii art
     :param legacy: Set true when using fastfetch < 1.8.0
     """
-    asc = get_distro_ascii()
-    asc = alignment.recolor_ascii(asc, preset)
-
     # Write temp file
     with TemporaryDirectory() as tmp_dir:
         tmp_dir = Path(tmp_dir)

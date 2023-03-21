@@ -320,7 +320,9 @@ def run():
     parser.add_argument('--c-set-l', dest='light', help=f'Set lightness value of the colors', type=float)
     parser.add_argument('-V', '--version', dest='version', action='store_true', help=f'Check version')
     parser.add_argument('--debug', action='store_true', help=f'Debug mode')
+
     parser.add_argument('--distro', '--test-distro', dest='distro', help=f'Test for a specific distro')
+    parser.add_argument('--ascii-file', help='Use a specific file for the ascii art')
 
     # Hidden debug arguments
     # --test-print: Print the ascii distro and exit
@@ -384,7 +386,9 @@ def run():
 
     # Run
     try:
-        neofetch_util.run(preset, config.color_align, config.backend)
+        asc = get_distro_ascii() if not args.ascii_file else Path(args.ascii_file).read_text("utf-8")
+        asc = config.color_align.recolor_ascii(asc, preset)
+        neofetch_util.run(asc, config.backend)
     except Exception as e:
         print(f'Error: {e}')
         traceback.print_exc()
