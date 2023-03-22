@@ -104,10 +104,18 @@ def detect(name: str) -> AsciiArt | None:
         from .apricity import apricity
         return apricity
     
+    if name.startswith('archcraft_ascii'):
+        from .archcraft_ascii import archcraft_ascii
+        return archcraft_ascii
+
+    if name.startswith('archcraft_minimal'):
+        from .archcraft_minimal import archcraft_minimal
+        return archcraft_minimal
+
     if name.startswith('archcraft'):
         from .archcraft import archcraft
         return archcraft
-    
+
     if name.startswith('arcolinux_small'):
         from .arcolinux_small import arcolinux_small
         return arcolinux_small

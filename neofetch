@@ -7013,6 +7013,58 @@ dhhyys+/-`
 EOF
         ;;
 
+        "archcraft_ascii"*)
+            set_colors 6 1 2 3 4 5
+            read -rd '' ascii_data <<'EOF'
+${c1}                   -o\
+                  :ooo:
+                 .ooooo.
+                 ooooooo.
+                +oooooooo.
+               -oooooooooo.
+              --:-+oooooooo.
+             yooo+=+sooooooo.
+            yoooooosooooooooo.
+           y+ooooooooooooooooo.
+          yoooooooooooooooooooo`
+         yoooooo+oo=  :oo++ooooo`
+        :oooooo.           +ooooo-
+       -ooooooo.   .::.    +ooosoo=
+      -oooooo`    .oooo`     +os-=o=
+     =ooooooo=:    `oo+    :=ooo=--`.
+    +ooooooooos.          .=sooooooo+-
+  .+osossos+-`              `-+osososs+.
+ :sss+=-:`                     `:-=+ssss:
+:=-:`                                `-=+:
+EOF
+        ;;
+
+        "archcraft_minimal"*)
+            set_colors 6 1 2 3 4 5
+            read -rd '' ascii_data <<'EOF'
+${c1}                   ⢰⡆
+                  ⢠⣿⣿⡄
+                 ⢀⣾⣿⣿⣿⡀
+                 ⣼⣿⣿⣿⣿⣷⡀
+                ⣼⣿⣿⣿⣿⣿⣿⣷
+               ⢼⣿⣿⣿⣿⣿⣿⣿⣿⣧
+              ⣰⣤⣈⠻⢿⣿⣿⣿⣿⣿⣿⣧
+             ⣰⣿⣿⣿⣿⣮⣿⣿⣿⣿⣿⣿⣿⣧
+            ⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧
+           ⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧
+          ⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧
+         ⣼⣿⣿⣿⣿⣿⡿⣿⣿⡟  ⠸⣿⣿⡿⣿⣿⣿⣿⣿⣷⡀
+        ⣼⣿⣿⣿⣿⣿⡏          ⠈⣿⣿⣿⣿⣿⣷⡀
+      ⢀⣼⣿⣿⣿⣿⣿⣿⡗   ⢀⣠⣤⣀   ⠸⣿⣿⣿⣿⣿⣿⣷⡀
+     ⢀⣾⣿⣿⣿⣿⣿⡏⠁   ⢠⣿⣿⣿⣿⡇    ⢙⣿⣿⣻⠿⣿⣷⡀
+    ⢀⣾⣿⣿⣿⣿⣿⣿⣷⣤⡀   ⠻⣿⣿⡿⠃   ⢀⣼⣿⣿⣿⣿⣦⣌⠙
+   ⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏           ⢿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀
+  ⢠⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠁             ⠙⠻⣿⣿⣿⣿⣿⣿⣿⣿⡄
+ ⣠⣿⣿⣿⣿⠿⠛⠋⠁                    ⠉⠙⠻⢿⣿⣿⣿⣿⣆
+⡰⠟⠛⠉⠁                              ⠉⠙⠛⠿⢆
+EOF
+        ;;
+
         "Archcraft"*)
             set_colors 6 1 2 3 4 5
             read -rd '' ascii_data <<'EOF'
