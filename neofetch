@@ -1880,6 +1880,10 @@ get_packages() {
         }
     }
 
+    # OS-independent package managers.
+    has pipx && tot pipx list --short
+
+    # OS-specific package managers.
     case $os in
         Linux|BSD|"iPhone OS"|Solaris|illumos)
             # Package Manager Programs.
