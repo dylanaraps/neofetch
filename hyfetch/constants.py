@@ -5,9 +5,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .types import LightDark
+from .__version__ import VERSION
 
 CONFIG_PATH = Path.home() / '.config/hyfetch.json'
-VERSION = '1.4.7'
 
 
 TEST_ASCII = r"""
