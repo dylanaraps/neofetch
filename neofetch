@@ -1561,6 +1561,7 @@ get_model() {
         "iPhone OS")
             case $kernel_machine in
                 iPad1,1):            "iPad" ;;
+                iPad1,2):            "iPad 3G" ;;
                 iPad2,[1-4]):        "iPad 2" ;;
                 iPad3,[1-3]):        "iPad 3" ;;
                 iPad3,[4-6]):        "iPad 4" ;;
@@ -1569,20 +1570,25 @@ get_model() {
                 iPad7,1[1-2]):       "iPad 7" ;;
                 iPad11,[6-7]):       "iPad 8" ;;
                 iPad12,[1-2]):       "iPad 9" ;;
+                iPad13,1[8-9]):      "iPad 10" ;;
                 iPad4,[1-3]):        "iPad Air" ;;
                 iPad5,[3-4]):        "iPad Air 2" ;;
                 iPad11,[3-4]):       "iPad Air 3" ;;
-                iPad13,[1-2]):       "iPad Air 4";;
-                iPad6,[7-8]):        "iPad Pro (12.9 Inch)" ;;
-                iPad6,[3-4]):        "iPad Pro (9.7 Inch)" ;;
-                iPad7,[1-2]):        "iPad Pro 2 (12.9 Inch)" ;;
-                iPad7,[3-4]):        "iPad Pro (10.5 Inch)" ;;
-                iPad8,[1-4]):        "iPad Pro (11 Inch)" ;;
-                iPad8,[5-8]):        "iPad Pro 3 (12.9 Inch)" ;;
-                iPad8,9 | iPad8,10): "iPad Pro 4 (11 Inch)" ;;
-                iPad8,1[1-2]):       "iPad Pro 4 (12.9 Inch)" ;;
-                iPad13,[4-7]):       "iPad Pro 5 (11 Inch)" ;;
-                iPad13,8 | iPad13,11): "iPad Pro 5 (12.9 Inch)" ;;
+                iPad13,[1-2]):       "iPad Air 4" ;;
+                iPad13,1[6-7]):      "iPad Air 5" ;;
+                iPad6,[7-8]):        "iPad Pro 12.9-inch" ;;
+                iPad6,[3-4]):        "iPad Pro 9.7-inch" ;;
+                iPad7,[1-2]):        "iPad Pro 12.9-inch (2nd generation)" ;;
+                iPad7,[3-4]):        "iPad Pro 10.5-inch" ;;
+                iPad8,[1-4]):        "iPad Pro 11-inch" ;;
+                iPad8,[5-8]):        "iPad Pro 12.9-inch (3rd generation)" ;;
+                iPad8,9 | iPad8,10): "iPad Pro 11-inch (2nd generation)" ;;
+                iPad8,1[1-2]):       "iPad Pro 12.9-inch (4th generation)" ;;
+                iPad13,[4-7]):       "iPad Pro 11-inch (3rd generation)" ;;
+                iPad13,[8-9]):       "iPad Pro 12.9-inch (5th generation)" ;;
+                iPad13,1[0-1]):      "iPad Pro 12.9-inch (5th generation)" ;;
+                iPad14,[3-4]):       "iPad Pro 11-inch (4th generation)" ;;
+                iPad14,[5-6]):       "iPad Pro 12.9-inch (6th generation)" ;;
                 iPad2,[5-7]):        "iPad mini" ;;
                 iPad4,[4-6]):        "iPad mini 2" ;;
                 iPad4,[7-9]):        "iPad mini 3" ;;
@@ -1623,13 +1629,18 @@ get_model() {
                 iPhone14,3):    "iPhone 13 Pro Max" ;;
                 iPhone14,4):    "iPhone 13 Mini" ;;
                 iPhone14,5):    "iPhone 13" ;;
+                iPhone14,6):    "iPhone SE 2022" ;;
+                iPhone14,7):    "iPhone 14" ;;
+                iPhone14,8):    "iPhone 14 Plus" ;;
+                iPhone15,2):    "iPhone 14 Pro" ;;
+                iPhone15,3):    "iPhone 14 Pro Max" ;;
 
                 iPod1,1): "iPod touch" ;;
-                ipod2,1): "iPod touch 2G" ;;
-                ipod3,1): "iPod touch 3G" ;;
-                ipod4,1): "iPod touch 4G" ;;
-                ipod5,1): "iPod touch 5G" ;;
-                ipod7,1): "iPod touch 6G" ;;
+                iPod2,1): "iPod touch 2G" ;;
+                iPod3,1): "iPod touch 3G" ;;
+                iPod4,1): "iPod touch 4G" ;;
+                iPod5,1): "iPod touch 5G" ;;
+                iPod7,1): "iPod touch 6G" ;;
                 iPod9,1): "iPod touch 7G" ;;
             esac
 
@@ -2822,12 +2833,22 @@ END
                 "iPhone10,"[1-6]): "Apple A11 Bionic (6) @ 2.39GHz" ;;
                 "iPhone11,"[2468] | "iPad11,"[1-4] | "iPad11,"[6-7]): "Apple A12 Bionic (6) @ 2.49GHz" ;;
                 "iPhone12,"[1358]): "Apple A13 Bionic (6) @ 2.65GHz" ;;
-                "iPhone13,"[1-4] | "iPad13,"[1-2]): "Apple A14 Bionic (6) @ 3.00Ghz" ;;
+                "iPhone13,"[1-4] | "iPad13,"[1-2]): "Apple A14 Bionic (6) @ 3.00GHz" ;;
+                "iPhone14,"[2-8]): "Apple A15 Bionic (6) @ 3.23GHz" ;;
+                "iPhone15,"[2-3]): "Apple A16 Bionic (6) @ 3.46GHz" ;;
+                "iPad12,"[1-2]): "Apple A13 Bionic (6) @ 2.65GHz" ;;
+                "iPad13,"[4-9]): "Apple M1 (8) @ 3.19GHz" ;;
+                "iPad13,1"[0-1]): "Apple M1 (8) @ 3.19GHz" ;;
+                "iPad13,1"[6-7]): "Apple M1 (8) @ 3.19GHz" ;;
+                "iPad13,1"[8-9]): "Apple A14 Bionic (6) @ 3.00GHz" ;;
+                "iPad14,"[1-2]): "Apple A15 Bionic (6) @ 3.23GHz" ;;
+                "iPad14,"[3-6]): "Apple M2 (8) @ 3.49GHz" ;;
 
                 "iPod2,1"): "Samsung S5L8720 (1) @ 533MHz" ;;
                 "iPod3,1"): "Samsung S5L8922 (1) @ 600MHz" ;;
                 "iPod7,1"): "Apple A8 (2) @ 1.1GHz" ;;
-                "iPad1,1"): "Apple A4 (1) @ 1GHz" ;;
+                "iPod9,1"): "Apple A10 Fusion (4) @ 1.64GHz" ;;
+                "iPad1,"[1-2]): "Apple A4 (1) @ 1GHz" ;;
                 "iPad2,"[1-7]): "Apple A5 (2) @ 1GHz" ;;
                 "iPad3,"[1-3]): "Apple A5X (2) @ 1GHz" ;;
                 "iPad3,"[4-6]): "Apple A6X (2) @ 1.4GHz" ;;
@@ -3144,7 +3165,7 @@ get_gpu() {
         "iPhone OS")
             case $kernel_machine in
                 "iPhone1,"[1-2]):                             "PowerVR MBX Lite 3D" ;;
-                "iPhone2,1" | "iPhone3,"[1-3] | "iPod3,1" | "iPod4,1" | "iPad1,1"):
+                "iPhone2,1" | "iPhone3,"[1-3] | "iPod3,1" | "iPod4,1" | "iPad1,"[1-2]):
                     "PowerVR SGX535"
                 ;;
                 "iPhone4,1" | "iPad2,"[1-7] | "iPod5,1"):     "PowerVR SGX543MP2" ;;
@@ -3154,14 +3175,19 @@ get_gpu() {
                 "iPhone8,"[1-4] | "iPad6,1"[12]):             "PowerVR GT7600" ;;
                 "iPhone9,"[1-4] | "iPad7,"[5-6]):             "PowerVR GT7600 Plus" ;;
                 "iPhone10,"[1-6]):                            "Apple Designed GPU (A11)" ;;
-                "iPhone11,"[2468] | "iPad11,"[67]):           "Apple Designed GPU (A12)" ;;
-                "iPhone12,"[1358]):                           "Apple Designed GPU (A13)" ;;
+                "iPhone11,"[2468] | "iPad11,"[123467]):       "Apple Designed GPU (A12)" ;;
+                "iPhone12,"[1358] | "iPad12,"[12]):           "Apple Designed GPU (A13)" ;;
                 "iPhone13,"[1234] | "iPad13,"[12]):           "Apple Designed GPU (A14)" ;;
 
                 "iPad3,"[1-3]):     "PowerVR SGX534MP4" ;;
                 "iPad3,"[4-6]):     "PowerVR SGX554MP4" ;;
                 "iPad5,"[3-4]):     "PowerVR GXA6850" ;;
                 "iPad6,"[3-8]):     "PowerVR 7XT" ;;
+                "iPad8,"[1-8]):     "Apple Designed GPU (A12X)" ;;
+                "iPad8,9" | "iPad8,1"[0-2]):        "Apple Designed GPU (A12Z)" ;;
+                "iPad13,"[4-9] | "iPad13,1"[0-1]):  "Apple Designed GPU (M1)" ;;
+                "iPad14,"[1-2]):    "Apple Designed GPU (A15)" ;;
+                "iPad14,"[3-6]):    "Apple Designed GPU (M2)" ;;
 
                 "iPod1,1" | "iPod2,1")
                     : "PowerVR MBX Lite"
