@@ -40,7 +40,7 @@ setup(
         
         # Windows dependencies
         'psutil ; platform_system=="Windows"',
-        'colorama ; platform_system=="Windows"',
+        'colorama>=0.4.6 ; platform_system=="Windows"',
     ],
     entry_points={
         "console_scripts": [
