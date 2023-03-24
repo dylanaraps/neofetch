@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import pathlib
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 
 import hyfetch.constants
 
@@ -31,7 +31,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
     ],
-    packages=find_packages(),
+    packages=find_namespace_packages(),
     package_data={'hyfetch': ['hyfetch/*']},
     include_package_data=True,
     install_requires=[
