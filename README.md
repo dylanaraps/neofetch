@@ -31,6 +31,8 @@ Currently, these distributions have existing packages for HyFetch:
 * Arch Linux: `sudo pacman -S hyfetch` (Thanks to [@Aleksana](https://github.com/Aleksanaa) and [@Antiz96](https://github.com/Antiz96))
 * Nix: `nix-env -i hyfetch` (Thanks to [@YisuiDenghua](https://github.com/YisuiDenghua))
 * Guix: `guix install hyfetch` (Thanks to [@WammKD](https://github.com/WammKD))
+* Slackware `sbopkg -b hyfetch` Slackware Slackbuild https://slackbuilds.org/repository/15.0/desktop/hyfetch/?search=hyfetch (Thanks to [@bittin] and Urchlay
+
 
 ### Method 3: Install the latest developmental version using git
 
