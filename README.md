@@ -105,11 +105,16 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 * 🌈 Improved color formatting codes (#101)
 * 🌈 Allow specifying distro in config (#102)
 * 🌈 Allow specifying custom ascii files (#104)
+* 🌈 Add omniromantic and pangender (#106)
+* 🌈 Now officially packaged for ArchLinux Community & Slackware! (#112) (#109)
+* 🖼 Host - Update Apple device model detection. (#111)
 * 🖼 Distro - Add Salient OS. (dylanaraps/neofetch#2301)
 * 🖼 Distro - Add PikaOS. (#105)
+* 🖼 Distro - Add Archcraft minimal variant. (#108)
 * 🖼 Distro - Update Vanilla logo. (#98)
 * 🖼 Distro - ChromeOS version improvements. (dylanaraps/neofetch#2305)
 * 🖼 CPU - Improved multi-cpu ARM chip detection. (#97)
+* 🖼 Packages - Support pipx package manager. (#107)
 
 ### 1.4.7
 
