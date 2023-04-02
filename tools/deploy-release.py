@@ -130,8 +130,7 @@ def create_release(v: str):
     # 4. Push
     print('Pushing commits...')
     subprocess.check_call(['git', 'push'])
-    subprocess.check_call(['git', 'push', 'origin', v])
-    subprocess.check_call(['git', 'push', 'origin', f'neofetch-{NEOFETCH_NEW_VERSION}'])
+    subprocess.check_call(['git', 'push', 'origin', v, f'neofetch-{NEOFETCH_NEW_VERSION}'])
 
 
 def deploy():
