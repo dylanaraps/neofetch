@@ -103,6 +103,7 @@ def post_check():
     """
     Check after changes are made
     """
+    print('Running shellcheck... (This may take a while)')
     subprocess.check_call(shlex.split('shellcheck neofetch'))
 
 
@@ -113,7 +114,7 @@ def create_release(v: str):
     print('Committing changes...')
 
     # 1. Add files
-    subprocess.check_call(['git', 'add', 'hyfetch/constants.py', 'neofetch', 'neofetch.1', 'package.json', 'README.md',
+    subprocess.check_call(['git', 'add', 'hyfetch/__version__.py', 'neofetch', 'neofetch.1', 'package.json', 'README.md',
                            'hyfetch/distros/*'])
 
     # 2. Commit
