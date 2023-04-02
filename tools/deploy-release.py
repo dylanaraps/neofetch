@@ -25,6 +25,7 @@ def pre_check():
     assert os.path.islink('./hyfetch/scripts/neowofetch'), 'neowofetch is not a symbolic link'
     # subprocess.check_call(shlex.split('git diff-index --quiet HEAD --'))  # 'Please commit all changes before release'
 
+    print('Running shellcheck... (This may take a while)')
     subprocess.check_call(shlex.split('shellcheck neofetch'))
 
 
@@ -46,8 +47,8 @@ def edit_versions(version: str):
     path.write_text(json.dumps(content, ensure_ascii=False, indent=2))
 
     # 2. hyfetch/constants.py
-    print('Editing hyfetch/constants.py...')
-    path = Path('hyfetch/constants.py')
+    print('Editing hyfetch/__version__.py...')
+    path = Path('hyfetch/__version__.py')
     content = [f"VERSION = '{version}'" if l.startswith('VERSION = ') else l for l in path.read_text().split('\n')]
     path.write_text('\n'.join(content))
 
