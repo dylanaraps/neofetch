@@ -63,7 +63,7 @@ def edit_versions(version: str):
     # 4. neofetch script
     print('Editing neofetch...')
     path = Path('neofetch')
-    lines = path.read_text().split('\n')
+    lines = path.read_text().replace("\t", "    ").split('\n')
     version_i = next(i for i, l in enumerate(lines) if l.startswith('version='))
     nf = pv.parse(lines[version_i].replace('version=', ''))
     new = pv.parse(version)

@@ -12571,7 +12571,7 @@ xxxxxxxxxxxxxxxxxx0       xxxxxxxxxxxxxx
                         0xxx00
                       x00
 EOF
-		;;
+        ;;
 
         "Scientific"*)
             set_colors 4 7 1
