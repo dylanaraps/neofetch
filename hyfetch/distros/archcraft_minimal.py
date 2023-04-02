@@ -2,7 +2,7 @@
 
 from . import AsciiArt
 
-archcraft_minimal = AsciiArt(match=r'''"Archcraft"*''', color='6 1 2 3 4 5', ascii=r"""
+archcraft_minimal = AsciiArt(match=r'''"archcraft_minimal"*''', color='6 1 2 3 4 5', ascii=r"""
 ${c1}                   ⢰⡆
                   ⢠⣿⣿⡄
                  ⢀⣾⣿⣿⣿⡀

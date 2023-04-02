@@ -4,22 +4,24 @@ from . import AsciiArt
 
 vanilla = AsciiArt(match=r'''"Vanilla"*''', color='11 15', ascii=r"""
 ${c1}
-                .----:
-               .-------.
-              :---::----:
-             .----::-----.
-  .........  :----::-----: ..:::-::::..
-.-----------------::------------------:
-  ----::-----------::----------::::---:
-   -----:::--------::-------:::-------
-    :------::::--::...:::::---------:
-     .---------::..    ..:---------.
-      .::-----::..    .::----::.
-        .:------:.......:-------:
-       .--------::::::::-:::-------.
-      .-------::-----.:-----::------.
-     -----::------:   :------::-----
-    :--::--------:     .-------::---:
-   :----------::         .:----------
+
+                  .OO.
+                 .OOOO.
+                .OO${c2}II${c1}OO.
+               IOOO${c2}II${c1}OOOI
+              .OOOO${c2}II${c1}OOOO.
+  ............IOOOO${c2}II${c1}OOOOI............
+ OOOOOOOOOOOOOOOOOO${c2}II${c1}OOOOOOOOOOOOOOOOOO
+  OOOO${c2}II${c1}OOOOOOOOOOO${c2}II${c1}OOOOOOOOOOO${c2}II${c1}OOOO
+   OOOOO${c2}III${c1}OOOOOOOO${c2}II${c1}OOOOOOOO${c2}III${c1}OOOOO
+    OOOOOOO${c2}IIII${c1}OO${c2}I....I${c1}OO${c2}IIII${c1}OOOOOOO
+     OOOOOOOOOO${c2}II..  ..II${c1}OOOOOOOOOO
+       OOOOOOO${c2}II.      .II${c1}OOOOOOO
+        OOOOOO${c2}II:......:II${c1}OOOOOO
+       OOOOOOOOO${c2}IIIIIIII${c1}OOOOOOOOO
+      OOOOOO${c2}II${c1}OOOOOOOOOOOO${c2}II${c1}OOOOOO
+     OOOO${c2}II${c1}OOOOOOOI   IOOOOOO${c2}II${c1}OOOO
+    IOO${c2}II${c1}OOOOOOOO:     :OOOOOOOO${c2}II${c1}OOI
+   IOOOOOOOOOOII         IIOOOOOOOOOOI
 """)
     

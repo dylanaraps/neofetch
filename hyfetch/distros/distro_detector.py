@@ -107,15 +107,15 @@ def detect(name: str) -> AsciiArt | None:
     if name.startswith('archcraft_ascii'):
         from .archcraft_ascii import archcraft_ascii
         return archcraft_ascii
-
+    
     if name.startswith('archcraft_minimal'):
         from .archcraft_minimal import archcraft_minimal
         return archcraft_minimal
-
+    
     if name.startswith('archcraft'):
         from .archcraft import archcraft
         return archcraft
-
+    
     if name.startswith('arcolinux_small'):
         from .arcolinux_small import arcolinux_small
         return arcolinux_small
@@ -928,6 +928,10 @@ def detect(name: str) -> AsciiArt | None:
         from .pisi import pisi
         return pisi
     
+    if name.startswith('pikaos'):
+        from .pikaos import pikaos
+        return pikaos
+    
     if name.startswith('pnm linux') or name.startswith('whpnm linux'):
         from .pnm_linux import pnm_linux
         return pnm_linux
@@ -1075,6 +1079,10 @@ def detect(name: str) -> AsciiArt | None:
     if name.startswith('sasanqua'):
         from .sasanqua import sasanqua
         return sasanqua
+    
+    if name.startswith('salient os') or name.startswith('salientos') or name.startswith('salientos'):
+        from .salient_os import salient_os
+        return salient_os
     
     if name.startswith('scientific'):
         from .scientific import scientific

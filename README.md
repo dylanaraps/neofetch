@@ -101,20 +101,22 @@ pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 
 <!-- CHANGELOG STARTS HERE --->
 
-* 🌈 Improved Windows git bash detection (#99)
-* 🌈 Improved color formatting codes (#101)
-* 🌈 Allow specifying distro in config (#102)
-* 🌈 Allow specifying custom ascii files (#104)
-* 🌈 Add omniromantic and pangender (#106)
-* 🌈 Now officially packaged for ArchLinux Community & Slackware! (#112) (#109)
-* 🖼 Host - Update Apple device model detection. (#111)
-* 🖼 Distro - Add Salient OS. (dylanaraps/neofetch#2301)
-* 🖼 Distro - Add PikaOS. (#105)
-* 🖼 Distro - Add Archcraft minimal variant. (#108)
-* 🖼 Distro - Update Vanilla logo. (#98)
-* 🖼 Distro - ChromeOS version improvements. (dylanaraps/neofetch#2305)
-* 🖼 CPU - Improved multi-cpu ARM chip detection. (#97)
-* 🖼 Packages - Support pipx package manager. (#107)
+### 1.4.8
+
+* 🌈 Improved Windows git bash detection ([#99](https://github.com/hykilpikonna/hyfetch/pull/99))
+* 🌈 Improved color formatting codes ([#101](https://github.com/hykilpikonna/hyfetch/pull/101))
+* 🌈 Allow specifying distro in config ([#102](https://github.com/hykilpikonna/hyfetch/pull/102))
+* 🌈 Allow specifying custom ascii files ([#104](https://github.com/hykilpikonna/hyfetch/pull/104))
+* 🌈 Add omniromantic and pangender ([#106](https://github.com/hykilpikonna/hyfetch/pull/106))
+* 🌈 Now officially packaged for ArchLinux Community & Slackware! ([#112](https://github.com/hykilpikonna/hyfetch/pull/112)) ([#109](https://github.com/hykilpikonna/hyfetch/pull/109))
+* 🖼 Host - Update Apple device model detection. ([#111](https://github.com/hykilpikonna/hyfetch/pull/111))
+* 🖼 Distro - Add Salient OS. ([dylanaraps#2301](https://github.com/dylanaraps/neofetch/pull/2301))
+* 🖼 Distro - Add PikaOS. ([#105](https://github.com/hykilpikonna/hyfetch/pull/105))
+* 🖼 Distro - Add Archcraft minimal variant. ([#108](https://github.com/hykilpikonna/hyfetch/pull/108))
+* 🖼 Distro - Update Vanilla logo. ([#98](https://github.com/hykilpikonna/hyfetch/pull/98))
+* 🖼 Distro - ChromeOS version improvements. ([dylanaraps#2305](https://github.com/dylanaraps/neofetch/pull/2305))
+* 🖼 CPU - Improved multi-cpu ARM chip detection. ([#97](https://github.com/hykilpikonna/hyfetch/pull/97))
+* 🖼 Packages - Support pipx package manager. ([#107](https://github.com/hykilpikonna/hyfetch/pull/107))
 
 ### 1.4.7
 
