@@ -1245,14 +1245,34 @@ get_distro() {
                 fi
             fi
 
+            # Gets the windows tag caption (ie `Microsoft Windows 11 Pro Insider Preview`)
+            #
+            # Then removes the `Microsoft` and `Windows` part and gets the current
+            # version of Windows (old code reported Windows 10 even if host runs Windows 11).
+            #
+            # Finally, we decline it in three versions :
+            #
+            # - The `on`   version (ie `[Windows 11.0.25330]`)
+            # - The `tiny` version (ie `Windows 11`)
+            # - The `any`  version (ie `on Windows 11 Pro Insider Preview`)
             if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
-                windows_version=$(wmic.exe os get Version)
-                windows_version=$(trim "${windows_version/Version}")
+
+                windows_version_verbose=$(wmic.exe os get Caption)
+                windows_version_verbose=$(trim "${windows_version_verbose/Caption}")
+                windows_version_verbose=$(trim "${windows_version_verbose/Microsoft}")
+                windows_version_verbose=$(trim "${windows_version_verbose/Windows}")
+
+                windows_version_current=${windows_version_verbose//[^[:digit:]]/}
+
+                windows_version_number_long=$(wmic.exe os get Version)
+                windows_version_number_long=$(trim "${windows_version_number_long/Version}")
+                windows_version_number_long=$(trim "${windows_version_number_long}")
+                windows_version_number_long="${windows_version_current}${windows_version_number_long:2}"
 
                 case $distro_shorthand in
-                    on)   distro+=" [Windows $windows_version]" ;;
-                    tiny) distro="Windows ${windows_version::2}" ;;
-                    *)    distro+=" on Windows $windows_version" ;;
+                    on)   distro+=" [Windows $windows_version_number_long]" ;;
+                    tiny) distro=" Windows $windows_version_current" ;;
+                    *)    distro+=" on Windows $windows_version_verbose" ;;
                 esac
 
             # Chrome OS doesn't conform to the /etc/*-release standard.
