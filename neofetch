@@ -2077,7 +2077,7 @@ get_packages() {
             has choco && dir "$ProgramData"/chocolatey/lib/*
 
             # Count winget
-            has winget && tot winget list
+            has winget && tot winget list --accept-source-agreements
         ;;
 
         Haiku)
