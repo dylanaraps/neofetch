@@ -1257,10 +1257,16 @@ get_distro() {
             # - The `any`  version (ie `on Windows 11 Pro Insider Preview`)
             if [[ $(< /proc/version) == *Microsoft* || $kernel_version == *Microsoft* ]]; then
 
-                windows_version_verbose=$(wmic.exe os get Caption)
-                windows_version_verbose=$(trim "${windows_version_verbose/Caption}")
-                windows_version_verbose=$(trim "${windows_version_verbose/Microsoft}")
+                windows_version_verbose=$(reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -v ProductName | grep REG_)
+                windows_version_verbose=$(trim "${windows_version_verbose/ProductName}")
+                windows_version_verbose=$(trim "${windows_version_verbose/REG_SZ}")buildnumber=$(reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -v CurrentBuildNumber | grep REG_)
                 windows_version_verbose=$(trim "${windows_version_verbose/Windows}")
+                windows_buildnumber=$(reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -v CurrentBuildNumber | grep REG_)               
+                windows_buildnumber=${buildnumber/CurrentBuildNumber}
+                windows_buildnumber=${buildnumber/REG_SZ}
+                if [[ "$windows_version_verbose" == *"10"* ]] && (( windows_buildnumber >= 22000 )); then
+                    windows_version_verbose=${windows_version_verbose/10/11}
+                fi
 
                 windows_version_current=${windows_version_verbose//[^[:digit:]]/}
 
@@ -1369,9 +1375,17 @@ get_distro() {
         ;;
 
         Windows)
-            distro=$(wmic os get Caption)
-            distro=${distro/Caption}
-            distro=${distro/Microsoft }
+            distro=$(reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -v ProductName | grep REG_)
+            distro=${distro/ProductName}
+            distro=${distro/REG_SZ}
+            buildnumber=$(reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -v CurrentBuildNumber | grep REG_)
+            buildnumber=${buildnumber/CurrentBuildNumber}
+            buildnumber=${buildnumber/REG_SZ}
+
+            # If the value of "ProductName" obtained is Windows 10 and the value of "CurrentBuildNumber" is greater than 22000, then the actual operating system version is Windows 11.
+            if [[ "$distro" == *"Windows 10"* ]] && (( buildnumber >= 22000 )); then
+                distro=${distro/Windows 10/Windows 11}
+            fi
         ;;
 
         Solaris|illumos)
