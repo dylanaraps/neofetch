@@ -1100,6 +1100,20 @@ get_distro() {
                     on|tiny) distro="LindowsOS" ;;
                     *) distro="$(awk '/Version/ {print $2,$3}' /etc/lindowsos-version)"
                 esac
+        
+            elif [[ -f /etc/astra_version ]]; then
+                distro="Astra Linux"
+                distro_version="$(cat /etc/astra_version \
+                                  | sed -nr 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')"
+                if [[ $distro_version == "2.12"* ]]; then
+                    distro_codename="ALCE"
+                else
+                    distro_codename="ALSE"
+                fi
+                case $distro_shorthand in
+                    on|tiny) distro=${distro} ;;
+                    *) distro="${distro} ${distro_version} ${distro_codename}"
+                esac
 
             elif type -p pveversion >/dev/null; then
                 case $distro_shorthand in
@@ -2244,6 +2258,10 @@ get_de() {
             if [[ $DESKTOP_SESSION == *regolith ]]; then
                 de=Regolith
 
+            # Added support Fly for Astra Linux
+            elif [[ $DESKTOP_SESSION == fly ]]; then
+                de=Fly
+
             elif [[ $XDG_CURRENT_DESKTOP ]]; then
                 de=${XDG_CURRENT_DESKTOP/X\-}
                 de=${de/Budgie:GNOME/Budgie}
@@ -2635,6 +2653,16 @@ get_wm_theme() {
             if command -v leftwm-theme &> /dev/null
             then
                 wm_theme=$(leftwm-theme status | grep "Your current theme" | sed -e 's/Your current theme is //g' -e 's/\,.*$//g')
+            fi
+        ;;
+        
+        fly-wm)
+            fly_config_file
+            if grep -q 'DecorTheme' "${fly_config_file}" 2>/dev/null; then
+                wm_theme=$(awk -F'=' '/^DecorTheme/{print $2}' "${fly_config_file}")
+            fi
+            if [ -z "$wm_theme" ] || [ "$wm_theme" = "Not Found" ]; then
+                wm_theme=Default
             fi
         ;;
     esac
@@ -3900,6 +3928,28 @@ get_style() {
                 shopt -u nullglob
             ;;
 
+            "Fly")
+                fly_config_file
+                if [[ $fly == "ColorScheme" ]]; then
+                    fly_theme=$(
+                        basename $(
+                            awk -F '=' '/^'"${fly}"'/{print $2}' "${HOME}/.fly/paletterc"
+                            )
+                    )
+                    if [[ $wm_theme == "Default" && $fly_theme != *"FlyDefault"* ]]; then
+                        fly_theme=$(awk -F '=' '/^'"${fly}"'/{print $2}'\
+                                        "${HOME}/.config/fly-admin-themerc")
+                    fi
+                elif [[ $fly == "IconTheme" ]]; then
+                     fly_theme=$(awk -F '=' '/^'"${fly}"'/{print $2}' "${fly_config_file}")
+                elif [[ $fly == "DefaultFont" ]]; then
+                    fly_theme=$(awk -F'=' '/^'"${fly}"'/\
+                                    {gsub(/"/, "", $2); \
+                                    sub(/-.*/, "", $2); \
+                                    print $2}' "${fly_config_file}")
+                fi
+                fly_theme+=" [$de], "
+            ;;
         esac
 
         # Check for general GTK2 Theme.
@@ -4029,6 +4079,7 @@ get_style() {
         }
         theme=''
         local cur_theme=''
+        append_theme "$fly_theme" 'Fly'
         append_theme "$qt_theme" 'Qt'
         append_theme "$gtk2_theme" 'GTK2'
         append_theme "$gtk3_theme" 'GTK3'
@@ -4056,7 +4107,7 @@ get_theme() {
     kde="widgetStyle"
     lxqt="style"
     qt5ct="style=" # There is a property called 'stylesheets'.
-
+    fly="ColorScheme"
 
     get_style
 }
@@ -4069,7 +4120,7 @@ get_icons() {
     kde="Theme"
     lxqt="icon_theme"
     qt5ct="icon_theme"
-
+    fly="IconTheme"
 
     get_style
     icons="$theme"
@@ -4083,6 +4134,7 @@ get_font() {
     kde="font"
     lxqt="font"
     qt5ct="general"
+    fly="DefaultFont"
 
     get_style
     font="$theme"
@@ -5803,6 +5855,11 @@ tde_config_dir() {
     fi
 
     tde_config_dir="${tde_config_dir/$'/:'*}"
+}
+
+fly_config_file() {
+    # Return main path the fly config file
+    fly_config_file=${HOME}/.fly/theme/current.themerc
 }
 
 term_padding() {
@@ -12428,6 +12485,38 @@ RO  ROSA  ROS     ROSAROSAR  ROSARO  RO
      AROS   AROSAROSAROSARO   AROS
         ROSA               SARO
            ROSAROSAROSAROSAR
+EOF
+        ;;
+
+        "Astra Linux"*)
+            if [[ $ascii_distro == *"ALCE"* ]]; then
+                set_colors 160 231
+            else
+                set_colors 32 231
+            fi
+            read -rd '' ascii_data <<'EOF'
+${c1}                   AA
+${c1}                  AaaA
+${c1}                 Aa${c2}/\\${c1}aA
+${c1}                Aa${c2}/${c1}aa${c2}\\${c1}aA
+${c1}               Aa${c2}/${c1}aAAa${c2}\\${c1}aA
+${c1}              aA${c2}/${c1}aaAAaa${c2}\\${c1}Aa
+${c1}             aA${c2}/${c1}aaAAAAaa${c2}\\${c1}Aa
+${c1}   aaaaaaAAAAa${c2}/${c1}aaAAAAAAaa${c2}\\${c1}aAAAAaaaaa
+${c1} aAAa${c2}-----${c1}aaaaaAAAAAAAAAAaaaaa${c2}-----${c1}aAAa
+${c1}   aAA${c2}\ ${c1}aAAAAAAAAAAAAAAAAAAAAAAa${c2} /${c1}AAa
+${c1}     aAa${c2}\\${c1}aAAA${c2}\\${c1}AAAA${c2}\\${c1}AAAA${c2}\\${c1}AAA${c2}\\${c1}AAa${c2}/${c1}aAa
+${c1}       aAa${c2}\\${c1}aA${c2}\\\\${c1}AAA${c2}\\\\${c1}AAA${c2}\\\\${c1}AA${c2}\\\\/${c1}aAa
+${c1}        aAA${c2}\\${c1}aA${c2}\\\\${c1}AAA${c2}\\\\${c1}AAA${c2}\\\\${c1}Aa${c2}/${c1}AAa
+${c1}          aA${c2}\\${c1}aA${c2}\\\\${c1}AAA${c2}\\\\${c1}AAA${c2}\\\\/${c1}Aa
+${c1}          aA${c2}/${c1}AA${c2}\\\\\\${c1}AA${c2}\\\\\\${c1}AA${c2}\\\\\\${c1}Aa
+${c1}         aA${c2}/\\${c1}AAa${c2}\\\\\\${c1}Aa${c2}\\\\\\${c1}Aa${c2}\\\\\\${c1}Aa
+${c1}         aA${c2}/\\\\${c1}AAa${c2}\\\\/\\${c1}a${c2}\\\\\\${c1}Aa${c2}\\\\${c1}Aa
+${c1}        aA${c2}/${c1}a${c2}\\\\\\${c1}Aa${c2}\\/${c1}AA${c2}\\\\\\\\\\${c1}Aa${c2}\\\\${c1}Aa
+${c1}        aA${c2}/${c1}aA${c2}\\\\/${c1}aAa  aAa${c2}\\\\\\${c1}Aa${c2}\\${c1}Aa
+${c1}       aA${c2}/\\${c1}A${c2}\\/${c1}Aa        aA${c2}\\\\${c1}A${c2}\\\\${c1}Aa
+${c1}       A${c2}|/${c1}aaAa            aAaa${c2}\\|${c1}A
+${c1}      aAaa                    aaAa
 EOF
         ;;
 
