@@ -1103,15 +1103,14 @@ get_distro() {
         
             elif [[ -f /etc/astra_version ]]; then
                 distro="Astra Linux"
-                distro_version="$(cat /etc/astra_version \
-                                  | sed -nr 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p')"
+                distro_version="$(sed -nr 's/^[^0-9]*(([0-9]+\.)*[0-9]+).*/\1/p' < /etc/astra_version)"
                 if [[ $distro_version == "2.12"* ]]; then
                     distro_codename="ALCE"
                 else
                     distro_codename="ALSE"
                 fi
                 case $distro_shorthand in
-                    on|tiny) distro=${distro} ;;
+                    on|tiny) ;;
                     *) distro="${distro} ${distro_version} ${distro_codename}"
                 esac
 
@@ -3945,11 +3944,11 @@ get_style() {
             "Fly")
                 fly_config_file
                 if [[ $fly == "ColorScheme" ]]; then
-                    fly_theme=$(
-                        basename $(
+                    fly_theme="$(
+                        basename "$(
                             awk -F '=' '/^'"${fly}"'/{print $2}' "${HOME}/.fly/paletterc"
-                            )
-                    )
+                        )"
+                    )"
                     if [[ $wm_theme == "Default" && $fly_theme != *"FlyDefault"* ]]; then
                         fly_theme=$(awk -F '=' '/^'"${fly}"'/{print $2}'\
                                         "${HOME}/.config/fly-admin-themerc")
