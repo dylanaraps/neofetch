@@ -88,6 +88,17 @@ print_info() {
     info cols
 }
 
+# Screen
+
+
+# Clear screen before displaying output
+#
+# Default:  'on'
+# Values:   'on', 'off'
+# Flag:     --clear_screen
+clear_screen="on"
+
+
 # Title
 
 
@@ -1450,7 +1461,16 @@ get_title() {
     local top_margin
     if [ "$image_backend" = "off" ] || [ "$image_backend" = "ascii" ]; then top_margin=-1 # No move
     else
-        top_margin=1
+        if [ "$clear_screen" = "on" ]; then top_margin=1
+        else
+            local parent_shell; parent_shell=$(ps -p "$(ps -o ppid= -p $$)" -ocomm=)
+            case $parent_shell in
+                # TODO: The escape sequence doesn't work on ZSH. Already tried different escape codes.
+                #       Besides, the offset might vary depending on the OhMyZSH configuration.
+                *zsh) top_margin=3 ;;
+                *)    top_margin=2 ;;
+            esac
+        fi
     fi
 
     title="\e[${top_margin}B${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
@@ -4078,7 +4098,10 @@ get_cols() {
 # IMAGES
 
 image_backend() {
-    clear && printf '\e[H\e[J\e[E' # Legacy Support: \e[H\e[J\e[1B
+    case $clear_screen in
+        on)  clear && printf '\e[H\e[J\e[E' ;; # Legacy Support: \e[H\e[J\e[1B
+        off) printf '\e[E'                  ;; # Legacy Support: \e[1B\e[G or \e[1B\e[9999999D
+    esac
 
     [[ "$image_backend" != "off" ]] && ! type -p convert &>/dev/null && \
         { image_backend="ascii"; err "Image: Imagemagick not found, falling back to ascii mode."; }
@@ -5072,6 +5095,7 @@ INFO:
 
                                 NOTE: You can supply multiple args. eg. 'neofetch --disable cpu gpu'
 
+    --clear_screen on/off       Clear screen before displaying output
     --title_fqdn on/off         Hide/Show Fully Qualified Domain Name in title.
     --package_managers on/off   Hide/Show Package Manager names . (on, tiny, off)
     --os_arch on/off            Hide/Show OS architecture.
@@ -5318,6 +5342,7 @@ get_args() {
     while [[ "$1" ]]; do
         case $1 in
             # Info
+            "--clear_screen") clear_screen="$2" ;;
             "--title_fqdn") title_fqdn="$2" ;;
             "--package_managers") package_managers="$2" ;;
             "--os_arch") os_arch="$2" ;;
