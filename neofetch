@@ -932,6 +932,66 @@ background_color=
 stdout="off"
 EOF
 
+# IPC
+
+ipc_rand=$(od -An -N2 -i /dev/urandom | tr -d ' ')
+ipc_code=$(((ipc_rand%(999-100+1))+100)) # min: 100 | max: 999
+ipc_base=$(df | grep -wq '/dev/shm' && echo "/dev/shm/neofetch_" || echo "/tmp/neofetch_")
+readonly ipc_rand ipc_code ipc_base
+
+unique_descriptor() { # ipc_name : $1
+    hash=$(printf "%s" "${1}" | openssl dgst -md5 | awk '{print $2}')
+    desc=$(echo "ibase=16; ${hash^^}" | bc)
+    desc=$(echo "(${desc}%(999-100+1))+100" | bc) # min: 100 | max: 999
+    echo "${desc}"
+}
+
+acquire_ipc() { # ipc_name : $1
+    local ipc_desc; ipc_desc=$(unique_descriptor "${1}")
+    local ipc_lock="${ipc_base}${1}_${ipc_code}.lock"
+    exec {ipc_desc}>"${ipc_lock}";
+    flock -x -w 10 "${ipc_desc}" || {
+        err "Failed to lock the IPC"
+        exit 1
+    }
+}
+
+release_ipc() { # ipc_name : $1
+    local ipc_desc; ipc_desc=$(unique_descriptor "${1}")
+    local ipc_lock="${ipc_base}${1}_${ipc_code}.lock"
+    exec {ipc_desc}>&-
+    rm -f "${ipc_lock}"
+}
+
+read_ipc() { # ipc_name : $1
+    local ipc_file="${ipc_base}${1}_${ipc_code}"
+    acquire_ipc "${1}"
+    cat "${ipc_file}"
+    release_ipc "${1}"
+}
+
+write_ipc() { # ipc_name : $1 | ipc_data : $2
+    local ipc_file="${ipc_base}${1}_${ipc_code}"
+    acquire_ipc "${1}"
+    printf '%s' "${2}" > "${ipc_file}"
+    release_ipc "${1}"
+}
+
+increment_ipc() { # ipc_name : $1
+    local ipc_data; ipc_data=$(read_ipc "${1}")
+    if [[ "${ipc_data}" =~ ^[0-9]+$ ]]; then
+        write_ipc "${1}" "$((++ipc_data))"
+    else
+        err "Increment operation requires IPC value to be an integer!"
+        exit 1
+    fi
+}
+
+destroy_ipc() { # ipc_name : $1
+    local ipc_file="${ipc_base}${1}_${ipc_code}"
+    rm -f "${ipc_file}"
+}
+
 # DETECT INFORMATION
 
 get_os() {
@@ -1387,8 +1447,17 @@ get_title() {
         *)  hostname=${HOSTNAME:-$(hostname)} ;;
     esac
 
-    title=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
+    local top_margin
+    if [ "$image_backend" = "off" ] || [ "$image_backend" = "ascii" ]; then top_margin=-1 # No move
+    else
+        top_margin=1
+    fi
+
+    title="\e[${top_margin}B${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}"
+
     length=$((${#user} + ${#hostname} + 1))
+
+    increment_ipc "info_height"
 }
 
 get_kernel() {
@@ -3991,7 +4060,8 @@ get_cols() {
 [${text_padding}C${zws}}
 
         # Add block height to info height.
-        ((info_height+=block_range[1]>7?block_height+2:block_height+1))
+        local info_height; info_height=$(read_ipc "info_height")
+        write_ipc "info_height" "$((info_height+(block_range[1]>7?block_height+2:block_height+1)))"
 
         case $col_offset in
             "auto") printf '\n\e[%bC%b\n' "$text_padding" "${zws}${cols}" ;;
@@ -4008,6 +4078,8 @@ get_cols() {
 # IMAGES
 
 image_backend() {
+    clear && printf '\e[H\e[J\e[E' # Legacy Support: \e[H\e[J\e[1B
+
     [[ "$image_backend" != "off" ]] && ! type -p convert &>/dev/null && \
         { image_backend="ascii"; err "Image: Imagemagick not found, falling back to ascii mode."; }
 
@@ -4034,7 +4106,6 @@ image_backend() {
                 return
             }
 
-            printf '\e[2J\e[H'
             get_image_size
             make_thumbnail
             display_image || to_off "Image: $image_backend failed to display the image."
@@ -4051,7 +4122,7 @@ image_backend() {
     esac
 
     # Set cursor position next image/ascii.
-    [[ "$image_backend" != "off" ]] && printf '\e[%sA\e[9999999D' "${lines:-0}"
+    [[ "$image_backend" != "off" ]] && printf '\e[%sA\e[G' "${lines:-0}" # Legacy Support: \e[%sA\e[9999999D
 }
 
 print_ascii() {
@@ -4547,7 +4618,7 @@ to_ascii() {
     print_ascii
 
     # Set cursor position next image/ascii.
-    printf '\e[%sA\e[9999999D' "${lines:-0}"
+    printf '\e[%sA\e[G' "${lines:-0}" # Legacy Support: \e[%sA\e[9999999D
 }
 
 to_off() {
@@ -4615,7 +4686,7 @@ prin() {
     printf '%b\n' "${text_padding:+\e[${text_padding}C}${zws}${string//\\n}${reset} "
 
     # Calculate info height.
-    ((++info_height))
+    increment_ipc "info_height"
 
     # Log that prin was used.
     prin=1
@@ -4628,7 +4699,7 @@ get_underline() {
                         "${underline// /$underline_char}${reset} "
     }
 
-    ((++info_height))
+    increment_ipc "info_height"
     length=
     prin=1
 }
@@ -4875,12 +4946,16 @@ term_padding() {
 }
 
 dynamic_prompt() {
-    [[ "$image_backend" == "off" ]]   && { printf '\n'; return; }
-    [[ "$image_backend" != "ascii" ]] && ((lines=(height + yoffset) / font_height + 1))
-    [[ "$image_backend" == "w3m" ]]   && ((lines=lines + padding / font_height + 1))
+    case $image_backend in
+        "ascii") ;;
+        "off")   printf '\n'; return ;;
+        "w3m")   lines=$((((lines+padding)/font_height)+1))  ;;
+        *)       lines=$((((height+yoffset)/font_height)+1)) ;;
+    esac
 
     # If the ascii art is taller than the info.
-    ((lines=lines>info_height?lines-info_height+1:1))
+    local info_height; info_height=$(read_ipc "info_height")
+    lines=$((lines>info_height?lines-info_height+1:1)) # TODO: Determine the expected result
 
     printf -v nlines "%${lines}s"
     printf "%b" "${nlines// /\\n}"
@@ -11540,6 +11615,9 @@ EOF
 }
 
 main() {
+    # Shared Resources
+    write_ipc "info_height" 0
+
     cache_uname
     get_os
 
@@ -11585,6 +11663,8 @@ main() {
         display_image
         sleep 1
     done
+
+    destroy_ipc "info_height"
 
     return 0
 }
