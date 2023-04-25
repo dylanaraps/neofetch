@@ -1,0 +1,11 @@
+# IDEs
+/.idea
+/.vscode
+
+# Builds
+/bin
+/share
+
+# Executable
+/neofetch
+
