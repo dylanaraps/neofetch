@@ -2450,6 +2450,7 @@ get_cpu() {
     cpu="${cpu//Core / }"
     cpu="${cpu//(\"AuthenticAMD\"*)}"
     cpu="${cpu//with Radeon * Graphics}"
+    cpu="${cpu//with Radeon Graphics}"
     cpu="${cpu//, altivec supported}"
     cpu="${cpu//FPU*}"
     cpu="${cpu//Chip Revision*}"
