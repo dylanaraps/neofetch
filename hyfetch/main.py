@@ -67,7 +67,7 @@ def create_config() -> Config:
         if term_len < 2 * asc_width + 4 or term_lines < 30:
             printc(f'&cWarning: Your terminal is too small ({term_len} * {term_lines}). \n'
                    f'Please resize it for better experience.')
-            input('Press any key to ignore...')
+            input('Press enter to ignore...')
     except:
         # print('Warning: We cannot detect your terminal size.')
         pass
