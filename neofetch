@@ -5491,7 +5491,7 @@ display_image() {
         ;;
 
         "sixel")
-            img2sixel \
+            img2sixel -I \
                 -w "$width" \
                 -h "$height" \
             "$image"
