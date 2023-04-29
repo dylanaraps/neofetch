@@ -2503,10 +2503,13 @@ get_gpu() {
     case $os in
         "Linux")
             if [[ "$distro" == "Android"* ]]; then
-                gpu="$(/system/bin/getprop ro.hardware.vulkan)"
-                # I wanted to show up the detailed GPU model,but i can't show it up because vulkaninfo isn't fun.
-                # gpu="$(vulkaninfo|grep deviceName|cut -d = -f 2|cut -d " " -f 2-10)"
-                # (lazy
+                #GPU model can show up using vulkaninfo,but i can't find another way to show it without external program.
+                #(And this is hard coded too)
+                if [[ -f "/data/data/com.termux/files/usr/bin/vulkaninfo" ]]; then
+                    gpu="$(vulkaninfo|grep deviceName|cut -d = -f 2|cut -d " " -f 2-10)"
+                else
+                    gpu="$(/system/bin/getprop ro.hardware.vulkan)"
+                fi
             else
             # Read GPUs into array.
             gpu_cmd="$(lspci -mm |
