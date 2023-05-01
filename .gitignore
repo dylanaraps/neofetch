@@ -116,3 +116,5 @@ dmypy.json
 # Custom
 .idea
 ._*
+webhook-log
+start_moderation.sh
