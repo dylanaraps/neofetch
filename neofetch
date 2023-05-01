@@ -4367,6 +4367,17 @@ END
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
+            # Loop while the process name is not "konsole"
+            while [[ "$(ps -p "$(get_ppid "$child")" -o comm=)" != "konsole" ]]; do
+                # Get the parent process ID
+                child="$(get_ppid "$child")"
+
+                # Exit the loop if the parent process ID is 1 (i.e., init)
+                if [[ "$child" == "1" ]]; then
+                    break
+                fi
+            done
+
             QT_BINDIR="$(qtpaths --binaries-dir)" && PATH+=":$QT_BINDIR"
 
             IFS=$'\n' read -d "" -ra konsole_instances \
