@@ -295,18 +295,7 @@ def create_config() -> Config:
     return c
 
 
-def run():
-    # Optional: Import readline
-    try:
-        import readline
-    except ModuleNotFoundError:
-        pass
-
-    # On Windows: Try to fix color rendering if not in git bash
-    if IS_WINDOWS:
-        import colorama
-        colorama.just_fix_windows_console()
-
+def create_parser() -> argparse.ArgumentParser:
     # Create CLI
     hyfetch = color('&l&bhyfetch&~&L')
     parser = argparse.ArgumentParser(description=color(f'{hyfetch} - neofetch with flags <3'))
@@ -330,6 +319,22 @@ def run():
     # --ask-exit: Ask for input before exiting
     parser.add_argument('--ask-exit', action='store_true', help=argparse.SUPPRESS)
 
+    return parser
+
+
+def run():
+    # Optional: Import readline
+    try:
+        import readline
+    except ModuleNotFoundError:
+        pass
+
+    # On Windows: Try to fix color rendering if not in git bash
+    if IS_WINDOWS:
+        import colorama
+        colorama.just_fix_windows_console()
+
+    parser = create_parser()
     args = parser.parse_args()
 
     if args.version:
