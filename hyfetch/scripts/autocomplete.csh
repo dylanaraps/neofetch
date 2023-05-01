@@ -3,8 +3,8 @@
 
 
 complete hyfetch \
-        'c/--/(version test-distro ascii-file preset c-set-l help debug config-file c-scale config backend mode distro)/' \
-        'c/-/(C m V h p b c -)/' \
+        'c/--/(mode test-distro preset config c-scale c-set-l config-file ascii-file version debug distro help backend)/' \
+        'c/-/(m h V C p b c -)/' \
         'n/-p/(rainbow transgender nonbinary agender queer genderfluid bisexual pansexual polysexual omnisexual omniromantic gay-men lesbian abrosexual asexual aromantic aroace1 aroace2 aroace3 autosexual intergender greygender akiosexual bigender demigender demiboy demigirl transmasculine transfeminine genderfaun demifaun genderfae demifae neutrois biromantic1 biromantic2 autoromantic boyflux2 finsexual unlabeled1 unlabeled2 pangender gendernonconforming1 gendernonconforming2 femboy tomboy gendervoid voidgirl voidboy beiyang burger)/' \
         'n/--preset/(rainbow transgender nonbinary agender queer genderfluid bisexual pansexual polysexual omnisexual omniromantic gay-men lesbian abrosexual asexual aromantic aroace1 aroace2 aroace3 autosexual intergender greygender akiosexual bigender demigender demiboy demigirl transmasculine transfeminine genderfaun demifaun genderfae demifae neutrois biromantic1 biromantic2 autoromantic boyflux2 finsexual unlabeled1 unlabeled2 pangender gendernonconforming1 gendernonconforming2 femboy tomboy gendervoid voidgirl voidboy beiyang burger)/' \
         'n/-m/(8bit rgb)/' \
