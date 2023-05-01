@@ -298,9 +298,9 @@ def create_config() -> Config:
 def create_parser() -> argparse.ArgumentParser:
     # Create CLI
     hyfetch = color('&l&bhyfetch&~&L')
-    parser = argparse.ArgumentParser(description=color(f'{hyfetch} - neofetch with flags <3'))
+    parser = argparse.ArgumentParser(description=color(f'{hyfetch} - neofetch with flags <3'), prog="hyfetch")
 
-    parser.add_argument('-c', '--config', action='store_true', help=color(f'Configure {hyfetch}'))
+    parser.add_argument('-c', '--config', action='store_true', help=color(f'Configure hyfetch'))
     parser.add_argument('-C', '--config-file', dest='config_file', default=CONFIG_PATH, help=f'Use another config file')
     parser.add_argument('-p', '--preset', help=f'Use preset', choices=list(PRESETS.keys()))
     parser.add_argument('-m', '--mode', help=f'Color mode', choices=['8bit', 'rgb'])
