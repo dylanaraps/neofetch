@@ -25,6 +25,7 @@ from .types import BackendLiteral, ColorAlignMode
 
 RE_NEOFETCH_COLOR = re.compile('\\${c[0-9]}')
 
+
 def literal_input(prompt: str, options: Iterable[str], default: str, show_ops: bool = True) -> str:
     """
     Ask the user to provide an input among a list of options
@@ -67,6 +68,7 @@ def literal_input(prompt: str, options: Iterable[str], default: str, show_ops: b
     print()
 
     return find_selection(selection)
+
 
 def term_size() -> tuple[int, int]:
     """
@@ -404,7 +406,6 @@ def get_fore_back(distro: str | None = None) -> tuple[int, int] | None:
 # Foreground-background recommendation
 fore_back = {
     'fedora': (2, 1),
-    'ubuntu': (2, 1),
     'kubuntu': (2, 1),
     'lubuntu': (2, 1),
     'xubuntu': (2, 1),

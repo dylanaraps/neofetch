@@ -32,6 +32,7 @@ def check_config(path) -> Config:
 
     return create_config()
 
+
 def create_config() -> Config:
     """
     Create config interactively
@@ -336,6 +337,9 @@ def run():
 
     parser = create_parser()
     args = parser.parse_args()
+
+    # Use a custom distro
+    GLOBAL_CFG.override_distro = args.distro
 
     if args.version:
         print(f'Version is {VERSION}')
