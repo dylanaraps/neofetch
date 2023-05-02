@@ -100,6 +100,16 @@ Note: You can install the latest nightly version by using:
 pip install git+https://github.com/hykilpikonna/hyfetch.git@master
 ```
 
+* 🌈 Autocompletion for bash, zsh, tcsh (#96)
+* 🌈 Add nix profile installation method (#114)
+* 🖼 Version - Fix Windows version detection (dylanaraps/neofetch#2309)
+* 🖼 Packages - Fix winget stuck on agreement (#82)
+* 🖼 Distro - Fix Windows text encoding (#115)
+* 🖼 Distro - Add Astra Linux (dylanaraps/neofetch#2313)
+* 🖼 Distro - Add FemboyOS (#121)
+* 🖼 Font - Fix Konsole ppid detection (#116)
+* 🖼 Image - Optimize sixel image display (dylanaraps/neofetch#2316)
+
 <!-- CHANGELOG STARTS HERE --->
 
 ### 1.4.8
