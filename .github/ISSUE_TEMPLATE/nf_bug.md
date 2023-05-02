@@ -1,5 +1,5 @@
 ---
-name: Neofetch Bug report
+name: Neofetch Bug Report
 about: Create a report for system-information related bugs.
 title: ''
 labels: 'neofetch'

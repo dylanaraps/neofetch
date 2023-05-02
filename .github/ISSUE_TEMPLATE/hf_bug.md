@@ -1,5 +1,5 @@
 ---
-name: HyFetch Bug report
+name: HyFetch Bug Report
 about: Create a report for coloring related bugs.
 title: ''
 labels: 'hyfetch'
