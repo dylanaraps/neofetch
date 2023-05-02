@@ -5,14 +5,12 @@
 import hashlib
 import hmac
 import json
-import time
 import unicodedata
 from datetime import datetime
 from pathlib import Path
 
-import requests
-import toml
 import openai
+import toml
 from fastapi import FastAPI, Request, Response
 from github import Github
 from hypy_utils import write, json_stringify
@@ -110,19 +108,6 @@ async def process_event(event: str, obj: dict, id: str):
 
     # Normalize content
     content = unicodedata.normalize("NFKC", get_content(event, obj))
-
-    # Ask chatgpt to predict if it's offensive
-    # res: requests.Response = requests.post(harm_classifier_url, headers={"token": harm_classifier_token}, data=content)
-    # if res.status_code != 200:
-    #     printc(f"&c[x] Error {res.status_code} from classifier: {res.text}")
-    #     return
-    # clas = res.text
-    #
-    # # Check if it's offensive
-    # if clas == "HARMFUL":
-    #     printc(f"\n&c[!] AI classified {event} {id} by {actor} as offensive !!!\n> Content: {content}\n\n")
-    #     redact(event, obj, id, "Flagged by a large language model.")
-    #     return
 
     # Ask OpenAI to predict if it's offensive
     res: OpenAIObject = openai.Moderation.create(content, openai_model).results[0]
