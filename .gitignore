@@ -119,3 +119,4 @@ dmypy.json
 webhook-log
 start_moderation.sh
 gh_moderator.toml
+moderator-data
