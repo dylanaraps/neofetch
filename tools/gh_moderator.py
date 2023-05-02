@@ -103,7 +103,7 @@ async def process_event(event: str, obj: dict, id: str):
     printc(f"&e[+] Received event: {id} {event} by {actor}")
 
     if actor in blacklist_users:
-        redact(event, obj, "User is blacklisted", id)
+        redact(event, obj, id, "User is blacklisted")
         return
 
     # Normalize content
