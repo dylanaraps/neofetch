@@ -1,0 +1,10 @@
+# Secret of Github Webhook to verify the request is from Github
+webhook_secret = "secret"
+
+# Github token and repo to regulate
+gh_token = "token"
+gh_repo = "owner/repo"
+
+# AI harm classifier token
+harm_classifier_url = "https://example.com/classify"
+harm_classifier_token = "token"
