@@ -2515,7 +2515,7 @@ get_gpu() {
                 #GPU model can show up using vulkaninfo,but i can't find another way to show it without external program.
                 #(And this is hard coded too)
                 if [[ -f "/data/data/com.termux/files/usr/bin/vulkaninfo" ]]; then
-                    gpu="$(vulkaninfo|grep deviceName|cut -d = -f 2|cut -d " " -f 2-10)"
+                    gpu="$(vulkaninfo|grep deviceName|cut -d = -f 2|cut -d " " -f 2-10|sed 's/-/ /g')"
                 else
                     gpu="$(/system/bin/getprop ro.hardware.vulkan)"
                 fi
