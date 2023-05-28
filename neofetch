@@ -59,6 +59,7 @@ print_info() {
     info "OS" distro
     info "Host" model
     info "Kernel" kernel
+    info "ROM" rom # This only works on Android
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
@@ -1235,6 +1236,19 @@ get_distro() {
         ascii_distro=$(trim "$distro")
 }
 
+get_rom() {
+    #Definitely from Screenfetch
+    if [[ $distro != "Android"* ]]; then
+        err "You didn't run neofetch from Android"
+    else
+        if [[ $(getprop ro.build.host) == "cyanogenmod" ]]; then
+            rom=$(getprop ro.cm.version)
+        else
+            rom=$(getprop ro.build.display.id)
+        fi
+    fi
+}
+
 get_model() {
     case $os in
         Linux)
@@ -1386,8 +1400,13 @@ get_title() {
     user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
 
     case $title_fqdn in
-        on) hostname=$(hostname -f) ;;
-        *)  hostname=${HOSTNAME:-$(hostname)} ;;
+        on) if [[ $distro != "Android"* ]]; then
+            hostname=$(hostname -f)
+        else
+            hostname=$(getprop ro.product.device)
+        fi
+            ;;
+        *)  hostname=$HOSTNAME ;;
     esac
 
     title=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
