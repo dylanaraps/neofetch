@@ -2525,6 +2525,12 @@ get_cpu() {
         deg="[${deg/${deg: -1}}.${deg: -1}°${cpu_temp:-C}]"
         cpu="$cpu $deg"
     fi
+
+    # Add CPU brand because MTK uses MT* as CPU name.
+    if [[ "$cpu_brand" == "on" ]] && [[ "$cpu" == "MT"* ]] then
+        cpu="MTK $cpu"
+    fi
+
 }
 
 get_gpu() {
@@ -2615,6 +2621,10 @@ get_gpu() {
                     gpu="${gpu/AMD }"
                     gpu="${gpu/NVIDIA }"
                     gpu="${gpu/Intel }"
+                    gpu="${gpu/Adreno }"
+                    gpu="${gpu/adreno }"
+                    gpu="${gpu/Mali }"
+                    gpu="${gpu/mali }"
                 fi
 
                 prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
