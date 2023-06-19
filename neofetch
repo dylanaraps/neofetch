@@ -59,6 +59,7 @@ print_info() {
     info "OS" distro
     info "Host" model
     info "Kernel" kernel
+    info "ROM" rom # This only works on Android
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
@@ -73,6 +74,9 @@ print_info() {
     info "CPU" cpu
     info "GPU" gpu
     info "Memory" memory
+    info "Locale" locale
+    info "Disk" disk
+    info "Battery" battery
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "Disk" disk
@@ -112,7 +116,7 @@ title_fqdn="off"
 # Example:
 # on:  '4.8.9-1-ARCH'
 # off: 'Linux 4.8.9-1-ARCH'
-kernel_shorthand="on"
+kernel_shorthand="off"
 
 
 # Distro
@@ -445,7 +449,7 @@ de_version="on"
 # disk_show=('/'):
 #      'Disk (/): 74G / 118G (66%)'
 #
-disk_show=('/')
+disk_show=('/' '/sdcard')
 
 # Disk subtitle.
 # What to append to the Disk subtitle.
@@ -685,15 +689,15 @@ col_offset="auto"
 
 # Bar characters
 #
-# Default:  '-', '='
+# Default:  '=', '-'
 # Values:   'string', 'string'
 # Flag:     --bar_char
 #
 # Example:
 # neofetch --bar_char 'elapsed' 'total'
 # neofetch --bar_char '-' '='
-bar_char_elapsed="-"
-bar_char_total="="
+bar_char_elapsed="="
+bar_char_total="-"
 
 # Toggle Bar border
 #
@@ -738,8 +742,8 @@ bar_color_total="distro"
 # infobar: 'info [---=======]'
 # barinfo: '[---=======] info'
 # off:     'info'
-memory_display="off"
-battery_display="off"
+memory_display="barinfo"
+battery_display="barinfo"
 disk_display="off"
 
 
@@ -754,7 +758,7 @@ disk_display="off"
 #           'viu'
 
 # Flag:     --backend
-image_backend="ascii"
+image_backend="catimg"
 
 # Image Source
 #
@@ -1232,6 +1236,19 @@ get_distro() {
         ascii_distro=$(trim "$distro")
 }
 
+get_rom() {
+    #Definitely from Screenfetch
+    if [[ $distro != "Android"* ]]; then
+        err "You didn't run neofetch from Android"
+    else
+        if [[ $(getprop ro.build.host) == "cyanogenmod" ]]; then
+            rom=$(getprop ro.cm.version)
+        else
+            rom=$(getprop ro.build.display.id)
+        fi
+    fi
+}
+
 get_model() {
     case $os in
         Linux)
@@ -1383,8 +1400,13 @@ get_title() {
     user=${USER:-$(id -un || printf %s "${HOME/*\/}")}
 
     case $title_fqdn in
-        on) hostname=$(hostname -f) ;;
-        *)  hostname=${HOSTNAME:-$(hostname)} ;;
+        on) if [[ $distro != "Android"* ]]; then
+            hostname=$(hostname -f)
+        else
+            hostname=$(getprop ro.product.device)
+        fi
+            ;;
+        *)  hostname=$HOSTNAME ;;
     esac
 
     title=${title_color}${bold}${user}${at_color}@${title_color}${bold}${hostname}
@@ -1393,6 +1415,12 @@ get_title() {
 
 get_kernel() {
     # Since these OS are integrated systems, it's better to skip this function altogether
+    # I don't know why Android doesn't want to detect Kernel version
+    # So i just redetected this
+    [[ $os == Linux ]] && {
+        kernel_name=$(uname -s)
+        kernel_version=$(uname -r)
+}
     [[ $os =~ (AIX|IRIX) ]] && return
 
     # Haiku uses 'uname -v' and not - 'uname -r'.
@@ -2497,11 +2525,26 @@ get_cpu() {
         deg="[${deg/${deg: -1}}.${deg: -1}°${cpu_temp:-C}]"
         cpu="$cpu $deg"
     fi
+
+    # Add CPU brand because MTK uses MT* as CPU name.
+    if [[ "$cpu_brand" == "on" ]] && [[ "$cpu" == "MT"* ]] then
+        cpu="MTK $cpu"
+    fi
+
 }
 
 get_gpu() {
     case $os in
         "Linux")
+            if [[ "$distro" == "Android"* ]]; then
+                #GPU model can show up using vulkaninfo,but i can't find another way to show it without external program.
+                #(And this is hard coded too)
+                if [[ -f "/data/data/com.termux/files/usr/bin/vulkaninfo" ]]; then
+                    gpu="$(vulkaninfo|grep deviceName|cut -d = -f 2|cut -d " " -f 2-10|sed 's/-/ /g')"
+                else
+                    gpu="$(/system/bin/getprop ro.hardware.vulkan)"
+                fi
+            else
             # Read GPUs into array.
             gpu_cmd="$(lspci -mm |
                        awk -F '\"|\" \"|\\(' \
@@ -2578,12 +2621,17 @@ get_gpu() {
                     gpu="${gpu/AMD }"
                     gpu="${gpu/NVIDIA }"
                     gpu="${gpu/Intel }"
+                    gpu="${gpu/Adreno }"
+                    gpu="${gpu/adreno }"
+                    gpu="${gpu/Mali }"
+                    gpu="${gpu/mali }"
                 fi
 
                 prin "${subtitle:+${subtitle}${gpu_name}}" "$gpu"
             done
 
             return
+            fi
         ;;
 
         "Mac OS X"|"macOS")
@@ -3079,6 +3127,9 @@ get_resolution() {
         ;;
 
         *)
+            if [[ "$distro" == "Android"* ]]; then
+                resolution="$(/system/bin/getprop persist.sys.rog.height)x$(/system/bin/getprop persist.sys.rog.width)"
+            else 
             if type -p xrandr >/dev/null && [[ $DISPLAY && -z $WAYLAND_DISPLAY ]]; then
                 case $refresh_rate in
                     "on")
@@ -3112,6 +3163,7 @@ get_resolution() {
 
                     [[ $single_resolution ]] && resolution="${single_resolution}, ${resolution}"
                 done
+            fi
             fi
         ;;
     esac
@@ -3306,7 +3358,12 @@ get_term() {
     # Most likely TosWin2 on FreeMiNT - quick check
     [[ "$TERM" == "tw52" || "$TERM" == "tw100" ]] && term="TosWin2"
     [[ "$SSH_CONNECTION" ]] && term="$SSH_TTY"
-    [[ "$WT_SESSION" ]]     && term="Windows Terminal"
+	    [[ "$WT_SESSION" || "$WSL_DISTRO_NAME" || "$WT_PROFILE_ID" ]]     && term="Windows Terminal"
+    
+    #I think i need Termux ()
+    #My Edge crashed 3 times when i want to commit
+    #rua~
+    [[ "$(ls /data/data/com.termux/files/)" || "$TERMUX_VERSION" || "$PREFIX" == "/data/data/com.termux/files/usr" ]] && term="Termux $TERMUX_VERSION"
 
     # Check $PPID for terminal emulator.
     while [[ -z "$term" ]]; do
@@ -3594,6 +3651,10 @@ END
                          "$termite_config")"
         ;;
 
+        "Termux $TERMUX_VERSION")
+            term_font=$(fc-scan /data/data/com.termux/files/home/.termux/font.ttf|grep fullname:|cut -d '"' -f2)
+            ;;
+
         urxvt|urxvtd|rxvt-unicode|xterm)
             xrdb=$(xrdb -query)
             term_font=$(grep -im 1 -e "^${term/d}"'\**\.*font:' -e '^\*font:' <<< "$xrdb")
@@ -3762,6 +3823,18 @@ get_disk() {
 get_battery() {
     case $os in
         "Linux")
+        if [[ $distro == "Android"* ]]; then
+        capacity="$(termux-battery-status|grep percentage|cut -c 17-|sed "s/,//")"
+        #Sorry for this super long command
+        status="$(termux-battery-status|grep status|cut -d " " -f 4|sed -e 's/\(.*\)/\L\1/'|sed 's/\"//g;s/,//')"
+        #yee
+            battery="${capacity}% [${status}]"
+            case $battery_display in
+                    "bar")     battery="$(bar "${capacity}" "100")" ;;
+                    "infobar") battery+=" $(bar "${capacity}" "100")" ;;
+                    "barinfo") battery="$(bar "${capacity}" "100") ${info_color} ${battery}" ;;
+            esac
+            else
             # We use 'prin' here so that we can do multi battery support
             # with a single battery per line.
             for bat in "/sys/class/power_supply/"{BAT,axp288_fuel_gauge,CMB}*; do
@@ -3782,18 +3855,30 @@ get_battery() {
                 fi
             done
             return
-        ;;
+        fi
+            ;;
 
         "BSD")
             case $kernel_name in
                 "FreeBSD"* | "DragonFly"*)
                     battery="$(acpiconf -i 0 | awk -F ':\t' '/Remaining capacity/ {print $2}')"
                     battery_state="$(acpiconf -i 0 | awk -F ':\t\t\t' '/State/ {print $2}')"
+                    case $battery_display in
+                    "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
+                    "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
+                    "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
+                    esac
                 ;;
 
                 "NetBSD"*)
                     battery="$(envstat | awk '\\(|\\)' '/charge:/ {print $2}')"
                     battery="${battery/\.*/%}"
+                    [[ "$battery_state" ]] && battery+=" Charging"
+                    case $battery_display in
+                    "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
+                    "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
+                    "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
+                    esac    
                 ;;
 
                 "OpenBSD"* | "Bitrig"*)
@@ -3812,6 +3897,11 @@ get_battery() {
                     [[ "${state}" == "charging" ]] && battery_state="charging"
                     [[ "$battery0full" ]] && \
                     battery="$((100 * ${battery0now/\.} / ${battery0full/\.}))%"
+                    case $battery_display in
+                    "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
+                    "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
+                    "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
+                    esac
                 ;;
             esac
         ;;
@@ -3820,6 +3910,11 @@ get_battery() {
             battery="$(pmset -g batt | grep -o '[0-9]*%')"
             state="$(pmset -g batt | awk '/;/ {print $4}')"
             [[ "$state" == "charging;" ]] && battery_state="charging"
+            case $battery_display in
+            "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
+            "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
+            "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
+            esac
         ;;
 
         "Windows")
@@ -3829,21 +3924,24 @@ get_battery() {
             state="$(wmic /NameSpace:'\\root\WMI' Path BatteryStatus get Charging)"
             state="${state/Charging}"
             [[ "$state" == *TRUE* ]] && battery_state="charging"
+            case $battery_display in
+            "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
+            "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
+            "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
+            esac
         ;;
 
         "Haiku")
             battery0full="$(awk -F '[^0-9]*' 'NR==2 {print $4}' /dev/power/acpi_battery/0)"
             battery0now="$(awk -F '[^0-9]*' 'NR==5 {print $4}' /dev/power/acpi_battery/0)"
             battery="$((battery0full * 100 / battery0now))%"
+            [[ "$battery_state" ]] && battery+=" Charging"
+            case $battery_display in
+            "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
+            "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
+            "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
+            esac
         ;;
-    esac
-
-    [[ "$battery_state" ]] && battery+=" Charging"
-
-    case $battery_display in
-        "bar")     battery="$(bar "${battery/\%*}" 100)" ;;
-        "infobar") battery="${battery} $(bar "${battery/\%*}" 100)" ;;
-        "barinfo") battery="$(bar "${battery/\%*}" 100)${info_color} ${battery}" ;;
     esac
 }
 
@@ -3929,7 +4027,11 @@ get_users() {
 }
 
 get_locale() {
+    if [[ $distro == "Android"* ]]; then
+        locale="$(/system/bin/getprop ro.product.locale)"
+    else
     locale="$sys_locale"
+    fi
 }
 
 get_gpu_driver() {
@@ -3982,8 +4084,8 @@ get_cols() {
         printf -v block_spaces "%${block_height}s"
 
         # Convert the spaces into rows of blocks.
-        [[ "$blocks"  ]] && cols+="${block_spaces// /${blocks}[mnl}"
-        [[ "$blocks2" ]] && cols+="${block_spaces// /${blocks2}[mnl}"
+        [[ "$blocks"  ]] && cols+="${block_spaces} ${blocks}[mnl"
+        [[ "$blocks2" ]] && cols+="${block_spaces} ${blocks2}[mnl"
 
         # Add newlines to the string.
         cols=${cols%%nl}
@@ -4814,7 +4916,6 @@ bar() {
 
     printf "%b" "${bar}${info_color}"
 }
-
 cache() {
     if [[ "$2" ]]; then
         mkdir -p "${cache_dir}/neofetch"
