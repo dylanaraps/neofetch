@@ -1906,7 +1906,7 @@ get_wm() {
             # lsof may not exist, or may need root on some systems. Similarly fuser.
             # On those systems we search for a list of known window managers, this can mistakenly
             # match processes for another user or session and will miss unlisted window managers.
-            wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F \
+            wm=$(ps "${ps_flags[@]}" | grep -m 1 -o -F -v \
                                -e arcan \
                                -e asc \
                                -e clayland \
