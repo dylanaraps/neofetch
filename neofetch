@@ -7082,7 +7082,7 @@ EOF
         ;;
 
 
-"OpenKylin"*)
+"openKylin"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
 ${c1}             
