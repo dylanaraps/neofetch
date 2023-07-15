@@ -786,7 +786,7 @@ image_source="auto"
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
-#       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,openkylin 
+#       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,OpenKylin 
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
@@ -5146,7 +5146,7 @@ ASCII:
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
                                 Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
-                                Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, openkylin, DesaOS, Devuan,
+                                Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, OpenKylin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
                                 EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
@@ -7082,7 +7082,7 @@ EOF
         ;;
 
 
-"Deepin"*)
+"OpenKylin"*)
             set_colors 2 7
             read -rd '' ascii_data <<'EOF'
 ${c1}             
