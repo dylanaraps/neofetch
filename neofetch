@@ -807,7 +807,7 @@ image_source="auto"
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
 #       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
-#       Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
+#       Obarun, windows10, Windows7, windows95, Xubuntu, Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
 # NOTE: Ubuntu has flavor variants.
@@ -11274,6 +11274,30 @@ llllllllllllll  lllllllllllllllllll
        `' \\*::  :ccllllllllllllllll
                        ````''*::cll
                                  ``
+EOF
+        ;;
+
+        "Windows95")
+            set_colors 6 4 3 2 1 0
+            read -rd '' ascii_data <<'EOF'
+${c6}                           ___
+                      .--=+++++=-:.
+   .              _ *%@@@@@@@@@@@@@@*
+    *:+:.__ :+* @@@ @"${c5}_*&%${c6}@@${c4}%&&&*${c6}"@@@
+     "+.-#+ +%* " _ ${c5}++&&&%${c6}@@${c4}%&&&&&#${c6}@@
+${c5}   "          , ${c6}%@@ ${c5}&&&&&%${c6}@@${c4}%&&&&&#${c6}@@
+${c5}      *  oo  *# ${c6}" _ ${c5}&&&&&%${c6}@@${c4}%&&&&&#${c6}@@
+${c5}   "          , ${c6}%@@ ${c5}&&&&"${c6}@@@@#*${c4}"&&&${c6}@@
+   .${c5}  *  oo  *# ${c6}" _ %@@@@@@@@@@@@@@@@
+    *:+:.__ :=* %@@ @"${c1}**&%${c6}@@${c3}%&&&*${c6}"@@@
+     "+.-#+ +%* " _ ${c1}&&&&&%${c6}@@${c3}%&&&&&#${c6}@@
+${c1}   "          , ${c6}%@@ ${c1}&&&&&%${c6}@@${c3}%&&&&&#${c6}@@
+${c1}      *  oo  *# ${c6}" _ ${c1}&&&&&%${c6}@@${c3}%&&&&&#${c6}@@
+${c1}   "          , ${c6}%@@ ${c1}&&*"${c6}%@@@@@@${c3}"*%&${c6}@@
+   .${c1}  *  oo  *# ${c6}" _ @@@@@@@@@@@@@@@@@
+    *:+:.__ :+# @@@ @%#=+""""""+==%#@
+     "+.-#+ +%* %+" "             ":@
+          " "
 EOF
         ;;
 
