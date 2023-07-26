@@ -7378,19 +7378,19 @@ EOF
             read -rd '' ascii_data <<'EOF'
 ${c1}\e[1;32m      dddddddddddddddddddddddd
   .ddd.                      .ddd.
- :dd    :dddddddddddddddddd     dd:
- :dd    ldl                     dd:
- :dd    ldl                     dd:
- :dd    ldl                     dd:
- :dd    ldl                     dd:
- :dd    ldl                     dd:
- :dd    ldl  ddddddd  ddddd     dd:
- :dd    ldl                     dd:
- :dd    ldl                     dd:
- :dd    ldl                     dd:
- :dd    ldl                     dd:
- :dd    ldl                     dd:
- :dd    ldl  dddddddddddddd     dd:
+ :dd    ddddddddddddddddddd     dd:
+ :dd    ddd                     dd:
+ :dd    ddd                     dd:
+ :dd    ddd                     dd:
+ :dd    ddd                     dd:
+ :dd    ddd                     dd:
+ :dd    ddd  ddddddd  ddddd     dd:
+ :dd    ddd                     dd:
+ :dd    ddd                     dd:
+ :dd    ddd                     dd:
+ :dd    ddd                     dd:
+ :dd    ddd                     dd:
+ :dd    ddd  dddddddddddddd     dd:
   ddd:.                      .:ddd
       dddddddddddddddddddddddd\e[0m
 EOF
