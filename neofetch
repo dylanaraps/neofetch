@@ -1010,7 +1010,7 @@ get_distro() {
 
             elif type -p lsb_release >/dev/null; then
                 case $distro_shorthand in
-                    on)   lsb_flags=-si ;;
+                    on)   lsb_flags=-sir ;;
                     tiny) lsb_flags=-si ;;
                     *)    lsb_flags=-sd ;;
                 esac
