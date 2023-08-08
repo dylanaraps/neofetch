@@ -797,7 +797,7 @@ image_source="auto"
 #       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
 #       Netrunner, Nitrux, NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD,
 #       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
-#       osmc, Oracle, OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix,
+#       osmc, Oracle, OS Elbrus, PacBSD, Panwah, Parabola, Pardus, Parrot, Parsix,
 #       TrueOS, PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
 #       Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian,
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith,
@@ -5157,7 +5157,7 @@ ASCII:
                                 Live_Raizo, MX_Linux, Namib, Neptune, NetBSD, Netrunner, Nitrux,
                                 NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD, openEuler, OpenIndiana,
                                 openmamba, OpenMandriva, OpenStage, OpenWrt, osmc, Oracle,
-                                OS Elbrus, PacBSD, Parabola, Pardus, Parrot, Parsix, TrueOS,
+                                OS Elbrus, PacBSD, Panwah, Parabola, Pardus, Parrot, Parsix, TrueOS,
                                 PCLinuxOS, Pengwin, Peppermint, Pisi, popos, Porteus, PostMarketOS,
                                 Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian, Reborn_OS,
                                 Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
@@ -9354,6 +9354,34 @@ ${c1}      :+sMs.
       `/hMMMMMMMMMMMNo-``    `.+yy+-`
         `-/hmNMNMMMMMMmmddddhhy/-`
             `-+oooyMMMdsoo+/:.
+EOF
+        ;;
+
+        "Panwah"*)
+                set_colors 7 1 0
+                read -rd '' ascii_data <<'EOF'
+${c1}
+          HHH
+         HAAAH                             HHH
+         HAAAAH                           HAAAH
+        HAAAAAAH                         HAAAAH
+        HAAAAAAH                       HAAAAAH
+       HAAAAAAAAH${c2}WWWWWWWWWWWWWWWW      ${c1}HAAAAAH$
+       HAAAAAAAAH${c2}WWWWWWWWWWWWWWWWWWWW${c1} HAAAAAH
+       HAA${c2}WWWWWWWWWWWWWWWWWWWWWWWWWWWWW${c1}AAAAAH${c2}
+      WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW${c1}WAH${c2}
+     WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+   WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+ WWWWWWW${c1}AAA${c2}WWWW   WWWWWWWWWWWWWWWWWWWWWWWWWWW
+   WWWW${c1}AAA${c2}WWWWW    WWWWWWW    WWWWWWWWWWWWWWW
+    WW${c1}AAA${c2}WWWWWWWWWWWWWWWWW   WWWWW${c1}AAA${c2}WWWWWWWW
+     ${c1}AAA${c2}WWWWW${c1}OOOOOOOOOOO${C2}WWWWWWWWWWW${c1}AAA${c2}WWWWWW
+           ${c1}OOOO${c3}GGGGGGG${c1}OOOO${c2}WWWWWWWWWW${c1}AAA${c2}WWWW
+            ${c1}OOO${c3}GGGGGGG${c1}OOO${c2}WWWWWWWWWWWW${c1}AAA${c2}W
+              ${c1}OOOOOOOOO
 EOF
         ;;
 
