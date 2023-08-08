@@ -10323,6 +10323,32 @@ ${c2}             `:smMM${c4}yy${c3}MMNy/`
 EOF
         ;;
 
+        "Salix"*)
+            set_colors 2
+            read -rd '' ascii_data <<'EOF'
+${c1}              __s_aaaaaaaaauuoXSSSSSSSS:
+          ._xSSSSSSSSSSSSSSSSSSSSSSSSSS:
+        _aSSSSSSSSSSSSSSSSSSSSSSSSSSSSS:
+      _xSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS:
+     <XSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS:
+    -"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'
+
+  .ssssssssssssssssssssssssssssssssssss
+  {SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSl
+  oSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS;
+ :XSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS;
+ {SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+ -"""""""""""""""""""""""""""""""""""'
+
+ <assssssssssssssssssssssssssssssss>
+ nSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS}
+ nSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS}`
+ XSSSSSSSSSSSSSSSSSSSSSSSSSSSS"`
+ SSSSSSSSSSSSSSSSSSSSSSSSS!"`
+-""""""""""""""""""""""`
+EOF
+        ;;
+
         "Scientific"*)
             set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'
