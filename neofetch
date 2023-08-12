@@ -802,7 +802,7 @@ image_source="auto"
 #       Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian,
 #       Reborn_OS, Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith,
 #       Rocky, Rosa, sabotage, Sabayon, Sailfish, SalentOS, Salix, Scientific, Septor,
-#       SereneLinux, SharkLinux, Siduction, SkiffOS, Slackware, SliTaz, SmartOS,
+#       SereneLinux, SharkLinux, Siduction, SkiffOS, Slackel, Slackware, SliTaz, SmartOS,
 #       Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap, t2,
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
@@ -5162,7 +5162,7 @@ ASCII:
                                 Proxmox, PuffOS, Puppy, PureOS, Qubes, Qubyt, Quibian, Radix, Raspbian, Reborn_OS,
                                 Redstar, Redcore, Redhat, Refracted_Devuan, Regata, Regolith, Rosa,
                                 sabotage, Sabayon, Sailfish, SalentOS, Salix, Scientific, Septor,
-                                SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
+                                SereneLinux, SharkLinux, Siduction, Slackel, Slackware, SliTaz, SmartOS,
                                 Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
@@ -10473,6 +10473,34 @@ _Qh;.nm       .QWc. {QL      ]QQp;..vmQ/
                 -?T??"
 EOF
         ;;
+        "Slackel"*)
+            set_colors 3
+            read -rd '' ascii_data <<'EOF'
+${c1}              _aawmmmmmwwaaaaas,,,_.
+           .ammmmm###mmmmmmm###BQmm##mws
+         .am###mmBmBmBmBmBmBmmmmm#mmmm#2
+        <q###mmBmBmBmBmBmBmBmBmBmBmmBmZ`
+       um#mmmBmBm##U##mmBmBmBmWmmBmWm#(
+     .wm#mmBBmm#Y~   ~XmBmBmWmmmmmBm#e
+    .dm#mmWmm#Z'      ]#mBmBmmBZ!""""`
+   .dm#mmBmm#2`       ]mmmBmBm#2
+   jm#mmWmm#2`        dmmBmBmB#(
+  )m##mBmmWZ`        )##mBmBmmZ
+ :dmmmBmBm#'        .d#mBmBmWZ(
+ j#mmBmBmme         jmmmBmBm#2
+_m#mBmWmmm'        )mmmBmBmmZ`
+]##mBmmm#2        <m#mBmBmB#^
+dmmmBmWm#C       <m#mBmBmB#(
+ZmmBmBmmmh.    _jm#mmBmBm#(
+XBmBmBmBmm6s_aum##mmBmBm&^
+3$mBmBmBmmm#mmmmmmBmBm#2'
++ZmBmBmWmBmBmWmmBmBm##!
+ )ZmBmBmmmBmBmmBmB##!`
+  -4U#mBmWmBmBm##2"
+    -!!XU##US*?"-
+EOF
+        ;;
+
 
         "slackware_small"*)
             set_colors 4 7 1
