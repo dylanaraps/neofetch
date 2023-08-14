@@ -3877,7 +3877,7 @@ get_local_ip() {
 
         "Mac OS X" | "macOS" | "iPhone OS")
             if [[ "${local_ip_interface[0]}" == "auto" ]]; then
-                interface="$(route get 1 | awk -F': ' '/interface/ {printf $2; exit}')"
+                interface="$(route get 0 | awk -F': ' '/interface/ {printf $2; exit}')"
                 local_ip="$(ipconfig getifaddr "$interface")"
             else
                 for interface in "${local_ip_interface[@]}"; do
