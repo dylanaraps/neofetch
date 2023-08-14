@@ -3878,10 +3878,10 @@ get_local_ip() {
         "Mac OS X" | "macOS" | "iPhone OS")
             if [[ "${local_ip_interface[0]}" == "auto" ]]; then
                 interface="$(route get 1 | awk -F': ' '/interface/ {printf $2; exit}')"
-                local_ip="$(ipconfig getifaddr "$interface")"
+                local_ip="$(ifconfig "$interface" | grep "inet " | awk '{print $2}')"
             else
                 for interface in "${local_ip_interface[@]}"; do
-                    local_ip="$(ipconfig getifaddr "$interface")"
+                    local_ip="$(ifconfig "$interface" | grep "inet " | awk '{print $2}')"
                     if [[ -n "$local_ip" ]]; then
                         prin "$interface" "$local_ip"
                     else
