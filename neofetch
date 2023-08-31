@@ -7376,24 +7376,15 @@ EOF
         "EvolutionOS"*)
             set_colors 4 7
             read -rd '' ascii_data <<'EOF'
-${c1}\e[1;32m      dddddddddddddddddddddddd
-  .dddd''''''''''''''''''''''dddd.
-  dd:   dddddddddddddddddddd;   dd:
-  dd:   ldl:''''''''''''''''    dd:
-  dd:   ldl:                    dd:
-  dd:   ldl:                    dd:
-  dd:   ldl:                    dd:
-  dd:   ldl:                    dd:
-  dd:   ldl: ddddddd;  ddddd;   dd:
-  dd:   ldl: '''''''   '''''    dd:
-  dd:   ldl:                    dd:
-  dd:   ldl:                    dd:
-  dd:   ldl:                    dd:
-  dd:   ldl:                    dd:
-  dd:   ldl: ddddddddddddddd;   dd:
-  dddd:.'''  '''''''''''''''  dddd:
-     dddddddddddddddddddddddddd;;'
-      '''''''''''''''''''''''''\e[0m
+      ${c7},coddoc'
+   'cddddddddddc'
+ 'ddd${c2}OWWXXXXXXK${c7}ddo.
+.dddd${c2}OMX${c7}ddddddddddd.
+odddd${c2}OMXk00OkOO${c7}ddddo
+.dddd${c2}OMX${c7}kOOOxOkdddd.
+ .ddd${c2}OWWXXXXXXK${c7}ddd'
+   'dddddddddddd'
+      'cddddd,
 EOF
         ;;
 
