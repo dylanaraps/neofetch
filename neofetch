@@ -788,7 +788,7 @@ image_source="auto"
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
-#       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
+#       EndeavourOS, Endless, EuroLinux, EvolutionOS, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
 #       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
@@ -5148,7 +5148,7 @@ ASCII:
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
-                                EuroLinux, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
+                                EuroLinux, EvolutionOS, Exherbo, Fedora, Feren, FreeBSD, FreeMiNT, Frugalware,
                                 Funtoo, GalliumOS, Garuda, Gentoo, Pentoo, gNewSense, GNOME, GNU,
                                 GoboLinux, Grombyang, Guix, Haiku, Huayra, Hyperbola, iglunix, janus, Kali,
                                 KaOS, KDE_neon, Kibojoe, Kogaion, Korora, KSLinux, Kubuntu, LEDE,
@@ -7370,6 +7370,21 @@ wWW${c2}N${c1}WWWWw
     wWWWWWWWWWWWWWWWw
        WWWWWWWWWWWWWw
            wWWWWWWWw
+EOF
+        ;;
+
+        "EvolutionOS"*)
+            set_colors 4 7
+            read -rd '' ascii_data <<'EOF'
+      ${c7},coddoc'
+   'cddddddddddc'
+ 'ddd${c2}OWWXXXXXXK${c7}ddo.
+.dddd${c2}OMX${c7}ddddddddddd.
+odddd${c2}OMXk00OkOO${c7}ddddo
+.dddd${c2}OMX${c7}kOOOxOkdddd.
+ .ddd${c2}OWWXXXXXXK${c7}ddd'
+   'dddddddddddd'
+      'cddddd,
 EOF
         ;;
 
