@@ -4069,7 +4069,7 @@ print_ascii() {
     # Calculate size of ascii file in line length / line count.
     while IFS=$'\n' read -r line; do
         line=${line//\\\\/\\}
-        line=${line//█/ }
+        line=$(echo -e "$line" | sed -E 's/█//g; s/\x1B\[[0-9;]*[a-zA-Z]//g')
         ((++lines,${#line}>ascii_len)) && ascii_len="${#line}"
     done <<< "${ascii_data//\$\{??\}}"
 
