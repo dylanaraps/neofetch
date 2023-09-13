@@ -11031,8 +11031,8 @@ EOF
         "Ubuntu"* | "i3buntu"*)
             set_colors 1 7 3
             read -rd '' ascii_data <<'EOF'
-${c1}            .-/+oossssoo+\-.
-        ´:+ssssssssssssssssss+:`
+${c1}            --+oossssssoo+--
+        .:+ssssssssssssssssss+:.
       -+ssssssssssssssssssyyssss+-
     .ossssssssssssssssss${c2}dMMMNy${c1}sssso.
    /sssssssssss${c2}hdmmNNmmyNMMMMh${c1}ssssss\
@@ -11049,8 +11049,9 @@ oss${c2}yNMMMNyMMh${c1}sssssssssssssshmmmh${c1}ssssssso
    \sssssssssss${c2}hdmNNNNmyNMMMMh${c1}ssssss/
     .ossssssssssssssssss${c2}dMMMNy${c1}sssso.
       -+sssssssssssssssss${c2}yyy${c1}ssss+-
-        `:+ssssssssssssssssss+:`
-            .-\+oossssoo+/-.
+        `:+ssssssssssssssssss+:´
+            --+oossssssoo+--
+
 EOF
         ;;
 
