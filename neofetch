@@ -784,7 +784,7 @@ image_source="auto"
 #       Antergos, antiX, "AOSC OS", "AOSC OS/Retro", Apricity, ArchCraft,
 #       ArcoLinux, ArchBox, ARCHlabs, ArchStrike, XFerience, ArchMerge, Arch,
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
-#       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
+#       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, Zebara OS, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
 #       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
@@ -5144,7 +5144,7 @@ ASCII:
                                 Apricity, ArchCraft, ArcoLinux, ArchBox, ARCHlabs, ArchStrike,
                                 XFerience, ArchMerge, Arch, Artix, Arya, Bedrock, Bitrig,
                                 BlackArch, BLAG, BlankOn, BlueLight, Bodhi, bonsai, BSD, BunsenLabs,
-                                Calculate, Carbs, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
+                                Calculate, Carbs, Zebara OS, CentOS, Chakra, ChaletOS, Chapeau, Chrom,
                                 Cleanjaro, ClearOS, Clear_Linux, Clover, Condres, Container_Linux,
                                 Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin, DesaOS, Devuan,
                                 DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary, EndeavourOS, Endless,
@@ -6539,6 +6539,26 @@ ${c2}             ..........
                 .....
 EOF
         ;;
+
+        "Zebara OS"*)
+            set_colors 5 7
+            read -rd '' ascii_data <<'EOF'
+${c1}             
+          cO000000k.      o0000000d       .   
+         l00x   .000     x00d   '000    .000  
+        ,000    ;00O    l00k    d00d    000.  
+       .000.   .000    ;00O    ;00k    O00'   
+       O00'    000.   .000.   .000    x00c    
+      k00:    O00,    000.    000.   o00x     
+     d00d    k00l    k00;    O00;   '000      
+    :00k    o00x    x00o                      
+   .000    '00O    :00x                       
+   000.    :00O   .000                        
+  k00,      d00kld000                         
+               l0k                            
+EOF
+
+    ;;
 
     "CBL-Mariner"*)
         set_colors 6
