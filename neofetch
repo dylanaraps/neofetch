@@ -6143,9 +6143,9 @@ EOF
         ;;
 
         "aerOS"*)
-            set_colors 6 6 7 1
+            set_colors fg 0 0 0
             read -rd '' ascii_data <<'EOF'
-${c1}                    y:
+${c1}                    
                    ooo OOO OOO ooo
                oOO                 OOo
            oOO                         OOo
