@@ -11527,6 +11527,29 @@ oMMMMmMMMMNds:.+MMMmmMMN/.-odNMMMMmMMMM+
 EOF
                 ;;
 
+                "Ubuntu"*)
+                    set_colors 12 7 6 4
+                    read -rd '' ascii_data << 'EOF'
+{c1}                         yyy             
+{c1}                        dMMMNy            
+{c1}               hdmmNNmmyNMMMMh           
+{c1}            hm  MMMMMMMNddddy             
+{c1}          hNMMM  hyyyyhmNMMMNh            
+{c1}         dMMMNh          hNMMMd           
+{c1}     hhhyNMMNy            yNMMMy          
+{c1}   yNMMMNyMMh              hmmmh          
+{c1}   yNMMMNyMMh                             
+{c1}     hhhyNMMNy            yNMMMy          
+{c1}         dMMMNh          hNMMMd          
+{c1}          hNMMM  hyyyyhdNMMMNh            
+{c1}            dm  MMMMMMMMddddy             
+{c1}               hdmNNNNmyyNMMMMh           
+{c1}                         dMMMNy          
+{c1}                          yyy  
+
+EOF
+                ;;
+
             esac
         ;;
     esac
