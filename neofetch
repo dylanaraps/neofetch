@@ -1504,6 +1504,7 @@ get_packages() {
             has alps       && tot alps showinstalled
             has butch      && tot butch list
             has mine       && tot mine -q
+            has trbprt     && tot trbprt portlist
 
             # Counting files/dirs.
             # Variables need to be unquoted here. Only Bedrock Linux is affected.
