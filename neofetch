@@ -2088,6 +2088,7 @@ get_wm_theme() {
             case $de in
                 LXDE*) ob_file=lxde-rc ;;
                 LXQt*) ob_file=lxqt-rc ;;
+		BunsenLabs*) ob_file=bl-rc ;;
                     *) ob_file=rc ;;
             esac
 
