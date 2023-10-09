@@ -896,6 +896,13 @@ image_size="auto"
 # Flags:   --catimg_size
 catimg_size="2"
 
+# Termpix uses true colors?
+# Apply termpix's --true-color flag.
+#
+# Default: ''
+# Flag: --true-color
+true_color=
+
 # Gap between image and text
 #
 # Default: '3'
@@ -4503,6 +4510,7 @@ display_image() {
             termpix \
                 --width "$((width / font_width))" \
                 --height "$((height / font_height))" \
+		$true_color \
             "$image"
         ;;
 
@@ -5214,6 +5222,7 @@ IMAGE:
                                 closer to the left side.
 
     --clean                     Delete cached files and thumbnails.
+    --true-color                Use termpix --true-color flag.
 
 OTHER:
     --config /path/to/config    Specify a path to a custom config file
@@ -5373,6 +5382,7 @@ get_args() {
             "--catimg_size") catimg_size="$2" ;;
             "--crop_mode") crop_mode="$2" ;;
             "--crop_offset") crop_offset="$2" ;;
+            "--true-color") true_color="--true-color" ;;
             "--xoffset") xoffset="$2" ;;
             "--yoffset") yoffset="$2" ;;
             "--background_color" | "--bg_color") background_color="$2" ;;
