@@ -3018,36 +3018,48 @@ get_song() {
 get_resolution() {
     case $os in
         "Mac OS X"|"macOS")
-            if type -p screenresolution >/dev/null; then
-                resolution="$(screenresolution get 2>&1 | awk '/Display/ {printf $6 "Hz, "}')"
-                resolution="${resolution//x??@/ @ }"
+            resolution=""
+            temp_plist="/tmp/neofetch_system_profiler_SPDisplaysDataType.xml" # PlistBuddy doesn't support reading from /dev/stdin
+            if system_profiler SPDisplaysDataType -xml > $temp_plist; then
+                for ((gpu=0; gpu<999; gpu++)); do
+                    if PlistBuddy -c "print 0:_items:${gpu}" $temp_plist &> /dev/null; then
+                        for ((display=0; display<999; display++)); do
+                            if spdisplays_resolution="$(PlistBuddy -c "print 0:_items:${gpu}:spdisplays_ndrvs:${display}:_spdisplays_resolution" $temp_plist)" 2>/dev/null; then
+                                spdisplays_resolution="${spdisplays_resolution//.[0-9][0-9]/}"
+                                if spdisplays_pixels="$(PlistBuddy -c "print 0:_items:${gpu}:spdisplays_ndrvs:${display}:_spdisplays_pixels" $temp_plist)" 2>/dev/null; then
+                                    scaled_x="$(echo "$spdisplays_resolution" | awk '{print $1}')"
+                                    output_x="$(echo "$spdisplays_pixels" | awk '{print $1}')"
+                                    (( scale_factor=output_x/scaled_x ))
+                                    if [[ $scale_factor -gt 1 ]]; then
+                                        if [[ "$spdisplays_resolution" == *"@"* ]]; then
+                                            spdisplays_resolution="${spdisplays_resolution// @/ @${scale_factor}x @}"
+                                        else
+                                            spdisplays_resolution="${spdisplays_resolution} @ ${scale_factor}x"
+                                        fi
+                                    fi
+                                fi
+                                spdisplays_resolution="${spdisplays_resolution// x /x}"
+                                [[ $gpu -gt 0 || $display -gt 0 ]] && resolution+=", "
+                                resolution+="${spdisplays_resolution}"
+                            else
+                                break
+                            fi
+                        done
+                    else
+                        break
+                    fi
+                done
 
-            else
-                resolution="$(system_profiler SPDisplaysDataType |\
-                              awk '/Resolution:/ {printf $2"x"$4" @ "$6"Hz, "}')"
+                if [[ "$refresh_rate" == "off" ]]; then
+                    resolution="${resolution/ @ [0-9][0-9][0.9]Hz}"
+                    resolution="${resolution/ @ [0-9][0.9]Hz}"
+                    resolution="${resolution/ @ [0-9]Hz}"
+                else
+                    resolution="${resolution// @ 0Hz}"
+                fi
+
+                rm $temp_plist
             fi
-
-            if [[ -e "/Library/Preferences/com.apple.windowserver.plist" ]]; then
-                scale_factor="$(PlistBuddy -c "Print DisplayAnyUserSets:0:0:Resolution" \
-                                /Library/Preferences/com.apple.windowserver.plist)"
-            else
-                scale_factor=""
-            fi
-
-            # If no refresh rate is empty.
-            [[ "$resolution" == *"@ Hz"* ]] && \
-                resolution="${resolution//@ Hz}"
-
-            [[ "${scale_factor%.*}" == 2 ]] && \
-                resolution="${resolution// @/@2x @}"
-
-            if [[ "$refresh_rate" == "off" ]]; then
-                resolution="${resolution// @ [0-9][0-9]Hz}"
-                resolution="${resolution// @ [0-9][0-9][0-9]Hz}"
-            fi
-
-            [[ "$resolution" == *"0Hz"* ]] && \
-                resolution="${resolution// @ 0Hz}"
         ;;
 
         "Windows")
