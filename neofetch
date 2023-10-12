@@ -3051,21 +3051,82 @@ get_resolution() {
         ;;
 
         "Windows")
-            IFS=$'\n' read -d "" -ra sw \
-                <<< "$(wmic path Win32_VideoController get CurrentHorizontalResolution)"
+            ps1_path=/tmp/neofetch_resolution_windows.ps1
+            cat <<EOF > $ps1_path
+Add-Type @"
+using System;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Linq;
 
-            IFS=$'\n' read -d "" -ra sh \
-                <<< "$(wmic path Win32_VideoController get CurrentVerticalResolution)"
+namespace WinAPI
+{
+    public static class MonitorMethods
+    {
+        enum PROCESS_DPI_AWARENESS
+        {
+            PROCESS_DPI_UNAWARE = 0,
+            PROCESS_SYSTEM_DPI_AWARE = 1,
+            PROCESS_PER_MONITOR_DPI_AWARE = 2
+        }
+        [DllImport("shcore.dll")]
+        static extern uint SetProcessDpiAwareness(PROCESS_DPI_AWARENESS awareness);
 
-            sw=("${sw[@]//CurrentHorizontalResolution}")
-            sh=("${sh[@]//CurrentVerticalResolution}")
+        [StructLayout(LayoutKind.Sequential)]
+        struct Rect
+        {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+        }
+        [DllImport("user32.dll")]
+        static extern bool EnumDisplayMonitors(
+            IntPtr hdc,
+            IntPtr lprcClip,
+            EnumMonitorsDelegate lpfnEnum,
+            IntPtr dwData
+        );
+        delegate bool EnumMonitorsDelegate(IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, IntPtr dwData);
 
-            for ((mn = 0; mn < ${#sw[@]}; mn++)) {
-                [[ ${sw[mn]//[[:space:]]} && ${sh[mn]//[[:space:]]} ]] &&
-                    resolution+="${sw[mn]//[[:space:]]}x${sh[mn]//[[:space:]]}, "
-            }
+        class DisplayInfo
+        {
+            public int Width;
+            public int Height;
+            public double ScaleFactor;
+        }
 
-            resolution=${resolution%,}
+        public static string GetResolution()
+        {
+            var displays = new List<DisplayInfo>();
+            EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, (IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, IntPtr dwData) =>
+            {
+                displays.Add(new DisplayInfo
+                {
+                    Width = lprcMonitor.right - lprcMonitor.left,
+                    Height = lprcMonitor.bottom - lprcMonitor.top,
+                    ScaleFactor = -1
+                });
+                return true;
+            }, IntPtr.Zero);
+
+            SetProcessDpiAwareness(PROCESS_DPI_AWARENESS.PROCESS_PER_MONITOR_DPI_AWARE);
+
+            EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, (IntPtr hMonitor, IntPtr hdcMonitor, ref Rect lprcMonitor, IntPtr dwData) =>
+            {
+                var display = displays.Find(x => x.ScaleFactor < 0);
+                display.ScaleFactor = (lprcMonitor.right - lprcMonitor.left) / (double)display.Width;
+                return true;
+            }, IntPtr.Zero);
+            return string.Join(", ", displays.Select(x => x.Width + "x" + x.Height + (x.ScaleFactor > 1 ? string.Format(" @{0:0.###}x", x.ScaleFactor) : "")));
+        }
+    }
+}
+"@
+echo ([WinAPI.MonitorMethods]::GetResolution())
+EOF
+            resolution="$(powershell.exe -NoLogo -NoProfile -File $ps1_path)"
+            rm $ps1_path
         ;;
 
         "Haiku")
