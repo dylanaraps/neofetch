@@ -3079,7 +3079,34 @@ get_resolution() {
         ;;
 
         *)
-            if type -p xrandr >/dev/null && [[ $DISPLAY && -z $WAYLAND_DISPLAY ]]; then
+            if type -p wayland-info >/dev/null && [[ $WAYLAND_DISPLAY ]]; then
+                resolution=""
+                # `wayland-info` prints one interface per display
+                num_displays="$(wayland-info -i wl_output | csplit - '/interface: /' '{*}' --suppress-matched -z -n 1 --prefix '/tmp/neofetch-wayland-info-display-' | wc -l)"
+                for ((display=0; display<$num_displays; display++)); do
+                    scale_factor="$(grep -Po 'scale: \K\d+' < /tmp/neofetch-wayland-info-display-$display)"
+                    # `wayland-info` prints all modes supported by the display, and current mode is flagged as `current`
+                    mode="$(grep 'flags: .*current' -B1 < /tmp/neofetch-wayland-info-display-$display | head -1)"
+                    # width: 3456 px, height: 2160 px, refresh: 59.996 Hz,
+                    width="$(echo $mode | grep -Po 'width: \K\d+')"
+                    height="$(echo $mode |  grep -Po 'height: \K\d+')"
+                    if [[ $scale_factor -gt 1 ]]; then
+                        (( width=width/scale_factor))
+                        (( height=height/scale_factor ))
+                        resolution="$resolution${width}x${height} @${scale_factor}x"
+                    else
+                        resolution="$resolution${width}x${height}"
+                    fi;
+
+                    if [[ "$refresh_rate" == "on" ]]; then
+                        refresh="$(echo $mode | grep -Po 'refresh: \K[\d\.]+')"
+                        [[ $refresh ]] && resolution="$resolution @ $refresh Hz"
+                    fi
+
+                    resolution="$resolution, "
+                done
+                rm /tmp/neofetch-wayland-info-display-*
+            elif type -p xrandr >/dev/null && [[ $DISPLAY && -z $WAYLAND_DISPLAY ]]; then
                 case $refresh_rate in
                     "on")
                         resolution="$(xrandr --nograb --current |\
