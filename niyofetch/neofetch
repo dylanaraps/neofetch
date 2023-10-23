@@ -976,7 +976,7 @@ get_distro() {
                 if [[ -n $show_distro ]]; then
                     distro=$show_distro
                 fi
-      
+
                 if [[ -n $show_os ]]; then
                     os=$show_os
                 fi
