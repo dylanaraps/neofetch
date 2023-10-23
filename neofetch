@@ -971,7 +971,17 @@ get_distro() {
 
     case $os in
         Linux|BSD|MINIX)
-            if [[ -f /bedrock/etc/bedrock-release && -z $BEDROCK_RESTRICT ]]; then
+
+            if [[ -n $show_distro || -n $show_os ]]; then
+                if [[ -n $show_distro ]]; then
+                    distro=$show_distro
+                fi
+      
+                if [[ -n $show_os ]]; then
+                    os=$show_os
+                fi
+
+            elif [[ -f /bedrock/etc/bedrock-release && -z $BEDROCK_RESTRICT ]]; then
                 case $distro_shorthand in
                     on|tiny) distro="Bedrock Linux" ;;
                     *) distro=$(< /bedrock/etc/bedrock-release)
