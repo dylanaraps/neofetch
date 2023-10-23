@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://raw.githubusercontent.com/r4mbhardwaj/niyofetch/main/assets/niyofetch_logo.png" alt="logo" height="120px">
+  <img src="https://raw.githubusercontent.com/r4mbhardwaj/niyofetch/master/assets/niyofetch_logo.png" alt="logo" height="120px">
   <br>
   Niyofetch - Your System Info, But Better
 </h1>
@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/r4mbhardwaj/niyofetch/main/assets/ultra-chad.jpg" alt="Gigachad Meme" height="300">
+  <img src="https://raw.githubusercontent.com/r4mbhardwaj/niyofetch/master/assets/ultra-chad.jpg" alt="Gigachad Meme" height="300">
 <p/>
 
 <h1 align="center"> 🖥️ Flex your system, regardless of the OS 🌐</h1>
