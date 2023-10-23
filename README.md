@@ -1,25 +1,90 @@
-<h3 align="center"><img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px"></h3>
-<p align="center">A command-line system information tool written in bash 3.2+</p>
+<h1 align="center">
+  <img src="https://raw.githubusercontent.com/r4mbhardwaj/niyofetch/main/assets/niyofetch_logo.png" alt="logo" height="120px">
+  <br>
+  Niyofetch - Your System Info, But Better
+</h1>
+
+<h4 align="center"> For Chads who use Arch (or any other distro) and aren't afraid to show it. </h4>
 
 <p align="center">
 <a href="./LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
-<a href="https://github.com/dylanaraps/neofetch/releases"><img src="https://img.shields.io/github/release/dylanaraps/neofetch.svg"></a>
-<a href="https://repology.org/metapackage/neofetch"><img src="https://repology.org/badge/tiny-repos/neofetch.svg" alt="Packaging status"></a>
+<a href="https://github.com/r4mbhardwaj/niyofetch/releases"><img src="https://img.shields.io/github/release/r4mbhardwaj/niyofetch.svg"></a>
+<a href="https://repology.org/metapackage/niyofetch"><img src="https://repology.org/badge/tiny-repos/neofetch.svg" alt="Packaging status"></a>
 </p>
 
-<img src="https://i.imgur.com/GFmC5Ad.png" alt="neofetch" align="right" height="240px">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/r4mbhardwaj/niyofetch/main/assets/ultra-chad.jpg" alt="Gigachad Meme" height="300">
+<p/>
 
-Neofetch is a command-line system information tool written in `bash 3.2+`. Neofetch displays information about your operating system, software and hardware in an aesthetic and visually pleasing way.
+<h1 align="center"> 🖥️ Flex your system, regardless of the OS 🌐</h1>
 
-The overall purpose of Neofetch is to be used in screen-shots of your system. Neofetch shows the information other people want to see. There are other tools available for proper system statistic/diagnostics.
+<p align="center">
+You say: "I use Arch BTW!", but secretly love Ubuntu? With Niyofetch, you can have your cake and eat it too.
+</p>
 
-The information by default is displayed alongside your operating system's logo. You can further configure Neofetch to instead use an image, a custom ASCII file, your wallpaper or nothing at all.
+<h2>🚀 Quick Start</h2>
 
-<img src="https://i.imgur.com/lUrkQBN.png" alt="neofetch" align="right" height="240px">
+1️⃣ Install Niyofetch with pip:
 
-You can further configure Neofetch to display exactly what you want it to. Through the use of command-line flags and the configuration file you can change existing information outputs or add your own custom ones.
+```sh
+pip install niyofetch
+```
 
-Neofetch supports almost 150 different operating systems. From Linux to Windows, all the way to more obscure operating systems like Minix, AIX and Haiku. If your favourite operating system is unsupported: Open up an issue and support will be added.
+2️⃣ Set an environment variable to your preferred distro:
+
+```sh
+export show_distro="Arch Linux"
+```
+
+3️⃣ Run Niyofetch:
+
+```sh
+niyofetch
+```
+
+Voila, flex time
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/63110845/277485633-4ea62835-46fc-44b4-8d87-58483464b7a7.png" alt="I use arch btw" height="300">
+<p/>
+
+<h2> 💻 Customize to your liking </h2>
+
+Feeling like Gentoo today? Or maybe Fedora? Niyofetch got you covered:
+
+```sh
+export show_distro="Gentoo"
+niyofetch
+```
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/63110845/277485895-bce3ec6a-97e2-4955-9906-a3227719491b.png" alt="I use arch btw" height="300">
+<p/>
+<h2>🕶️ Ultimate Flex </h2>
+
+You've already flexed your system with `show_distro`. Now, let's go a step further. Use `niyofetch` for the ultimate flex on r/unixporn:
+
+```sh
+alias neofetch=niyofetch
+```
+
+Now, every `neofetch` is a `niyofetch`. Prepare to post your elite setup on [r/unixporn](https://www.reddit.com/r/unixporn/)!
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/63110845/277486769-f388b788-1336-4ae2-890a-9a31b96351f7.png" alt="I use arch btw" height="300">
+<p/>
 
 
-### More: \[[Dependencies](https://github.com/dylanaraps/neofetch/wiki/Dependencies)\] \[[Installation](https://github.com/dylanaraps/neofetch/wiki/Installation)\] \[[Wiki](https://github.com/dylanaraps/neofetch/wiki)\]
+<h2>🔗 Links</h2>
+
+- [Dependencies](https://github.com/r4mbhardwaj/niyofetch/wiki/Dependencies)
+- [Installation](https://github.com/r4mbhardwaj/niyofetch/wiki/Installation)
+- [Wiki](https://github.com/r4mbhardwaj/niyofetch/wiki)
+
+<h2>📝 License</h2>
+
+This project is MIT licensed. See the [LICENSE.md](LICENSE.md) file for details.
+
+<h2>🙏 Acknowledgements</h2>
+
+Niyofetch is based on the original [neofetch](https://github.com/dylanaraps/neofetch) project.

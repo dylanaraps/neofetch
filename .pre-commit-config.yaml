@@ -1,0 +1,31 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v1.5.3
+    hooks:
+      - id: autoflake
+        args: ["--in-place"]
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.3.1
+    hooks:
+      - id: pyupgrade
+        args: ["--py37-plus"]
+
+  - repo: https://github.com/peterdemin/pip-compile-multi
+    rev: v2.6.2
+    hooks:
+      - id: pip-compile-multi-verify
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: fix-byte-order-marker
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: no-commit-to-branch
+      #  args: ["--branch", "main"]
