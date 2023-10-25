@@ -786,7 +786,7 @@ image_source="auto"
 #       Artix, Arya, Bedrock, Bitrig, BlackArch, BLAG, BlankOn, BlueLight,
 #       Bodhi, bonsai, BSD, BunsenLabs, Calculate, Carbs, CentOS, Chakra, ChaletOS,
 #       Chapeau, Chrom*, Cleanjaro, ClearOS, Clear_Linux, Clover, Condres,
-#       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,
+#       Container_Linux, Crystal Linux, CRUX, Cucumber, dahlia, Debian, Deepin,UnionTechOS,
 #       DesaOS, Devuan, DracOS, DarkOs, Itc, DragonFly, Drauger, Elementary,
 #       EndeavourOS, Endless, EuroLinux, Exherbo, Fedora, Feren, FreeBSD,
 #       FreeMiNT, Frugalware, Funtoo, GalliumOS, Garuda, Gentoo, Pentoo,
@@ -7078,6 +7078,25 @@ ${c1}             ............
       ,dkkkkkkkkkkkkko;.    .;o;
         .;okkkkkdl;.    .,cl:.
             .,:cccccccc:,.
+EOF
+        ;;
+
+        "UnionTech"*)
+            set_colors 2 1 3 4 7
+            read -rd '' ascii_data <<'EOF'   
+      
+${c4}
+ZZO   OZZ OZZZZZZZZ mZZZZZZZZ
+ZZm   wZZ ZOZZZZZZZ ZOZZZZZZm
+ZZm   mZZ ZOZ   ZZZ ZZZ        
+ZZm   mZZ ZOZ   ZZZ ZZZ
+ZZm   mZZ ZOZ   ZZZ ZZZZZZZZZ
+ZZm   mZZ ZOZ   ZZZ ZZZZZZZZZ
+ZZm   mZZ ZOZ   ZZZ ZZZZZZZZZ
+ZZm   mZZ ZOZ   ZZZ       ZZZ
+ZZb   wZZ ZOZ   ZZZ       ZZO
+ZZZZZZZZZ ZOZZZZZZZ wOZZZZZZO
+ZZZZZZZZZ ZZZZZZZZZ ZZZZZZZZZ
 EOF
         ;;
 
