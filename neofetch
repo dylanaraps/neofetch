@@ -793,7 +793,7 @@ image_source="auto"
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
 #       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
-#       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
+#       Lubuntu, Lunar, macos, Mageia, MagpieOS, MainsailOS, Mandriva, Manjaro, TeArch, Maui,
 #       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
 #       Netrunner, Nitrux, NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD,
 #       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
@@ -816,7 +816,7 @@ image_source="auto"
 # NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
 #       CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android,
 #       Artix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
-#       Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
+#       MainsailOS, Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
 #       Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
 #       postmarketOS, and Void have a smaller logo variant.
 #       Use '{distro name}_small' to use the small variants.
@@ -5181,7 +5181,7 @@ ASCII:
                                 NOTE: Arcolinux, Dragonfly, Fedora, Alpine, Arch, Ubuntu,
                                 CRUX, Debian, Gentoo, FreeBSD, Mac, NixOS, OpenBSD, android,
                                 Artix, CentOS, Cleanjaro, ElementaryOS, GUIX, Hyperbola,
-                                Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
+                                MainsailOS, Manjaro, MXLinux, NetBSD, Parabola, POP_OS, PureOS,
                                 Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
                                 postmarketOS, and Void have a smaller logo variant.
 
@@ -8512,6 +8512,43 @@ o00.              k0O${c2}dddddd${c1}occ
        ..          ${c4}dxl     .xx;
                     :xxolldxd'
                       ;oxdl.
+EOF
+        ;;
+
+        "MainsailOS_small"*)
+            set_colors 1
+            read -rd '' ascii_data <<'EOF'
+${c1}          -:
+         +%*
+       .#%%+
+      -%%%: +=
+     +%%#..#%%-
+   .#%%+ -%%%- +=
+  -%%%- +%%#..#%%+
+EOF
+          ;;
+
+        "MainsailOS"*)
+            set_colors 1
+            read -rd '' ascii_data <<'EOF'
+${c1}                           -
+                          *%:
+                        :%%%#
+                       =%%%%%-
+                      *%%%%%%#
+                    :#%%%%%%%#.
+                   -%%%%%%%%+
+                  *%%%%%%%%-    :
+                .#%%%%%%%#.    *%=
+               -%%%%%%%%+    :#%%%*
+              +%%%%%%%%-    =%%%%%%#.
+            .#%%%%%%%#.    *%%%%%%%%:
+           -%%%%%%%%*    :#%%%%%%%#.
+          +%%%%%%%%-    =%%%%%%%%+    :%*.
+        .#%%%%%%%#:    *%%%%%%%%-    +%%%%*:
+       :%%%%%%%%*    :#%%%%%%%#.   .*%%%%%%%*
+      +%%%%%%%%=    -%%%%%%%%+    :%%%%%%%%*
+    .#%%%%%%%%:    *%%%%%%%%-    =%%%%%%%%=
 EOF
         ;;
 
