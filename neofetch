@@ -7982,6 +7982,29 @@ ${c1}     |
 EOF
         ;;
 
+        "Interix"*)
+            set_colors 1 7 4 0 3
+            read -rd '' ascii_data <<'EOF'
+${c1}                   .${c3}.
+${c1}                  75${c3}G!
+${c1}                ^?PG${c3}&&J.
+${c1}              :!5GPP${c3}&&&B!
+${c1}             :YPPPPP${c3}&&&&&Y:
+${c1}            !5PPPPPP${c3}&&&&&&B!
+${c1}          :?PPPPPPPP${c3}&&&&&&&&Y~
+${c1}         !5PPPPPPPPP${c3}###&&&&&&B7
+${c1}       :?PPPP5555555${c3}B####&&&&&&5:
+${c1}      ~5PPPP555YJ${c5}7!~7?${c3}5B###&&&&&B?.
+${c1}   .:JPPPP5555Y${c5}?^....:^?${c3}G####&&&&&5:
+${c1}   75PPP555555Y${c5}7:....:^!${c3}5#####&&&&&B7.
+${c1} :JPPPP${c4}555555YY?${c5}~::::^~${c4}7YPGBB###${c3}&&&&&5^
+${c1}75${c4}GGPPPPPP555555YJ?77??YYYYYY55PPGGB#${c3}&B?
+${c4}~!!7JY5PGGBBBBBBBBGGGGGGGBGGGGGP5YJ?7~~~
+       .::^~7?JYPGBB#BGPYJ?7!7^:.
+                 ..:^...
+EOF
+        ;;
+
         "januslinux"*|"janus"*|"Ataraxia Linux"*|"Ataraxia"*)
             set_colors 4 5 6 2
             read -rd '' ascii_data <<'EOF'
