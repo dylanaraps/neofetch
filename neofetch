@@ -945,6 +945,7 @@ get_os() {
         AIX)      os=AIX ;;
         IRIX*)    os=IRIX ;;
         FreeMiNT) os=FreeMiNT ;;
+        Interix)  os=Interix ;;
 
         Linux|GNU*)
             os=Linux
@@ -1210,6 +1211,10 @@ get_distro() {
         FreeMiNT)
             distro=FreeMiNT
         ;;
+
+        Interix)
+            distro="Interix ${kernel_version}"
+        ;;
     esac
 
     distro=${distro//Enterprise Server}
@@ -1356,6 +1361,12 @@ get_model() {
             model=$(sysctl -n hw.model)
             model=${model/ (_MCH *)}
         ;;
+
+        Interix)
+            model=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe computersystem get manufacturer,model)
+            model=${model/Manufacturer}
+            model=${model/Model}
+        ;;
     esac
 
     # Remove dummy OEM info.
@@ -1408,6 +1419,13 @@ get_kernel() {
         return
     }
 
+    # In Interix the Kernel version is commonly comprised of the host OS build number,
+    # OS architecture and Interix build number
+    [[ $os == Interix ]] && {
+        kernel="$(uname -r) $(uname -m) $(uname -v)"
+        return
+    }
+
     case $kernel_shorthand in
         on)  kernel=$kernel_version ;;
         off) kernel="$kernel_name $kernel_version" ;;
@@ -1452,6 +1470,19 @@ get_uptime() {
 
         AIX|IRIX)
             t=$(LC_ALL=POSIX ps -o etime= -p 1)
+
+            [[ $t == *-*   ]] && { d=${t%%-*}; t=${t#*-}; }
+            [[ $t == *:*:* ]] && { h=${t%%:*}; t=${t#*:}; }
+
+            h=${h#0}
+            t=${t#0}
+
+            s=$((${d:-0}*86400 + ${h:-0}*3600 + ${t%%:*}*60 + ${t#*:}))
+        ;;
+
+        Interix)
+            t=$(LC_ALL=POSIX ps -o etime= -p 0)
+            t=${t%%.*}
 
             [[ $t == *-*   ]] && { d=${t%%-*}; t=${t#*-}; }
             [[ $t == *:*:* ]] && { h=${t%%:*}; t=${t#*:}; }
@@ -1544,7 +1575,7 @@ get_packages() {
     }
 
     case $os in
-        Linux|BSD|"iPhone OS"|Solaris)
+        Linux|BSD|"iPhone OS"|Solaris|Interix)
             # Package Manager Programs.
             has kiss       && tot kiss l
             has cpt-list   && tot cpt-list
@@ -2431,6 +2462,17 @@ get_cpu() {
             cpu="$(awk -F':' '/CPU:/ {printf $2}' /kern/cpuinfo)"
             speed="$(awk -F '[:.M]' '/Clocking:/ {printf $2}' /kern/cpuinfo)"
         ;;
+
+        "Interix")
+            cpu=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get Name)
+            cpu=${cpu/Name}
+
+            speed=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get CurrentClockSpeed)
+            speed=${speed/CurrentClockSpeed}
+
+            cores=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get NumberOfCores)
+            cores=${cores/NumberOfCores}
+        ;;
     esac
 
     # Remove un-needed patterns from cpu output.
@@ -2645,6 +2687,22 @@ get_gpu() {
             done
         ;;
 
+        "Interix")
+            /dev/fs/C/Windows/System32/wbem/WMIC.exe path Win32_VideoController get caption | while read -r line; do
+                line=$(trim "$line")
+
+                case $line in
+                    *Caption*|'')
+                        continue
+                    ;;
+
+                    *)
+                        prin "${subtitle:+${subtitle}${gpu_name}}" "$line"
+                    ;;
+                esac
+            done
+        ;;
+
         "Haiku")
             gpu="$(listdev | grep -A2 -F 'device Display controller' |\
                    awk -F':' '/device beef/ {print $2}')"
@@ -2795,6 +2853,18 @@ get_memory() {
             mem_used="$((mem_total - mem_free))"
             mem_total="$((mem_total / 1024))"
             mem_used="$((mem_used / 1024))"
+        ;;
+
+        "Interix")
+            mem_total=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe computersystem get TotalPhysicalMemory | tr -d '[:space:]')
+            mem_total=${mem_total/TotalPhysicalMemory}
+            mem_total="$((mem_total / 1024 / 1024))"
+
+            mem_free=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe os get FreePhysicalMemory | tr -d '[:space:]')
+            mem_free=${mem_free/FreePhysicalMemory}
+            mem_free="$((mem_free / 1024))"
+
+            mem_used="$((mem_total - mem_free))"
         ;;
 
     esac
@@ -3831,6 +3901,15 @@ get_battery() {
             [[ "$state" == *TRUE* ]] && battery_state="charging"
         ;;
 
+        "Interix")
+            battery="$(/dev/fs/C/Windows/System32/wbem/WMIC.exe Path Win32_Battery get EstimatedChargeRemaining)"
+            battery="${battery/EstimatedChargeRemaining}"
+            battery="$(trim "$battery")%"
+            state="$(/dev/fs/C/Windows/System32/wbem/WMIC.exe /NameSpace:'\\root\WMI' Path BatteryStatus get Charging)"
+            state="${state/Charging}"
+            [[ "$state" == *TRUE* ]] && battery_state="charging"
+        ;;
+
         "Haiku")
             battery0full="$(awk -F '[^0-9]*' 'NR==2 {print $4}' /dev/power/acpi_battery/0)"
             battery0now="$(awk -F '[^0-9]*' 'NR==5 {print $4}' /dev/power/acpi_battery/0)"
@@ -3891,7 +3970,7 @@ get_local_ip() {
             fi
         ;;
 
-        "Windows")
+        "Windows" | "Interix")
             local_ip="$(ipconfig | awk -F ': ' '/IPv4 Address/ {printf $2 ", "}')"
             local_ip="${local_ip%\,*}"
         ;;
@@ -7997,9 +8076,9 @@ ${c1}       :?PPPP5555555${c3}B####&&&&&&5:
 ${c1}      ~5PPPP555YJ${c5}7!~7?${c3}5B###&&&&&B?.
 ${c1}   .:JPPPP5555Y${c5}?^....:^?${c3}G####&&&&&5:
 ${c1}   75PPP555555Y${c5}7:....:^!${c3}5#####&&&&&B7.
-${c1} :JPPPP${c4}555555YY?${c5}~::::^~${c4}7YPGBB###${c3}&&&&&5^
-${c1}75${c4}GGPPPPPP555555YJ?77??YYYYYY55PPGGB#${c3}&B?
-${c4}~!!7JY5PGGBBBBBBBBGGGGGGGBGGGGGP5YJ?7~~~
+${c1} :JPPPP${c2}555555YY?${c5}~::::^~${c2}7YPGBB###${c3}&&&&&5^
+${c1}75${c2}GGPPPPPP555555YJ?77??YYYYYY55PPGGB#${c3}&B?
+${c2}~!!7JY5PGGBBBBBBBBGGGGGGGBGGGGGP5YJ?7~~~
        .::^~7?JYPGBB#BGPYJ?7!7^:.
                  ..:^...
 EOF
