@@ -1363,9 +1363,9 @@ get_model() {
         ;;
 
         Interix)
-            model=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe computersystem get manufacturer,model)
-            model=${model/Manufacturer}
-            model=${model/Model}
+            model="$(/dev/fs/C/Windows/System32/wbem/WMIC.exe computersystem get manufacturer,model)"
+            model="${model/Manufacturer}"
+            model="${model/Model}"
         ;;
     esac
 
@@ -1481,16 +1481,16 @@ get_uptime() {
         ;;
 
         Interix)
-            t=$(LC_ALL=POSIX ps -o etime= -p 0)
-            t=${t%%.*}
+            t="$(LC_ALL=POSIX ps -o etime= -p 0)"
+            t="${t%%.*}"
 
             [[ $t == *-*   ]] && { d=${t%%-*}; t=${t#*-}; }
             [[ $t == *:*:* ]] && { h=${t%%:*}; t=${t#*:}; }
 
-            h=${h#0}
-            t=${t#0}
+            h="${h#0}"
+            t="${t#0}"
 
-            s=$((${d:-0}*86400 + ${h:-0}*3600 + ${t%%:*}*60 + ${t#*:}))
+            s="$((${d:-0}*86400 + ${h:-0}*3600 + ${t%%:*}*60 + ${t#*:}))"
         ;;
 
         Haiku)
@@ -2464,14 +2464,14 @@ get_cpu() {
         ;;
 
         "Interix")
-            cpu=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get Name)
-            cpu=${cpu/Name}
+            cpu="$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get Name)"
+            cpu="${cpu/Name}"
 
-            speed=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get CurrentClockSpeed)
-            speed=${speed/CurrentClockSpeed}
+            speed="$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get CurrentClockSpeed)"
+            speed="${speed/CurrentClockSpeed}"
 
-            cores=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get NumberOfCores)
-            cores=${cores/NumberOfCores}
+            cores="$(/dev/fs/C/Windows/System32/wbem/WMIC.exe cpu get NumberOfCores)"
+            cores="${cores/NumberOfCores}"
         ;;
     esac
 
@@ -2856,12 +2856,14 @@ get_memory() {
         ;;
 
         "Interix")
-            mem_total=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe computersystem get TotalPhysicalMemory | tr -d '[:space:]')
-            mem_total=${mem_total/TotalPhysicalMemory}
+            mem_total="$(/dev/fs/C/Windows/System32/wbem/WMIC.exe computersystem get TotalPhysicalMemory)"
+            mem_total="${mem_total//[[:space:]]}"
+            mem_total="${mem_total/TotalPhysicalMemory}"
             mem_total="$((mem_total / 1024 / 1024))"
 
-            mem_free=$(/dev/fs/C/Windows/System32/wbem/WMIC.exe os get FreePhysicalMemory | tr -d '[:space:]')
-            mem_free=${mem_free/FreePhysicalMemory}
+            mem_free="$(/dev/fs/C/Windows/System32/wbem/WMIC.exe os get FreePhysicalMemory)"
+            mem_free="${mem_free//[[:space:]]}"
+            mem_free="${mem_free/FreePhysicalMemory}"
             mem_free="$((mem_free / 1024))"
 
             mem_used="$((mem_total - mem_free))"
