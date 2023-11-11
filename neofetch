@@ -1128,7 +1128,7 @@ get_distro() {
             if [[ $distro == "Ubuntu"* ]]; then
                 case $XDG_CONFIG_DIRS in
                     *"studio"*)   distro=${distro/Ubuntu/Ubuntu Studio} ;;
-                    *"plasma"*)   distro=${distro/Ubuntu/Kubuntu} ;;
+                    *"kde"*)      distro=${distro/Ubuntu/Kubuntu} ;;
                     *"mate"*)     distro=${distro/Ubuntu/Ubuntu MATE} ;;
                     *"xubuntu"*)  distro=${distro/Ubuntu/Xubuntu} ;;
                     *"Lubuntu"*)  distro=${distro/Ubuntu/Lubuntu} ;;
