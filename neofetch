@@ -11302,7 +11302,7 @@ EOF
 "Xray"*)
             set_colors 15 14 16 24
             read -rd '' ascii_data <<'EOF'
-${c1}               ${c1}raaaaaaaaaaaayyyyyyyyy
+${c1}               ${c1}rrrrrraaaaaaaaaaaayyyy
            ${c1}xxrrrrrrrraaaaaaaaaaaayyyyyyyyy
         ${c1}xxxxxrrrrrrrraaaaaaaaaaaayyyyyyy${c3}yyyyy${c2}yyyyyyyyyy
       ${c1}xxxxxxxrrrrrrrraaaaa ${c2}aaaaayyyyyyyyyyyyyyyyyyy
