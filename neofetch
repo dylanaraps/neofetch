@@ -807,7 +807,7 @@ image_source="auto"
 #       openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
 #       Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
 #       Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
-#       Obarun, windows10, Windows7, Xubuntu, Xray, Zorin, and IRIX have ascii logos.
+#       Obarun, windows10, Windows7, Xubuntu, Xray_OS, Zorin, and IRIX have ascii logos.
 # NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 #       Use '{distro name}_old' to use the old logos.
 # NOTE: Ubuntu has flavor variants.
@@ -5167,7 +5167,7 @@ ASCII:
                                 t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
                                 Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
-                                Obarun, windows10, Windows7, Xubuntu, Xray, Zorin, and IRIX have ascii logos.
+                                Obarun, windows10, Windows7, Xubuntu, Xray_OS, Zorin, and IRIX have ascii logos.
 
                                 NOTE: Arch, Ubuntu, Redhat, Fedora and Dragonfly have 'old' logo variants.
 
@@ -11299,7 +11299,7 @@ ${c3}             `${c4} :EEEEtttt::::z7
 EOF
         ;;
 
-"Xray"*)
+"Xray_OS"*)
             set_colors 15 14 16 24
             read -rd '' ascii_data <<'EOF'
 ${c1}               ${c1}rrrrrraaaaaaaaaaaayyyy
