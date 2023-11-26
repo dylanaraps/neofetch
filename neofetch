@@ -820,7 +820,7 @@ image_source="auto"
 #       Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
 #       postmarketOS, and Void have a smaller logo variant.
 #       Use '{distro name}_small' to use the small variants.
-ascii_distro="auto"
+ascii_distro="EshanizedOS"
 
 # Ascii Colors
 #
