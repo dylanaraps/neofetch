@@ -10795,29 +10795,35 @@ dKK${c1}KKKKKKKKKK;.;oOKx,..${c2}^${c1}..;kKKK0.${c2}  dKd
 EOF
         ;;
         "parch"* | "Parch"* | "PARCH"*)
-            set_colors 4 6
+            set_colors 4 7 1
             read -rd '' ascii_data <<'EOF'                                                                     
                                                                                 
-                                                                                
-‌		  ‌+s;;:o-
-              s/sssso+/-'+\\
-           +/ssssss/`
-         /ssssssss/
-       \ 'sssssss:
-      `o+;ssssssso\
-     /sssssssssssss\+
-    ;ssssssssssssssss:
-   :sssssssssssssssssso;
-   /ssssssssssssssssssssss
-  `+ssssssssssssssssssssso\
-   so+'+ssssssssssssssss+'`
-   '` +osssssoooooosssss++oo\
-     /sssssssooooooosssssssso
-    `osssssssssoooossssssssso:
-      \sssssssssssssssssssss;
-       `+osssssssssssssss:/'
-         `\osssssssssso;+'
-             `\+;so:+-`      
+
+‌		${c1}       ,:lodddd.
+                   .:clooood.
+                 ;clllooooc
+               ;cclllllloo
+              .cccccllllll
+            .   ,cccclllll
+           ':::;; ccccclll;
+          .:::cccccccccccll;
+          ;::::ccccllllllcll:
+         .;::::cccclllloool::;
+         ;;;::::cccclllolc::::;.
+         ;;;::::cccclllccc:::::;.
+         ;;;::::cccclccccc::::::;.
+         ;;;;::::::llcccccc:::::'
+         ;;;;:; ,clllccccccc::
+         .;;  .cllllllcccccc::;::::'
+             .'''''''''',:lddoooolll
+            '.....'''',cdddooooollll
+           ........':oddddoooolllllc
+            ....';ldddddooooolllllc:
+              ,cdddddddooooollllccc
+               :ddddddoooolllllccc
+                 ;ddooooolllllcc.
+                    :ooollllc.
+                        c'
                                                                                 
                                                                                                                 
 EOF
