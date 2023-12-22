@@ -793,7 +793,7 @@ image_source="auto"
 #       gNewSense, GNOME, GNU, GoboLinux, Grombyang, Guix, Haiku, Huayra, HydroOS
 #       Hyperbola, iglunix, janus, Kali, KaOS, KDE_neon, Kibojoe, Kogaion, Korora,
 #       KSLinux, Kubuntu, LEDE, LaxerOS, LibreELEC, LFS, Linux_Lite, LMDE,
-#       Lubuntu, Lunar, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
+#       Lubuntu, Lunar, MacaroniOS, macos, Mageia, MagpieOS, Mandriva, Manjaro, TeArch, Maui,
 #       Mer, Minix, LinuxMint, Live_Raizo, MX_Linux, Namib, Neptune, NetBSD,
 #       Netrunner, Nitrux, NixOS, Nurunner, NuTyX, OBRevenge, OpenBSD,
 #       openEuler, OpenIndiana, openmamba, OpenMandriva, OpenStage, OpenWrt,
@@ -1006,6 +1006,17 @@ get_distro() {
                         distro=$(pveversion)
                         distro=${distro#pve-manager/}
                         distro="Proxmox VE ${distro%/*}"
+                esac
+
+            elif type -p anise >/dev/null; then
+                for file in /etc/lsb-release /etc/os-release ; do
+                    source "$file"
+                done
+
+                case $distro_shorthand in
+                    on|tiny) distro="${NAME:-${DISTRIB_DESCRIPTION:-MacaroniOS}}" ;;
+                    *)
+                        distro="${NAME:-${DISTRIB_DESCRIPTION:-MacaroniOS}} ${VERSION:-${DISTRIB_RELEASE}}"
                 esac
 
             elif type -p lsb_release >/dev/null; then
@@ -1565,6 +1576,7 @@ get_packages() {
             has swupd      && tot swupd bundle-list --quiet
             has pisi       && tot pisi li
             has pacstall   && tot pacstall -L
+            has anise      && tot anise s --installed
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -8411,6 +8423,35 @@ ${c3}          __
          |  |   _ _ ___ ___ ___
          |  |__| | |   | .'|  _|
          |_____|___|_|_|__,|_|
+EOF
+        ;;
+
+        "MacaroniOS"* | "Macaroni OS"*)
+
+            set_colors 2 3 15 14
+            read -rd '' ascii_data <<'EOF'
+                 ${c2}
+             -=+++==--::..                                      .-+++==-:.
+           .:--:-=++==-:.                              :=*+=--==+***######**+-:
+      .---:-===-----===+++==-:..                     :=+=--=+*****+++*****#%%%#-
+       .=*********+++========+++++=--:.         .:-=+++++++=-:..     .=*=::.
+     :-=-.  .:::---===+++++++++++*******++====+**+++=-:.               :+*-..
+  .. -++                    ..:--==+***********=:.                       -*=
+ .   :+.      .           ${c3}...${c2}        .:--===:.                            .++
+    .*:       .       ${c3}:+#%%@@%%#=:                                          ${c2}--
+    ${c2}-=              ${c3}-#@@@@@@@@@@@@#:                                         ${c2}.
+                  ${c3}:*%@%%@@@@@@@@@@@%+          .:--====-:.
+                 :*%%%%%%%%%@@@@@@@@@*.     :=*#%%%%@@@@@%#+-
+                .*%%%%%%%%%%%%%@@#+--=-   -*%%%%%%%%%%%@@@@@%#=
+                -#%%%%%%%%%%%%%#:  :+:   :+%*#%%%%%%%%%%%%%%%%%*.
+                +%%%%%%%%%%%%%%:   .#*:    *+-*%%%%%%%%%%%%%%%%%+
+                +%%%%%%%%%%%%%#  .      .   . :%%%%%%%%%%%%%%%%%#.
+                =#%%%%%%%%%%%%#  .      .     =%%%%%%%%%%%%%%%%%*.
+                .*%%%%%%%%%%%%%*         :   =%%%%%%%%%%%%%%%%%#-
+                 :#%%%%%%%%%%%%%#=....   .=*%%%%%%%%%%%%%%%%%%*:
+                  :*%@@%%%%%%%%%%%%#+.     :+#%%%%%%%%%%%%%#*-
+                    =*%%@@%%%%%%%#*-          .-=+**##**+=:
+                      :=*######+=:
 EOF
         ;;
 
