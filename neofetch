@@ -4751,23 +4751,26 @@ get_full_path() {
     # If the file exists in the current directory, stop here.
     [[ -f "${PWD}/${1}" ]] && { printf '%s\n' "${PWD}/${1}"; return; }
 
-    ! cd "${1%/*}" && {
-        err "Error: Directory '${1%/*}' doesn't exist or is inaccessible"
+    # Extract the directory path and filename
+    local dir_path="${1%/*}"
+    local file_name="${1##*/}"
+
+    # Change directory to the path (if it exists)
+    ! cd "$dir_path" && {
+        err "Error: Directory '$dir_path' doesn't exist or is inaccessible"
         err "       Check that the directory exists or try another directory."
         exit 1
     }
 
-    local full_dir="${1##*/}"
-
     # Iterate down a (possible) chain of symlinks.
-    while [[ -L "$full_dir" ]]; do
-        full_dir="$(readlink "$full_dir")"
-        cd "${full_dir%/*}" || exit
-        full_dir="${full_dir##*/}"
+    while [[ -L "$file_name" ]]; do
+        file_name="$(readlink "$file_name")"
+        cd "${file_name%/*}" || exit
+        file_name="${file_name##*/}"
     done
 
     # Final directory.
-    full_dir="$(pwd -P)/${1/*\/}"
+    local full_dir="$(pwd -P)/$file_name"
 
     [[ -e "$full_dir" ]] && printf '%s\n' "$full_dir"
 }
