@@ -1,6 +1,7 @@
 ## AZOS GNU/Linux custom-tailored neofetch
 
-We basically forked neoftech and added the AZOS GNU/Linux logo (since the neofetch developer won't do so) since people have requested this.
+We basically forked neoftech and added the AZOS GNU/Linux logo (since the neofetch developer won't do so) since people have requested this. To build a package out of it download it, extract it (or you can always `git clone` into the repo) and run 
+`makepkg` into it. If you want to make it AND install it, do `makepkg -si`.
 
 ## Original README
 <h3 align="center"><img src="https://i.imgur.com/ZQI2EYz.png" alt="logo" height="100px"></h3>
