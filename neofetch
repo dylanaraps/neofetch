@@ -3752,7 +3752,7 @@ get_disk() {
 
         # Append '(disk mount point)' to the subtitle.
         if [[ "$subtitle" ]]; then
-            prin "$subtitle${disk_sub:+ ($disk_sub)}" "$disk"
+            prin "$subtitle" "${disk_sub:+ ${bold}($disk_sub)${reset}} $disk" 
         else
             prin "$disk_sub" "$disk"
         fi
@@ -4882,7 +4882,7 @@ dynamic_prompt() {
     # If the ascii art is taller than the info.
     ((lines=lines>info_height?lines-info_height+1:1))
 
-    printf -v nlines "%${lines}s"
+    printf -v nlines "%${lines}s"\
     printf "%b" "${nlines// /\\n}"
 }
 
