@@ -1216,7 +1216,7 @@ get_distro() {
         ;;
 
         "z/OS")
-            distro="IBM z/OS ${kernel_version}"
+            distro="z/OS ${kernel_version}"
             os_arch=off
         ;;
     esac
@@ -11426,6 +11426,21 @@ ssssssssssssso/-`      `-/osssssssssssss
       .+oooooooooooooooooooooooo+.
        -osssssssssssssssssssssso-
         `osssssssssssssssssssso`
+EOF
+        ;;
+
+        "z/OS"*)
+            set_colors 12
+            read -rd '' ascii_data <<'EOF'
+${c1}             //   OOO    SSSS
+            //   OO OO  SS  SS
+zzzzzz     //   OO   OO SSS
+z  zz     //    OO   OO  SSS
+  zz     //     OO   OO    SSS
+ zz  z  //       OO OO  SS  SS
+zzzzzz  /         OOO    SSSS
+
+
 EOF
         ;;
 
