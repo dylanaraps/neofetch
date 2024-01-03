@@ -1,4 +1,4 @@
- #!/usr/bin/env bash
+  #!/usr/bin/env bash
 # vim: noai:ts=4:sw=4:expandtab
 # shellcheck source=/dev/null
 # shellcheck disable=2009
@@ -4956,12 +4956,8 @@ cache_uname() {
         IFS=" " read -ra uname <<< "$(uname -srmvI)"
 
         kernel_name="${uname[0]}"
+        kernel_version="$((10#${uname[2]})).$((10#${uname[1]:0:2}))"
         kernel_machine="${uname[3]}"
-        kv="$((10#${uname[2]}))"
-        kr="$((10#${uname[1]:0:2}))"
-
-        kernel_version="$kv.$kr"
-
     fi
 }
 
