@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+ #!/usr/bin/env bash
 # vim: noai:ts=4:sw=4:expandtab
 # shellcheck source=/dev/null
 # shellcheck disable=2009
@@ -958,6 +958,10 @@ get_os() {
             os=Windows
         ;;
 
+        "z/OS")
+            os="z/OS"
+        ;;
+
         *)
             printf '%s\n' "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf '%s\n' "Open an issue on GitHub to add support for your OS." >&2
@@ -1210,6 +1214,11 @@ get_distro() {
         FreeMiNT)
             distro=FreeMiNT
         ;;
+
+        "z/OS")
+            distro="IBM z/OS ${kernel_version}"
+            os_arch=off
+        ;;
     esac
 
     distro=${distro//Enterprise Server}
@@ -1356,6 +1365,32 @@ get_model() {
             model=$(sysctl -n hw.model)
             model=${model/ (_MCH *)}
         ;;
+
+        "z/OS")
+            case $kernel_machine in
+                2064): "IBM z900 (Freeway)" ;;
+                2066): "IBM z800 (Raptor)" ;;
+                2084): "IBM z990 (T-Rex)" ;;
+                2086): "IBM z890 (pTero)" ;;
+                2094): "IBM z9 EC (Danu)" ;;
+                2096): "IBM z9 BC (Pollux)" ;;
+                2097): "IBM z10 EC (eCLipz)" ;;
+                2098): "IBM z10 BC (eCLipz)" ;;
+                2817): "IBM z196 (Gryphon)" ;;
+                2818): "IBM z114 (Gryphon)" ;;
+                2827): "IBM zEC12 (Helix)" ;;
+                2828): "IBM zBC12 (Helix)" ;;
+                2964): "IBM z13 (Sphinx)" ;;
+                2965): "IBM z13s (Sphinx)" ;;
+                3906): "IBM z14 (Midas)" ;;
+                3907): "IBM z14 Model ZR1 (Zeus)" ;;
+                8561): "IBM z15 (Themis)" ;;
+                8562): "IBM z15 Model T02 (Athena)" ;;
+                3931): "IBM z16 (Artemis)" ;;
+                3932): "IBM z16 Model A02 (Selene)" ;;
+            esac
+
+            model=$_
     esac
 
     # Remove dummy OEM info.
@@ -1419,6 +1454,11 @@ get_kernel() {
             on|tiny) kernel=$kernel_version ;;
             *)       unset kernel ;;
         esac
+
+    # z/OS doesn't have a separate kernel version.
+    [[ $os == "z/OS" ]] && {
+        unset kernel
+    }
 }
 
 get_uptime() {
@@ -4909,6 +4949,19 @@ cache_uname() {
                 ProductBuildVersion)  osx_build=${sw_vers[i+1]}   ;;
             esac
         }
+    fi
+
+    if [[ "$kernel_name" == "OS/390" ]]; then
+        # z/OS has a non-standard -I argument for uname.
+        IFS=" " read -ra uname <<< "$(uname -srmvI)"
+
+        kernel_name="${uname[0]}"
+        kernel_machine="${uname[3]}"
+        kv="$((10#${uname[2]}))"
+        kr="$((10#${uname[1]:0:2}))"
+
+        kernel_version="$kv.$kr"
+
     fi
 }
 
