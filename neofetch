@@ -1,4 +1,4 @@
-  #!/usr/bin/env bash
+#!/usr/bin/env bash
 # vim: noai:ts=4:sw=4:expandtab
 # shellcheck source=/dev/null
 # shellcheck disable=2009
@@ -1504,6 +1504,14 @@ get_uptime() {
 
         Haiku)
             s=$(($(system_time) / 1000000))
+        ;;
+
+        z/OS)
+            IFS=" " read -ra ut <<< "$(uptime)"
+            df="$((10#${ut[2]}))"
+            hf="$((10#${ut[4]:0:2}))"
+            mf="$((10#${ut[4]:3:2}))"
+            s="$((df * 60 * 60 * 24 + hf * 60 * 60 + mf * 60))"
         ;;
     esac
 
