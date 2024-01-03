@@ -1507,6 +1507,7 @@ get_uptime() {
         ;;
 
         z/OS)
+            # z/OS doesn't have /proc until v3.1.
             IFS=" " read -ra ut <<< "$(uptime)"
             df="$((10#${ut[2]}))"
             hf="$((10#${ut[4]:0:2}))"
