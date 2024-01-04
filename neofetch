@@ -2765,12 +2765,15 @@ get_memory() {
 
         "z/OS")
             memory_unit="gib"
-            # Create a temporary REXX exec to get the number of CPUs in the system.
+            # Create a temporary REXX exec to get amount of memory in the system.
             REXXFILE="/tmp/memory-$$.rexx"
             printf "/* REXX */\nNumeric digits 20\nsay C2d(Storage(D2x(C2d(Storage(10,4)) + 856),4))/1024\n" > ${REXXFILE}
             chmod +x ${REXXFILE}
             mem_total=$($REXXFILE)
+            printf "/* REXX */\nNumeric digits 20\nsay C2d(Storage(D2x(C2d(Storage(D2x(C2d(Storage(10,4)) + 1168),4)) + 136),4)) * 4096 // (1024*1024)\n" > ${REXXFILE}
+            mem_avail=$($REXXFILE)
             rm -f ${REXXFILE}
+            mem_used=$((mem_total - mem_avail))
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
