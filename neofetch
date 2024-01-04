@@ -2485,7 +2485,7 @@ get_cpu() {
             cpu="IBM Z CPU"
 
             # Create a temporary REXX exec to get the number of CPUs in the system.
-            REXXFILE="/tmp/cpus.rexx"
+            REXXFILE="/tmp/cpus-$$.rexx"
             printf "/* REXX */\nx = SYSCPUS('CPUS.')\nsay CPUS.0\n" > ${REXXFILE}
             chmod +x ${REXXFILE}
             cores=$($REXXFILE)
@@ -2761,6 +2761,16 @@ get_memory() {
             fi
 
             mem_total="$((mem_total / 1024))"
+        ;;
+
+        "z/OS")
+            memory_unit="gib"
+            # Create a temporary REXX exec to get the number of CPUs in the system.
+            REXXFILE="/tmp/memory-$$.rexx"
+            printf "/* REXX */\nNumeric digits 20\nsay C2d(Storage(D2x(C2d(Storage(10,4)) + 856),4))/1024\n" > ${REXXFILE}
+            chmod +x ${REXXFILE}
+            mem_total=$($REXXFILE)
+            rm -f ${REXXFILE}
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
