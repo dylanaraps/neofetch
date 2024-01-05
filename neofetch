@@ -1016,6 +1016,18 @@ get_distro() {
                 esac
                 distro=$(lsb_release "$lsb_flags")
 
+            elif [[ -f /etc/packageversion ]]; then
+                source /etc/packageversion
+                if [[ -f /etc/unicorn.conf ]]; then
+                    DISTRO_NAME=$(cat /etc/unicorn.conf | grep server_public_address | awk '{print $2}')
+                fi
+
+                # Format the distro name
+                case $distro_shorthand in
+                    tiny) distro="${NAME:-${DISTRO_NAME}}" ;;
+                    *)   distro="${NAME:-${DISTRO_NAME}} (${VERSION_ID:-${SOFTWARE_VERSION}})" ;;
+                esac
+
             elif [[ -f /etc/os-release || \
                     -f /usr/lib/os-release || \
                     -f /etc/openwrt_release || \
@@ -1253,6 +1265,9 @@ get_model() {
 
             elif [[ -f /tmp/sysinfo/model ]]; then
                 model=$(< /tmp/sysinfo/model)
+
+            elif [[ $kernel_machine == "armv5"* ]]; then
+                model="$(awk -F':' '/Hardware/ {printf $2; exit}' /proc/cpuinfo)"
             fi
         ;;
 
@@ -2201,9 +2216,10 @@ get_cpu() {
                     cpu="$(awk -F'=' '/machine/ {print $4; exit}' "$cpu_file")"
                 ;;
 
-                "ia64" | "m32r")
+                "ia64" | "m32r" | "armv5"* )
                     cpu="$(awk -F':' '/model/ {print $2; exit}' "$cpu_file")"
                     [[ -z "$cpu" ]] && cpu="$(awk -F':' '/family/ {printf $2; exit}' "$cpu_file")"
+                    [[ -z "$cpu" ]] && cpu="$(awk -F':' '/Processor/ {printf $2; exit}' "$cpu_file")"
                 ;;
 
                 *)
@@ -6998,7 +7014,7 @@ ${c3}             !M$EEEEEEEEEEEP
 EOF
         ;;
 
-                "dahlia"*)
+        "dahlia"*)
                     set_colors 1 7 3
                     read -rd '' ascii_data <<'EOF'
 ${c1}
@@ -7020,7 +7036,26 @@ ${c1}
                ,/%@@@%/.
                   ,#,
 EOF
-                ;;
+        ;;
+
+        *"lacie"*)
+            set_colors 4 7
+            read -rd '' ascii_data <<'EOF'
+${c1}                        .%%%%%%%%%%%%.
+               %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        /%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%,
+     %%%%%%%%%%%%%%%%%%%%%%%%#         %%%%%%%%%%%%%%%%%
+  .%%%%%%%  %%%%%%%%. %%%%%%   %%%%%%%%%# %%       %%%%%%%
+ %%%%%%%%%  %%%%%%%(   %%%%  %%%%%%%%%%%# %%  %%%%%%%%%%%%%
+%%%%%%%%%%  %%%%%%% .%  %%#  %%%%%%%%%%%# %%       %%%%%%%%
+ %%%%%%%%%  %%%%%%  %%%  %%  %%%%%%%%%%%# %%  %%%%%%%%%%%%%
+ ,%%%%%%%%  %%%%%         %.  %%%%%%%%%%# %%  %%%%%%%%%%%%%
+   %%%%%%%        %%%%%%%  %%     .    %# %%       %%%%%%%
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%   %%%%%%%%%%%%%%%%%%%
+          %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+              `%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%`
+EOF
+        ;;
 
         "debian_small")
             set_colors 1 7 3
