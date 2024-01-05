@@ -2765,15 +2765,25 @@ get_memory() {
 
         "z/OS")
             memory_unit="gib"
-            # Create a temporary REXX exec to get amount of memory in the system.
+            # Create a temporary REXX exec to get the amount of memory in the system.
+            read -rd '' rexx_code <<'EOF'
+/* REXX */
+Numeric digits 20
+TOTALMEM = C2d(Storage(D2x(C2d(Storage(10,4)) + 856),4))/1024
+CVT      = C2d(Storage(10,4))
+CVTRCEP  = C2d(Storage(D2x(CVT + 1168),4))
+FREEMEM =  trunc(C2d(Storage(D2x(CVTRCEP + 136),4)) * 4096 / (1024 * 1024))
+
+say TOTALMEM FREEMEM
+EOF
             REXXFILE="/tmp/memory-$$.rexx"
-            printf "/* REXX */\nNumeric digits 20\nsay C2d(Storage(D2x(C2d(Storage(10,4)) + 856),4))/1024\n" > ${REXXFILE}
+            printf "%s\n" "${rexx_code}" > ${REXXFILE}
             chmod +x ${REXXFILE}
-            mem_total=$($REXXFILE)
-            printf "/* REXX */\nNumeric digits 20\nsay C2d(Storage(D2x(C2d(Storage(D2x(C2d(Storage(10,4)) + 1168),4)) + 136),4)) * 4096 // (1024*1024)\n" > ${REXXFILE}
-            mem_avail=$($REXXFILE)
-            rm -f ${REXXFILE}
+            IFS=" " read -ra rexx_data <<< "$($REXXFILE)"
+            mem_total="${rexx_data[0]}"
+            mem_avail="${rexx_data[1]}"
             mem_used=$((mem_total - mem_avail))
+            rm -f ${REXXFILE}
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
