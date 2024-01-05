@@ -11466,15 +11466,13 @@ EOF
         "z/OS"*)
             set_colors 12
             read -rd '' ascii_data <<'EOF'
-${c1}             //   OOO    SSSS
-            //   OO OO  SS  SS
-zzzzzz     //   OO   OO SSS
-z  zz     //    OO   OO  SSS
-  zz     //     OO   OO    SSS
- zz  z  //       OO OO  SS  SS
-zzzzzz  /         OOO    SSSS
-
-
+${c1}             //  OOOOOOO  SSSSSSS
+            //  OO    OO SS
+    zzzzzz //  OO    OO SS
+      zz  //  OO    OO   SSSS
+    zz   //  OO    OO       SS
+  zz    //  OO    OO       SS
+zzzzzz //   OOOOOOO  SSSSSSS
 EOF
         ;;
 
