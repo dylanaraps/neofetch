@@ -820,6 +820,9 @@ image_source="auto"
 #       Slackware, SunOS, LinuxLite, OpenSUSE, Raspbian,
 #       postmarketOS, and Void have a smaller logo variant.
 #       Use '{distro name}_small' to use the small variants.
+# NOTE: Fedora has immutable spins with unique logos (except Onyx).
+#       Change this to Silverblue, Kinoite, Sericea, or CoreOS to use the spins.
+
 ascii_distro="auto"
 
 # Ascii Colors
@@ -1134,6 +1137,19 @@ get_distro() {
                     *"Lubuntu"*)  distro=${distro/Ubuntu/Lubuntu} ;;
                     *"budgie"*)   distro=${distro/Ubuntu/Ubuntu Budgie} ;;
                     *"cinnamon"*) distro=${distro/Ubuntu/Ubuntu Cinnamon} ;;
+                esac
+            fi
+
+            # Get Fedora immutable spin.
+            if [[ $distro == "Fedora"* ]]; then
+                case $VARIANT in
+                    "CoreOS" | "Kinoite" | "Sericea" | "Silverblue")
+                        case $distro_shorthand in
+                            on)   distro="Fedora $VARIANT $VERSION_ID" ;;
+                            tiny) distro="$VARIANT";;
+                            *)    distro="Fedora $VARIANT $OSTREE_VERSION" ;;
+                        esac
+                        ;;
                 esac
             fi
         ;;
@@ -5187,6 +5203,11 @@ ASCII:
 
                                 NOTE: Use '{distro name}_small' to use the small variants.
 
+                                NOTE: Fedora has immutable spins with unique logos (except Onyx).
+
+                                NOTE: Change this to Silverblue, Kinoite, Sericea, or CoreOS to use
+                                the spins.
+
     --ascii_bold on/off         Whether or not to bold the ascii logo.
     -L, --logo                  Hide the info text and only show the ascii logo.
 
@@ -7436,6 +7457,76 @@ ${c1}          /:-------------:\\
 :---${c2}:sdNMMMMNds:${c1}------------:
 :------${c2}:://:${c1}-------------::
 :---------------------://
+EOF
+        ;;
+
+        "Fedora Silverblue" | "Silverblue"*)
+            set_colors 4 7 12
+            read -rd '' ascii_data <<'EOF'
+${c1}    .;ooooooooooooooooooooooooooo.
+${c1}  ,dddddddddddddddddddddddddddddd'${c3};
+${c1} lddddddddddddddddddddddddddddd'${c3};;;
+${c1}ddddd${c2},XXX.${c1}ddddd${c2},XXX.${c1}dddd'${c2},XXX.${c3};;;;;
+${c1}ddddd${c2}XX${c1}x${c2}XX${c1}ddddd${c2}XX${c1}x${c2}XX${c1}ddd'${c2},XX${c3}x${c2}XX${c3};;;;;
+${c1}ddddd${c2}'XXX'${c1}ddddd${c2}'XXX'${c1}dd'${c2}XXXXXX'${c3};;;;;
+${c1}dddddd${c2};X;${c1}ddddddd${c2};X:${c1}d'${c2}XXX${c3};;;;;;;;;;;
+${c1}dddddd${c2};X;${c1}ddddddd${c2};X:${c2}XXX${c3};;;;;;;;;;;;;
+${c1}dddddd${c2};X;${c1}dddddd'${c2};XXX,,,,,,XXX.${c3};;;;;
+${c1}dddddd${c2};X;${c1}dddd'${c2}XXXX${c2}XXXXXXXXX${c3}x${c2}XX${c3};;;;;
+${c1}dddddd${c2};X;${c1}dd'${c2}XXX${c3};;;;;;;;;;;${c2}XXX${c3};;;;;;
+${c1}dddddd${c2};X;${c1}'${c2}XXX${c3};;;;;;;;;;;;;;;;;;;;;;
+${c1}dddddd${c2};XXXXX,,,,,,,,,,,,,;XXX:${c3};;;;;
+${c1}dddddd${c2}:XXXXXXXXXXXXXXXXXXXX${c3}x${c2}XX${c3};;;;;
+${c1}ddddd'${c3};;;;;;;;;;;;;;;;;;;${c2}'XXX'${c3};;;;'
+${c1}ddd'${c3};;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+${c1}o'${c3};;;;;;;;;;;;;;;;;;;;;;;;;;;;'
+EOF
+        ;;
+
+        "Fedora Kinoite"* | "Kinoite"*)
+            set_colors 12 7
+            read -rd '' ascii_data <<'EOF'
+${c1} ,clll:.${c2}          .,::::::::::::'
+${c1}:ooooooo${c2}        .;::::::::::::::
+${c1}looooooo${c2}       ,:::::::::::::::'
+${c1}looooooo${c2}      .::::::::::::::::
+${c1}looooooo${c2}      ;:::::::::::::::.
+${c1}looooooo${c2}     .::::::::::::::::
+${c1}looooool${c2};;;;,::::::::::::::::
+${c1}looool${c2}::,   .::::::::::::::
+${c1}looooc${c2}::     ;::
+${c1}looooc${c2}::;.  .::;
+${c1}loooool${c2}:::::::::::.
+${c1}looooooo${c2}.    .::::::'
+${c1}looooooo${c2}       .::::::,;,..
+${c1}looooooo${c2}          :::;' ';:;.
+${c1}looooooo${c2}          :::     :::
+${c1}cooooooo${c2}          .::'   '::.
+ ${c1}.ooooc ${c2}            ::, ,::
+                      ''''
+EOF
+        ;;
+
+        "Fedora Sericea"* | "Sericea"*)
+            set_colors 12 7
+            read -rd '' ascii_data <<'EOF'
+${c1}              :oooo,  .','
+      .';;;.;oooooooolooooo'
+     coooooooooooooooooooooooolc'
+  .':oooooooooooo${c2}ll${c1}ooooooooooooool
+.oooooooooooooooo${c2}ll${c1}oooooooooooo${c2}l${c1}ool
+ooooooooooooooooo${c2}ll${c1}ooooooooooo${c2}ll${c1}oo'
+ oooo${c2}l${c1}oooooooooo${c2}lll${c1}ooooooooo${c2}lll${c1}oo
+ .ooooo${c2}lll${c1}ooooo${c2}lll${c1}ooooooooo${c2}lll${c1}ool
+ .ooooooo${c2}lll${c1}oo${c2}llll${c1}oooo${c2}lllll${c1}ooooo:
+  'oooooooo${c2}llllllllllll${c1}oooooooo'
+     .c,.oo${c2}lllll${c1}oooooooo.${c2}
+           'll;
+           'll.
+           lll
+           lll
+          ;ll,
+          .l:
 EOF
         ;;
 
