@@ -958,6 +958,10 @@ get_os() {
             os=Windows
         ;;
 
+        "z/OS")
+            os="z/OS"
+        ;;
+
         *)
             printf '%s\n' "Unknown OS detected: '$kernel_name', aborting..." >&2
             printf '%s\n' "Open an issue on GitHub to add support for your OS." >&2
@@ -1210,6 +1214,11 @@ get_distro() {
         FreeMiNT)
             distro=FreeMiNT
         ;;
+
+        "z/OS")
+            distro="z/OS ${kernel_version}"
+            os_arch=off
+        ;;
     esac
 
     distro=${distro//Enterprise Server}
@@ -1356,6 +1365,32 @@ get_model() {
             model=$(sysctl -n hw.model)
             model=${model/ (_MCH *)}
         ;;
+
+        "z/OS")
+            case $kernel_machine in
+                2064): "IBM z900 (Freeway)" ;;
+                2066): "IBM z800 (Raptor)" ;;
+                2084): "IBM z990 (T-Rex)" ;;
+                2086): "IBM z890 (pTero)" ;;
+                2094): "IBM z9 EC (Danu)" ;;
+                2096): "IBM z9 BC (Pollux)" ;;
+                2097): "IBM z10 EC (eCLipz)" ;;
+                2098): "IBM z10 BC (eCLipz)" ;;
+                2817): "IBM z196 (Gryphon)" ;;
+                2818): "IBM z114 (Gryphon)" ;;
+                2827): "IBM zEC12 (Helix)" ;;
+                2828): "IBM zBC12 (Helix)" ;;
+                2964): "IBM z13 (Sphinx)" ;;
+                2965): "IBM z13s (Sphinx)" ;;
+                3906): "IBM z14 (Midas)" ;;
+                3907): "IBM z14 Model ZR1 (Zeus)" ;;
+                8561): "IBM z15 (Themis)" ;;
+                8562): "IBM z15 Model T02 (Athena)" ;;
+                3931): "IBM z16 (Artemis)" ;;
+                3932): "IBM z16 Model A02 (Selene)" ;;
+            esac
+
+            model=$_
     esac
 
     # Remove dummy OEM info.
@@ -1419,6 +1454,11 @@ get_kernel() {
             on|tiny) kernel=$kernel_version ;;
             *)       unset kernel ;;
         esac
+
+    # z/OS doesn't have a separate kernel version.
+    [[ $os == "z/OS" ]] && {
+        unset kernel
+    }
 }
 
 get_uptime() {
@@ -1464,6 +1504,15 @@ get_uptime() {
 
         Haiku)
             s=$(($(system_time) / 1000000))
+        ;;
+
+        z/OS)
+            # z/OS doesn't have /proc until v3.1.
+            IFS=" " read -ra ut <<< "$(uptime)"
+            df="$((10#${ut[2]}))"
+            hf="$((10#${ut[4]:0:2}))"
+            mf="$((10#${ut[4]:3:2}))"
+            s="$((df * 60 * 60 * 24 + hf * 60 * 60 + mf * 60))"
         ;;
     esac
 
@@ -2431,6 +2480,17 @@ get_cpu() {
             cpu="$(awk -F':' '/CPU:/ {printf $2}' /kern/cpuinfo)"
             speed="$(awk -F '[:.M]' '/Clocking:/ {printf $2}' /kern/cpuinfo)"
         ;;
+
+        "z/OS")
+            cpu="IBM Z CPU"
+
+            # Create a temporary REXX exec to get the number of CPUs in the system.
+            REXXFILE="/tmp/cpus-$$.rexx"
+            printf "/* REXX */\nx = SYSCPUS('CPUS.')\nsay CPUS.0\n" > ${REXXFILE}
+            chmod +x ${REXXFILE}
+            cores=$($REXXFILE)
+            rm -f ${REXXFILE}
+        ;;
     esac
 
     # Remove un-needed patterns from cpu output.
@@ -2701,6 +2761,29 @@ get_memory() {
             fi
 
             mem_total="$((mem_total / 1024))"
+        ;;
+
+        "z/OS")
+            memory_unit="gib"
+            # Create a temporary REXX exec to get the amount of memory in the system.
+            read -rd '' rexx_code <<'EOF'
+/* REXX */
+Numeric digits 20
+TOTALMEM = C2d(Storage(D2x(C2d(Storage(10,4)) + 856),4))/1024
+CVT      = C2d(Storage(10,4))
+CVTRCEP  = C2d(Storage(D2x(CVT + 1168),4))
+FREEMEM =  trunc(C2d(Storage(D2x(CVTRCEP + 136),4)) * 4096 / (1024 * 1024))
+
+say TOTALMEM FREEMEM
+EOF
+            REXXFILE="/tmp/memory-$$.rexx"
+            printf "%s\n" "${rexx_code}" > ${REXXFILE}
+            chmod +x ${REXXFILE}
+            IFS=" " read -ra rexx_data <<< "$($REXXFILE)"
+            mem_total="${rexx_data[0]}"
+            mem_avail="${rexx_data[1]}"
+            mem_used=$((mem_total - mem_avail))
+            rm -f ${REXXFILE}
         ;;
 
         "Mac OS X" | "macOS" | "iPhone OS")
@@ -4909,6 +4992,15 @@ cache_uname() {
                 ProductBuildVersion)  osx_build=${sw_vers[i+1]}   ;;
             esac
         }
+    fi
+
+    if [[ "$kernel_name" == "OS/390" ]]; then
+        # z/OS has a non-standard -I argument for uname.
+        IFS=" " read -ra uname <<< "$(uname -srmvI)"
+
+        kernel_name="${uname[0]}"
+        kernel_version="$((10#${uname[2]})).$((10#${uname[1]:0:2}))"
+        kernel_machine="${uname[3]}"
     fi
 }
 
@@ -11368,6 +11460,19 @@ ssssssssssssso/-`      `-/osssssssssssss
       .+oooooooooooooooooooooooo+.
        -osssssssssssssssssssssso-
         `osssssssssssssssssssso`
+EOF
+        ;;
+
+        "z/OS"*)
+            set_colors 12
+            read -rd '' ascii_data <<'EOF'
+${c1}             //  OOOOOOO  SSSSSSS
+            //  OO    OO SS
+    zzzzzz //  OO    OO SS
+      zz  //  OO    OO   SSSS
+    zz   //  OO    OO       SS
+  zz    //  OO    OO       SS
+zzzzzz //   OOOOOOO  SSSSSSS
 EOF
         ;;
 
