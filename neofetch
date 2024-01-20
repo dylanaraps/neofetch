@@ -6142,6 +6142,52 @@ ${c1}                    y:
 EOF
         ;;
 
+        "aeros_small"*)
+            set_colors fg fg
+            read -rd '' ascii_data <<'EOF'
+${c1}
+          ooOOoo
+      ooO        Ooo
+   ooO              Ooo
+ ooO                  Ooo
+                       Ooo
+                       Ooo
+                       Ooo
+ oo.                  .oo
+   oo.              .oo
+      oo.        .oo
+          oo..oo
+EOF
+        ;;
+
+        "aerOS"*)
+            set_colors fg fg
+            read -rd '' ascii_data <<'EOF'
+${c1}                    
+                   ooo OOO OOO ooo
+               oOO                 OOo
+           oOO                         OOo
+        oOO                               OOo
+      oOO                                   OOo
+    oOO                                       OOo
+   oOO                                         OOo
+  oOO                                           OOo
+                                                 OOo
+                                                 OOo
+                                                 OOo
+                                                 OOo
+                                                 OOo
+  o..                                           ..o
+   o..                                         ..o
+    o..                                       ..o
+      o..                                   ..o
+        o..                               ..o
+           o..                         ..o
+               o..                 ..o
+                   ooo ... ... ooo
+EOF
+        ;;
+
         "Arch"*)
             set_colors 6 6 7 1
             read -rd '' ascii_data <<'EOF'
