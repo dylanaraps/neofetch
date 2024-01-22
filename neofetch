@@ -1565,6 +1565,7 @@ get_packages() {
             has swupd      && tot swupd bundle-list --quiet
             has pisi       && tot pisi li
             has pacstall   && tot pacstall -L
+	        has cccp       && tot cccp -l
 
             # Using the dnf package cache is much faster than rpm.
             if has dnf && type -p sqlite3 >/dev/null && [[ -f /var/cache/dnf/packages.db ]]; then
@@ -6141,6 +6142,36 @@ ${c1}                    y:
 /+.                                  -o.
 EOF
         ;;
+
+        "Soviet"*)
+            set_colors 1
+            read -rd '' ascii_data <<'EOF'
+${c1}
+
+                               .:+o+/-.
+                                `:oyys+:`
+                                   .+syyyo-`
+                    .:///+oss+.      .oyyyys:
+                  -oyyyyyyyyyso`       /yyyyyo.
+                -oyyyyyyyyys+-          :yyyyys-
+             `-oyyyyyyyyyyo.             /yyyyyy-
+           `-oyyyyyyyyyyyys/`            `syyyyys`
+          `oyyyyyyyyyyyyyyyys/`           /yyyyyy/
+           `/syyyyys/oyyyyyyyys/`         -yyyyyys
+             `/sys/`  -+yyyyyyyys/.       -yyyyyyy
+               `-`      -+syyyyyyys/.     /yyyyyys
+                          .+syyyyyyys+.  `syyyyyy/
+                            .+syyyyyyys+-oyyyyyys`
+        `-++-                 ./syyyyyyyyyyyyyys-
+      ./syyyso/.                `/syyyyyyyyyyys-
+    -+syyyyyyyyss+:.`            .:syyyyyyyyyy/
+ `:oyyyyyys+syyyyyyssso++/////+ossyyyyyyyyyyyyyo-
+:syyyyyyo-` `:oyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyys:
+`/syys/.       `:+syyyyyyyyyyyyyyyyyys+:.:syyys/`
+  `/:`             .-/+oossyysso+/:-`      :o/`
+EOF
+        ;;
+
 
         "Arch"*)
             set_colors 6 6 7 1
