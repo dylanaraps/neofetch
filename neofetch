@@ -5164,7 +5164,7 @@ ASCII:
                                 sabotage, Sabayon, Sailfish, SalentOS, Scientific, Septor,
                                 SereneLinux, SharkLinux, Siduction, Slackware, SliTaz, SmartOS,
                                 Solus, Source_Mage, Sparky, Star, SteamOS, SunOS, openSUSE_Leap,
-                                t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Trisquel,
+                                t2, openSUSE_Tumbleweed, openSUSE, SwagArch, Tails, Tatra, Trisquel,
                                 Ubuntu-Cinnamon, Ubuntu-Budgie, Ubuntu-GNOME, Ubuntu-MATE,
                                 Ubuntu-Studio, Ubuntu, Univention, Venom, Void, VNux, LangitKetujuh, semc,
                                 Obarun, windows10, Windows7, Xubuntu, Zorin, and IRIX have ascii logos.
@@ -11346,6 +11346,36 @@ oMMMMmMMMMNds:.+MMMmmMMN/.-odNMMMMmMMMM+
         .omMMMMMMMM-`NMMMMMMMmo.
           `:hMMMMMM. NMMMMMh/`
              .odNm+  /dNms.
+EOF
+
+                "Tatra"*)
+                    set_colors 4 7
+                    read -rd '' ascii_data <<'EOF'
+${c1}                ..                     ....                      
+                :!: ^??: :~.              :!????!.                    
+             .^..?!  ^:  ~!.:~.        :~~?J???JJ?.                   
+           ...^!. :^~~~~^: .?!...     ^JJJJJJJJ?!~:::.                
+           .!!: .!7??????7!. :7?:     ^!~~~~~~~:~7????!.              
+         .:^::. !?77777777?!..::^:          .::!JJ????J7^~~^:         
+         :7?!: .7?77777777?7. :!?7:       ^7?J??????????JJJJ?7.       
+          ..^!^ :7??7777??7^ ^!^..       :?J?????????????????J~       
+           .!^::..^!7777!^..~:^!.        .::::::::::::^^::::::.       
+             .!~.^^  ..  ^:.7?.  .J?                 ^??^             
+        .~!!~.. :7^ :??: ^7. .  :5##Y.         :.   ^!!!!:            
+        7JJJJ7      .~^.       ~G#BB#P^      .!J7:         .          
+        ^!!!!^     .^         7BBBBBB#G~    :7J?J?^      .!?~.        
+         .^~.     :5B7      .JBBBBBBBGY?~  ^?J?????~    :7???!.       
+         :7?~    ~GBBBJ.   :5#BBBBBBP?77?!!???????JJ~   .......       
+          .:    7BBBBB#5: ~G#BBBBBBY7777?55J?????J?~.                 
+              .JBBBBBBB#P?BBBBBBBGJ7777J5555Y???J7:                   
+             :5#BBBBBBBBBBBBBBBBP?77??Y555555YJ?~                     
+            ^GBBBBBBBBBBBBBBBBBY777?~?P5555555Y7~~~~~~~~~^            
+           7BBBBBBBBBBBBBBBBBG?77?7^  !555555Y????????????~           
+         .JBBBBBBBBBBP5JYGBB5777?!.    ^Y55YJ???????777777?!.         
+        :5#BBBBBBGPYJ????JPY????~...... :JJ???????????77777?7:        
+       ~G#BBBBG5J??????????J55Y7^^^^^^^^!???????????????7777?7:       
+      !GBGG5YJ???????????????J~^^^^^^^~!?????????????????777777^      
+      ::::......................................................     
 EOF
                 ;;
         "Zorin"*)
