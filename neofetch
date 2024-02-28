@@ -62,17 +62,17 @@ print_info() {
     info "Uptime" uptime
     info "Packages" packages
     info "Shell" shell
+    info "Terminal" term
+    info "Terminal Font" term_font
+    info "CPU" cpu
+    info "Memory" memory
+    info "GPU" gpu
     info "Resolution" resolution
     info "DE" de
     info "WM" wm
     info "WM Theme" wm_theme
     info "Theme" theme
     info "Icons" icons
-    info "Terminal" term
-    info "Terminal Font" term_font
-    info "CPU" cpu
-    info "GPU" gpu
-    info "Memory" memory
 
     # info "GPU Driver" gpu_driver  # Linux/macOS only
     # info "Disk" disk
@@ -5454,18 +5454,18 @@ get_args() {
                     info "Uptime" uptime
                     info "Packages" packages
                     info "Shell" shell
+                    info "Terminal" term
+                    info "Terminal Font" term_font
+                    info "CPU" cpu
+                    info "Memory" memory
+                    info "GPU" gpu
+                    info "GPU Driver" gpu_driver
                     info "Resolution" resolution
                     info "DE" de
                     info "WM" wm
                     info "WM Theme" wm_theme
                     info "Theme" theme
                     info "Icons" icons
-                    info "Terminal" term
-                    info "Terminal Font" term_font
-                    info "CPU" cpu
-                    info "GPU" gpu
-                    info "GPU Driver" gpu_driver
-                    info "Memory" memory
 
                     info "Disk" disk
                     info "Battery" battery
