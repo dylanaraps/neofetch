@@ -2647,7 +2647,7 @@ get_gpu() {
 
         "Haiku")
             gpu="$(listdev | grep -A2 -F 'device Display controller' |\
-                   awk -F':' '/device beef/ {print $2}')"
+                   awk -F':' '/device [^D]/ {print $2}')"
         ;;
 
         *)
