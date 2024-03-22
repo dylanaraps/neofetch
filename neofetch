@@ -2331,7 +2331,7 @@ get_cpu() {
 
         "BSD")
             # Get CPU name.
-            cpu="$(sysctl -n hw.model)"
+            cpu="$(sysctl -n machdep.cpu_brand || sysctl -n hw.model)"
             cpu="${cpu/[0-9]\.*}"
             cpu="${cpu/ @*}"
 
